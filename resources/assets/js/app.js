@@ -52,3 +52,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
 require('./bulma-extensions');
 
+require('@fortawesome/fontawesome-free/js/all');
