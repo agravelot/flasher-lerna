@@ -4,9 +4,9 @@
     <div class="container is-centered">
         <div class="columns is-multiline is-centered">
 
-            @foreach($goldenBookPosts as $goldenBookPost)
+            @foreach($goldenBooksPosts as $goldenBookPost)
                 <div class="column is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd">
-                    <a href="{{ route('goldenbookpost.show', ['goldenBookPost' => $goldenBookPost]) }}">
+                    <a href="{{ route('goldenbook.show', ['goldenBookPost' => $goldenBookPost]) }}">
                         <div class="card large">
                             <div class="card-content">
                                 <div class="media">

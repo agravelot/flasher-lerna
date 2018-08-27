@@ -32,6 +32,7 @@
                 <div class="navbar-start">
                     <a class="navbar-item" href="{{ route('posts.index') }}">Posts</a>
                     <a class="navbar-item" href="{{ route('albums.index') }}">Albums</a>
+                    <a class="navbar-item" href="{{ route('goldenbook.index') }}">Livre d'or</a>
                     <a class="navbar-item" href="#">A propos</a>
                     <a class="navbar-item" href="#">Contact</a>
 

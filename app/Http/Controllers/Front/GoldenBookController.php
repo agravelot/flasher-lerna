@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Models\GoldenBookPost;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -14,7 +15,9 @@ class GoldenBookController extends Controller
      */
     public function index()
     {
-        //
+        $goldenBooksPosts = GoldenBookPost::all();
+
+        return view('goldenbook.index', ['goldenBooksPosts' => $goldenBooksPosts]);
     }
 
     /**
@@ -46,7 +49,9 @@ class GoldenBookController extends Controller
      */
     public function show($id)
     {
-        //
+        $goldenBooksPost = GoldenBookPost::find($id);
+
+        return view('goldenbook.show', ['goldenBooksPost' => $goldenBooksPost]);
     }
 
     /**
