@@ -19,3 +19,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('posts', 'Front\PostController');
+Route::resource('goldenbook', 'Front\AlbumController');
