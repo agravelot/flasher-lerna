@@ -28,56 +28,13 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Many to Many relation
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class);
-    }
 
-    /**
-     * One to Many relation
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
     public function comments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->morphMany('App\Models\Comment', 'commentable');
     }
 
-    /**
-     * One to Many relation
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\hasMany
-     */
-    public function validComments()
-    {
-        return $this->comments()->whereHas('user', function ($query) {
-            $query->whereValid(true);
-        });
+    public function tags() {
+        return $this->morphToMany('App\Models\Tag', 'taggable');
     }
-
-    /**
-     * One to Many relation
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\hasMany
-     */
-    public function parentComments()
-    {
-        return $this->validComments()->whereParentId(null);
-    }
-
-    /**
-     * Many to Many relation
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
-     */
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class);
-    }
-
 }

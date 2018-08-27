@@ -33,11 +33,11 @@ class CreateForeignKeys extends Migration
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
         });
-        Schema::table('comments', function (Blueprint $table) {
-            $table->foreign('post_id')->references('id')->on('posts')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-        });
+//        Schema::table('comments', function (Blueprint $table) {
+//            $table->foreign('post_id')->references('id')->on('posts')
+//                ->onDelete('cascade')
+//                ->onUpdate('cascade');
+//        });
         Schema::table('category_post', function (Blueprint $table) {
             $table->foreign('category_id')->references('id')->on('categories')
                 ->onDelete('cascade')

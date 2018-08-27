@@ -13,13 +13,14 @@ class Tag extends Model
      */
     protected $fillable = ['tag'];
 
-    /**
-     * Many to Many relation
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
+
     public function posts()
     {
-        return $this->belongsToMany(Post::class);
+        return $this->morphedByMany('App\Models\Post', 'taggable');
+    }
+
+    public function albums()
+    {
+        return $this->morphedByMany('App\Models\Album', 'taggable');
     }
 }

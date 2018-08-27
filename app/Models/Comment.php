@@ -23,13 +23,18 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * One to Many relation
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function post()
+//    /**
+//     * One to Many relation
+//     *
+//     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+//     */
+//    public function post()
+//    {
+//        return $this->belongsTo(Post::class);
+//    }
+
+    public function commentable()
     {
-        return $this->belongsTo(Post::class);
+        return $this->morphTo();
     }
 }
