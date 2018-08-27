@@ -13,9 +13,9 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body>
+<body class="has-navbar-fixed-top">
 <div id="app">
-    <nav class="navbar has-shadow">
+    <nav class="navbar has-shadow is-fixed-top">
         <div class="container">
             <div class="navbar-brand">
                 <a href="{{ url('/') }}" class="navbar-item">{{ config('app.name', 'Laravel') }}</a>
@@ -32,12 +32,22 @@
                 <div class="navbar-start">
                     <a class="navbar-item" href="{{ route('posts.index') }}">Posts</a>
                     <a class="navbar-item" href="{{ route('albums.index') }}">Albums</a>
-                    <a class="navbar-item" href="#" target="_blank">
-                      <span class="icon">
-                            <i class="fab fa-facebook-f"></i>
-                      </span>
-                    </a>
+                    <a class="navbar-item" href="#">A propos</a>
+                    <a class="navbar-item" href="#">Contact</a>
+
                 </div>
+
+                <a class="navbar-item" href="#" target="_blank">
+                      <span class="icon">
+                            <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                      </span>
+                </a>
+                <a class="navbar-item" href="#" target="_blank">
+                      <span class="icon">
+                            <i class="fab fa-instagram" aria-hidden="true"></i>
+                      </span>
+                </a>
+
 
                 <div class="navbar-end">
                     @guest()
@@ -45,10 +55,19 @@
                         <a class="navbar-item " href="{{ route('register') }}">Register</a>
                     @else
                         <div class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link" href="#">{{ Auth::user()->name }}</a>
+                            <a class="navbar-link" href="#">
+                                <span class="icon">
+                                  <i class="fas fa-user"></i>
+                                </span>
+                                <span>{{ Auth::user()->name }}</span>
+                            </a>
 
-                            <div class="navbar-dropdown">
-                                <a class="navbar-item" href="{{ route('logout') }}"
+                            <div class="navbar-dropdown is-boxed is-right">
+                                <a class="navbar-item" href="#">
+                                    Settings
+                                </a>
+                                <hr class="navbar-divider">
+                                <a class="navbar-item has-text-danger" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                     Logout
                                 </a>
