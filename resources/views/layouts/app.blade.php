@@ -30,11 +30,47 @@
 
             <div class="navbar-menu" id="navMenu">
                 <div class="navbar-start">
-                    <a class="navbar-item" href="{{ route('posts.index') }}">Posts</a>
-                    <a class="navbar-item" href="{{ route('albums.index') }}">Albums</a>
-                    <a class="navbar-item" href="{{ route('goldenbook.index') }}">Livre d'or</a>
-                    <a class="navbar-item" href="#">A propos</a>
-                    <a class="navbar-item" href="#">Contact</a>
+
+
+                    @guest()
+                        <a class="navbar-item" href="{{ route('posts.index') }}">Posts</a>
+                        <a class="navbar-item" href="{{ route('albums.index') }}">Albums</a>
+                    @else
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link" href="{{ route('posts.index') }}">
+                                Posts
+                            </a>
+                            <div class="navbar-dropdown is-boxed is-right">
+                                <a class="navbar-item" href="{{ route('posts.create') }}">
+                                    Add
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link" href="{{ route('albums.index') }}">
+                                Albums
+                            </a>
+                            <div class="navbar-dropdown is-boxed is-right">
+                                <a class="navbar-item" href="{{ route('albums.create') }}">
+                                    Add
+                                </a>
+                            </div>
+                        </div>
+                    @endguest
+
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link" href="{{ route('goldenbook.index') }}">
+                            Golden book
+                        </a>
+
+                        <div class="navbar-dropdown is-boxed is-right">
+                            <a class="navbar-item" href="{{ route('goldenbook.create') }}">
+                                Add
+                            </a>
+                        </div>
+                    </div>
+
 
                 </div>
 
@@ -51,9 +87,13 @@
 
 
                 <div class="navbar-end">
+                    <a class="navbar-item" href="#">About</a>
+                    <a class="navbar-item" href="#">Contact</a>
                     @guest()
-                        <a class="navbar-item " href="{{ route('login') }}">Login</a>
-                        <a class="navbar-item " href="{{ route('register') }}">Register</a>
+                        {{--<a class="navbar-item " href="{{ route('login') }}">Login</a>--}}
+                        {{--<a class="navbar-item " href="{{ route('register') }
+                        }">Register</a>--}}
+
                     @else
                         <div class="navbar-item has-dropdown is-hoverable">
                             <a class="navbar-link" href="#">
@@ -79,7 +119,7 @@
                                 </form>
                             </div>
                         </div>
-                    @endif
+                    @endguest
                 </div>
             </div>
         </div>
