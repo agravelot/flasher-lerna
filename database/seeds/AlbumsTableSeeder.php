@@ -21,8 +21,8 @@ class AlbumsTableSeeder extends Seeder
         for ($i = 0; $i < 10; $i++) {
             DB::table('albums')->insert([
                 'title' => $faker->sentence,
-                'body' => $faker->paragraph,
-                'active' => true,
+                'body' => $faker->paragraph($i),
+                'active' => $faker->boolean,
                 'password' => null,
                 'user_id' => 1,
                 'created_at' => Carbon::now(),
