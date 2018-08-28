@@ -13,9 +13,9 @@
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
-<body class="has-navbar-fixed-top">
+<body>
 <div id="app">
-    <nav class="navbar has-shadow is-fixed-top">
+    <nav class="navbar has-shadow">
         <div class="container">
             <div class="navbar-brand">
                 <a href="{{ url('/') }}" class="navbar-item">{{ config('app.name', 'Laravel') }}</a>
