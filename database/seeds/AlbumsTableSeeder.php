@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -24,7 +25,8 @@ class AlbumsTableSeeder extends Seeder
                 'active' => true,
                 'password' => null,
                 'user_id' => 1,
-
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]);
         }
     }

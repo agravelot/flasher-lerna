@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -18,7 +19,9 @@ class GoldenBooksPostsTableSeeder extends Seeder
             DB::table('golden_book_posts')->insert([
                 'name' => $faker->sentence,
                 'content' => $faker->paragraph,
-                'active' => true
+                'active' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]);
         }
     }

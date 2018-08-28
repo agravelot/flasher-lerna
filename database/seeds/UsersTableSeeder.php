@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -20,15 +21,19 @@ class UsersTableSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('secret'),
-            'role' => 'admin'
+            'role' => 'admin',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
 
-        for ($i=0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             DB::table('users')->insert([
                 'name' => $faker->userName,
                 'email' => $faker->email,
                 'password' => bcrypt('secret'),
-                'role' => 'user'
+                'role' => 'user',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]);
         }
     }
