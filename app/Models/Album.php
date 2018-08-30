@@ -27,4 +27,8 @@ class Album extends Post
     public function tags() {
         return $this->morphToMany('App\Models\Tag', 'taggable');
     }
+
+    public function pictures() {
+        return $this->hasMany(Picture::class);
+    }
 }
