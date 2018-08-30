@@ -16,25 +16,7 @@ class AlbumController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->only(['create', 'store', 'edit', 'update', 'destroy']);
-    }
-
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'title' => 'string|required|unique:albums|min:6|max:255',
-            'seo_title' => 'nullable',
-            'body' => 'nullable',
-            'active' => 'nullable',
-            'user_id' => 'nullable',
-            'password' => 'required|string',
-        ]);
+        $this->middleware('auth', ['except' => ['index', 'show']]);
     }
 
     /**
