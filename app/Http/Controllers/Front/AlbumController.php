@@ -110,18 +110,40 @@ class AlbumController extends Controller
      */
     public function edit(Album $album)
     {
-        //
+        return view('albums.edit', ['album' => $album]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        //
+        $this->validate(request(), [
+            'title' => 'string|required|unique:albums|min:6|max:255',
+            'seo_title' => 'nullable',
+            'body' => 'nullable',
+            'active' => 'boolean',
+            'user_id' => 'nullable',
+            'password' => 'nullable|string',
+        ]);
+
+        $album = Album::find($id);
+
+
+        $album->title = $request->input('title');
+        $album->seo_title = $request->input('seo_title');
+        $album->body = $request->input('body');
+        $album->active = $request->input('active');
+        $album->user_id = Auth::id();
+        $album->password = Hash::make($request->input('password'));
+
+        $album->save();
+
+        return redirect(route('albums.show', ['album' => $album]));
     }
 
     /**
