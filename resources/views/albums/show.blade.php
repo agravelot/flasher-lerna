@@ -7,28 +7,14 @@
 
         <div class="carousel carousel-animated carousel-animate-slide">
             <div class="carousel-container">
-                <div class="carousel-item has-background is-active">
-                    <img class="is-background"
-                         src="https://images.unsplash.com/photo-1475778057357-d35f37fa89dd?dpr=1&amp;auto=compress,format&amp;fit=crop&amp;w=1920&amp;h=&amp;q=80&amp;cs=tinysrgb&amp;crop="
-                         alt="" width="640" height="310"/>
-                    {{--<div class="title">Merry Christmas</div>--}}
-                </div>
-                <div class="carousel-item has-background">
-                    <img class="is-background" src="https://wikiki.github.io/images/singer.jpg" alt="" width="640"
-                         height="310"/>
-                    <div class="title">Original Gift: Offer a song with <a href="https://lasongbox.com" target="_blank">La
-                            Song Box</a></div>
-                </div>
-                <div class="carousel-item has-background">
-                    <img class="is-background" src="https://wikiki.github.io/images/sushi.jpg" alt="" width="640"
-                         height="310"/>
-                    <div class="title">Sushi time</div>
-                </div>
-                <div class="carousel-item has-background">
-                    <img class="is-background" src="https://wikiki.github.io/images/life.jpg" alt="" width="640"
-                         height="310"/>
-                    <div class="title">Life</div>
-                </div>
+                @foreach ($album->pictures as $pictures)
+                    <div class="carousel-item has-background @if ($loop->first) is-active @endif">
+                        <img class="is-background" src="{{ asset('storage/'.$pictures->filename)}}" alt="" width="640"
+                             height="310"/>
+                        {{--<div class="title">Original Gift: Offer a song with <a href="https://lasongbox.com" target="_blank">La--}}
+                                {{--Song Box</a></div>--}}
+                    </div>
+                @endforeach
             </div>
             <div class="carousel-navigation is-overlay">
                 <div class="carousel-nav-left">
