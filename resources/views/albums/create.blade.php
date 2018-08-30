@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="card-content">
-            <form method="POST" action="{{ route('albums.store') }}">
+            <form method="POST" enctype="multipart/form-data" action="{{ route('albums.store') }}">
                 {{ csrf_field() }}
 
                 <div class="field is-horizontal">
@@ -89,6 +89,28 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <label class="label">Pictures</label>
+                    </div>
+
+                    <div class="field-body">
+                        <div class="field">
+                            <p class="control">
+                                <input type="file" name="pictures[]" multiple />
+                            </p>
+
+                            @if ($errors->has('pictures'))
+                                <p class="help is-danger">
+                                    {{ $errors->first('pictures') }}
+                                </p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+
 
 
 

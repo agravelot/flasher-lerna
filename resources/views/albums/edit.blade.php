@@ -29,7 +29,6 @@
                 </div>
 
 
-
                 <div class="field is-horizontal">
                     <div class="field-label">
                         <label class="label">Active</label>
@@ -79,7 +78,8 @@
                     <div class="field-body">
                         <div class="field">
                             <p class="control">
-                                <textarea class="textarea" id="body" type="text" name="body" rows="10">{{ old('body') }}</textarea>
+                                <textarea class="textarea" id="body" type="text" name="body"
+                                          rows="10">{{ old('body') }}</textarea>
                             </p>
 
                             @if ($errors->has('body'))
@@ -91,6 +91,25 @@
                     </div>
                 </div>
 
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <label class="label">Pictures</label>
+                    </div>
+
+                    <div class="field-body">
+                        <div class="field">
+                            <p class="control">
+                                <input type="file" name="pictures[]" multiple/>
+                            </p>
+
+                            @if ($errors->has('pictures'))
+                                <p class="help is-danger">
+                                    {{ $errors->first('pictures') }}
+                                </p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
 
 
                 <div class="field is-horizontal">

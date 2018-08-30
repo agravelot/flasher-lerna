@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Http\Requests\PictureUploadRequest;
 use App\Models\Album;
+use App\Models\Picture;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class AlbumController extends Controller
@@ -47,10 +50,10 @@ class AlbumController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param PictureUploadRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PictureUploadRequest $request)
     {
         $this->validate(request(), [
             'title' => 'string|required|unique:albums|min:6|max:255',
@@ -59,6 +62,7 @@ class AlbumController extends Controller
             'active' => 'boolean',
             'user_id' => 'nullable',
             'password' => 'nullable|string',
+            'pictures' => 'required',
         ]);
 
         $album = Album::create([
@@ -69,6 +73,12 @@ class AlbumController extends Controller
             'user_id' => Auth::id(),
             'password' => Hash::make($request->input('password')),
         ]);
+
+        foreach ($request->pictures as $uploaderPicture) {
+            $picture = new Picture();
+            $picture->filename = Storage::disk('uploads')->put('albums/' . $album->id, $uploaderPicture);
+            $album->pictures()->save($picture);
+        }
 
         return redirect(route('albums.show', ['album' => $album]));
     }
@@ -88,7 +98,7 @@ class AlbumController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Album $album
-     * @return void
+     * @return \Illuminate\Http\Response
      */
     public function edit(Album $album)
     {
@@ -98,12 +108,14 @@ class AlbumController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param PictureUploadRequest $request
      * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PictureUploadRequest $request, $id)
     {
+        //TODO Fix pictures updates
+        //TODO title uniques for update ?
         $this->validate(request(), [
             'title' => 'string|required|unique:albums|min:6|max:255',
             'seo_title' => 'nullable',
@@ -111,7 +123,9 @@ class AlbumController extends Controller
             'active' => 'boolean',
             'user_id' => 'nullable',
             'password' => 'nullable|string',
+            'pictures' => 'required',
         ]);
+
 
         $album = Album::find($id);
 
@@ -124,6 +138,12 @@ class AlbumController extends Controller
         $album->password = Hash::make($request->input('password'));
 
         $album->save();
+
+        foreach ($request->pictures as $uploaderPicture) {
+            $picture = new Picture();
+            $picture->filename = Storage::disk('uploads')->put('albums/' . $album->id, $uploaderPicture);
+            $album->pictures()->save($picture);
+        }
 
         return redirect(route('albums.show', ['album' => $album]));
     }
