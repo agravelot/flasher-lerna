@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Front;
 use App\Http\Requests\PictureUploadRequest;
 use App\Models\Album;
 use App\Models\Picture;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -152,10 +153,19 @@ class AlbumController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Album $album
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function destroy(Album $album)
     {
-        //
+        // Suppression des fichiers (dossier)
+        Storage::disk('uploads')->deleteDirectory('albums/' .$album->id);
+        $album->pictures()->delete();
+
+        $album->delete();
+
+        Session::flash('flash_message', 'Album successfully deleted');
+
+        return Redirect::back();
     }
 }
