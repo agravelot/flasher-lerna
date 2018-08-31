@@ -22,3 +22,5 @@ Route::resource('posts', 'Front\PostController');
 Route::resource('albums', 'Front\AlbumController');
 Route::resource('goldenbook', 'Front\GoldenBookController');
 
+Route::get('/admin/dashboard', 'Back\AdminController@dashboard')->name('dashboard');
+Route::get('/admin/albums', 'Back\AdminController@albums')->name('admin_albums');
