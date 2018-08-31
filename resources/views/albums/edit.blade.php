@@ -15,7 +15,7 @@
                     <div class="field-body">
                         <div class="field">
                             <p class="control">
-                                <input class="input" id="title" type="text" name="title" value="{{ old('title') }}"
+                                <input class="input" id="title" type="text" name="title" value="{{ $album->title }}"
                                        required autofocus>
                             </p>
 
@@ -28,7 +28,6 @@
                     </div>
                 </div>
 
-
                 <div class="field is-horizontal">
                     <div class="field-label">
                         <label class="label">Active</label>
@@ -38,7 +37,7 @@
                         <div class="field">
                             <p class="control">
                                 <input type="hidden" name="active" value="0">
-                                <input type="checkbox" name="active" @if(old('active')) checked @endif>
+                                <input type="checkbox" name="active" @if($album->active) checked @endif>
                             </p>
 
                             @if ($errors->has('active'))
@@ -58,6 +57,7 @@
                     <div class="field-body">
                         <div class="field">
                             <p class="control">
+                                {{--TODO Case reset password ?--}}
                                 <input class="input" id="password" type="password" name="password">
                             </p>
 
@@ -79,7 +79,7 @@
                         <div class="field">
                             <p class="control">
                                 <textarea class="textarea" id="body" type="text" name="body"
-                                          rows="10">{{ old('body') }}</textarea>
+                                          rows="10">{{ $album->body }}</textarea>
                             </p>
 
                             @if ($errors->has('body'))
@@ -99,6 +99,7 @@
                     <div class="field-body">
                         <div class="field">
                             <p class="control">
+                                {{--TODO Afficher les actuels--}}
                                 <input type="file" name="pictures[]" multiple/>
                             </p>
 
