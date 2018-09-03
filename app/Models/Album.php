@@ -3,6 +3,8 @@
 namespace App\Models;
 
 
+use App\User;
+
 class Album extends Post
 {
     /**
@@ -16,16 +18,16 @@ class Album extends Post
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
 
     public function comments()
     {
-     return $this->morphMany('App\Models\Comment', 'commentable');
+     return $this->morphMany(Comment::class, 'commentable');
     }
 
     public function tags() {
-        return $this->morphToMany('App\Models\Tag', 'taggable');
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 
     public function pictures() {

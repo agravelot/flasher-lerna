@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
@@ -31,10 +32,10 @@ class Post extends Model
 
     public function comments()
     {
-        return $this->morphMany('App\Models\Comment', 'commentable');
+        return $this->morphMany(Comment::class, 'commentable');
     }
 
     public function tags() {
-        return $this->morphToMany('App\Models\Tag', 'taggable');
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 }

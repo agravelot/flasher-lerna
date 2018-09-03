@@ -16,16 +16,6 @@ class Category extends Model
     ];
 
     /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
-    public function getRouteKeyName()
-    {
-        return request()->segment(1) === 'admin' ? 'id' : 'slug';
-    }
-
-    /**
      * Many to Many relation
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany

@@ -16,11 +16,11 @@ class Tag extends Model
 
     public function posts()
     {
-        return $this->morphedByMany('App\Models\Post', 'taggable');
+        return $this->morphedByMany(Post::class, 'taggable');
     }
 
     public function albums()
     {
-        return $this->morphedByMany('App\Models\Album', 'taggable');
+        return $this->morphedByMany(Album::class, 'taggable');
     }
 }
