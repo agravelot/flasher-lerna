@@ -32,19 +32,20 @@
                                     <table class="table is-fullwidth is-striped">
                                         <tbody>
 
-                                        @foreach($albums as $album)
+                                        @foreach($contacts as $contact)
                                             <tr>
                                                 <td width="5%">
                                                     <i class="far fa-images"></i>
-                                                    {{ $album->pictures->count() }}
+                                                    {{ $contact->name }}
+                                                    {{ $contact->email }}
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('albums.show', ['album' => $album]) }}">{{ $album->title }}</a>
+                                                    <a href="{{ route('contact.show', ['album' => $contact]) }}">{{ $contact->message }}</a>
                                                 </td>
                                                 <td><a class="button is-small is-primary"
-                                                       href="{{ route('albums.edit', ['album' => $album]) }}">Update</a>
+                                                       href="{{ route('contact.edit', ['album' => $contact]) }}">Update</a>
                                                 <td>
-                                                    <form action="{{ route('albums.destroy', ['album' => $album]) }}"
+                                                    <form action="{{ route('contact.destroy', ['album' => $contact]) }}"
                                                           method="POST">
                                                         {{ method_field('DELETE') }}
                                                         {{ csrf_field() }}

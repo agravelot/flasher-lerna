@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Back;
 
 use App\Models\Album;
+use App\Models\Contact;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -46,6 +47,21 @@ class AdminController extends Controller
 
         return view('admin.album', [
             'albums' => $albums
+        ]);
+    }
+
+
+    /**
+     * Display dashboard
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function contacts()
+    {
+        $contacts = Contact::all();
+
+        return view('admin.contact', [
+            'contacts' => $contacts
         ]);
     }
 }

@@ -3,31 +3,15 @@
 @section('content')
     <div class="container">
         <div class="columns">
-            <div class="column is-3">
-                <aside class="menu">
-                    <p class="menu-label">
-                        General
-                    </p>
-                    <ul class="menu-list">
-                        <li><a href="{{ route('dashboard') }}" class="is-active">Dashboard</a></li>
-                        <li><a href="{{ route('admin_albums') }}">Albums</a></li>
-                    </ul>
-                </aside>
-            </div>
+
+            @include('admin.partials._menu_list')
+
             <div class="column is-9">
-                <nav class="breadcrumb" aria-label="breadcrumbs">
-                    <ul>
-                        <li><a href="../">Bulma</a></li>
-                        <li><a href="../">Templates</a></li>
-                        <li><a href="../">Examples</a></li>
-                        <li class="is-active"><a href="#" aria-current="page">Admin</a></li>
-                    </ul>
-                </nav>
                 <section class="hero is-info welcome is-small">
                     <div class="hero-body">
                         <div class="container">
                             <h1 class="title">
-                                Hello, Admin.
+                                Hello, {{ Auth::user()->name }}.
                             </h1>
                             <h2 class="subtitle">
                                 I hope you are having a great day!

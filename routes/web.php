@@ -25,3 +25,4 @@ Route::resource('contact', 'Front\ContactController');
 
 Route::get('/admin/dashboard', 'Back\AdminController@dashboard')->name('dashboard');
 Route::get('/admin/albums', 'Back\AdminController@albums')->name('admin_albums');
+Route::get('/admin/contacts', 'Back\AdminController@contacts')->name('admin_contacts');
