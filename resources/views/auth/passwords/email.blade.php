@@ -29,7 +29,7 @@
 
                     <form class="forgot-password-form" method="POST" action="{{ route('password.email') }}">
 
-                        {{ csrf_field() }}
+                        @csrf
 
                         <div class="field is-horizontal">
                             <div class="field-label">

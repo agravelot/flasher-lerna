@@ -47,11 +47,9 @@
                                                     <form action="{{ route('albums.destroy', ['album' => $album]) }}"
                                                           method="POST">
                                                         {{ method_field('DELETE') }}
-                                                        {{ csrf_field() }}
+                                                        @csrf
                                                         <button class="button is-small is-danger">Delete</button>
                                                     </form>
-
-
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -65,7 +63,6 @@
                             </footer>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

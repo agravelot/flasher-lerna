@@ -13,7 +13,7 @@
                             <img src="https://placehold.it/128x128">
                         </figure>
                         <form class="login-form" method="POST" action="{{ route('login') }}">
-                            {{ csrf_field() }}
+                            @csrf
                             <div class="field">
                                 <div class="control">
                                     <input class="input is-large" id="email" type="email" name="email"

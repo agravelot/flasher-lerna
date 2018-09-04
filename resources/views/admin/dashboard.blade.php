@@ -55,9 +55,9 @@
                                     Events
                                 </p>
                                 <a href="#" class="card-header-icon" aria-label="more options">
-                  <span class="icon">
-                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                  </span>
+                                  <span class="icon">
+                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                  </span>
                                 </a>
                             </header>
                             <div class="card-table">
@@ -125,9 +125,9 @@
                                     Inventory Search
                                 </p>
                                 <a href="#" class="card-header-icon" aria-label="more options">
-                  <span class="icon">
-                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                  </span>
+                                  <span class="icon">
+                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                  </span>
                                 </a>
                             </header>
                             <div class="card-content">
@@ -135,11 +135,11 @@
                                     <div class="control has-icons-left has-icons-right">
                                         <input class="input is-large" type="text" placeholder="">
                                         <span class="icon is-medium is-left">
-                      <i class="fa fa-search"></i>
-                    </span>
+                                          <i class="fa fa-search"></i>
+                                        </span>
                                         <span class="icon is-medium is-right">
-                      <i class="fa fa-check"></i>
-                    </span>
+                                          <i class="fa fa-check"></i>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -150,9 +150,9 @@
                                     User Search
                                 </p>
                                 <a href="#" class="card-header-icon" aria-label="more options">
-                  <span class="icon">
-                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                  </span>
+                                  <span class="icon">
+                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                  </span>
                                 </a>
                             </header>
                             <div class="card-content">
@@ -160,11 +160,11 @@
                                     <div class="control has-icons-left has-icons-right">
                                         <input class="input is-large" type="text" placeholder="">
                                         <span class="icon is-medium is-left">
-                      <i class="fa fa-search"></i>
-                    </span>
+                                            <i class="fa fa-search"></i>
+                                        </span>
                                         <span class="icon is-medium is-right">
-                      <i class="fa fa-check"></i>
-                    </span>
+                                            <i class="fa fa-check"></i>
+                                        </span>
                                     </div>
                                 </div>
                             </div>

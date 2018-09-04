@@ -4,7 +4,7 @@
     <div class="container">
         <div class="card-content">
             <form method="POST" enctype="multipart/form-data" action="{{ route('albums.store') }}">
-                {{ csrf_field() }}
+                @csrf
 
                 <div class="field is-horizontal">
                     <div class="field-label">

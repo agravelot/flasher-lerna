@@ -5,7 +5,7 @@
         <div class="card-content">
             <form method="POST" action="{{ route('albums.index') . '/' .  $album->id }}">
                 {{ method_field('PATCH') }}
-                {{ csrf_field() }}
+                @csrf
 
                 <div class="field is-horizontal">
                     <div class="field-label">

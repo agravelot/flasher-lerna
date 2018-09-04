@@ -29,7 +29,7 @@
 
                     <form class="password-reset-form" method="POST" action="{{ route('password.request') }}">
 
-                        {{ csrf_field() }}
+                        @csrf
 
                         <input type="hidden" name="token" value="{{ $token }}">
 

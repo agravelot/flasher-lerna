@@ -48,7 +48,7 @@
                                                     <form action="{{ route('contact.destroy', ['album' => $contact]) }}"
                                                           method="POST">
                                                         {{ method_field('DELETE') }}
-                                                        {{ csrf_field() }}
+                                                        @csrf
                                                         <button class="button is-small is-danger">Delete</button>
                                                     </form>
 

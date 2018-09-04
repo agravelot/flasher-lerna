@@ -7,7 +7,7 @@
             <h1 class="title has-text-centered">Contact me</h1>
 
             <form method="POST" enctype="multipart/form-data" action="{{ route('contact.store') }}">
-                {{ csrf_field() }}
+                @csrf
 
                 <div class="field is-horizontal">
                     <div class="field-label">
