@@ -13,9 +13,9 @@
 
         <div class="navbar-menu" id="navMenu">
             <div class="navbar-start">
-                <a class="navbar-item" href="{{ route('posts.index') }}">Posts</a>
-                <a class="navbar-item" href="{{ route('albums.index') }}">Albums</a>
-                <a class="navbar-item" href="{{ route('goldenbook.index') }}">Golden book</a>
+                <a class="navbar-item {{ Request::is('posts*') ? 'is-active' : '' }}" href="{{ route('posts.index') }}">Posts</a>
+                <a class="navbar-item {{ Request::is('albums*') ? 'is-active' : '' }}" href="{{ route('albums.index') }}">Albums</a>
+                <a class="navbar-item {{ Request::is('goldenbook*') ? 'is-active' : '' }}" href="{{ route('goldenbook.index') }}">Golden book</a>
             </div>
 
             <a class="navbar-item" href="#" target="_blank">
@@ -31,8 +31,8 @@
 
 
             <div class="navbar-end">
-                <a class="navbar-item" href="#">About</a>
-                <a class="navbar-item" href="{{ route('contact.create') }}">Contact</a>
+                <a class="navbar-item {{ Request::is('') ? 'is-active' : '' }}" href="#">About</a>
+                <a class="navbar-item {{ Request::is('contact*') ? 'is-active' : '' }}" href="{{ route('contact.create') }}">Contact</a>
                 @guest()
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link" href="#">
@@ -62,10 +62,10 @@
                         </a>
 
                         <div class="navbar-dropdown is-boxed is-right">
-                            <a class="navbar-item" href="{{ route('dashboard') }}">
+                            <a class="navbar-item  {{ Request::is('admin*') ? 'is-active' : '' }} " href="{{ route('dashboard') }}">
                                 Admin
                             </a>
-                            <a class="navbar-item" href="#">
+                            <a class="navbar-item {{ Request::is('') ? 'is-active' : '' }}" href="#">
                                 Settings
                             </a>
                             <hr class="navbar-divider">
