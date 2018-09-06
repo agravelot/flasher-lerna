@@ -118,7 +118,7 @@ class AlbumController extends Controller
         //TODO Fix pictures updates
         //TODO title uniques for update ?
         $this->validate(request(), [
-            'title' => 'string|required|unique:albums|min:6|max:255',
+            'title' => 'string|required|min:2|max:255|unique:albums,' . $id,
             'seo_title' => 'nullable',
             'body' => 'nullable',
             'active' => 'boolean',
