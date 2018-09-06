@@ -12,7 +12,7 @@
                         <img class="is-background" src="{{ asset('storage/'.$pictures->filename)}}" alt="" width="640"
                              height="310"/>
                         {{--<div class="title">Original Gift: Offer a song with <a href="https://lasongbox.com" target="_blank">La--}}
-                                {{--Song Box</a></div>--}}
+                        {{--Song Box</a></div>--}}
                     </div>
                 @endforeach
             </div>
@@ -32,9 +32,9 @@
                 <div class="card-content">
                     <div class="media">
                         <div class="media-content has-text-centered">
-                            <p class="title article-title">{{ $album->title }}</p>
+                            <p class="title article-title">  {{-- {{ $album->title }}--}}</p>
                             <div class="tags has-addons level-item">
-                                <span class="tag is-rounded is-info">@ {{$album->user->name}}</span>
+                                <span class="tag is-rounded is-info">{{'@' . $album->user->name}}</span>
                                 <span class="tag is-rounded">{{ $album->created_at->toFormattedDateString() }}</span>
                             </div>
                         </div>
