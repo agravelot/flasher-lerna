@@ -1,4 +1,4 @@
-<nav class="navbar has-shadow">
+<nav class="navbar has-shadow is-primary">
     <div class="container">
         <div class="navbar-brand">
             <a href="{{ url('/') }}" class="navbar-item">{{ config('app.name', 'PicBlog') }}</a>
@@ -14,25 +14,32 @@
         <div class="navbar-menu" id="navMenu">
             <div class="navbar-start">
                 <a class="navbar-item {{ Request::is('posts*') ? 'is-active' : '' }}" href="{{ route('posts.index') }}">Posts</a>
-                <a class="navbar-item {{ Request::is('albums*') ? 'is-active' : '' }}" href="{{ route('albums.index') }}">Albums</a>
-                <a class="navbar-item {{ Request::is('goldenbook*') ? 'is-active' : '' }}" href="{{ route('goldenbook.index') }}">Golden book</a>
+                <a class="navbar-item {{ Request::is('albums*') ? 'is-active' : '' }}"
+                   href="{{ route('albums.index') }}">Albums</a>
+                <a class="navbar-item {{ Request::is('goldenbook*') ? 'is-active' : '' }}"
+                   href="{{ route('goldenbook.index') }}">Golden book</a>
             </div>
 
-            <a class="navbar-item" href="#" target="_blank">
-                <span class="icon">
-                    <i class="fab fa-facebook-f" aria-hidden="true"></i>
-                </span>
-            </a>
-            <a class="navbar-item" href="#" target="_blank">
+            @if (env('FACEBOOK_URL'))
+                <a class="navbar-item" href="{{ env('FACEBOOK_URL') }}" target="_blank">
+                    <span class="icon">
+                        <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                    </span>
+                </a>
+            @endif
+
+            @if (env('INSTAGRAM_URL'))
+                <a class="navbar-item" href="{{ env('INSTAGRAM_URL') }}" target="_blank">
                 <span class="icon">
                     <i class="fab fa-instagram" aria-hidden="true"></i>
                 </span>
-            </a>
-
+                </a>
+            @endif
 
             <div class="navbar-end">
                 <a class="navbar-item {{ Request::is('') ? 'is-active' : '' }}" href="#">About</a>
-                <a class="navbar-item {{ Request::is('contact*') ? 'is-active' : '' }}" href="{{ route('contact.create') }}">Contact</a>
+                <a class="navbar-item {{ Request::is('contact*') ? 'is-active' : '' }}"
+                   href="{{ route('contact.create') }}">Contact</a>
                 @guest()
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link" href="#">
@@ -62,7 +69,8 @@
                         </a>
 
                         <div class="navbar-dropdown is-boxed is-right">
-                            <a class="navbar-item  {{ Request::is('admin*') ? 'is-active' : '' }} " href="{{ route('dashboard') }}">
+                            <a class="navbar-item  {{ Request::is('admin*') ? 'is-active' : '' }} "
+                               href="{{ route('dashboard') }}">
                                 Admin
                             </a>
                             <a class="navbar-item {{ Request::is('') ? 'is-active' : '' }}" href="#">
