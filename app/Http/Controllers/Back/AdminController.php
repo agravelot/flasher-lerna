@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Back;
 use App\Models\Album;
 use App\Models\Contact;
 use App\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
@@ -17,7 +16,7 @@ class AdminController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'verified']);
     }
 
     /**

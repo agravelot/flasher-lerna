@@ -2,10 +2,12 @@
 
 namespace App;
 
+use App\Models\Album;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
 
@@ -28,6 +30,6 @@ class User extends Authenticatable
     ];
 
     public function albums() {
-        return $this->hasMany('App\Model\Album');
+        return $this->hasMany(Album::class);
     }
 }

@@ -24,6 +24,7 @@ class UsersTableSeeder extends Seeder
             'role' => 'admin',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
+            'email_verified_at' => Carbon::now(),
         ]);
 
         for ($i = 0; $i < 10; $i++) {
