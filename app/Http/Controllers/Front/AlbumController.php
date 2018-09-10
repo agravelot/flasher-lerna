@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class AlbumController extends Controller
 {
@@ -52,18 +52,21 @@ class AlbumController extends Controller
      * Store a newly created resource in storage.
      *
      * @param PictureUploadRequest $request
+     * @param $id
      * @return \Illuminate\Http\Response
      */
     public function store(PictureUploadRequest $request)
     {
         $this->validate(request(), [
-            'title' => 'string|required|unique:albums|min:6|max:255',
+            'title' => 'string|required|unique:albums|min:2|max:255',
             'seo_title' => 'nullable',
             'body' => 'nullable',
             'active' => 'boolean',
-            'user_id' => 'nullable',
             'password' => 'nullable|string',
             'pictures' => 'required',
+            Rule::exists('users')->where(function ($query) {
+                $query->where('user_id', 1);
+            }),
         ]);
 
         $album = Album::create([
@@ -116,25 +119,26 @@ class AlbumController extends Controller
     public function update(PictureUploadRequest $request, $id)
     {
         //TODO Fix pictures updates
-        //TODO title uniques for update ?
+        //TODO Fix boolean active
+
         $this->validate(request(), [
             'title' => 'string|required|min:2|max:255|unique:albums,' . $id,
             'seo_title' => 'nullable',
             'body' => 'nullable',
             'active' => 'boolean',
-            'user_id' => 'nullable',
             'password' => 'nullable|string',
             'pictures' => 'required',
+            Rule::exists('users')->where(function ($query) {
+                $query->where('user_id', 1);
+            }),
         ]);
-
 
         $album = Album::find($id);
 
-
         $album->title = $request->input('title');
-        $album->seo_title = $request->input('seo_title');
-        $album->body = $request->input('body');
-        $album->active = $request->input('active');
+        $album->seo_title = $request->input('seo_title', '');
+        $album->body = $request->input('body', '');
+        $album->active = $request->input('active', false);
         $album->user_id = Auth::id();
         $album->password = Hash::make($request->input('password'));
 
@@ -145,6 +149,7 @@ class AlbumController extends Controller
             $picture->filename = Storage::disk('uploads')->put('albums/' . $album->id, $uploaderPicture);
             $album->pictures()->save($picture);
         }
+
 
         return redirect(route('albums.show', ['album' => $album]));
     }
@@ -159,7 +164,7 @@ class AlbumController extends Controller
     public function destroy(Album $album)
     {
         // Suppression des fichiers (dossier)
-        Storage::disk('uploads')->deleteDirectory('albums/' .$album->id);
+        Storage::disk('uploads')->deleteDirectory('albums/' . $album->id);
         $album->pictures()->delete();
 
         $album->delete();
