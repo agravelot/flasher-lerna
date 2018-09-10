@@ -42,7 +42,7 @@ class AdminController extends Controller
      */
     public function albums()
     {
-        $albums = Album::all();
+        $albums = Album::with('pictures')->latest()->get();
 
         return view('admin.album', [
             'albums' => $albums

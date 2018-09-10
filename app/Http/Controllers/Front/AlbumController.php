@@ -31,7 +31,7 @@ class AlbumController extends Controller
     public function index()
     {
         if (Auth::user()) {
-            $albums = Album::all();
+            $albums = Album::with('pictures')->latest()->get();
         } else {
             $albums = Album::where('active', true)->get();
         }
@@ -52,7 +52,6 @@ class AlbumController extends Controller
      * Store a newly created resource in storage.
      *
      * @param PictureUploadRequest $request
-     * @param $id
      * @return \Illuminate\Http\Response
      */
     public function store(PictureUploadRequest $request)
