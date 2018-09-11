@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Http\Requests\ContactStoreRequest;
 use App\Models\Contact;
 use App\Models\Picture;
 use App\Http\Controllers\Controller;
@@ -36,17 +37,11 @@ class ContactController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param ContactStoreRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ContactStoreRequest $request)
     {
-        $this->validate(request(), [
-            'name' => 'string|required|min:3|max:255',
-            'email' => 'nullable',
-            'message' => 'min:25',
-        ]);
-
         Contact::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
