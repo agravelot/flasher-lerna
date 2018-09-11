@@ -22,7 +22,7 @@ class CreatePicturesTable extends Migration
             $table->integer('album_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('album_id')->references('id')->on('albums');
+            $table->foreign('album_id')->references('id')->on('albums')->onDelete('cascade');
         });
     }
 
