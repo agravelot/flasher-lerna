@@ -7,6 +7,7 @@
             <li><a href="{{ route('dashboard') }}" {{ Request::is('admin/dashboard*') ? 'class=is-active' : '' }}>Dashboard</a></li>
             <li><a href="{{ route('admin_albums') }}" {{ Request::is('admin/albums*') ? 'class=is-active' : '' }}>Albums</a></li>
             <li><a href="{{ route('admin_contacts') }}" {{ Request::is('admin/contacts*') ? 'class=is-active' : '' }}>Contacts</a></li>
+            <li><a href="{{ route('admin_cosplayers') }}" {{ Request::is('admin/cosplayers*') ? 'class=is-active' : '' }}>Cosplayers</a></li>
         </ul>
     </aside>
 </div>

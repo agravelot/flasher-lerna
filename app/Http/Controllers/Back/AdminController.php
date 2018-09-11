@@ -36,7 +36,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Display dashboard
+     * Display albums
      *
      * @return \Illuminate\Http\Response
      */
@@ -51,7 +51,7 @@ class AdminController extends Controller
 
 
     /**
-     * Display dashboard
+     * Display contacts
      *
      * @return \Illuminate\Http\Response
      */
@@ -61,6 +61,20 @@ class AdminController extends Controller
 
         return view('admin.contact', [
             'contacts' => $contacts
+        ]);
+    }
+
+    /**
+     * Display contacts
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function cosplayers()
+    {
+        $cosplayers = Album::with('pictures')->latest()->get();
+
+        return view('admin.cosplayer', [
+            'cosplayers' => $cosplayers
         ]);
     }
 }

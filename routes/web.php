@@ -22,7 +22,9 @@ Route::resource('posts', 'Front\PostController');
 Route::resource('albums', 'Front\AlbumController');
 Route::resource('goldenbook', 'Front\GoldenBookController');
 Route::resource('contact', 'Front\ContactController');
+Route::resource('cosplayers', 'Front\CosplayerController');
 
 Route::get('/admin/dashboard', 'Back\AdminController@dashboard')->name('dashboard');
 Route::get('/admin/albums', 'Back\AdminController@albums')->name('admin_albums');
 Route::get('/admin/contacts', 'Back\AdminController@contacts')->name('admin_contacts');
+Route::get('/admin/cosplayers', 'Back\AdminController@cosplayers')->name('admin_cosplayers');
