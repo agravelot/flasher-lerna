@@ -1,22 +1,25 @@
 <tr>
     <td width="5%">
-        <i class="far fa-images"></i>
+        <span class="icon">
+               <i class="far fa-address-book"></i>
+        </span>
         {{ $contact->name }}
         {{ $contact->email }}
     </td>
     <td>
-        <a href="{{ route('contact.show', ['album' => $contact]) }}">{{ $contact->message }}</a>
+        <a href="{{ route('contact.show', ['contact' => $contact]) }}">{{ $contact->message }}</a>
     </td>
-    <td><a class="button is-small is-primary"
-           href="{{ route('contact.edit', ['album' => $contact]) }}">Update</a>
     <td>
-        <form action="{{ route('contact.destroy', ['album' => $contact]) }}"
+        <form action="{{ route('contact.destroy', ['contact' => $contact]) }}"
               method="POST">
             {{ method_field('DELETE') }}
             @csrf
-            <button class="button is-small is-danger">Delete</button>
+            <button class="button is-danger is-outlined is-small">
+                <span class="icon has-text-danger">
+                    <i class="far fa-trash-alt"></i>
+                </span>
+            </button>
+
         </form>
-
-
     </td>
 </tr>
