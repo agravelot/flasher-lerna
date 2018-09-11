@@ -1,19 +1,31 @@
 <tr>
     <td width="5%">
-        <i class="far fa-images"></i>
-        {{ $album->pictures->count() }}
+        <span class="icon is-small">
+            <i class="far fa-images"></i>
+            {{ $album->pictures->count() }}
+        </span>
     </td>
     <td>
         <a href="{{ route('albums.show', ['album' => $album]) }}">{{ $album->title }}</a>
     </td>
-    <td><a class="button is-small is-primary"
-           href="{{ route('albums.edit', ['album' => $album]) }}">Update</a>
+    <td>
+        <a href="{{ route('albums.edit', ['album' => $album]) }}">
+            <span class="icon has-text-info">
+                <i class="far fa-edit"></i>
+            </span>
+        </a>
+    </td>
     <td>
         <form action="{{ route('albums.destroy', ['album' => $album]) }}"
               method="POST">
             {{ method_field('DELETE') }}
             @csrf
-            <button class="button is-small is-danger">Delete</button>
+            <button class="button is-danger is-outlined is-small">
+                <span class="icon has-text-danger">
+                    <i class="far fa-trash-alt"></i>
+                </span>
+            </button>
+
         </form>
     </td>
 </tr>
