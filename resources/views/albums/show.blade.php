@@ -65,14 +65,12 @@
                         <span class="tag">Twenty</span>
                     </div>
                     <div class="columns is-multiline is-mobile">
-                        @for ($i = 1; $i <= 10; $i++)
+                        @foreach ($album->cosplayers as $cosplayer)
                             <figure class="image column is-2-desktop is-3-tablet is-3-mobile">
                                 <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
-                                <p class="has-text-centered"><a href="#">Cosplayer {{ $i }}</a></p>
+                                <p class="has-text-centered"><a href="#">{{ $cosplayer->name }}</a></p>
                             </figure>
-                        @endfor
-
-
+                        @endforeach
                     </div>
 
                 </div>

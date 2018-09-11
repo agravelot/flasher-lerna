@@ -13,29 +13,36 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+//        DB::table('users')->insert([
+//            'name' => 'admin',
+//            'email' => 'admin@gmail.com',
+//            'password' => bcrypt('secret'),
+//            'role' => 'admin',
+//            'created_at' => Carbon::now(),
+//            'updated_at' => Carbon::now(),
+//            'email_verified_at' => Carbon::now(),
+//            'remember_token' => str_random(10),
+//        ]);
 
-        $faker = Faker\Factory::create();
-
-
-        DB::table('users')->insert([
-            'name' => 'admin',
-            'email' => 'admin@gmail.com',
-            'password' => bcrypt('secret'),
-            'role' => 'admin',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-            'email_verified_at' => Carbon::now(),
-        ]);
-
-        for ($i = 0; $i < 10; $i++) {
-            DB::table('users')->insert([
-                'name' => $faker->userName,
-                'email' => $faker->email,
+        $admin = factory(App\Models\User::class, 1)
+            ->create([
+                'name' => 'admin',
+                'email' => 'admin@gmail.com',
                 'password' => bcrypt('secret'),
-                'role' => 'user',
+                'role' => 'admin',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-            ]);
-        }
+                'email_verified_at' => Carbon::now(),
+                'remember_token' => str_random(10),
+            ])
+            ->each(function ($u) {
+                $u->albums()->save(factory(App\Models\Album::class)->make());
+            });
+
+        $users = factory(App\Models\User::class, 10)
+            ->create()
+            ->each(function ($u) {
+                $u->albums()->save(factory(App\Models\Album::class)->make());
+            });
     }
 }
