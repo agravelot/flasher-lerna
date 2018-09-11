@@ -31,9 +31,14 @@ class AlbumController extends Controller
     public function index()
     {
         if (Auth::user()) {
-            $albums = Album::with('pictures')->latest()->get();
+            $albums = Album::with('pictures')
+                ->latest()
+                ->get();
         } else {
-            $albums = Album::where('active', true)->get();
+            $albums = Album::with('pictures')
+                ->where('active', true)
+                ->where('password', null)
+                ->get();
         }
         return view('albums.index', ['albums' => $albums]);
     }
