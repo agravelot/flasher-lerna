@@ -48,8 +48,7 @@ class ContactController extends Controller
             'message' => $request->input('message'),
         ]);
 
-//        TODO Show success
-        return redirect(route('contact.create'));
+        return redirect(route('contact.create'))->withSuccess('Your message has been sent');
     }
 
     /**
@@ -74,8 +73,6 @@ class ContactController extends Controller
     {
         $contact->delete();
 
-        Session::flash('flash_message', 'Contact successfully deleted');
-
-        return Redirect::back();
+        return Redirect::back()->withSuccess('Contact successfully deleted');
     }
 }

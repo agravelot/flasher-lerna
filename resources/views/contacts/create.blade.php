@@ -6,6 +6,8 @@
 
             <h1 class="title has-text-centered">Contact me</h1>
 
+            @include('layouts.partials._messages')
+
             <form method="POST" enctype="multipart/form-data" action="{{ route('contact.store') }}">
                 @csrf
 

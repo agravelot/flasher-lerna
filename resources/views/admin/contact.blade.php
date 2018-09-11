@@ -7,12 +7,15 @@
             @include('admin.partials._menu_list')
 
             <div class="column is-9">
+
+                @include('layouts.partials._messages')
+
                 <div class="columns">
                     <div class="column">
                         <div class="card events-card">
                             <header class="card-header">
                                 <p class="card-header-title">
-                                    Albums
+                                    Contacts
                                     <a href="{{ route('albums.create') }}">
                                     <span class="icon">
                                         <i class="fas fa-plus"></i>

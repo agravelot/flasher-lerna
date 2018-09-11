@@ -127,8 +127,7 @@ class AlbumController extends Controller
             $album->pictures()->save($picture);
         }
 
-
-        return redirect(route('albums.show', ['album' => $album]));
+        return redirect(route('albums.show', ['album' => $album]))->withSuccess('Album successfully updated');
     }
 
     /**
@@ -146,8 +145,6 @@ class AlbumController extends Controller
 
         $album->delete();
 
-        Session::flash('flash_message', 'Album successfully deleted');
-
-        return Redirect::back();
+        return Redirect::back()->withSuccess('Album successfully deleted');
     }
 }
