@@ -2,20 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\Rule;
 
-class PictureUploadRequest extends FormRequest
+class PictureUploadRequest extends Request
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -23,21 +14,27 @@ class PictureUploadRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = [];
-
+        $id = $this->route('album');
         $pictures = $this->file('pictures');
-        if ($pictures != null) {
-            $picturesCount = count($pictures);
-            foreach(range(0, $picturesCount) as $index) {
-                $rules['pictures.' . $index] = 'image|mimes:jpeg,bmp,png|max:2000';
-            }
-//            TODO Handle empty
-//        } else {
-//            return redirect($this->route('albums.create'))
-//                ->withErrors($this, 'pictures')
-//                ->withInput();
-        }
 
+        $rules = [
+            'title' => 'string|required|min:2|max:255|unique:albums,id,' . $id,
+            'seo_title' => 'nullable',
+            'body' => 'nullable|max:65000',
+            //TODO Fix true on edit
+            'active' => 'boolean',
+            'password' => 'nullable|string|max:128',
+            'pictures' => 'required',
+            Rule::exists('users')->where(function ($query) {
+                $query->where('user_id', 1);
+            }),
+        ];
+
+        if ($pictures != null) {
+            foreach ($pictures as $key => $picture) {
+                $rules['pictures.' . $key] = 'image|mimes:jpeg,bmp,png|max:20000';
+            }
+        }
 
         return $rules;
     }

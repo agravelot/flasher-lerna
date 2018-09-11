@@ -56,18 +56,6 @@ class AlbumController extends Controller
      */
     public function store(PictureUploadRequest $request)
     {
-        $this->validate(request(), [
-            'title' => 'string|required|unique:albums|min:2|max:255',
-            'seo_title' => 'nullable',
-            'body' => 'nullable',
-            'active' => 'boolean',
-            'password' => 'nullable|string',
-            'pictures' => 'required',
-            Rule::exists('users')->where(function ($query) {
-                $query->where('user_id', 1);
-            }),
-        ]);
-
         $album = Album::create([
             'title' => $request->input('title'),
             'seo_title' => $request->input('seo_title'),
@@ -117,21 +105,6 @@ class AlbumController extends Controller
      */
     public function update(PictureUploadRequest $request, $id)
     {
-        //TODO Fix pictures updates
-        //TODO Fix boolean active
-
-        $this->validate(request(), [
-            'title' => 'string|required|min:2|max:255|unique:albums,' . $id,
-            'seo_title' => 'nullable',
-            'body' => 'nullable',
-            'active' => 'boolean',
-            'password' => 'nullable|string',
-            'pictures' => 'required',
-            Rule::exists('users')->where(function ($query) {
-                $query->where('user_id', 1);
-            }),
-        ]);
-
         $album = Album::find($id);
 
         $album->title = $request->input('title');
@@ -143,9 +116,9 @@ class AlbumController extends Controller
 
         $album->save();
 
-        foreach ($request->pictures as $uploaderPicture) {
+        foreach ($request->pictures as $uploadedPicture) {
             $picture = new Picture();
-            $picture->filename = Storage::disk('uploads')->put('albums/' . $album->id, $uploaderPicture);
+            $picture->filename = Storage::disk('uploads')->put('albums/' . $album->id, $uploadedPicture);
             $album->pictures()->save($picture);
         }
 
