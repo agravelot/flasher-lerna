@@ -13,7 +13,8 @@
         <div class="field-body">
             <div class="field">
                 <p class="control">
-                    <input class="input" id="title" type="text" name="title" value="{{ old('title', isset($album->title) ? $album->title : null) }}"
+                    <input class="input" id="title" type="text" name="title"
+                           value="{{ old('title', isset($album->title) ? $album->title : null) }}"
                            required autofocus>
                 </p>
 
@@ -35,7 +36,8 @@
             <div class="field">
                 <p class="control">
                     <input type="hidden" name="active" value="0">
-                    <input type="checkbox" name="active" @if(old('active', isset($album->active) ? $album->active : false)) checked @endif>
+                    <input type="checkbox" name="active"
+                           @if(old('active', isset($album->active) ? $album->active : false)) checked @endif>
                 </p>
 
                 @if ($errors->has('active'))
@@ -75,7 +77,8 @@
         <div class="field-body">
             <div class="field">
                 <p class="control">
-                    <textarea class="textarea" id="body" type="text" name="body" rows="10">{{ old('body', isset($album->body) ? $album->body : null) }}</textarea>
+                    <textarea class="textarea" id="body" type="text" name="body"
+                              rows="10">{{ old('body', isset($album->body) ? $album->body : null) }}</textarea>
                 </p>
 
                 @if ($errors->has('body'))
@@ -94,15 +97,38 @@
 
         <div class="field-body">
             <div class="field">
-                <p class="control">
-                    <input type="file" name="pictures[]" multiple />
-                </p>
+                <div class="file">
+                    <label class="file-label">
+                        <input class="file-input" type="file" name="pictures[]" multiple>
+                        <span class="file-cta">
+                            <span class="file-icon">
+                                <i class="fas fa-upload"></i>
+                            </span>
+                          <span class="file-label">
+                                Choose your files…
+                          </span>
+                        </span>
+                    </label>
+                </div>
 
                 @if ($errors->has('pictures'))
                     <p class="help is-danger">
                         {{ $errors->first('pictures') }}
                     </p>
                 @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal">
+        <div class="field-label">
+            <label class="label">Cosplayers</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    <input class="input" type="tags" placeholder="Add Cosplayers" value="Tag1,Tag2,Tag3">
+                </div>
             </div>
         </div>
     </div>

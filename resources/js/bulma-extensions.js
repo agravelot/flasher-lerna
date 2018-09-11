@@ -6,7 +6,7 @@ var bulmaCarousel = require('bulma-extensions/bulma-carousel/dist/js/bulma-carou
 // var bulmaQuickview = require('bulma-extensions/bulma-quickview/dist/js/bulma-quickview');
 // var bulmaSlider = require('bulma-extensions/bulma-slider/dist/js/bulma-slider');
 // var bulmaSteps = require('bulma-extensions/bulma-steps/dist/js/bulma-steps');
-// var bulmaTagsinput = require('bulma-extensions/bulma-tagsinput/dist/js/bulma-tagsinput');
+var bulmaTagsinput = require('bulma-extensions/bulma-tagsinput/dist/js/bulma-tagsinput');
 //
 //
 // // Instantiate
@@ -17,4 +17,4 @@ bulmaCarousel.attach();
 // bulmaQuickview.attach();
 // bulmaSlider.attach();
 // bulmaSteps.attach();
-// bulmaTagsinput.attach();
+bulmaTagsinput.attach();
