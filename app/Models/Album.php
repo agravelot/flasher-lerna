@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-
-use App\User;
-
 class Album extends Post
 {
     /**

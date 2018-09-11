@@ -1,8 +1,7 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\Models\Album;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;

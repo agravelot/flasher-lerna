@@ -8,7 +8,6 @@ class Picture extends Model
 {
     protected $fillable = ['filename'];
 
-
     public function album()
     {
         return $this->belongsTo(Album::class);

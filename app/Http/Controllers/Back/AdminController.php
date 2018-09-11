@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Back;
 
 use App\Models\Album;
 use App\Models\Contact;
-use App\User;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
