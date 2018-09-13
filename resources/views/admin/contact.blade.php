@@ -20,7 +20,7 @@
                                     <span class="icon">
                                         <i class="fas fa-plus"></i>
                                     </span>
-                                        <span>Ajouter</span>
+                                        <span>Add</span>
                                     </a>
                                 </p>
 
