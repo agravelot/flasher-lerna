@@ -20,14 +20,16 @@ class Album extends Post
 
     public function comments()
     {
-     return $this->morphMany(Comment::class, 'commentable');
+        return $this->morphMany(Comment::class, 'commentable');
     }
 
-    public function tags() {
+    public function tags()
+    {
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
-    public function pictures() {
+    public function pictures()
+    {
         return $this->hasMany(Picture::class);
     }
 }

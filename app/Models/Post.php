@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    ////https://github.com/bestmomo/laravel5-5-example/blob/master/app/Models/Post.php
-    ///
-
     /**
      * The attributes that are mass assignable.
      *
@@ -27,7 +24,6 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
-
 
     public function comments()
     {

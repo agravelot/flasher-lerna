@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
 
 class PictureUploadRequest extends Request
