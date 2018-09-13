@@ -35,14 +35,14 @@
                         </div>
                         <div class="tile is-parent">
                             <article class="tile is-child box">
-                                <p class="title">3.4k</p>
-                                <p class="subtitle">Open Orders</p>
+                                <p class="title">{{ $cosplayerCount }}</p>
+                                <p class="subtitle">Cosplayer</p>
                             </article>
                         </div>
                         <div class="tile is-parent">
                             <article class="tile is-child box">
-                                <p class="title">19</p>
-                                <p class="subtitle">Exceptions</p>
+                                <p class="title">{{ $contactCount }}</p>
+                                <p class="subtitle">Contacts</p>
                             </article>
                         </div>
                     </div>

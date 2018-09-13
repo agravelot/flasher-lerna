@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Back;
 
 use App\Models\Album;
 use App\Models\Contact;
+use App\Models\Cosplayer;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 
@@ -28,10 +29,14 @@ class AdminController extends Controller
     {
         $userCount = User::count();
         $albumCount = Album::count();
+        $cosplayerCount = Cosplayer::count();
+        $contactCount = Contact::count();
 
         return view('admin.dashboard', [
             'userCount' => $userCount,
-            'albumCount' => $albumCount
+            'albumCount' => $albumCount,
+            'cosplayerCount' => $cosplayerCount,
+            'contactCount' => $contactCount
         ]);
     }
 
