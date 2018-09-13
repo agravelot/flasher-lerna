@@ -13,16 +13,7 @@ class GoldenBooksPostsTableSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker\Factory::create();
-
-        for ($i = 0; $i < 10; $i++) {
-            DB::table('golden_book_posts')->insert([
-                'name' => $faker->sentence,
-                'content' => $faker->paragraph,
-                'active' => true,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]);
-        }
+        $goldenBookPosts = factory(\App\Models\GoldenBookPost::class, 10)
+            ->create();
     }
 }

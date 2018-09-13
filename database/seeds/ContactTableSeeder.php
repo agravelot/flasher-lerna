@@ -13,16 +13,7 @@ class ContactTableSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker\Factory::create();
-
-        for ($i = 0; $i < 10; $i++) {
-            DB::table('contacts')->insert([
-                'name' => $faker->userName,
-                'email' => $faker->email,
-                'message' => $faker->paragraph,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]);
-        }
+        $contacts = factory(App\Models\Contact::class, 10)
+            ->create();
     }
 }
