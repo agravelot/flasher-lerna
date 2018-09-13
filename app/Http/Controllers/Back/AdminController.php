@@ -76,7 +76,7 @@ class AdminController extends Controller
      */
     public function cosplayers()
     {
-        $cosplayers = Album::with('pictures')->latest()->get();
+        $cosplayers = Cosplayer::latest()->get();
 
         return view('admin.cosplayer', [
             'cosplayers' => $cosplayers

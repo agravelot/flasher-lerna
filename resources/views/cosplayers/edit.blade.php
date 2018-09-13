@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="card-content">
-            @include('albums._feilds', ['route' => route('albums.index') . '/' .  $album->id])
+            @include('cosplayers._feilds', ['route' => route('albums.index') . '/' .  $cosplayer->id])
         </div>
     </div>
 @endsection

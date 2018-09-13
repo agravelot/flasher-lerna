@@ -32,4 +32,9 @@ class Album extends Post
     {
         return $this->hasMany(Picture::class);
     }
+
+    public function cosplayers()
+    {
+        return $this->belongsToMany(Cosplayer::class);
+    }
 }

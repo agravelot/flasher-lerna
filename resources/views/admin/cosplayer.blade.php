@@ -15,12 +15,12 @@
                         <div class="card events-card">
                             <header class="card-header">
                                 <p class="card-header-title">
-                                    Albums
+                                    Cosplayers
                                     <a href="{{ route('cosplayers.create') }}">
                                     <span class="icon">
                                         <i class="fas fa-plus"></i>
                                     </span>
-                                        <span>Ajouter</span>
+                                        <span>Add</span>
                                     </a>
                                 </p>
 
@@ -35,7 +35,7 @@
                                     <table class="table is-fullwidth is-striped">
                                         <tbody>
 
-                                        @each('admin.partials._album_item', $cosplayers, 'album', 'admin.partials._empty')
+                                        @each('admin.partials._cosplayer_item', $cosplayers, 'cosplayer', 'admin.partials._empty')
 
                                         </tbody>
                                     </table>

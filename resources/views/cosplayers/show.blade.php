@@ -3,28 +3,8 @@
 @section("content")
     <div class="container is-centered">
 
-        <h1 class="title is-2 has-text-centered">{{ $album->title }}</h1>
+        <h1 class="title is-2 has-text-centered">{{ $cosplayer->name }}</h1>
 
-        <div class="carousel carousel-animated carousel-animate-slide">
-            <div class="carousel-container">
-                @foreach ($album->pictures as $pictures)
-                    <div class="carousel-item has-background @if ($loop->first) is-active @endif">
-                        <img class="is-background" src="{{ asset('storage/'.$pictures->filename)}}" alt="" width="640"
-                             height="310"/>
-                        {{--<div class="title">Original Gift: Offer a song with <a href="https://lasongbox.com" target="_blank">La--}}
-                        {{--Song Box</a></div>--}}
-                    </div>
-                @endforeach
-            </div>
-            <div class="carousel-navigation is-overlay">
-                <div class="carousel-nav-left">
-                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                </div>
-                <div class="carousel-nav-right">
-                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                </div>
-            </div>
-        </div>
 
         <div class="column is-8 is-offset-2">
             <!-- START ARTICLE -->
@@ -34,13 +14,13 @@
                         <div class="media-content has-text-centered">
                             <p class="title article-title">  {{-- {{ $album->title }}--}}</p>
                             <div class="tags has-addons level-item">
-                                <span class="tag is-rounded is-info">{{'@' . $album->user->name}}</span>
-                                <span class="tag is-rounded">{{ $album->created_at->toFormattedDateString() }}</span>
+                                {{--<span class="tag is-rounded is-info">{{'@' . $album->user->name}}</span>--}}
+                                {{--<span class="tag is-rounded">{{ $album->created_at->toFormattedDateString() }}</span>--}}
                             </div>
                         </div>
                     </div>
                     <div class="content article-body">
-                        <p class="has-text-justified">{{ $album->body }}</p>
+                        {{--<p class="has-text-justified">{{ $album->body }}</p>--}}
                     </div>
                     <div class="tags">
                         <span class="tag">One</span>
@@ -65,12 +45,12 @@
                         <span class="tag">Twenty</span>
                     </div>
                     <div class="columns is-multiline is-mobile">
-                        @for ($i = 1; $i <= 10; $i++)
-                            <figure class="image column is-2-desktop is-3-tablet is-3-mobile">
-                                <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
-                                <p class="has-text-centered"><a href="#">Cosplayer {{ $i }}</a></p>
-                            </figure>
-                        @endfor
+                        {{--@for ($i = 1; $i <= 10; $i++)--}}
+                        {{--<figure class="image column is-2-desktop is-3-tablet is-3-mobile">--}}
+                        {{--<img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">--}}
+                        {{--<p class="has-text-centered"><a href="#">Cosplayer {{ $i }}</a></p>--}}
+                        {{--</figure>--}}
+                        {{--@endfor--}}
 
 
                     </div>
