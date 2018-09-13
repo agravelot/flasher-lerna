@@ -48,6 +48,16 @@ class CreateForeignKeys extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });
+        Schema::table('album_cosplayer', function (Blueprint $table) {
+            $table->foreign('album_id')->references('id')->on('albums')
+                ->onDelete('set null')
+                ->onUpdate('set null');
+        });
+        Schema::table('album_cosplayer', function (Blueprint $table) {
+            $table->foreign('cosplayer_id')->references('id')->on('cosplayers')
+                ->onDelete('set null')
+                ->onUpdate('set null');
+        });
     }
 
     /**
@@ -81,5 +91,11 @@ class CreateForeignKeys extends Migration
         Schema::table('category_post', function (Blueprint $table) {
             $table->dropForeign('category_post_post_id_foreign');
         });
+        Schema::table('album_cosplayer', function (Blueprint $table) {
+            $table->dropForeign('album_cosplayer_album_id_foreign');
+        });
+//        Schema::table('album_cosplayer', function (Blueprint $table) {
+//            $table->dropForeign('album_id_cosplayer_id_foreign');
+//        });
     }
 }

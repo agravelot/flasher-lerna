@@ -15,8 +15,8 @@ class CreateAlbumCosplayerTable extends Migration
     {
         Schema::create('album_cosplayer', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('album_id')->unsigned();
-            $table->integer('cosplayer_id')->unsigned();
+            $table->integer('album_id')->unsigned()->nullable();
+            $table->integer('cosplayer_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }
