@@ -64,7 +64,6 @@ class AlbumController extends Controller
         //TODO Store categories
         $album = Album::create([
             'title' => $request->input('title'),
-            'seo_title' => $request->input('seo_title'),
             'body' => $request->input('body'),
             'active' => $request->input('active'),
             'user_id' => Auth::id(),
@@ -115,7 +114,6 @@ class AlbumController extends Controller
         $album = Album::with(['pictures', 'categories'])->find($id);
 
         $album->title = $request->input('title');
-        $album->seo_title = $request->input('seo_title', '');
         $album->body = $request->input('body', '');
         $album->active = $request->input('active', false);
         $album->user_id = Auth::id();
