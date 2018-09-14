@@ -14,5 +14,7 @@ let mix = require('laravel-mix');
 mix.js('resources/js/app.js', 'public/js')
    .sass('resources/sass/app.scss', 'public/css');
 
+mix.js('resources/js/carousel.js', 'public/js');
+mix.js('resources/js/tag-input.js', 'public/js');
 
 mix.browserSync('localhost:8000');

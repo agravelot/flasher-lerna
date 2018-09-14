@@ -27,7 +27,6 @@
         </div>
 
         <div class="column is-8 is-offset-2">
-            <!-- START ARTICLE -->
             <div class="card article">
                 <div class="card-content">
                     <div class="media">
@@ -64,8 +63,11 @@
 
                 </div>
             </div>
-            <!-- END ARTICLE -->
         </div>
 
     </div>
+@endsection
+
+@section('js')
+    <script src="{{ mix('js/carousel.js') }}"></script>
 @endsection
