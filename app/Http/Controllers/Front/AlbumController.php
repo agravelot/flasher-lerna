@@ -30,11 +30,12 @@ class AlbumController extends Controller
     public function index()
     {
         if (Auth::user()) {
-            $albums = Album::with('pictures')
+            $albums = Album::with(['pictures', 'categories'])
                 ->latest()
                 ->get();
         } else {
-            $albums = Album::with('pictures')
+            $albums = Album::with(['pictures', 'categories'])
+                ->latest()
                 ->where('active', true)
                 ->where('password', null)
                 ->get();
@@ -60,6 +61,7 @@ class AlbumController extends Controller
      */
     public function store(PictureUploadRequest $request)
     {
+        //TODO Store categories
         $album = Album::create([
             'title' => $request->input('title'),
             'seo_title' => $request->input('seo_title'),
@@ -109,7 +111,8 @@ class AlbumController extends Controller
      */
     public function update(PictureUploadRequest $request, $id)
     {
-        $album = Album::find($id);
+        //TODO Update categories
+        $album = Album::with(['pictures', 'categories'])->find($id);
 
         $album->title = $request->input('title');
         $album->seo_title = $request->input('seo_title', '');
