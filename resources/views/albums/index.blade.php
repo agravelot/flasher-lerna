@@ -25,13 +25,10 @@
                                 </div>
                                 <div class="content">
                                     <div class="tags">
-                                        <span class="tag">One</span>
-                                        <span class="tag">Two</span>
-                                        <span class="tag">Three</span>
+                                        @foreach($album->categories as $category)
+                                            <span class="tag">{{$category->name}}</span>
+                                        @endforeach
                                     </div>
-
-                                    {{--{{ $album->body }}--}}
-
                                 </div>
                             </div>
                         </div>
