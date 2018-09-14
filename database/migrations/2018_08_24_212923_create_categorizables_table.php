@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateModelsTagsTable extends Migration
+class CreateCategorizablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class CreateModelsTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('models_tags', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('categorizables', function (Blueprint $table) {
+//            $table->increments('id');
+            $table->integer('category_id')->unsigned();
+            $table->integer('categorizable_id')->unsigned();
+            $table->string('categorizable_type');
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateModelsTagsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('models_tags');
+        Schema::dropIfExists('categorizables');
     }
 }

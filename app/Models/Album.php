@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-class Album extends Post
+use Illuminate\Database\Eloquent\Model;
+
+class Album extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -23,9 +25,9 @@ class Album extends Post
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    public function tags()
+    public function categories()
     {
-        return $this->morphToMany(Tag::class, 'taggable');
+        return $this->morphToMany(Category::class, 'categorizable');
     }
 
     public function pictures()

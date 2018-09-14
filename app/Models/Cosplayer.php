@@ -12,4 +12,8 @@ class Cosplayer extends Model
     {
         return $this->belongsToMany(Album::class);
     }
+
+    public function categories() {
+        return $this->morphToMany(Category::class, 'categorizable');
+    }
 }

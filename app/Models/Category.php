@@ -11,17 +11,15 @@ class Category extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'title', 'slug'
-    ];
+    protected $fillable = ['name'];
 
-    /**
-     * Many to Many relation
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
-     */
     public function posts()
     {
-        return $this->belongsToMany(Post::class);
+        return $this->morphedByMany(Post::class, 'categorizable');
+    }
+
+    public function albums()
+    {
+        return $this->morphedByMany(Album::class, 'categorizable');
     }
 }

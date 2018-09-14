@@ -38,16 +38,16 @@ class CreateForeignKeys extends Migration
 //                ->onDelete('cascade')
 //                ->onUpdate('cascade');
 //        });
-        Schema::table('category_post', function (Blueprint $table) {
-            $table->foreign('category_id')->references('id')->on('categories')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-        });
-        Schema::table('category_post', function (Blueprint $table) {
-            $table->foreign('post_id')->references('id')->on('posts')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-        });
+//        Schema::table('category_post', function (Blueprint $table) {
+//            $table->foreign('category_id')->references('id')->on('categories')
+//                ->onDelete('cascade')
+//                ->onUpdate('cascade');
+//        });
+//        Schema::table('category_post', function (Blueprint $table) {
+//            $table->foreign('post_id')->references('id')->on('posts')
+//                ->onDelete('cascade')
+//                ->onUpdate('cascade');
+//        });
         Schema::table('album_cosplayer', function (Blueprint $table) {
             $table->foreign('album_id')->references('id')->on('albums')
                 ->onDelete('set null')
@@ -85,12 +85,12 @@ class CreateForeignKeys extends Migration
 //        Schema::table('comments', function (Blueprint $table) {
 //            $table->dropForeign('comments_parent_id_foreign');
 //        });
-        Schema::table('category_post', function (Blueprint $table) {
-            $table->dropForeign('category_post_category_id_foreign');
-        });
-        Schema::table('category_post', function (Blueprint $table) {
-            $table->dropForeign('category_post_post_id_foreign');
-        });
+//        Schema::table('category_post', function (Blueprint $table) {
+//            $table->dropForeign('category_post_category_id_foreign');
+//        });
+//        Schema::table('category_post', function (Blueprint $table) {
+//            $table->dropForeign('category_post_post_id_foreign');
+//        });
         Schema::table('album_cosplayer', function (Blueprint $table) {
             $table->dropForeign('album_cosplayer_album_id_foreign');
         });
