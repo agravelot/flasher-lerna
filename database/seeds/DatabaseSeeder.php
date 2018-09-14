@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(GoldenBooksPostsTableSeeder::class);
         $this->call(ContactTableSeeder::class);
         $this->call(CosplayerSeeder::class);
+        $this->call(CategoriesSeeder::class);
     }
 }
