@@ -16,12 +16,13 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Models\User::class, function (Faker $faker) {
     return [
-        'name' => $faker->userName,
-        'email' => $faker->email,
+        'name' => $faker->unique()->userName,
+        'email' => $faker->unique()->email,
         'password' => bcrypt('secret'),
         'role' => 'user',
         'created_at' => Carbon::now(),
         'updated_at' => Carbon::now(),
+        'email_verified_at' => Carbon::now(),
         'remember_token' => str_random(10),
     ];
 });
