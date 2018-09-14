@@ -5,9 +5,7 @@
 
         <h1 class="title is-2 has-text-centered">{{ $cosplayer->name }}</h1>
 
-
         <div class="column is-8 is-offset-2">
-            <!-- START ARTICLE -->
             <div class="card article">
                 <div class="card-content">
                     <div class="media">
@@ -23,26 +21,9 @@
                         {{--<p class="has-text-justified">{{ $album->body }}</p>--}}
                     </div>
                     <div class="tags">
-                        <span class="tag">One</span>
-                        <span class="tag">Two</span>
-                        <span class="tag">Three</span>
-                        <span class="tag">Four</span>
-                        <span class="tag">Five</span>
-                        <span class="tag">Six</span>
-                        <span class="tag">Seven</span>
-                        <span class="tag">Eight</span>
-                        <span class="tag">Nine</span>
-                        <span class="tag">Ten</span>
-                        <span class="tag">Eleven</span>
-                        <span class="tag">Twelve</span>
-                        <span class="tag">Thirteen</span>
-                        <span class="tag">Fourteen</span>
-                        <span class="tag">Fifteen</span>
-                        <span class="tag">Sixteen</span>
-                        <span class="tag">Seventeen</span>
-                        <span class="tag">Eighteen</span>
-                        <span class="tag">Nineteen</span>
-                        <span class="tag">Twenty</span>
+                        @foreach($cosplayer->categories as $category)
+                            <span class="tag">{{ $category->name }}</span>
+                        @endforeach
                     </div>
                     <div class="columns is-multiline is-mobile">
                         {{--@for ($i = 1; $i <= 10; $i++)--}}
@@ -52,13 +33,9 @@
                         {{--</figure>--}}
                         {{--@endfor--}}
 
-
                     </div>
-
                 </div>
             </div>
-            <!-- END ARTICLE -->
         </div>
-
     </div>
 @endsection
