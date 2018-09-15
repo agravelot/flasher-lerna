@@ -16,7 +16,7 @@
                             <header class="card-header">
                                 <p class="card-header-title">
                                     Albums
-                                    <a href="{{ route('albums.create') }}">
+                                    <a href="{{ route('admin.albums.create') }}">
                                     <span class="icon">
                                         <i class="fas fa-plus"></i>
                                     </span>
@@ -35,7 +35,7 @@
                                     <table class="table is-fullwidth is-striped">
                                         <tbody>
 
-                                        @each('admin.partials._album_item', $albums, 'album', 'admin.partials._empty')
+                                        @each('admin.albums._album_item', $albums, 'album', 'admin.partials._empty')
 
                                         </tbody>
                                     </table>

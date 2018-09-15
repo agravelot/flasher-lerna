@@ -16,7 +16,7 @@
                             <header class="card-header">
                                 <p class="card-header-title">
                                     Cosplayers
-                                    <a href="{{ route('cosplayers.create') }}">
+                                    <a href="{{ route('admin.cosplayers.create') }}">
                                     <span class="icon">
                                         <i class="fas fa-plus"></i>
                                     </span>

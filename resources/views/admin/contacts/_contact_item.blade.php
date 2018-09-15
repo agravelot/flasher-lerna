@@ -4,13 +4,13 @@
                <i class="far fa-address-book"></i>
         </span>
         {{ $contact->name }}
-        {{ $contact->email }}
+        <a href="{{ 'mailto:' . $contact->email }}">{{ $contact->email }}</a>
     </td>
     <td>
-        <a href="{{ route('contact.show', ['contact' => $contact]) }}">{{ $contact->message }}</a>
+        <a href="{{ route('admin.contacts.show', ['contact' => $contact]) }}">{{ $contact->message }}</a>
     </td>
     <td>
-        <form action="{{ route('contact.destroy', ['contact' => $contact]) }}"
+        <form action="{{ route('admin.contacts.destroy', ['contact' => $contact]) }}"
               method="POST">
             {{ method_field('DELETE') }}
             @csrf

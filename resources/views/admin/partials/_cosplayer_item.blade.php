@@ -8,14 +8,14 @@
         <a href="{{ route('cosplayers.show', ['cosplayer' => $cosplayer]) }}">{{ $cosplayer->name }}</a>
     </td>
     <td>
-        <a href="{{ route('cosplayers.edit', ['cosplayer' => $cosplayer]) }}">
+        <a href="{{ route('admin.cosplayers.edit', ['cosplayer' => $cosplayer]) }}">
             <span class="icon has-text-info">
                 <i class="far fa-edit"></i>
             </span>
         </a>
     </td>
     <td>
-        <form action="{{ route('cosplayers.destroy', ['cosplayer' => $cosplayer]) }}"
+        <form action="{{ route('admin.cosplayers.destroy', ['cosplayer' => $cosplayer]) }}"
               method="POST">
             {{ method_field('DELETE') }}
             @csrf

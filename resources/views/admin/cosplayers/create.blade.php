@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="card-content">
-            @include('cosplayers._feilds', [ 'route' => route('cosplayers.store') ])
+            @include('cosplayers._feilds', [ 'route' => route('admin.cosplayers.store') ])
         </div>
     </div>
 @endsection
