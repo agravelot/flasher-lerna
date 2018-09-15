@@ -8,93 +8,53 @@
 
     <div class="columns">
         <div class="column is-two-thirds">
-            <div class="card">
+            <div class="card has-margin-bottom-md">
                 <div class="card-content">
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Title</label>
-                        </div>
 
-                        <div class="field-body">
-                            <div class="field">
-                                <p class="control">
-                                    <input class="input" id="title" type="text" name="title"
-                                           value="{{ old('title', isset($album->title) ? $album->title : null) }}"
-                                           required autofocus>
-                                </p>
-
-                                @if ($errors->has('title'))
-                                    <p class="help is-danger">
-                                        {{ $errors->first('title') }}
-                                    </p>
-                                @endif
-                            </div>
+                    <div class="field">
+                        <label class="label">Title</label>
+                        <div class="control">
+                            <input class="input" id="title" type="text" name="title"
+                                   value="{{ old('title', isset($album->title) ? $album->title : null) }}"
+                                   required autofocus>
                         </div>
+                        @if ($errors->has('title'))
+                            <p class="help is-danger">
+                                {{ $errors->first('title') }}
+                            </p>
+                        @endif
                     </div>
 
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Active</label>
+                    <div class="field">
+                        <label class="label">Password</label>
+                        <div class="control">
+                            <input class="input" id="password" type="password" name="password" required autofocus>
                         </div>
-
-                        <div class="field-body">
-                            <div class="field">
-                                <p class="control">
-                                    <input type="hidden" name="active" value="0">
-                                    <input type="checkbox" name="active"
-                                           @if(old('active', isset($album->active) ? $album->active : false)) checked @endif>
-                                </p>
-
-                                @if ($errors->has('active'))
-                                    <p class="help is-danger">
-                                        {{ $errors->first('active') }}
-                                    </p>
-                                @endif
-                            </div>
-                        </div>
+                        @if ($errors->has('password'))
+                            <p class="help is-danger">
+                                {{ $errors->first('password') }}
+                            </p>
+                        @endif
                     </div>
 
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Password</label>
-                        </div>
 
-                        <div class="field-body">
-                            <div class="field">
-                                <p class="control">
-                                    <input class="input" id="password" type="password" name="password">
-                                </p>
-
-                                @if ($errors->has('password'))
-                                    <p class="help is-danger">
-                                        {{ $errors->first('password') }}
-                                    </p>
-                                @endif
-                            </div>
+                    <div class="field">
+                        <label class="label">Body</label>
+                        <div class="control">
+                            <textarea class="textarea" id="body" type="text" name="body"
+                                      rows="10">{{ old('body', isset($album->body) ? $album->body : null) }}</textarea>
                         </div>
+                        @if ($errors->has('body'))
+                            <p class="help is-danger">
+                                {{ $errors->first('body') }}
+                            </p>
+                        @endif
                     </div>
+                </div>
+            </div>
 
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Body</label>
-                        </div>
-
-                        <div class="field-body">
-                            <div class="field">
-                                <p class="control">
-                    <textarea class="textarea" id="body" type="text" name="body"
-                              rows="10">{{ old('body', isset($album->body) ? $album->body : null) }}</textarea>
-                                </p>
-
-                                @if ($errors->has('body'))
-                                    <p class="help is-danger">
-                                        {{ $errors->first('body') }}
-                                    </p>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
+            <div class="card has-margin-bottom-md">
+                <div class="card-content">
                     <div class="field is-horizontal">
                         <div class="field-label">
                             <label class="label">Pictures</label>
@@ -106,13 +66,13 @@
                                     <label class="file-label">
                                         <input class="file-input" type="file" name="pictures[]" multiple>
                                         <span class="file-cta">
-                            <span class="file-icon">
-                                <i class="fas fa-upload"></i>
-                            </span>
-                          <span class="file-label">
-                                Choose your files…
-                          </span>
-                        </span>
+                                            <span class="file-icon">
+                                                <i class="fas fa-upload"></i>
+                                            </span>
+                                          <span class="file-label">
+                                                Choose your files…
+                                          </span>
+                                        </span>
                                     </label>
                                 </div>
 
@@ -124,7 +84,12 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
 
+
+            <div class="card has-margin-bottom-md">
+                <div class="card-content">
                     <div class="field is-horizontal">
                         <div class="field-label">
                             <label class="label">Cosplayers</label>
@@ -143,7 +108,7 @@
 
         </div>
         <div class="column is-one-third">
-            <div class="card">
+            <div class="card has-margin-bottom-md">
                 <div class="card-header">
                     <div class="card-header-title">
                         Publish
@@ -161,6 +126,28 @@
                         </label>
                     </div>
                 </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <label class="label">Active</label>
+                    </div>
+
+                    <div class="field-body">
+                        <div class="field">
+                            <p class="control">
+                                <input type="hidden" name="active" value="0">
+                                <input type="checkbox" name="active"
+                                       @if(old('active', isset($album->active) ? $album->active : false)) checked @endif>
+                            </p>
+
+                            @if ($errors->has('active'))
+                                <p class="help is-danger">
+                                    {{ $errors->first('active') }}
+                                </p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
                 <footer class="card-footer">
                     <div class="control card-footer-item">
                         <button class="button is-primary">
@@ -168,6 +155,17 @@
                         </button>
                     </div>
                 </footer>
+            </div>
+
+            <div class="card has-margin-bottom-md">
+                <div class="card-header">
+                    <div class="card-header-title">
+                        Categories
+                    </div>
+                </div>
+                <div class="card-content">
+                    azeaze
+                </div>
             </div>
         </div>
 </form>
