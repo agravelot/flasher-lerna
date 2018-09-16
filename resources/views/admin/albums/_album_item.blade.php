@@ -6,17 +6,17 @@
         </span>
     </td>
     <td>
-        <a href="{{ route('albums.show', ['album' => $album]) }}">{{ $album->title }}</a>
+        <a href="{{ route('admin.albums.show', ['album' => $album]) }}">{{ $album->title }}</a>
     </td>
     <td>
-        <a href="{{ route('albums.edit', ['album' => $album]) }}">
+        <a href="{{ route('admin.albums.edit', ['album' => $album]) }}">
             <span class="icon has-text-info">
                 <i class="far fa-edit"></i>
             </span>
         </a>
     </td>
     <td>
-        <form action="{{ route('albums.destroy', ['album' => $album]) }}"
+        <form action="{{ route('admin.albums.destroy', ['album' => $album]) }}"
               method="POST">
             {{ method_field('DELETE') }}
             @csrf

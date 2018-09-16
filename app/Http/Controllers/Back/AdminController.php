@@ -32,54 +32,11 @@ class AdminController extends Controller
         $cosplayerCount = Cosplayer::count();
         $contactCount = Contact::count();
 
-        return view('admin.dashboard', [
+        return view('admin.dashboard.dashboard', [
             'userCount' => $userCount,
             'albumCount' => $albumCount,
             'cosplayerCount' => $cosplayerCount,
             'contactCount' => $contactCount
-        ]);
-    }
-
-    /**
-     * Display albums
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function albums()
-    {
-        $albums = Album::with('pictures')->latest()->get();
-
-        return view('admin.album', [
-            'albums' => $albums
-        ]);
-    }
-
-
-    /**
-     * Display contacts
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function contacts()
-    {
-        $contacts = Contact::all();
-
-        return view('admin.contact', [
-            'contacts' => $contacts
-        ]);
-    }
-
-    /**
-     * Display contacts
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function cosplayers()
-    {
-        $cosplayers = Cosplayer::latest()->get();
-
-        return view('admin.cosplayer', [
-            'cosplayers' => $cosplayers
         ]);
     }
 }

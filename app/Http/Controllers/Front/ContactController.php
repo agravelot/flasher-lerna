@@ -16,14 +16,7 @@ use Illuminate\Validation\Rule;
 
 class ContactController extends Controller
 {
-    /**
-     * ContactController constructor.
-     */
-    public function __construct()
-    {
-        $this->middleware('auth', ['except' => ['create', 'store']]);
-        $this->middleware('verified', ['except' => ['create', 'store']]);
-    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -50,30 +43,5 @@ class ContactController extends Controller
         ]);
 
         return redirect(route('contact.create'))->withSuccess('Your message has been sent');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Contact $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Contact $contact)
-    {
-        return view('contacts.show', ['contact' => $contact]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Contact $contact
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
-     */
-    public function destroy(Contact $contact)
-    {
-        $contact->delete();
-
-        return Redirect::back()->withSuccess('Contact successfully deleted');
     }
 }
