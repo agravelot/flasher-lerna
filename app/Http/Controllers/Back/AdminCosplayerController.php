@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\Http\Requests\CosplayerRequest;
 use App\Models\Cosplayer;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 
@@ -44,12 +44,16 @@ class AdminCosplayerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param CosplayerRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CosplayerRequest $request)
     {
-        //
+        $cosplayer = Cosplayer::create([
+            'name' => $request->input('name'),
+        ]);
+
+        return redirect(route('admin.cosplayers.show', ['cosplayer' => $cosplayer]));
     }
 
     /**
@@ -77,13 +81,19 @@ class AdminCosplayerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Models\Cosplayer $cosplayer
+     * @param CosplayerRequest $request
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Cosplayer $cosplayer)
+    public function update(CosplayerRequest $request, $id)
     {
-        //
+        //TODO Update categories
+        $cosplayer = Cosplayer::find($id);
+
+        $cosplayer->name = $request->input('name');
+        $cosplayer->save();
+
+        return redirect(route('admin.cosplayers.show', ['cosplayer' => $cosplayer]))->withSuccess('Cosplayers successfully updated');
     }
 
     /**

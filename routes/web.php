@@ -28,6 +28,7 @@ Route::resource('contact', 'Front\ContactController', ['only' => ['create', 'sto
 Route::get('admin/dashboard', 'Back\AdminController@dashboard')->name('dashboard');
 Route::resource('admin/albums', 'Back\AdminAlbumController', ['as' => 'admin']);
 Route::resource('admin/cosplayers', 'Back\AdminCosplayerController', ['as' => 'admin']);
+Route::resource('admin/users', 'Back\AdminUserController', ['as' => 'admin']);
 Route::resource('admin/contacts', 'Back\AdminContactController', [
     'as' => 'admin',
     'only' => ['index', 'delete']

@@ -13,6 +13,9 @@
             <li>
                 <a href="{{ route('admin.cosplayers.index') }}" {{ Request::is('admin/cosplayers*') ? 'class=is-active' : '' }}>Cosplayers</a>
             </li>
+            <li>
+                <a href="{{ route('admin.users.index') }}" {{ Request::is('admin/users*') ? 'class=is-active' : '' }}>Users</a>
+            </li>
 
             {{--<li><a>Team Settings</a></li>--}}
             {{--<li>--}}
