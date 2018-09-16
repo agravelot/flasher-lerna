@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 /**
  * App\Models\Album
  *
  * @property int $id
  * @property string $title
  * @property string|null $body
- * @property int $active
+ * @property int $publish
  * @property string|null $password
  * @property int $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -20,11 +21,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Cosplayer[] $cosplayers
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Picture[] $pictures
  * @property-read \App\Models\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereBody($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album wherePublish($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereUserId($value)

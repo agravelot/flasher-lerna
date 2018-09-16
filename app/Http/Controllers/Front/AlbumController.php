@@ -27,7 +27,7 @@ class AlbumController extends Controller
         } else {
             $albums = Album::with(['pictures', 'categories'])
                 ->latest()
-                ->where('active', true)
+                ->where('publish', true)
                 ->where('password', null)
                 ->get();
         }

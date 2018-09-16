@@ -32,7 +32,6 @@ class AdminContactController extends Controller
         ]);
     }
 
-
     /**
      * Display the specified resource.
      *

@@ -57,7 +57,7 @@ class AdminAlbumController extends Controller
         $album = Album::create([
             'title' => $request->input('title'),
             'body' => $request->input('body'),
-            'active' => $request->input('active'),
+            'publish' => $request->input('publish'),
             'user_id' => Auth::id(),
             'password' => Hash::make($request->input('password')),
         ]);
@@ -107,7 +107,7 @@ class AdminAlbumController extends Controller
 
         $album->title = $request->input('title');
         $album->body = $request->input('body', '');
-        $album->active = $request->input('active', false);
+        $album->publish = $request->input('publish', false);
         $album->user_id = Auth::id();
         $album->password = Hash::make($request->input('password'));
 

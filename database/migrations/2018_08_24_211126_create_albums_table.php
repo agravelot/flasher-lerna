@@ -17,7 +17,7 @@ class CreateAlbumsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->text('body')->nullable();
-            $table->boolean('active')->default(false);
+            $table->boolean('publish')->default(false);
             $table->string('password')->nullable();
             $table->integer('user_id')->unsigned();
             $table->timestamps();
