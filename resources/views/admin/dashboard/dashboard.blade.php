@@ -30,7 +30,7 @@
             <div class="tile is-parent">
                 <article class="tile is-child box">
                     <p class="title">{{ $cosplayerCount }}</p>
-                    <p class="subtitle">Cosplayer</p>
+                    <p class="subtitle">Cosplayers</p>
                 </article>
             </div>
             <div class="tile is-parent">

@@ -16,9 +16,9 @@ class CosplayerController extends Controller
      */
     public function index()
     {
-        $cosplayer = Cosplayer::all();
+        $cosplayers = Cosplayer::all();
 
-        return view('cosplayers.index', ['cosplayer' => $cosplayer]);
+        return view('cosplayers.index', ['cosplayers' => $cosplayers]);
     }
 
     /**

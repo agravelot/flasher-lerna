@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-
-    @each('albums.partials._index_item', $albums, 'album', 'admin.partials._empty')
-
+    <div class="container is-centered">
+        <div class="columns is-multiline">
+            @each('albums.partials._index_item', $albums, 'album', 'admin.partials._empty')
+        </div>
+    </div>
 @endsection

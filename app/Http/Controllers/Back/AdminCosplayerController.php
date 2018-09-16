@@ -17,7 +17,6 @@ class AdminCosplayerController extends Controller
         $this->middleware(['auth', 'verified']);
     }
 
-
     /**
      * Display a listing of the resource.
      *
@@ -51,6 +50,17 @@ class AdminCosplayerController extends Controller
     public function store(Request $request)
     {
         //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Cosplayer $cosplayer
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Cosplayer $cosplayer)
+    {
+        return view('admin.cosplayers.show', ['cosplayer' => $cosplayer]);
     }
 
     /**

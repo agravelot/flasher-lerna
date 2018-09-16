@@ -1,5 +1,5 @@
-@extends("layouts.app")
+@extends('admin.admin')
 
-@section("content")
+@section('admin-content')
     @include('cosplayers.partials._show_item', ['cosplayer' => $cosplayer])
 @endsection

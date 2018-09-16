@@ -5,7 +5,7 @@
         </span>
     </td>
     <td>
-        <a href="{{ route('cosplayers.show', ['cosplayer' => $cosplayer]) }}">{{ $cosplayer->name }}</a>
+        <a href="{{ route('admin.cosplayers.show', ['cosplayer' => $cosplayer]) }}">{{ $cosplayer->name }}</a>
     </td>
     <td>
         <a href="{{ route('admin.cosplayers.edit', ['cosplayer' => $cosplayer]) }}">
