@@ -1,7 +1,7 @@
 <tr>
     <td width="5%">
         <span class="icon is-small">
-            <i class="far fa-images"></i>
+            <i class="fas fa-user"></i>
         </span>
     </td>
     <td>
