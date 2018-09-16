@@ -10,6 +10,15 @@ use Illuminate\Support\Facades\Redirect;
 class AdminCosplayerController extends Controller
 {
     /**
+     * AdminCosplayerController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware(['auth', 'verified']);
+    }
+
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

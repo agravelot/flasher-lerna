@@ -1,4 +1,4 @@
-<nav class="navbar has-shadow is-primary">
+<nav class="navbar has-shadow">
     <div class="container">
         <div class="navbar-brand">
             <a href="{{ url('/') }}" class="navbar-item">{{ config('app.name', 'PicBlog') }}</a>

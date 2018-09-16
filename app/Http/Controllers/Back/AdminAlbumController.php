@@ -18,8 +18,7 @@ class AdminAlbumController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
-        $this->middleware('verified');
+        $this->middleware(['auth', 'verified']);
     }
 
     /**
@@ -69,9 +68,19 @@ class AdminAlbumController extends Controller
             $album->pictures()->save($picture);
         }
 
-        return redirect(route('albums.show', ['album' => $album]));
+        return redirect(route('admin.albums.show', ['album' => $album]));
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param Album $album
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Album $album)
+    {
+        return view('admin.albums.show', ['album' => $album]);
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -110,7 +119,7 @@ class AdminAlbumController extends Controller
             $album->pictures()->save($picture);
         }
 
-        return redirect(route('albums.show', ['album' => $album]))->withSuccess('Album successfully updated');
+        return redirect(route('admin.albums.show', ['album' => $album]))->withSuccess('Album successfully updated');
     }
 
     /**

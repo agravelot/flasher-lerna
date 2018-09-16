@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('admin.admin')
 
-@section('content')
+@section('admin-content')
     {{--<div class="container">--}}
     <div class="columns">
 
@@ -10,7 +10,7 @@
 
             @include('layouts.partials._messages')
 
-            @include('admin.albums._feilds', [ 'route' => route('albums.store') ])
+            @include('admin.albums._feilds', [ 'route' => route('admin.albums.store') ])
         </div>
     </div>
     {{--</div>--}}

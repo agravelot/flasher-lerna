@@ -6,7 +6,7 @@
         </span>
     </td>
     <td>
-        <a href="{{ route('albums.show', ['album' => $album]) }}">{{ $album->title }}</a>
+        <a href="{{ route('admin.albums.show', ['album' => $album]) }}">{{ $album->title }}</a>
     </td>
     <td>
         <a href="{{ route('admin.albums.edit', ['album' => $album]) }}">

@@ -1,9 +1,9 @@
-@extends('layouts.app')
+@extends('admin.admin')
 
-@section('content')
+@section('admin-content')
     <div class="container">
         <div class="card-content">
-            @include('cosplayers._feilds', [ 'route' => route('admin.cosplayers.store') ])
+            @include('admin.cosplayers._feilds', [ 'route' => route('admin.cosplayers.store') ])
         </div>
     </div>
 @endsection

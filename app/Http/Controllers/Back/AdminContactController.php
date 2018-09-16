@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Back;
 
 use App\Models\Contact;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 
@@ -15,8 +14,7 @@ class AdminContactController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['create', 'store']]);
-        $this->middleware('verified', ['except' => ['create', 'store']]);
+        $this->middleware(['auth', 'verified']);
     }
 
 

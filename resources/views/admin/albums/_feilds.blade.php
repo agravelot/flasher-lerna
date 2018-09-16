@@ -5,7 +5,6 @@
         {{ method_field('PATCH') }}
     @endif
 
-
     <div class="columns">
         <div class="column is-two-thirds">
             <div class="card has-margin-bottom-md">
@@ -28,7 +27,7 @@
                     <div class="field">
                         <label class="label">Password</label>
                         <div class="control">
-                            <input class="input" id="password" type="password" name="password" required autofocus>
+                            <input class="input" id="password" type="password" name="password">
                         </div>
                         @if ($errors->has('password'))
                             <p class="help is-danger">
@@ -168,4 +167,5 @@
                 </div>
             </div>
         </div>
+    </div>
 </form>

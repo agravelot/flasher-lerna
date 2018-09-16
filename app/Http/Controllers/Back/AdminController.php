@@ -32,7 +32,7 @@ class AdminController extends Controller
         $cosplayerCount = Cosplayer::count();
         $contactCount = Contact::count();
 
-        return view('admin.dashboard', [
+        return view('admin.dashboard.dashboard', [
             'userCount' => $userCount,
             'albumCount' => $albumCount,
             'cosplayerCount' => $cosplayerCount,

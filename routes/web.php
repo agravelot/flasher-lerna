@@ -25,7 +25,7 @@ Route::resource('goldenbook', 'Front\GoldenBookController');
 Route::resource('contact', 'Front\ContactController');
 Route::resource('cosplayers', 'Front\CosplayerController');
 
-Route::get('/admin/dashboard', 'Back\AdminController@dashboard')->name('dashboard');
+Route::get('admin/dashboard', 'Back\AdminController@dashboard')->name('dashboard');
 Route::resource('admin/albums', 'Back\AdminAlbumController', ['as' => 'admin']);
 Route::resource('admin/contacts', 'Back\AdminContactController', ['as' => 'admin']);
 Route::resource('admin/cosplayers', 'Back\AdminCosplayerController', ['as' => 'admin']);
