@@ -16,19 +16,22 @@ Route::get('/', function () {
 });
 Auth::routes(['verify' => true]);
 
+//FRONT
 Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('posts', 'Front\PostController', ['only' => ['index', 'show']]);
+Route::resource('albums', 'Front\AlbumController', ['only' => ['index', 'show']]);
+Route::resource('goldenbook', 'Front\GoldenBookController', ['only' => ['index', 'show']]);
+Route::resource('cosplayers', 'Front\CosplayerController', ['only' => ['index', 'show']]);
+Route::resource('contact', 'Front\ContactController', ['only' => ['create', 'store']]);
 
-Route::resource('posts', 'Front\PostController');
-//TODO Not all
-Route::resource('albums', 'Front\AlbumController');
-Route::resource('goldenbook', 'Front\GoldenBookController');
-Route::resource('contact', 'Front\ContactController');
-Route::resource('cosplayers', 'Front\CosplayerController');
-
+//BACK
 Route::get('admin/dashboard', 'Back\AdminController@dashboard')->name('dashboard');
 Route::resource('admin/albums', 'Back\AdminAlbumController', ['as' => 'admin']);
-Route::resource('admin/contacts', 'Back\AdminContactController', ['as' => 'admin']);
 Route::resource('admin/cosplayers', 'Back\AdminCosplayerController', ['as' => 'admin']);
+Route::resource('admin/contacts', 'Back\AdminContactController', [
+    'as' => 'admin',
+    'only' => ['index', 'delete']
+]);
 
 
 
