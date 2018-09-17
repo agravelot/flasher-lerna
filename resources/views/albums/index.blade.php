@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="container is-centered">
-        <div class="columns is-multiline">
-            @each('albums.partials._index_item', $albums, 'album', 'admin.partials._empty')
+        <div class="columns is-multiline is-centered">
+            @each('albums.partials._index_item', $albums, 'album', 'layouts.partials._empty')
         </div>
     </div>
 @endsection

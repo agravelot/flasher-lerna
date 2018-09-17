@@ -26,7 +26,7 @@
                         <table class="table is-fullwidth is-striped">
                             <tbody>
 
-                            @each('admin.contacts._contact_item', $contacts, 'contact', 'admin.partials._empty')
+                            @each('admin.contacts._contact_item', $contacts, 'contact', 'layouts.partials._empty')
 
                             </tbody>
                         </table>

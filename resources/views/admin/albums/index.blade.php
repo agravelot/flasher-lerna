@@ -26,7 +26,7 @@
                         <table class="table is-fullwidth is-striped">
                             <tbody>
 
-                            @each('admin.albums._album_item', $albums, 'album', 'admin.partials._empty')
+                            @each('admin.albums._album_item', $albums, 'album', 'layouts.partials._empty')
 
                             </tbody>
                         </table>
