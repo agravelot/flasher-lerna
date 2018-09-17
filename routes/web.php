@@ -31,7 +31,7 @@ Route::resource('admin/cosplayers', 'Back\AdminCosplayerController', ['as' => 'a
 Route::resource('admin/users', 'Back\AdminUserController', ['as' => 'admin']);
 Route::resource('admin/contacts', 'Back\AdminContactController', [
     'as' => 'admin',
-    'only' => ['index', 'delete']
+    'except' => ['edit', 'update']
 ]);
 
 
