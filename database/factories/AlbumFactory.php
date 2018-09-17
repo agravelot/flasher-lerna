@@ -8,7 +8,7 @@ $factory->define(App\Models\Album::class, function (Faker $faker) {
         'title' => $faker->sentence,
         'body' => $faker->paragraph($faker->randomDigit),
         'publish' => $faker->boolean,
-        'password' => null,
+        'password' =>  rand(0, 1) ? 'secret' : null,
         'created_at' => Carbon::now(),
         'updated_at' => Carbon::now(),
     ];
