@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div class="content article-body">
-                    {{--<p class="has-text-justified">{{ $album->body }}</p>--}}
+                    <p class="has-text-justified">{{ $cosplayer->description }}</p>
                 </div>
                 <div class="tags">
                     @foreach($cosplayer->categories as $category)

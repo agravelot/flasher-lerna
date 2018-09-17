@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Cosplayer extends Model
 {
-    protected $fillable = ['name', 'picture'];
+    protected $fillable = ['name', 'description'];
 
     public function albums()
     {

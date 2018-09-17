@@ -16,6 +16,7 @@ class CreateCosplayersTable extends Migration
         Schema::create('cosplayers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->text('description')->nullable();
             $table->string('pîcture')->nullable();
             $table->timestamps();
         });
