@@ -31,6 +31,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRole($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Cosplayer $cosplayer
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -60,5 +61,9 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function posts() {
         return $this->hasMany(Post::class);
+    }
+
+    public function cosplayer() {
+        return $this->hasOne(Cosplayer::class);
     }
 }

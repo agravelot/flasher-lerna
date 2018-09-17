@@ -20,6 +20,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer wherePîcture($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string $description
+ * @property int|null $user_id
+ * @property-read \App\Models\User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereUserId($value)
  */
 class Cosplayer extends Model
 {
@@ -33,4 +37,7 @@ class Cosplayer extends Model
     public function categories() {
         return $this->morphToMany(Category::class, 'categorizable');
     }
-}
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }

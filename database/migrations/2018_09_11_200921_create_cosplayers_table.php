@@ -18,6 +18,7 @@ class CreateCosplayersTable extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('pîcture')->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }
