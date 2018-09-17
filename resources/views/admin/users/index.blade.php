@@ -22,7 +22,7 @@
             <div class="content">
                 <table class="table is-fullwidth is-striped">
                     <tbody>
-                    @each('admin.users._user_item', $users, 'user', 'admin.partials._empty')
+                    @each('admin.users._user_item', $users, 'user', 'layouts.partials._empty')
                     </tbody>
                 </table>
             </div>
