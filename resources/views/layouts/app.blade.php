@@ -18,6 +18,8 @@
 
 @include('layouts.partials._navbar')
 
+@include('layouts.partials._impersonating')
+
 @yield('content')
 
 @include('layouts.partials._footer')

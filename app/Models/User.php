@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Lab404\Impersonate\Models\Impersonate;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
+    use Impersonate;
 
     /**
      * The attributes that are mass assignable.
@@ -38,5 +40,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function cosplayer() {
         return $this->hasOne(Cosplayer::class);
+    }
+
+    /**
+     * @return bool
+     */
+    public function canImpersonate()
+    {
+        // For example
+        return $this->role == 'admin';
     }
 }
