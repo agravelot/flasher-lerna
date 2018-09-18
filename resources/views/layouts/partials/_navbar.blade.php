@@ -69,10 +69,13 @@
                         </a>
 
                         <div class="navbar-dropdown is-boxed is-right">
-                            <a class="navbar-item  {{ Request::is('admin*') ? 'is-active' : '' }} "
-                               href="{{ route('admin.dashboard') }}">
-                                Admin
-                            </a>
+
+                            @can('dashboard')
+                                <a class="navbar-item  {{ Request::is('admin*') ? 'is-active' : '' }} "
+                                   href="{{ route('admin.dashboard') }}">
+                                    Admin
+                                </a>
+                            @endcan
                             <a class="navbar-item {{ Request::is('') ? 'is-active' : '' }}" href="#">
                                 Settings
                             </a>
