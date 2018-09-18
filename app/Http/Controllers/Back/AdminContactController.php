@@ -22,9 +22,11 @@ class AdminContactController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
+        $this->authorize('index', Contact::class);
         $contacts = Contact::all();
 
         return view('admin.contacts.index', [
@@ -37,9 +39,11 @@ class AdminContactController extends Controller
      *
      * @param Contact $contact
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(Contact $contact)
     {
+        $this->authorize('show', $contact);
         return view('admin.contacts.show', ['contact' => $contact]);
     }
 
@@ -52,8 +56,8 @@ class AdminContactController extends Controller
      */
     public function destroy(Contact $contact)
     {
+        $this->authorize('destroy', $contact);
         $contact->delete();
-
         return Redirect::back()->withSuccess('Contact successfully deleted');
     }
 }

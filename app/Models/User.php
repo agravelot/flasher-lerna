@@ -42,12 +42,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Cosplayer::class);
     }
 
-    /**
-     * @return bool
-     */
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
     public function canImpersonate()
     {
         // For example
-        return $this->role == 'admin';
+        return $this->isAdmin();
     }
 }

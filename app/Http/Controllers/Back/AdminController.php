@@ -24,9 +24,12 @@ class AdminController extends Controller
      * Display dashboard
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function dashboard()
     {
+        $this->authorize('dashboard');
+
         $userCount = User::count();
         $albumCount = Album::count();
         $cosplayerCount = Cosplayer::count();

@@ -23,9 +23,11 @@ class AdminUserController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
+        $this->authorize('index', User::class);
         $users = User::latest()->get();
 
         return view('admin.users.index', [
@@ -37,9 +39,11 @@ class AdminUserController extends Controller
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create()
     {
+        $this->authorize('create', User::class);
         return view('admin.users.create');
     }
 
@@ -48,14 +52,18 @@ class AdminUserController extends Controller
      *
      * @param UserRequest $request
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(UserRequest $request)
     {
-        $user = User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-        ]);
+        $user =new User();
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password =  Hash::make($request->input('password'));
+
+        $this->authorize('store', $user);
+
+        $user->save();
 
         return redirect(route('admin.users.show', ['user' => $user]));
     }
@@ -65,9 +73,11 @@ class AdminUserController extends Controller
      *
      * @param User $user
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(User $user)
     {
+        $this->authorize('show', $user);
         return view('admin.users.show', ['user' => $user]);
     }
 
@@ -76,24 +86,29 @@ class AdminUserController extends Controller
      *
      * @param User $user
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(User $user)
     {
+        $this->authorize('edit', $user);
         return view('admin.users.edit', ['user' => $user]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param UserRequest $request
      * @param  int $id
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(UserRequest $request, $id)
     {
         $user = User::find($id);
-
         $user->name = $request->input('name');
+
+        $this->authorize('update', $user);
+
         $user->save();
 
         return redirect(route('admin.users.show', ['user' => $user]))->withSuccess('Users successfully updated');
@@ -108,6 +123,8 @@ class AdminUserController extends Controller
      */
     public function destroy(User $user)
     {
+        $this->authorize('destroy', $user);
+
         $user->delete();
         return Redirect::back()->withSuccess('User successfully deleted');
     }
