@@ -4,7 +4,7 @@
             Administration
         </p>
         <ul class="menu-list">
-            <li><a href="{{ route('dashboard') }}" {{ Request::is('admin/dashboard*') ? 'class=is-active' : '' }}>Dashboard</a></li>
+            <li><a href="{{ route('admin.dashboard') }}" {{ Request::is('admin/dashboard*') ? 'class=is-active' : '' }}>Dashboard</a></li>
             <li><a href="{{ route('admin.albums.index') }}" {{ Request::is('admin/albums*') ? 'class=is-active' : '' }}>Albums</a>
             </li>
             <li>

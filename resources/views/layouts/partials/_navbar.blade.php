@@ -70,7 +70,7 @@
 
                         <div class="navbar-dropdown is-boxed is-right">
                             <a class="navbar-item  {{ Request::is('admin*') ? 'is-active' : '' }} "
-                               href="{{ route('dashboard') }}">
+                               href="{{ route('admin.dashboard') }}">
                                 Admin
                             </a>
                             <a class="navbar-item {{ Request::is('') ? 'is-active' : '' }}" href="#">
