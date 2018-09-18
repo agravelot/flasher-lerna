@@ -7,17 +7,17 @@
     <td>
         <a href="{{ route('admin.users.show', ['user' => $user]) }}">{{ $user->name }}</a>
     </td>
+    <td width="2%">
     @canImpersonate
         @canBeImpersonated($user)
-            <td width="2%">
                 <a href="{{ route('impersonate', ['user' => $user->id]) }}">
                     <span class="icon has-text-info">
                         <i class="fas fa-sign-in-alt"></i>
                     </span>
                 </a>
-            </td>
         @endCanBeImpersonated
     @endCanImpersonate
+    </td>
     <td width="2%">
         <a href="{{ route('admin.users.edit', ['user' => $user]) }}">
             <span class="icon has-text-info">
@@ -35,7 +35,6 @@
                     <i class="far fa-trash-alt"></i>
                 </span>
             </button>
-
         </form>
     </td>
 </tr>
