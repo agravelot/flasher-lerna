@@ -25,7 +25,7 @@ Route::resource('cosplayers', 'Front\CosplayerController', ['only' => ['index', 
 Route::resource('contact', 'Front\ContactController', ['only' => ['create', 'store']]);
 
 //BACK
-Route::get('admin/dashboard', 'Back\AdminController@dashboard')->name('dashboard');
+Route::get('admin/', 'Back\AdminController@dashboard')->name('dashboard');
 Route::resource('admin/albums', 'Back\AdminAlbumController', ['as' => 'admin']);
 Route::resource('admin/cosplayers', 'Back\AdminCosplayerController', ['as' => 'admin']);
 Route::resource('admin/users', 'Back\AdminUserController', ['as' => 'admin']);
