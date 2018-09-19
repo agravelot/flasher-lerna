@@ -26,14 +26,20 @@ Route::resource('cosplayers', 'Front\CosplayerController', ['only' => ['index', 
 Route::resource('contact', 'Front\ContactController', ['only' => ['create', 'store']]);
 
 //BACK
-Route::get('admin/', 'Back\AdminController@dashboard')->name('admin.dashboard');
-Route::resource('admin/albums', 'Back\AdminAlbumController', ['as' => 'admin']);
-Route::resource('admin/cosplayers', 'Back\AdminCosplayerController', ['as' => 'admin']);
-Route::resource('admin/users', 'Back\AdminUserController', ['as' => 'admin']);
-Route::resource('admin/contacts', 'Back\AdminContactController', [
-    'as' => 'admin',
-    'except' => ['edit', 'update']
-]);
+Route::namespace('Back')->group(function () {
+    Route::name('admin.')->group(function () { # Route Name Prefixe
+        Route::prefix('admin')->group(function () { # Route Prefixe /admin/
+            Route::get('', 'AdminController@dashboard')->name('admin.dashboard');
+            Route::resource('albums', 'AdminAlbumController');
+            Route::resource('cosplayers', 'AdminCosplayerController');
+            Route::resource('users', 'AdminUserController');
+            Route::resource('contacts', 'AdminContactController', [
+                'except' => ['edit', 'update']
+            ]);
+        });
+    });
+});
+
 
 
 
