@@ -2,14 +2,9 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Http\Requests\PictureUploadRequest;
 use App\Models\Album;
-use App\Models\Picture;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Storage;
 
 class AlbumController extends Controller
 {

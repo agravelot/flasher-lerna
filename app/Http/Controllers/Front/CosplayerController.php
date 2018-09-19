@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cosplayer;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 
 class CosplayerController extends Controller
 {

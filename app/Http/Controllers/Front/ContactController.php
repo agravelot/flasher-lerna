@@ -4,15 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Requests\ContactStoreRequest;
 use App\Models\Contact;
-use App\Models\Picture;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
 
 class ContactController extends Controller
 {

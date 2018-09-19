@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Lab404\Impersonate\Models\Impersonate;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -30,26 +30,29 @@ class User extends Authenticatable implements MustVerifyEmail
         'password', 'remember_token',
     ];
 
-    public function albums() {
+    public function albums()
+    {
         return $this->hasMany(Album::class);
     }
 
-    public function posts() {
+    public function posts()
+    {
         return $this->hasMany(Post::class);
     }
 
-    public function cosplayer() {
-        return $this->hasOne(Cosplayer::class);
-    }
-
-    public function isAdmin()
+    public function cosplayer()
     {
-        return $this->role === 'admin';
+        return $this->hasOne(Cosplayer::class);
     }
 
     public function canImpersonate()
     {
         // For example
         return $this->isAdmin();
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
     }
 }

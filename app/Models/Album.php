@@ -18,11 +18,6 @@ class Album extends Model
         'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'active', 'image', 'user_id'
     ];
 
-    public function __toString()
-    {
-        return $this->id . '-'. $this->title;
-    }
-
     public function user()
     {
         return $this->belongsTo(User::class);
