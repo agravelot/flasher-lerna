@@ -15,6 +15,7 @@ class CreateAlbumsTable extends Migration
     {
         Schema::create('albums', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('slug');
             $table->string('title');
             $table->text('body')->nullable();
             $table->boolean('publish')->default(false);

@@ -14,17 +14,5 @@ class PostsTableSeeder extends Seeder
     public function run()
     {
 
-        $faker = Faker\Factory::create();
-
-        for ($i = 0; $i < 10; $i++) {
-            DB::table('posts')->insert([
-                'title' => $faker->sentence,
-                'body' => $faker->paragraph,
-                'active' => true,
-                'user_id' => 1,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]);
-        }
     }
 }
