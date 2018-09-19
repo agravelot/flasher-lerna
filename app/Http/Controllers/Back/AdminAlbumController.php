@@ -88,7 +88,7 @@ class AdminAlbumController extends Controller
      */
     public function show(Album $album)
     {
-        $this->authorize('show', Album::class);
+        $this->authorize('view', Album::class);
         return view('admin.albums.show', ['album' => $album]);
     }
 

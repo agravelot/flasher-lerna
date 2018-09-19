@@ -43,7 +43,7 @@ class AdminContactController extends Controller
      */
     public function show(Contact $contact)
     {
-        $this->authorize('show', $contact);
+        $this->authorize('view', $contact);
         return view('admin.contacts.show', ['contact' => $contact]);
     }
 
