@@ -18,7 +18,7 @@ Route::resource('contact', 'Front\ContactController', ['only' => ['create', 'sto
 Route::namespace('Back')->group(function () {
     Route::name('admin.')->group(function () { # Route Name Prefixe
         Route::prefix('admin')->group(function () { # Route Prefixe /admin/
-            Route::get('', 'AdminController@dashboard')->name('admin.dashboard');
+            Route::get('', 'AdminController@dashboard')->name('dashboard');
             Route::resource('albums', 'AdminAlbumController');
             Route::resource('cosplayers', 'AdminCosplayerController');
             Route::resource('users', 'AdminUserController');
