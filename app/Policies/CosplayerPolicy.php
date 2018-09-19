@@ -5,7 +5,7 @@ namespace App\Policies;
 use App\Models\Cosplayer;
 use App\Models\User;
 
-class AdminCosplayerPolicy extends Policy
+class CosplayerPolicy extends Policy
 {
     /**
      * Determine whether the user can view the cosplayers.

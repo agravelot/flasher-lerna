@@ -6,10 +6,10 @@ use App\Models\Album;
 use App\Models\Contact;
 use App\Models\Cosplayer;
 use App\Models\User;
-use App\Policies\AdminAlbumPolicy;
-use App\Policies\AdminContactPolicy;
-use App\Policies\AdminCosplayerPolicy;
-use App\Policies\AdminUserPolicy;
+use App\Policies\AlbumPolicy;
+use App\Policies\ContactPolicy;
+use App\Policies\CosplayerPolicy;
+use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -21,10 +21,10 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        Album::class => AdminAlbumPolicy::class,
-        Contact::class => AdminContactPolicy::class,
-        Cosplayer::class => AdminCosplayerPolicy::class,
-        User::class => AdminUserPolicy::class,
+        Album::class => AlbumPolicy::class,
+        Contact::class => ContactPolicy::class,
+        Cosplayer::class => CosplayerPolicy::class,
+        User::class => UserPolicy::class,
     ];
 
     /**

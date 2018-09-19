@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 
-class AdminUserPolicy extends Policy
+class UserPolicy extends Policy
 {
     /**
      * Determine whether the user can view the model.

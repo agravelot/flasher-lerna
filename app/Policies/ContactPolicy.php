@@ -5,7 +5,7 @@ namespace App\Policies;
 use App\Models\Contact;
 use App\Models\User;
 
-class AdminContactPolicy extends Policy
+class ContactPolicy extends Policy
 {
     /**
      * Determine whether the user can view the contacts.

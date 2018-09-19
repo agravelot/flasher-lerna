@@ -5,7 +5,7 @@ namespace App\Policies;
 use App\Models\Album;
 use App\Models\User;
 
-class AdminAlbumPolicy extends Policy
+class AlbumPolicy extends Policy
 {
     /**
      * Determine whether the user can view the albums.
