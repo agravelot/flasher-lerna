@@ -15,7 +15,7 @@ class CosplayerRequest extends Request
         $id = $this->route('cosplayer');
 
         return [
-            'name' => 'string|required|min:2|max:255|unique:cosplayers,id,' . $id,
+            'name' => 'string|required|min:2|max:255|unique:cosplayers,name,' . $id,
         ];
     }
 }
