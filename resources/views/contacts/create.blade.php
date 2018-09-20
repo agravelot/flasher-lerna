@@ -23,11 +23,7 @@
                                        required autofocus>
                             </p>
 
-                            @if ($errors->has('name'))
-                                <p class="help is-danger">
-                                    {{ $errors->first('name') }}
-                                </p>
-                            @endif
+                           @include('layouts.partials._form_errors', ['data' => 'name'])
                         </div>
                     </div>
                 </div>
@@ -46,11 +42,7 @@
                                        required autofocus>
                             </p>
 
-                            @if ($errors->has('email'))
-                                <p class="help is-danger">
-                                    {{ $errors->first('email') }}
-                                </p>
-                            @endif
+                            @include('layouts.partials._form_errors', ['data' => 'email'])
                         </div>
                     </div>
                 </div>
@@ -67,11 +59,7 @@
                                 <textarea class="textarea" id="message" type="text" name="message" rows="10">{{ old('message') }}</textarea>
                             </p>
 
-                            @if ($errors->has('message'))
-                                <p class="help is-danger">
-                                    {{ $errors->first('message') }}
-                                </p>
-                            @endif
+                            @include('layouts.partials._form_errors', ['data' => 'message'])
                         </div>
                     </div>
                 </div>

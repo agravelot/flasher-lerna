@@ -12,11 +12,7 @@
                    value="{{ old('name', isset($cosplayer->name) ? $cosplayer->name : null) }}"
                    required autofocus>
         </div>
-        @if ($errors->has('name'))
-            <p class="help is-danger">
-                {{ $errors->first('name') }}
-            </p>
-        @endif
+        @include('layouts.partials._form_errors', ['data' => 'name'])
     </div>
 
 
@@ -26,11 +22,7 @@
                 <textarea class="textarea" id="description" type="text" name="description"
                           rows="10">{{ old('description', isset($cosplayer->description) ? $cosplayer->description : null) }}</textarea>
         </div>
-        @if ($errors->has('description'))
-            <p class="help is-danger">
-                {{ $errors->first('description') }}
-            </p>
-        @endif
+        @include('layouts.partials._form_errors', ['data' => 'description'])
     </div>
 
     <div class="field">

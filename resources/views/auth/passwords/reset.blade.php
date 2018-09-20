@@ -45,12 +45,7 @@
                                         <input class="input" id="email" type="email" name="email"
                                                value="{{ old('email') }}" required autofocus>
                                     </p>
-
-                                    @if ($errors->has('email'))
-                                        <p class="help is-danger">
-                                            {{ $errors->first('email') }}
-                                        </p>
-                                    @endif
+                                    @include('layouts.partials._form_errors', ['data' => 'email'])
                                 </div>
                             </div>
                         </div>
@@ -65,12 +60,7 @@
                                     <p class="control">
                                         <input class="input" id="password" type="password" name="password" required>
                                     </p>
-
-                                    @if ($errors->has('password'))
-                                        <p class="help is-danger">
-                                            {{ $errors->first('password') }}
-                                        </p>
-                                    @endif
+                                    @include('layouts.partials._form_errors', ['data' => 'password'])
                                 </div>
                             </div>
                         </div>
@@ -86,6 +76,7 @@
                                     <p class="control">
                                         <input class="input" id="password-confirm" type="password" name="password_confirmation" required>
                                     </p>
+                                    @include('layouts.partials._form_errors', ['data' => 'password_confirmation'])
                                 </div>
                             </div>
                         </div>

@@ -19,11 +19,7 @@
                                     <input class="input is-large" id="email" type="email" name="email"
                                            placeholder="Your Email" autofocus="" value="{{ old('email') }}">
                                 </div>
-                                @if ($errors->has('email'))
-                                    <p class="help is-danger">
-                                        {{ $errors->first('email') }}
-                                    </p>
-                                @endif
+                                @include('layouts.partials._form_errors', ['data' => 'email'])
                             </div>
 
                             <div class="field">
@@ -31,11 +27,7 @@
                                     <input class="input is-large" id="password" type="password" name="password"
                                            placeholder="Your Password">
                                 </div>
-                                @if ($errors->has('password'))
-                                    <p class="help is-danger">
-                                        {{ $errors->first('password') }}
-                                    </p>
-                                @endif
+                                @include('layouts.partials._form_errors', ['data' => 'password'])
                             </div>
                             <div class="field">
                                 <label class="checkbox">

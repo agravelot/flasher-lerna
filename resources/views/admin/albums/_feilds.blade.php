@@ -17,11 +17,7 @@
                                    value="{{ old('title', isset($album->title) ? $album->title : null) }}"
                                    required autofocus>
                         </div>
-                        @if ($errors->has('title'))
-                            <p class="help is-danger">
-                                {{ $errors->first('title') }}
-                            </p>
-                        @endif
+                        @include('layouts.partials._form_errors', ['data' => 'title'])
                     </div>
 
                     <div class="field">
@@ -29,11 +25,7 @@
                         <div class="control">
                             <input class="input" id="password" type="password" name="password">
                         </div>
-                        @if ($errors->has('password'))
-                            <p class="help is-danger">
-                                {{ $errors->first('password') }}
-                            </p>
-                        @endif
+                        @include('layouts.partials._form_errors', ['data' => 'password'])
                     </div>
 
 
@@ -43,11 +35,7 @@
                             <textarea class="textarea" id="body" type="text" name="body"
                                       rows="10">{{ old('body', isset($album->body) ? $album->body : null) }}</textarea>
                         </div>
-                        @if ($errors->has('body'))
-                            <p class="help is-danger">
-                                {{ $errors->first('body') }}
-                            </p>
-                        @endif
+                        @include('layouts.partials._form_errors', ['data' => 'body'])
                     </div>
                 </div>
             </div>
@@ -75,11 +63,7 @@
                                     </label>
                                 </div>
 
-                                @if ($errors->has('pictures'))
-                                    <p class="help is-danger">
-                                        {{ $errors->first('pictures') }}
-                                    </p>
-                                @endif
+                                @include('layouts.partials._form_errors', ['data' => 'pictures'])
                             </div>
                         </div>
                     </div>
@@ -139,11 +123,7 @@
                                        @if(old('active', isset($album->active) ? $album->active : false)) checked @endif>
                             </p>
 
-                            @if ($errors->has('active'))
-                                <p class="help is-danger">
-                                    {{ $errors->first('active') }}
-                                </p>
-                            @endif
+                            @include('layouts.partials._form_errors', ['data' => 'active'])
                         </div>
                     </div>
                 </div>

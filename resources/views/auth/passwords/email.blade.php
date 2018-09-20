@@ -42,12 +42,7 @@
                                         <input class="input" id="email" type="email" name="email"
                                                value="{{ old('email') }}" required autofocus>
                                     </p>
-
-                                    @if ($errors->has('email'))
-                                        <p class="help is-danger">
-                                            {{ $errors->first('email') }}
-                                        </p>
-                                    @endif
+                                    @include('layouts.partials._form_errors', ['data' => 'email'])
                                 </div>
                             </div>
                         </div>
