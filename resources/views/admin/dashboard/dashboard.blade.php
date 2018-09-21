@@ -15,30 +15,34 @@
     </section>
     <section class="info-tiles">
         <div class="tile is-ancestor has-text-centered">
-            <div class="tile is-parent">
+            <a class="tile is-parent"
+               @can('index', \App\Models\User::class) href="{{ route('admin.users.index') }}" @endcan>
                 <article class="tile is-child box">
                     <p class="title">{{ $userCount }}</p>
                     <p class="subtitle">Users</p>
                 </article>
-            </div>
-            <div class="tile is-parent">
+            </a>
+            <a class="tile is-parent"
+               @can('index', \App\Models\Album::class) href="{{ route('admin.albums.index') }}" @endcan>
                 <article class="tile is-child box">
                     <p class="title">{{ $albumCount }}</p>
                     <p class="subtitle">Albums</p>
                 </article>
-            </div>
-            <div class="tile is-parent">
+            </a>
+            <a class="tile is-parent"
+               @can('index', \App\Models\Cosplayer::class) href="{{ route('admin.cosplayers.index') }}" @endcan>
                 <article class="tile is-child box">
                     <p class="title">{{ $cosplayerCount }}</p>
                     <p class="subtitle">Cosplayers</p>
                 </article>
-            </div>
-            <div class="tile is-parent">
+            </a>
+            <a class="tile is-parent"
+                 @can('index', \App\Models\Contact::class) href="{{ route('admin.contacts.index') }}" @endcan>
                 <article class="tile is-child box">
                     <p class="title">{{ $contactCount }}</p>
                     <p class="subtitle">Contacts</p>
                 </article>
-            </div>
+            </a>
         </div>
     </section>
     <div class="columns">
