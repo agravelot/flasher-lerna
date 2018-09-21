@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="columns is-fullheight">
-        @include('admin.partials._menu_list')
-        <div class="column is-main-content">
+    <div class="columns">
+        @include('admin.partials._menu')
+        <div class="column is-10">
             @include('layouts.partials._messages')
             @yield('admin-content')
         </div>
