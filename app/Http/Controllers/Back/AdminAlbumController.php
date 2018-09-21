@@ -30,7 +30,9 @@ class AdminAlbumController extends Controller
     public function index()
     {
         $this->authorize('index', Album::class);
-        $albums = Album::with('pictures')->latest()->get();
+        $albums = Album::with('pictures')
+            ->latest()
+            ->paginate(10);
 
         return view('admin.albums.index', [
             'albums' => $albums

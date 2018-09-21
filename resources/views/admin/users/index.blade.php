@@ -27,8 +27,6 @@
                 </table>
             </div>
         </div>
-        <footer class="card-footer">
-            <a href="#" class="card-footer-item">View All</a>
-        </footer>
     </div>
+    {{ $users->links() }}
 @endsection

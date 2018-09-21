@@ -27,7 +27,7 @@ class AdminContactController extends Controller
     public function index()
     {
         $this->authorize('index', Contact::class);
-        $contacts = Contact::all();
+        $contacts = Contact::paginate(10);
 
         return view('admin.contacts.index', [
             'contacts' => $contacts

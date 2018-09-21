@@ -26,7 +26,7 @@ class AdminCosplayerController extends Controller
     public function index()
     {
         $this->authorize('index', Cosplayer::class);
-        $cosplayers = Cosplayer::latest()->get();
+        $cosplayers = Cosplayer::latest()->paginate(10);
 
         return view('admin.cosplayers.index', [
             'cosplayers' => $cosplayers

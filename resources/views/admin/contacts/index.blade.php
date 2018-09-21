@@ -8,17 +8,17 @@
                     <p class="card-header-title">
                         Contacts
                         <a href="{{ route('contact.create') }}">
-                                    <span class="icon">
-                                        <i class="fas fa-plus"></i>
-                                    </span>
+                            <span class="icon">
+                                <i class="fas fa-plus"></i>
+                            </span>
                             <span>Add</span>
                         </a>
                     </p>
 
                     <a href="#" class="card-header-icon" aria-label="more options">
-                                  <span class="icon">
-                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                  </span>
+                        <span class="icon">
+                            <i class="fa fa-angle-down" aria-hidden="true"></i>
+                        </span>
                     </a>
                 </header>
                 <div class="card-table">
@@ -36,6 +36,7 @@
                     <a href="#" class="card-footer-item">View All</a>
                 </footer>
             </div>
+            {{ $contacts->links() }}
         </div>
     </div>
 @endsection

@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Redirect;
 
 class AdminUserController extends Controller
 {
-
     /**
      * AdminCosplayerController constructor.
      */
@@ -28,7 +27,7 @@ class AdminUserController extends Controller
     public function index()
     {
         $this->authorize('index', User::class);
-        $users = User::latest()->get();
+        $users = User::latest()->paginate(10);
 
         return view('admin.users.index', [
             'users' => $users
