@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Back;
 
-use App\Http\Requests\PictureUploadRequest;
+use App\Http\Requests\AlbumRequest;
 use App\Models\Album;
 use App\Models\Picture;
 use App\Http\Controllers\Controller;
@@ -52,11 +52,11 @@ class AdminAlbumController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param PictureUploadRequest $request
+     * @param AlbumRequest $request
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function store(PictureUploadRequest $request)
+    public function store(AlbumRequest $request)
     {
         //TODO Store categories
         $album = new Album();
@@ -108,12 +108,12 @@ class AdminAlbumController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param PictureUploadRequest $request
+     * @param AlbumRequest $request
      * @param $id
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(PictureUploadRequest $request, $id)
+    public function update(AlbumRequest $request, $id)
     {
         //TODO Update categories
         $album = Album::with(['pictures', 'categories'])->find($id);

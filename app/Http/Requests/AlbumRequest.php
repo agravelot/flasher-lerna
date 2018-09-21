@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Validation\Rule;
 
-class PictureUploadRequest extends Request
+class AlbumRequest extends Request
 {
     /**
      * Get the validation rules that apply to the request.
