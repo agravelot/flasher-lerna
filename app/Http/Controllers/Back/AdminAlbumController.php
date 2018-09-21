@@ -64,7 +64,7 @@ class AdminAlbumController extends Controller
         $album = new Album();
         $album->title = $request->input('title');
         $album->body = $request->input('body');
-        $album->publish = $request->input('publish');
+        $album->publish = $request->input('publish', false);
         $album->user_id = Auth::id();
         $album->password = Hash::make($request->input('password'));
 

@@ -22,6 +22,7 @@ class AlbumRequest extends Request
             'body' => 'nullable|max:65000',
             //TODO Fix true on edit
             'active' => 'boolean',
+            'publish' => 'boolean',
             'password' => 'nullable|string|max:128',
             'pictures' => 'required',
             Rule::exists('users')->where(function ($query) {
