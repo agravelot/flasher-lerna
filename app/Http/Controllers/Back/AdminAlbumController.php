@@ -68,7 +68,7 @@ class AdminAlbumController extends Controller
         $album->user_id = Auth::id();
         $album->password = Hash::make($request->input('password'));
 
-        $this->authorize('store', $album);
+        $this->authorize('create', $album);
 
         $album->save();
 

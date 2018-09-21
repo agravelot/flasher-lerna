@@ -60,7 +60,7 @@ class AdminUserController extends Controller
         $user->email = $request->input('email');
         $user->password =  Hash::make($request->input('password'));
 
-        $this->authorize('store', $user);
+        $this->authorize('create', $user);
 
         $user->save();
 
