@@ -30,7 +30,7 @@
               method="POST">
             {{ method_field('DELETE') }}
             @csrf
-            <button class="button is-danger is-outlined is-small">
+            <button class="button is-danger is-inverted is-small">
                 <span class="icon has-text-danger">
                     <i class="far fa-trash-alt"></i>
                 </span>
