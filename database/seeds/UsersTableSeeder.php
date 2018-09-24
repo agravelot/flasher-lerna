@@ -28,7 +28,7 @@ class UsersTableSeeder extends Seeder
                 $u->posts()->save(factory(Post::class)->make());
             });
 
-        $users = factory(User::class, 10)
+        $users = factory(User::class, 100)
             ->create()
             ->each(function ($u) {
                 $u->albums()->save(factory(Album::class)->make());
