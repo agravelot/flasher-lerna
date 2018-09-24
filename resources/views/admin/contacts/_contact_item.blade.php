@@ -10,8 +10,7 @@
         <a href="{{ route('admin.contacts.show', ['contact' => $contact]) }}">{{ $contact->message }}</a>
     </td>
     <td>
-        <form action="{{ route('admin.contacts.destroy', ['contact' => $contact]) }}"
-              method="POST">
+        <form action="{{ route('admin.contacts.destroy', ['contact' => $contact]) }}" method="POST">
             {{ method_field('DELETE') }}
             @csrf
             <button class="button is-danger is-inverted is-small">

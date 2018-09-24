@@ -1,4 +1,4 @@
-<div class="column is-2 is-sidebar-menu ">
+<div class="column is-2 is-sidebar-menu">
     <aside class="menu">
         <p class="menu-label">
             Administration

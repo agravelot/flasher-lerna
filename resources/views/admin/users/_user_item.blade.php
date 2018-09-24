@@ -8,15 +8,15 @@
         <a href="{{ route('admin.users.show', ['user' => $user]) }}">{{ $user->name }}</a>
     </td>
     <td width="2%">
-    @canImpersonate
-        @canBeImpersonated($user)
-                <a href="{{ route('impersonate', ['user' => $user->id]) }}">
-                    <span class="icon has-text-info">
-                        <i class="fas fa-sign-in-alt"></i>
-                    </span>
-                </a>
-        @endCanBeImpersonated
-    @endCanImpersonate
+        @canImpersonate
+            @canBeImpersonated($user)
+                    <a href="{{ route('impersonate', ['user' => $user->id]) }}">
+                        <span class="icon has-text-info">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </span>
+                    </a>
+            @endCanBeImpersonated
+        @endCanImpersonate
     </td>
     <td width="2%">
         <a href="{{ route('admin.users.edit', ['user' => $user]) }}">
@@ -26,8 +26,7 @@
         </a>
     </td>
     <td width="2%">
-        <form action="{{ route('admin.users.destroy', ['user' => $user]) }}"
-              method="POST">
+        <form action="{{ route('admin.users.destroy', ['user' => $user]) }}" method="POST">
             {{ method_field('DELETE') }}
             @csrf
             <button class="button is-danger is-inverted is-small">

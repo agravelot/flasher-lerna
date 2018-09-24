@@ -30,8 +30,7 @@
         </a>
     </td>
     <td>
-        <form action="{{ route('admin.albums.destroy', ['album' => $album]) }}"
-              method="POST">
+        <form action="{{ route('admin.albums.destroy', ['album' => $album]) }}" method="POST">
             {{ method_field('DELETE') }}
             @csrf
             <button class="button is-danger is-inverted is-small">

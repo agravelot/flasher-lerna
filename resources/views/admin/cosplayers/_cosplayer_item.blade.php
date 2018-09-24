@@ -15,8 +15,7 @@
         </a>
     </td>
     <td>
-        <form action="{{ route('admin.cosplayers.destroy', ['cosplayer' => $cosplayer]) }}"
-              method="POST">
+        <form action="{{ route('admin.cosplayers.destroy', ['cosplayer' => $cosplayer]) }}" method="POST">
             {{ method_field('DELETE') }}
             @csrf
             <button class="button is-danger is-inverted is-small">
