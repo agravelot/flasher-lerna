@@ -1,15 +1,30 @@
-<nav class="navbar is-fixed-top has-shadow is-transparent">
+<nav class="navbar is-fixed-top has-shadow is-transparent" role="navigation" aria-label="dropdown navigation">
     <div class="container">
         <div class="navbar-brand">
             <a href="{{ url('/') }}" class="navbar-item">{{ config('app.name', 'PicBlog') }}</a>
+
+            @if (env('FACEBOOK_URL'))
+                <a class="navbar-item is-hidden-desktop" href="{{ env('FACEBOOK_URL') }}" target="_blank">
+                    <span class="icon">
+                        <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                    </span>
+                </a>
+            @endif
+
+            @if (env('INSTAGRAM_URL'))
+                <a class="navbar-item is-hidden-desktop" href="{{ env('INSTAGRAM_URL') }}" target="_blank">
+                <span class="icon">
+                    <i class="fab fa-instagram" aria-hidden="true"></i>
+                </span>
+                </a>
+            @endif
         </div>
 
-
-        <div class="navbar-burger burger" data-target="navMenu">
+        <a role="button" class="navbar-burger" aria-label="menu" data-target="navMenu" aria-expanded="false">
             <span></span>
             <span></span>
             <span></span>
-        </div>
+        </a>
 
         <div class="navbar-menu" id="navMenu">
             <div class="navbar-start">
@@ -21,7 +36,7 @@
             </div>
 
             @if (env('FACEBOOK_URL'))
-                <a class="navbar-item" href="{{ env('FACEBOOK_URL') }}" target="_blank">
+                <a class="navbar-item is-hidden-touch" href="{{ env('FACEBOOK_URL') }}" target="_blank">
                     <span class="icon">
                         <i class="fab fa-facebook-f" aria-hidden="true"></i>
                     </span>
@@ -29,7 +44,7 @@
             @endif
 
             @if (env('INSTAGRAM_URL'))
-                <a class="navbar-item" href="{{ env('INSTAGRAM_URL') }}" target="_blank">
+                <a class="navbar-item is-hidden-touch" href="{{ env('INSTAGRAM_URL') }}" target="_blank">
                 <span class="icon">
                     <i class="fab fa-instagram" aria-hidden="true"></i>
                 </span>
