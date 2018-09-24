@@ -1,4 +1,4 @@
-<div class="container is-centered">
+<div class="container is-centered has-margin-top-md">
 
     <h1 class="title is-2 has-text-centered">{{ $album->title }}</h1>
 
