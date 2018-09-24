@@ -149,7 +149,7 @@ class AdminAlbumController extends Controller
      */
     public function destroy(Album $album)
     {
-        $this->authorize('destroy', $album);
+        $this->authorize('delete', $album);
 
         // Suppression des fichiers (dossier)
         Storage::disk('uploads')->deleteDirectory('albums/' . $album->id);

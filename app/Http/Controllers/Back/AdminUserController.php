@@ -122,7 +122,7 @@ class AdminUserController extends Controller
      */
     public function destroy(User $user)
     {
-        $this->authorize('destroy', $user);
+        $this->authorize('delete', $user);
 
         $user->delete();
         return Redirect::back()->withSuccess('User successfully deleted');

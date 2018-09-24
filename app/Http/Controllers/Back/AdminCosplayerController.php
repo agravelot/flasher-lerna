@@ -120,7 +120,7 @@ class AdminCosplayerController extends Controller
      */
     public function destroy(Cosplayer $cosplayer)
     {
-        $this->authorize('destroy', $cosplayer);
+        $this->authorize('delete', $cosplayer);
         $cosplayer->delete();
         return Redirect::back()->withSuccess('Cosplayer successfully deleted');
     }

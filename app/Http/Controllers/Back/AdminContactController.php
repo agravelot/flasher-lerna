@@ -56,7 +56,7 @@ class AdminContactController extends Controller
      */
     public function destroy(Contact $contact)
     {
-        $this->authorize('destroy', $contact);
+        $this->authorize('delete', $contact);
         $contact->delete();
         return Redirect::back()->withSuccess('Contact successfully deleted');
     }
