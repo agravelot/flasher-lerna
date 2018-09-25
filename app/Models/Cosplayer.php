@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
 
 class Cosplayer extends Model
 {
     use Sluggable;
+    use SluggableScopeHelpers;
 
     protected $fillable = ['name', 'description', 'slug'];
 

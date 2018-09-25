@@ -2,19 +2,26 @@
 
 namespace App\Http\Controllers\Back;
 
-use App\Models\Contact;
 use App\Http\Controllers\Controller;
+use App\Models\Contact;
+use App\Repositories\ContactRepositoryEloquent;
 use Illuminate\Support\Facades\Redirect;
 
 class AdminContactController extends Controller
 {
+    /**
+     * @var ContactRepositoryEloquent
+     */
+    protected $repository;
 
     /**
      * AdminContactController constructor.
+     * @param ContactRepositoryEloquent $repository
      */
-    public function __construct()
+    public function __construct(ContactRepositoryEloquent $repository)
     {
         $this->middleware(['auth', 'verified']);
+        $this->repository = $repository;
     }
 
 
@@ -27,7 +34,7 @@ class AdminContactController extends Controller
     public function index()
     {
         $this->authorize('index', Contact::class);
-        $contacts = Contact::paginate(10);
+        $contacts = $this->repository->paginate(10);
 
         return view('admin.contacts.index', [
             'contacts' => $contacts
@@ -37,12 +44,13 @@ class AdminContactController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Contact $contact
+     * @param int $id
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function show(Contact $contact)
+    public function show(int $id)
     {
+        $contact = $this->repository->find($id);
         $this->authorize('view', $contact);
         return view('admin.contacts.show', ['contact' => $contact]);
     }
@@ -50,14 +58,14 @@ class AdminContactController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Contact $contact
+     * @param int $id
      * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function destroy(Contact $contact)
+    public function destroy(int $id)
     {
-        $this->authorize('delete', $contact);
-        $contact->delete();
+        $this->authorize('delete', Contact::class);
+        $this->repository->delete($id);
         return Redirect::back()->withSuccess('Contact successfully deleted');
     }
 }

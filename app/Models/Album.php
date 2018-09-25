@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
 
 class Album extends Model
 {
     use Sluggable;
+    use SluggableScopeHelpers;
 
     /**
      * The attributes that are mass assignable.

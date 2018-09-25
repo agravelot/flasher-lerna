@@ -2,20 +2,24 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
+use App\Repositories\UserRepositoryEloquent;
 use Illuminate\Support\Facades\Redirect;
 
 class AdminUserController extends Controller
 {
+    protected $repository;
+
     /**
      * AdminCosplayerController constructor.
+     * @param UserRepositoryEloquent $userRepository
      */
-    public function __construct()
+    public function __construct(UserRepositoryEloquent $userRepository)
     {
         $this->middleware(['auth', 'verified']);
+        $this->repository = $userRepository;
     }
 
     /**
@@ -27,7 +31,7 @@ class AdminUserController extends Controller
     public function index()
     {
         $this->authorize('index', User::class);
-        $users = User::latest()->paginate(10);
+        $users = $this->repository->paginate(10);
 
         return view('admin.users.index', [
             'users' => $users
@@ -52,30 +56,25 @@ class AdminUserController extends Controller
      * @param UserRequest $request
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(UserRequest $request)
     {
-        $user =new User();
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->password =  Hash::make($request->input('password'));
-
-        $this->authorize('create', $user);
-
-        $user->save();
-
+        $this->authorize('create', User::class);
+        $user = $this->repository->create($request->all());
         return redirect(route('admin.users.show', ['user' => $user]));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param User $user
+     * @param int $id
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function show(User $user)
+    public function show(int $id)
     {
+        $user = $this->repository->find($id);
         $this->authorize('view', $user);
         return view('admin.users.show', ['user' => $user]);
     }
@@ -83,13 +82,14 @@ class AdminUserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param User $user
+     * @param int $id
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function edit(User $user)
+    public function edit(int $id)
     {
-        $this->authorize('edit', $user);
+        $user = $this->repository->find($id);
+        $this->authorize('update', $user);
         return view('admin.users.edit', ['user' => $user]);
     }
 
@@ -100,15 +100,13 @@ class AdminUserController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update(UserRequest $request, $id)
     {
-        $user = User::find($id);
-        $user->name = $request->input('name');
-
+        $user = $this->repository->find($id);
         $this->authorize('update', $user);
-
-        $user->save();
+        $this->repository->update($request->all(), $id);
 
         return redirect(route('admin.users.show', ['user' => $user]))->withSuccess('Users successfully updated');
     }
@@ -116,15 +114,14 @@ class AdminUserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param User $user
+     * @param int $id
      * @return \Illuminate\Http\Response
-     * @throws \Exception
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function destroy(User $user)
+    public function destroy(int $id)
     {
-        $this->authorize('delete', $user);
-
-        $user->delete();
+        $this->authorize('delete', User::class);
+        $this->repository->delete($id);
         return Redirect::back()->withSuccess('User successfully deleted');
     }
 }
