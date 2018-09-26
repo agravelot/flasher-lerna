@@ -49,4 +49,20 @@ class UserTest extends ModelTestCase
             'password', 'remember_token',
         ]);
     }
+
+    public function testHasManyAlbumsRelationship()
+    {
+        $user = new User();
+        $relation = $user->albums();
+
+        $this->assertHasManyRelation($relation, $user, new Album(), 'user_id');
+    }
+
+    public function testHasManyPostsRelationship()
+    {
+        $user = new User();
+        $relation = $user->posts();
+
+        $this->assertHasManyRelation($relation, $user, new Post(), 'user_id');
+    }
 }

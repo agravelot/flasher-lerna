@@ -3,6 +3,7 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Album;
+use App\Models\Picture;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\ModelTestCase;
 
@@ -46,4 +47,29 @@ class AlbumTest extends ModelTestCase
             'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'active', 'image', 'user_id'
         ]);
     }
+
+    public function testHasManyPicturesRelationship()
+    {
+        $album = new Album();
+        $relation = $album->pictures();
+
+        $this->assertHasManyRelation($relation, $album, new Picture(), 'album_id');
+    }
+
+    public function testHasManyAlbumsRelationship()
+    {
+        $album = new Album();
+        $relation = $album->cosplayers();
+
+        $this->assertHasManyRelation($relation, $album, new Album(), 'album_id');
+    }
+
+    //TODO add test morphToMany
+//    public function testHasManyCategoriesRelationship()
+//    {
+//        $album = new Album();
+//        $relation = $album->categories();
+//
+//        $this->assertHasManyRelation($relation, $album, new Category(), 'user_id');
+//    }
 }

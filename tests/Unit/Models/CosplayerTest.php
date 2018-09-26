@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models;
 
+use App\Models\Album;
 use App\Models\Cosplayer;
 use App\Models\User;
 use Tests\ModelTestCase;
@@ -46,4 +47,11 @@ class CosplayerTest extends ModelTestCase
         ]);
     }
 
+    public function testHasOneUserRelationship()
+    {
+        $cosplayer = new Cosplayer();
+        $relation = $cosplayer->user();
+
+        $this->assertBelongsToRelation($relation, $cosplayer, new User(), 'user_id');
+    }
 }
