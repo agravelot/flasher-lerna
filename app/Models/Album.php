@@ -42,7 +42,7 @@ class Album extends Model
 
     public function cosplayers()
     {
-        return $this->hasMany(Cosplayer::class);
+        return $this->belongsToMany(Cosplayer::class);
     }
 
     /**
