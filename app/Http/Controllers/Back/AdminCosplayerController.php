@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Back;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CosplayerRequest;
 use App\Models\Cosplayer;
+use App\Repositories\Contracts\CosplayerRepository;
 use App\Repositories\CosplayerRepositoryEloquent;
 use Illuminate\Support\Facades\Redirect;
 
@@ -17,9 +18,9 @@ class AdminCosplayerController extends Controller
 
     /**
      * AdminCosplayerController constructor.
-     * @param CosplayerRepositoryEloquent $repository
+     * @param CosplayerRepository $repository
      */
-    public function __construct(CosplayerRepositoryEloquent $repository)
+    public function __construct(CosplayerRepository $repository)
     {
         $this->middleware(['auth', 'verified']);
         $this->repository = $repository;

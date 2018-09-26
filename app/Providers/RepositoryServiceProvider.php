@@ -2,6 +2,14 @@
 
 namespace App\Providers;
 
+use App\Repositories\AlbumRepositoryEloquent;
+use App\Repositories\ContactRepositoryEloquent;
+use App\Repositories\Contracts\AlbumRepository;
+use App\Repositories\Contracts\ContactRepository;
+use App\Repositories\Contracts\CosplayerRepository;
+use App\Repositories\Contracts\UserRepository;
+use App\Repositories\CosplayerRepositoryEloquent;
+use App\Repositories\UserRepositoryEloquent;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -13,7 +21,7 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        
     }
 
     /**
@@ -23,10 +31,10 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(\App\Repositories\Contracts\AlbumRepository::class, \App\Repositories\AlbumRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Contracts\UserRepository::class, \App\Repositories\UserRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Contracts\CosplayerRepository::class, \App\Repositories\CosplayerRepositoryEloquent::class);
-        $this->app->bind(\App\Repositories\Contracts\ContactRepository::class, \App\Repositories\ContactRepositoryEloquent::class);
+        $this->app->bind(UserRepository::class, UserRepositoryEloquent::class);
+        $this->app->bind(AlbumRepository::class, AlbumRepositoryEloquent::class);
+        $this->app->bind(CosplayerRepository::class, CosplayerRepositoryEloquent::class);
+        $this->app->bind(ContactRepository::class, ContactRepositoryEloquent::class);
         //:end-bindings:
     }
 }

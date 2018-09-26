@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Back;
 use App\Http\Controllers\Controller;
 use App\Repositories\AlbumRepositoryEloquent;
 use App\Repositories\ContactRepositoryEloquent;
+use App\Repositories\Contracts\AlbumRepository;
+use App\Repositories\Contracts\ContactRepository;
+use App\Repositories\Contracts\CosplayerRepository;
+use App\Repositories\Contracts\UserRepository;
 use App\Repositories\CosplayerRepositoryEloquent;
 use App\Repositories\UserRepositoryEloquent;
 
@@ -29,16 +33,16 @@ class AdminController extends Controller
 
     /**
      * AdminController constructor.
-     * @param UserRepositoryEloquent $userRepository
-     * @param ContactRepositoryEloquent $contactRepository
-     * @param CosplayerRepositoryEloquent $cosplayerRepository
-     * @param AlbumRepositoryEloquent $albumRepository
+     * @param UserRepository $userRepository
+     * @param ContactRepository $contactRepository
+     * @param CosplayerRepository $cosplayerRepository
+     * @param AlbumRepository $albumRepository
      */
     public function __construct(
-        UserRepositoryEloquent $userRepository,
-        ContactRepositoryEloquent $contactRepository,
-        CosplayerRepositoryEloquent $cosplayerRepository,
-        AlbumRepositoryEloquent $albumRepository)
+        UserRepository $userRepository,
+        ContactRepository $contactRepository,
+        CosplayerRepository $cosplayerRepository,
+        AlbumRepository $albumRepository)
     {
         $this->middleware(['auth', 'verified']);
         $this->userRepository = $userRepository;

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Back;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
-use App\Repositories\UserRepositoryEloquent;
+use App\Repositories\Contracts\UserRepository;
 use Illuminate\Support\Facades\Redirect;
 
 class AdminUserController extends Controller
@@ -14,9 +14,9 @@ class AdminUserController extends Controller
 
     /**
      * AdminCosplayerController constructor.
-     * @param UserRepositoryEloquent $userRepository
+     * @param UserRepository $userRepository
      */
-    public function __construct(UserRepositoryEloquent $userRepository)
+    public function __construct(UserRepository $userRepository)
     {
         $this->middleware(['auth', 'verified']);
         $this->repository = $userRepository;

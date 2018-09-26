@@ -7,6 +7,7 @@ use App\Http\Requests\AlbumRequest;
 use App\Models\Album;
 use App\Models\Picture;
 use App\Repositories\AlbumRepositoryEloquent;
+use App\Repositories\Contracts\AlbumRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
@@ -21,8 +22,9 @@ class AdminAlbumController extends Controller
 
     /**
      * AdminAlbumController constructor.
+     * @param AlbumRepository $repository
      */
-    public function __construct(AlbumRepositoryEloquent $repository)
+    public function __construct(AlbumRepository $repository)
     {
         $this->middleware(['auth', 'verified']);
         $this->repository = $repository;

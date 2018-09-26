@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Back;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Repositories\ContactRepositoryEloquent;
+use App\Repositories\Contracts\ContactRepository;
 use Illuminate\Support\Facades\Redirect;
 
 class AdminContactController extends Controller
@@ -16,9 +17,9 @@ class AdminContactController extends Controller
 
     /**
      * AdminContactController constructor.
-     * @param ContactRepositoryEloquent $repository
+     * @param ContactRepository $repository
      */
-    public function __construct(ContactRepositoryEloquent $repository)
+    public function __construct(ContactRepository $repository)
     {
         $this->middleware(['auth', 'verified']);
         $this->repository = $repository;
