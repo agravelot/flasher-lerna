@@ -3,11 +3,10 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Album;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\ModelTestCase;
 
-class AlbumTest extends TestCase
+class AlbumTest extends ModelTestCase
 {
     use WithFaker;
 
@@ -21,7 +20,8 @@ class AlbumTest extends TestCase
         $this->assertEquals($$routeKey, $slug);
     }
 
-    public function testSlugAsRouteKeyName() {
+    public function testSlugAsRouteKeyName()
+    {
         $post = new Album();
         $routeKey = $post->getRouteKeyName();
 
@@ -30,12 +30,20 @@ class AlbumTest extends TestCase
         $this->assertEquals($excepted, $routeKey);
     }
 
-    public function testSlugSourceAsTitle() {
+    public function testSlugSourceAsTitle()
+    {
         $post = new Album();
         $slugSource = $post->sluggable()['slug']['source'];
 
         $excepted = "title";
 
         $this->assertEquals($excepted, $slugSource);
+    }
+
+    public function testModelConfiguration()
+    {
+        $this->runConfigurationAssertions(new Album(), [
+            'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'active', 'image', 'user_id'
+        ]);
     }
 }

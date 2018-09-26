@@ -3,11 +3,11 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Cosplayer;
-use Tests\TestCase;
+use App\Models\User;
+use Tests\ModelTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class CosplayerTest extends TestCase
+class CosplayerTest extends ModelTestCase
 {
     use WithFaker;
 
@@ -38,4 +38,12 @@ class CosplayerTest extends TestCase
 
         $this->assertEquals($excepted, $slugSource);
     }
+
+    public function testModelConfiguration()
+    {
+        $this->runConfigurationAssertions(new Cosplayer(), [
+            'name', 'description', 'slug'
+        ]);
+    }
+
 }

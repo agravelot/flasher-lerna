@@ -3,10 +3,10 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Post;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Tests\ModelTestCase;
 
-class PostTest extends TestCase
+class PostTest extends ModelTestCase
 {
     use WithFaker;
 
@@ -20,7 +20,8 @@ class PostTest extends TestCase
         $this->assertEquals($$routeKey, $slug);
     }
 
-    public function testSlugAsRouteKeyName() {
+    public function testSlugAsRouteKeyName()
+    {
         $post = new Post();
         $routeKey = $post->getRouteKeyName();
 
@@ -29,12 +30,20 @@ class PostTest extends TestCase
         $this->assertEquals($excepted, $routeKey);
     }
 
-    public function testSlugSourceAsTitle() {
+    public function testSlugSourceAsTitle()
+    {
         $post = new Post();
         $slugSource = $post->sluggable()['slug']['source'];
 
         $excepted = "title";
 
         $this->assertEquals($excepted, $slugSource);
+    }
+
+    public function testModelConfiguration()
+    {
+        $this->runConfigurationAssertions(new Post(), [
+            'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'active', 'image', 'user_id'
+        ]);
     }
 }
