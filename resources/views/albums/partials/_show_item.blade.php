@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="content article-body">
-                    <p class="has-text-justified">{{ $album->body }}</p>
+                    <p class="has-text-justified">{!! $album->body  !!}</p>
                 </div>
                 <div class="tags">
                     @foreach($album->categories as $category)
