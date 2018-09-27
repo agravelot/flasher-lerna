@@ -149,3 +149,10 @@
         </div>
     </div>
 </form>
+
+@section('js')
+    <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace( 'body' );
+    </script>
+@stop
