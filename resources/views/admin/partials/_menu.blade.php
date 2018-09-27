@@ -5,7 +5,7 @@
         </p>
         <ul class="menu-list">
             <li>
-                <a href="{{ route('admin.dashboard') }}" {{ Request::is('admin/dashboard*') ? 'class=is-active' : '' }}>
+                <a href="{{ route('admin.dashboard') }}" {{ Request::is('admin') ? 'class=is-active' : '' }}>
                 <span class="icon">
                     <i class="fas fa-home"></i>
                 </span>
