@@ -11,7 +11,8 @@ services:
 
 variables:
   MYSQL_DATABASE: picblog_testing
-  MYSQL_ROOT_PASSWORD: root
+  MYSQL_USER: picblog
+  MYSQL_PASSWORD: secret
 
 # This folder is cached between builds
 # http://docs.gitlab.com/ce/ci/yaml/README.html#cache
