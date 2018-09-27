@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepository;
-use Illuminate\Support\Facades\Redirect;
 
 class AdminUserController extends Controller
 {
@@ -56,7 +55,6 @@ class AdminUserController extends Controller
      * @param UserRequest $request
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(UserRequest $request)
     {
@@ -100,7 +98,6 @@ class AdminUserController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update(UserRequest $request, $id)
     {
@@ -122,6 +119,6 @@ class AdminUserController extends Controller
     {
         $this->authorize('delete', User::class);
         $this->repository->delete($id);
-        return Redirect::back()->withSuccess('User successfully deleted');
+        return back()->withSuccess('User successfully deleted');
     }
 }

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Repositories\ContactRepositoryEloquent;
 use App\Repositories\Contracts\ContactRepository;
-use Illuminate\Support\Facades\Redirect;
 
 class AdminContactController extends Controller
 {
@@ -67,6 +66,6 @@ class AdminContactController extends Controller
     {
         $this->authorize('delete', Contact::class);
         $this->repository->delete($id);
-        return Redirect::back()->withSuccess('Contact successfully deleted');
+        return back()->withSuccess('Contact successfully deleted');
     }
 }

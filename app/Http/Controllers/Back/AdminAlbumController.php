@@ -10,7 +10,6 @@ use App\Repositories\AlbumRepositoryEloquent;
 use App\Repositories\Contracts\AlbumRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 
 class AdminAlbumController extends Controller
@@ -160,6 +159,6 @@ class AdminAlbumController extends Controller
 
         $album->delete();
 
-        return Redirect::back()->withSuccess('Album successfully deleted');
+        return back()->withSuccess('Album successfully deleted');
     }
 }

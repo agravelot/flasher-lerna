@@ -7,7 +7,6 @@ use App\Http\Requests\CosplayerRequest;
 use App\Models\Cosplayer;
 use App\Repositories\Contracts\CosplayerRepository;
 use App\Repositories\CosplayerRepositoryEloquent;
-use Illuminate\Support\Facades\Redirect;
 
 class AdminCosplayerController extends Controller
 {
@@ -132,6 +131,6 @@ class AdminCosplayerController extends Controller
         $this->authorize('delete', Cosplayer::class);
         $id = $this->repository->findBySlug($slug)->id;
         $this->repository->delete($id);
-        return Redirect::back()->withSuccess('Cosplayer successfully deleted');
+        return back()->withSuccess('Cosplayer successfully deleted');
     }
 }
