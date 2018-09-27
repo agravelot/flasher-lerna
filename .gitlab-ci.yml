@@ -62,6 +62,11 @@ before_script:
 # DB_PASSWORD=secret
 - cp .env.testing .env
 
+# Force testing environment
+- export APP_ENV=testing
+- php artisan --database=testing --env=testing
+
+
 # Run yarn build
 # comment this out if you don't have a frontend build
 # you can change this to to your frontend building script like
