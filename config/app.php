@@ -161,6 +161,7 @@ return [
         * Package Service Providers...
         */
         Lab404\Impersonate\ImpersonateServiceProvider::class,
+        Unisharp\Ckeditor\ServiceProvider::class,
     ],
 
     /*
