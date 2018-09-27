@@ -4,7 +4,7 @@
     <div class="card events-card">
         <header class="card-header">
             <p class="card-header-title">
-                Cosplayers
+                Users
                 <a href="{{ route('admin.users.create') }}">
                             <span class="icon">
                                 <i class="fas fa-plus"></i>
