@@ -16,7 +16,8 @@
     "laravel-frontend-presets/bulma": "^1.7",
     "laravel/framework": "5.7.*",
     "laravel/tinker": "^1.0",
-    "phpunit/phpunit": "^7.3"
+    "phpunit/phpunit": "^7.3",
+    "prettus/l5-repository": "^2.6"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.1",

@@ -3,11 +3,10 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Category;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\ModelTestCase;
 
-class CategoryTest extends TestCase
+class CategoryTest extends ModelTestCase
 {
     use WithFaker;
 
@@ -37,5 +36,10 @@ class CategoryTest extends TestCase
         $excepted = "name";
 
         $this->assertEquals($excepted, $slugSource);
+    }
+
+    public function testModelConfiguration()
+    {
+        $this->runConfigurationAssertions(new Category(), ['name', 'slug']);
     }
 }

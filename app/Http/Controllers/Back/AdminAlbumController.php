@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\AlbumRequest;
 use App\Models\Album;
 use App\Models\Picture;
-use App\Http\Controllers\Controller;
+use App\Repositories\AlbumRepositoryEloquent;
+use App\Repositories\Contracts\AlbumRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
@@ -14,11 +16,18 @@ use Illuminate\Support\Facades\Storage;
 class AdminAlbumController extends Controller
 {
     /**
-     * AdminAlbumController constructor.
+     * @var AlbumRepositoryEloquent
      */
-    public function __construct()
+    protected $repository;
+
+    /**
+     * AdminAlbumController constructor.
+     * @param AlbumRepository $repository
+     */
+    public function __construct(AlbumRepository $repository)
     {
         $this->middleware(['auth', 'verified']);
+        $this->repository = $repository;
     }
 
     /**
@@ -30,8 +39,8 @@ class AdminAlbumController extends Controller
     public function index()
     {
         $this->authorize('index', Album::class);
-        $albums = Album::with('pictures')
-            ->latest()
+        $albums = $this->repository->with('pictures')
+            ->orderBy('updated_at')
             ->paginate(10);
 
         return view('admin.albums.index', [
@@ -57,21 +66,15 @@ class AdminAlbumController extends Controller
      * @param AlbumRequest $request
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(AlbumRequest $request)
     {
+        $this->authorize('create', Album::class);
+        $album = $this->repository->create($request->all());
+
         //TODO Store categories
-        $album = new Album();
-        $album->title = $request->input('title');
-        $album->body = $request->input('body');
-        $album->publish = $request->input('publish', false);
-        $album->user_id = Auth::id();
-        $album->password = Hash::make($request->input('password'));
-
-        $this->authorize('create', $album);
-
-        $album->save();
-
+        //TODO Move in repository
         foreach ($request->pictures as $uploaderPicture) {
             $picture = new Picture();
             $picture->filename = Storage::disk('uploads')->put('albums/' . $album->id, $uploaderPicture);

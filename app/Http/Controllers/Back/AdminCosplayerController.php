@@ -2,19 +2,28 @@
 
 namespace App\Http\Controllers\Back;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\CosplayerRequest;
 use App\Models\Cosplayer;
-use App\Http\Controllers\Controller;
+use App\Repositories\Contracts\CosplayerRepository;
+use App\Repositories\CosplayerRepositoryEloquent;
 use Illuminate\Support\Facades\Redirect;
 
 class AdminCosplayerController extends Controller
 {
     /**
-     * AdminCosplayerController constructor.
+     * @var CosplayerRepositoryEloquent
      */
-    public function __construct()
+    protected $repository;
+
+    /**
+     * AdminCosplayerController constructor.
+     * @param CosplayerRepository $repository
+     */
+    public function __construct(CosplayerRepository $repository)
     {
         $this->middleware(['auth', 'verified']);
+        $this->repository = $repository;
     }
 
     /**
@@ -26,7 +35,7 @@ class AdminCosplayerController extends Controller
     public function index()
     {
         $this->authorize('index', Cosplayer::class);
-        $cosplayers = Cosplayer::latest()->paginate(10);
+        $cosplayers = $this->repository->orderBy('updated_at')->paginate(10);
 
         return view('admin.cosplayers.index', [
             'cosplayers' => $cosplayers
@@ -51,15 +60,13 @@ class AdminCosplayerController extends Controller
      * @param CosplayerRequest $request
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CosplayerRequest $request)
     {
-        $cosplayer = new Cosplayer();
-        $cosplayer->name = $request->input('name');
+        $this->authorize('create', Cosplayer::class);
 
-        $this->authorize('create', $cosplayer);
-
-        $cosplayer->save();
+        $cosplayer = $this->repository->create($request->all());
 
         return redirect(route('admin.cosplayers.show', ['cosplayer' => $cosplayer]));
     }
@@ -67,26 +74,30 @@ class AdminCosplayerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Cosplayer $cosplayer
+     * @param string $slug
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function show(Cosplayer $cosplayer)
+    public function show(string $slug)
     {
-        $this->authorize('view', $cosplayer);
+        $this->authorize('view', Cosplayer::class);
+        $cosplayer = $this->repository->findBySlug($slug);
         return view('admin.cosplayers.show', ['cosplayer' => $cosplayer]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Cosplayer $cosplayer
+     * @param string $slug
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function edit(Cosplayer $cosplayer)
+    public function edit(string $slug)
     {
-        $this->authorize('edit', $cosplayer);
+        $this->authorize('update', Cosplayer::class);
+        $cosplayer = $this->repository->findBySlug($slug);
         return view('admin.cosplayers.edit', ['cosplayer' => $cosplayer]);
     }
 
@@ -97,16 +108,13 @@ class AdminCosplayerController extends Controller
      * @param $id
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update(CosplayerRequest $request, $id)
     {
         //TODO Update categories
-        $cosplayer = Cosplayer::find($id);
-
-        $this->authorize('update', $cosplayer);
-
-        $cosplayer->name = $request->input('name');
-        $cosplayer->save();
+        $this->authorize('update', Cosplayer::class);
+        $cosplayer = $this->repository->update($request->all(), $id);
 
         return redirect(route('admin.cosplayers.show', ['cosplayer' => $cosplayer]))->withSuccess('Cosplayers successfully updated');
     }
@@ -114,14 +122,16 @@ class AdminCosplayerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Cosplayer $cosplayer
+     * @param string $slug
      * @return \Illuminate\Http\Response
-     * @throws \Exception
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function destroy(Cosplayer $cosplayer)
+    public function destroy(string $slug)
     {
-        $this->authorize('delete', $cosplayer);
-        $cosplayer->delete();
+        $this->authorize('delete', Cosplayer::class);
+        $id = $this->repository->findBySlug($slug)->id;
+        $this->repository->delete($id);
         return Redirect::back()->withSuccess('Cosplayer successfully deleted');
     }
 }

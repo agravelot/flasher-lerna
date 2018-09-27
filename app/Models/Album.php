@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
 
 class Album extends Model
 {
     use Sluggable;
+    use SluggableScopeHelpers;
 
     /**
      * The attributes that are mass assignable.
@@ -40,7 +42,7 @@ class Album extends Model
 
     public function cosplayers()
     {
-        return $this->belongsToMany(Cosplayer::class);
+        return $this->hasMany(Cosplayer::class);
     }
 
     /**
