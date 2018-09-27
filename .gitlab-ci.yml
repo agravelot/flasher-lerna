@@ -24,7 +24,7 @@ cache:
 # services such as redis or postgres
 before_script:
 # Installing dependency to install nodejs
-- apt-get install gnupg -yqq
+- apt-get install gnupg2 -yqq
 
 # Update packages
 - apt-get update -yqq
