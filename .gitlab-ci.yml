@@ -26,8 +26,8 @@ before_script:
 # Update packages
 - apt-get update -yqq
 
-# Installing dependency to install nodejs
-- apt-get install gnupg -yqq
+# Installing dependency to install nodejs and yarn
+- apt-get install gnupg apt-transport-https -yqq
 
 # Upgrade yarn
 - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
