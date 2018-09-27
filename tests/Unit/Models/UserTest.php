@@ -44,7 +44,7 @@ class UserTest extends ModelTestCase
     public function testModelConfiguration()
     {
         $this->runConfigurationAssertions(new User(), [
-            'name', 'email', 'password', 'role', 'slug'
+            'name', 'email', 'password', 'role'
         ], [
             'password', 'remember_token',
         ]);
