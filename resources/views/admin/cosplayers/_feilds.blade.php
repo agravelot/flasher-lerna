@@ -19,7 +19,7 @@
     <div class="field">
         <label class="label">Body</label>
         <div class="control">
-                <textarea class="textarea" id="description" type="text" name="description"
+                <textarea class="textarea ckeditor" id="description" type="text" name="description"
                           rows="10">{{ old('description', isset($cosplayer->description) ? $cosplayer->description : null) }}</textarea>
         </div>
         @include('layouts.partials._form_errors', ['data' => 'description'])
@@ -37,6 +37,6 @@
 @section('js')
     <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
     <script>
-        CKEDITOR.replace( 'description' );
+        CKEDITOR.replace('.ckeditor');
     </script>
-@stop
+@endsection

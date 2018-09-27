@@ -32,7 +32,7 @@
                     <div class="field">
                         <label class="label">Body</label>
                         <div class="control">
-                            <textarea class="textarea" id="body" type="text" name="body"
+                            <textarea class="textarea ckeditor" id="body" type="text" name="body"
                                       rows="10">{{ old('body', isset($album->body) ? $album->body : null) }}</textarea>
                         </div>
                         @include('layouts.partials._form_errors', ['data' => 'body'])
@@ -153,6 +153,6 @@
 @section('js')
     <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
     <script>
-        CKEDITOR.replace( 'body' );
+        CKEDITOR.replace('.ckeditor');
     </script>
-@stop
+@endsection
