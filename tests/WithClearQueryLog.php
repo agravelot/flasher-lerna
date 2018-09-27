@@ -1,6 +1,7 @@
 <?php
 
 namespace Tests;
+
 trait WithClearQueryLog
 {
     /**
