@@ -8,8 +8,6 @@ use App\Models\Album;
 use App\Models\Picture;
 use App\Repositories\AlbumRepositoryEloquent;
 use App\Repositories\Contracts\AlbumRepository;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class AdminAlbumController extends Controller
@@ -86,25 +84,29 @@ class AdminAlbumController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Album $album
+     * @param string $slug
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function show(Album $album)
+    public function show(string $slug)
     {
-        $this->authorize('view', Album::class);
+        $album = $this->repository->findBySlug($slug);
+        $this->authorize('view', $album);
         return view('admin.albums.show', ['album' => $album]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Album $album
+     * @param string $slug
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function edit(Album $album)
+    public function edit(string $slug)
     {
+        $album = $this->repository->findBySlug($slug);
         $this->authorize('update', $album);
         return view('admin.albums.edit', ['album' => $album]);
     }
@@ -116,23 +118,18 @@ class AdminAlbumController extends Controller
      * @param $id
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update(AlbumRequest $request, $id)
     {
         //TODO Update categories
-        $album = Album::with(['pictures', 'categories'])->find($id);
+        //TODO Keep current user id ?
 
-        $album->title = $request->input('title');
-        $album->body = $request->input('body', '');
-        $album->publish = $request->input('publish', false);
-        //TODO Keep current ?
-        $album->user_id = Auth::id();
-        $album->password = Hash::make($request->input('password'));
+        $this->authorize('update', Album::class);
 
-        $this->authorize('update', $album);
+        $album = $this->repository->update($request->all(), $id);
 
-        $album->save();
-
+        //TODO Move in repo
         foreach ($request->pictures as $uploadedPicture) {
             $picture = new Picture();
             $picture->filename = Storage::disk('uploads')->put('albums/' . $album->id, $uploadedPicture);
@@ -145,19 +142,21 @@ class AdminAlbumController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Album $album
+     * @param string $slug
      * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function destroy(Album $album)
+    public function destroy(string $slug)
     {
+        $album = $this->repository->findBySlug($slug);
         $this->authorize('delete', $album);
 
         // Suppression des fichiers (dossier)
         Storage::disk('uploads')->deleteDirectory('albums/' . $album->id);
         $album->pictures()->delete();
 
-        $album->delete();
+        $this->repository->delete($album->id);
 
         return back()->withSuccess('Album successfully deleted');
     }

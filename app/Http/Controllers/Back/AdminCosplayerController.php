@@ -128,9 +128,9 @@ class AdminCosplayerController extends Controller
      */
     public function destroy(string $slug)
     {
-        $this->authorize('delete', Cosplayer::class);
-        $id = $this->repository->findBySlug($slug)->id;
-        $this->repository->delete($id);
+        $album = $this->repository->findBySlug($slug);
+        $this->authorize('delete', $album);
+        $this->repository->delete($album->id);
         return back()->withSuccess('Cosplayer successfully deleted');
     }
 }
