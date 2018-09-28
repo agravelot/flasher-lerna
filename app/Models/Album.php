@@ -20,6 +20,11 @@ class Album extends Model
         'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'active', 'image', 'user_id'
     ];
 
+    public function isPublic()
+    {
+        return $this->publish && $this->password == null;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
