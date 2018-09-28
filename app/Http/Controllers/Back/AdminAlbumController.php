@@ -105,7 +105,7 @@ class AdminAlbumController extends Controller
      */
     public function edit(Album $album)
     {
-        $this->authorize('edit', $album);
+        $this->authorize('update', $album);
         return view('admin.albums.edit', ['album' => $album]);
     }
 
