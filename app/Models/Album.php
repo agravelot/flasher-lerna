@@ -45,6 +45,11 @@ class Album extends Model
         return $this->hasMany(Picture::class);
     }
 
+    public function pictureHeader()
+    {
+        return $this->hasOne(Picture::class, 'album_header_id');
+    }
+
     public function cosplayers()
     {
         return $this->belongsToMany(Cosplayer::class);
