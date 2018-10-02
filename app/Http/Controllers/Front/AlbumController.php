@@ -40,7 +40,7 @@ class AlbumController extends Controller
 
         $albums = $this->repository->with(['pictures', 'categories', 'pictureHeader'])
             ->orderBy('created_at')
-            ->all();
+            ->paginate(10);
 
         return view('albums.index', ['albums' => $albums]);
     }

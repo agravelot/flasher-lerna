@@ -5,5 +5,6 @@
         <div class="columns is-multiline is-centered">
             @each('albums.partials._index_item', $albums, 'album', 'layouts.partials._empty')
         </div>
+        {{ $albums->links() }}
     </div>
 @endsection
