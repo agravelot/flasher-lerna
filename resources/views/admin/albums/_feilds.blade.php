@@ -110,23 +110,6 @@
                     </div>
                 </div>
 
-                <div class="field is-horizontal">
-                    <div class="field-label">
-                        <label class="label">Active</label>
-                    </div>
-
-                    <div class="field-body">
-                        <div class="field">
-                            <p class="control">
-                                <input type="hidden" name="active" value="0">
-                                <input type="checkbox" name="active"
-                                       @if(old('active', isset($album->active) ? $album->active : false)) checked @endif>
-                            </p>
-
-                            @include('layouts.partials._form_errors', ['data' => 'active'])
-                        </div>
-                    </div>
-                </div>
                 <footer class="card-footer">
                     <div class="control card-footer-item">
                         <button class="button is-primary">
