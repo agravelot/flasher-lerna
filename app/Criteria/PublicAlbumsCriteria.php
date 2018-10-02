@@ -23,7 +23,7 @@ class PublicAlbumsCriteria implements CriteriaInterface
     public function apply($model, RepositoryInterface $repository)
     {
         $model = $model->where('publish', true)
-            ->whereNotNull('password');
+            ->whereNull('password');
         return $model;
     }
 }

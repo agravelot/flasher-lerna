@@ -18,23 +18,24 @@ class AlbumController extends Controller
     /**
      * AlbumController constructor.
      * @param AlbumRepository $repository
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function __construct(AlbumRepository $repository)
     {
         $this->repository = $repository;
-//        $this->repository->pushCriteria(PublicAlbumsCriteria::class);
+        $this->repository->pushCriteria(PublicAlbumsCriteria::class);
     }
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index()
     {
-        If (!Auth::check() || !Auth::user()->isAdmin()) {
-            $this->repository->pushCriteria(PublicAlbumsCriteria::class);
+        //TODO Show user own albums
+        if (Auth::check() && Auth::user()->isAdmin()) {
+            $this->repository->popCriteria(PublicAlbumsCriteria::class);
         }
 
         $albums = $this->repository->with(['pictures', 'categories'])
@@ -54,6 +55,9 @@ class AlbumController extends Controller
      */
     public function show(string $slug)
     {
+        //TODO Fix issue with find by slug, policies will check user permission for us
+        $this->repository->popCriteria(PublicAlbumsCriteria::class);
+
         $album = $this->repository->findBySlug($slug);
         $this->authorize('view', $album);
         return view('albums.show', ['album' => $album]);
