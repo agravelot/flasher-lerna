@@ -4,9 +4,9 @@
 
     <div class="carousel carousel-animated carousel-animate-slide">
         <div class="carousel-container">
-            @foreach ($album->pictures as $pictures)
+            @foreach ($album->pictures as $picture)
                 <div class="carousel-item has-background @if ($loop->first) is-active @endif">
-                    <img class="is-background" src="{{ asset('storage/'.$pictures->filename)}}" alt="" width="640"
+                    <img class="is-background" src="{{ asset('storage/'.$picture->filename)}}" alt="" width="640"
                          height="310"/>
                     {{--<div class="title">Original Gift: Offer a song with <a href="https://lasongbox.com" target="_blank">La--}}
                     {{--Song Box</a></div>--}}

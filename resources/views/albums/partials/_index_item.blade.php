@@ -15,13 +15,15 @@
                         <p class="subtitle is-5">{{ $album->title }}</p>
                     </div>
                 </div>
-                <div class="content">
-                    <div class="tags">
-                        @foreach($album->categories as $category)
-                            <span class="tag">{{$category->name}}</span>
-                        @endforeach
+                @if (isset($album->categories))
+                    <div class="content">
+                        <div class="tags">
+                            @foreach($album->categories as $category)
+                                <span class="tag">{{$category->name}}</span>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
     </a>

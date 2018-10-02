@@ -2,11 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Models\Album;
+use App\Repositories\Contracts\AlbumRepository;
 use Illuminate\Support\Facades\Hash;
 use Prettus\Repository\Eloquent\BaseRepository;
-use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\Contracts\AlbumRepository;
-use App\Models\Album;
 
 /**
  * Class AlbumRepositoryEloquent.
@@ -15,6 +14,7 @@ use App\Models\Album;
  */
 class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepository
 {
+
     public function create(array $attributes)
     {
         $attributes['password'] = Hash::make($attributes['password']);
@@ -76,7 +76,6 @@ class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepository
      */
     public function boot()
     {
-        $this->pushCriteria(app(RequestCriteria::class));
+        //$this->pushCriteria(app(RequestCriteria::class));
     }
-    
 }

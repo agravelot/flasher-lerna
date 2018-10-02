@@ -47,7 +47,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function canImpersonate()
     {
-        // For example
         return $this->isAdmin();
     }
 
