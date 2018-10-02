@@ -1,8 +1,7 @@
 <?php
 
-use Carbon\Carbon;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class AlbumsTableSeeder extends Seeder
 {
@@ -13,20 +12,11 @@ class AlbumsTableSeeder extends Seeder
      */
     public function run()
     {
-        // 'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'active', 'image', 'user_id'
-
-//        $faker = Faker\Factory::create();
-//
-//        for ($i = 0; $i < 10; $i++) {
-//            DB::table('albums')->insert([
-//                'title' => $faker->sentence,
-//                'body' => $faker->paragraph($i * 10),
-//                'active' => $faker->boolean,
-//                'password' => null,
-//                'user_id' => 1,
-//                'created_at' => Carbon::now(),
-//                'updated_at' => Carbon::now(),
-//            ]);
-//        }
+        User::all()->each(function ($user)  {
+            $user->albums()->saveMany(
+                factory(App\Models\Album::class, 2)
+                    ->make()
+            );
+        });
     }
 }
