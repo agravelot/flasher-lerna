@@ -72,10 +72,16 @@ class AdminAlbumController extends Controller
 
         //TODO Store categories
         //TODO Move in repository
-        foreach ($request->pictures as $uploaderPicture) {
+        foreach ($request->pictures as $key => $uploaderPicture) {
             $picture = new Picture();
             $picture->filename = Storage::disk('uploads')->put('albums/' . $album->id, $uploaderPicture);
             $album->pictures()->save($picture);
+
+            if ($key === 0) {
+                $picture = new Picture();
+                $picture->filename = Storage::disk('uploads')->put('albums/' . $album->id . '/header/', $uploaderPicture);
+                $album->pictureHeader()->save($picture);
+            }
         }
 
         return redirect(route('admin.albums.show', ['album' => $album]));
@@ -123,17 +129,21 @@ class AdminAlbumController extends Controller
     public function update(AlbumRequest $request, $id)
     {
         //TODO Update categories
-        //TODO Keep current user id ?
 
         $this->authorize('update', Album::class);
 
         $album = $this->repository->update($request->all(), $id);
 
         //TODO Move in repo
-        foreach ($request->pictures as $uploadedPicture) {
+        foreach ($request->pictures as $key => $uploadedPicture) {
             $picture = new Picture();
             $picture->filename = Storage::disk('uploads')->put('albums/' . $album->id, $uploadedPicture);
             $album->pictures()->save($picture);
+            if ($key === 0) {
+                $picture = new Picture();
+                $picture->filename = Storage::disk('uploads')->put('albums/' . $album->id . '/header', $uploadedPicture);
+                $album->pictureHeader()->save($picture);
+            }
         }
 
         return redirect(route('admin.albums.show', ['album' => $album]))->withSuccess('Album successfully updated');
@@ -155,6 +165,7 @@ class AdminAlbumController extends Controller
         // Suppression des fichiers (dossier)
         Storage::disk('uploads')->deleteDirectory('albums/' . $album->id);
         $album->pictures()->delete();
+        $album->pictureHeader()->delete();
 
         $this->repository->delete($album->id);
 
