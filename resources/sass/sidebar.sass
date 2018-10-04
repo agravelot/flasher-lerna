@@ -2,24 +2,30 @@
 
 .is-sidebar-menu
   padding: 1.5rem
-  background: $grey-dark
-  li
-    a
-      color: $white
+  //background: $grey-dark
+  min-height: calc(100vh - (#{$navbar-height} - .75rem))
+  max-height: calc(100vh - (#{$navbar-height} - .75rem))
+  height: calc(100vh - (#{$navbar-height} - .75rem))
+  position: fixed
+  top: (#{$navbar-height})
+  left: 0
+  //li
+  //  a
+  //    color: $white
 
 .columns
   &.is-fullheight
-    min-height: calc(100vh - (#{$navbar-height} - .75rem))
-    max-height: calc(100vh - (#{$navbar-height} - .75rem))
-    height: calc(100vh - (#{$navbar-height} - .75rem))
+
     display: flex
     flex-direction: row
-    justify-content: stretch
+    //justify-content: stretch
+    justify-content: end
     .column
       overflow-y: auto
 
 //.is-main-content
 //  background: $grey-lighter
 
+// Correctif pour IE
 .is-fullheight.columns
   height: calc(100vh - (3.25rem - .75rem))
