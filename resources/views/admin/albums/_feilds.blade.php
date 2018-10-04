@@ -21,21 +21,20 @@
                     </div>
 
                     <div class="field">
-                        <label class="label">Password</label>
-                        <div class="control">
-                            <input class="input" id="password" type="password" name="password">
-                        </div>
-                        @include('layouts.partials._form_errors', ['data' => 'password'])
-                    </div>
-
-
-                    <div class="field">
                         <label class="label">Body</label>
                         <div class="control">
                             <textarea class="textarea ckeditor" id="body" type="text" name="body"
                                       rows="10">{{ old('body', isset($album->body) ? $album->body : null) }}</textarea>
                         </div>
                         @include('layouts.partials._form_errors', ['data' => 'body'])
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Password</label>
+                        <div class="control">
+                            <input class="input" id="password" type="password" name="password">
+                        </div>
+                        @include('layouts.partials._form_errors', ['data' => 'password'])
                     </div>
                 </div>
             </div>
