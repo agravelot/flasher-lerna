@@ -15,10 +15,14 @@ class CreatePicturesTable extends Migration
     {
         Schema::create('pictures', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('filename');
-//            $table->string('originalFilename');
-//            $table->string('extension');
-//            $table->string('extension');
+            //TODO Must be unique
+            $table->string('filePath');
+            $table->string('mineType');
+            $table->string('originalName');
+            //TODO Must be unique
+            $table->string('hashName');
+            $table->string('size');
+            $table->string('extension');
             $table->integer('album_id')->unsigned()->nullable();
             $table->integer('album_header_id')->unsigned()->nullable();
             $table->timestamps();

@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Back;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AlbumRequest;
 use App\Models\Album;
-use App\Models\Picture;
 use App\Repositories\AlbumRepositoryEloquent;
 use App\Repositories\Contracts\AlbumRepository;
+use App\Repositories\Contracts\PictureRepository;
 use Illuminate\Support\Facades\Storage;
 
 class AdminAlbumController extends Controller
@@ -15,16 +15,22 @@ class AdminAlbumController extends Controller
     /**
      * @var AlbumRepositoryEloquent
      */
-    protected $repository;
+    protected $albumRepository;
+    /**
+     * @var PictureRepository
+     */
+    protected $pictureRepository;
 
     /**
      * AdminAlbumController constructor.
-     * @param AlbumRepository $repository
+     * @param AlbumRepository $albumRepository
+     * @param PictureRepository $pictureRepository
      */
-    public function __construct(AlbumRepository $repository)
+    public function __construct(AlbumRepository $albumRepository, PictureRepository $pictureRepository)
     {
         $this->middleware(['auth', 'verified']);
-        $this->repository = $repository;
+        $this->albumRepository = $albumRepository;
+        $this->pictureRepository = $pictureRepository;
     }
 
     /**
@@ -36,8 +42,8 @@ class AdminAlbumController extends Controller
     public function index()
     {
         $this->authorize('index', Album::class);
-        $albums = $this->repository->with('pictures')
-            ->orderBy('updated_at')
+        $albums = $this->albumRepository->with('pictures')
+            ->orderBy('updated_at', 'desc')
             ->paginate(10);
 
         return view('admin.albums.index', [
@@ -68,22 +74,8 @@ class AdminAlbumController extends Controller
     public function store(AlbumRequest $request)
     {
         $this->authorize('create', Album::class);
-        $album = $this->repository->create($request->all());
-
-        //TODO Store categories
-        //TODO Move in repository
-        foreach ($request->pictures as $key => $uploaderPicture) {
-            $picture = new Picture();
-            $picture->filename = Storage::disk('uploads')->put('albums/' . $album->id, $uploaderPicture);
-            $album->pictures()->save($picture);
-
-            if ($key === 0) {
-                $picture = new Picture();
-                $picture->filename = Storage::disk('uploads')->put('albums/' . $album->id . '/header/', $uploaderPicture);
-                $album->pictureHeader()->save($picture);
-            }
-        }
-
+        $album = $this->albumRepository->create($request->all());
+        $this->pictureRepository->createForAlbum($request->files->get('pictures'), $album);
         return redirect(route('admin.albums.show', ['album' => $album]));
     }
 
@@ -97,7 +89,7 @@ class AdminAlbumController extends Controller
      */
     public function show(string $slug)
     {
-        $album = $this->repository->findBySlug($slug);
+        $album = $this->albumRepository->findBySlug($slug);
         $this->authorize('view', $album);
         return view('admin.albums.show', ['album' => $album]);
     }
@@ -112,7 +104,7 @@ class AdminAlbumController extends Controller
      */
     public function edit(string $slug)
     {
-        $album = $this->repository->findBySlug($slug);
+        $album = $this->albumRepository->findBySlug($slug);
         $this->authorize('update', $album);
         return view('admin.albums.edit', ['album' => $album]);
     }
@@ -129,22 +121,10 @@ class AdminAlbumController extends Controller
     public function update(AlbumRequest $request, $id)
     {
         //TODO Update categories
-
         $this->authorize('update', Album::class);
 
-        $album = $this->repository->update($request->all(), $id);
-
-        //TODO Move in repo
-        foreach ($request->pictures as $key => $uploadedPicture) {
-            $picture = new Picture();
-            $picture->filename = Storage::disk('uploads')->put('albums/' . $album->id, $uploadedPicture);
-            $album->pictures()->save($picture);
-            if ($key === 0) {
-                $picture = new Picture();
-                $picture->filename = Storage::disk('uploads')->put('albums/' . $album->id . '/header', $uploadedPicture);
-                $album->pictureHeader()->save($picture);
-            }
-        }
+        $album = $this->albumRepository->update($request->all(), $id);
+        $this->pictureRepository->createForAlbum($request->files->get('pictures'), $album);
 
         return redirect(route('admin.albums.show', ['album' => $album]))->withSuccess('Album successfully updated');
     }
@@ -159,7 +139,7 @@ class AdminAlbumController extends Controller
      */
     public function destroy(string $slug)
     {
-        $album = $this->repository->findBySlug($slug);
+        $album = $this->albumRepository->findBySlug($slug);
         $this->authorize('delete', $album);
 
         // Suppression des fichiers (dossier)
@@ -167,7 +147,7 @@ class AdminAlbumController extends Controller
         $album->pictures()->delete();
         $album->pictureHeader()->delete();
 
-        $this->repository->delete($album->id);
+        $this->albumRepository->delete($album->id);
 
         return back()->withSuccess('Album successfully deleted');
     }

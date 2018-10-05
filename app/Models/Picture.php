@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Picture extends Model
 {
-    protected $fillable = ['filename'];
+    protected $fillable = ['filePath', 'mineType', 'originalName', 'hashName', 'size', 'extension'];
 
     public function album()
     {
