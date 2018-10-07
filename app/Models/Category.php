@@ -3,18 +3,22 @@
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
+use Prettus\Repository\Contracts\Transformable;
+use Prettus\Repository\Traits\TransformableTrait;
 
 class Category extends Model
 {
     use Sluggable;
+    use SluggableScopeHelpers;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug'];
+    protected $fillable = ['name', 'slug', 'description'];
 
     public function posts()
     {

@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Models\Album;
+use App\Models\Category;
 use App\Models\Contact;
 use App\Models\Cosplayer;
 use App\Models\User;
 use App\Policies\AlbumPolicy;
+use App\Policies\CategoryPolicy;
 use App\Policies\ContactPolicy;
 use App\Policies\CosplayerPolicy;
 use App\Policies\UserPolicy;
@@ -25,6 +27,7 @@ class AuthServiceProvider extends ServiceProvider
         Contact::class => ContactPolicy::class,
         Cosplayer::class => CosplayerPolicy::class,
         User::class => UserPolicy::class,
+        Category::class => CategoryPolicy::class,
     ];
 
     /**

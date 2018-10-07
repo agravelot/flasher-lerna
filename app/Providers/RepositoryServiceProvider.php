@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Repositories\AlbumRepositoryEloquent;
+use App\Repositories\CategoryRepositoryEloquent;
 use App\Repositories\ContactRepositoryEloquent;
 use App\Repositories\Contracts\AlbumRepository;
+use App\Repositories\Contracts\CategoryRepository;
 use App\Repositories\Contracts\ContactRepository;
 use App\Repositories\Contracts\CosplayerRepository;
 use App\Repositories\Contracts\PictureRepository;
@@ -38,6 +40,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CosplayerRepository::class, CosplayerRepositoryEloquent::class);
         $this->app->bind(ContactRepository::class, ContactRepositoryEloquent::class);
         $this->app->bind(PictureRepository::class, PictureRepositoryEloquent::class);
+        $this->app->bind(CategoryRepository::class, CategoryRepositoryEloquent::class);
         //:end-bindings:
     }
 }
