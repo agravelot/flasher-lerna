@@ -45,6 +45,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Cosplayer::class);
     }
 
+    public function contact() {
+        return $this->hasMany(Contact::class);
+    }
+
     public function canImpersonate()
     {
         return $this->isAdmin();
