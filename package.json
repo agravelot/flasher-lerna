@@ -17,7 +17,6 @@
         "bulma-extensions": "^2.2.0",
         "cross-env": "^5.1",
         "laravel-mix": "^2.0",
-        "lodash": "^4.17.4",
-        "popper.js": "^1.12"
+        "lodash": "^4.17.4"
     }
 }
