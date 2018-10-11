@@ -4,7 +4,7 @@
             <div class="card-image">
                 <figure class="image">
                     {{--@foreach($cosplayer->avatar as $picture)--}}
-                    {{--<img src="{{ asset('storage/'.$picture->filename) }}"--}}
+                    {{--<img src="{{ asset('storage/'.$picture->filePath) }}"--}}
                     {{--alt="Image" title="" style="">--}}
                     {{--@endforeach--}}
                 </figure>

@@ -4,7 +4,7 @@
             @if(isset($album->pictureHeader))
                 <div class="card-image">
                     <figure class="image">
-                        <img src="{{ asset('storage/'.$album->pictureHeader->filename) }}"
+                        <img src="{{ asset('storage/'.$album->pictureHeader->filePath) }}"
                              alt="Image" title="" style="">
                     </figure>
                 </div>
