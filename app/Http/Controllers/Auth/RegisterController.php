@@ -47,6 +47,7 @@ class RegisterController extends Controller
      */
     protected function create(UserRequest $request)
     {
+        //TODO Create with repository
         return User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),

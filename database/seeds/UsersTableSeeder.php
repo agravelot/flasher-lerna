@@ -20,7 +20,7 @@ class UsersTableSeeder extends Seeder
                 'role' => 'admin',
             ]);
 
-        $users = factory(User::class, 10)
+        $users = factory(User::class, 30)
             ->create();
     }
 }
