@@ -5,10 +5,20 @@ namespace App\Http\Controllers\Front;
 use App\Http\Requests\ContactStoreRequest;
 use App\Models\Contact;
 use App\Http\Controllers\Controller;
+use App\Repositories\Contracts\ContactRepository;
 
 class ContactController extends Controller
 {
 
+    /**
+     * @var ContactRepository
+     */
+    private $contactRepository;
+
+    public function __construct(ContactRepository $contactRepository)
+    {
+        $this->contactRepository = $contactRepository;
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -28,11 +38,7 @@ class ContactController extends Controller
      */
     public function store(ContactStoreRequest $request)
     {
-        Contact::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'message' => $request->input('message'),
-        ]);
+        $this->contactRepository->create($request->validated());
 
         return redirect(route('contact.create'))->withSuccess('Your message has been sent');
     }
