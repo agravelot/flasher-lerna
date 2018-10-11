@@ -16,15 +16,21 @@ use Prettus\Repository\Eloquent\BaseRepository;
 class UserRepositoryEloquent extends BaseRepository implements UserRepository
 {
 
-    public function create(array $attributes)
+    public function create(array $attributes): User
     {
         $attributes['password'] = Hash::make($attributes['password']);
+
         return parent::create($attributes);
     }
 
     public function update(array $attributes, $id)
     {
-        $attributes['password'] = Hash::make($attributes['password']);
+        if (isset($attributes['password'])) {
+            $attributes['password'] = Hash::make($attributes['password']);
+        } else {
+            unset($attributes['password']);
+        }
+
         return parent::update($attributes, $id);
     }
 

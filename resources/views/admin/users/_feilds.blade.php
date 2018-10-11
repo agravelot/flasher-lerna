@@ -48,7 +48,7 @@
             <div class="field-body">
                 <div class="field">
                     <p class="control">
-                        <input class="input" id="password" type="password" name="password" required>
+                        <input class="input" id="password" type="password" name="password" @if (!isset($user)) required @endif>
                     </p>
                     @include('layouts.partials._form_errors', ['data' => 'password'])
                 </div>
@@ -64,7 +64,7 @@
                 <div class="field">
                     <p class="control">
                         <input class="input" id="password-confirm" type="password"
-                               name="password_confirmation" required>
+                               name="password_confirmation" @if (!isset($user)) required @endif>
                     </p>
                     @include('layouts.partials._form_errors', ['data' => 'password_confirmation'])
                 </div>
