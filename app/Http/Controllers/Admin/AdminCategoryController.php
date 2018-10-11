@@ -96,7 +96,7 @@ class AdminCategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         $this->authorize('create', Category::class);
-        $category = $this->repository->create($request->all());
+        $category = $this->repository->create($request->validated());
         return redirect(route('admin.categories.show', ['category' => $category]));
     }
 
@@ -114,10 +114,8 @@ class AdminCategoryController extends Controller
     public function update(CategoryRequest $request, string $slug)
     {
         $category = $this->repository->findBySlug($slug);
-//        var_dump($category);
-//        die();
         $this->authorize('update', $category);
-        $category = $this->repository->update($request->all(), $category->id);
+        $category = $this->repository->update($request->validated(), $category->id);
         return redirect(route('admin.categories.show', ['category' => $category]))->withSuccess('Category successfully updated');
     }
 

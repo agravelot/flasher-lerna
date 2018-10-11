@@ -74,7 +74,7 @@ class AdminAlbumController extends Controller
     public function store(AlbumRequest $request)
     {
         $this->authorize('create', Album::class);
-        $album = $this->albumRepository->create($request->all());
+        $album = $this->albumRepository->create($request->validated());
         $this->pictureRepository->createForAlbum($request->files->get('pictures'), $album);
         return redirect(route('admin.albums.show', ['album' => $album]));
     }
@@ -123,7 +123,7 @@ class AdminAlbumController extends Controller
         //TODO Update categories
         $this->authorize('update', Album::class);
 
-        $album = $this->albumRepository->update($request->all(), $id);
+        $album = $this->albumRepository->update($request->validated(), $id);
         $this->pictureRepository->createForAlbum($request->files->get('pictures'), $album);
 
         return redirect(route('admin.albums.show', ['album' => $album]))->withSuccess('Album successfully updated');

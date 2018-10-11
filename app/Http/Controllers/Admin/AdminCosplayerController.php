@@ -65,7 +65,7 @@ class AdminCosplayerController extends Controller
     {
         $this->authorize('create', Cosplayer::class);
 
-        $cosplayer = $this->repository->create($request->all());
+        $cosplayer = $this->repository->create($request->validated());
 
         return redirect(route('admin.cosplayers.show', ['cosplayer' => $cosplayer]));
     }
@@ -113,7 +113,7 @@ class AdminCosplayerController extends Controller
     {
         //TODO Update categories
         $this->authorize('update', Cosplayer::class);
-        $cosplayer = $this->repository->update($request->all(), $id);
+        $cosplayer = $this->repository->update($request->validated(), $id);
 
         return redirect(route('admin.cosplayers.show', ['cosplayer' => $cosplayer]))->withSuccess('Cosplayers successfully updated');
     }

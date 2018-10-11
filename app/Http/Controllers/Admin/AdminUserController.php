@@ -69,7 +69,7 @@ class AdminUserController extends Controller
     public function store(UserRequest $request)
     {
         $this->authorize('create', User::class);
-        $user = $this->userRepository->create($request->all());
+        $user = $this->userRepository->create($request->validated());
         return redirect(route('admin.users.show', ['user' => $user]));
     }
 
@@ -119,7 +119,7 @@ class AdminUserController extends Controller
     {
         $user = $this->userRepository->find($id);
         $this->authorize('update', $user);
-        $this->userRepository->update($request->all(), $id);
+        $this->userRepository->update($request->validated(), $id);
 
         return redirect(route('admin.users.show', ['user' => $user]))->withSuccess('Users successfully updated');
     }
