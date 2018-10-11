@@ -15,13 +15,18 @@
                         <p class="subtitle is-5">{{ $album->title }}</p>
                     </div>
                 </div>
+                <div class="content">
+
+                </div>
                 @if (isset($album->categories))
-                    <div class="content">
-                        <div class="tags">
-                            @foreach($album->categories as $category)
-                                <span class="tag">{{$category->name}}</span>
-                            @endforeach
-                        </div>
+                    <div class="tags">
+                        @foreach($album->categories as $category)
+                            <div class="tag">
+                                <a href="{{ route('categories.show', ['category' => $category]) }}">
+                                    {{$category->name}}
+                                </a>
+                            </div>
+                        @endforeach
                     </div>
                 @endif
             </div>

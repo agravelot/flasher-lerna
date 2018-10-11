@@ -21,6 +21,16 @@
                 </a>
             </li>
         @endcan
+        @can('index', \App\Models\Category::class)
+            <li>
+                <a href="{{ route('admin.categories.index') }}" {{ Request::is('admin/categories*') ? 'class=is-active' : '' }}>
+                    <span class="icon">
+                        <i class="fas fa-tags"></i>
+                    </span>
+                    Categories
+                </a>
+            </li>
+        @endcan
         @can('index', \App\Models\Contact::class)
             <li>
                 <a href="{{ route('admin.contacts.index') }}" {{ Request::is('admin/contacts*') ? 'class=is-active' : '' }}>

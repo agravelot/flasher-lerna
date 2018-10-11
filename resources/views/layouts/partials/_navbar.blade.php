@@ -31,6 +31,7 @@
                 <a class="navbar-item {{ Request::is('posts*') ? 'is-active' : '' }}" href="{{ route('posts.index') }}">Posts</a>
                 <a class="navbar-item {{ Request::is('albums*') ? 'is-active' : '' }}"
                    href="{{ route('albums.index') }}">Albums</a>
+                <a class="navbar-item {{ Request::is('categories*') ? 'is-active' : '' }}" href="{{ route('categories.index') }}">Categories</a>
                 <a class="navbar-item {{ Request::is('goldenbook*') ? 'is-active' : '' }}"
                    href="{{ route('goldenbook.index') }}">Golden book</a>
             </div>

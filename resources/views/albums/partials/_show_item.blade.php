@@ -40,7 +40,11 @@
                 </div>
                 <div class="tags">
                     @foreach($album->categories as $category)
-                        <span class="tag">{{$category->name}}</span>
+                        <span class="tag">
+                            <a href="{{ route('categories.show', ['category' => $category]) }}">
+                                {{$category->name}}
+                            </a>
+                        </span>
                     @endforeach
                 </div>
                 <div class="columns is-multiline is-mobile">
