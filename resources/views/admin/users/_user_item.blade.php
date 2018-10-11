@@ -19,6 +19,15 @@
         @endCanImpersonate
     </td>
     <td width="2%">
+        @if (isset($user->cosplayer))
+            <a href="{{ route('admin.cosplayers.show', ['cosplayer' => $user->cosplayer]) }}">
+                <span class="icon has-text-info">
+                    <i class="fas fa-link"></i>
+                </span>
+            </a>
+        @endif
+    </td>
+    <td width="2%">
         <a href="{{ route('admin.users.edit', ['user' => $user]) }}">
             <span class="icon has-text-info">
                 <i class="far fa-edit"></i>

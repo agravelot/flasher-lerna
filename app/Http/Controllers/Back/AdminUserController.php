@@ -5,20 +5,27 @@ namespace App\Http\Controllers\Back;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use App\Repositories\Contracts\CosplayerRepository;
 use App\Repositories\Contracts\UserRepository;
 
 class AdminUserController extends Controller
 {
-    protected $repository;
+    protected $userRepository;
+    /**
+     * @var CosplayerRepository
+     */
+    protected $cosplayerRepository;
 
     /**
      * AdminCosplayerController constructor.
      * @param UserRepository $userRepository
+     * @param CosplayerRepository $cosplayerRepository
      */
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, CosplayerRepository $cosplayerRepository)
     {
         $this->middleware(['auth', 'verified']);
-        $this->repository = $userRepository;
+        $this->userRepository = $userRepository;
+        $this->cosplayerRepository = $cosplayerRepository;
     }
 
     /**
@@ -30,7 +37,7 @@ class AdminUserController extends Controller
     public function index()
     {
         $this->authorize('index', User::class);
-        $users = $this->repository->paginate(10);
+        $users = $this->userRepository->with('cosplayer')->paginate(10);
 
         return view('admin.users.index', [
             'users' => $users
@@ -46,7 +53,10 @@ class AdminUserController extends Controller
     public function create()
     {
         $this->authorize('create', User::class);
-        return view('admin.users.create');
+        $cosplayers = $this->cosplayerRepository->with('user')->all(['id', 'name']);
+        return view('admin.users.create', [
+            'cosplayers' => $cosplayers
+        ]);
     }
 
     /**
@@ -59,7 +69,7 @@ class AdminUserController extends Controller
     public function store(UserRequest $request)
     {
         $this->authorize('create', User::class);
-        $user = $this->repository->create($request->all());
+        $user = $this->userRepository->create($request->all());
         return redirect(route('admin.users.show', ['user' => $user]));
     }
 
@@ -72,7 +82,7 @@ class AdminUserController extends Controller
      */
     public function show(int $id)
     {
-        $user = $this->repository->find($id);
+        $user = $this->userRepository->find($id);
         $this->authorize('view', $user);
         return view('admin.users.show', ['user' => $user]);
     }
@@ -86,9 +96,15 @@ class AdminUserController extends Controller
      */
     public function edit(int $id)
     {
-        $user = $this->repository->find($id);
+        $user = $this->userRepository->find($id);
         $this->authorize('update', $user);
-        return view('admin.users.edit', ['user' => $user]);
+
+        $cosplayers = $this->cosplayerRepository->with('user')->all();
+
+        return view('admin.users.edit', [
+            'user' => $user,
+            'cosplayers' => $cosplayers
+        ]);
     }
 
     /**
@@ -101,9 +117,9 @@ class AdminUserController extends Controller
      */
     public function update(UserRequest $request, $id)
     {
-        $user = $this->repository->find($id);
+        $user = $this->userRepository->find($id);
         $this->authorize('update', $user);
-        $this->repository->update($request->all(), $id);
+        $this->userRepository->update($request->all(), $id);
 
         return redirect(route('admin.users.show', ['user' => $user]))->withSuccess('Users successfully updated');
     }
@@ -118,7 +134,7 @@ class AdminUserController extends Controller
     public function destroy(int $id)
     {
         $this->authorize('delete', User::class);
-        $this->repository->delete($id);
+        $this->userRepository->delete($id);
         return back()->withSuccess('User successfully deleted');
     }
 }

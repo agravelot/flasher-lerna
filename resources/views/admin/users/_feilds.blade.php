@@ -1,5 +1,5 @@
 <div class="card-content">
-    <form class="register-form" method="POST" action="{{ $route  }}">
+    <form class="register-form" method="POST" action="{{ $route }}">
 
         @csrf
 
@@ -15,7 +15,8 @@
             <div class="field-body">
                 <div class="field">
                     <p class="control">
-                        <input class="input" id="name" type="name" name="name" value="{{ old('name') }}"
+                        <input class="input" id="name" type="name" name="name"
+                               value="{{ old('name', isset($user->name) ? $user->name : null) }}"
                                required autofocus>
                     </p>
                     @include('layouts.partials._form_errors', ['data' => 'name'])
@@ -32,7 +33,7 @@
                 <div class="field">
                     <p class="control">
                         <input class="input" id="email" type="email" name="email"
-                               value="{{ old('email') }}" required autofocus>
+                               value="{{ old('email', isset($user->email) ? $user->email : null) }}" required autofocus>
                     </p>
                     @include('layouts.partials._form_errors', ['data' => 'email'])
                 </div>
@@ -65,6 +66,40 @@
                         <input class="input" id="password-confirm" type="password"
                                name="password_confirmation" required>
                     </p>
+                    @include('layouts.partials._form_errors', ['data' => 'password_confirmation'])
+                </div>
+            </div>
+        </div>
+
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Cosplayer</label>
+            </div>
+
+            <div class="field-body">
+                <div class="field">
+                    <div class="control has-icons-left">
+                        <div class="select">
+                            <select name="cosplayer" id="cosplayer">
+                                <option value="0">None</option>
+                                @foreach($cosplayers as $cosplayer )
+                                    @php
+                                        $options = null;
+                                        if (isset($user->cosplayer) && $user->cosplayer->id === $cosplayer->id) {
+                                            $options = 'selected';
+                                        } elseif (isset($cosplayer->user)) {
+                                            $options = 'disabled';
+                                        }
+                                    @endphp
+                                    <option value="{{ $cosplayer->id }}" {{ $options }}>{{ $cosplayer->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <span class="icon is-medium is-left">
+                            <i class="fas fa-user-tag"></i>
+                        </span>
+                    </div>
                     @include('layouts.partials._form_errors', ['data' => 'password_confirmation'])
                 </div>
             </div>
