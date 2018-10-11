@@ -15,7 +15,6 @@ use App\Validators\CosplayerValidator;
  */
 class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRepository
 {
-
     /**
      * Find data by field and value
      *
@@ -27,9 +26,8 @@ class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRep
     {
         $this->applyCriteria();
         $this->applyScope();
-        $model = $this->model->findBySlug($value)->first();
+        $model = $this->model->findBySlug($value);
         $this->resetModel();
-
         return $this->parserResult($model);
     }
 
