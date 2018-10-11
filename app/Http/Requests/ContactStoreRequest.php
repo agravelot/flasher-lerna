@@ -16,6 +16,7 @@ class ContactStoreRequest extends Request
             'name' => 'string|required|min:3|max:255',
             'email' => 'email',
             'message' => 'min:25',
+            'g-recaptcha-response' => 'required|captcha'
         ];
     }
 }
