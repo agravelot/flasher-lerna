@@ -23,12 +23,10 @@
                                        required autofocus>
                             </p>
 
-                           @include('layouts.partials._form_errors', ['data' => 'name'])
+                            @include('layouts.partials._form_errors', ['data' => 'name'])
                         </div>
                     </div>
                 </div>
-
-
 
                 <div class="field is-horizontal">
                     <div class="field-label">
@@ -47,7 +45,6 @@
                     </div>
                 </div>
 
-
                 <div class="field is-horizontal">
                     <div class="field-label">
                         <label class="label">Message</label>
@@ -55,11 +52,25 @@
 
                     <div class="field-body">
                         <div class="field">
-                            <p class="control">
-                                <textarea class="textarea" id="message" type="text" name="message" rows="10">{{ old('message') }}</textarea>
-                            </p>
+                            <div class="control">
+                                <textarea class="textarea" id="message" type="text" name="message"
+                                          rows="10">{{ old('message') }}</textarea>
+                            </div>
 
                             @include('layouts.partials._form_errors', ['data' => 'message'])
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <!-- Left empty for spacing -->
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                {!! NoCaptcha::display() !!}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -75,10 +86,15 @@
                                     Send
                                 </button>
                             </div>
+                            @include('layouts.partials._form_errors', ['data' => 'g-recaptcha-response'])
                         </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+@endsection
+
+@section('js')
+    {!! NoCaptcha::renderJs() !!}
 @endsection
