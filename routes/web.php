@@ -19,7 +19,7 @@ Route::namespace('Front')->group(function () {
 });
 
 //BACK
-Route::namespace('Back')->group(function () {
+Route::namespace('Admin')->group(function () {
     Route::name('admin.')->group(function () { # Route Name Prefixe
         Route::prefix('admin')->group(function () { # Route Prefixe /admin/
             Route::get('', 'AdminController@dashboard')->name('dashboard');

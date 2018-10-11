@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Http\Controllers;
 
-use App\Http\Controllers\Back\AdminUserController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepository;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
