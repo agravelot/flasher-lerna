@@ -49,6 +49,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Contact::class);
     }
 
+    public function goldenBookPosts() {
+        return $this->hasMany(GoldenBookPost::class);
+    }
+
     public function canImpersonate()
     {
         return $this->isAdmin();

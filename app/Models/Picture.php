@@ -16,4 +16,9 @@ class Picture extends Model
     public function albumHeader() {
         return $this->belongsTo(Album::class);
     }
+
+    public function post()
+    {
+        return $this->hasOne(Picture::class);
+    }
 }

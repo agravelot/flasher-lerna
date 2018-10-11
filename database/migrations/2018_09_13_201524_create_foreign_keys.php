@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateForeignKeys extends Migration
 {
@@ -13,7 +13,26 @@ class CreateForeignKeys extends Migration
      */
     public function up()
     {
+
+        Schema::table('albums', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+        });
+
+        Schema::table('cosplayers', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+        });
+
         Schema::table('posts', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+        });
+
+        Schema::table('golden_book_posts', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
@@ -37,16 +56,16 @@ class CreateForeignKeys extends Migration
                 ->onUpdate('set null');
         });
 
-        Schema::table('categorizables', function (Blueprint $table) {
-            $table->foreign('category_id')->references('id')->on('categories')
-                ->onDelete('set null')
-                ->onUpdate('set null');
-        });
-
         Schema::table('contacts', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users')
                 ->onDelete('set null')
                 ->onUpdate('set null');
+        });
+
+        Schema::table('categorizables', function (Blueprint $table) {
+            $table->foreign('category_id')->references('id')->on('categories')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 
@@ -57,12 +76,24 @@ class CreateForeignKeys extends Migration
      */
     public function down()
     {
+        Schema::table('albums', function (Blueprint $table) {
+            $table->dropForeign('albums_user_id_foreign');
+        });
+
+        Schema::table('cosplayers', function (Blueprint $table) {
+            $table->dropForeign('cosplayers_user_id_foreign');
+        });
+
         Schema::table('posts', function (Blueprint $table) {
             $table->dropForeign('posts_user_id_foreign');
         });
 
         Schema::table('comments', function (Blueprint $table) {
             $table->dropForeign('comments_user_id_foreign');
+        });
+
+        Schema::table('golden_book_posts', function (Blueprint $table) {
+            $table->dropForeign('golden_book_posts_user_id_foreign');
         });
 
         Schema::table('album_cosplayer', function (Blueprint $table) {

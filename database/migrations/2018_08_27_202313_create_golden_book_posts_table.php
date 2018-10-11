@@ -18,6 +18,7 @@ class CreateGoldenBookPostsTable extends Migration
             $table->string('name');
             $table->text('content');
             $table->boolean('active')->default(true);
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }
