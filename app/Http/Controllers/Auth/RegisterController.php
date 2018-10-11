@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
+use App\Repositories\Contracts\UserRepository;
 
 class RegisterController extends Controller
 {
@@ -28,15 +28,20 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
+    /**
+     * @var UserRepository
+     */
+    private $repository;
 
     /**
      * Create a new controller instance.
      *
-     * @return void
+     * @param UserRepository $repository
      */
-    public function __construct()
+    public function __construct(UserRepository $repository)
     {
         $this->middleware('guest');
+        $this->repository = $repository;
     }
 
     /**
@@ -47,11 +52,6 @@ class RegisterController extends Controller
      */
     protected function create(UserRequest $request)
     {
-        //TODO Create with repository
-        return User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-        ]);
+        return $this->repository->create($request->validated());
     }
 }
