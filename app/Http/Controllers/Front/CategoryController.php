@@ -20,7 +20,6 @@ class CategoryController extends Controller
      */
     public function __construct(CategoryRepository $repository)
     {
-        $this->middleware(['auth', 'verified']);
         $this->repository = $repository;
     }
 
@@ -29,11 +28,9 @@ class CategoryController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
-        $this->authorize('index', Category::class);
         $categories = $this->repository->paginate(10);
 
         return view('categories.index', [
@@ -46,13 +43,11 @@ class CategoryController extends Controller
      *
      * @param string $slug
      * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function show(string $slug)
     {
         $category = $this->repository->findBySlug($slug);
-        $this->authorize('view', $category);
         return view('categories.show', ['category' => $category]);
     }
 
