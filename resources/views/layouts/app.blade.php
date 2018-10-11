@@ -22,7 +22,7 @@
 
 @yield('content')
 
-@include('layouts.partials._footer')
+{{--@include('layouts.partials._footer')--}}
 
 <!-- Scripts -->
 <script src="{{ mix('js/app.js') }}"></script>
