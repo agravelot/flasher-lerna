@@ -27,8 +27,8 @@
         <div class="field">
             <label class="label">Description</label>
             <div class="control">
-                <textarea class="textarea" id="body" type="text" name="body"
-                          rows="10">{{ old('body', isset($album->body) ? $album->body : null) }}</textarea>
+                <textarea class="textarea" id="description" type="text" name="description"
+                          rows="10">{{ old('description', isset($album->description) ? $album->description : null) }}</textarea>
             </div>
             @include('layouts.partials._form_errors', ['data' => 'body'])
         </div>

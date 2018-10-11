@@ -15,6 +15,7 @@ class CategoryRequest extends Request
 
         return [
             'name' => 'string|required|min:2|max:255|unique:categories,name,' . $id,
+            'description' => 'nullable|string|max:65555'
         ];
     }
 }
