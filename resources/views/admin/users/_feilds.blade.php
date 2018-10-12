@@ -82,7 +82,7 @@
                     <div class="control has-icons-left">
                         <div class="select">
                             <select name="cosplayer" id="cosplayer">
-                                <option value="0">None</option>
+                                <option value=""> None</option>
                                 @foreach($cosplayers as $cosplayer )
                                     @php
                                         $options = null;
@@ -100,7 +100,7 @@
                             <i class="fas fa-user-tag"></i>
                         </span>
                     </div>
-                    @include('layouts.partials._form_errors', ['data' => 'password_confirmation'])
+                    @include('layouts.partials._form_errors', ['data' => 'cosplayer'])
                 </div>
             </div>
         </div>

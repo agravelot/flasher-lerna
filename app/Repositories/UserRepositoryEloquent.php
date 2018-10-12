@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Cosplayer;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepository;
 use Illuminate\Support\Facades\Hash;
@@ -69,4 +70,30 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
+    /**
+     * @param User $user
+     * @param Cosplayer|null $cosplayer
+     * @throws \Exception
+     */
+    public function setCosplayer(User $user, ?Cosplayer $cosplayer)
+    {
+        if (isset($cosplayer)) {
+            // We need to perform verification to avoid unwanted modification
+            if ($cosplayer->user()->exists()) {
+                throw new \Exception('Cosplayer is already linked too an user');
+            }
+            $this->resetCosplayer($user);
+            $user->cosplayer()->save($cosplayer);
+        } else {
+            $this->resetCosplayer($user);
+        }
+    }
+
+    public function resetCosplayer(User $user)
+    {
+        if (isset($user->cosplayer)) {
+            $user->cosplayer->user()->dissociate();
+            $user->cosplayer->save();
+        }
+    }
 }

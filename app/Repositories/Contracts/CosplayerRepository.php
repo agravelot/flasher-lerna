@@ -11,5 +11,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface CosplayerRepository extends RepositoryInterface
 {
-    //
+    public function findNotLinkedToUser($cosplayerId);
 }

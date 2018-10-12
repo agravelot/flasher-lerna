@@ -2,11 +2,11 @@
 
 namespace App\Repositories;
 
-use Prettus\Repository\Eloquent\BaseRepository;
-use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\Contracts\CosplayerRepository;
 use App\Models\Cosplayer;
+use App\Repositories\Contracts\CosplayerRepository;
 use App\Validators\CosplayerValidator;
+use Prettus\Repository\Criteria\RequestCriteria;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class CosplayerRepositoryEloquent.
@@ -15,6 +15,22 @@ use App\Validators\CosplayerValidator;
  */
 class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRepository
 {
+
+
+    /**
+     * @param $cosplayerId
+     * @return mixed
+     * @throws \Exception
+     */
+    public function findNotLinkedToUser($cosplayerId)
+    {
+        $cosplayer = $this->find($cosplayerId);
+        if ($cosplayer->user()->exists()) {
+            throw new \Exception('Cosplayer is already linked too an user');
+        }
+        return $cosplayer;
+    }
+
     /**
      * Find data by field and value
      *
@@ -65,5 +81,5 @@ class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRep
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
 }

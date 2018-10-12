@@ -70,6 +70,12 @@ class AdminUserController extends Controller
     {
         $this->authorize('create', User::class);
         $user = $this->userRepository->create($request->validated());
+        if ($request->has('cosplayer')) {
+            $cosplayerId = $request->validated()['cosplayer'];
+            $cosplayer = $this->cosplayerRepository->findNotLinkedToUser($cosplayerId);
+            $this->userRepository->setCosplayer($user, $cosplayer);
+        }
+
         return redirect(route('admin.users.show', ['user' => $user]));
     }
 
@@ -119,7 +125,15 @@ class AdminUserController extends Controller
     {
         $user = $this->userRepository->find($id);
         $this->authorize('update', $user);
-        $this->userRepository->update($request->validated(), $id);
+        $user = $this->userRepository->update($request->validated(), $id);
+        if ($request->has('cosplayer')) {
+            $cosplayer = null;
+            $cosplayerId = $request->validated()['cosplayer'];
+            if ($cosplayerId > 0) {
+                $cosplayer = $this->cosplayerRepository->findNotLinkedToUser($cosplayerId);
+            }
+            $this->userRepository->setCosplayer($user, $cosplayer);
+        }
 
         return redirect(route('admin.users.show', ['user' => $user]))->withSuccess('Users successfully updated');
     }
