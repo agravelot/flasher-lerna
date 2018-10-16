@@ -6,6 +6,10 @@ Route::get('/', function () {
 Auth::routes(['verify' => true]);
 Route::impersonate();
 
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth', 'verified']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
+});
+
 //FRONT
 Route::get('/home', 'HomeController@index')->name('home');
 

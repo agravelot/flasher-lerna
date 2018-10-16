@@ -20,7 +20,7 @@
     "phpunit/phpunit": "^7.3",
     "prettus/l5-repository": "^2.6",
     "spatie/laravel-sitemap": "^5.2",
-    "unisharp/laravel-ckeditor": "^4.7"
+    "unisharp/laravel-filemanager": "dev-master"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.1",

@@ -1,3 +1,8 @@
+@section('head')
+    <!-- TinyMCE -->
+    <script src="{{ mix('js/tinymce.js') }}"></script>
+@stop
+
 <form method="POST" enctype="multipart/form-data" action="{{ $route }}">
     @csrf
 
@@ -23,7 +28,7 @@
                     <div class="field">
                         <label class="label">Body</label>
                         <div class="control">
-                            <textarea class="textarea ckeditor" id="body" type="text" name="body"
+                            <textarea class="textarea tinymce" id="body" type="text" name="body"
                                       rows="10">{{ old('body', isset($album->body) ? $album->body : null) }}</textarea>
                         </div>
                         @include('layouts.partials._form_errors', ['data' => 'body'])
@@ -133,8 +138,5 @@
 </form>
 
 @section('js')
-    <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
-    <script>
-        CKEDITOR.replace('.ckeditor');
-    </script>
+
 @endsection
