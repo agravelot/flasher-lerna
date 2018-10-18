@@ -14,7 +14,6 @@ class AlbumRequest extends Request
     public function rules()
     {
         $id = $this->route('album');
-        $pictures = $this->file('pictures');
 
         $rules = [
             'title' => 'string|required|min:2|max:255|unique:albums,id,' . $id,
@@ -24,21 +23,18 @@ class AlbumRequest extends Request
             'active' => 'boolean',
             'publish' => 'boolean',
             'password' => 'nullable|string|max:128',
-            'pictures' => 'required',
             'categories' => 'array',
             'categories.*' => 'integer|min:1',
             'cosplayers' => 'array',
             'cosplayers.*' => 'integer|min:1',
+            'pictures' => 'required|array',
+            'pictures.*' => 'file|image|mimetypes:image/jpeg,image/png|mimes:jpeg,png|max:20000',
+
+            //TODO Fix this
             Rule::exists('users')->where(function ($query) {
                 $query->where('user_id', 1);
             }),
         ];
-
-        if ($pictures != null) {
-            foreach ($pictures as $key => $picture) {
-                $rules['pictures.' . $key] = 'image|mimes:jpeg,bmp,png|max:20000';
-            }
-        }
 
         return $rules;
     }

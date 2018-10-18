@@ -10,6 +10,7 @@ use App\Repositories\Contracts\AlbumRepository;
 use App\Repositories\Contracts\CategoryRepository;
 use App\Repositories\Contracts\CosplayerRepository;
 use App\Repositories\Contracts\PictureRepository;
+use Exception;
 use Illuminate\Support\Facades\Storage;
 
 class AdminAlbumController extends Controller
@@ -94,23 +95,30 @@ class AdminAlbumController extends Controller
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
+     * @throws \Exception
      */
     public function store(AlbumRequest $request)
     {
         $this->authorize('create', Album::class);
 
-        $album = $this->albumRepository->create($request->validated());
-        //TODO Récupérer depuis validated
-        $this->pictureRepository->createForAlbum($request->files->get('pictures'), $album);
+        $validated = $request->validated();
+        $album = $this->albumRepository->create($validated);
 
-        if (array_key_exists('categories', $request->validated())) {
-            $categoriesIds = $request->validated()['categories'];
+        $key = 'pictures';
+        if (array_key_exists($key, $validated)) {
+            $this->pictureRepository->createForAlbum($validated['pictures'], $album);
+        } else {
+            throw new Exception('No pictures provided to the request');
+        }
+
+        if (array_key_exists('categories', $validated)) {
+            $categoriesIds = $validated['categories'];
             $categories = $this->categoryRepository->findWhereIn('id', $categoriesIds);
             $this->categoryRepository->saveRelation($categories, $album);
         }
 
-        if (array_key_exists('cosplayers', $request->validated())) {
-            $cosplayersIds = $request->validated()['cosplayers'];
+        if (array_key_exists('cosplayers', $validated)) {
+            $cosplayersIds = $validated['cosplayers'];
             $cosplayers = $this->cosplayerRepository->findWhereIn('id', $cosplayersIds);
             $this->cosplayerRepository->saveRelation($cosplayers, $album);
         }
@@ -164,23 +172,31 @@ class AdminAlbumController extends Controller
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
+     * @throws \Exception
      */
     public function update(AlbumRequest $request, $id)
     {
-        $album = $this->albumRepository->update($request->validated(), $id);
+        $validated = $request->validated();
+        $album = $this->albumRepository->find($id);
         $this->authorize('update', $album);
+        $album = $this->albumRepository->update($validated, $id);
 
-        //TODO Récupérer depuis validated
-        $this->pictureRepository->createForAlbum($request->files->get('pictures'), $album);
+        // An update can contain no picture
+        $key = 'pictures';
+        if (array_key_exists($key, $validated)) {
+            $this->pictureRepository->createForAlbum($validated['pictures'], $album);
+        }
 
-        if (array_key_exists('categories', $request->validated())) {
-            $categoriesIds = $request->validated()['categories'];
+        $key = 'categories';
+        if (array_key_exists($key, $validated)) {
+            $categoriesIds = $validated[$key];
             $categories = $this->categoryRepository->findWhereIn('id', $categoriesIds);
             $this->categoryRepository->saveRelation($categories, $album);
         }
 
-        if (array_key_exists('cosplayers', $request->validated())) {
-            $cosplayersIds = $request->validated()['cosplayers'];
+        $key = 'cosplayers';
+        if (array_key_exists($key, $validated)) {
+            $cosplayersIds = $validated[$key];
             $cosplayers = $this->cosplayerRepository->findWhereIn('id', $cosplayersIds);
             $this->cosplayerRepository->saveRelation($cosplayers, $album);
         }
