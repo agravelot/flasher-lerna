@@ -87,10 +87,8 @@
                                         <select name="cosplayers[]" id="cosplayers" size="8" multiple="multiple">
                                             @foreach($cosplayers as $cosplayer)
                                                 @php($selected = '')
-                                                @if (isset($album) && $album->cosplayers)
-                                                    @if ($album->cosplayers->contains($cosplayer->id))
-                                                        @php($selected = 'selected="selected"')
-                                                    @endif
+                                                @if (isset($album) && $album->cosplayers && $album->cosplayers->contains($cosplayer->id) || in_array($cosplayer->id ,old('cosplayers', [])))
+                                                    @php($selected = 'selected="selected"')
                                                 @endif
                                                 <option value="{{ $cosplayer->id }}" {{ $selected }}>{{ $cosplayer->name }}</option>
                                             @endforeach
@@ -148,10 +146,8 @@
                         <select name="categories[]" id="categories" size="8" multiple="multiple">
                             @foreach($categories as $category)
                                 @php($selected = '')
-                                @if (isset($album) && $album->categories)
-                                    @if ($album->categories->contains($category->id))
-                                        @php($selected = 'selected="selected"')
-                                    @endif
+                                @if (isset($album) && $album->categories && $album->categories->contains($category->id) || in_array($category->id ,old('categories', [])))
+                                    @php($selected = 'selected="selected"')
                                 @endif
                                 <option value="{{ $category->id }}" {{ $selected }}>{{ $category->name }}</option>
                             @endforeach
