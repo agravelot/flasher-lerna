@@ -96,9 +96,8 @@
                                             @endforeach
                                         </select>
                                     </div>
-
-
                                 </div>
+                                @include('layouts.partials._form_errors', ['data' => 'cosplayers'])
                             </div>
                         </div>
                     </div>
@@ -116,14 +115,17 @@
                 <div class="card-content">
                     <div class="control">
                         <label class="radio">
-                            <input type="radio" name="foobar" checked>
+                            <input type="radio" name="publish"
+                                   value="1" {{ old('publish', isset($album->publish) && $album->publish) ? 'checked="checked"' : null  }}>
                             Publish
                         </label>
                         <label class="radio">
-                            <input type="radio" name="foobar">
+                            <input type="radio" name="publish"
+                                   value="0" {{ old('publish', isset($album->publish) && $album->publish) ? null : 'checked="checked"' }}>
                             Draft
                         </label>
                     </div>
+                    @include('layouts.partials._form_errors', ['data' => 'publish'])
                 </div>
 
                 <footer class="card-footer">
@@ -155,6 +157,7 @@
                             @endforeach
                         </select>
                     </div>
+                    @include('layouts.partials._form_errors', ['data' => 'categories'])
                 </div>
             </div>
         </div>
