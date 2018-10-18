@@ -99,18 +99,21 @@ class AdminAlbumController extends Controller
     {
         $this->authorize('create', Album::class);
 
-        $categoriesIds = $request->validated()['categories'];
-        $cosplayersIds = $request->validated()['cosplayers'];
-
         $album = $this->albumRepository->create($request->validated());
         //TODO Récupérer depuis validated
         $this->pictureRepository->createForAlbum($request->files->get('pictures'), $album);
 
-        $categories = $this->categoryRepository->findWhereIn('id', $categoriesIds);
-        $cosplayers = $this->cosplayerRepository->findWhereIn('id', $cosplayersIds);
+        if (array_key_exists('categories', $request->validated())) {
+            $categoriesIds = $request->validated()['categories'];
+            $categories = $this->categoryRepository->findWhereIn('id', $categoriesIds);
+            $this->categoryRepository->saveRelation($categories, $album);
+        }
 
-        $this->categoryRepository->saveRelation($categories, $album);
-        $this->cosplayerRepository->saveRelation($cosplayers, $album);
+        if (array_key_exists('cosplayers', $request->validated())) {
+            $cosplayersIds = $request->validated()['cosplayers'];
+            $cosplayers = $this->cosplayerRepository->findWhereIn('id', $cosplayersIds);
+            $this->cosplayerRepository->saveRelation($cosplayers, $album);
+        }
 
         return redirect(route('admin.albums.show', ['album' => $album]));
     }
@@ -170,14 +173,17 @@ class AdminAlbumController extends Controller
         //TODO Récupérer depuis validated
         $this->pictureRepository->createForAlbum($request->files->get('pictures'), $album);
 
-        $categoriesIds = $request->validated()['categories'];
-        $cosplayersIds = $request->validated()['cosplayers'];
+        if (array_key_exists('categories', $request->validated())) {
+            $categoriesIds = $request->validated()['categories'];
+            $categories = $this->categoryRepository->findWhereIn('id', $categoriesIds);
+            $this->categoryRepository->saveRelation($categories, $album);
+        }
 
-        $categories = $this->categoryRepository->findWhereIn('id', $categoriesIds);
-        $cosplayers = $this->cosplayerRepository->findWhereIn('id', $cosplayersIds);
-
-        $this->categoryRepository->saveRelation($categories, $album);
-        $this->cosplayerRepository->saveRelation($cosplayers, $album);
+        if (array_key_exists('cosplayers', $request->validated())) {
+            $cosplayersIds = $request->validated()['cosplayers'];
+            $cosplayers = $this->cosplayerRepository->findWhereIn('id', $cosplayersIds);
+            $this->cosplayerRepository->saveRelation($cosplayers, $album);
+        }
 
         return redirect(route('admin.albums.show', ['album' => $album]))->withSuccess('Album successfully updated');
     }
