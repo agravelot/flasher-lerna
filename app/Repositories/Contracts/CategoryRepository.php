@@ -2,6 +2,8 @@
 
 namespace App\Repositories\Contracts;
 
+use App\Models\Album;
+use Illuminate\Support\Collection;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
@@ -11,5 +13,5 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface CategoryRepository extends RepositoryInterface
 {
-    //
+    public function saveRelation(Collection $categories, Album $album);
 }

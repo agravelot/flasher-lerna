@@ -2,11 +2,12 @@
 
 namespace App\Repositories;
 
-use Prettus\Repository\Eloquent\BaseRepository;
-use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\Contracts\CategoryRepository;
+use App\Models\Album;
 use App\Models\Category;
-use App\Validators\CategoryValidator;
+use App\Repositories\Contracts\CategoryRepository;
+use Illuminate\Support\Collection;
+use Prettus\Repository\Criteria\RequestCriteria;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class CategoryRepositoryEloquent.
@@ -49,5 +50,9 @@ class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepos
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
+    public function saveRelation(Collection $categories, Album $album)
+    {
+        $album->categories()->sync($categories);
+    }
 }

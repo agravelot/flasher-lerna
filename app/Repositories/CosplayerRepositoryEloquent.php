@@ -2,9 +2,11 @@
 
 namespace App\Repositories;
 
+use App\Models\Album;
 use App\Models\Cosplayer;
 use App\Repositories\Contracts\CosplayerRepository;
-use App\Validators\CosplayerValidator;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
 
@@ -15,8 +17,6 @@ use Prettus\Repository\Eloquent\BaseRepository;
  */
 class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRepository
 {
-
-
     /**
      * @param $cosplayerId
      * @return mixed
@@ -82,4 +82,8 @@ class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRep
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
+    public function saveRelation(Collection $cosplayers, Album $model)
+    {
+        $model->cosplayers()->sync($cosplayers);
+    }
 }

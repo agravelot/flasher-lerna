@@ -25,6 +25,10 @@ class AlbumRequest extends Request
             'publish' => 'boolean',
             'password' => 'nullable|string|max:128',
             'pictures' => 'required',
+            'categories' => 'array',
+            'categories.*' => 'integer|min:1',
+            'cosplayers' => 'array',
+            'cosplayers.*' => 'integer|min:1',
             Rule::exists('users')->where(function ($query) {
                 $query->where('user_id', 1);
             }),

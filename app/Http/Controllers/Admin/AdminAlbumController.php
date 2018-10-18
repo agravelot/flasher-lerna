@@ -7,6 +7,8 @@ use App\Http\Requests\AlbumRequest;
 use App\Models\Album;
 use App\Repositories\AlbumRepositoryEloquent;
 use App\Repositories\Contracts\AlbumRepository;
+use App\Repositories\Contracts\CategoryRepository;
+use App\Repositories\Contracts\CosplayerRepository;
 use App\Repositories\Contracts\PictureRepository;
 use Illuminate\Support\Facades\Storage;
 
@@ -20,17 +22,32 @@ class AdminAlbumController extends Controller
      * @var PictureRepository
      */
     protected $pictureRepository;
+    /**
+     * @var CategoryRepository
+     */
+    protected $categoryRepository;
+    /**
+     * @var CosplayerRepository
+     */
+    protected $cosplayerRepository;
 
     /**
      * AdminAlbumController constructor.
      * @param AlbumRepository $albumRepository
      * @param PictureRepository $pictureRepository
+     * @param CategoryRepository $categoryRepository
+     * @param CosplayerRepository $cosplayerRepository
      */
-    public function __construct(AlbumRepository $albumRepository, PictureRepository $pictureRepository)
+    public function __construct(AlbumRepository $albumRepository,
+                                PictureRepository $pictureRepository,
+                                CategoryRepository $categoryRepository,
+                                CosplayerRepository $cosplayerRepository)
     {
         $this->middleware(['auth', 'verified']);
         $this->albumRepository = $albumRepository;
         $this->pictureRepository = $pictureRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->cosplayerRepository = $cosplayerRepository;
     }
 
     /**
@@ -60,7 +77,14 @@ class AdminAlbumController extends Controller
     public function create()
     {
         $this->authorize('create', Album::class);
-        return view('admin.albums.create');
+
+        $categories = $this->categoryRepository->all();
+        $cosplayers = $this->cosplayerRepository->all();
+
+        return view('admin.albums.create', [
+            'categories' => $categories,
+            'cosplayers' => $cosplayers,
+        ]);
     }
 
     /**
@@ -74,8 +98,20 @@ class AdminAlbumController extends Controller
     public function store(AlbumRequest $request)
     {
         $this->authorize('create', Album::class);
+
+        $categoriesIds = $request->validated()['categories'];
+        $cosplayersIds = $request->validated()['cosplayers'];
+
         $album = $this->albumRepository->create($request->validated());
+        //TODO Récupérer depuis validated
         $this->pictureRepository->createForAlbum($request->files->get('pictures'), $album);
+
+        $categories = $this->categoryRepository->findWhereIn('id', $categoriesIds);
+        $cosplayers = $this->cosplayerRepository->findWhereIn('id', $cosplayersIds);
+
+        $this->categoryRepository->saveRelation($categories, $album);
+        $this->cosplayerRepository->saveRelation($cosplayers, $album);
+
         return redirect(route('admin.albums.show', ['album' => $album]));
     }
 
@@ -106,7 +142,15 @@ class AdminAlbumController extends Controller
     {
         $album = $this->albumRepository->findBySlug($slug);
         $this->authorize('update', $album);
-        return view('admin.albums.edit', ['album' => $album]);
+
+        $categories = $this->categoryRepository->all();
+        $cosplayers = $this->cosplayerRepository->all();
+
+        return view('admin.albums.edit', [
+            'album' => $album,
+            'categories' => $categories,
+            'cosplayers' => $cosplayers,
+        ]);
     }
 
     /**
@@ -120,11 +164,20 @@ class AdminAlbumController extends Controller
      */
     public function update(AlbumRequest $request, $id)
     {
-        //TODO Update categories
-        $this->authorize('update', Album::class);
-
         $album = $this->albumRepository->update($request->validated(), $id);
+        $this->authorize('update', $album);
+
+        //TODO Récupérer depuis validated
         $this->pictureRepository->createForAlbum($request->files->get('pictures'), $album);
+
+        $categoriesIds = $request->validated()['categories'];
+        $cosplayersIds = $request->validated()['cosplayers'];
+
+        $categories = $this->categoryRepository->findWhereIn('id', $categoriesIds);
+        $cosplayers = $this->cosplayerRepository->findWhereIn('id', $cosplayersIds);
+
+        $this->categoryRepository->saveRelation($categories, $album);
+        $this->cosplayerRepository->saveRelation($cosplayers, $album);
 
         return redirect(route('admin.albums.show', ['album' => $album]))->withSuccess('Album successfully updated');
     }

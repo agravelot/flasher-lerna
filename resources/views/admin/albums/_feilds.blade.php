@@ -74,7 +74,6 @@
                 </div>
             </div>
 
-
             <div class="card has-margin-bottom-md">
                 <div class="card-content">
                     <div class="field is-horizontal">
@@ -84,8 +83,21 @@
                         <div class="field-body">
                             <div class="field">
                                 <div class="control">
-                                    <input class="input" type="tags" placeholder="Add Cosplayers"
-                                           value="Tag1,Tag2,Tag3">
+                                    <div class="select is-multiple">
+                                        <select name="cosplayers[]" id="cosplayers" size="8" multiple="multiple">
+                                            @foreach($cosplayers as $cosplayer)
+                                                @php($selected = '')
+                                                @if (isset($album) && $album->cosplayers)
+                                                    @if ($album->cosplayers->contains($cosplayer->id))
+                                                        @php($selected = 'selected="selected"')
+                                                    @endif
+                                                @endif
+                                                <option value="{{ $cosplayer->id }}" {{ $selected }}>{{ $cosplayer->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+
                                 </div>
                             </div>
                         </div>
@@ -130,13 +142,21 @@
                     </div>
                 </div>
                 <div class="card-content">
-                    azeaze
+                    <div class="select is-multiple">
+                        <select name="categories[]" id="categories" size="8" multiple="multiple">
+                            @foreach($categories as $category)
+                                @php($selected = '')
+                                @if (isset($album) && $album->categories)
+                                    @if ($album->categories->contains($category->id))
+                                        @php($selected = 'selected="selected"')
+                                    @endif
+                                @endif
+                                <option value="{{ $category->id }}" {{ $selected }}>{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </form>
-
-@section('js')
-
-@endsection
