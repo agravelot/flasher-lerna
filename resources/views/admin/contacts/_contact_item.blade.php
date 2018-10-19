@@ -7,7 +7,7 @@
         <a href="{{ 'mailto:' . $contact->email }}">{{ $contact->email }}</a>
     </td>
     <td>
-        <a href="{{ route('admin.contacts.show', ['contact' => $contact]) }}">{{ $contact->message }}</a>
+        <a href="{{ route('admin.contacts.show', ['contact' => $contact]) }}">{{ str_limit($contact->message, 150) }}</a>
     </td>
     <td>
         <form action="{{ route('admin.contacts.destroy', ['contact' => $contact]) }}" method="POST">

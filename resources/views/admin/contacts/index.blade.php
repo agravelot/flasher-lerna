@@ -25,16 +25,11 @@
                     <div class="content">
                         <table class="table is-fullwidth is-striped">
                             <tbody>
-
                             @each('admin.contacts._contact_item', $contacts, 'contact', 'layouts.partials._empty')
-
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <footer class="card-footer">
-                    <a href="#" class="card-footer-item">View All</a>
-                </footer>
             </div>
             {{ $contacts->links() }}
         </div>
