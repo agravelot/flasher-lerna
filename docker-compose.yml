@@ -16,7 +16,7 @@ services:
     - db-data:/var/lib/mysql
     environment:
     - MYSQL_ROOT_PASSWORD=secret
-    - MYSQL_DATABASE=picblog_testing
+    - MYSQL_DATABASE=picblog
     - MYSQL_USER=picblog
     - MYSQL_PASSWORD=secret
 
@@ -27,11 +27,9 @@ services:
     - "443:443"
     volumes:
     - src:/var/www/html
-    - ./site.conf:/etc/nginx/conf.d/default.conf
+    - ./docker/php-fpm/site.conf:/etc/nginx/conf.d/default.conf
     links:
     - php
-
-# TODO Problème de permission
 
   #phpmyadmin:
   #  image: phpmyadmin/phpmyadmin

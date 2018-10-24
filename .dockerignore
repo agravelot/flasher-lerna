@@ -26,4 +26,6 @@ public/sitemap\.xml
 storage/framework/cache/**
 storage/framework/sessions/**
 storage/framework/views/**
+storage/debugbar
+storage/logs/laravel.log
 bootstrap/cache/**
