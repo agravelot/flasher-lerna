@@ -63,15 +63,16 @@ COPY --chown=www-data:www-data --from=frontend /app/mix-manifest.json /var/www/h
 
 WORKDIR /var/www/html
 
-RUN mv .env.production .env
-RUN php artisan key:generate
-
-RUN php artisan cache:clear
-RUN php artisan config:clear
-RUN php artisan view:clear
+RUN mv .env.production .env && \
+        php artisan storage:link && \
+        chown -h www-data:www-data /var/www/html/public/storage && \
+        php artisan key:generate && \
+        php artisan cache:clear && \
+        php artisan config:clear && \
+        php artisan view:clear
 
 # Optimizing for production
 # https://laravel.com/docs/5.7/deployment#optimization
-RUN php artisan optimize
-RUN php artisan route:cache
-RUN php artisan config:cache
+RUN php artisan optimize && \
+        php artisan route:cache && \
+        php artisan config:cache
