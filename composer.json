@@ -23,7 +23,7 @@
     "unisharp/laravel-filemanager": "dev-master"
   },
   "require-dev": {
-    "barryvdh/laravel-debugbar": "^3.1",
+    "barryvdh/laravel-debugbar": "^3.2",
     "barryvdh/laravel-ide-helper": "^2.5",
     "beyondcode/laravel-dump-server": "^1.2",
     "beyondcode/laravel-query-detector": "^0.6.0",
