@@ -22,6 +22,7 @@ _ide_helper_models.php
 public/vendor/
 public/images/
 public/sitemap\.xml
+public/storage
 
 storage/framework/cache/**
 storage/framework/sessions/**
@@ -29,3 +30,12 @@ storage/framework/views/**
 storage/debugbar
 storage/logs/laravel.log
 bootstrap/cache/**
+
+docker/*/Dockerfile
+
+*.md
+
+additions:
+'**' matches any number of directories (including zero)
+'!' lines starting with ! (exclamation mark) can be used to make exceptions to exclusions
+'#' lines starting with this character are ignored: use it for comments

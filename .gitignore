@@ -1,5 +1,6 @@
 /node_modules
 /public/hot
+/public/fonts
 /public/storage
 /storage/*.key
 /vendor
@@ -21,7 +22,5 @@ public/js
 public/css
 
 public/vendor/
-
 public/images/
-
 public/sitemap\.xml
