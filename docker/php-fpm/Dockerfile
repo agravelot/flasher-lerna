@@ -17,31 +17,14 @@ RUN composer install \
     --no-progress \
     --profile \
     --no-scripts
-    # --no-plugins \
     # Production only
-    # --optimize-autoloader \
-    # --no-dev
-
-#
-# Frontend
-#
-FROM node:8-alpine as frontend
-
-RUN mkdir -p /app/public
-RUN mkdir -p /app/resources/{js,css}
-
-COPY ./package.json webpack.mix.js yarn.lock /app/
-COPY ./resources/js /app/resources/js/
-COPY ./resources/sass /app/resources/sass/
-
-WORKDIR /app
-
-RUN yarn install && yarn production
+    --optimize-autoloader \
+    --no-dev
 
 #
 # Application PHP
 #
-# TODO Add timze zone
+# TODO Add TZ
 FROM php:7.2-fpm
 
 RUN apt-get update
@@ -55,11 +38,6 @@ COPY --chown=www-data:www-data . /var/www/html
 
 # Importing composer dependencies
 COPY --chown=www-data:www-data --from=vendor /app/vendor/ /var/www/html/vendor/
-
-# Importing webpack assets
-COPY --chown=www-data:www-data --from=frontend /app/public/js/ /var/www/html/public/js/
-COPY --chown=www-data:www-data --from=frontend /app/public/css/ /var/www/html/public/css/
-COPY --chown=www-data:www-data --from=frontend /app/mix-manifest.json /var/www/html/mix-manifest.json
 
 WORKDIR /var/www/html
 
