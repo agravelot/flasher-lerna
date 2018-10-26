@@ -16,6 +16,5 @@ mix.js('resources/js/app.js', 'public/js')
 
 mix.js('resources/js/carousel.js', 'public/js');
 mix.js('resources/js/tinymce.js', 'public/js');
-mix.js('resources/js/tag-input.js', 'public/js');
 
 mix.browserSync('localhost:8000');
