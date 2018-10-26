@@ -40,6 +40,6 @@ class CategoryTest extends ModelTestCase
 
     public function testModelConfiguration()
     {
-        $this->runConfigurationAssertions(new Category(), ['name', 'slug']);
+        $this->runConfigurationAssertions(new Category(), ['name', 'slug', 'description']);
     }
 }

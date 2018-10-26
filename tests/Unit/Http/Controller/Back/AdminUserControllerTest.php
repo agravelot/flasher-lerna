@@ -3,7 +3,9 @@
 namespace Tests\Unit\Http\Controllers;
 
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Models\Cosplayer;
 use App\Models\User;
+use App\Repositories\Contracts\CosplayerRepository;
 use App\Repositories\Contracts\UserRepository;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\RedirectResponse;
@@ -18,16 +20,18 @@ class AdminUserControllerTest extends TestCase
     protected $controller;
     protected $admin;
     protected $userRepository;
+    protected $cosplayerRepository;
 
     public function setUp()
     {
         $this->afterApplicationCreated(function () {
             $this->userRepository = Mockery::mock(UserRepository::class);
+            $this->cosplayerRepository = Mockery::mock(CosplayerRepository::class);
         });
 
         parent::setUp();
 
-        $this->controller = new AdminUserController($this->userRepository);
+        $this->controller = new AdminUserController($this->userRepository, $this->cosplayerRepository);
 
         $this->admin = factory(User::class)
             ->create([
@@ -42,10 +46,10 @@ class AdminUserControllerTest extends TestCase
         // We define the logged user to pass policies
         Auth::setUser($this->admin);
 
-        $this->userRepository->shouldReceive('paginate')
-            ->once()
-            ->with(10)
-            ->andReturn($users);
+        $this->userRepository
+            ->shouldReceive('with')->with('cosplayer')->once()->andReturn(Mockery::self())
+            ->getMock()->shouldReceive('paginate')->with(10)->once()->andReturn($users);
+
 
         $view = $this->controller->index();
 
@@ -55,8 +59,13 @@ class AdminUserControllerTest extends TestCase
 
     public function testCreateReturnsView()
     {
+        $cosplayers = factory(Cosplayer::class, 10)->create();
+
         // We define the logged user to pass policies
         Auth::setUser($this->admin);
+
+        $this->cosplayerRepository->shouldReceive('with')->with('user')->andReturn(Mockery::self())
+            ->getMock()->shouldReceive('all')->with('id', 'name')->andReturn($cosplayers);
 
         $view = $this->controller->create();
 
@@ -84,6 +93,7 @@ class AdminUserControllerTest extends TestCase
     public function testEditReturnsView()
     {
         $user = factory(User::class)->create();
+        $cosplayers = factory(Cosplayer::class, 10)->create();
 
         // We define the logged user to pass policies
         Auth::setUser($this->admin);
@@ -92,6 +102,9 @@ class AdminUserControllerTest extends TestCase
             ->once()
             ->with($user->id)
             ->andReturn($user);
+
+        $this->cosplayerRepository->shouldReceive('with')->with('user')->once()->andReturn(Mockery::self())
+            ->getMock()->shouldReceive('all')->with('id', 'name')->once()->andReturn($cosplayers);
 
         $view = $this->controller->edit($user->id);
 
