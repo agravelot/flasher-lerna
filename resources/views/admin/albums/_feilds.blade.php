@@ -12,7 +12,7 @@
 
     <div class="columns">
         <div class="column is-two-thirds">
-            <div class="card has-margin-bottom-md">
+            <div class="card">
                 <div class="card-content">
 
                     <div class="field">
