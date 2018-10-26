@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1842ed8ea0af27e49f56099262563ef9",
+    "content-hash": "b2f004d0048d0471ef378b997daa1025",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -1162,16 +1162,16 @@
         },
         {
             "name": "laravel-frontend-presets/bulma",
-            "version": "v1.7.13",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-frontend-presets/bulma.git",
-                "reference": "8b4bee87933f26455fc886d522b7243494cf5482"
+                "reference": "fce973525abead2f85596a3bd6fc0d2b12356cc6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel-frontend-presets/bulma/zipball/8b4bee87933f26455fc886d522b7243494cf5482",
-                "reference": "8b4bee87933f26455fc886d522b7243494cf5482",
+                "url": "https://api.github.com/repos/laravel-frontend-presets/bulma/zipball/fce973525abead2f85596a3bd6fc0d2b12356cc6",
+                "reference": "fce973525abead2f85596a3bd6fc0d2b12356cc6",
                 "shasum": ""
             },
             "require": {
@@ -1200,7 +1200,7 @@
                 "laravel",
                 "preset"
             ],
-            "time": "2018-09-10T12:22:34+00:00"
+            "time": "2018-09-22T14:25:56+00:00"
         },
         {
             "name": "laravel/framework",
@@ -3595,6 +3595,60 @@
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
             "time": "2016-10-03T07:35:21+00:00"
+        },
+        {
+            "name": "sllh/composer-versions-check",
+            "version": "v2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Soullivaneuh/composer-versions-check.git",
+                "reference": "f6fe100dd71a9fa0d3c922612b445fb179e19127"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Soullivaneuh/composer-versions-check/zipball/f6fe100dd71a9fa0d3c922612b445fb179e19127",
+                "reference": "f6fe100dd71a9fa0d3c922612b445fb179e19127",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0",
+                "php": "^5.3 || ^7.0"
+            },
+            "require-dev": {
+                "composer/composer": "^1.0",
+                "sllh/php-cs-fixer-styleci-bridge": "^2.0",
+                "symfony/phpunit-bridge": "^2.7.4|^3.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "SLLH\\ComposerVersionsCheck\\VersionsCheckPlugin",
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SLLH\\ComposerVersionsCheck\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sullivan SENECHAL",
+                    "email": "soullivaneuh@gmail.com"
+                }
+            ],
+            "description": "Checks if packages are up to date to last major versions after update",
+            "keywords": [
+                "composer",
+                "plugin",
+                "update",
+                "versions"
+            ],
+            "time": "2017-06-16T09:29:23+00:00"
         },
         {
             "name": "spatie/browsershot",
