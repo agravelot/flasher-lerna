@@ -102,14 +102,25 @@ class AdminAlbumController extends Controller
         $this->authorize('create', Album::class);
 
         $validated = $request->validated();
+        /** @var Album $album */
         $album = $this->albumRepository->create($validated);
 
         $key = 'pictures';
-        if (array_key_exists($key, $validated)) {
-            $this->pictureRepository->createForAlbum($validated['pictures'], $album);
-        } else {
+        if (!array_key_exists($key, $validated)) {
             throw new Exception('No pictures provided to the request');
         }
+
+//        dd($validated[$key]);
+
+        //$this->pictureRepository->createForAlbum($validated['pictures'], $album);
+        $album
+            ->addMultipleMediaFromRequest([$key])
+            ->each(function ($fileAdder) {
+                $fileAdder
+                    ->preservingOriginal()
+                    ->withResponsiveImages()
+                    ->toMediaCollection();
+            });
 
         if (array_key_exists('categories', $validated)) {
             $categoriesIds = $validated['categories'];

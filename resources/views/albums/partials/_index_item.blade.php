@@ -1,15 +1,13 @@
 <div class="column is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-third-fullhd">
     <a href="{{ route('albums.show', ['album' => $album]) }}">
         <div class="card large">
-            @if(isset($album->pictureHeader))
                 <div class="card-image">
                     <figure class="image">
-                        <img src="{{ asset('storage/'.$album->pictureHeader->filePath) }}"
-                             alt="Image" title="" style="">
+                        {{ $album->getFirstMedia()  }}
                     </figure>
                 </div>
-            @endif
-            <div class="card-content">
+
+                <div class="card-content">
                 <div class="media">
                     <div class="media-content">
                         <p class="subtitle is-5">{{ $album->title }}</p>

@@ -5,11 +5,12 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
-class Album extends Model
+class Album extends Model implements HasMedia
 {
-    use Sluggable;
-    use SluggableScopeHelpers;
+    use Sluggable, SluggableScopeHelpers, HasMediaTrait;
 
     /**
      * The attributes that are mass assignable.
