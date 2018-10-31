@@ -113,14 +113,25 @@ class AdminAlbumController extends Controller
 //        dd($validated[$key]);
 
         //$this->pictureRepository->createForAlbum($validated['pictures'], $album);
-        $album
-            ->addMultipleMediaFromRequest([$key])
-            ->each(function ($fileAdder) {
-                $fileAdder
-                    ->preservingOriginal()
-                    ->withResponsiveImages()
-                    ->toMediaCollection();
-            });
+
+//        dd($validated['pictures']);
+
+        foreach ($validated['pictures'] as $picture) {
+            $album
+                ->addMedia($picture)
+                ->preservingOriginal()
+                ->withResponsiveImages()
+                ->toMediaCollection('pictures');
+        }
+
+//        $album
+//            ->addMultipleMediaFromRequest([$key])
+//            ->each(function ($fileAdder) {
+//                $fileAdder
+//                    ->preservingOriginal()
+//                    ->withResponsiveImages()
+//                    ->toMediaCollection();
+//            });
 
         if (array_key_exists('categories', $validated)) {
             $categoriesIds = $validated['categories'];

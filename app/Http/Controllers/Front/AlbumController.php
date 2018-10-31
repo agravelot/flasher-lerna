@@ -38,7 +38,7 @@ class AlbumController extends Controller
             $this->repository->popCriteria(PublicAlbumsCriteria::class);
         }
 
-        $albums = $this->repository->with(['pictures', 'categories', 'pictureHeader'])
+        $albums = $this->repository->with(['media', 'categories'])
             ->orderBy('created_at')
             ->paginate(10);
 

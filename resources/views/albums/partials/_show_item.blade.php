@@ -4,10 +4,11 @@
 
     <div class="carousel carousel-animated carousel-animate-slide">
         <div class="carousel-container">
-            @foreach ($album->media as $picture)
+            @foreach ($album->getMedia('pictures') as $picture)
                 <div class="carousel-item has-background @if ($loop->first) is-active @endif">
-                    <img class="is-background" src="{{ $picture->getUrl() }}" alt="" width="640"
-                         height="310"/>
+                    {{--<img class="is-background" src="{{ $picture->getUrl() }}" alt="" width="640"--}}
+                         {{--height="310"/>--}}
+                    {{ $picture }}
                     <div class="title"></div>
                 </div>
             @endforeach

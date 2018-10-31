@@ -26,7 +26,7 @@ class AlbumRequest extends Request
             'cosplayers' => 'array',
             'cosplayers.*' => 'integer|min:1',
             'pictures' => 'required|array',
-            'pictures.*' => 'file|image|mimetypes:image/jpeg,image/png|mimes:jpeg,png|max:20000',
+            'pictures.*' => 'file|image|mimetypes:image/*|max:20000',
 
             //TODO Fix this
             Rule::exists('users')->where(function ($query) {

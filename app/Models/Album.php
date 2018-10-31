@@ -5,8 +5,10 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\Models\Media;
 
 class Album extends Model implements HasMedia
 {
@@ -80,5 +82,22 @@ class Album extends Model implements HasMedia
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function registerMediaCollections()
+    {
+        $this
+            ->addMediaCollection('pictures')
+            ->acceptsFile(function (File $file) {
+                return strpos($file->mimeType, 'image/') === 0;
+            });
+    }
+
+    public function registerMediaConversions(Media $media = null)
+    {
+        $this->addMediaConversion('thumb')
+            ->width(368)
+            ->height(232)
+            ->performOnCollections('pictures');
     }
 }

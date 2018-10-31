@@ -69,6 +69,13 @@
 
                                 @include('layouts.partials._form_errors', ['data' => 'pictures'])
                             </div>
+
+                            @if (isset($album) && $album->getMedia('thumb'))
+                                @foreach($album->getMedia('thumb') as $picture)
+                                    {{ $picture }}
+                                @endforeach
+                            @endif
+
                         </div>
                     </div>
                 </div>
