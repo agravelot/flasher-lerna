@@ -12,7 +12,7 @@
 
     <div class="columns">
         <div class="column is-two-thirds">
-            <div class="card">
+            <div class="card has-margin-bottom-md">
                 <div class="card-content">
 
                     <div class="field">
@@ -80,35 +80,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="card has-margin-bottom-md">
-                <div class="card-content">
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Cosplayers</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control">
-                                    <div class="select is-multiple">
-                                        <select name="cosplayers[]" id="cosplayers" size="8" multiple="multiple">
-                                            @foreach($cosplayers as $cosplayer)
-                                                @php($selected = '')
-                                                @if (isset($album) && $album->cosplayers && $album->cosplayers->contains($cosplayer->id) || in_array($cosplayer->id ,old('cosplayers', [])))
-                                                    @php($selected = 'selected="selected"')
-                                                @endif
-                                                <option value="{{ $cosplayer->id }}" {{ $selected }}>{{ $cosplayer->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                @include('layouts.partials._form_errors', ['data' => 'cosplayers'])
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
         <div class="column is-one-third">
             <div class="card has-margin-bottom-md">
@@ -163,6 +134,37 @@
                     @include('layouts.partials._form_errors', ['data' => 'categories'])
                 </div>
             </div>
+
+            <div class="card has-margin-bottom-md">
+                <div class="card-header">
+                    <div class="card-header-title">
+                        Cosplayers
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="field is-horizontal">
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <div class="select is-multiple">
+                                        <select name="cosplayers[]" id="cosplayers" size="8" multiple="multiple">
+                                            @foreach($cosplayers as $cosplayer)
+                                                @php($selected = '')
+                                                @if (isset($album) && $album->cosplayers && $album->cosplayers->contains($cosplayer->id) || in_array($cosplayer->id ,old('cosplayers', [])))
+                                                    @php($selected = 'selected="selected"')
+                                                @endif
+                                                <option value="{{ $cosplayer->id }}" {{ $selected }}>{{ $cosplayer->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                @include('layouts.partials._form_errors', ['data' => 'cosplayers'])
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </div>
 </form>
