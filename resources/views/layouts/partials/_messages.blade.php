@@ -1,11 +1,11 @@
-@foreach (['danger', 'warning', 'success', 'info'] as $msg)
+@if ($errors->first())
+    <p class="notification is-danger">
+        <button class="delete"></button>
+        {{ $errors->first()  }}
+    </p>
+@endif
 
-    @foreach ($errors->all() as $error)
-        <p class="notification is-danger">
-            <button class="delete"></button>
-            {{ $error }}
-        </p>
-    @endforeach
+@foreach (['danger', 'warning', 'success', 'info'] as $msg)
 
     @if(Session::has($msg))
         <p class="notification is-{{ $msg }}">
