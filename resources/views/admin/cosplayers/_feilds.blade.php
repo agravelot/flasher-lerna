@@ -20,7 +20,6 @@
         @include('layouts.partials._form_errors', ['data' => 'name'])
     </div>
 
-
     <div class="field">
         <label class="label">Body</label>
         <div class="control">
@@ -28,6 +27,31 @@
                           rows="10">{{ old('description', isset($cosplayer->description) ? $cosplayer->description : null) }}</textarea>
         </div>
         @include('layouts.partials._form_errors', ['data' => 'description'])
+    </div>
+
+    <div class="card-content">
+        <div class="field">
+            <label class="label">Avatar</label>
+
+            <img src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb')  }}" alt="">
+
+            <div class="control">
+                <div class="file">
+                    <label class="file-label">
+                        <input class="file-input" type="file" name="avatar">
+                        <span class="file-cta">
+                            <span class="file-icon">
+                                <i class="fas fa-upload"></i>
+                            </span>
+                            <span class="file-label">
+                                Choose your files…
+                            </span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+            @include('layouts.partials._form_errors', ['data' => 'avatar'])
+        </div>
     </div>
 
     <div class="field">

@@ -1,7 +1,7 @@
 <tr>
     <td width="2%">
         <span class="icon is-small">
-            <span class="has-margin-sm">{{ $album->pictures->count() }}</span>
+            <span class="has-margin-sm">{{ $album->media->count() }}</span>
             <i class="far fa-images"></i>
         </span>
     </td>

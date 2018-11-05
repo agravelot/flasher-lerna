@@ -46,17 +46,20 @@
 
             <div class="card has-margin-bottom-md">
                 <div class="card-content">
-                    <div class="field is-horizontal">
-                        <div class="field-label">
-                            <label class="label">Pictures</label>
-                        </div>
+                    <div class="field">
+                        <label class="label">Pictures</label>
 
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="file">
-                                    <label class="file-label">
-                                        <input class="file-input" type="file" name="pictures[]" multiple>
-                                        <span class="file-cta">
+                        @if (isset($album) && $album->getMedia('thumb'))
+                            @foreach($album->getMedia('pictures') as $picture)
+                                {{ $picture('thumb') }}
+                            @endforeach
+                        @endif
+
+                        <div class="control">
+                            <div class="file">
+                                <label class="file-label">
+                                    <input class="file-input" type="file" name="pictures[]" multiple>
+                                    <span class="file-cta">
                                             <span class="file-icon">
                                                 <i class="fas fa-upload"></i>
                                             </span>
@@ -64,23 +67,17 @@
                                                 Choose your files…
                                           </span>
                                         </span>
-                                    </label>
-                                </div>
-
-                                @include('layouts.partials._form_errors', ['data' => 'pictures'])
+                                </label>
                             </div>
-
-                            @if (isset($album) && $album->getMedia('thumb'))
-                                @foreach($album->getMedia('thumb') as $picture)
-                                    {{ $picture }}
-                                @endforeach
-                            @endif
-
                         </div>
+                        @include('layouts.partials._form_errors', ['data' => 'pictures'])
                     </div>
                 </div>
             </div>
+
+
         </div>
+
         <div class="column is-one-third">
             <div class="card has-margin-bottom-md">
                 <div class="card-header">
@@ -164,7 +161,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </form>
