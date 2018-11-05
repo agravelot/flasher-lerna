@@ -60,7 +60,7 @@ class AdminAlbumController extends Controller
     public function index()
     {
         $this->authorize('index', Album::class);
-        $albums = $this->albumRepository->with('pictures')
+        $albums = $this->albumRepository->with('media')
             ->orderBy('updated_at', 'desc')
             ->paginate(10);
 
@@ -110,28 +110,13 @@ class AdminAlbumController extends Controller
             throw new Exception('No pictures provided to the request');
         }
 
-//        dd($validated[$key]);
-
-        //$this->pictureRepository->createForAlbum($validated['pictures'], $album);
-
-//        dd($validated['pictures']);
-
-        foreach ($validated['pictures'] as $picture) {
+        foreach ($validated[$key] as $picture) {
             $album
                 ->addMedia($picture)
                 ->preservingOriginal()
                 ->withResponsiveImages()
                 ->toMediaCollection('pictures');
         }
-
-//        $album
-//            ->addMultipleMediaFromRequest([$key])
-//            ->each(function ($fileAdder) {
-//                $fileAdder
-//                    ->preservingOriginal()
-//                    ->withResponsiveImages()
-//                    ->toMediaCollection();
-//            });
 
         if (array_key_exists('categories', $validated)) {
             $categoriesIds = $validated['categories'];
@@ -206,7 +191,13 @@ class AdminAlbumController extends Controller
         // An update can contain no picture
         $key = 'pictures';
         if (array_key_exists($key, $validated)) {
-            $this->pictureRepository->createForAlbum($validated['pictures'], $album);
+            foreach ($validated[$key] as $picture) {
+                $album
+                    ->addMedia($picture)
+                    ->preservingOriginal()
+                    ->withResponsiveImages()
+                    ->toMediaCollection('pictures');
+            }
         }
 
         $key = 'categories';

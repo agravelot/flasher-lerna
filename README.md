@@ -2,7 +2,9 @@
 
 ## Prerequisite
 
-`docker docker-compose`
+`docker docker-compose jpegoptim optipng pngquant gifsicle`
+
+Increase php max upload size
 
 ## Deploying in production
 
