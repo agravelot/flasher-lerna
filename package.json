@@ -22,8 +22,9 @@
         "lodash": "^4.17",
         "onchange": "^5.0"
     },
-  "dependencies": {
-    "tinymce": "^4.8",
-    "tinymce-i18n": "^18.10"
+    "dependencies": {
+        "svgo": "svg/svgo",
+        "tinymce": "^4.8",
+        "tinymce-i18n": "^18.10"
     }
 }

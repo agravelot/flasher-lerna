@@ -16,7 +16,7 @@ RUN composer install \
     --prefer-dist \
     --no-progress \
     --profile \
-    --no-scripts
+    --no-scripts \
     # Production only
     --optimize-autoloader \
     --no-dev
@@ -29,7 +29,7 @@ FROM php:7.2-fpm
 
 RUN apt-get update
 # TODO All required after compilation ?
-RUN apt-get install -yqq libcurl4-gnutls-dev libicu-dev libpng-dev libxml2-dev libbz2-dev
+RUN apt-get install -yqq libcurl4-gnutls-dev libicu-dev libpng-dev libxml2-dev libbz2-dev jpegoptim optipng gifsicle
 RUN apt-get clean
 RUN docker-php-ext-install mbstring pdo_mysql curl json intl gd xml zip bz2 opcache exif
 

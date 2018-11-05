@@ -7,6 +7,19 @@ use App\Models\User;
 
 class AlbumPolicy extends Policy
 {
+
+    /**
+     * Determine whether the user can download the album.
+     *
+     * @param  User $user
+     * @param Album $album
+     * @return mixed
+     */
+    public function download(User $user, Album $album)
+    {
+        return $album->cosplayers->contains($user->cosplayer);
+    }
+
     /**
      * Determine whether the user can view the albums.
      *
@@ -57,7 +70,7 @@ class AlbumPolicy extends Policy
      * @param Album $album
      * @return mixed
      */
-    public function update(Album $album, User $user)
+    public function update(User $user, Album $album)
     {
         return $user->id == $album->user_id;
     }

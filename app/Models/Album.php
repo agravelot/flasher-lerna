@@ -5,11 +5,14 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\File;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\Models\Media;
 
-class Album extends Model
+class Album extends Model implements HasMedia
 {
-    use Sluggable;
-    use SluggableScopeHelpers;
+    use Sluggable, SluggableScopeHelpers, HasMediaTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -41,17 +44,6 @@ class Album extends Model
     {
         return $this->morphToMany(Category::class, 'categorizable');
     }
-
-    public function pictures()
-    {
-        return $this->hasMany(Picture::class);
-    }
-
-    public function pictureHeader()
-    {
-        return $this->hasOne(Picture::class, 'album_header_id');
-    }
-
     public function cosplayers()
     {
         return $this->belongsToMany(Cosplayer::class);
@@ -79,5 +71,22 @@ class Album extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function registerMediaCollections()
+    {
+        $this
+            ->addMediaCollection('pictures')
+            ->acceptsFile(function (File $file) {
+                return strpos($file->mimeType, 'image/') === 0;
+            });
+    }
+
+    public function registerMediaConversions(Media $media = null)
+    {
+        $this->addMediaConversion('thumb')
+            ->width(368)
+            ->height(232)
+            ->performOnCollections('pictures');
     }
 }

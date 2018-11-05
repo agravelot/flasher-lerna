@@ -4,12 +4,12 @@
 
     <div class="carousel carousel-animated carousel-animate-slide">
         <div class="carousel-container">
-            @foreach ($album->pictures as $picture)
+            @foreach ($album->getMedia('pictures') as $picture)
                 <div class="carousel-item has-background @if ($loop->first) is-active @endif">
-                    <img class="is-background" src="{{ asset('storage/'.$picture->filePath)}}" alt="" width="640"
-                         height="310"/>
-                    {{--<div class="title">Original Gift: Offer a song with <a href="https://lasongbox.com" target="_blank">La--}}
-                    {{--Song Box</a></div>--}}
+                    {{--<img class="is-background" src="{{ $picture->getUrl() }}" alt="" width="640"--}}
+                    {{--height="310"/>--}}
+                    {{ $picture }}
+                    <div class="title"></div>
                 </div>
             @endforeach
         </div>
@@ -29,6 +29,30 @@
                 <div class="media">
                     <div class="media-content has-text-centered">
                         <p class="title article-title">  {{-- {{ $album->title }}--}}</p>
+
+                        <div class="field has-addons">
+                            @can('download', $album)
+                                <p class="control">
+                                    <a class="button" href="{{ route('album_download', ['album' => $album]) }}">
+                                        <span class="icon is-small">
+                                           <i class="fas fa-download"></i>
+                                        </span>
+                                        <span>Download</span>
+                                    </a>
+                                </p>
+                            @endcan
+                            @can('update', $album)
+                                <p class="control">
+                                    <a class="button" href="{{ route('admin.albums.edit', ['album' => $album]) }}">
+                                        <span class="icon is-small">
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                        <span>Edit</span>
+                                    </a>
+                                </p>
+                            @endcan
+                        </div>
+
                         <div class="tags has-addons level-item">
                             <span class="tag is-rounded is-info">{{'@' . $album->user->name}}</span>
                             <span class="tag is-rounded">{{ $album->created_at->toFormattedDateString() }}</span>
@@ -51,7 +75,7 @@
                     @foreach ($album->cosplayers as $cosplayer)
                         <a href="{{route('cosplayers.show', ['cosplayer' => $cosplayer]) }}">
                             <figure class="image column is-2-desktop is-3-tablet is-3-mobile">
-                                <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+                                <img class="is-rounded" src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb') }}">
                                 <p class="has-text-centered">
                                     <a href="{{route('cosplayers.show', ['cosplayer' => $cosplayer]) }}">
                                         {{ $cosplayer->name }}

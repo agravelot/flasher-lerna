@@ -16,6 +16,8 @@ class CosplayerRequest extends Request
 
         return [
             'name' => 'string|required|min:2|max:255|unique:cosplayers,name,' . $id,
+            'description' => 'nullable|max:65000',
+            'avatar' => 'nullable|file|image|mimetypes:image/*|max:2000000',
         ];
     }
 }

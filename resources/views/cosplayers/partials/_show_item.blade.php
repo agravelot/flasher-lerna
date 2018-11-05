@@ -1,6 +1,10 @@
 <div class="container is-centered">
 
-    <h1 class="title is-2 has-text-centered">{{ $cosplayer->name }}</h1>
+    <figure class="has-text-centered">
+        <img class="is-rounded" src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb') }}">
+        <h1 class="title is-2">{{ $cosplayer->name }}</h1>
+    </figure>
+
 
     <div class="column is-8 is-offset-2">
         <div class="card article">
@@ -23,13 +27,7 @@
                     @endforeach
                 </div>
                 <div class="columns is-multiline is-mobile">
-                    {{--@for ($i = 1; $i <= 10; $i++)--}}
-                    {{--<figure class="image column is-2-desktop is-3-tablet is-3-mobile">--}}
-                    {{--<img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">--}}
-                    {{--<p class="has-text-centered"><a href="#">Cosplayer {{ $i }}</a></p>--}}
-                    {{--</figure>--}}
-                    {{--@endfor--}}
-
+                    {{--// TODO Show related albums ? --}}
                 </div>
             </div>
         </div>

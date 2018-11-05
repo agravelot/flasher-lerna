@@ -8,7 +8,7 @@
 
             @include('layouts.partials._messages')
 
-            <form method="POST" enctype="multipart/form-data" action="{{ route('contact.store') }}">
+            <form method="POST" action="{{ route('contact.store') }}">
                 @csrf
 
                 <div class="field is-horizontal">
@@ -71,6 +71,7 @@
                             <div class="control">
                                 {!! NoCaptcha::display() !!}
                             </div>
+                            @include('layouts.partials._form_errors', ['data' => 'g-recaptcha-response'])
                         </div>
                     </div>
                 </div>
@@ -86,7 +87,6 @@
                                     Send
                                 </button>
                             </div>
-                            @include('layouts.partials._form_errors', ['data' => 'g-recaptcha-response'])
                         </div>
                     </div>
                 </div>

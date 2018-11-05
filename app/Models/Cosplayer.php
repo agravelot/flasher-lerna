@@ -5,11 +5,14 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\Models\Media;
+use Spatie\MediaLibrary\File;
 
-class Cosplayer extends Model
+class Cosplayer extends Model implements HasMedia
 {
-    use Sluggable;
-    use SluggableScopeHelpers;
+    use Sluggable, SluggableScopeHelpers, HasMediaTrait;
 
     protected $fillable = ['name', 'description', 'slug'];
 
@@ -50,5 +53,25 @@ class Cosplayer extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+
+    public function registerMediaCollections()
+    {
+        $this
+            ->addMediaCollection('avatar') 
+            ->singleFile()
+            ->acceptsFile(function (File $file) {
+                return strpos($file->mimeType, 'image/') === 0;
+            });
+    }
+
+    public function registerMediaConversions(Media $media = null)
+    {
+        $this->addMediaConversion('thumb')
+            ->width(368)
+            ->height(232)
+            ->sharpen(10)
+            ->performOnCollections('avatar');
     }
 }

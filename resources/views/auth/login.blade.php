@@ -9,9 +9,6 @@
                     <h3 class="title has-text-grey">Login</h3>
                     <p class="subtitle has-text-grey">Please login to proceed.</p>
                     <div class="box">
-                        <figure class="avatar">
-                            <img src="https://placehold.it/128x128">
-                        </figure>
                         <form class="login-form" method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="field">

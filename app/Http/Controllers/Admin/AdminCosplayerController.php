@@ -65,8 +65,18 @@ class AdminCosplayerController extends Controller
     {
         $this->authorize('create', Cosplayer::class);
 
-        $cosplayer = $this->repository->create($request->validated());
+        $validated = $request->validated();
 
+        $cosplayer = $this->repository->create($validated);
+
+        $key = 'avatar';
+        if (array_key_exists($key, $validated)) {
+            $cosplayer
+                ->addMedia($validated[$key])
+                ->preservingOriginal()
+                ->withResponsiveImages()
+                ->toMediaCollection('avatar');
+        }
         return redirect(route('admin.cosplayers.show', ['cosplayer' => $cosplayer]));
     }
 
@@ -113,7 +123,18 @@ class AdminCosplayerController extends Controller
     {
         //TODO Update categories
         $this->authorize('update', Cosplayer::class);
-        $cosplayer = $this->repository->update($request->validated(), $id);
+        $validated = $request->validated();
+
+        $cosplayer = $this->repository->update($validated, $id);
+
+        $key = 'avatar';
+        if (array_key_exists($key, $validated)) {
+            $cosplayer
+                ->addMedia($validated[$key])
+                ->preservingOriginal()
+                ->withResponsiveImages()
+                ->toMediaCollection('avatar');
+        }
 
         return redirect(route('admin.cosplayers.show', ['cosplayer' => $cosplayer]))->withSuccess('Cosplayers successfully updated');
     }
