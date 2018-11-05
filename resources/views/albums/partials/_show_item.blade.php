@@ -7,7 +7,7 @@
             @foreach ($album->getMedia('pictures') as $picture)
                 <div class="carousel-item has-background @if ($loop->first) is-active @endif">
                     {{--<img class="is-background" src="{{ $picture->getUrl() }}" alt="" width="640"--}}
-                         {{--height="310"/>--}}
+                    {{--height="310"/>--}}
                     {{ $picture }}
                     <div class="title"></div>
                 </div>
@@ -75,7 +75,7 @@
                     @foreach ($album->cosplayers as $cosplayer)
                         <a href="{{route('cosplayers.show', ['cosplayer' => $cosplayer]) }}">
                             <figure class="image column is-2-desktop is-3-tablet is-3-mobile">
-                                <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+                                <img class="is-rounded" src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb') }}">
                                 <p class="has-text-centered">
                                     <a href="{{route('cosplayers.show', ['cosplayer' => $cosplayer]) }}">
                                         {{ $cosplayer->name }}
