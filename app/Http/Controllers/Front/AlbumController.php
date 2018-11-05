@@ -4,26 +4,28 @@ namespace App\Http\Controllers\Front;
 
 use App\Criteria\PublicAlbumsCriteria;
 use App\Http\Controllers\Controller;
+use App\Models\Album;
 use App\Repositories\AlbumRepositoryEloquent;
 use App\Repositories\Contracts\AlbumRepository;
 use Illuminate\Support\Facades\Auth;
+use Spatie\MediaLibrary\MediaStream;
 
 class AlbumController extends Controller
 {
     /**
      * @var AlbumRepositoryEloquent
      */
-    protected $repository;
+    protected $albumRepository;
 
     /**
      * AlbumController constructor.
-     * @param AlbumRepository $repository
+     * @param AlbumRepository $albumRepository
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function __construct(AlbumRepository $repository)
+    public function __construct(AlbumRepository $albumRepository)
     {
-        $this->repository = $repository;
-        $this->repository->pushCriteria(PublicAlbumsCriteria::class);
+        $this->albumRepository = $albumRepository;
+        $this->albumRepository->pushCriteria(PublicAlbumsCriteria::class);
     }
 
     /**
@@ -35,10 +37,10 @@ class AlbumController extends Controller
     {
         //TODO Show user own albums
         if (Auth::check() && Auth::user()->isAdmin()) {
-            $this->repository->popCriteria(PublicAlbumsCriteria::class);
+            $this->albumRepository->popCriteria(PublicAlbumsCriteria::class);
         }
 
-        $albums = $this->repository->with(['media', 'categories'])
+        $albums = $this->albumRepository->with(['media', 'categories'])
             ->orderBy('created_at')
             ->paginate(10);
 
@@ -56,10 +58,32 @@ class AlbumController extends Controller
     public function show(string $slug)
     {
         //TODO Fix issue with find by slug, policies will check user permission for us
-        $this->repository->popCriteria(PublicAlbumsCriteria::class);
+        if (Auth::check() && Auth::user()->isAdmin()) {
+            $this->albumRepository->popCriteria(PublicAlbumsCriteria::class);
+        }
 
-        $album = $this->repository->findBySlug($slug);
+        $album = $this->albumRepository->findBySlug($slug);
         $this->authorize('view', $album);
         return view('albums.show', ['album' => $album]);
+    }
+
+    /**
+     * @param string $slug
+     * @return MediaStream
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
+    public function download(string $slug)
+    {
+        //TODO Fix issue with find by slug, policies will check user permission for us
+        if (Auth::check() && Auth::user()->isAdmin()) {
+            $this->albumRepository->popCriteria(PublicAlbumsCriteria::class);
+        }
+
+        /** @var Album $album */
+        $album = $this->albumRepository->findBySlug($slug);
+        $this->authorize('download', $album);
+        $pictures = $album->getMedia('pictures');
+        return MediaStream::create($album->slug . '.zip')->addMedia($pictures);
     }
 }
