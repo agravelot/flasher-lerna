@@ -38,10 +38,6 @@ class Post extends Model
         return $this->morphToMany(Category::class, 'categorizable');
     }
 
-    public function picture() {
-        return $this->belongsTo(Picture::class);
-    }
-
     /**
      * Return the sluggable configuration array for this model.
      *

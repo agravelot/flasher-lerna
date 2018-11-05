@@ -44,17 +44,6 @@ class Album extends Model implements HasMedia
     {
         return $this->morphToMany(Category::class, 'categorizable');
     }
-
-    public function pictures()
-    {
-        return $this->hasMany(Picture::class);
-    }
-
-    public function pictureHeader()
-    {
-        return $this->hasOne(Picture::class, 'album_header_id');
-    }
-
     public function cosplayers()
     {
         return $this->belongsToMany(Cosplayer::class);

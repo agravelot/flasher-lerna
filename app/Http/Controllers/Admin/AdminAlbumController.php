@@ -19,10 +19,7 @@ class AdminAlbumController extends Controller
      * @var AlbumRepositoryEloquent
      */
     protected $albumRepository;
-    /**
-     * @var PictureRepository
-     */
-    protected $pictureRepository;
+
     /**
      * @var CategoryRepository
      */
@@ -35,18 +32,15 @@ class AdminAlbumController extends Controller
     /**
      * AdminAlbumController constructor.
      * @param AlbumRepository $albumRepository
-     * @param PictureRepository $pictureRepository
      * @param CategoryRepository $categoryRepository
      * @param CosplayerRepository $cosplayerRepository
      */
     public function __construct(AlbumRepository $albumRepository,
-                                PictureRepository $pictureRepository,
                                 CategoryRepository $categoryRepository,
                                 CosplayerRepository $cosplayerRepository)
     {
         $this->middleware(['auth', 'verified']);
         $this->albumRepository = $albumRepository;
-        $this->pictureRepository = $pictureRepository;
         $this->categoryRepository = $categoryRepository;
         $this->cosplayerRepository = $cosplayerRepository;
     }
