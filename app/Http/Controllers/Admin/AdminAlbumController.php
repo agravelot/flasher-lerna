@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AlbumRequest;
 use App\Models\Album;
+use App\Models\User;
 use App\Repositories\AlbumRepositoryEloquent;
 use App\Repositories\Contracts\AlbumRepository;
 use App\Repositories\Contracts\CategoryRepository;
@@ -12,6 +13,7 @@ use App\Repositories\Contracts\CosplayerRepository;
 use App\Repositories\Contracts\PictureRepository;
 use Exception;
 use Illuminate\Support\Facades\Storage;
+use Spatie\MediaLibrary\MediaStream;
 
 class AdminAlbumController extends Controller
 {
@@ -223,11 +225,6 @@ class AdminAlbumController extends Controller
     {
         $album = $this->albumRepository->findBySlug($slug);
         $this->authorize('delete', $album);
-
-        // Suppression des fichiers (dossier)
-        Storage::disk('uploads')->deleteDirectory('albums/' . $album->id);
-        $album->pictures()->delete();
-        $album->pictureHeader()->delete();
 
         $this->albumRepository->delete($album->id);
 
