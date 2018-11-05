@@ -29,6 +29,30 @@
                 <div class="media">
                     <div class="media-content has-text-centered">
                         <p class="title article-title">  {{-- {{ $album->title }}--}}</p>
+
+                        <div class="field has-addons">
+                            @can('download', $album)
+                                <p class="control">
+                                    <a class="button" href="{{ route('album_download', ['album' => $album]) }}">
+                                        <span class="icon is-small">
+                                           <i class="fas fa-download"></i>
+                                        </span>
+                                        <span>Download</span>
+                                    </a>
+                                </p>
+                            @endcan
+                            @can('update', $album)
+                                <p class="control">
+                                    <a class="button" href="{{ route('admin.albums.edit', ['album' => $album]) }}">
+                                        <span class="icon is-small">
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                        <span>Edit</span>
+                                    </a>
+                                </p>
+                            @endcan
+                        </div>
+
                         <div class="tags has-addons level-item">
                             <span class="tag is-rounded is-info">{{'@' . $album->user->name}}</span>
                             <span class="tag is-rounded">{{ $album->created_at->toFormattedDateString() }}</span>

@@ -70,7 +70,7 @@ class AlbumPolicy extends Policy
      * @param Album $album
      * @return mixed
      */
-    public function update(Album $album, User $user)
+    public function update(User $user, Album $album)
     {
         return $user->id == $album->user_id;
     }
