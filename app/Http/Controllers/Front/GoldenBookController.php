@@ -2,12 +2,24 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Models\GoldenBookPost;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GoldenBookRequest;
+use App\Models\GoldenBookPost;
+use App\Repositories\Contracts\GoldenBookRepository;
 
 class GoldenBookController extends Controller
 {
+
+    /**
+     * @var GoldenBookRepository
+     */
+    private $repository;
+
+    public function __construct(GoldenBookRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -27,64 +39,19 @@ class GoldenBookController extends Controller
      */
     public function create()
     {
-        //
+        return view('goldenbook.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param GoldenBookRequest $request
+     * @return
      */
-    public function store(Request $request)
+    public function store(GoldenBookRequest $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $goldenBooksPost = GoldenBookPost::find($id);
-
-        return view('goldenbook.show', ['goldenBooksPost' => $goldenBooksPost]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $validated = $request->validated();
+        $this->repository->create($validated);
+        return redirect()->route('goldenbook.index')->withSuccess('Your message has been added to the golden book');
     }
 }

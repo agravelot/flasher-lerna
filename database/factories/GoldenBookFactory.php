@@ -6,7 +6,8 @@ use Faker\Generator as Faker;
 $factory->define(\App\Models\GoldenBookPost::class, function (Faker $faker) {
     return [
         'name' => $faker->sentence,
-        'content' => $faker->paragraph,
+        'email' => $faker->email,
+        'body' => $faker->paragraph,
         'active' => true,
         'created_at' => Carbon::now(),
         'updated_at' => Carbon::now(),

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class GoldenBookPost extends Model
 {
     protected $fillable = [
-        'name', 'content', 'active'
+        'name', 'body', 'email', 'active'
     ];
 
     public function user() {

@@ -16,7 +16,8 @@ class CreateGoldenBookPostsTable extends Migration
         Schema::create('golden_book_posts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->text('content');
+            $table->string('email');
+            $table->text('body');
             $table->boolean('active')->default(true);
             $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();

@@ -11,7 +11,7 @@
                     </div>
                 </div>
                 <div class="content">
-                    {{ $goldenBooksPost->content }}
+                    {{ $goldenBooksPost->body }}
                 </div>
             </div>
 

@@ -39,7 +39,7 @@ class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepository
      */
     public function findBySlug($slug)
     {
-        $this->applyCriteria();
+//        $this->applyCriteria();
         $this->applyScope();
         $model = $this->model->findBySlug($slug);
         $this->resetModel();
