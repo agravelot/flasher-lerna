@@ -9,7 +9,8 @@ use Lab404\Impersonate\Models\Impersonate;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable, Impersonate;
+    use Notifiable;
+    use Impersonate;
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +18,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'role'
+        'name', 'email', 'password', 'role'
     ];
 
     /**
