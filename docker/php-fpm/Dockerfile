@@ -18,14 +18,18 @@ RUN composer install \
     --profile \
     --no-scripts \
     # Production only
-    --optimize-autoloader \
-    --no-dev
+#    --no-dev \
+    --optimize-autoloader
 
 #
 # Application PHP
 #
 # TODO Add TZ
 FROM php:7.2-fpm
+
+RUN usermod -u 1000 www-data
+
+COPY docker/php-fpm/custom.ini /usr/local/etc/php/conf.d/
 
 RUN apt-get update
 # TODO All required after compilation ?
@@ -46,10 +50,14 @@ COPY --chown=www-data:www-data --from=vendor /app/vendor/ /var/www/html/vendor/
 
 WORKDIR /var/www/html
 
-RUN mv .env.production .env && \
-        php artisan storage:link && \
-        chown -h www-data:www-data /var/www/html/public/storage && \
-        php artisan key:generate && \
+RUN mv .env.production .env
+RUN php artisan storage:link && \
+        chown -h www-data:www-data /var/www/html/public/storage
+
+RUN chmod -R 777 /var/www/html/*
+
+# TODO Key generation should not be in dockerfile
+RUN php artisan key:generate && \
         php artisan cache:clear && \
         php artisan config:clear && \
         php artisan view:clear
