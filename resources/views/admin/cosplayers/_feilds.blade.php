@@ -32,8 +32,9 @@
     <div class="card-content">
         <div class="field">
             <label class="label">Avatar</label>
-
-            <img src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb')  }}" alt="">
+            @if (isset($cosplayer) && $cosplayer->getFirstMediaUrl('avatar') )
+                <img src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb')  }}" alt="">
+            @endif
 
             <div class="control">
                 <div class="file">
