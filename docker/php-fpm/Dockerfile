@@ -29,9 +29,14 @@ FROM php:7.2-fpm
 
 RUN apt-get update
 # TODO All required after compilation ?
-RUN apt-get install -yqq libcurl4-gnutls-dev libicu-dev libpng-dev libxml2-dev libbz2-dev jpegoptim optipng gifsicle
+RUN apt-get install -yqq libcurl4-gnutls-dev libicu-dev libpng-dev libxml2-dev libbz2-dev jpegoptim optipng gifsicle libjpeg-dev libfreetype6-dev
 RUN apt-get clean
-RUN docker-php-ext-install mbstring pdo_mysql curl json intl gd xml zip bz2 opcache exif
+RUN docker-php-ext-configure gd \
+        --with-gd \
+        --with-freetype-dir=/usr/include/ \
+        --with-png-dir=/usr/include/ \
+        --with-jpeg-dir=/usr/include/
+RUN docker-php-ext-install -j$(nproc) mbstring pdo_mysql curl json intl gd xml zip bz2 opcache exif bcmath
 
 # Importing source code
 COPY --chown=www-data:www-data . /var/www/html
