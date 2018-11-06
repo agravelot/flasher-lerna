@@ -88,6 +88,23 @@
                         </div>
 
                         <div class="field is-horizontal">
+                            <div class="field-label">
+                                <label class="label"></label>
+                            </div>
+
+                            <div class="field-body">
+                                <div class="field">
+                                    <p class="control">
+                                        {!! NoCaptcha::display() !!}
+                                    </p>
+                                    @include('layouts.partials._form_errors', ['data' => 'g-recaptcha-response'])
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="field is-horizontal">
                             <div class="field-label"></div>
 
                             <div class="field-body">
@@ -104,3 +121,7 @@
         </div>
     </div>
 @endsection
+
+@section('js')
+    {!! NoCaptcha::renderJs() !!}
+@stop
