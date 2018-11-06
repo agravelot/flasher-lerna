@@ -72,18 +72,7 @@
                     @endforeach
                 </div>
                 <div class="columns is-multiline is-mobile">
-                    @foreach ($album->cosplayers as $cosplayer)
-                        <a href="{{route('cosplayers.show', ['cosplayer' => $cosplayer]) }}">
-                            <figure class="image column is-2-desktop is-3-tablet is-3-mobile">
-                                <img class="is-rounded" src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb') }}">
-                                <p class="has-text-centered">
-                                    <a href="{{route('cosplayers.show', ['cosplayer' => $cosplayer]) }}">
-                                        {{ $cosplayer->name }}
-                                    </a>
-                                </p>
-                            </figure>
-                        </a>
-                    @endforeach
+                    @each('cosplayers.partials._cosplayer_badge', $album->cosplayers, 'cosplayer', 'layouts.partials._empty')
                 </div>
 
             </div>
