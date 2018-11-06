@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Models\Album;
 use App\Models\Cosplayer;
 use App\Repositories\Contracts\CosplayerRepository;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
@@ -22,7 +21,7 @@ class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRep
      * @return mixed
      * @throws \Exception
      */
-    public function findNotLinkedToUser($cosplayerId)
+    public function findNotLinkedToUser(int $cosplayerId): Cosplayer
     {
         $cosplayer = $this->find($cosplayerId);
         if ($cosplayer->user()->exists()) {
@@ -34,15 +33,15 @@ class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRep
     /**
      * Find data by field and value
      *
-     * @param       $value
+     * @param string $slug
      * @return mixed
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function findBySlug($value)
+    public function findBySlug(string $slug): Cosplayer
     {
         $this->applyCriteria();
         $this->applyScope();
-        $model = $this->model->findBySlug($value);
+        $model = $this->model->whereSlug($slug)->first();
         $this->resetModel();
         return $this->parserResult($model);
     }
@@ -64,6 +63,11 @@ class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRep
         return $result;
     }
 
+    public function saveRelation(Collection $cosplayers, Album $model): void
+    {
+        $model->cosplayers()->sync($cosplayers);
+    }
+
     /**
      * Specify Model class name
      *
@@ -80,10 +84,5 @@ class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRep
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
-    }
-
-    public function saveRelation(Collection $cosplayers, Album $model)
-    {
-        $model->cosplayers()->sync($cosplayers);
     }
 }

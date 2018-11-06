@@ -3,6 +3,7 @@
 namespace App\Repositories\Contracts;
 
 use App\Models\Album;
+use App\Models\Cosplayer;
 use Illuminate\Support\Collection;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
@@ -13,7 +14,9 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface CosplayerRepository extends RepositoryInterface
 {
-    public function findNotLinkedToUser($cosplayerId);
+    public function findBySlug(string $slug): Cosplayer;
 
-    public function saveRelation(Collection $cosplayers, Album $model);
+    public function findNotLinkedToUser(int $cosplayerId): Cosplayer;
+
+    public function saveRelation(Collection $cosplayers, Album $model): void;
 }

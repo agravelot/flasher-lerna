@@ -17,6 +17,28 @@ use Prettus\Repository\Eloquent\BaseRepository;
 class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepository
 {
     /**
+     * Find data by field and value
+     *
+     * @param       $slug
+     * @return mixed
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     */
+    public function findBySlug(string $slug): Category
+    {
+        $this->applyCriteria();
+        $this->applyScope();
+        $model = $this->model->with('albums.media', 'albums.categories')->whereSlug($slug)->first();
+        $this->resetModel();
+
+        return $this->parserResult($model);
+    }
+
+    public function saveRelation(Collection $categories, Album $album): void
+    {
+        $album->categories()->sync($categories);
+    }
+
+    /**
      * Specify Model class name
      *
      * @return string
@@ -27,32 +49,10 @@ class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepos
     }
 
     /**
-     * Find data by field and value
-     *
-     * @param       $slug
-     * @return mixed
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
-     */
-    public function findBySlug($slug)
-    {
-        $this->applyCriteria();
-        $this->applyScope();
-        $model = $this->model->findBySlug($slug);
-        $this->resetModel();
-
-        return $this->parserResult($model);
-    }
-
-    /**
      * Boot up the repository, pushing criteria
      */
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
-    }
-
-    public function saveRelation(Collection $categories, Album $album)
-    {
-        $album->categories()->sync($categories);
     }
 }

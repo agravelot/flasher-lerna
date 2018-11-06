@@ -20,7 +20,6 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     public function create(array $attributes): User
     {
         $attributes['password'] = Hash::make($attributes['password']);
-
         return parent::create($attributes);
     }
 
