@@ -4,7 +4,6 @@
 FROM composer:1.7 as vendor
 
 COPY ./database database/
-
 COPY ./composer.json composer.json
 COPY ./composer.lock composer.lock
 
@@ -43,7 +42,9 @@ RUN docker-php-ext-configure gd \
         --with-png-dir=/usr/include/ \
         --with-jpeg-dir=/usr/include/
 RUN docker-php-ext-install -j$(nproc) mbstring pdo_mysql curl json intl gd xml zip bz2 opcache exif bcmath
-
+RUN pecl install -o -f redis && \
+        rm -rf /tmp/pear && \
+        docker-php-ext-enable redis
 # Importing source code
 COPY --chown=1000:1000 . /var/www/html
 

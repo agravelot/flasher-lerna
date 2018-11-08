@@ -34,8 +34,13 @@ services:
     - storage:/var/www/html/storage:ro
     links:
     - php
+    - cache
     depends_on:
     - php
+    - cache
+
+  cache:
+    image: redis:5.0-alpine
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -44,8 +49,8 @@ services:
     ports:
     - "8082:80"
     environment:
-#    - PMA_USER=picblog
-#    - PMA_PASSWORD=secret
+    #    - PMA_USER=picblog
+    #    - PMA_PASSWORD=secret
     - PHP_UPLOAD_MAX_FILESIZE=100MB
 
 volumes:
