@@ -43,18 +43,16 @@ RUN docker-php-ext-configure gd \
 RUN docker-php-ext-install -j$(nproc) mbstring pdo_mysql curl json intl gd xml zip bz2 opcache exif bcmath
 
 # Importing source code
-COPY --chown=www-data:www-data . /var/www/html
+COPY --chown=1000:1000 . /var/www/html
 
 # Importing composer dependencies
-COPY --chown=www-data:www-data --from=vendor /app/vendor/ /var/www/html/vendor/
+COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/vendor/
 
 WORKDIR /var/www/html
 
 RUN mv .env.production .env
 RUN php artisan storage:link && \
-        chown -h www-data:www-data /var/www/html/public/storage
-
-RUN chmod -R 777 /var/www/html/*
+        chown -h 1000:1000 /var/www/html/storage
 
 # TODO Key generation should not be in dockerfile
 RUN php artisan key:generate && \

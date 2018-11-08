@@ -19,14 +19,17 @@ RUN yarn install && yarn production
 #
 FROM nginx:alpine
 
+RUN apk --no-cache add shadow && \
+        usermod -u 1000 nginx
+
 COPY ./docker/nginx/site.conf /etc/nginx/conf.d/default.conf
 
 # Importing source code
-COPY --chown=nginx:nginx . /var/www/html
+COPY --chown=1000:1000 . /var/www/html
 
 # Importing webpack assets
-COPY --chown=nginx:nginx --from=frontend /app/public/js/ /var/www/html/public/js/
-COPY --chown=nginx:nginx --from=frontend /app/public/css/ /var/www/html/public/css/
-COPY --chown=nginx:nginx --from=frontend /app/mix-manifest.json /var/www/html/mix-manifest.json
+COPY --chown=1000:1000 --from=frontend /app/public/js/ /var/www/html/public/js/
+COPY --chown=1000:1000 --from=frontend /app/public/css/ /var/www/html/public/css/
+COPY --chown=1000:1000 --from=frontend /app/mix-manifest.json /var/www/html/mix-manifest.json
 
 WORKDIR /var/www/html
