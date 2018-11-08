@@ -27,13 +27,15 @@ RUN composer install \
 # TODO Add TZ
 FROM php:7.2-fpm
 
+WORKDIR /var/www/html
+
 RUN usermod -u 1000 www-data
 
 COPY docker/php-fpm/custom.ini /usr/local/etc/php/conf.d/
 
 RUN apt-get update
 # TODO All required after compilation ?
-RUN apt-get install -yqq libcurl4-gnutls-dev libicu-dev libpng-dev libxml2-dev libbz2-dev jpegoptim optipng gifsicle libjpeg-dev libfreetype6-dev
+RUN apt-get install -y libcurl4-gnutls-dev libicu-dev libpng-dev libxml2-dev libbz2-dev jpegoptim optipng gifsicle libjpeg-dev libfreetype6-dev
 RUN apt-get clean
 RUN docker-php-ext-configure gd \
         --with-gd \
@@ -47,8 +49,6 @@ COPY --chown=1000:1000 . /var/www/html
 
 # Importing composer dependencies
 COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/vendor/
-
-WORKDIR /var/www/html
 
 RUN mv .env.production .env
 RUN php artisan storage:link && \

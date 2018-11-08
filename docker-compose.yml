@@ -31,7 +31,7 @@ services:
     - 443:443
     env_file: ./docker/nginx/.env
     volumes:
-    - storage:/var/www/html/storage
+    - storage:/var/www/html/storage:ro
     links:
     - php
     depends_on:
