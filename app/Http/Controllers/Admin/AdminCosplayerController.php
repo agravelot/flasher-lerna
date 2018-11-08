@@ -90,8 +90,8 @@ class AdminCosplayerController extends Controller
      */
     public function show(string $slug)
     {
-        $this->authorize('view', Cosplayer::class);
         $cosplayer = $this->repository->findBySlug($slug);
+        $this->authorize('view', $cosplayer);
         return view('admin.cosplayers.show', ['cosplayer' => $cosplayer]);
     }
 
@@ -105,8 +105,8 @@ class AdminCosplayerController extends Controller
      */
     public function edit(string $slug)
     {
-        $this->authorize('update', Cosplayer::class);
         $cosplayer = $this->repository->findBySlug($slug);
+        $this->authorize('update', $cosplayer);
         return view('admin.cosplayers.edit', ['cosplayer' => $cosplayer]);
     }
 
@@ -122,7 +122,8 @@ class AdminCosplayerController extends Controller
     public function update(CosplayerRequest $request, $id)
     {
         //TODO Update categories
-        $this->authorize('update', Cosplayer::class);
+        $cosplayer = $this->repository->find($id);
+        $this->authorize('update', $cosplayer);
         $validated = $request->validated();
 
         $cosplayer = $this->repository->update($validated, $id);

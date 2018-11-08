@@ -10,6 +10,9 @@ use App\Repositories\Contracts\UserRepository;
 
 class AdminUserController extends Controller
 {
+    /**
+     * @var UserRepository
+     */
     protected $userRepository;
     /**
      * @var CosplayerRepository
@@ -147,8 +150,9 @@ class AdminUserController extends Controller
      */
     public function destroy(int $id)
     {
-        $this->authorize('delete', User::class);
-        $this->userRepository->delete($id);
+        $user = $this->userRepository->find($id);
+        $this->authorize('delete', $user);
+        $this->userRepository->delete($user->id);
         return back()->withSuccess('User successfully deleted');
     }
 }

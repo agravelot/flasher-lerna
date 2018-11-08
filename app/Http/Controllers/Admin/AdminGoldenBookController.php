@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
+use App\Models\GoldenBookPost;
 use App\Repositories\ContactRepositoryEloquent;
 use App\Repositories\Contracts\ContactRepository;
+use App\Repositories\Contracts\GoldenBookRepository;
 
-class AdminContactController extends Controller
+class AdminGoldenBookController extends Controller
 {
     /**
      * @var ContactRepositoryEloquent
@@ -15,15 +17,14 @@ class AdminContactController extends Controller
     protected $repository;
 
     /**
-     * AdminContactController constructor.
-     * @param ContactRepository $repository
+     * AdminGoldenBookController constructor.
+     * @param GoldenBookRepository $repository
      */
-    public function __construct(ContactRepository $repository)
+    public function __construct(GoldenBookRepository $repository)
     {
         $this->middleware(['auth', 'verified']);
         $this->repository = $repository;
     }
-
 
     /**
      * Display a listing of the resource.
@@ -33,11 +34,11 @@ class AdminContactController extends Controller
      */
     public function index()
     {
-        $this->authorize('index', Contact::class);
-        $contacts = $this->repository->paginate(10);
+        $this->authorize('index', GoldenBookPost::class);
+        $goldenBookPosts = $this->repository->paginate(10);
 
-        return view('admin.contacts.index', [
-            'contacts' => $contacts
+        return view('admin.goldenbook.index', [
+            'goldenBookPosts' => $goldenBookPosts
         ]);
     }
 
@@ -50,9 +51,9 @@ class AdminContactController extends Controller
      */
     public function show(int $id)
     {
-        $contact = $this->repository->find($id);
-        $this->authorize('view', $contact);
-        return view('admin.contacts.show', ['contact' => $contact]);
+        $goldenBookPost = $this->repository->find($id);
+        $this->authorize('view', $goldenBookPost);
+        return view('admin.contacts.show', ['contact' => $goldenBookPost]);
     }
 
     /**
@@ -64,8 +65,9 @@ class AdminContactController extends Controller
      */
     public function destroy(int $id)
     {
-        $this->authorize('delete', Contact::class);
-        $this->repository->delete($id);
+        $goldenBookPost = $this->repository->find($id);
+        $this->authorize('delete', $goldenBookPost);
+        $this->repository->delete($goldenBookPost->id);
         return back()->withSuccess('Contact successfully deleted');
     }
 }

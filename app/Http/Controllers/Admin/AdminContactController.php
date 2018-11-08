@@ -64,8 +64,9 @@ class AdminContactController extends Controller
      */
     public function destroy(int $id)
     {
-        $this->authorize('delete', Contact::class);
-        $this->repository->delete($id);
+        $contact = $this->repository->find($id);
+        $this->authorize('delete', $contact);
+        $this->repository->delete($contact->id);
         return back()->withSuccess('Contact successfully deleted');
     }
 }
