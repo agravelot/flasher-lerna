@@ -31,16 +31,6 @@
                 </a>
             </li>
         @endcan
-        @can('index', \App\Models\Contact::class)
-            <li>
-                <a href="{{ route('admin.contacts.index') }}" {{ Request::is('admin/contacts*') ? 'class=is-active' : '' }}>
-                    <span class="icon">
-                        <i class="fas fa-pen-fancy"></i>
-                    </span>
-                    Contacts
-                </a>
-            </li>
-        @endcan
         @can('index', \App\Models\Cosplayer::class)
             <li>
                 <a href="{{ route('admin.cosplayers.index') }}" {{ Request::is('admin/cosplayers*') ? 'class=is-active' : '' }}>
@@ -58,6 +48,26 @@
                         <i class="fas fa-user"></i>
                     </span>
                     Users
+                </a>
+            </li>
+        @endcan
+        @can('index', \App\Models\Contact::class)
+            <li>
+                <a href="{{ route('admin.contacts.index') }}" {{ Request::is('admin/contacts*') ? 'class=is-active' : '' }}>
+                    <span class="icon">
+                        <i class="fas fa-pen-fancy"></i>
+                    </span>
+                    Contacts
+                </a>
+            </li>
+        @endcan
+        @can('index', \App\Models\GoldenBookPost::class)
+            <li>
+                <a href="{{ route('admin.goldenbook.index') }}" {{ Request::is('admin/goldenbook*') ? 'class=is-active' : '' }}>
+                    <span class="icon">
+                        <i class="fas fa-pen-fancy"></i>
+                    </span>
+                    Golden book
                 </a>
             </li>
         @endcan
