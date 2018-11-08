@@ -32,4 +32,8 @@ COPY --chown=1000:1000 --from=frontend /app/public/js/ /var/www/html/public/js/
 COPY --chown=1000:1000 --from=frontend /app/public/css/ /var/www/html/public/css/
 COPY --chown=1000:1000 --from=frontend /app/mix-manifest.json /var/www/html/mix-manifest.json
 
+# Storrage link
+RUN ln -s /var/www/html/storage/app/public/ /var/www/html/public/storage && \
+    chown -h 1000:1000 /var/www/html/public/storage
+
 WORKDIR /var/www/html
