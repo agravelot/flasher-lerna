@@ -34,23 +34,23 @@ RUN apk --no-cache add shadow && \
 COPY docker/php-fpm/custom.ini /usr/local/etc/php/conf.d/
 
 # Installing required dependencies
-RUN apk --no-cache add jpegoptim optipng gifsicle icu
-RUN apk --no-cache add --virtual php_deps $PHPIZE_DEPS freetype-dev libjpeg-turbo-dev icu-dev bzip2-dev libpng-dev
+RUN apk --no-cache add jpegoptim optipng gifsicle freetype-dev libjpeg-turbo-dev icu-dev bzip2-dev libpng-dev
+RUN apk --no-cache add --virtual php_deps $PHPIZE_DEPS
 RUN docker-php-ext-configure gd \
         --with-gd \
         --with-freetype-dir=/usr/include/ \
         --with-png-dir=/usr/include/ \
         --with-jpeg-dir=/usr/include/
-RUN docker-php-ext-install -j$(nproc) pdo_mysql json intl gd zip bz2 opcache exif bcmath
+RUN docker-php-ext-install -j$(nproc) pdo_mysql json intl gd zip bz2 opcache exif bcmath pcntl
 
 # Install redis
 RUN pecl install -o -f redis && \
         docker-php-ext-enable redis
 
 # Cleanup
-RUN apk del php_deps && \
-        rm -rf /tmp/* /usr/local/lib/php/doc/* /var/cache/apk/* && \
-        rm -rf /tmp/pear
+RUN rm -rf /tmp/* /usr/local/lib/php/doc/* /var/cache/apk/* && \
+        rm -rf /tmp/pear && \
+        apk del php_deps
 
 # Importing source code
 COPY --chown=1000:1000 . /var/www/html
@@ -61,16 +61,18 @@ COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/vendor/
 RUN mv .env.production .env
 
 # Link storage
-RUN php artisan storage:link && \
+RUN ln -s /var/www/html/storage/app/public && \
         chown -h 1000:1000 /var/www/html/storage
 
+#RUN php artisan vendor:publish --provider="Laravel\Horizon\HorizonServiceProvider"
+
 # Clean laravel cache
-RUN php artisan cache:clear && \
-        php artisan config:clear && \
-        php artisan view:clear
+#RUN php artisan config:clear && \
+#        php artisan cache:clear && \
+#        php artisan view:clear
 
 # Optimizing for production
 # https://laravel.com/docs/5.7/deployment#optimization
-RUN php artisan optimize && \
-        php artisan route:cache && \
-        php artisan config:cache
+#RUN php artisan optimize && \
+#        php artisan route:cache && \
+#        php artisan config:cache
