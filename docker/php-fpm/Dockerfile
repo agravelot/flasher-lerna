@@ -49,7 +49,7 @@ RUN pecl install -o -f redis && \
 
 # Cleanup
 RUN rm -rf /tmp/* /usr/local/lib/php/doc/* /var/cache/apk/* && \
-        rm -rf /tmp/pear && \
+        rm -rf /tmp/pear ~/.pearrc && \
         apk del php_deps
 
 # Importing source code
@@ -67,12 +67,16 @@ RUN ln -s /var/www/html/storage/app/public && \
 #RUN php artisan vendor:publish --provider="Laravel\Horizon\HorizonServiceProvider"
 
 # Clean laravel cache
-#RUN php artisan config:clear && \
-#        php artisan cache:clear && \
-#        php artisan view:clear
+CMD php artisan config:clear && \
+        php artisan cache:clear && \
+        php artisan view:clear && \
 
 # Optimizing for production
 # https://laravel.com/docs/5.7/deployment#optimization
-#RUN php artisan optimize && \
-#        php artisan route:cache && \
-#        php artisan config:cache
+        php artisan optimize && \
+        php artisan route:cache && \
+        php artisan config:cache && \
+
+# Run php-fpm
+# https://github.com/docker-library/php/blob/master/7.2/alpine3.8/fpm/Dockerfile
+        php-fpm
