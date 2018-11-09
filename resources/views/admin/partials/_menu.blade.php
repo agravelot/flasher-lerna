@@ -65,7 +65,7 @@
             <li>
                 <a href="{{ route('admin.goldenbook.index') }}" {{ Request::is('admin/goldenbook*') ? 'class=is-active' : '' }}>
                     <span class="icon">
-                        <i class="fas fa-pen-fancy"></i>
+                        <i class="fas fa-book"></i>
                     </span>
                     Golden book
                 </a>
