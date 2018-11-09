@@ -1,7 +1,7 @@
 @extends('admin.admin')
 
 @section('admin-content')
-    <section class="hero is-info welcome is-small">
+    <section class="hero is-info welcome is-small has-margin-bottom-sm">
         <div class="hero-body">
             <div class="container">
                 <h1 class="title">
@@ -53,9 +53,9 @@
                         Events
                     </p>
                     <a href="#" class="card-header-icon" aria-label="more options">
-                                  <span class="icon">
-                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                  </span>
+                        <span class="icon">
+                            <i class="fa fa-angle-down" aria-hidden="true"></i>
+                        </span>
                     </a>
                 </header>
                 <div class="card-table">
@@ -117,7 +117,7 @@
             </div>
         </div>
         <div class="column is-6">
-            <div class="card">
+            <div class="card has-margin-bottom-sm">
                 <header class="card-header">
                     <p class="card-header-title">
                         Inventory Search
@@ -142,7 +142,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
+            <div class="card has-margin-bottom-sm">
                 <header class="card-header">
                     <p class="card-header-title">
                         User Search
