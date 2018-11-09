@@ -19,8 +19,10 @@ services:
     - storage:/var/www/html/storage
     links:
     - db
+    - cache
     depends_on:
     - db
+    - cache
 
   web:
     build:
@@ -34,10 +36,8 @@ services:
     - storage:/var/www/html/storage:ro
     links:
     - php
-    - cache
     depends_on:
     - php
-    - cache
 
   cache:
     image: redis:5.0-alpine
