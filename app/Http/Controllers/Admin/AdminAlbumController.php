@@ -5,15 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AlbumRequest;
 use App\Models\Album;
-use App\Models\User;
 use App\Repositories\AlbumRepositoryEloquent;
 use App\Repositories\Contracts\AlbumRepository;
 use App\Repositories\Contracts\CategoryRepository;
 use App\Repositories\Contracts\CosplayerRepository;
 use App\Repositories\Contracts\PictureRepository;
 use Exception;
-use Illuminate\Support\Facades\Storage;
-use Spatie\MediaLibrary\MediaStream;
 
 class AdminAlbumController extends Controller
 {
@@ -106,13 +103,10 @@ class AdminAlbumController extends Controller
             throw new Exception('No pictures provided to the request');
         }
 
-        foreach ($validated[$key] as $picture) {
-            $album
-                ->addMedia($picture)
-                ->preservingOriginal()
-                ->withResponsiveImages()
-                ->toMediaCollection('pictures');
-        }
+        $album->addMediaFromRequest($key)
+            ->preservingOriginal()
+            ->withResponsiveImages()
+            ->toMediaCollection('pictures');
 
         if (array_key_exists('categories', $validated)) {
             $categoriesIds = $validated['categories'];
