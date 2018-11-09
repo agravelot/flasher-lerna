@@ -8,21 +8,15 @@
     .column
       overflow-y: auto
 
-//.is-main-content
-//  background: $grey-lighter
-
-// Correctif pour IE
+// IE fix is not present
 .is-fullheight.columns
-  height: calc(100vh - (#{$navbar-height} - .75rem))
+  height: calc(100vh - #{$navbar-height})
 
 @media screen and (min-width: $tablet)
   .is-sidebar-menu
     //background: $grey-lighter
     padding: 1.25rem
-    max-height: calc(100vh - (#{$navbar-height} - .75rem))
-    height: calc(100vh - (#{$navbar-height} - .75rem))
     max-width: 250px
-    //top: (#{$navbar-height})
     position: -webkit-sticky
     position: sticky
   //li
