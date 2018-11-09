@@ -3,6 +3,7 @@ version: '3'
 services:
   db:
     image: mariadb
+    restart: always
     volumes:
     - db-data:/var/lib/mysql
     environment:
@@ -15,6 +16,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/php-fpm/Dockerfile
+    restart: always
     volumes:
     - storage:/var/www/html/storage
     links:
@@ -28,6 +30,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/nginx/Dockerfile
+    restart: always
     ports:
     - 80:80
     - 443:443
@@ -44,13 +47,12 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
+    restart: always
     links:
     - db
     ports:
     - "8082:80"
     environment:
-    #    - PMA_USER=picblog
-    #    - PMA_PASSWORD=secret
     - PHP_UPLOAD_MAX_FILESIZE=100MB
 
 volumes:
