@@ -98,12 +98,7 @@ class AdminAlbumController extends Controller
         /** @var Album $album */
         $album = $this->albumRepository->create($validated);
 
-        $key = 'pictures';
-        if (!array_key_exists($key, $validated)) {
-            throw new Exception('No pictures provided to the request');
-        }
-
-        $album->addMediaFromRequest($key)
+        $album->addMediaFromRequest('pictures')
             ->preservingOriginal()
             ->withResponsiveImages()
             ->toMediaCollection('pictures');
