@@ -16,6 +16,7 @@
     "lab404/laravel-impersonate": "^1.2",
     "laravel-frontend-presets/bulma": "^2",
     "laravel/framework": "5.7.*",
+    "laravel/horizon": "^1.4",
     "laravel/tinker": "^1.0",
     "phpunit/phpunit": "^7.3",
     "predis/predis": "^1.1",

@@ -1,7 +1,4 @@
 <aside class="menu">
-    <p class="menu-label">
-        Administration
-    </p>
     <ul class="menu-list">
         <li>
             <a href="{{ route('admin.dashboard') }}" {{ Request::is('admin') ? 'class=is-active' : '' }}>
@@ -11,6 +8,9 @@
                 Dashboard
             </a>
         </li>
+        <p class="menu-label">
+            Administration
+        </p>
         @can('index', \App\Models\Album::class)
             <li>
                 <a href="{{ route('admin.albums.index') }}" {{ Request::is('admin/albums*') ? 'class=is-active' : '' }}>
@@ -73,10 +73,33 @@
         @endcan
     </ul>
 
+
+    <p class="menu-label">
+        Monitoring
+    </p>
+    <ul class="menu-list">
+        <li>
+            <a>
+                <span class="icon">
+                    <i class="fas fa-tachometer-alt"></i>
+                </span>
+                Statistics
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('horizon.index') }}" {{ Request::is('horizon') ? 'class=is-active' : '' }}>
+                <span class="icon">
+                    <i class="fas fa-tasks"></i>
+                </span>
+                Background tasks
+            </a>
+        </li>
+    </ul>
+
     <a href="{{ route('home') }}">
         <span class="icon">
             <i class="fas fa-chevron-circle-left"></i>
         </span>
-        Retour sur le site
+        Back to the website
     </a>
 </aside>

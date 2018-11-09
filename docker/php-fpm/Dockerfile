@@ -64,12 +64,11 @@ RUN mv .env.production .env
 RUN ln -s /var/www/html/storage/app/public && \
         chown -h 1000:1000 /var/www/html/storage
 
-#RUN php artisan vendor:publish --provider="Laravel\Horizon\HorizonServiceProvider"
-
 # Clean laravel cache
 CMD php artisan config:clear && \
         php artisan cache:clear && \
         php artisan view:clear && \
+        php artisan vendor:publish --provider="Laravel\Horizon\HorizonServiceProvider" && \
 
 # Optimizing for production
 # https://laravel.com/docs/5.7/deployment#optimization

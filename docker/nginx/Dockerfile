@@ -36,6 +36,7 @@ RUN composer install \
 
 RUN docker-php-ext-install -j$(nproc) bcmath
 RUN php artisan vendor:publish --tag=lfm_public
+RUN php artisan vendor:publish --provider="Laravel\Horizon\HorizonServiceProvider"
 
 #
 # Application PHP
