@@ -10,7 +10,7 @@ use App\Repositories\Contracts\AlbumRepository;
 use App\Repositories\Contracts\CategoryRepository;
 use App\Repositories\Contracts\CosplayerRepository;
 use App\Repositories\Contracts\PictureRepository;
-use Exception;
+use Spatie\MediaLibrary\FileAdder\FileAdder;
 
 class AdminAlbumController extends Controller
 {
@@ -98,10 +98,13 @@ class AdminAlbumController extends Controller
         /** @var Album $album */
         $album = $this->albumRepository->create($validated);
 
-        $album->addMediaFromRequest('pictures')
-            ->preservingOriginal()
-            ->withResponsiveImages()
-            ->toMediaCollection('pictures');
+        $album->addAllMediaFromRequest()
+            ->each(function ($fileAdder) {
+                /** @var FileAdder $fileAdder */
+                $fileAdder->preservingOriginal()
+                    ->withResponsiveImages()
+                    ->toMediaCollection('pictures');
+            });
 
         if (array_key_exists('categories', $validated)) {
             $categoriesIds = $validated['categories'];
@@ -176,13 +179,14 @@ class AdminAlbumController extends Controller
         // An update can contain no picture
         $key = 'pictures';
         if (array_key_exists($key, $validated)) {
-            foreach ($validated[$key] as $picture) {
-                $album
-                    ->addMedia($picture)
-                    ->preservingOriginal()
-                    ->withResponsiveImages()
-                    ->toMediaCollection('pictures');
-            }
+            /** @var Album $album */
+            $album->addAllMediaFromRequest()
+                ->each(function ($fileAdder) {
+                    /** @var FileAdder $fileAdder */
+                    $fileAdder->preservingOriginal()
+                        ->withResponsiveImages()
+                        ->toMediaCollection('pictures');
+                });
         }
 
         $key = 'categories';
