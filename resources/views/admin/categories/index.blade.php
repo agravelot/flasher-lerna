@@ -3,7 +3,7 @@
 @section('admin-content')
     <div class="columns">
         <div class="column">
-            <div class="card events-card has-padding-sm">
+            <div class="card has-padding-sm">
                 <header class="card-header">
                     <p class="card-header-title">
                         Categories
@@ -25,9 +25,7 @@
                     <div class="content">
                         <table class="table is-fullwidth is-striped">
                             <tbody>
-
                             @each('admin.categories._category_item', $categories, 'category', 'layouts.partials._empty')
-
                             </tbody>
                         </table>
                     </div>

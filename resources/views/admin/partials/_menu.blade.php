@@ -1,5 +1,8 @@
 <aside class="menu">
     <ul class="menu-list">
+        <p class="menu-label">
+            Administration
+        </p>
         <li>
             <a href="{{ route('admin.dashboard') }}" {{ Request::is('admin') ? 'class=is-active' : '' }}>
                 <span class="icon">
@@ -8,9 +11,6 @@
                 Dashboard
             </a>
         </li>
-        <p class="menu-label">
-            Administration
-        </p>
         @can('index', \App\Models\Album::class)
             <li>
                 <a href="{{ route('admin.albums.index') }}" {{ Request::is('admin/albums*') ? 'class=is-active' : '' }}>
@@ -96,10 +96,14 @@
         </li>
     </ul>
 
-    <a href="{{ route('home') }}">
-        <span class="icon">
-            <i class="fas fa-chevron-circle-left"></i>
-        </span>
-        Back to the website
-    </a>
+    <ul class="menu-list">
+        <li>
+            <a class="has-text-info has-margin-top-lg" href="{{ route('home') }}">
+                <span class="icon">
+                    <i class="fas fa-chevron-circle-left"></i>
+                </span>
+                Back to the website
+            </a>
+        </li>
+    </ul>
 </aside>

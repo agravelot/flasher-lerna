@@ -72,7 +72,7 @@
                     @endforeach
                 </div>
                 <div class="columns is-multiline is-mobile">
-                    @each('cosplayers.partials._cosplayer_badge', $album->cosplayers, 'cosplayer', 'layouts.partials._empty')
+                    @each('cosplayers.partials._cosplayer_badge', $album->cosplayers, 'cosplayer')
                 </div>
 
             </div>

@@ -1,5 +1,5 @@
 <tr>
-    <td width="5%">
+    <td width="2%">
         <span class="icon">
             <i class="fas fa-tags"></i>
         </span>
@@ -14,7 +14,7 @@
             </span>
         </a>
     </td>
-    <td>
+    <td width="2%">
         <form action="{{ route('admin.categories.destroy', ['category' => $category]) }}" method="POST">
             {{ method_field('DELETE') }}
             @csrf

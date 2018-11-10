@@ -1,7 +1,7 @@
 @extends('admin.admin')
 
 @section('admin-content')
-    <div class="card events-card">
+    <div class="card">
         <header class="card-header">
             <p class="card-header-title">
                 Users

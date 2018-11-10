@@ -1,26 +1,27 @@
 <tr>
     <td width="2%">
-        <span class="icon is-small">
-            <span class="has-margin-sm">{{ $album->media->count() }}</span>
-            <i class="far fa-images"></i>
-        </span>
-    </td>
-    <td width="2%">
-        @if ($album->publish)
-            <span class="icon is-small has-text-success">
-                <i class="fas fa-check"></i>
-            </span>
-        @endif
-    </td>
-    <td width="2%">
         @if ($album->password)
             <span class="icon is-small has-text-warning">
                 <i class="fas fa-lock"></i>
+            </span>
+        @elseif ($album->publish)
+            <span class="icon is-small has-text-success">
+                <i class="fas fa-check"></i>
+            </span>
+        @else
+            <span class="icon is-small has-text-grey-light">
+                <i class="far fa-sticky-note"></i>
             </span>
         @endif
     </td>
     <td>
         <a href="{{ route('admin.albums.show', ['album' => $album]) }}">{{ $album->title }}</a>
+    </td>
+    <td width="5%">
+        <span class="icon is-small">
+            <span class="has-margin-sm has-text-grey">{{ $album->media->count() }}</span>
+            <i class="far fa-images has-text-grey-light"></i>
+        </span>
     </td>
     <td width="2%">
         <a href="{{ route('admin.albums.edit', ['album' => $album]) }}">

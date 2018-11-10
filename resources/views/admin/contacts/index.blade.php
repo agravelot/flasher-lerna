@@ -3,7 +3,7 @@
 @section('admin-content')
     <div class="columns">
         <div class="column">
-            <div class="card events-card">
+            <div class="card">
                 <header class="card-header">
                     <p class="card-header-title">
                         Contacts

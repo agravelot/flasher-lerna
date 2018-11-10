@@ -18,9 +18,10 @@
 
 @include('layouts.partials._navbar')
 
-@include('layouts.partials._impersonating')
-
-@yield('content')
+<div class="container has-margin-top-md">
+    @include('layouts.partials._impersonating')
+    @yield('content')
+</div>
 
 {{--@include('layouts.partials._footer')--}}
 
