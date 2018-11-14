@@ -43,10 +43,11 @@ integration_test:
 release_image:
   stage: release
   script:
+  - docker-compose push registry.gitlab.com/nevax/picblog
 #  - docker push registry.gitlab.com/nevax/picblog
-  - docker pull $CONTAINER_TEST_IMAGE
-  - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
-  - docker push $CONTAINER_RELEASE_IMAGE
+#  - docker pull $CONTAINER_TEST_IMAGE
+#  - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
+#  - docker push $CONTAINER_RELEASE_IMAGE
 
 deploy_dev:
   stage: deploy
