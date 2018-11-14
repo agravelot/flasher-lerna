@@ -15,6 +15,13 @@ variables:
   CONTAINER_TEST_IMAGE: registry.gitlab.com/nevax/picblog:$CI_BUILD_REF_NAME
   CONTAINER_RELEASE_IMAGE: registry.gitlab.com/nevax/picblog:latest
 
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+  - .cache/pip
+  - vendor/
+  - node_modules
+
 before_script:
 - apk add --no-cache py-pip
 - pip install docker-compose
