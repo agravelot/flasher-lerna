@@ -15,7 +15,7 @@ before_script:
 build:
   stage: build
   script:
-  - docker login registry.gitlab.com
+  - docker login registry.example.com -u gitlab-ci-token -p $GITLAB_TOKEN
   - docker-compose build -t registry.gitlab.com/nevax/picblog .
   - docker push registry.gitlab.com/nevax/picblog
 
