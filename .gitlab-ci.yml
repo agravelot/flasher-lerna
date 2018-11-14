@@ -12,3 +12,12 @@ build:
   stage: build
   script:
   - docker-compose build
+
+test:
+  stage: test
+  script:
+  - echo "TEST"
+  - docker-compose up -d
+  - docker-compose exec php .vendor/bin/phpunit
+  - docker-compose down
+  allow_failure: true
