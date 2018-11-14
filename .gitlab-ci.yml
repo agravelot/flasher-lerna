@@ -1,29 +1,59 @@
 image: docker
 
+services:
+- docker:dind
+
 stages:
 - build
 - test
+- release
+- deploy
 
-services:
-- docker:dind
+variables:
+  CONTAINER_TEST_IMAGE: registry.gitlab.com/nevax/picblog:$CI_BUILD_REF_NAME
+  CONTAINER_RELEASE_IMAGE: registry.gitlab.com/nevax/picblog:latest
 
 before_script:
 - apk add --no-cache py-pip
 - pip install docker-compose
 - docker-compose version
+- docker login -u gitlab-ci-token -p $GITLAB_TOKEN registry.gitlab.com
 
 build:
   stage: build
   script:
-  - docker login registry.example.com -u gitlab-ci-token -p $GITLAB_TOKEN
   - docker-compose build -t registry.gitlab.com/nevax/picblog .
-  - docker push registry.gitlab.com/nevax/picblog
 
-test:
+unit_test:
   stage: test
   script:
-  - echo "TEST"
+  - echo "UNIT TESTS"
   - docker-compose up -d
   - docker-compose exec php .vendor/bin/phpunit --coverage-text
   - docker-compose down
   allow_failure: true
+
+integration_test:
+  stage: test
+  script:
+  - echo "INTEGRATION TEST"
+
+release_image:
+  stage: release
+  script:
+#  - docker push registry.gitlab.com/nevax/picblog
+  - docker pull $CONTAINER_TEST_IMAGE
+  - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
+  - docker push $CONTAINER_RELEASE_IMAGE
+
+deploy_dev:
+  stage: deploy
+  script:
+  - echo "Deploying stagging"
+
+deploy_production:
+  stage: deploy
+  script:
+  - echo "Deploying production"
+  only:
+  - master
