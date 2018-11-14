@@ -34,7 +34,7 @@ services:
     ports:
     - 80:80
     - 443:443
-    env_file: ./docker/nginx/.env
+    env_file: ./docker/nginx/.env.production
     volumes:
     - storage:/var/www/html/storage:ro
     links:
