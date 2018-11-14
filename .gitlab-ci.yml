@@ -1,3 +1,5 @@
+# https://about.gitlab.com/2016/05/23/gitlab-container-registry/
+
 image: docker
 
 services:
@@ -22,7 +24,7 @@ before_script:
 build:
   stage: build
   script:
-  - docker-compose build -t registry.gitlab.com/nevax/picblog .
+  - docker-compose build
 
 unit_test:
   stage: test
