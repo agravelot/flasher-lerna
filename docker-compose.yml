@@ -13,6 +13,7 @@ services:
     - MYSQL_PASSWORD=secret
 
   php:
+    image: registry.gitlab.com/nevax/picblog/picblog_php
     build:
       context: .
       dockerfile: ./docker/php-fpm/Dockerfile
@@ -26,7 +27,8 @@ services:
     - db
     - cache
 
-  web:
+  nginx:
+    image: registry.gitlab.com/nevax/picblog/picblog_nginx
     build:
       context: .
       dockerfile: ./docker/nginx/Dockerfile
