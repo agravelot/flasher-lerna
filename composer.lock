@@ -1859,16 +1859,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "1.34.1",
+            "version": "1.35.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "19201b87f7dba2a7cbf1cccdf0e1da13c04ee9c9"
+                "reference": "5c05a2be472b22f63291d192410df9f0e0de3b19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/19201b87f7dba2a7cbf1cccdf0e1da13c04ee9c9",
-                "reference": "19201b87f7dba2a7cbf1cccdf0e1da13c04ee9c9",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/5c05a2be472b22f63291d192410df9f0e0de3b19",
+                "reference": "5c05a2be472b22f63291d192410df9f0e0de3b19",
                 "shasum": ""
             },
             "require": {
@@ -1876,8 +1876,11 @@
                 "symfony/translation": "~2.6 || ~3.0 || ~4.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "~2",
                 "phpunit/phpunit": "^4.8.35 || ^5.7"
+            },
+            "suggest": {
+                "friendsofphp/php-cs-fixer": "Needed for the `composer phpcs` command. Allow to automatically fix code style.",
+                "phpstan/phpstan": "Needed for the `composer phpstan` command. Allow to detect potential errors."
             },
             "type": "library",
             "extra": {
@@ -1910,7 +1913,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2018-11-08T13:33:47+00:00"
+            "time": "2018-11-14T21:55:58+00:00"
         },
         {
             "name": "nicmart/tree",
@@ -2676,16 +2679,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.4.3",
+            "version": "7.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "c151651fb6ed264038d486ea262e243af72e5e64"
+                "reference": "b1be2c8530c4c29c3519a052c9fb6cee55053bbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/c151651fb6ed264038d486ea262e243af72e5e64",
-                "reference": "c151651fb6ed264038d486ea262e243af72e5e64",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b1be2c8530c4c29c3519a052c9fb6cee55053bbd",
+                "reference": "b1be2c8530c4c29c3519a052c9fb6cee55053bbd",
                 "shasum": ""
             },
             "require": {
@@ -2756,7 +2759,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-10-23T05:57:41+00:00"
+            "time": "2018-11-14T16:52:02+00:00"
         },
         {
             "name": "predis/predis",
@@ -5409,16 +5412,16 @@
         },
         {
             "name": "tightenco/collect",
-            "version": "v5.7.12",
+            "version": "v5.7.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tightenco/collect.git",
-                "reference": "0d89929f10a495ebafc15fb6bff5581d10c38abb"
+                "reference": "5172ad96c54560352b79386b293375da40280fdc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tightenco/collect/zipball/0d89929f10a495ebafc15fb6bff5581d10c38abb",
-                "reference": "0d89929f10a495ebafc15fb6bff5581d10c38abb",
+                "url": "https://api.github.com/repos/tightenco/collect/zipball/5172ad96c54560352b79386b293375da40280fdc",
+                "reference": "5172ad96c54560352b79386b293375da40280fdc",
                 "shasum": ""
             },
             "require": {
@@ -5455,7 +5458,7 @@
                 "collection",
                 "laravel"
             ],
-            "time": "2018-10-30T21:09:13+00:00"
+            "time": "2018-11-09T19:12:42+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -5510,12 +5513,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UniSharp/laravel-filemanager.git",
-                "reference": "aa889f69fd877bcb70252b1d244a6bf145329697"
+                "reference": "c5eec4360ff333d5948d6c09deb3bded31a82101"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UniSharp/laravel-filemanager/zipball/aa889f69fd877bcb70252b1d244a6bf145329697",
-                "reference": "aa889f69fd877bcb70252b1d244a6bf145329697",
+                "url": "https://api.github.com/repos/UniSharp/laravel-filemanager/zipball/c5eec4360ff333d5948d6c09deb3bded31a82101",
+                "reference": "c5eec4360ff333d5948d6c09deb3bded31a82101",
                 "shasum": ""
             },
             "require": {
@@ -5577,7 +5580,7 @@
                 "tinymce",
                 "upload"
             ],
-            "time": "2018-11-08T06:13:10+00:00"
+            "time": "2018-11-14T02:13:25+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -6684,16 +6687,16 @@
         },
         {
             "name": "laravel/telescope",
-            "version": "v0.1.7",
+            "version": "v0.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/telescope.git",
-                "reference": "7183e588501de3b1de307a6f82d311e2212b0f83"
+                "reference": "96e23e08c5de5748b7ea38573da13b3a1f3fc141"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/telescope/zipball/7183e588501de3b1de307a6f82d311e2212b0f83",
-                "reference": "7183e588501de3b1de307a6f82d311e2212b0f83",
+                "url": "https://api.github.com/repos/laravel/telescope/zipball/96e23e08c5de5748b7ea38573da13b3a1f3fc141",
+                "reference": "96e23e08c5de5748b7ea38573da13b3a1f3fc141",
                 "shasum": ""
             },
             "require": {
@@ -6743,7 +6746,7 @@
                 "laravel",
                 "monitoring"
             ],
-            "time": "2018-11-08T11:21:56+00:00"
+            "time": "2018-11-09T14:19:41+00:00"
         },
         {
             "name": "maximebf/debugbar",
