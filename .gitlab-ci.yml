@@ -36,7 +36,7 @@ build:
   script:
   - docker-compose build
   - docker push registry.gitlab.com/nevax/picblog/picblog_php:latest
-  - docker push registry.gitlab.com/nevax/picblog/picblog_web:latest
+  - docker push registry.gitlab.com/nevax/picblog/picblog_nginx:latest
 
 unit_test:
   stage: test
