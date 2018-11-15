@@ -20,6 +20,7 @@ services:
     restart: always
     volumes:
     - storage:/var/www/html/storage
+    - public_vendor:/var/www/html/public/vendor
     links:
     - db
     - cache
@@ -39,6 +40,7 @@ services:
     env_file: ./docker/nginx/.env.production
     volumes:
     - storage:/var/www/html/storage:ro
+    - public_vendor:/var/www/html/public/vendor:ro
     links:
     - php
     depends_on:
@@ -60,3 +62,4 @@ services:
 volumes:
   db-data:
   storage:
+  public_vendor:

@@ -77,14 +77,15 @@ RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage && \
         chown -h 1000:1000 /var/www/html/public/storage
 
 # Clean laravel cache
-CMD chown -R 1000:1000 /var/www/html/storage && \
-        php artisan config:clear && \
+CMD php artisan config:clear && \
 #        php artisan cache:clear && \
         php artisan view:clear && \
 
 # Publish assets
+        php artisan vendor:publish --tag=lfm_public && \
         php artisan vendor:publish --provider="Laravel\Horizon\HorizonServiceProvider" && \
         php artisan vendor:publish --tag=telescope-assets --force && \
+
 
 # Update database
         php artisan migrate --force && \
@@ -95,9 +96,12 @@ CMD chown -R 1000:1000 /var/www/html/storage && \
         php artisan route:cache && \
         php artisan config:cache && \
 
-#        chown -R 1000:1000 . && \
+# Setup permissions
+        chown -R 1000:1000 /var/www/html/storage && \
+        chown -R 1000:1000 public/vendor && \
 
-# Run queues workers
+
+# Run queues workers as daemon
         supervisord -c /etc/custom-supervisord.ini && \
 
 # Run php-fpm
