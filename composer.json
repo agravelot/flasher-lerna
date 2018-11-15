@@ -34,7 +34,7 @@
     "doctrine/dbal": "^2.8",
     "filp/whoops": "^2.0",
     "fzaninotto/faker": "^1.8",
-    "laravel/telescope": "^0.1.6",
+    "laravel/telescope": "^1.0",
     "mockery/mockery": "^1.0",
     "nunomaduro/collision": "^2.0",
     "phploc/phploc": "*",
@@ -58,7 +58,6 @@
   "extra": {
     "laravel": {
       "dont-discover": [
-        "laravel/telescope"
       ]
     }
   },

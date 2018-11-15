@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "49948661afce961bad08684ffc43376f",
+    "content-hash": "0d31e11f7ab166650ac1a3c24e5ffdf6",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -5686,16 +5686,16 @@
     "packages-dev": [
         {
             "name": "barryvdh/laravel-debugbar",
-            "version": "v3.2.0",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-debugbar.git",
-                "reference": "5b68f3972083a7eeec0d6f161962fcda71a127c0"
+                "reference": "9d5caf43c5f3a3aea2178942f281054805872e7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/5b68f3972083a7eeec0d6f161962fcda71a127c0",
-                "reference": "5b68f3972083a7eeec0d6f161962fcda71a127c0",
+                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/9d5caf43c5f3a3aea2178942f281054805872e7c",
+                "reference": "9d5caf43c5f3a3aea2178942f281054805872e7c",
                 "shasum": ""
             },
             "require": {
@@ -5750,7 +5750,7 @@
                 "profiler",
                 "webprofiler"
             ],
-            "time": "2018-08-22T11:06:19+00:00"
+            "time": "2018-11-09T08:37:55+00:00"
         },
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -6687,16 +6687,16 @@
         },
         {
             "name": "laravel/telescope",
-            "version": "v0.1.8",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/telescope.git",
-                "reference": "96e23e08c5de5748b7ea38573da13b3a1f3fc141"
+                "reference": "feaf48bf4162ea0b7613ec4a2944342cd1a84dca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/telescope/zipball/96e23e08c5de5748b7ea38573da13b3a1f3fc141",
-                "reference": "96e23e08c5de5748b7ea38573da13b3a1f3fc141",
+                "url": "https://api.github.com/repos/laravel/telescope/zipball/feaf48bf4162ea0b7613ec4a2944342cd1a84dca",
+                "reference": "feaf48bf4162ea0b7613ec4a2944342cd1a84dca",
                 "shasum": ""
             },
             "require": {
@@ -6746,7 +6746,7 @@
                 "laravel",
                 "monitoring"
             ],
-            "time": "2018-11-09T14:19:41+00:00"
+            "time": "2018-11-15T15:28:27+00:00"
         },
         {
             "name": "maximebf/debugbar",
