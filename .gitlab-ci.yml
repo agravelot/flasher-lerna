@@ -14,6 +14,8 @@ stages:
 variables:
   CONTAINER_TEST_IMAGE: registry.gitlab.com/nevax/picblog:$CI_BUILD_REF_NAME
   CONTAINER_RELEASE_IMAGE: registry.gitlab.com/nevax/picblog:latest
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
