@@ -33,7 +33,8 @@ build:
   stage: build
   script:
   - docker-compose build
-  - docker-compose push
+  - docker push registry.gitlab.com/picblog_php
+  - docker push registry.gitlab.com/picblog_web
 
 unit_test:
   stage: test
