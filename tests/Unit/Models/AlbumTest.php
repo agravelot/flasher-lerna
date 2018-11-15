@@ -45,15 +45,8 @@ class AlbumTest extends ModelTestCase
     {
         $this->runConfigurationAssertions(new Album(), [
             'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'publish', 'user_id'
-        ]);
-    }
-
-    public function testHasManyPicturesRelationship()
-    {
-        $album = new Album();
-        $relation = $album->pictures();
-
-        $this->assertHasManyRelation($relation, $album, new Picture(), 'album_id');
+        ],
+            ['password']);
     }
 
     public function testHasManyAlbumsRelationship()
