@@ -43,6 +43,7 @@ unit_test:
   - echo "UNIT TESTS"
   - docker-compose pull
   - docker-compose up -d
+  - docker-compose exec -T apk add --no-cache $PHPIZE_DEPS && pecl install xdebug && docker-php-ext-enable xdebug
   - docker-compose exec -T php vendor/bin/phpunit --coverage-text
   - docker-compose down
   allow_failure: true
