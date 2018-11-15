@@ -8,7 +8,6 @@ services:
 stages:
 - build
 - test
-- release
 - deploy
 
 variables:
@@ -56,15 +55,6 @@ integration_test:
   - docker-compose up -d
   - docker-compose exec -T php echo "Run test here"
   - docker-compose down
-
-release_image:
-  stage: release
-  script:
-  - docker-compose push
-#  - docker push registry.gitlab.com/nevax/picblog
-#  - docker pull $CONTAINER_TEST_IMAGE
-#  - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
-#  - docker push $CONTAINER_RELEASE_IMAGE
 
 deploy_dev:
   stage: deploy
