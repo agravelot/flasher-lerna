@@ -5,6 +5,15 @@ image: docker
 services:
 - docker:dind
 
+.docker: &dind
+  services:
+  - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://localhost:2375
+  tags:
+  - docker
+
 stages:
 - build
 - test
@@ -32,6 +41,7 @@ before_script:
 - echo "Login to gitlab registry" && docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
 
 build:
+  <<: *dind
   stage: build
   script:
   - docker-compose build
@@ -39,6 +49,7 @@ build:
   - docker push registry.gitlab.com/nevax/picblog/picblog_nginx:latest
 
 unit_test:
+  <<: *dind
   stage: test
   script:
   - echo "UNIT TESTS"
@@ -54,6 +65,7 @@ unit_test:
   allow_failure: true
 
 integration_test:
+  <<: *dind
   stage: test
   script:
   - echo "INTEGRATION TEST"
@@ -62,6 +74,7 @@ integration_test:
   - docker-compose exec -T php echo "Run test here"
 
 lint:
+  <<: *dind
   stage: test
   script:
   - echo "LINT CODE"
@@ -77,6 +90,7 @@ lint:
   allow_failure: true
 
 security_audit:
+  <<: *dind
   stage: test
   script:
   - echo "SECURITY AUDIT"
@@ -93,12 +107,14 @@ security_audit:
   allow_failure: true
 
 deploy_dev:
+  <<: *dind
   stage: deploy
   script:
   - echo "Deploying stagging"
   - docker-compose pull
 
 deploy_production:
+  <<: *dind
   stage: deploy
   script:
   - echo "Deploying production"
