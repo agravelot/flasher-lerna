@@ -9,6 +9,7 @@ _ide_helper_models.php
 .phpunit.result.cache
 .phpstorm.meta.php
 Dockerfile
+.php_cs.cache
 
 /vendor/
 /node_modules/
