@@ -17,7 +17,7 @@ RUN composer install \
     --profile \
     --no-scripts \
     # Production only
-#    --no-dev \
+    --no-dev \
     --optimize-autoloader
 
 #
