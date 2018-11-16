@@ -43,9 +43,12 @@ unit_test:
   - echo "UNIT TESTS"
   - docker-compose pull
   - docker-compose up -d
-  - docker-compose exec -T php apk add --no-cache $PHPIZE_DEPS && pecl install xdebug && docker-php-ext-enable xdebug
-  - docker-compose exec -T php vendor/bin/phpunit  --coverage-text --colors=never
-  - docker-compose down
+  - docker-compose exec php -T apk add --no-cache $PHPIZE_DEPS && pecl install xdebug && docker-php-ext-enable xdebug
+  - docker-compose exec php -T php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+  - docker-compose exec php -T php composer-setup.php
+  - docker-compose exec php -T php -r "unlink('composer-setup.php');"
+  - docker-compose exec php -T php composer.phar require phpunit/phpunit
+  - docker-compose exec php -T vendor/bin/phpunit  --coverage-text --colors=never
   allow_failure: true
 
 integration_test:
