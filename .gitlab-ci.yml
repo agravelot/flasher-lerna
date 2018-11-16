@@ -44,12 +44,12 @@ unit_test:
   - echo "UNIT TESTS"
   - docker-compose pull
   - docker-compose up -d
-  - docker-compose exec php -T apk add --no-cache $PHPIZE_DEPS && pecl install xdebug && docker-php-ext-enable xdebug
-  - docker-compose exec php -T php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-  - docker-compose exec php -T php composer-setup.php
-  - docker-compose exec php -T php -r "unlink('composer-setup.php');"
-  - docker-compose exec php -T php composer.phar require phpunit/phpunit
-  - docker-compose exec php -T vendor/bin/phpunit  --coverage-text --colors=never
+  - docker-compose exec -T php apk add --no-cache $PHPIZE_DEPS && pecl install xdebug && docker-php-ext-enable xdebug
+  - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+  - docker-compose exec -T php php composer-setup.php
+  - docker-compose exec -T php php -r "unlink('composer-setup.php');"
+  - docker-compose exec -T php php composer.phar require phpunit/phpunit
+  - docker-compose exec -T php vendor/bin/phpunit  --coverage-text --colors=never
   allow_failure: true
 
 integration_test:
@@ -58,7 +58,7 @@ integration_test:
   - echo "INTEGRATION TEST"
   - docker-compose pull
   - docker-compose up -d
-  - docker-compose exec php -T echo "Run test here"
+  - docker-compose exec -T php echo "Run test here"
 
 lint:
   stage: test
@@ -66,12 +66,12 @@ lint:
   - echo "LINT CODE"
   - docker-compose pull
   - docker-compose up -d
-  - docker-compose exec php -T apk add --no-cache $PHPIZE_DEPS && pecl install xdebug && docker-php-ext-enable xdebug
-  - docker-compose exec php -T php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-  - docker-compose exec php -T php composer-setup.php
-  - docker-compose exec php -T php -r "unlink('composer-setup.php');"
-  - docker-compose exec php -T php composer.phar require pheromone/phpcs-security-audit
-  - docker-compose exec php -T vendor/bin/php-cs-fixer fix --dry-run --diff
+  - docker-compose exec -T php apk add --no-cache $PHPIZE_DEPS && pecl install xdebug && docker-php-ext-enable xdebug
+  - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+  - docker-compose exec -T php php composer-setup.php
+  - docker-compose exec -T php php -r "unlink('composer-setup.php');"
+  - docker-compose exec -T php php composer.phar require pheromone/phpcs-security-audit
+  - docker-compose exec -T php vendor/bin/php-cs-fixer fix --dry-run --diff
   allow_failure: true
 
 security_audit:
@@ -80,12 +80,12 @@ security_audit:
   - echo "SECURITY AUDIT"
   - docker-compose pull
   - docker-compose up -d
-  - docker-compose exec php -T apk add --no-cache $PHPIZE_DEPS && pecl install xdebug && docker-php-ext-enable xdebug
-  - docker-compose exec php -T php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-  - docker-compose exec php -T php composer-setup.php
-  - docker-compose exec php -T php -r "unlink('composer-setup.php');"
-  - docker-compose exec php -T php composer.phar require pheromone/phpcs-security-audit
-  - docker-compose exec php -T sh vendor/pheromone/phpcs-security-audit/symlink.sh
+  - docker-compose exec -T php apk add --no-cache $PHPIZE_DEPS && pecl install xdebug && docker-php-ext-enable xdebug
+  - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+  - docker-compose exec -T php php composer-setup.php
+  - docker-compose exec -T php php -r "unlink('composer-setup.php');"
+  - docker-compose exec -T php php composer.phar require pheromone/phpcs-security-audit
+  - docker-compose exec -T php sh vendor/pheromone/phpcs-security-audit/symlink.sh
   - docker-compose exec -T vendor/bin/phpcs --standard=./vendor/pheromone/phpcs-security-audit/example_base_ruleset.xml ./vendor/pheromone/phpcs-security-audit/tests.php
   allow_failure: true
 
