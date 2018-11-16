@@ -8,6 +8,7 @@ services:
 stages:
 - build
 - test
+- review
 - deploy
 
 variables:
@@ -62,7 +63,7 @@ integration_test:
   - docker-compose exec -T php echo "Run test here"
 
 lint:
-  stage: test
+  stage: review
   script:
   - echo "LINT CODE"
   - docker-compose pull
@@ -77,7 +78,7 @@ lint:
   allow_failure: true
 
 security_audit:
-  stage: test
+  stage: review
   script:
   - echo "SECURITY AUDIT"
   - docker-compose pull
