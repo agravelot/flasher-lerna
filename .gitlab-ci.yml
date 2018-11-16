@@ -38,6 +38,7 @@ build:
   - docker-compose build
   - docker push registry.gitlab.com/nevax/picblog/picblog_php:latest
   - docker push registry.gitlab.com/nevax/picblog/picblog_nginx:latest
+  - docker system prune -f
 
 unit_test:
   stage: test
