@@ -51,7 +51,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    restart: always
+    restart: unless-stopped
     links:
     - db
     ports:
