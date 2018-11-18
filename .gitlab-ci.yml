@@ -49,7 +49,7 @@ unit_test:
   - docker-compose stop phpmyadmin
   - docker-compose exec -T php df -h
   - docker-compose exec -T php free -m
-  - docker-compose exec -T php sh -l -c "apk add --no-cache \$PHPIZE_DEPS"
+  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
   - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
   - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
   - docker-compose exec -T php php composer-setup.php
@@ -74,7 +74,7 @@ lint:
   - echo "LINT CODE"
   - docker-compose pull
   - docker-compose up -d
-  - docker-compose exec -T php sh -l -c "apk add --no-cache \$PHPIZE_DEPS"
+  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
   - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
   - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
   - docker-compose exec -T php php composer-setup.php
@@ -90,7 +90,7 @@ security_audit:
   - echo "SECURITY AUDIT"
   - docker-compose pull
   - docker-compose up -d
-  - docker-compose exec -T php sh -l -c "apk add --no-cache \$PHPIZE_DEPS"
+  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
   - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
   - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
   - docker-compose exec -T php php composer-setup.php
