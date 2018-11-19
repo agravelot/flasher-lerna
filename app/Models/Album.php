@@ -44,6 +44,7 @@ class Album extends Model implements HasMedia
     {
         return $this->morphToMany(Category::class, 'categorizable');
     }
+
     public function cosplayers()
     {
         return $this->belongsToMany(Cosplayer::class);
@@ -75,8 +76,7 @@ class Album extends Model implements HasMedia
 
     public function registerMediaCollections()
     {
-        $this
-            ->addMediaCollection('pictures')
+        $this->addMediaCollection('pictures')
             ->acceptsFile(function (File $file) {
                 return strpos($file->mimeType, 'image/') === 0;
             });

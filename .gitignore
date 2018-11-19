@@ -3,7 +3,7 @@
 /public/fonts
 /public/storage
 /storage/*.key
-/vendor
+/vendor/
 /.idea
 /.vscode
 /.vagrant
@@ -14,13 +14,15 @@ yarn-error.log
 .env
 .phpunit.result.cache
 .phpstorm.meta.php
+.php_cs.cache
 
 _ide_helper.php
 _ide_helper_models.php
-public/mix-manifest.json
-public/js
-public/css
+/public/mix-manifest.json
+/public/js
+/public/css
+/public/images/
+/public/vendor
+/public/sitemap\.xml
 
-public/vendor/
-public/images/
-public/sitemap\.xml
+/storage/medialibrary

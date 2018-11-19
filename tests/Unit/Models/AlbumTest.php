@@ -45,23 +45,16 @@ class AlbumTest extends ModelTestCase
     {
         $this->runConfigurationAssertions(new Album(), [
             'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'publish', 'user_id'
-        ]);
+        ],
+            ['password']);
     }
 
-    public function testHasManyPicturesRelationship()
-    {
-        $album = new Album();
-        $relation = $album->pictures();
-
-        $this->assertHasManyRelation($relation, $album, new Picture(), 'album_id');
-    }
-
-    public function testHasManyAlbumsRelationship()
+    public function testBelongsToManyAlbumsRelationship()
     {
         $album = new Album();
         $relation = $album->cosplayers();
 
-        $this->assertHasManyRelation($relation, $album, new Album(), 'album_id');
+        $this->assertBelongsToManyRelation($relation, $album, new Album(), 'album_id');
     }
 
     //TODO add test morphToMany

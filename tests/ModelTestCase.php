@@ -5,6 +5,7 @@ namespace Tests;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 abstract class ModelTestCase extends TestCase
@@ -132,5 +133,35 @@ abstract class ModelTestCase extends TestCase
         }
 
         $this->assertEquals($owner, $relation->getOwnerKey());
+    }
+
+    /**
+     * @param BelongsToMany $relation
+     * @param Model $model
+     * @param Model $related
+     * @param string $key
+     * @param string $parent
+     * @param \Closure $queryCheck
+     *
+     * - `getQuery()`: assert query has not been modified or modified properly.
+     * - `getForeignKey()`: any `HasOneOrMany` or `BelongsTo` relation, but key type differs (see documentaiton).
+     * - `getQualifiedParentKeyName()`: in case of `HasOneOrMany` relation, there is no `getLocalKey()` method, so this one should be asserted.
+     */
+    protected function assertBelongsToManyRelation($relation, Model $model, Model $related, $key, $parent = null, \Closure $queryCheck = null)
+    {
+        $this->assertInstanceOf(BelongsToMany::class, $relation);
+
+        if (!is_null($queryCheck)) {
+            $queryCheck->bindTo($this);
+            $queryCheck($relation->getQuery(), $model, $relation);
+        }
+
+        $this->assertEquals($key, $relation->getForeignPivotKeyName());
+
+        if (is_null($parent)) {
+            $parent = $model->getKeyName();
+        }
+
+        $this->assertEquals($model->getTable() . '.' . $parent, $relation->getQualifiedParentKeyName());
     }
 }

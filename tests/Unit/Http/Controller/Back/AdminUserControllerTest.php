@@ -7,6 +7,7 @@ use App\Models\Cosplayer;
 use App\Models\User;
 use App\Repositories\Contracts\CosplayerRepository;
 use App\Repositories\Contracts\UserRepository;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +17,7 @@ use Tests\TestCase;
 class AdminUserControllerTest extends TestCase
 {
     use DatabaseTransactions;
+    use DatabaseMigrations;
 
     protected $controller;
     protected $admin;
@@ -50,7 +52,6 @@ class AdminUserControllerTest extends TestCase
             ->shouldReceive('with')->with('cosplayer')->once()->andReturn(Mockery::self())
             ->getMock()->shouldReceive('paginate')->with(10)->once()->andReturn($users);
 
-
         $view = $this->controller->index();
 
         $this->assertEquals('admin.users.index', $view->getName());
@@ -65,7 +66,7 @@ class AdminUserControllerTest extends TestCase
         Auth::setUser($this->admin);
 
         $this->cosplayerRepository->shouldReceive('with')->with('user')->andReturn(Mockery::self())
-            ->getMock()->shouldReceive('all')->with('id', 'name')->andReturn($cosplayers);
+            ->getMock()->shouldReceive('all')->with(['id', 'name'])->andReturn($cosplayers);
 
         $view = $this->controller->create();
 
@@ -104,7 +105,7 @@ class AdminUserControllerTest extends TestCase
             ->andReturn($user);
 
         $this->cosplayerRepository->shouldReceive('with')->with('user')->once()->andReturn(Mockery::self())
-            ->getMock()->shouldReceive('all')->with('id', 'name')->once()->andReturn($cosplayers);
+            ->getMock()->shouldReceive('all')->with(['id', 'name'])->once()->andReturn($cosplayers);
 
         $view = $this->controller->edit($user->id);
 
@@ -119,10 +120,14 @@ class AdminUserControllerTest extends TestCase
         // We define the logged user to pass policies
         Auth::setUser($this->admin);
 
-        $this->userRepository->shouldReceive('delete')
+        $this->userRepository->shouldReceive('find')
             ->once()
             ->with($user->id)
             ->andReturn($user);
+
+        $this->userRepository->shouldReceive('delete')
+            ->once()
+            ->with($user->id);
 
         $response = $this->controller->destroy($user->id);
 

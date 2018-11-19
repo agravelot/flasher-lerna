@@ -1,37 +1,38 @@
 .git/
 .editorconfig
-.gitingore
+.gitignore
 .gitlab-ci.yml
 .gitattributes
-vendor/
-node_modules/
-public/js/
-public/css/
-yarn-error.log
-docker-compose.yml
-
-
 _ide_helper.php
 _ide_helper_models.php
-
-
 .env
 .phpunit.result.cache
 .phpstorm.meta.php
+Dockerfile
+.php_cs.cache
 
-public/vendor/
-public/images/
-public/sitemap\.xml
-public/storage
+/vendor/
+/node_modules/
+/yarn-error.log
+/docker-compose.yml
 
-storage/framework/cache/**
-storage/framework/sessions/**
-storage/framework/views/**
-storage/debugbar
-storage/logs/laravel.log
-bootstrap/cache/**
 
-docker/*/Dockerfile
+/public/vendor/
+#!/public/vendor/telescope
+/public/images/
+/public/sitemap\.xml
+/public/storage
+/public/js/
+/public/css/
+
+/storage/framework/cache/**
+/storage/framework/sessions/**
+/storage/framework/views/**
+/storage/debugbar
+/storage/logs/*
+/storage/medialibrary
+/storage/app/public/*
+/bootstrap/cache/**
 
 *.md
 

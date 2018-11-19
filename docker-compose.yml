@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 
 services:
   db:
@@ -13,12 +13,16 @@ services:
     - MYSQL_PASSWORD=secret
 
   php:
+    image: registry.gitlab.com/nevax/picblog/picblog_php
     build:
       context: .
       dockerfile: ./docker/php-fpm/Dockerfile
+      cache_from:
+      - registry.gitlab.com/nevax/picblog/picblog_php:latest
     restart: always
     volumes:
     - storage:/var/www/html/storage
+    - public_vendor:/var/www/html/public/vendor
     links:
     - db
     - cache
@@ -26,17 +30,21 @@ services:
     - db
     - cache
 
-  web:
+  nginx:
+    image: registry.gitlab.com/nevax/picblog/picblog_nginx
     build:
       context: .
       dockerfile: ./docker/nginx/Dockerfile
+      cache_from:
+        - registry.gitlab.com/nevax/picblog/picblog_nginx:latest
     restart: always
     ports:
-    - 80:80
-    - 443:443
+    - 8080:80
+    - 4434:443
     env_file: ./docker/nginx/.env.production
     volumes:
     - storage:/var/www/html/storage:ro
+    - public_vendor:/var/www/html/public/vendor:ro
     links:
     - php
     depends_on:
@@ -47,7 +55,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    restart: always
+    restart: unless-stopped
     links:
     - db
     ports:
@@ -58,3 +66,4 @@ services:
 volumes:
   db-data:
   storage:
+  public_vendor:

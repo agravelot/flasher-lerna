@@ -1,92 +1,116 @@
-# This file is a template, and might need editing before it works on your project.
-# Official framework image. Look for the different tagged releases at:
-# https://hub.docker.com/r/library/php
-image: php:latest
+# https://about.gitlab.com/2016/05/23/gitlab-container-registry/
 
-# Pick zero or more services to be used on all builds.
-# Only needed when using a docker container to run your tests in.
-# Check out: http://docs.gitlab.com/ce/ci/docker/using_docker_images.html#what-is-a-service
+image: docker
+
 services:
-- mariadb:latest
+- docker:dind
+
+stages:
+- build
+- test
+- review
+- deploy
 
 variables:
-  MYSQL_ROOT_PASSWORD: secret
-  MYSQL_DATABASE: picblog_testing
-  MYSQL_USER: picblog
-  MYSQL_PASSWORD: secret
+  CONTAINER_TEST_IMAGE: registry.gitlab.com/nevax/picblog:$CI_BUILD_REF_NAME
+  CONTAINER_RELEASE_IMAGE: registry.gitlab.com/nevax/picblog:latest
+  CONTAINER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
 
-# This folder is cached between builds
-# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
 cache:
+  key: ${CI_COMMIT_REF_SLUG}
   paths:
+  - .cache/pip
   - vendor/
-  - node_modules/
+  - node_modules
 
-# This is a basic example for a gem or script which doesn't use
-# services such as redis or postgres
 before_script:
-# Update packages
-- apt-get update -yqq
+- apk add --no-cache py-pip
+- echo "Installing Docker compose" && pip install docker-compose
+- echo "Docker compose version" && docker-compose version
+- echo "Docker compose validating" && docker-compose config
+- echo "Login to gitlab registry" && docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
 
-# Installing dependency to install nodejs and yarn
-- apt-get install gnupg apt-transport-https -yqq
-
-# Upgrade yarn
-- curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-- echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-
-# Upgrade to Node 10, it will also run update for you
-- curl -sL https://deb.nodesource.com/setup_10.x | bash -
-
-# Install dependencies
-- apt-get install git nodejs yarn libcurl4-gnutls-dev libicu-dev libmcrypt-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libpq-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev -yqq
-
-# Install php extensions
-- docker-php-ext-install mbstring pdo_mysql curl json intl gd xml zip bz2 opcache exif
-
-# Install & enable Xdebug for code coverage reports
-#- pecl install xdebug
-#- docker-php-ext-enable xdebug
-
-# Install Composer and project dependencies.
-- curl -sS https://getcomposer.org/installer | php
-- php composer.phar install
-
-# Install Node dependencies.
-# comment this out if you don't have a node dependency
-- yarn install
-
-# Copy over testing configuration.
-# Don't forget to set the database config in .env.testing correctly
-# DB_HOST=mysql
-# DB_DATABASE=project_name
-# DB_USERNAME=root
-# DB_PASSWORD=secret
-- cp .env.testing .env
-
-# Run yarn build
-# comment this out if you don't have a frontend build
-# you can change this to to your frontend building script like
-# yarn run build
-- yarn run dev
-
-# Generate an application key. Re-cache.
-- php artisan key:generate
-- php artisan config:cache
-
-# Run database migrations.
-- php artisan migrate
-
-# Run database seed
-- php artisan db:seed
-
-test:
+build:
+  stage: build
   script:
-  # run laravel tests
-  - php vendor/bin/phpunit --coverage-text
+  - docker-compose build
+  - docker push registry.gitlab.com/nevax/picblog/picblog_php:latest
+  - docker push registry.gitlab.com/nevax/picblog/picblog_nginx:latest
+  - docker system prune -f
 
-  # run frontend tests
-  # if you have any task for testing frontend
-  # set it in your package.json script
-  # comment this out if you don't have a frontend test
-  # - npm test
+unit_test:
+  stage: test
+  script:
+  - echo "UNIT TESTS"
+  - docker-compose pull
+  - docker-compose up -d
+  - df -h && free -m
+  - docker-compose exec -T php df -h
+  - docker-compose exec -T php free -m
+  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
+  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
+  - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+  - docker-compose exec -T php php composer-setup.php
+  - docker-compose exec -T php php -r "unlink('composer-setup.php');"
+  - docker-compose exec -T php php composer.phar require phpunit/phpunit
+  - docker-compose exec -T php vendor/bin/phpunit  --coverage-text --colors=never
+  - docker-compose down
+  allow_failure: true
+
+integration_test:
+  stage: test
+  script:
+  - echo "INTEGRATION TEST"
+  - docker-compose pull
+  - docker-compose up -d
+  - docker-compose exec -T php echo "Run test here"
+  - docker-compose down
+
+lint:
+  stage: review
+  script:
+  - echo "LINT CODE"
+  - docker-compose pull
+  - docker-compose up -d
+  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
+  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
+  - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+  - docker-compose exec -T php php composer-setup.php
+  - docker-compose exec -T php php -r "unlink('composer-setup.php');"
+  - docker-compose exec -T php php composer.phar require pheromone/phpcs-security-audit
+  - docker-compose exec -T php vendor/bin/php-cs-fixer fix --dry-run --diff
+  - docker-compose down
+  allow_failure: true
+
+security_audit:
+  stage: review
+  script:
+  - echo "SECURITY AUDIT"
+  - docker-compose pull
+  - docker-compose up -d
+  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
+  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
+  - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+  - docker-compose exec -T php php composer-setup.php
+  - docker-compose exec -T php php -r "unlink('composer-setup.php');"
+  - docker-compose exec -T php php composer.phar require pheromone/phpcs-security-audit
+  - docker-compose exec -T php sh vendor/pheromone/phpcs-security-audit/symlink.sh
+  - docker-compose exec -T vendor/bin/phpcs --standard=./vendor/pheromone/phpcs-security-audit/example_base_ruleset.xml ./vendor/pheromone/phpcs-security-audit/tests.php
+  - docker-compose down
+  allow_failure: true
+
+deploy_dev:
+  stage: deploy
+  script:
+  - echo "Deploying stagging"
+  - docker-compose pull
+
+deploy_production:
+  stage: deploy
+  script:
+  - echo "Deploying production"
+  - docker-compose pull
+  only:
+  - master
