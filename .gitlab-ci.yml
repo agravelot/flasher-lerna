@@ -46,6 +46,7 @@ unit_test:
   - echo "UNIT TESTS"
   - docker-compose pull
   - docker-compose up -d
+  - df -h && free -m
   - docker-compose exec -T php df -h
   - docker-compose exec -T php free -m
   - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
