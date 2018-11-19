@@ -70,29 +70,23 @@ RUN mv .env.production .env \
 # Clean laravel cache
 CMD php artisan config:clear \
 #        && php artisan cache:clear \
-        && php artisan view:clear  \
-
+        && php artisan view:clear \
 # Publish assets
         && php artisan vendor:publish --tag=lfm_public \
         && php artisan vendor:publish --provider="Laravel\Horizon\HorizonServiceProvider" \
         && php artisan vendor:publish --tag=telescope-assets --force \
-
 # Update database
         && php artisan migrate --force \
-
 # Optimizing for production
 # https://laravel.com/docs/5.7/deployment#optimization
         && php artisan optimize \
         && php artisan route:cache \
         && php artisan config:cache \
-
 # Setup permissions
         && chown -R 1000:1000 storage/ \
         && chown -R 1000:1000 public/vendor \
-
 # Run queues workers as daemon
         && supervisord -c /etc/custom-supervisord.ini \
-
 # Run php-fpm
 # https://github.com/docker-library/php/blob/master/7.2/alpine3.8/fpm/Dockerfile
         && php-fpm
