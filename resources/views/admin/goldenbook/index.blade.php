@@ -7,12 +7,6 @@
                 <header class="card-header">
                     <p class="card-header-title">
                         Golden book posts
-                        <a href="{{ route('admin.goldenbook.create') }}">
-                            <span class="icon">
-                                <i class="fas fa-plus"></i>
-                            </span>
-                            <span>Add</span>
-                        </a>
                     </p>
 
                     <a href="#" class="card-header-icon" aria-label="more options">
