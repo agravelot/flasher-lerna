@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 
 services:
   db:
@@ -17,6 +17,8 @@ services:
     build:
       context: .
       dockerfile: ./docker/php-fpm/Dockerfile
+      cache_from:
+      - registry.gitlab.com/nevax/picblog/picblog_php:latest
     restart: always
     volumes:
     - storage:/var/www/html/storage
@@ -33,10 +35,12 @@ services:
     build:
       context: .
       dockerfile: ./docker/nginx/Dockerfile
+      cache_from:
+        - registry.gitlab.com/nevax/picblog/picblog_nginx:latest
     restart: always
     ports:
-    - 80:80
-    - 443:443
+    - 8080:80
+    - 4434:443
     env_file: ./docker/nginx/.env.production
     volumes:
     - storage:/var/www/html/storage:ro
