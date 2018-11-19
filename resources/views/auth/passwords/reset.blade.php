@@ -41,9 +41,12 @@
 
                             <div class="field-body">
                                 <div class="field">
-                                    <p class="control">
+                                    <p class="control has-icons-left">
                                         <input class="input" id="email" type="email" name="email"
                                                value="{{ old('email') }}" required autofocus>
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
                                     </p>
                                     @include('layouts.partials._form_errors', ['data' => 'email'])
                                 </div>
@@ -57,8 +60,11 @@
 
                             <div class="field-body">
                                 <div class="field">
-                                    <p class="control">
+                                    <p class="control has-icons-left">
                                         <input class="input" id="password" type="password" name="password" required>
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-key"></i>
+                                        </span>
                                     </p>
                                     @include('layouts.partials._form_errors', ['data' => 'password'])
                                 </div>
