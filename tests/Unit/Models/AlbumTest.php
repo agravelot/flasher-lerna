@@ -49,12 +49,12 @@ class AlbumTest extends ModelTestCase
             ['password']);
     }
 
-    public function testHasManyAlbumsRelationship()
+    public function testBelongsToManyAlbumsRelationship()
     {
         $album = new Album();
         $relation = $album->cosplayers();
 
-        $this->assertHasManyRelation($relation, $album, new Album(), 'album_id');
+        $this->assertBelongsToManyRelation($relation, $album, new Album(), 'album_id');
     }
 
     //TODO add test morphToMany

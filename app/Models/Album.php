@@ -47,7 +47,7 @@ class Album extends Model implements HasMedia
 
     public function cosplayers()
     {
-        return $this->hasMany(Cosplayer::class);
+        return $this->belongsToMany(Cosplayer::class);
     }
 
     /**
