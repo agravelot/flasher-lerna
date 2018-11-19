@@ -8,7 +8,7 @@
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "yarn run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "watch:migrations": "onchange 'database/migrations/*.php' -- php artisan migrate:refresh ",
+        "watch:migrations": "onchange 'database/migrations/*.php' -- php artisan migrate:refresh",
         "watch:migrations-seeds": "onchange 'database/*/*.php' -- php artisan migrate:refresh --seed"
     },
     "devDependencies": {
@@ -19,6 +19,7 @@
         "bulma-extensions": "^2.2",
         "cross-env": "^5.1",
         "laravel-mix": "^2.0",
+        "laravel-mix-purgecss": "^3.0.0",
         "lodash": "^4.17",
         "onchange": "^5.0"
     },
