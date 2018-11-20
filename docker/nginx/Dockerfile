@@ -1,7 +1,7 @@
 #
 # Frontend
 #
-FROM node:8-alpine as frontend
+FROM node:10-alpine as frontend
 
 WORKDIR /app
 
