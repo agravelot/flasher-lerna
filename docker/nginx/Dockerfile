@@ -19,7 +19,8 @@ WORKDIR /var/www/html
 RUN apk --no-cache add shadow \
         && usermod -u 1000 nginx
 
-COPY docker/nginx/site.conf /etc/nginx/conf.d/default.conf
+COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY docker/nginx/conf.d/site.conf /etc/nginx/conf.d/default.conf
 
 # Importing source code
 COPY --chown=1000:1000 . /var/www/html
