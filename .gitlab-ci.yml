@@ -109,7 +109,7 @@ deploy_dev:
   - apk add --no-cache openssh-client socat bash
   - eval $(ssh-agent -s)
   - mkdir -p ~/.ssh
-  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   - chmod +x ./deploy.sh
   - bash -c './deploy.sh'
 #  only:
