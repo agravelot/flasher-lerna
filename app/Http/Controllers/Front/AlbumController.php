@@ -41,7 +41,7 @@ class AlbumController extends Controller
         }
 
         $albums = $this->albumRepository->with(['media', 'categories'])
-            ->orderBy('created_at')
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         return view('albums.index', ['albums' => $albums]);

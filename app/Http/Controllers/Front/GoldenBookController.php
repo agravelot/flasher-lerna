@@ -9,7 +9,6 @@ use App\Repositories\Contracts\GoldenBookRepository;
 
 class GoldenBookController extends Controller
 {
-
     /**
      * @var GoldenBookRepository
      */
@@ -27,8 +26,7 @@ class GoldenBookController extends Controller
      */
     public function index()
     {
-        $goldenBooksPosts = GoldenBookPost::all();
-
+        $goldenBooksPosts = $this->repository->orderBy('created_at', 'desc')->all();
         return view('goldenbook.index', ['goldenBooksPosts' => $goldenBooksPosts]);
     }
 
