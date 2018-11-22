@@ -9,7 +9,7 @@ REMOTE=sshuser@${CI_DEPLOY_URI}
 PICBLOG_IMAGE_PHP=registry.gitlab.com/nevax/picblog/picblog_php
 PICBLOG_IMAGE_NGINX=registry.gitlab.com/nevax/picblog/picblog_nginx
 
-ssh-add <(echo "${SSH_PRIVATE_KEY}" | base64 -d)
+echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
 
 echo " * OPENING DOCKER SOCKET TUNNEL"
 socat \
