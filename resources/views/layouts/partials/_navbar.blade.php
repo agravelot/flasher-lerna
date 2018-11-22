@@ -3,21 +3,8 @@
         <div class="navbar-brand">
             <a href="{{ url('/') }}" class="navbar-item">{{ config('app.name', 'PicBlog') }}</a>
 
-            @if (env('FACEBOOK_URL'))
-                <a class="navbar-item is-hidden-desktop" href="{{ env('FACEBOOK_URL') }}" target="_blank">
-                    <span class="icon">
-                        <i class="fab fa-facebook-f" aria-hidden="true"></i>
-                    </span>
-                </a>
-            @endif
+            @include('layouts.partials._navbar_socials', ['desktop' => false])
 
-            @if (env('INSTAGRAM_URL'))
-                <a class="navbar-item is-hidden-desktop" href="{{ env('INSTAGRAM_URL') }}" target="_blank">
-                    <span class="icon">
-                        <i class="fab fa-instagram" aria-hidden="true"></i>
-                    </span>
-                </a>
-            @endif
             <a role="button" class="navbar-burger burger" aria-label="menu" data-target="navMenu" aria-expanded="false">
                 <span></span>
                 <span></span>
@@ -25,10 +12,9 @@
             </a>
         </div>
 
-
         <div class="navbar-menu" id="navMenu">
             <div class="navbar-start">
-                {{--                <a class="navbar-item {{ Request::is('posts*') ? 'is-active' : '' }}" href="{{ route('posts.index') }}">Posts</a>--}}
+                {{-- <a class="navbar-item {{ Request::is('posts*') ? 'is-active' : '' }}" href="{{ route('posts.index') }}">Posts</a>--}}
                 <a class="navbar-item {{ Request::is('albums*') ? 'is-active' : '' }}"
                    href="{{ route('albums.index') }}">Albums</a>
                 <a class="navbar-item {{ Request::is('categories*') ? 'is-active' : '' }}"
@@ -37,23 +23,8 @@
                    href="{{ route('goldenbook.index') }}">Golden book</a>
             </div>
 
-            @if (env('FACEBOOK_URL'))
-                <a class="navbar-item is-hidden-touch" href="{{ env('FACEBOOK_URL') }}" target="_blank">
-                    <span class="icon">
-                        <i class="fab fa-facebook-f" aria-hidden="true"></i>
-                    </span>
-                </a>
-            @endif
-
-            @if (env('INSTAGRAM_URL'))
-                <a class="navbar-item is-hidden-touch" href="{{ env('INSTAGRAM_URL') }}" target="_blank">
-                <span class="icon">
-                    <i class="fab fa-instagram" aria-hidden="true"></i>
-                </span>
-                </a>
-            @endif
-
             <div class="navbar-end">
+                @include('layouts.partials._navbar_socials', ['desktop' => true])
                 <a class="navbar-item {{ Request::is('about') ? 'is-active' : '' }}" href="#">About</a>
                 <a class="navbar-item {{ Request::is('contact*') ? 'is-active' : '' }}"
                    href="{{ route('contact.create') }}">Contact</a>
@@ -75,7 +46,6 @@
                             </a>
                         </div>
                     </div>
-
                 @else
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link" href="#">
