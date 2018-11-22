@@ -13,25 +13,26 @@
 
             @if (env('INSTAGRAM_URL'))
                 <a class="navbar-item is-hidden-desktop" href="{{ env('INSTAGRAM_URL') }}" target="_blank">
-                <span class="icon">
-                    <i class="fab fa-instagram" aria-hidden="true"></i>
-                </span>
+                    <span class="icon">
+                        <i class="fab fa-instagram" aria-hidden="true"></i>
+                    </span>
                 </a>
             @endif
+            <a role="button" class="navbar-burger burger" aria-label="menu" data-target="navMenu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </a>
         </div>
 
-        <a role="button" class="navbar-burger" aria-label="menu" data-target="navMenu" aria-expanded="false">
-            <span></span>
-            <span></span>
-            <span></span>
-        </a>
 
         <div class="navbar-menu" id="navMenu">
             <div class="navbar-start">
-                <a class="navbar-item {{ Request::is('posts*') ? 'is-active' : '' }}" href="{{ route('posts.index') }}">Posts</a>
+                {{--                <a class="navbar-item {{ Request::is('posts*') ? 'is-active' : '' }}" href="{{ route('posts.index') }}">Posts</a>--}}
                 <a class="navbar-item {{ Request::is('albums*') ? 'is-active' : '' }}"
                    href="{{ route('albums.index') }}">Albums</a>
-                <a class="navbar-item {{ Request::is('categories*') ? 'is-active' : '' }}" href="{{ route('categories.index') }}">Categories</a>
+                <a class="navbar-item {{ Request::is('categories*') ? 'is-active' : '' }}"
+                   href="{{ route('categories.index') }}">Categories</a>
                 <a class="navbar-item {{ Request::is('goldenbook*') ? 'is-active' : '' }}"
                    href="{{ route('goldenbook.index') }}">Golden book</a>
             </div>
@@ -53,7 +54,7 @@
             @endif
 
             <div class="navbar-end">
-                <a class="navbar-item {{ Request::is('') ? 'is-active' : '' }}" href="#">About</a>
+                <a class="navbar-item {{ Request::is('about') ? 'is-active' : '' }}" href="#">About</a>
                 <a class="navbar-item {{ Request::is('contact*') ? 'is-active' : '' }}"
                    href="{{ route('contact.create') }}">Contact</a>
                 @guest()
