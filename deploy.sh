@@ -31,4 +31,4 @@ docker-compose -f docker-compose.yml pull
 echo " * UPDATING RUNNING CONTAINERS"
 docker-compose -f docker-compose.yml up -d
 echo " * CLEANING OLD IMAGES"
-ssh -t ${REMOTE} -p $CI_DEPLOY_SSH_PORT "docker-clean images" -p $CI_DEPLOY_SSH_PORT
+ssh -t ${REMOTE} -p $CI_DEPLOY_SSH_PORT "docker-clean images"
