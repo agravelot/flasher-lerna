@@ -35,6 +35,7 @@ before_script:
 build:
   stage: build
   script:
+  - docker-compose pull
   - docker-compose build
   - docker push registry.gitlab.com/nevax/picblog/picblog_php:latest
   - docker push registry.gitlab.com/nevax/picblog/picblog_nginx:latest
