@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 set -o pipefail  # trace ERR through pipes
 set -o errtrace  # trace ERR through 'time command' and other functions
@@ -6,13 +6,15 @@ set -o nounset   ## set -u : exit the script if you try to use an uninitialised 
 set -o errexit   ## set -e : exit the script if any statement returns a non-true return value
 
 REMOTE=sshuser@$CI_DEPLOY_URI
-PICBLOG_IMAGE_PHP=registry.gitlab.com/vendor/customer/typo3
-PICBLOG_IMAGE_NGINX=registry.gitlab.com/vendor/customer/typo3
+PICBLOG_IMAGE_PHP=registry.gitlab.com/nevax/picblog/picblog_php
+PICBLOG_IMAGE_NGINX=registry.gitlab.com/nevax/picblog/picblog_nginx
+
+ssh-add <(echo "$SSH_PRIVATE_KEY" | base64 --decode)
 
 echo " * OPENING DOCKER SOCKET TUNNEL"
 socat \
   "UNIX-LISTEN:/tmp/docker.sock,reuseaddr,fork" \
-  "EXEC:'ssh -kTax $REMOTE socat STDIO UNIX-CONNECT\:/var/run/docker.sock'" \
+  "EXEC:'ssh -kTax $REMOTE -p $CI_DEPLOY_SSH_PORT socat STDIO UNIX-CONNECT\:/var/run/docker.sock'" \
   &
 export DOCKER_HOST=unix:///tmp/docker.sock
 export COMPOSE_PROJECT_NAME=picblog

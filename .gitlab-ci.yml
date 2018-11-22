@@ -105,10 +105,8 @@ deploy_dev:
   stage: deploy
   script:
   - echo "Deploying stagging"
-  - docker-compose pull
   - apk add --no-cache openssh-client socat bash
   - eval $(ssh-agent -s)
-  - bash -c 'ssh-add <(echo "$SSH_PRIVATE_KEY")'
   - mkdir -p ~/.ssh
   - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   - bash -c './deploy.sh'
