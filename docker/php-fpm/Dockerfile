@@ -1,4 +1,15 @@
 #
+# Frontend
+#
+FROM node:10-alpine as frontend
+
+WORKDIR /app
+
+COPY . .
+
+RUN yarn install && yarn production
+
+#
 # PHP Dependencies
 #
 FROM composer:1.7 as vendor
@@ -23,7 +34,6 @@ RUN composer install \
 #
 # Application PHP
 #
-# TODO Add TZ
 FROM php:7.2-fpm-alpine
 
 WORKDIR /var/www/html
@@ -43,8 +53,11 @@ COPY docker/php-fpm/custom-supervisord.ini /etc/
 # Importing source code
 COPY --chown=1000:1000 . /var/www/html
 
-# Importing composer dependencies
+# Importing composer and assets dependencies
 COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/vendor/
+COPY --chown=1000:1000 --from=frontend /app/public/js/ /var/www/html/public/js
+COPY --chown=1000:1000 --from=frontend /app/public/css/ /var/www/html/public/css
+COPY --chown=1000:1000 --from=frontend /app/public/mix-manifest.json /var/www/html/public/mix-manifest.json
 
 # Link storage
 RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
