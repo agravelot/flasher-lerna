@@ -26,7 +26,8 @@ cache:
   - node_modules
 
 before_script:
-- apk add --no-cache py-pip
+- touch docker/db/.env docker/nginx/.env docker/php-fpm/.env
+- apk add --no-cache py-pip bash gettext
 - echo "Installing Docker compose" && pip install docker-compose
 - echo "Docker compose version" && docker-compose version
 - echo "Docker compose validating" && docker-compose config
@@ -46,10 +47,9 @@ unit_test:
   script:
   - echo "UNIT TESTS"
   - docker-compose pull
+  - chmod +x docker/*.sh
+  - bash -c 'docker/generate_env.sh'
   - docker-compose up -d
-  - df -h && free -m
-  - docker-compose exec -T php df -h
-  - docker-compose exec -T php free -m
   - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
   - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
   - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
@@ -65,6 +65,8 @@ integration_test:
   script:
   - echo "INTEGRATION TEST"
   - docker-compose pull
+  - chmod +x docker/*.sh
+  - bash -c 'docker/generate_env.sh'
   - docker-compose up -d
   - docker-compose exec -T php echo "Run test here"
   - docker-compose down
@@ -74,6 +76,8 @@ lint:
   script:
   - echo "LINT CODE"
   - docker-compose pull
+  - chmod +x docker/*.sh
+  - bash -c 'docker/generate_env.sh'
   - docker-compose up -d
   - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
   - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
@@ -90,6 +94,8 @@ security_audit:
   script:
   - echo "SECURITY AUDIT"
   - docker-compose pull
+  - chmod +x docker/*.sh
+  - bash -c 'docker/generate_env.sh'
   - docker-compose up -d
   - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
   - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
@@ -110,7 +116,8 @@ deploy_dev:
   - eval $(ssh-agent -s)
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  - chmod +x docker/deploy.sh
+  - chmod +x docker/*.sh
+  - bash -c 'docker/generate_env.sh'
   - bash -c 'docker/deploy.sh'
 #  only:
 #  - develop

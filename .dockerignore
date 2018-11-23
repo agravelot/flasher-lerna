@@ -10,6 +10,7 @@ _ide_helper_models.php
 .phpstorm.meta.php
 Dockerfile
 .php_cs.cache
+sitemap.xml
 
 /vendor/
 /node_modules/
