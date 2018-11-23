@@ -110,8 +110,8 @@ deploy_dev:
   - eval $(ssh-agent -s)
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  - chmod +x ./deploy.sh
-  - bash -c './deploy.sh'
+  - chmod +x docker/deploy.sh
+  - bash -c 'docker/deploy.sh'
 #  only:
 #  - develop
   except:
