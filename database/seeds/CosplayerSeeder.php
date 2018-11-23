@@ -12,8 +12,7 @@ class CosplayerSeeder extends Seeder
      */
     public function run()
     {
-        $cosplayers = factory(App\Models\Cosplayer::class, 10)
-            ->create();
+        $cosplayers = factory(App\Models\Cosplayer::class, 10)->create();
 
         Album::all()->each(function ($album) use ($cosplayers) {
             $album->cosplayers()->attach(
