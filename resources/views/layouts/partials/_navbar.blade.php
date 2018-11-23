@@ -23,8 +23,9 @@
                    href="{{ route('goldenbook.index') }}">Golden book</a>
             </div>
 
+            @include('layouts.partials._navbar_socials', ['desktop' => true])
+
             <div class="navbar-end">
-                @include('layouts.partials._navbar_socials', ['desktop' => true])
                 <a class="navbar-item {{ Request::is('about') ? 'is-active' : '' }}" href="#">About</a>
                 <a class="navbar-item {{ Request::is('contact*') ? 'is-active' : '' }}"
                    href="{{ route('contact.create') }}">Contact</a>
