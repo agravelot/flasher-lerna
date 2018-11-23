@@ -6,11 +6,8 @@ services:
     restart: always
     volumes:
     - db-data:/var/lib/mysql
-    environment:
-    - MYSQL_ROOT_PASSWORD=secret
-    - MYSQL_DATABASE=picblog
-    - MYSQL_USER=picblog
-    - MYSQL_PASSWORD=secret
+    env_file:
+    - docker/db/.env
 
   php:
     image: registry.gitlab.com/nevax/picblog/picblog_php
@@ -20,6 +17,8 @@ services:
       cache_from:
       - registry.gitlab.com/nevax/picblog/picblog_php:latest
     restart: always
+    env_file:
+    - docker/php-fpm/.env
     volumes:
     - storage:/var/www/html/storage
     - public_vendor:/var/www/html/public/vendor
@@ -41,7 +40,7 @@ services:
     ports:
     - 8080:80
     - 4434:443
-    env_file: ./docker/nginx/.env.production
+    env_file: ./docker/nginx/.env
     volumes:
     - storage:/var/www/html/storage:ro
     - public_vendor:/var/www/html/public/vendor:ro
