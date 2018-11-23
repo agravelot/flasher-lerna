@@ -108,7 +108,7 @@ class AdminUserController extends Controller
         $user = $this->userRepository->find($id);
         $this->authorize('update', $user);
 
-        $cosplayers = $this->cosplayerRepository->with('user')->all( ['id', 'name']);
+        $cosplayers = $this->cosplayerRepository->with('user')->all(['id', 'name']);
 
         return view('admin.users.edit', [
             'user' => $user,

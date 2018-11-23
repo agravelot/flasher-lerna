@@ -56,7 +56,7 @@ class CreateAdminUser extends Command
             'name' => $username,
             'email' => $email,
             'password' => $password,
-            'role' => 'admin'
+            'role' => 'admin',
         ];
 
         // Only get filtered keys
@@ -67,6 +67,7 @@ class CreateAdminUser extends Command
         $this->createUser($data);
 
         $this->info('User created successfully');
+
         return 0;
     }
 
@@ -81,11 +82,12 @@ class CreateAdminUser extends Command
             foreach ($validator->errors()->all() as $error) {
                 $this->warn($error);
             }
+
             return 1;
         }
     }
 
-    private function createUser($date)
+    private function createUser($data)
     {
         $user = $this->repository->create($data);
         if ($user->markEmailAsVerified()) {
