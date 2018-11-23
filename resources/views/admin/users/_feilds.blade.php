@@ -1,6 +1,5 @@
 <div class="card-content">
     <form class="register-form" method="POST" action="{{ $route }}">
-
         @csrf
 
         @if (isset($user))
