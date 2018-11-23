@@ -26,6 +26,7 @@ cache:
   - node_modules
 
 before_script:
+- touch docker/db/.env docker/nginx/.env docker/php-fpm/.env
 - apk add --no-cache py-pip
 - echo "Installing Docker compose" && pip install docker-compose
 - echo "Docker compose version" && docker-compose version
