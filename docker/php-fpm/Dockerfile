@@ -46,9 +46,8 @@ COPY --chown=1000:1000 . /var/www/html
 # Importing composer dependencies
 COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/vendor/
 
-RUN mv .env.production .env \
 # Link storage
-        && ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
+RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
         && chown -h 1000:1000 /var/www/html/public/storage \
 # Installing required dependencies
         && apk --no-cache add jpegoptim optipng gifsicle freetype-dev libjpeg-turbo-dev icu-dev bzip2-dev libpng-dev supervisor \
