@@ -30,5 +30,3 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
 });
-
-require('@fortawesome/fontawesome-free/js/all');
