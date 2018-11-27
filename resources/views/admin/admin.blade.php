@@ -2,10 +2,8 @@
 
 @section('content')
     <div class="columns">
-        <div class="column is-2">
-            @include('admin.partials._menu')
-        </div>
-        <div class="column is-10">
+        @include('admin.partials._menu')
+        <div class="column" id="main-admin">
             @include('layouts.partials._messages')
             @yield('admin-content')
         </div>

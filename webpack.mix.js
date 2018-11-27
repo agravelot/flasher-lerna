@@ -16,6 +16,7 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
     .purgeCss();
 
+mix.js('resources/js/admin/admin.js', 'public/js');
 mix.js('resources/js/carousel.js', 'public/js');
 mix.js('resources/js/tinymce.js', 'public/js');
 
