@@ -30,6 +30,4 @@ RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
     && chown -h 1000:1000 /var/www/html/public/storage
 
 # Importing webpack assets
-COPY --chown=1000:1000 --from=frontend /app/public/js/ /var/www/html/public/js
-COPY --chown=1000:1000 --from=frontend /app/public/css/ /var/www/html/public/css
-COPY --chown=1000:1000 --from=frontend /app/public/mix-manifest.json /var/www/html/public/mix-manifest.json
+COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
