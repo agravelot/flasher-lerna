@@ -20,7 +20,7 @@
                         <div class="field">
                             <p class="control">
                                 <input class="input" id="name" type="text" name="name" value="{{ old('name') }}"
-                                       required autofocus>
+                                       placeholder="Name" required autofocus>
                             </p>
 
                             @include('layouts.partials._form_errors', ['data' => 'name'])
@@ -37,7 +37,7 @@
                         <div class="field">
                             <p class="control">
                                 <input class="input" id="email" type="text" name="email" value="{{ old('email') }}"
-                                       required autofocus>
+                                       placeholder="Email" required autofocus>
                             </p>
 
                             @include('layouts.partials._form_errors', ['data' => 'email'])
@@ -54,7 +54,7 @@
                         <div class="field">
                             <div class="control">
                                 <textarea class="textarea" id="message" type="text" name="message"
-                                          rows="10">{{ old('message') }}</textarea>
+                                          rows="10" placeholder="Your message here">{{ old('message') }}</textarea>
                             </div>
 
                             @include('layouts.partials._form_errors', ['data' => 'message'])

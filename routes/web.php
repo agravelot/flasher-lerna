@@ -20,7 +20,7 @@ Route::namespace('Front')->group(function () {
     Route::resource('goldenbook', 'GoldenBookController')->only(['index', 'create', 'store']);
     Route::resource('cosplayers', 'CosplayerController')->only(['index', 'show']);
     Route::resource('categories', 'CategoryController')->only(['index', 'show']);
-    Route::resource('contact', 'ContactController')->only(['create', 'store']);
+    Route::resource('contact', 'ContactController')->only(['index', 'store']);
 });
 
 //BACK

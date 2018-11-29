@@ -28,7 +28,7 @@
             <div class="navbar-end">
                 <a class="navbar-item {{ Request::is('about') ? 'is-active' : '' }}" href="#">About</a>
                 <a class="navbar-item {{ Request::is('contact*') ? 'is-active' : '' }}"
-                   href="{{ route('contact.create') }}">Contact</a>
+                   href="{{ route('contact.index') }}">Contact</a>
                 @guest()
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link" href="#">
