@@ -46,6 +46,7 @@ var editor_config = {
     selector: "textarea.tinymce",
     language: "fr_FR",
     themes: "modern",
+    skin: false,
     browser_spellcheck: true,
     contextmenu: false,
     branding: false,
