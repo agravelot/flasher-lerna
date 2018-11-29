@@ -10,12 +10,9 @@ RUN yarn install && yarn production
 # PHP Dependencies
 #
 FROM composer:1.7 as vendor
-
 COPY . .
-
-RUN composer global require hirak/prestissimo
-
-RUN composer install \
+RUN composer global require hirak/prestissimo \
+    && composer install \
     --ignore-platform-reqs \
     --no-interaction \
     --prefer-dist \
@@ -40,8 +37,7 @@ RUN apk --no-cache add shadow \
         && usermod -u 1000 nginx \
         && apk del shadow
 
-COPY docker/nginx/conf/nginx.conf /etc/nginx/nginx.conf
-COPY docker/nginx/conf/conf.d/default.conf /etc/nginx/conf.d
+COPY docker/nginx/conf/ /etc/nginx/
 
 # Importing source code
 COPY --chown=1000:1000 . /var/www/html
