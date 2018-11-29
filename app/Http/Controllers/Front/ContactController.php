@@ -19,13 +19,13 @@ class ContactController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new contact.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function index()
     {
-        return view('contacts.create');
+        return view('contacts.index');
     }
 
     /**
