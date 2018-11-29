@@ -49,7 +49,8 @@ COPY --chown=1000:1000 . /var/www/html
 # Storrage link
 RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
     && chown -h 1000:1000 /var/www/html/public/storage \
-    && ln -s /var/www/html/storage/sitemap.xml /var/www/html/public/sitemap.xml
+    && ln -s /var/www/html/storage/sitemap.xml /var/www/html/public/sitemap.xml \
+    && chown -h 1000:1000 /var/www/html/public/sitemap.xml
 
 # Importing webpack assets
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
