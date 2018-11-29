@@ -11,17 +11,17 @@ use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class CategoryRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepository
 {
     /**
-     * Find data by field and value
+     * Find data by field and value.
      *
-     * @param       $slug
-     * @return mixed
+     * @param $slug
+     *
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     *
+     * @return mixed
      */
     public function findBySlug(string $slug): Category
     {
@@ -39,7 +39,7 @@ class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepos
     }
 
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -49,7 +49,7 @@ class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepos
     }
 
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {

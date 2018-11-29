@@ -22,7 +22,8 @@ class CosplayerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Cosplayer $cosplayer
+     * @param \App\Models\Cosplayer $cosplayer
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Cosplayer $cosplayer)

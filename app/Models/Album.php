@@ -20,7 +20,7 @@ class Album extends Model implements HasMedia
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'publish', 'user_id'
+        'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'publish', 'user_id',
     ];
 
     protected $hidden = ['password'];
@@ -59,8 +59,8 @@ class Album extends Model implements HasMedia
     {
         return [
             'slug' => [
-                'source' => 'title'
-            ]
+                'source' => 'title',
+            ],
         ];
     }
 
@@ -87,6 +87,8 @@ class Album extends Model implements HasMedia
         $this->addMediaConversion('thumb')
             ->width(368)
             ->height(232)
+            ->sharpen(10)
+            ->optimize()
             ->performOnCollections('pictures');
     }
 }

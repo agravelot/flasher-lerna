@@ -2,21 +2,18 @@
 
 namespace App\Repositories;
 
-use Prettus\Repository\Eloquent\BaseRepository;
-use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\Contracts\ContactRepository;
 use App\Models\Contact;
-use App\Validators\ContactValidator;
+use App\Repositories\Contracts\ContactRepository;
+use Prettus\Repository\Criteria\RequestCriteria;
+use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class ContactRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class ContactRepositoryEloquent extends BaseRepository implements ContactRepository
 {
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -26,11 +23,13 @@ class ContactRepositoryEloquent extends BaseRepository implements ContactReposit
     }
 
     /**
-     * Count results of repository
+     * Count results of repository.
      *
      * @param string $columns
-     * @return int
+     *
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     *
+     * @return int
      */
     public function count($columns = '*')
     {
@@ -39,15 +38,15 @@ class ContactRepositoryEloquent extends BaseRepository implements ContactReposit
         $result = $this->model->count($columns);
         $this->resetModel();
         $this->resetScope();
+
         return $result;
     }
 
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
 }

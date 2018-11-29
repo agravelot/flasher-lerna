@@ -7,9 +7,9 @@ use Illuminate\Foundation\Http\FormRequest;
 abstract class Request extends FormRequest
 {
     /**
-     * Authorization
+     * Authorization.
      *
-     * @return boolean
+     * @return bool
      */
     public function authorize()
     {

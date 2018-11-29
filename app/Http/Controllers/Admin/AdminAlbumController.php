@@ -9,7 +9,6 @@ use App\Repositories\AlbumRepositoryEloquent;
 use App\Repositories\Contracts\AlbumRepository;
 use App\Repositories\Contracts\CategoryRepository;
 use App\Repositories\Contracts\CosplayerRepository;
-use App\Repositories\Contracts\PictureRepository;
 use Spatie\MediaLibrary\FileAdder\FileAdder;
 
 class AdminAlbumController extends Controller
@@ -30,8 +29,9 @@ class AdminAlbumController extends Controller
 
     /**
      * AdminAlbumController constructor.
-     * @param AlbumRepository $albumRepository
-     * @param CategoryRepository $categoryRepository
+     *
+     * @param AlbumRepository     $albumRepository
+     * @param CategoryRepository  $categoryRepository
      * @param CosplayerRepository $cosplayerRepository
      */
     public function __construct(AlbumRepository $albumRepository,
@@ -47,8 +47,9 @@ class AdminAlbumController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -58,15 +59,16 @@ class AdminAlbumController extends Controller
             ->paginate(10);
 
         return view('admin.albums.index', [
-            'albums' => $albums
+            'albums' => $albums,
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -85,10 +87,12 @@ class AdminAlbumController extends Controller
      * Store a newly created resource in storage.
      *
      * @param AlbumRequest $request
-     * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      * @throws \Exception
+     *
+     * @return \Illuminate\Http\Response
      */
     public function store(AlbumRequest $request)
     {
@@ -100,7 +104,7 @@ class AdminAlbumController extends Controller
 
         $album->addAllMediaFromRequest()
             ->each(function ($fileAdder) {
-                /** @var FileAdder $fileAdder */
+                /* @var FileAdder $fileAdder */
                 $fileAdder->preservingOriginal()
                     ->withResponsiveImages()
                     ->toMediaCollection('pictures');
@@ -125,14 +129,17 @@ class AdminAlbumController extends Controller
      * Display the specified resource.
      *
      * @param string $slug
-     * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function show(string $slug)
     {
         $album = $this->albumRepository->findBySlug($slug);
         $this->authorize('view', $album);
+
         return view('admin.albums.show', ['album' => $album]);
     }
 
@@ -140,9 +147,11 @@ class AdminAlbumController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param string $slug
-     * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function edit(string $slug)
     {
@@ -164,10 +173,12 @@ class AdminAlbumController extends Controller
      *
      * @param AlbumRequest $request
      * @param $id
-     * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      * @throws \Exception
+     *
+     * @return \Illuminate\Http\Response
      */
     public function update(AlbumRequest $request, $id)
     {
@@ -179,10 +190,10 @@ class AdminAlbumController extends Controller
         // An update can contain no picture
         $key = 'pictures';
         if (array_key_exists($key, $validated)) {
-            /** @var Album $album */
+            /* @var Album $album */
             $album->addAllMediaFromRequest()
                 ->each(function ($fileAdder) {
-                    /** @var FileAdder $fileAdder */
+                    /* @var FileAdder $fileAdder */
                     $fileAdder->preservingOriginal()
                         ->withResponsiveImages()
                         ->toMediaCollection('pictures');
@@ -210,9 +221,11 @@ class AdminAlbumController extends Controller
      * Remove the specified resource from storage.
      *
      * @param string $slug
-     * @return \Illuminate\Http\RedirectResponse
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(string $slug)
     {

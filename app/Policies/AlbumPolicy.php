@@ -7,12 +7,12 @@ use App\Models\User;
 
 class AlbumPolicy extends Policy
 {
-
     /**
      * Determine whether the user can download the album.
      *
-     * @param  User $user
+     * @param User  $user
      * @param Album $album
+     *
      * @return mixed
      */
     public function download(User $user, Album $album)
@@ -23,7 +23,8 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can view the albums.
      *
-     * @param  User $user
+     * @param User $user
+     *
      * @return mixed
      */
     public function index(?User $user)
@@ -35,15 +36,16 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can view the album.
      *
-     * @param  User $user
+     * @param User  $user
      * @param Album $album
+     *
      * @return mixed
      */
     public function view(?User $user, Album $album)
     {
         if ($album->isPublic()) {
             return true;
-        } elseif ($user === null) {
+        } elseif (null === $user) {
             return false;
         }
 
@@ -54,7 +56,8 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can create albums.
      *
-     * @param  User $user
+     * @param User $user
+     *
      * @return mixed
      */
     public function create(User $user)
@@ -66,8 +69,9 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can update the album.
      *
-     * @param  User $user
+     * @param User  $user
      * @param Album $album
+     *
      * @return mixed
      */
     public function update(User $user, Album $album)
@@ -78,8 +82,9 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can delete the album.
      *
-     * @param  User $user
+     * @param User  $user
      * @param Album $album
+     *
      * @return mixed
      */
     public function delete(User $user, Album $album)
@@ -90,8 +95,9 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can restore the album.
      *
-     * @param  User $user
+     * @param User  $user
      * @param Album $album
+     *
      * @return mixed
      */
     public function restore(User $user, Album $album)
@@ -102,8 +108,9 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can permanently delete the album.
      *
-     * @param  User $user
+     * @param User  $user
      * @param Album $album
+     *
      * @return mixed
      */
     public function forceDelete(User $user, Album $album)

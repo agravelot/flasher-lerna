@@ -14,7 +14,7 @@ class Comment extends Model
     protected $fillable = ['body', 'post_id', 'user_id', 'parent_id'];
 
     /**
-     * One to Many relation
+     * One to Many relation.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

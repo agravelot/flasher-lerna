@@ -19,7 +19,9 @@ class AlbumController extends Controller
 
     /**
      * AlbumController constructor.
+     *
      * @param AlbumRepository $albumRepository
+     *
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function __construct(AlbumRepository $albumRepository)
@@ -51,9 +53,11 @@ class AlbumController extends Controller
      * Display the specified resource.
      *
      * @param string $slug
-     * @return \Illuminate\Http\Response
+     *
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function show(string $slug)
     {
@@ -64,14 +68,17 @@ class AlbumController extends Controller
 
         $album = $this->albumRepository->findBySlug($slug);
         $this->authorize('view', $album);
+
         return view('albums.show', ['album' => $album]);
     }
 
     /**
      * @param string $slug
-     * @return MediaStream
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     *
+     * @return MediaStream
      */
     public function download(string $slug)
     {
@@ -84,6 +91,7 @@ class AlbumController extends Controller
         $album = $this->albumRepository->findBySlug($slug);
         $this->authorize('download', $album);
         $pictures = $album->getMedia('pictures');
-        return MediaStream::create($album->slug . '.zip')->addMedia($pictures);
+
+        return MediaStream::create($album->slug.'.zip')->addMedia($pictures);
     }
 }
