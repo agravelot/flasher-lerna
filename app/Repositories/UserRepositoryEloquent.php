@@ -11,15 +11,13 @@ use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class UserRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class UserRepositoryEloquent extends BaseRepository implements UserRepository
 {
-
     public function create(array $attributes): User
     {
         $attributes['password'] = Hash::make($attributes['password']);
+
         return parent::create($attributes);
     }
 
@@ -35,11 +33,13 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     }
 
     /**
-     * Count results of repository
+     * Count results of repository.
      *
      * @param string $columns
-     * @return int
+     *
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     *
+     * @return int
      */
     public function count($columns = '*')
     {
@@ -48,11 +48,12 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $result = $this->model->count($columns);
         $this->resetModel();
         $this->resetScope();
+
         return $result;
     }
 
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -62,7 +63,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     }
 
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {
@@ -70,8 +71,9 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     }
 
     /**
-     * @param User $user
+     * @param User           $user
      * @param Cosplayer|null $cosplayer
+     *
      * @throws \Exception
      */
     public function setCosplayer(User $user, ?Cosplayer $cosplayer)

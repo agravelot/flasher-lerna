@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Contact;
 use App\Models\GoldenBookPost;
 use App\Repositories\ContactRepositoryEloquent;
-use App\Repositories\Contracts\ContactRepository;
 use App\Repositories\Contracts\GoldenBookRepository;
 
 class AdminGoldenBookController extends Controller
@@ -18,6 +16,7 @@ class AdminGoldenBookController extends Controller
 
     /**
      * AdminGoldenBookController constructor.
+     *
      * @param GoldenBookRepository $repository
      */
     public function __construct(GoldenBookRepository $repository)
@@ -29,8 +28,9 @@ class AdminGoldenBookController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -38,7 +38,7 @@ class AdminGoldenBookController extends Controller
         $goldenBookPosts = $this->repository->paginate(10);
 
         return view('admin.goldenbook.index', [
-            'goldenBookPosts' => $goldenBookPosts
+            'goldenBookPosts' => $goldenBookPosts,
         ]);
     }
 
@@ -46,13 +46,16 @@ class AdminGoldenBookController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function show(int $id)
     {
         $goldenBookPost = $this->repository->find($id);
         $this->authorize('view', $goldenBookPost);
+
         return view('admin.contacts.show', ['contact' => $goldenBookPost]);
     }
 
@@ -60,14 +63,17 @@ class AdminGoldenBookController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(int $id)
     {
         $goldenBookPost = $this->repository->find($id);
         $this->authorize('delete', $goldenBookPost);
         $this->repository->delete($goldenBookPost->id);
+
         return back()->withSuccess('Contact successfully deleted');
     }
 }

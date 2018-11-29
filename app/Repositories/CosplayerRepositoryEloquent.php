@@ -11,15 +11,15 @@ use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class CosplayerRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRepository
 {
     /**
      * @param $cosplayerId
-     * @return mixed
+     *
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function findNotLinkedToUser(int $cosplayerId): Cosplayer
     {
@@ -27,15 +27,18 @@ class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRep
         if ($cosplayer->user()->exists()) {
             throw new \Exception('Cosplayer is already linked too an user');
         }
+
         return $cosplayer;
     }
 
     /**
-     * Find data by field and value
+     * Find data by field and value.
      *
      * @param string $slug
-     * @return mixed
+     *
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     *
+     * @return mixed
      */
     public function findBySlug(string $slug): Cosplayer
     {
@@ -43,15 +46,18 @@ class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRep
         $this->applyScope();
         $model = $this->model->whereSlug($slug)->first();
         $this->resetModel();
+
         return $this->parserResult($model);
     }
 
     /**
-     * Count results of repository
+     * Count results of repository.
      *
      * @param string $columns
-     * @return int
+     *
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     *
+     * @return int
      */
     public function count($columns = '*')
     {
@@ -60,6 +66,7 @@ class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRep
         $result = $this->model->count($columns);
         $this->resetModel();
         $this->resetScope();
+
         return $result;
     }
 
@@ -69,7 +76,7 @@ class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRep
     }
 
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -79,7 +86,7 @@ class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRep
     }
 
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {

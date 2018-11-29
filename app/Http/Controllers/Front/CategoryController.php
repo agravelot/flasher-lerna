@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
 use App\Repositories\CategoryRepositoryEloquent;
 use App\Repositories\Contracts\CategoryRepository;
 
@@ -16,13 +15,13 @@ class CategoryController extends Controller
 
     /**
      * AdminCategoryController constructor.
+     *
      * @param CategoryRepository $repository
      */
     public function __construct(CategoryRepository $repository)
     {
         $this->repository = $repository;
     }
-
 
     /**
      * Display a listing of the resource.
@@ -34,7 +33,7 @@ class CategoryController extends Controller
         $categories = $this->repository->paginate(10);
 
         return view('categories.index', [
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }
 
@@ -42,13 +41,15 @@ class CategoryController extends Controller
      * Display the specified resource.
      *
      * @param string $slug
-     * @return \Illuminate\Http\Response
+     *
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function show(string $slug)
     {
         $category = $this->repository->findBySlug($slug);
+
         return view('categories.show', ['category' => $category]);
     }
-
 }

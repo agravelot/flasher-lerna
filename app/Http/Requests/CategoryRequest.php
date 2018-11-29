@@ -14,8 +14,8 @@ class CategoryRequest extends Request
         $id = $this->route('category');
 
         return [
-            'name' => 'string|required|min:2|max:255|unique:categories,name,' . $id,
-            'description' => 'nullable|string|max:65555'
+            'name' => 'string|required|min:2|max:255|unique:categories,name,'.$id,
+            'description' => 'nullable|string|max:65555',
         ];
     }
 }

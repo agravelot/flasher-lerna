@@ -5,10 +5,10 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
-use Spatie\MediaLibrary\File;
 
 class Cosplayer extends Model implements HasMedia
 {
@@ -40,8 +40,8 @@ class Cosplayer extends Model implements HasMedia
     {
         return [
             'slug' => [
-                'source' => 'name'
-            ]
+                'source' => 'name',
+            ],
         ];
     }
 
@@ -55,11 +55,10 @@ class Cosplayer extends Model implements HasMedia
         return 'slug';
     }
 
-
     public function registerMediaCollections()
     {
         $this
-            ->addMediaCollection('avatar') 
+            ->addMediaCollection('avatar')
             ->singleFile()
             ->acceptsFile(function (File $file) {
                 return strpos($file->mimeType, 'image/') === 0;

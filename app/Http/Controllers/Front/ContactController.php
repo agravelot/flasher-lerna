@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Http\Requests\ContactStoreRequest;
-use App\Models\Contact;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ContactStoreRequest;
 use App\Repositories\Contracts\ContactRepository;
 
 class ContactController extends Controller
 {
-
     /**
      * @var ContactRepository
      */
@@ -34,6 +32,7 @@ class ContactController extends Controller
      * Store a newly created resource in storage.
      *
      * @param ContactStoreRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(ContactStoreRequest $request)

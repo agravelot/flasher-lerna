@@ -18,7 +18,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role'
+        'name', 'email', 'password', 'role',
     ];
 
     /**
@@ -45,11 +45,13 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Cosplayer::class);
     }
 
-    public function contact() {
+    public function contact()
+    {
         return $this->hasMany(Contact::class);
     }
 
-    public function goldenBookPosts() {
+    public function goldenBookPosts()
+    {
         return $this->hasMany(GoldenBookPost::class);
     }
 

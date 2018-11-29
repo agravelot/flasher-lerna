@@ -7,15 +7,13 @@ use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
  * Class PublicAlbumsCriteria.
- *
- * @package namespace App\Criteria;
  */
 class PublicAlbumsCriteria implements CriteriaInterface
 {
     /**
-     * Apply criteria in query repository
+     * Apply criteria in query repository.
      *
-     * @param string $model
+     * @param string              $model
      * @param RepositoryInterface $repository
      *
      * @return mixed
@@ -24,6 +22,7 @@ class PublicAlbumsCriteria implements CriteriaInterface
     {
         $model = $model->where('publish', true)
             ->whereNull('password');
+
         return $model;
     }
 }

@@ -17,6 +17,7 @@ class AdminCosplayerController extends Controller
 
     /**
      * AdminCosplayerController constructor.
+     *
      * @param CosplayerRepository $repository
      */
     public function __construct(CosplayerRepository $repository)
@@ -28,8 +29,9 @@ class AdminCosplayerController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -37,19 +39,21 @@ class AdminCosplayerController extends Controller
         $cosplayers = $this->repository->orderBy('updated_at')->paginate(10);
 
         return view('admin.cosplayers.index', [
-            'cosplayers' => $cosplayers
+            'cosplayers' => $cosplayers,
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
         $this->authorize('create', Cosplayer::class);
+
         return view('admin.cosplayers.create');
     }
 
@@ -57,9 +61,11 @@ class AdminCosplayerController extends Controller
      * Store a newly created resource in storage.
      *
      * @param CosplayerRequest $request
-     * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function store(CosplayerRequest $request)
     {
@@ -77,6 +83,7 @@ class AdminCosplayerController extends Controller
                 ->withResponsiveImages()
                 ->toMediaCollection('avatar');
         }
+
         return redirect(route('admin.cosplayers.show', ['cosplayer' => $cosplayer]));
     }
 
@@ -84,14 +91,17 @@ class AdminCosplayerController extends Controller
      * Display the specified resource.
      *
      * @param string $slug
-     * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function show(string $slug)
     {
         $cosplayer = $this->repository->findBySlug($slug);
         $this->authorize('view', $cosplayer);
+
         return view('admin.cosplayers.show', ['cosplayer' => $cosplayer]);
     }
 
@@ -99,14 +109,17 @@ class AdminCosplayerController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param string $slug
-     * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function edit(string $slug)
     {
         $cosplayer = $this->repository->findBySlug($slug);
         $this->authorize('update', $cosplayer);
+
         return view('admin.cosplayers.edit', ['cosplayer' => $cosplayer]);
     }
 
@@ -115,9 +128,11 @@ class AdminCosplayerController extends Controller
      *
      * @param CosplayerRequest $request
      * @param $id
-     * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function update(CosplayerRequest $request, $id)
     {
@@ -144,15 +159,18 @@ class AdminCosplayerController extends Controller
      * Remove the specified resource from storage.
      *
      * @param string $slug
-     * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function destroy(string $slug)
     {
         $album = $this->repository->findBySlug($slug);
         $this->authorize('delete', $album);
         $this->repository->delete($album->id);
+
         return back()->withSuccess('Cosplayer successfully deleted');
     }
 }

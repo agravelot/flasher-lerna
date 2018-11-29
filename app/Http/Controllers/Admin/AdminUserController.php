@@ -21,7 +21,8 @@ class AdminUserController extends Controller
 
     /**
      * AdminCosplayerController constructor.
-     * @param UserRepository $userRepository
+     *
+     * @param UserRepository      $userRepository
      * @param CosplayerRepository $cosplayerRepository
      */
     public function __construct(UserRepository $userRepository, CosplayerRepository $cosplayerRepository)
@@ -34,8 +35,9 @@ class AdminUserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -43,22 +45,24 @@ class AdminUserController extends Controller
         $users = $this->userRepository->with('cosplayer')->paginate(10);
 
         return view('admin.users.index', [
-            'users' => $users
+            'users' => $users,
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
         $this->authorize('create', User::class);
         $cosplayers = $this->cosplayerRepository->with('user')->all(['id', 'name']);
+
         return view('admin.users.create', [
-            'cosplayers' => $cosplayers
+            'cosplayers' => $cosplayers,
         ]);
     }
 
@@ -66,8 +70,10 @@ class AdminUserController extends Controller
      * Store a newly created resource in storage.
      *
      * @param UserRequest $request
-     * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function store(UserRequest $request)
     {
@@ -86,13 +92,16 @@ class AdminUserController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function show(int $id)
     {
         $user = $this->userRepository->find($id);
         $this->authorize('view', $user);
+
         return view('admin.users.show', ['user' => $user]);
     }
 
@@ -100,8 +109,10 @@ class AdminUserController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function edit(int $id)
     {
@@ -112,7 +123,7 @@ class AdminUserController extends Controller
 
         return view('admin.users.edit', [
             'user' => $user,
-            'cosplayers' => $cosplayers
+            'cosplayers' => $cosplayers,
         ]);
     }
 
@@ -120,9 +131,11 @@ class AdminUserController extends Controller
      * Update the specified resource in storage.
      *
      * @param UserRequest $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param int         $id
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function update(UserRequest $request, $id)
     {
@@ -145,14 +158,17 @@ class AdminUserController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function destroy(int $id)
     {
         $user = $this->userRepository->find($id);
         $this->authorize('delete', $user);
         $this->userRepository->delete($user->id);
+
         return back()->withSuccess('User successfully deleted');
     }
 }

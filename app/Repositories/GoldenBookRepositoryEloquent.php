@@ -9,14 +9,11 @@ use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class AlbumRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class GoldenBookRepositoryEloquent extends BaseRepository implements GoldenBookRepository
 {
-
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -26,7 +23,7 @@ class GoldenBookRepositoryEloquent extends BaseRepository implements GoldenBookR
     }
 
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {

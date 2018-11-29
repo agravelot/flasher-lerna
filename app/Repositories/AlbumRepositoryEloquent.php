@@ -11,31 +11,32 @@ use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class AlbumRepositoryEloquent.
- *
- * @package namespace App\Repositories;
  */
 class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepository
 {
-
     public function create(array $attributes)
     {
         $attributes['password'] = Hash::make($attributes['password']);
         $attributes['user_id'] = Auth::user()->id;
+
         return parent::create($attributes);
     }
 
     public function update(array $attributes, $id)
     {
         $attributes['password'] = Hash::make($attributes['password']);
+
         return parent::update($attributes, $id);
     }
 
     /**
-     * Find data by field and value
+     * Find data by field and value.
      *
-     * @param       $slug
-     * @return mixed
+     * @param $slug
+     *
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     *
+     * @return mixed
      */
     public function findBySlug(string $slug): Album
     {
@@ -48,11 +49,13 @@ class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepository
     }
 
     /**
-     * Count results of repository
+     * Count results of repository.
      *
      * @param string $columns
-     * @return int
+     *
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     *
+     * @return int
      */
     public function count($columns = '*'): int
     {
@@ -61,11 +64,12 @@ class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepository
         $result = $this->model->count($columns);
         $this->resetModel();
         $this->resetScope();
+
         return $result;
     }
 
     /**
-     * Specify Model class name
+     * Specify Model class name.
      *
      * @return string
      */
@@ -75,7 +79,7 @@ class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepository
     }
 
     /**
-     * Boot up the repository, pushing criteria
+     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {

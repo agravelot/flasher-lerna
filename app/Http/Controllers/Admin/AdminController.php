@@ -33,10 +33,11 @@ class AdminController extends Controller
 
     /**
      * AdminController constructor.
-     * @param UserRepository $userRepository
-     * @param ContactRepository $contactRepository
+     *
+     * @param UserRepository      $userRepository
+     * @param ContactRepository   $contactRepository
      * @param CosplayerRepository $cosplayerRepository
-     * @param AlbumRepository $albumRepository
+     * @param AlbumRepository     $albumRepository
      */
     public function __construct(
         UserRepository $userRepository,
@@ -52,11 +53,12 @@ class AdminController extends Controller
     }
 
     /**
-     * Display dashboard
+     * Display dashboard.
      *
-     * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function dashboard()
     {
@@ -71,7 +73,7 @@ class AdminController extends Controller
             'userCount' => $userCount,
             'albumCount' => $albumCount,
             'cosplayerCount' => $cosplayerCount,
-            'contactCount' => $contactCount
+            'contactCount' => $contactCount,
         ]);
     }
 }

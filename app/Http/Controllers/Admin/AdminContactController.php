@@ -16,6 +16,7 @@ class AdminContactController extends Controller
 
     /**
      * AdminContactController constructor.
+     *
      * @param ContactRepository $repository
      */
     public function __construct(ContactRepository $repository)
@@ -24,12 +25,12 @@ class AdminContactController extends Controller
         $this->repository = $repository;
     }
 
-
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -37,7 +38,7 @@ class AdminContactController extends Controller
         $contacts = $this->repository->paginate(10);
 
         return view('admin.contacts.index', [
-            'contacts' => $contacts
+            'contacts' => $contacts,
         ]);
     }
 
@@ -45,13 +46,16 @@ class AdminContactController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\Response
      */
     public function show(int $id)
     {
         $contact = $this->repository->find($id);
         $this->authorize('view', $contact);
+
         return view('admin.contacts.show', ['contact' => $contact]);
     }
 
@@ -59,14 +63,17 @@ class AdminContactController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(int $id)
     {
         $contact = $this->repository->find($id);
         $this->authorize('delete', $contact);
         $this->repository->delete($contact->id);
+
         return back()->withSuccess('Contact successfully deleted');
     }
 }

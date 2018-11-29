@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GoldenBookRequest;
-use App\Models\GoldenBookPost;
 use App\Repositories\Contracts\GoldenBookRepository;
 
 class GoldenBookController extends Controller
@@ -27,6 +26,7 @@ class GoldenBookController extends Controller
     public function index()
     {
         $goldenBooksPosts = $this->repository->orderBy('created_at', 'desc')->all();
+
         return view('goldenbook.index', ['goldenBooksPosts' => $goldenBooksPosts]);
     }
 
@@ -44,12 +44,14 @@ class GoldenBookController extends Controller
      * Store a newly created resource in storage.
      *
      * @param GoldenBookRequest $request
+     *
      * @return
      */
     public function store(GoldenBookRequest $request)
     {
         $validated = $request->validated();
         $this->repository->create($validated);
+
         return redirect()->route('goldenbook.index')->withSuccess('Your message has been added to the golden book');
     }
 }
