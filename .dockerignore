@@ -19,7 +19,7 @@ sitemap.xml
 
 
 /public/vendor/
-#!/public/vendor/telescope
+/public/fonts/
 /public/images/
 /public/sitemap\.xml
 /public/storage
