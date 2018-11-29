@@ -13,9 +13,8 @@ services:
     image: registry.gitlab.com/nevax/picblog/picblog_php
     build:
       context: .
-      dockerfile: ./docker/php-fpm/Dockerfile
-      cache_from:
-      - registry.gitlab.com/nevax/picblog/picblog_php:latest
+      dockerfile: Dockerfile
+      target: php
     restart: always
     env_file:
     - docker/php-fpm/.env
@@ -33,9 +32,8 @@ services:
     image: registry.gitlab.com/nevax/picblog/picblog_nginx
     build:
       context: .
-      dockerfile: ./docker/nginx/Dockerfile
-      cache_from:
-        - registry.gitlab.com/nevax/picblog/picblog_nginx:latest
+      dockerfile: Dockerfile
+      target: nginx
     restart: always
     ports:
     - 8080:80
