@@ -84,16 +84,17 @@ COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/public/vendor/
 RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
         && chown -h 1000:1000 /var/www/html/public/storage \
 # Installing required dependencies
-        && apk --no-cache add jpegoptim optipng gifsicle freetype-dev libjpeg-turbo-dev icu-dev bzip2-dev libpng-dev supervisor \
+        && apk --no-cache add jpegoptim optipng gifsicle freetype-dev libjpeg-turbo-dev icu-dev bzip2-dev libpng-dev libzip-dev zip supervisor \
         && apk --no-cache add --virtual php_deps $PHPIZE_DEPS \
         && docker-php-ext-configure gd \
             --with-gd \
             --with-freetype-dir=/usr/include/ \
             --with-png-dir=/usr/include/ \
-            --with-jpeg-dir=/usr/include/ \
-        && docker-php-ext-install -j$(nproc) pdo_mysql json intl gd zip bz2 opcache exif bcmath pcntl \
+            --with-jpeg-dir=/usr/include/ > /dev/null \
+        && docker-php-ext-configure zip --with-libzip > /dev/null \
+        && docker-php-ext-install -j$(nproc) pdo_mysql json intl gd zip bz2 opcache exif bcmath pcntl > /dev/null \
 # Install redis
-        && pecl install -o -f redis \
+        && pecl install -o -f redis > /dev/null \
         && docker-php-ext-enable redis \
 # Cleanup
         && rm -rf /tmp/* /usr/local/lib/php/doc/* /var/cache/apk/* \
