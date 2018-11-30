@@ -40,7 +40,6 @@ build:
   - docker-compose build
   - docker push registry.gitlab.com/nevax/picblog/picblog_php:latest
   - docker push registry.gitlab.com/nevax/picblog/picblog_nginx:latest
-  - docker system prune -f
 
 unit_test:
   stage: test
@@ -57,7 +56,6 @@ unit_test:
   - docker-compose exec -T php php -r "unlink('composer-setup.php');"
   - docker-compose exec -T php php composer.phar require phpunit/phpunit
   - docker-compose exec -T php vendor/bin/phpunit  --coverage-text --colors=never
-  - docker-compose down
   allow_failure: true
 
 integration_test:
@@ -69,7 +67,6 @@ integration_test:
   - bash -c 'docker/generate_env.sh'
   - docker-compose up -d
   - docker-compose exec -T php echo "Run test here"
-  - docker-compose down
 
 lint:
   stage: review
@@ -86,7 +83,6 @@ lint:
   - docker-compose exec -T php php -r "unlink('composer-setup.php');"
   - docker-compose exec -T php php composer.phar require pheromone/phpcs-security-audit
   - docker-compose exec -T php vendor/bin/php-cs-fixer fix --dry-run --diff
-  - docker-compose down
   allow_failure: true
 
 security_audit:
@@ -105,10 +101,9 @@ security_audit:
   - docker-compose exec -T php php composer.phar require pheromone/phpcs-security-audit
   - docker-compose exec -T php sh vendor/pheromone/phpcs-security-audit/symlink.sh
   - docker-compose exec -T vendor/bin/phpcs --standard=./vendor/pheromone/phpcs-security-audit/example_base_ruleset.xml ./vendor/pheromone/phpcs-security-audit/tests.php
-  - docker-compose down
   allow_failure: true
 
-deploy_dev:
+deploy_stagging:
   stage: deploy
   script:
   - echo "Deploying stagging"
@@ -118,16 +113,20 @@ deploy_dev:
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   - chmod +x docker/*.sh
   - bash -c 'docker/generate_env.sh'
-  - bash -c 'docker/deploy.sh'
-#  only:
-#  - develop
+  - bash -c 'docker/deploy.sh stagging'
   except:
-  - master
+    - master
 
 deploy_production:
   stage: deploy
   script:
   - echo "Deploying production"
-  - docker-compose pull
+  - apk add --no-cache openssh-client socat bash
+  - eval $(ssh-agent -s)
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  - chmod +x docker/*.sh
+  - bash -c 'docker/generate_env.sh'
+  - bash -c 'docker/deploy.sh production'
   only:
   - master
