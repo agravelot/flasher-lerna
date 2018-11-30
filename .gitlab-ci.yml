@@ -119,8 +119,8 @@ deploy_stagging:
   - chmod +x docker/*.sh
   - bash -c 'docker/generate_env.sh'
   - bash -c 'docker/deploy.sh stagging'
-  only:
-  - develop
+  except:
+    - master
 
 deploy_production:
   stage: deploy
