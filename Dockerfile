@@ -10,24 +10,22 @@ RUN yarn install && yarn production
 # PHP Dependencies
 #
 FROM composer:1.7 as vendor
-
 COPY . .
 
-RUN composer global require hirak/prestissimo
-
-RUN composer install \
-    --ignore-platform-reqs \
-    --no-interaction \
-    --prefer-dist \
-    --no-progress \
-    --profile \
-    --no-scripts \
-    # Production only
-    --no-dev \
-    --optimize-autoloader \
-    && php artisan vendor:publish --tag=lfm_public \
-    && php artisan vendor:publish --provider="Laravel\Horizon\HorizonServiceProvider" \
-    && php artisan vendor:publish --tag=telescope-assets
+RUN composer global require hirak/prestissimo \
+        && composer install \
+            --ignore-platform-reqs \
+            --no-interaction \
+            --prefer-dist \
+            --no-progress \
+            --profile \
+            --no-scripts \
+            # Production only
+            --no-dev \
+            --optimize-autoloader \
+        && php artisan vendor:publish --tag=lfm_public \
+        && php artisan vendor:publish --provider="Laravel\Horizon\HorizonServiceProvider" \
+        && php artisan vendor:publish --tag=telescope-assets
 
 #
 # Nginx server
@@ -40,8 +38,7 @@ RUN apk --no-cache add shadow \
         && usermod -u 1000 nginx \
         && apk del shadow
 
-COPY docker/nginx/conf/nginx.conf /etc/nginx/nginx.conf
-COPY docker/nginx/conf/conf.d/default.conf /etc/nginx/conf.d
+COPY docker/nginx/conf/ /etc/nginx/
 
 # Importing source code
 COPY --chown=1000:1000 . /var/www/html
@@ -88,16 +85,17 @@ COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/public/vendor/
 RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
         && chown -h 1000:1000 /var/www/html/public/storage \
 # Installing required dependencies
-        && apk --no-cache add jpegoptim optipng gifsicle freetype-dev libjpeg-turbo-dev icu-dev bzip2-dev libpng-dev supervisor \
+        && apk --no-cache add jpegoptim optipng gifsicle freetype-dev libjpeg-turbo-dev icu-dev bzip2-dev libpng-dev libzip-dev zip supervisor \
         && apk --no-cache add --virtual php_deps $PHPIZE_DEPS \
         && docker-php-ext-configure gd \
             --with-gd \
             --with-freetype-dir=/usr/include/ \
             --with-png-dir=/usr/include/ \
-            --with-jpeg-dir=/usr/include/ \
-        && docker-php-ext-install -j$(nproc) pdo_mysql json intl gd zip bz2 opcache exif bcmath pcntl \
+            --with-jpeg-dir=/usr/include/ > /dev/null \
+        && docker-php-ext-configure zip --with-libzip > /dev/null \
+        && docker-php-ext-install -j$(nproc) pdo_mysql json intl gd zip bz2 opcache exif bcmath pcntl > /dev/null \
 # Install redis
-        && pecl install -o -f redis \
+        && pecl install -o -f redis > /dev/null \
         && docker-php-ext-enable redis \
 # Cleanup
         && rm -rf /tmp/* /usr/local/lib/php/doc/* /var/cache/apk/* \
