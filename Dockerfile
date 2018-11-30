@@ -11,20 +11,21 @@ RUN yarn install && yarn production
 #
 FROM composer:1.7 as vendor
 COPY . .
+
 RUN composer global require hirak/prestissimo \
-    && composer install \
-    --ignore-platform-reqs \
-    --no-interaction \
-    --prefer-dist \
-    --no-progress \
-    --profile \
-    --no-scripts \
-    # Production only
-    --no-dev \
-    --optimize-autoloader \
-    && php artisan vendor:publish --tag=lfm_public \
-    && php artisan vendor:publish --provider="Laravel\Horizon\HorizonServiceProvider" \
-    && php artisan vendor:publish --tag=telescope-assets
+        && composer install \
+            --ignore-platform-reqs \
+            --no-interaction \
+            --prefer-dist \
+            --no-progress \
+            --profile \
+            --no-scripts \
+            # Production only
+            --no-dev \
+            --optimize-autoloader \
+        && php artisan vendor:publish --tag=lfm_public \
+        && php artisan vendor:publish --provider="Laravel\Horizon\HorizonServiceProvider" \
+        && php artisan vendor:publish --tag=telescope-assets
 
 #
 # Nginx server
