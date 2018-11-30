@@ -36,16 +36,27 @@ services:
       target: nginx
     restart: always
     ports:
-    - 8080:80
-    - 4434:443
+    - 80:80
+    - 443:443
     env_file: ./docker/nginx/.env
     volumes:
     - storage:/var/www/html/storage:ro
     - public_vendor:/var/www/html/public/vendor:ro
+    - certs:/etc/nginx/certs:ro
     links:
     - php
+    - letsencrypt
     depends_on:
     - php
+
+  letsencrypt:
+    image: certbot/certbot
+    volumes:
+      - certs:/etc/letsencrypt:rw
+    ports:
+      - 9123:80
+      - 443
+    command: certonly --standalone -d agravelot.eu --text --agree-tos --email antoine.gravelot@hotmail.fr --rsa-key-size 4096 --renew-by-default --standalone-supported-challenges http-01
 
   cache:
     image: redis:5.0-alpine
@@ -56,7 +67,7 @@ services:
     links:
     - db
     ports:
-    - "8082:80"
+    - 8082:80
     environment:
     - PHP_UPLOAD_MAX_FILESIZE=100MB
 
@@ -64,3 +75,4 @@ volumes:
   db-data:
   storage:
   public_vendor:
+  certs:
