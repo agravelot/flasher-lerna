@@ -82,12 +82,12 @@ while [[ -n $1 ]]; do
       usage
       error_exit "Unknown option $1" ;;
     *)
-      FILES+=($1);;
+      FILES+=($1) ;;
   esac
   shift
 done
 
-if [ ${#FILES[@]} -eq 0 ];
+if [[ ${#FILES[@]} -eq 0 ]];
 then
       usage;
       graceful_exit;
