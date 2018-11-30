@@ -102,7 +102,7 @@ RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
             --with-png-dir=/usr/include/ \
             --with-jpeg-dir=/usr/include/ > /dev/null \
         && docker-php-ext-configure zip --with-libzip > /dev/null \
-        && docker-php-ext-install -j$(nproc) pdo_mysql json intl gd zip bz2 opcache exif bcmath pcntl > /dev/null \
+        && docker-php-ext-install -j$(nproc) pdo_mysql intl gd zip bz2 opcache exif bcmath pcntl > /dev/null \
 # Install redis
         && pecl install -o -f redis > /dev/null \
         && docker-php-ext-enable redis \
