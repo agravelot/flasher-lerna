@@ -2,8 +2,20 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Gate;
+use App\Models\Album;
+use App\Models\Category;
+use App\Models\Contact;
+use App\Models\Cosplayer;
+use App\Models\GoldenBookPost;
+use App\Models\User;
+use App\Policies\AlbumPolicy;
+use App\Policies\CategoryPolicy;
+use App\Policies\ContactPolicy;
+use App\Policies\CosplayerPolicy;
+use App\Policies\GoldenBookPolicy;
+use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,7 +25,12 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
+        Album::class => AlbumPolicy::class,
+        Contact::class => ContactPolicy::class,
+        Cosplayer::class => CosplayerPolicy::class,
+        User::class => UserPolicy::class,
+        Category::class => CategoryPolicy::class,
+        GoldenBookPost::class => GoldenBookPolicy::class,
     ];
 
     /**
@@ -25,6 +42,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('dashboard', 'App\Policies\AdminPolicy@dashboard');
     }
 }

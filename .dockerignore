@@ -1,0 +1,43 @@
+.git/
+.editorconfig
+.gitignore
+.gitlab-ci.yml
+.gitattributes
+_ide_helper.php
+_ide_helper_models.php
+.env
+.phpunit.result.cache
+.phpstorm.meta.php
+Dockerfile
+.php_cs.cache
+sitemap.xml
+
+/vendor/
+/node_modules/
+/yarn-error.log
+/docker-compose.yml
+
+
+/public/vendor/
+/public/fonts/
+/public/images/
+/public/sitemap\.xml
+/public/storage
+/public/js/
+/public/css/
+
+/storage/framework/cache/**
+/storage/framework/sessions/**
+/storage/framework/views/**
+/storage/debugbar
+/storage/logs/*
+/storage/medialibrary
+/storage/app/public/*
+/bootstrap/cache/**
+
+*.md
+
+additions:
+'**' matches any number of directories (including zero)
+'!' lines starting with ! (exclamation mark) can be used to make exceptions to exclusions
+'#' lines starting with this character are ignored: use it for comments

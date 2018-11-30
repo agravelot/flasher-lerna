@@ -2,17 +2,6 @@
 
 @section('content')
 
-
-    <section class="hero is-primary">
-        <div class="hero-body">
-            <div class="container">
-                <h1 class="title">
-                    Reset Password
-                </h1>
-            </div>
-        </div>
-    </section>
-
     <div class="columns is-marginless is-centered">
         <div class="column is-5">
             <div class="card">
@@ -29,27 +18,17 @@
 
                     <form class="forgot-password-form" method="POST" action="{{ route('password.email') }}">
 
-                        {{ csrf_field() }}
+                        @csrf
 
-                        <div class="field is-horizontal">
-                            <div class="field-label">
-                                <label class="label">E-Mail Address</label>
-                            </div>
-
-                            <div class="field-body">
-                                <div class="field">
-                                    <p class="control">
-                                        <input class="input" id="email" type="email" name="email"
-                                               value="{{ old('email') }}" required autofocus>
-                                    </p>
-
-                                    @if ($errors->has('email'))
-                                        <p class="help is-danger">
-                                            {{ $errors->first('email') }}
-                                        </p>
-                                    @endif
-                                </div>
-                            </div>
+                        <div class="field">
+                            <p class="control has-icons-left">
+                                <input class="input" id="email" type="email" name="email"
+                                       value="{{ old('email') }}" placeholder="E-Mail" required autofocus>
+                                <span class="icon is-small is-left">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                            </p>
+                            @include('layouts.partials._form_errors', ['data' => 'email'])
                         </div>
 
                         <div class="field is-horizontal">
@@ -58,7 +37,8 @@
                             <div class="field-body">
                                 <div class="field is-grouped">
                                     <div class="control">
-                                        <button type="submit" class="button is-primary">Send Password Reset Link
+                                        <button type="submit" class="button is-primary">
+                                            Send Password Reset Link
                                         </button>
                                     </div>
                                 </div>

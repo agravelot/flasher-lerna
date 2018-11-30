@@ -29,7 +29,7 @@
 
                     <form class="password-reset-form" method="POST" action="{{ route('password.request') }}">
 
-                        {{ csrf_field() }}
+                        @csrf
 
                         <input type="hidden" name="token" value="{{ $token }}">
 
@@ -41,16 +41,14 @@
 
                             <div class="field-body">
                                 <div class="field">
-                                    <p class="control">
+                                    <p class="control has-icons-left">
                                         <input class="input" id="email" type="email" name="email"
                                                value="{{ old('email') }}" required autofocus>
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
                                     </p>
-
-                                    @if ($errors->has('email'))
-                                        <p class="help is-danger">
-                                            {{ $errors->first('email') }}
-                                        </p>
-                                    @endif
+                                    @include('layouts.partials._form_errors', ['data' => 'email'])
                                 </div>
                             </div>
                         </div>
@@ -62,15 +60,13 @@
 
                             <div class="field-body">
                                 <div class="field">
-                                    <p class="control">
+                                    <p class="control has-icons-left">
                                         <input class="input" id="password" type="password" name="password" required>
+                                        <span class="icon is-small is-left">
+                                            <i class="fas fa-key"></i>
+                                        </span>
                                     </p>
-
-                                    @if ($errors->has('password'))
-                                        <p class="help is-danger">
-                                            {{ $errors->first('password') }}
-                                        </p>
-                                    @endif
+                                    @include('layouts.partials._form_errors', ['data' => 'password'])
                                 </div>
                             </div>
                         </div>
@@ -86,6 +82,7 @@
                                     <p class="control">
                                         <input class="input" id="password-confirm" type="password" name="password_confirmation" required>
                                     </p>
+                                    @include('layouts.partials._form_errors', ['data' => 'password_confirmation'])
                                 </div>
                             </div>
                         </div>
