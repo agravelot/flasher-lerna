@@ -29,6 +29,6 @@ fi
 echo " * PULLING NEW IMAGES"
 docker-compose -f docker-compose.yml pull
 echo " * UPDATING RUNNING CONTAINERS"
-docker-compose -f docker-compose.yml up -d
+docker-compose -f docker-compose.yml up -d --remove-orphans
 #echo " * CLEANING OLD IMAGES"
 #ssh -t ${REMOTE} -p $CI_DEPLOY_SSH_PORT "docker-clean images"
