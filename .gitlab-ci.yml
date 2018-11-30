@@ -108,7 +108,7 @@ security_audit:
   - docker-compose down
   allow_failure: true
 
-deploy_dev:
+deploy_stagging:
   stage: deploy
   script:
   - echo "Deploying stagging"
@@ -118,16 +118,20 @@ deploy_dev:
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   - chmod +x docker/*.sh
   - bash -c 'docker/generate_env.sh'
-  - bash -c 'docker/deploy.sh'
-#  only:
-#  - develop
-  except:
-  - master
+  - bash -c 'docker/deploy.sh stagging'
+  only:
+  - develop
 
 deploy_production:
   stage: deploy
   script:
   - echo "Deploying production"
-  - docker-compose pull
+  - apk add --no-cache openssh-client socat bash
+  - eval $(ssh-agent -s)
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  - chmod +x docker/*.sh
+  - bash -c 'docker/generate_env.sh'
+  - bash -c 'docker/deploy.sh production'
   only:
   - master
