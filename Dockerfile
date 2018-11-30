@@ -1,3 +1,12 @@
+
+FROM nginx:alpine as nginx_config
+COPY docker/nginx/ .
+RUN apk add --no-cache bash
+RUN cd conf/ \
+        && cp nginx.conf nginx.tmp.conf \
+        && bash bin/inline.sh nginx.tmp.conf > /conf/nginx.conf \
+        && echo "}" >> /conf/nginx.conf
+
 #
 # Frontend
 #
@@ -38,7 +47,7 @@ RUN apk --no-cache add shadow \
         && usermod -u 1000 nginx \
         && apk del shadow
 
-COPY docker/nginx/conf/ /etc/nginx/
+COPY --from=nginx_config /conf/nginx.conf /etc/nginx/nginx.conf
 
 # Importing source code
 COPY --chown=1000:1000 . /var/www/html
