@@ -1,8 +1,9 @@
 FROM nginx:alpine as certs
 RUN apk add --no-cache openssl
 RUN openssl req -new -passin pass:client11 -out lib/client1.csr \
-                         -subj "/C=FR/ST=France/L=/O=/OU=/CN=/emailAddress=" \
-                            -newkey rsa:2048 -days 365 -nodes -x509 -keyout default_ssl.key -out default_ssl.crt
+                         -subj "/C=FR/ST=France" \
+                         -newkey rsa:2048 -days 365 -nodes -x509 \
+                         -keyout default_ssl.key -out default_ssl.crt
 
 FROM certbot/certbot as letsencrypt
 #COPY --from=certs default_ssl.crt /etc/letsencrypt/keys/default_ssl.crt
