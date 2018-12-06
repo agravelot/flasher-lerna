@@ -80,18 +80,7 @@ COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/public/vendor/
 #
 # PHP Application
 #
-FROM php:7.2-fpm-alpine as php
-
-WORKDIR /var/www/html
-
-RUN apk --no-cache add shadow \
-        && usermod -u 1000 www-data  \
-        && groupmod -g 1000 www-data \
-        && apk del shadow \
-# Allow www-data group to read php config files
-        && chown root:www-data -R /usr/local/etc/php \
-        && chmod g+r -R /usr/local/etc/php \
-        && chown -R 1000:1000 /var/www/html
+FROM nevax/docker-php-fpm-alpine-laravel as php
 
 # Add configurations
 COPY docker/php-fpm/custom.ini /usr/local/etc/php/conf.d/
@@ -107,24 +96,7 @@ COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/public/vendor/
 
 # Link storage
 RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
-        && chown -h 1000:1000 /var/www/html/public/storage \
-# Installing required dependencies
-        && apk --no-cache add jpegoptim optipng gifsicle freetype-dev libjpeg-turbo-dev icu-dev bzip2-dev libpng-dev libzip-dev zip supervisor \
-        && apk --no-cache add --virtual php_deps $PHPIZE_DEPS \
-        && docker-php-ext-configure gd \
-            --with-gd \
-            --with-freetype-dir=/usr/include/ \
-            --with-png-dir=/usr/include/ \
-            --with-jpeg-dir=/usr/include/ > /dev/null \
-        && docker-php-ext-configure zip --with-libzip > /dev/null \
-        && docker-php-ext-install -j$(nproc) pdo_mysql intl gd zip bz2 opcache exif bcmath pcntl > /dev/null \
-# Install redis
-        && pecl install -o -f redis > /dev/null \
-        && docker-php-ext-enable redis \
-# Cleanup
-        && rm -rf /tmp/* /usr/local/lib/php/doc/* /var/cache/apk/* \
-        && rm -rf /tmp/pear ~/.pearrc \
-        && apk del php_deps
+        && chown -h 1000:1000 /var/www/html/public/storage
 
 # Clean laravel cache
 CMD php artisan config:clear \
