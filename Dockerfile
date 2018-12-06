@@ -10,12 +10,12 @@ FROM certbot/certbot as letsencrypt
 #COPY --from=certs default_ssl.key /etc/letsencrypt/keys/default_ssl.key
 
 FROM nginx:alpine as nginx_config
-COPY docker/nginx/ .
-RUN apk add --no-cache bash
-RUN cd conf/ \
-        && cp nginx.conf nginx.tmp.conf \
-        && bash bin/inline.sh nginx.tmp.conf > /conf/nginx.conf \
-        && echo "}" >> /conf/nginx.conf
+COPY docker/nginx/conf /etc/nginx
+RUN apk add --no-cache bash \
+         && cd /etc/nginx/ \
+         && cp nginx.conf nginx.tmp.conf \
+         && bash bin/inline.sh nginx.tmp.conf > /etc/nginx/nginx.conf \
+         && echo "}" >> /etc/nginx/nginx.conf
 
 #
 # Frontend
@@ -57,7 +57,7 @@ RUN apk --no-cache add shadow \
         && usermod -u 1000 nginx \
         && apk del shadow
 
-COPY --from=nginx_config /conf/nginx.conf /etc/nginx/nginx.conf
+COPY --from=nginx_config /etc/nginx/nginx.conf /etc/nginx/nginx.conf
 
 # Importing source code
 COPY --chown=1000:1000 . /var/www/html
