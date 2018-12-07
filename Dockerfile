@@ -100,12 +100,12 @@ RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
 
 # Clean laravel cache
 CMD php artisan config:clear \
-#        && php artisan cache:clear \
-        && php artisan view:clear \
 # Update database
         && php artisan migrate --force \
 # Optimizing for production
 # https://laravel.com/docs/5.7/deployment#optimization
+        && php artisan cache:clear \
+        && php artisan view:clear \
         && php artisan optimize \
         && php artisan route:cache \
         && php artisan config:cache \
