@@ -14,8 +14,8 @@ COPY docker/nginx/conf /etc/nginx
 RUN apk add --no-cache bash \
          && cd /etc/nginx/ \
          && cp nginx.conf nginx.tmp.conf \
-         && bash bin/inline.sh nginx.tmp.conf > /etc/nginx/nginx.conf \
-         && echo "}" >> /etc/nginx/nginx.conf
+         && bash bin/inline.sh nginx.tmp.conf > /etc/nginx/nginx.inlined.conf \
+         && echo "}" >> /etc/nginx/nginx.inlined.conf
 
 #
 # Frontend
@@ -57,7 +57,7 @@ RUN apk --no-cache add shadow \
         && usermod -u 1000 nginx \
         && apk del shadow
 
-COPY --from=nginx_config /etc/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY --from=nginx_config /etc/nginx/nginx.inlined.conf /etc/nginx/nginx.inlined.conf
 
 # Importing source code
 COPY --chown=1000:1000 . /var/www/html
@@ -76,6 +76,10 @@ COPY --from=certs default_ssl.key /etc/nginx/certs/keys/default_ssl.key
 # Importing webpack assets
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
 COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/public/vendor/
+
+CMD envsubst '\$NGINX_HOST' < /etc/nginx/nginx.inlined.conf > /etc/nginx/nginx.conf \
+        && cat /etc/nginx/nginx.conf \
+        && exec nginx -g 'daemon off;'
 
 #
 # PHP Application
