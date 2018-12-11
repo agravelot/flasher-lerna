@@ -49,8 +49,8 @@ unit_test:
   - chmod +x docker/*.sh
   - bash -c 'docker/generate_env.sh production'
   - docker-compose up -d
-  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
-  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
+#  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
+#  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
   - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
   - docker-compose exec -T php php composer-setup.php
   - docker-compose exec -T php php -r "unlink('composer-setup.php');"
@@ -76,8 +76,8 @@ lint:
   - chmod +x docker/*.sh
   - bash -c 'docker/generate_env.sh production'
   - docker-compose up -d
-  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
-  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
+#  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
+#  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
   - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
   - docker-compose exec -T php php composer-setup.php
   - docker-compose exec -T php php -r "unlink('composer-setup.php');"
@@ -93,8 +93,8 @@ security_audit:
   - chmod +x docker/*.sh
   - bash -c 'docker/generate_env.sh production'
   - docker-compose up -d
-  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
-  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
+#  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
+#  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
   - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
   - docker-compose exec -T php php composer-setup.php
   - docker-compose exec -T php php -r "unlink('composer-setup.php');"
