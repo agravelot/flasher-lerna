@@ -78,7 +78,6 @@ COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
 COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/public/vendor/
 
 CMD envsubst '\$NGINX_HOST' < /etc/nginx/nginx.inlined.conf > /etc/nginx/nginx.conf \
-        && cat /etc/nginx/nginx.conf \
         && exec nginx -g 'daemon off;'
 
 #
