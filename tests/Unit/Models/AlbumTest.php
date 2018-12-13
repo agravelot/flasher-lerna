@@ -5,13 +5,14 @@ namespace Tests\Unit\Models;
 use App\Models\Album;
 use App\Models\Picture;
 use App\Models\User;
+use Cocur\Slugify\Slugify;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\ModelTestCase;
 
 class AlbumTest extends ModelTestCase
 {
-    use WithFaker, DatabaseMigrations;
+    use WithFaker;
 
     public function testRouteKeyName()
     {
@@ -68,21 +69,8 @@ class AlbumTest extends ModelTestCase
 //        $this->assertHasManyRelation($relation, $album, new Category(), 'user_id');
 //    }
 
-    public function test_slug_generated_is_valid()
-    {
-        $user = factory(User::class)->create();
-        $album = factory(Album::class)->create([
-            'title' => 'This is a title',
-            'user_id' => $user->id,
-        ]);
-
-        $this->assertEquals('this-is-a-title', $album->slug);
-    }
-
     public function test_post_is_public() {
-        $user = factory(User::class)->create();
-        $post = factory(Album::class)->create([
-            'user_id' => $user->id,
+        $post = factory(Album::class)->make([
             'publish' => true,
             'password' => null,
         ]);
@@ -91,9 +79,7 @@ class AlbumTest extends ModelTestCase
     }
 
     public function test_post_is_private_when_not_published() {
-        $user = factory(User::class)->create();
-        $post = factory(Album::class)->create([
-            'user_id' => $user->id,
+        $post = factory(Album::class)->make([
             'publish' => false,
             'password' => null,
         ]);
@@ -102,9 +88,7 @@ class AlbumTest extends ModelTestCase
     }
 
     public function test_post_is_private_when_password_is_defined() {
-        $user = factory(User::class)->create();
-        $post = factory(Album::class)->create([
-            'user_id' => $user->id,
+        $post = factory(Album::class)->make([
             'publish' => true,
             'password' => 'password',
         ]);
@@ -113,9 +97,7 @@ class AlbumTest extends ModelTestCase
     }
 
     public function test_post_is_private_when_password_is_defined_and_not_published() {
-        $user = factory(User::class)->create();
-        $post = factory(Album::class)->create([
-            'user_id' => $user->id,
+        $post = factory(Album::class)->make([
             'publish' => false,
             'password' => 'password',
         ]);

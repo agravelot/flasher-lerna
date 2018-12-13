@@ -9,7 +9,7 @@ use Tests\ModelTestCase;
 
 class CategoryTest extends ModelTestCase
 {
-    use WithFaker, DatabaseMigrations;
+    use WithFaker;
 
     public function testRouteKeyName()
     {
@@ -42,14 +42,5 @@ class CategoryTest extends ModelTestCase
     public function testModelConfiguration()
     {
         $this->runConfigurationAssertions(new Category(), ['name', 'slug', 'description']);
-    }
-
-    public function test_slug_generated_is_valid()
-    {
-        $category = factory(Category::class)->create([
-            'name' => 'This is a name',
-        ]);
-
-        $this->assertEquals('this-is-a-name', $category->slug);
     }
 }

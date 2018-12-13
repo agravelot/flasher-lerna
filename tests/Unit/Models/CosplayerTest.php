@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 
 class CosplayerTest extends ModelTestCase
 {
-    use WithFaker, DatabaseMigrations;
+    use WithFaker;
 
     public function testRouteKeyName()
     {
@@ -54,14 +54,5 @@ class CosplayerTest extends ModelTestCase
         $relation = $cosplayer->user();
 
         $this->assertBelongsToRelation($relation, $cosplayer, new User(), 'user_id');
-    }
-
-    public function test_slug_generated_is_valid()
-    {
-        $cosplayer = factory(Cosplayer::class)->create([
-            'name' => 'This is a name',
-        ]);
-
-        $this->assertEquals('this-is-a-name', $cosplayer->slug);
     }
 }

@@ -12,11 +12,11 @@ use Tests\ModelTestCase;
 
 class UserTest extends ModelTestCase
 {
-    use WithFaker, DatabaseMigrations;
+    use WithFaker;
 
     public function testAdminPermission()
     {
-        $user = factory(User::class)->create([
+        $user = factory(User::class)->make([
            'role' => 'admin'
         ]);
 
@@ -25,7 +25,7 @@ class UserTest extends ModelTestCase
 
     public function testBasicPermission()
     {
-        $user = factory(User::class)->create([
+        $user = factory(User::class)->make([
             'role' => 'user'
         ]);
 
@@ -43,7 +43,7 @@ class UserTest extends ModelTestCase
 
     public function testHasManyAlbumsRelationship()
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->make();
 
         $relation = $user->albums();
 
@@ -52,7 +52,7 @@ class UserTest extends ModelTestCase
 
     public function testHasManyPostsRelationship()
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->make();
 
         $relation = $user->posts();
 
