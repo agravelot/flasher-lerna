@@ -13,7 +13,7 @@ class ViewAlbumTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function test_user_can_view_album()
+    public function test_user_can_view_a_published_album()
     {
         $user = factory(User::class)->create();
 

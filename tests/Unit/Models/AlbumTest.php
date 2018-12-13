@@ -16,18 +16,18 @@ class AlbumTest extends ModelTestCase
 
     public function testRouteKeyName()
     {
-        $post = new Album();
+        $album = new Album();
         $slug = $this->faker->slug;
-        $routeKey = $post->getRouteKeyName();
-        $post->$$routeKey = $slug;
+        $routeKey = $album->getRouteKeyName();
+        $album->$$routeKey = $slug;
 
         $this->assertEquals($$routeKey, $slug);
     }
 
     public function testSlugAsRouteKeyName()
     {
-        $post = new Album();
-        $routeKey = $post->getRouteKeyName();
+        $album = new Album();
+        $routeKey = $album->getRouteKeyName();
 
         $excepted = "slug";
 
@@ -36,8 +36,8 @@ class AlbumTest extends ModelTestCase
 
     public function testSlugSourceAsTitle()
     {
-        $post = new Album();
-        $slugSource = $post->sluggable()['slug']['source'];
+        $album = new Album();
+        $slugSource = $album->sluggable()['slug']['source'];
 
         $excepted = "title";
 
@@ -69,39 +69,39 @@ class AlbumTest extends ModelTestCase
 //        $this->assertHasManyRelation($relation, $album, new Category(), 'user_id');
 //    }
 
-    public function test_post_is_public() {
-        $post = factory(Album::class)->make([
+    public function test_album_is_public() {
+        $album = factory(Album::class)->make([
             'publish' => true,
             'password' => null,
         ]);
 
-        $this->assertEquals(true, $post->isPublic());
+        $this->assertEquals(true, $album->isPublic());
     }
 
-    public function test_post_is_private_when_not_published() {
-        $post = factory(Album::class)->make([
+    public function test_album_is_private_when_not_published() {
+        $album = factory(Album::class)->make([
             'publish' => false,
             'password' => null,
         ]);
 
-        $this->assertEquals(false, $post->isPublic());
+        $this->assertEquals(false, $album->isPublic());
     }
 
-    public function test_post_is_private_when_password_is_defined() {
-        $post = factory(Album::class)->make([
+    public function test_album_is_private_when_password_is_defined() {
+        $album = factory(Album::class)->make([
             'publish' => true,
             'password' => 'password',
         ]);
 
-        $this->assertEquals(false, $post->isPublic());
+        $this->assertEquals(false, $album->isPublic());
     }
 
-    public function test_post_is_private_when_password_is_defined_and_not_published() {
-        $post = factory(Album::class)->make([
+    public function test_album_is_private_when_password_is_defined_and_not_published() {
+        $album = factory(Album::class)->make([
             'publish' => false,
             'password' => 'password',
         ]);
 
-        $this->assertEquals(false, $post->isPublic());
+        $this->assertEquals(false, $album->isPublic());
     }
 }
