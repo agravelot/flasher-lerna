@@ -7,9 +7,31 @@ $factory->define(App\Models\Album::class, function (Faker $faker) {
     return [
         'title' => $faker->sentence,
         'body' => $faker->paragraph($faker->randomDigit),
-        'published_at' => rand(0, 1) ? $faker->dateTime : null,
-        'password' => rand(0, 1) ? 'secret' : null,
         'created_at' => $faker->dateTime(),
         'updated_at' => Carbon::now(),
+    ];
+});
+
+$factory->state(\App\Models\Album::class, 'published', function (Faker $faker) {
+    return [
+        'published_at' => $faker->dateTime,
+    ];
+});
+
+$factory->state(\App\Models\Album::class, 'unpublished', function () {
+    return [
+        'published_at' => null,
+    ];
+});
+
+$factory->state(\App\Models\Album::class, 'password', function () {
+    return [
+        'password' => 'secret',
+    ];
+});
+
+$factory->state(\App\Models\Album::class, 'passwordLess', function () {
+    return [
+        'password' => null,
     ];
 });
