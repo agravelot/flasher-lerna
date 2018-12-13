@@ -42,7 +42,7 @@ class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepository
     {
         $this->applyCriteria();
         $this->applyScope();
-        $model = $this->model->with('cosplayers.media')->whereSlug($slug)->first();
+        $model = $this->model->with('cosplayers.media')->whereSlug($slug)->firstOrFail();
         $this->resetModel();
 
         return $this->parserResult($model);
