@@ -3,17 +3,25 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Post;
+use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\ModelTestCase;
 
 class PostTest extends ModelTestCase
 {
-    use WithFaker;
+    use WithFaker, DatabaseMigrations;
 
     public function testRouteKeyName()
     {
-        $post = new Post();
+        $user = factory(User::class)->create();
+
         $slug = $this->faker->slug;
+        $post = factory(Post::class)->create([
+            'slug' => $slug,
+            'user_id' => $user->id,
+        ]);
+
         $routeKey = $post->getRouteKeyName();
         $post->$$routeKey = $slug;
 
