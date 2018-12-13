@@ -83,7 +83,7 @@ CMD envsubst '\$NGINX_HOST' < /etc/nginx/nginx.inlined.conf > /etc/nginx/nginx.c
 #
 # PHP Application
 #
-FROM nevax/docker-php-fpm-alpine-laravel as php
+FROM nevax/docker-php-fpm-alpine-laravel:php7.3 as php
 
 # Add configurations
 COPY docker/php-fpm/custom.ini /usr/local/etc/php/conf.d/
