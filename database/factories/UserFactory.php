@@ -20,9 +20,9 @@ $factory->define(App\Models\User::class, function (Faker $faker) {
         'email' => $faker->unique()->email,
         'password' => Hash::make('secret'),
         'role' => 'user',
-        'created_at' => Carbon::now(),
-        'updated_at' => Carbon::now(),
         'email_verified_at' => Carbon::now(),
         'remember_token' => str_random(10),
+        'created_at' => $faker->dateTime(),
+        'updated_at' => Carbon::now(),
     ];
 });

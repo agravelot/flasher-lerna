@@ -8,7 +8,7 @@ $factory->define(\App\Models\Contact::class, function (Faker $faker) {
         'name' => $faker->name,
         'email' => $faker->email,
         'message' => $faker->paragraph,
-        'created_at' => Carbon::now(),
+        'created_at' => $faker->dateTime(),
         'updated_at' => Carbon::now(),
     ];
 });

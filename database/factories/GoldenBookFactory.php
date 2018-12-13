@@ -9,7 +9,7 @@ $factory->define(\App\Models\GoldenBookPost::class, function (Faker $faker) {
         'email' => $faker->email,
         'body' => $faker->paragraph,
         'active' => true,
-        'created_at' => Carbon::now(),
+        'created_at' => $faker->dateTime(),
         'updated_at' => Carbon::now(),
     ];
 });
