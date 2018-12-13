@@ -47,10 +47,10 @@ unit_test:
   - echo "UNIT TESTS"
   - docker-compose pull
   - chmod +x docker/*.sh
-  - bash -c 'docker/generate_env.sh'
+  - bash -c 'docker/generate_env.sh production'
   - docker-compose up -d
-  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
-  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
+#  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
+#  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
   - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
   - docker-compose exec -T php php composer-setup.php
   - docker-compose exec -T php php -r "unlink('composer-setup.php');"
@@ -64,7 +64,7 @@ integration_test:
   - echo "INTEGRATION TEST"
   - docker-compose pull
   - chmod +x docker/*.sh
-  - bash -c 'docker/generate_env.sh'
+  - bash -c 'docker/generate_env.sh production'
   - docker-compose up -d
   - docker-compose exec -T php echo "Run test here"
 
@@ -74,10 +74,10 @@ lint:
   - echo "LINT CODE"
   - docker-compose pull
   - chmod +x docker/*.sh
-  - bash -c 'docker/generate_env.sh'
+  - bash -c 'docker/generate_env.sh production'
   - docker-compose up -d
-  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
-  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
+#  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
+#  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
   - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
   - docker-compose exec -T php php composer-setup.php
   - docker-compose exec -T php php -r "unlink('composer-setup.php');"
@@ -91,10 +91,10 @@ security_audit:
   - echo "SECURITY AUDIT"
   - docker-compose pull
   - chmod +x docker/*.sh
-  - bash -c 'docker/generate_env.sh'
+  - bash -c 'docker/generate_env.sh production'
   - docker-compose up -d
-  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
-  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
+#  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
+#  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
   - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
   - docker-compose exec -T php php composer-setup.php
   - docker-compose exec -T php php -r "unlink('composer-setup.php');"
@@ -112,7 +112,7 @@ deploy_stagging:
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   - chmod +x docker/*.sh
-  - bash -c 'docker/generate_env.sh'
+  - bash -c 'docker/generate_env.sh stagging'
   - bash -c 'docker/deploy.sh stagging'
   except:
     - master
@@ -126,7 +126,7 @@ deploy_production:
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   - chmod +x docker/*.sh
-  - bash -c 'docker/generate_env.sh'
+  - bash -c 'docker/generate_env.sh production'
   - bash -c 'docker/deploy.sh production'
   only:
   - master
