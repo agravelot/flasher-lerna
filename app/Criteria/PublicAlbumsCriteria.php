@@ -2,6 +2,7 @@
 
 namespace App\Criteria;
 
+use App\Models\Album;
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
@@ -13,15 +14,15 @@ class PublicAlbumsCriteria implements CriteriaInterface
     /**
      * Apply criteria in query repository.
      *
-     * @param string              $model
+     * @param string $model
      * @param RepositoryInterface $repository
      *
      * @return mixed
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        $model = $model->where('publish', true)
-            ->whereNull('password');
+        /** @var Album $model */
+        $model = $model->whereNotNull('published_at')->whereNull('password');
 
         return $model;
     }

@@ -20,14 +20,14 @@ class Album extends Model implements HasMedia
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'publish', 'user_id',
+        'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id',
     ];
 
     protected $hidden = ['password'];
 
     public function isPublic()
     {
-        return $this->publish && $this->password == null;
+        return $this->published_at && $this->password == null;
     }
 
     public function user()
