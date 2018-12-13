@@ -16,12 +16,26 @@ use Tests\TestCase;
 
 class AdminUserControllerTest extends TestCase
 {
-    use DatabaseTransactions;
-    use DatabaseMigrations;
+    use DatabaseTransactions, DatabaseMigrations;
 
+    /**
+     * @var AdminUserController
+     */
     protected $controller;
+
+    /**
+     * @var User
+     */
     protected $admin;
+
+    /**
+     * @var UserRepository
+     */
     protected $userRepository;
+
+    /**
+     * @var CosplayerRepository
+     */
     protected $cosplayerRepository;
 
     public function setUp()
@@ -39,18 +53,21 @@ class AdminUserControllerTest extends TestCase
             ->create([
                 'role' => 'admin',
             ])->first();
+
+        // We define the logged user to pass policies
+        Auth::setUser($this->admin);
     }
 
+    /**
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function testIndexReturnsView()
     {
         $users = factory(User::class, 10)->create();
 
-        // We define the logged user to pass policies
-        Auth::setUser($this->admin);
-
-        $this->userRepository
-            ->shouldReceive('with')->with('cosplayer')->once()->andReturn(Mockery::self())
-            ->getMock()->shouldReceive('paginate')->with(10)->once()->andReturn($users);
+        $this->cosplayerRepository->shouldReceive('paginate')->with(10)->andReturn($users);
+        $this->userRepository->shouldReceive('with')->with('cosplayer')->andReturn(Mockery::self())
+            ->getMock()->shouldReceive('paginate')->with(10)->andReturn($users);
 
         $view = $this->controller->index();
 
@@ -58,12 +75,12 @@ class AdminUserControllerTest extends TestCase
         $this->assertArraySubset(['users' => $users], $view->getData());
     }
 
+    /**
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function testCreateReturnsView()
     {
         $cosplayers = factory(Cosplayer::class, 10)->create();
-
-        // We define the logged user to pass policies
-        Auth::setUser($this->admin);
 
         $this->cosplayerRepository->shouldReceive('with')->with('user')->andReturn(Mockery::self())
             ->getMock()->shouldReceive('all')->with(['id', 'name'])->andReturn($cosplayers);
@@ -77,9 +94,6 @@ class AdminUserControllerTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        // We define the logged user to pass policies
-        Auth::setUser($this->admin);
-
         $this->userRepository->shouldReceive('find')
             ->once()
             ->with($user->id)
@@ -91,13 +105,13 @@ class AdminUserControllerTest extends TestCase
         $this->assertArraySubset(['user' => $user], $view->getData());
     }
 
+    /**
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function testEditReturnsView()
     {
         $user = factory(User::class)->create();
         $cosplayers = factory(Cosplayer::class, 10)->create();
-
-        // We define the logged user to pass policies
-        Auth::setUser($this->admin);
 
         $this->userRepository->shouldReceive('find')
             ->once()
@@ -113,12 +127,12 @@ class AdminUserControllerTest extends TestCase
         $this->assertArraySubset(['user' => $user], $view->getData());
     }
 
+    /**
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function testDestroyRedirect()
     {
         $user = factory(User::class)->create();
-
-        // We define the logged user to pass policies
-        Auth::setUser($this->admin);
 
         $this->userRepository->shouldReceive('find')
             ->once()
