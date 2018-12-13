@@ -7,7 +7,7 @@
                 <header class="card-header">
                     <p class="card-header-title">
                         Contacts
-                        <a href="{{ route('contact.create') }}">
+                        <a href="{{ route('contact.index') }}">
                             <span class="icon">
                                 <i class="fas fa-plus"></i>
                             </span>
