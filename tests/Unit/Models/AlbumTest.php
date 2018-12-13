@@ -5,6 +5,7 @@ namespace Tests\Unit\Models;
 use App\Models\Album;
 use App\Models\Picture;
 use App\Models\User;
+use Carbon\Carbon;
 use Cocur\Slugify\Slugify;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -71,7 +72,7 @@ class AlbumTest extends ModelTestCase
 
     public function test_album_is_public() {
         $album = factory(Album::class)->make([
-            'publish' => true,
+            'published_at' => Carbon::parse('-1 week'),
             'password' => null,
         ]);
 
@@ -80,7 +81,7 @@ class AlbumTest extends ModelTestCase
 
     public function test_album_is_private_when_not_published() {
         $album = factory(Album::class)->make([
-            'publish' => false,
+            'published_at' => null,
             'password' => null,
         ]);
 
@@ -89,7 +90,7 @@ class AlbumTest extends ModelTestCase
 
     public function test_album_is_private_when_password_is_defined() {
         $album = factory(Album::class)->make([
-            'publish' => true,
+            'published_at' => Carbon::parse('-1 week'),
             'password' => 'password',
         ]);
 
@@ -98,7 +99,7 @@ class AlbumTest extends ModelTestCase
 
     public function test_album_is_private_when_password_is_defined_and_not_published() {
         $album = factory(Album::class)->make([
-            'publish' => false,
+            'published_at' => null,
             'password' => 'password',
         ]);
 
