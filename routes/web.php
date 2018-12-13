@@ -1,8 +1,5 @@
 <?php
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
 Auth::routes(['verify' => true]);
 Route::impersonate();
 
@@ -11,7 +8,7 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth',
 });
 
 //FRONT
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::namespace('Front')->group(function () {
     Route::resource('posts', 'PostController')->only(['index', 'show']);

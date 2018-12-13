@@ -7,12 +7,12 @@
                 <nav class="card">
                     <header class="card-header">
                         <p class="card-header-title">
-                            Dashboard
+                            Welcome
                         </p>
                     </header>
 
                     <div class="card-content">
-                        You are logged in!
+                        Picblog is here
                     </div>
                 </nav>
             </div>
