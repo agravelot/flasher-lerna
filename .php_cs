@@ -6,6 +6,7 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
     ->name('*.php')
     ->notName('*.blade.php')
+    ->notName('_ide_helper.php')
     ->ignoreDotFiles(true)
     ->ignoreVCS(true)
 ;
@@ -19,6 +20,7 @@ return PhpCsFixer\Config::create()
         'not_operator_with_successor_space' => true,
         'ordered_imports' => true,
         'phpdoc_order' => true,
+        'yoda_style' => false,
     ))
     ->setFinder($finder)
 ;
