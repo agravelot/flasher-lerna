@@ -2,11 +2,11 @@
 
 namespace App\Repositories;
 
+use App\Criteria\PublicAlbumsCriteria;
 use App\Models\Album;
 use App\Repositories\Contracts\AlbumRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
@@ -14,6 +14,13 @@ use Prettus\Repository\Eloquent\BaseRepository;
  */
 class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepository
 {
+    public function latestWithPagination()
+    {
+        return $this->model->with(['media', 'categories'])
+            ->orderBy('created_at', 'desc')
+            ->paginate();
+    }
+
     public function create(array $attributes)
     {
         $attributes['password'] = Hash::make($attributes['password']);
@@ -80,9 +87,12 @@ class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepository
 
     /**
      * Boot up the repository, pushing criteria.
+     *
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function boot()
     {
-        $this->pushCriteria(app(RequestCriteria::class));
+        // $this->pushCriteria(app(RequestCriteria::class));
+        $this->pushCriteria(PublicAlbumsCriteria::class);
     }
 }

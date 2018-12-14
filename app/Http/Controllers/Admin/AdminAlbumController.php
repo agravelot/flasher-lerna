@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Criteria\PublicAlbumsCriteria;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AlbumRequest;
 use App\Models\Album;
@@ -42,6 +43,8 @@ class AdminAlbumController extends Controller
         $this->albumRepository = $albumRepository;
         $this->categoryRepository = $categoryRepository;
         $this->cosplayerRepository = $cosplayerRepository;
+
+        $this->albumRepository->popCriteria(PublicAlbumsCriteria::class);
     }
 
     /**
