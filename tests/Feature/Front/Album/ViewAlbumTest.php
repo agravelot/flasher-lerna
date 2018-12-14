@@ -80,12 +80,10 @@ class ViewAlbumTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_guest_cannot_view_album_with_password_listing()
+    public function test_bad_slug_redirect_page_not_found()
     {
-        $album = factory(Album::class)->states(['published', 'password', 'withUser'])->create();
+        $response = $this->get('/albums/same-random-slug');
 
-        $response = $this->get('/albums/' . $album->slug);
-
-        $response->assertStatus(403);
+        $response->assertStatus(404);
     }
 }
