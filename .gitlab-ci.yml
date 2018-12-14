@@ -67,6 +67,7 @@ integration_test:
   - bash -c 'docker/generate_env.sh production'
   - docker-compose up -d
   - docker-compose exec -T php echo "Run test here"
+  allow_failure: true
 
 lint:
   stage: review
