@@ -17,10 +17,10 @@ class IndexAlbumTest extends TestCase
         $response = $this->get('/albums');
 
         $response->assertStatus(200);
-        $response->assertSee($albums[0]->title);
-        $response->assertDontSee($albums[0]->body);
-        $response->assertSee($albums[1]->title);
-        $response->assertDontSee($albums[1]->body);
+        $response->assertSee($albums->get(0)->title);
+        $response->assertDontSee($albums->get(0)->body);
+        $response->assertSee($albums->get(1)->title);
+        $response->assertDontSee($albums->get(1)->body);
     }
 
     public function test_guest_can_not_view_unpublished_albums()
@@ -30,10 +30,10 @@ class IndexAlbumTest extends TestCase
         $response = $this->get('/albums');
 
         $response->assertStatus(200);
-        $response->assertDontSee($albums[0]->title);
-        $response->assertDontSee($albums[0]->body);
-        $response->assertDontSee($albums[1]->title);
-        $response->assertDontSee($albums[1]->body);
+        $response->assertDontSee($albums->get(0)->title);
+        $response->assertDontSee($albums->get(0)->body);
+        $response->assertDontSee($albums->get(1)->title);
+        $response->assertDontSee($albums->get(1)->body);
     }
 
 
@@ -44,10 +44,10 @@ class IndexAlbumTest extends TestCase
         $response = $this->get('/albums');
 
         $response->assertStatus(200);
-        $response->assertDontSee($albums[0]->title);
-        $response->assertDontSee($albums[0]->body);
-        $response->assertDontSee($albums[1]->title);
-        $response->assertDontSee($albums[1]->body);
+        $response->assertDontSee($albums->get(0)->title);
+        $response->assertDontSee($albums->get(0)->body);
+        $response->assertDontSee($albums->get(1)->title);
+        $response->assertDontSee($albums->get(1)->body);
     }
 
     public function test_guest_can_not_view_unpublished_albums_with_password()
@@ -57,9 +57,9 @@ class IndexAlbumTest extends TestCase
         $response = $this->get('/albums');
 
         $response->assertStatus(200);
-        $response->assertDontSee($albums[0]->title);
-        $response->assertDontSee($albums[0]->body);
-        $response->assertDontSee($albums[1]->title);
-        $response->assertDontSee($albums[1]->body);
+        $response->assertDontSee($albums->get(0)->title);
+        $response->assertDontSee($albums->get(0)->body);
+        $response->assertDontSee($albums->get(1)->title);
+        $response->assertDontSee($albums->get(1)->body);
     }
 }
