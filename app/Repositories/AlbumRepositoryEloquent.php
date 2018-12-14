@@ -16,7 +16,7 @@ class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepository
 {
     public function latestWithPagination()
     {
-        return $this->model->with(['media', 'categories'])
+        return parent::with(['media', 'categories'])
             ->orderBy('created_at', 'desc')
             ->paginate();
     }
