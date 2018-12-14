@@ -19,7 +19,7 @@
                 </div>
                 <div class="tags">
                     {{--@foreach($user->categories as $category)--}}
-                        {{--<span class="tag">{{ $category->name }}</span>--}}
+                    {{--<span class="tag">{{ $category->name }}</span>--}}
                     {{--@endforeach--}}
                 </div>
                 <div class="columns is-multiline is-mobile">

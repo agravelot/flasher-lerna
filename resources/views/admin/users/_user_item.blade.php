@@ -9,13 +9,13 @@
     </td>
     <td width="2%">
         @canImpersonate
-            @canBeImpersonated($user)
-                    <a href="{{ route('impersonate', ['user' => $user->id]) }}">
+        @canBeImpersonated($user)
+        <a href="{{ route('impersonate', ['user' => $user->id]) }}">
                         <span class="icon has-text-info">
                             <i class="fas fa-sign-in-alt"></i>
                         </span>
-                    </a>
-            @endCanBeImpersonated
+        </a>
+        @endCanBeImpersonated
         @endCanImpersonate
     </td>
     <td width="2%">

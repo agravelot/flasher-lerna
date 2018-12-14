@@ -112,12 +112,12 @@
 </div>
 
 <div class="" style="position: fixed; bottom: 42px; left: 10px; z-index: 5;">
-        <a class="has-text-info has-margin-top-lg" id="collapse-admin-menu" >
+    <a class="has-text-info has-margin-top-lg" id="collapse-admin-menu">
                 <span class="icon">
                     <i class="fas fa-chevron-circle-left"></i>
                 </span>
-            Collapse
-        </a>
+        Collapse
+    </a>
 </div>
 
 @section('js')
