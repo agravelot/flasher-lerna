@@ -14,18 +14,14 @@ class UserTest extends ModelTestCase
 
     public function testAdminPermission()
     {
-        $user = factory(User::class)->make([
-           'role' => 'admin',
-        ]);
+        $user = factory(User::class)->state('admin')->make();
 
         $this->assertTrue($user->isAdmin(), 'user should have admin right');
     }
 
     public function testBasicPermission()
     {
-        $user = factory(User::class)->make([
-            'role' => 'user',
-        ]);
+        $user = factory(User::class)->state('user')->make();
 
         $this->assertFalse($user->isAdmin(), 'user should have basic user right');
     }

@@ -68,40 +68,28 @@ class AlbumTest extends ModelTestCase
 
     public function test_album_is_public()
     {
-        $album = factory(Album::class)->make([
-            'published_at' => Carbon::parse('-1 week'),
-            'password' => null,
-        ]);
+        $album = factory(Album::class)->states(['published', 'passwordLess'])->make();
 
         $this->assertEquals(true, $album->isPublic());
     }
 
     public function test_album_is_private_when_not_published()
     {
-        $album = factory(Album::class)->make([
-            'published_at' => null,
-            'password' => null,
-        ]);
+        $album = factory(Album::class)->states(['unpublished', 'passwordLess'])->make();
 
         $this->assertEquals(false, $album->isPublic());
     }
 
     public function test_album_is_private_when_password_is_defined()
     {
-        $album = factory(Album::class)->make([
-            'published_at' => Carbon::parse('-1 week'),
-            'password' => 'password',
-        ]);
+        $album = factory(Album::class)->states(['published', 'password'])->make();
 
         $this->assertEquals(false, $album->isPublic());
     }
 
     public function test_album_is_private_when_password_is_defined_and_not_published()
     {
-        $album = factory(Album::class)->make([
-            'published_at' => null,
-            'password' => 'password',
-        ]);
+        $album = factory(Album::class)->states(['unpublished', 'password'])->make();
 
         $this->assertEquals(false, $album->isPublic());
     }

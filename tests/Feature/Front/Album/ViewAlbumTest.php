@@ -22,11 +22,9 @@ class ViewAlbumTest extends TestCase
         ]);
 
         /** @var Album $album */
-        $album = factory(Album::class)->create([
+        $album = factory(Album::class)->states(['published', 'passwordLess'])->create([
             'title' => 'Test title',
             'body' => 'Some test body, this is a good day!',
-            'published_at' => Carbon::now(),
-            'password' => null,
             'user_id' => $user->id,
         ]);
         $album->categories()->attach($category);
@@ -44,11 +42,7 @@ class ViewAlbumTest extends TestCase
         $user = factory(User::class)->create();
 
         /** @var Album $album */
-        $album = factory(Album::class)->create([
-            'title' => 'Test title private',
-            'body' => 'Some test body, this is a good day!',
-            'published_at' => null,
-            'password' => null,
+        $album = factory(Album::class)->states(['unpublished', 'passwordLess'])->create([
             'user_id' => $user->id,
         ]);
 

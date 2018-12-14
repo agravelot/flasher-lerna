@@ -26,3 +26,16 @@ $factory->define(App\Models\User::class, function (Faker $faker) {
         'updated_at' => Carbon::now(),
     ];
 });
+
+
+$factory->state(\App\Models\User::class, 'admin', function () {
+    return [
+        'role' => 'admin'
+    ];
+});
+
+$factory->state(\App\Models\User::class, 'user', function () {
+    return [
+        'role' => 'user'
+    ];
+});
