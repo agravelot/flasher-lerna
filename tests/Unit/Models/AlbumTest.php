@@ -26,7 +26,7 @@ class AlbumTest extends ModelTestCase
         $album = new Album();
         $routeKey = $album->getRouteKeyName();
 
-        $excepted = "slug";
+        $excepted = 'slug';
 
         $this->assertEquals($excepted, $routeKey);
     }
@@ -36,7 +36,7 @@ class AlbumTest extends ModelTestCase
         $album = new Album();
         $slugSource = $album->sluggable()['slug']['source'];
 
-        $excepted = "title";
+        $excepted = 'title';
 
         $this->assertEquals($excepted, $slugSource);
     }
@@ -44,7 +44,7 @@ class AlbumTest extends ModelTestCase
     public function testModelConfiguration()
     {
         $this->runConfigurationAssertions(new Album(), [
-            'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id'
+            'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id',
         ],
             ['password']);
     }

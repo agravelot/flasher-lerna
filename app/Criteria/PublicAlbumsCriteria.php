@@ -14,7 +14,7 @@ class PublicAlbumsCriteria implements CriteriaInterface
     /**
      * Apply criteria in query repository.
      *
-     * @param string $model
+     * @param string              $model
      * @param RepositoryInterface $repository
      *
      * @return mixed

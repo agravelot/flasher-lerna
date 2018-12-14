@@ -148,7 +148,6 @@ class AdminUserControllerTest extends TestCase
         $this->assertInstanceOf(RedirectResponse::class, $response);
     }
 
-
     //TODO Test create and update
 //    public function testStoreReturnsView()
 //    {
@@ -177,5 +176,4 @@ class AdminUserControllerTest extends TestCase
 //        $this->assertEquals('admin.users.show', $view->getName());
 //        $this->assertArraySubset(['user' => $user], $view->getData());
 //    }
-
 }

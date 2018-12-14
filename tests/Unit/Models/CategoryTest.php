@@ -3,7 +3,6 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Category;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\ModelTestCase;
 
@@ -21,20 +20,22 @@ class CategoryTest extends ModelTestCase
         $this->assertEquals($$routeKey, $slug);
     }
 
-    public function testSlugAsRouteKeyName() {
+    public function testSlugAsRouteKeyName()
+    {
         $post = new Category();
         $routeKey = $post->getRouteKeyName();
 
-        $excepted = "slug";
+        $excepted = 'slug';
 
         $this->assertEquals($excepted, $routeKey);
     }
 
-    public function testSlugSourceAsTitle() {
+    public function testSlugSourceAsTitle()
+    {
         $post = new Category();
         $slugSource = $post->sluggable()['slug']['source'];
 
-        $excepted = "name";
+        $excepted = 'name';
 
         $this->assertEquals($excepted, $slugSource);
     }

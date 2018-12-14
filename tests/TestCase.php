@@ -12,8 +12,8 @@ abstract class TestCase extends BaseTestCase
     protected function assertAuthenticationRequired($uri, $method = 'get', $redirect = '/login')
     {
         $method = strtolower($method);
-        if (!in_array($method, ['get', 'post', 'put', 'update', 'delete'])) {
-            throw new InvalidArgumentException('Invalid method: ' . $method);
+        if (! in_array($method, ['get', 'post', 'put', 'update', 'delete'])) {
+            throw new InvalidArgumentException('Invalid method: '.$method);
         }
         // Html check
         $response = $this->$method($uri);

@@ -11,17 +11,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 abstract class ModelTestCase extends TestCase
 {
     /**
-     * @param Model $model
-     * @param array $fillable
-     * @param array $hidden
-     * @param array $guarded
-     * @param array $visible
-     * @param array $casts
-     * @param array $dates
+     * @param Model  $model
+     * @param array  $fillable
+     * @param array  $hidden
+     * @param array  $guarded
+     * @param array  $visible
+     * @param array  $casts
+     * @param array  $dates
      * @param string $collectionClass
-     * @param null $table
+     * @param null   $table
      * @param string $primaryKey
-     * @param null $connection
+     * @param null   $connection
      *
      * - `$fillable` -> `getFillable()`
      * - `$guarded` -> `getGuarded()`
@@ -48,8 +48,7 @@ abstract class ModelTestCase extends TestCase
         $primaryKey = 'id',
         $connection = null,
         $slug = null
-    )
-    {
+    ) {
         $this->assertEquals($fillable, $model->getFillable());
         $this->assertEquals($guarded, $model->getGuarded());
         $this->assertEquals($hidden, $model->getHidden());
@@ -62,21 +61,21 @@ abstract class ModelTestCase extends TestCase
         $this->assertEquals($collectionClass, get_class($c));
         $this->assertInstanceOf(Collection::class, $c);
 
-        if ($connection !== null) {
+        if (null !== $connection) {
             $this->assertEquals($connection, $model->getConnectionName());
         }
 
-        if ($table !== null) {
+        if (null !== $table) {
             $this->assertEquals($table, $model->getTable());
         }
     }
 
     /**
-     * @param HasMany $relation
-     * @param Model $model
-     * @param Model $related
-     * @param string $key
-     * @param string $parent
+     * @param HasMany  $relation
+     * @param Model    $model
+     * @param Model    $related
+     * @param string   $key
+     * @param string   $parent
      * @param \Closure $queryCheck
      *
      * - `getQuery()`: assert query has not been modified or modified properly.
@@ -87,7 +86,7 @@ abstract class ModelTestCase extends TestCase
     {
         $this->assertInstanceOf(HasMany::class, $relation);
 
-        if (!is_null($queryCheck)) {
+        if (! is_null($queryCheck)) {
             $queryCheck->bindTo($this);
             $queryCheck($relation->getQuery(), $model, $relation);
         }
@@ -102,16 +101,16 @@ abstract class ModelTestCase extends TestCase
             $parent = $model->getKeyName();
         }
 
-        $this->assertEquals($model->getTable() . '.' . $parent, $relation->getQualifiedParentKeyName());
+        $this->assertEquals($model->getTable().'.'.$parent, $relation->getQualifiedParentKeyName());
     }
 
     /**
      * @param BelongsTo $relation
-     * @param Model $model
-     * @param Model $related
-     * @param string $key
-     * @param string $owner
-     * @param \Closure $queryCheck
+     * @param Model     $model
+     * @param Model     $related
+     * @param string    $key
+     * @param string    $owner
+     * @param \Closure  $queryCheck
      *
      * - `getQuery()`: assert query has not been modified or modified properly.
      * - `getForeignKey()`: any `HasOneOrMany` or `BelongsTo` relation, but key type differs (see documentaiton).
@@ -121,7 +120,7 @@ abstract class ModelTestCase extends TestCase
     {
         $this->assertInstanceOf(BelongsTo::class, $relation);
 
-        if (!is_null($queryCheck)) {
+        if (! is_null($queryCheck)) {
             $queryCheck->bindTo($this);
             $queryCheck($relation->getQuery(), $model, $relation);
         }
@@ -137,11 +136,11 @@ abstract class ModelTestCase extends TestCase
 
     /**
      * @param BelongsToMany $relation
-     * @param Model $model
-     * @param Model $related
-     * @param string $key
-     * @param string $parent
-     * @param \Closure $queryCheck
+     * @param Model         $model
+     * @param Model         $related
+     * @param string        $key
+     * @param string        $parent
+     * @param \Closure      $queryCheck
      *
      * - `getQuery()`: assert query has not been modified or modified properly.
      * - `getForeignKey()`: any `HasOneOrMany` or `BelongsTo` relation, but key type differs (see documentaiton).
@@ -151,7 +150,7 @@ abstract class ModelTestCase extends TestCase
     {
         $this->assertInstanceOf(BelongsToMany::class, $relation);
 
-        if (!is_null($queryCheck)) {
+        if (! is_null($queryCheck)) {
             $queryCheck->bindTo($this);
             $queryCheck($relation->getQuery(), $model, $relation);
         }
@@ -162,6 +161,6 @@ abstract class ModelTestCase extends TestCase
             $parent = $model->getKeyName();
         }
 
-        $this->assertEquals($model->getTable() . '.' . $parent, $relation->getQualifiedParentKeyName());
+        $this->assertEquals($model->getTable().'.'.$parent, $relation->getQualifiedParentKeyName());
     }
 }

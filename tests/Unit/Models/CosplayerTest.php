@@ -2,12 +2,10 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\Album;
 use App\Models\Cosplayer;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\ModelTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Tests\ModelTestCase;
 
 class CosplayerTest extends ModelTestCase
 {
@@ -23,20 +21,22 @@ class CosplayerTest extends ModelTestCase
         $this->assertEquals($$routeKey, $slug);
     }
 
-    public function testSlugAsRouteKeyName() {
+    public function testSlugAsRouteKeyName()
+    {
         $post = new Cosplayer();
         $routeKey = $post->getRouteKeyName();
 
-        $excepted = "slug";
+        $excepted = 'slug';
 
         $this->assertEquals($excepted, $routeKey);
     }
 
-    public function testSlugSourceAsTitle() {
+    public function testSlugSourceAsTitle()
+    {
         $post = new Cosplayer();
         $slugSource = $post->sluggable()['slug']['source'];
 
-        $excepted = "name";
+        $excepted = 'name';
 
         $this->assertEquals($excepted, $slugSource);
     }
@@ -44,7 +44,7 @@ class CosplayerTest extends ModelTestCase
     public function testModelConfiguration()
     {
         $this->runConfigurationAssertions(new Cosplayer(), [
-            'name', 'description', 'slug'
+            'name', 'description', 'slug',
         ]);
     }
 

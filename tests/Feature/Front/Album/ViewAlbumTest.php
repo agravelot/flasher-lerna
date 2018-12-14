@@ -18,7 +18,7 @@ class ViewAlbumTest extends TestCase
         $user = factory(User::class)->create();
 
         $category = factory(Category::class)->create([
-            'name' => 'Category name'
+            'name' => 'Category name',
         ]);
 
         /** @var Album $album */
@@ -31,7 +31,7 @@ class ViewAlbumTest extends TestCase
         ]);
         $album->categories()->attach($category);
 
-        $response = $this->get('/albums/' . $album->slug);
+        $response = $this->get('/albums/'.$album->slug);
 
         $response->assertStatus(200);
         $response->assertSee('Test title');
@@ -52,7 +52,7 @@ class ViewAlbumTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $response = $this->get('/albums/' . $album->slug);
+        $response = $this->get('/albums/'.$album->slug);
 
         $response->assertStatus(404);
     }

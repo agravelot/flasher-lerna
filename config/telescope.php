@@ -1,10 +1,9 @@
 <?php
 
-use Laravel\Telescope\Watchers;
 use Laravel\Telescope\Http\Middleware\Authorize;
+use Laravel\Telescope\Watchers;
 
 return [
-
     'path' => 'telescope',
 
     /*
@@ -71,12 +70,12 @@ return [
         ],
 
         Watchers\RedisWatcher::class => env('TELESCOPE_REDIS_WATCHER', true),
-        
+
         Watchers\RequestWatcher::class => [
             'enabled' => env('TELESCOPE_REQUEST_WATCHER', true),
             'size_limit' => env('TELESCOPE_REQUEST_SIZE_LIMIT', 64),
         ],
-        
+
         Watchers\ScheduleWatcher::class => env('TELESCOPE_SCHEDULE_WATCHER', true),
     ],
 ];

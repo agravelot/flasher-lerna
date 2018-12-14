@@ -8,12 +8,9 @@ class CreateForeignKeys extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
-
         Schema::table('albums', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users')
                 ->onDelete('cascade')
@@ -71,8 +68,6 @@ class CreateForeignKeys extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

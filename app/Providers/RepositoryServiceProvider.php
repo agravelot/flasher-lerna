@@ -10,11 +10,9 @@ use App\Repositories\Contracts\CategoryRepository;
 use App\Repositories\Contracts\ContactRepository;
 use App\Repositories\Contracts\CosplayerRepository;
 use App\Repositories\Contracts\GoldenBookRepository;
-use App\Repositories\Contracts\PictureRepository;
 use App\Repositories\Contracts\UserRepository;
 use App\Repositories\CosplayerRepositoryEloquent;
 use App\Repositories\GoldenBookRepositoryEloquent;
-use App\Repositories\PictureRepositoryEloquent;
 use App\Repositories\UserRepositoryEloquent;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,18 +20,13 @@ class RepositoryServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap services.
-     *
-     * @return void
      */
     public function boot()
     {
-        
     }
 
     /**
      * Register services.
-     *
-     * @return void
      */
     public function register()
     {
