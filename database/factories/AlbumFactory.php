@@ -35,3 +35,9 @@ $factory->state(\App\Models\Album::class, 'passwordLess', function () {
         'password' => null,
     ];
 });
+
+$factory->state(\App\Models\Album::class, 'withUser', function () {
+    return [
+        'user_id' => factory(\App\Models\User::class)->create()->id,
+    ];
+});

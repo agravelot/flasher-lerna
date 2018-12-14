@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Album;
 use App\Models\Category;
-use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -14,12 +13,9 @@ class ViewAlbumTest extends TestCase
 
     public function test_guest_can_view_a_published_album()
     {
-        $user = factory(User::class)->create();
-
-        $album = factory(Album::class)->states(['published', 'passwordLess'])->create([
+        $album = factory(Album::class)->states(['published', 'passwordLess', 'withUser'])->create([
             'title' => 'Test title',
             'body' => 'Some test body, this is a good day!',
-            'user_id' => $user->id,
         ]);
 
         $response = $this->get('/albums/' . $album->slug);
@@ -31,16 +27,13 @@ class ViewAlbumTest extends TestCase
 
     public function test_guest_can_view_a_published_album_with_category()
     {
-        $user = factory(User::class)->create();
-
         $category = factory(Category::class)->create([
             'name' => 'Category name',
         ]);
 
-        $album = factory(Album::class)->states(['published', 'passwordLess'])->create([
+        $album = factory(Album::class)->states(['published', 'passwordLess', 'withUser'])->create([
             'title' => 'Test title',
             'body' => 'Some test body, this is a good day!',
-            'user_id' => $user->id,
         ]);
         $album->categories()->attach($category);
 
@@ -54,8 +47,6 @@ class ViewAlbumTest extends TestCase
 
     public function test_guest_can_view_a_published_album_with_two_categories()
     {
-        $user = factory(User::class)->create();
-
         $categoryA = factory(Category::class)->create([
             'name' => 'Category name',
         ]);
@@ -64,10 +55,9 @@ class ViewAlbumTest extends TestCase
             'name' => 'Category name two',
         ]);
 
-        $album = factory(Album::class)->states(['published', 'passwordLess'])->create([
+        $album = factory(Album::class)->states(['published', 'passwordLess', 'withUser'])->create([
             'title' => 'Test title',
             'body' => 'Some test body, this is a good day!',
-            'user_id' => $user->id,
         ]);
 
         $album->categories()->attach([$categoryA->id, $categoryB->id]);
@@ -83,11 +73,7 @@ class ViewAlbumTest extends TestCase
 
     public function test_guest_cannot_view_unpublished_album_listing()
     {
-        $user = factory(User::class)->create();
-
-        $album = factory(Album::class)->states(['unpublished', 'passwordLess'])->create([
-            'user_id' => $user->id,
-        ]);
+        $album = factory(Album::class)->states(['unpublished', 'passwordLess', 'withUser'])->create();
 
         $response = $this->get('/albums/' . $album->slug);
 
@@ -96,11 +82,7 @@ class ViewAlbumTest extends TestCase
 
     public function test_guest_cannot_view_album_with_password_listing()
     {
-        $user = factory(User::class)->create();
-
-        $album = factory(Album::class)->states(['published', 'password'])->create([
-            'user_id' => $user->id,
-        ]);
+        $album = factory(Album::class)->states(['published', 'password', 'withUser'])->create();
 
         $response = $this->get('/albums/' . $album->slug);
 
