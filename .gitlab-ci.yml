@@ -55,7 +55,8 @@ unit_test:
   - docker-compose exec -T php php composer-setup.php
   - docker-compose exec -T php php -r "unlink('composer-setup.php');"
   - docker-compose exec -T php php composer.phar require phpunit/phpunit
-  - docker-compose exec -T php vendor/bin/phpunit  --coverage-text --colors=never
+  - echo "Running unit tests"
+  - docker-compose exec -T php vendor/bin/phpunit  --coverage-text --colors=never --testsuite Unit
   allow_failure: true
 
 integration_test:
@@ -66,7 +67,12 @@ integration_test:
   - chmod +x docker/*.sh
   - bash -c 'docker/generate_env.sh production'
   - docker-compose up -d
-  - docker-compose exec -T php echo "Run test here"
+  - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+  - docker-compose exec -T php php composer-setup.php
+  - docker-compose exec -T php php -r "unlink('composer-setup.php');"
+  - docker-compose exec -T php php composer.phar require phpunit/phpunit
+  - echo "Running integration tests"
+  - docker-compose exec -T php vendor/bin/phpunit  --coverage-text --colors=never --testsuite Feature
   allow_failure: true
 
 lint:
