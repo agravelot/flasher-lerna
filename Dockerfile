@@ -43,7 +43,6 @@ RUN composer global require hirak/prestissimo \
             --no-dev \
             --optimize-autoloader \
         && php artisan vendor:publish --tag=lfm_public \
-        && php artisan vendor:publish --provider="Laravel\Horizon\HorizonServiceProvider" \
         && php artisan vendor:publish --tag=telescope-assets
 
 #
