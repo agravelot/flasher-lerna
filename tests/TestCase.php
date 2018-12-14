@@ -13,7 +13,7 @@ abstract class TestCase extends BaseTestCase
     {
         $method = strtolower($method);
         if (! in_array($method, ['get', 'post', 'put', 'update', 'delete'])) {
-            throw new InvalidArgumentException('Invalid method: '.$method);
+            throw new InvalidArgumentException('Invalid method: ' . $method);
         }
         // Html check
         $response = $this->$method($uri);

@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Album;
 use App\Models\Category;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -29,7 +28,7 @@ class ViewAlbumTest extends TestCase
         ]);
         $album->categories()->attach($category);
 
-        $response = $this->get('/albums/'.$album->slug);
+        $response = $this->get('/albums/' . $album->slug);
 
         $response->assertStatus(200);
         $response->assertSee('Test title');
@@ -46,7 +45,7 @@ class ViewAlbumTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $response = $this->get('/albums/'.$album->slug);
+        $response = $this->get('/albums/' . $album->slug);
 
         $response->assertStatus(404);
     }

@@ -27,15 +27,14 @@ $factory->define(App\Models\User::class, function (Faker $faker) {
     ];
 });
 
-
 $factory->state(\App\Models\User::class, 'admin', function () {
     return [
-        'role' => 'admin'
+        'role' => 'admin',
     ];
 });
 
 $factory->state(\App\Models\User::class, 'user', function () {
     return [
-        'role' => 'user'
+        'role' => 'user',
     ];
 });

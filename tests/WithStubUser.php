@@ -13,7 +13,7 @@ trait WithStubUser
     {
         $data = array_merge([
             'name' => 'Test User',
-            'email' => 'test-user-'.uniqid().'@example.com',
+            'email' => 'test-user-' . uniqid() . '@example.com',
             'password' => Hash::make('123456'),
         ], $data);
 

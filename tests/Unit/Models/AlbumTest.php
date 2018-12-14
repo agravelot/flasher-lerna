@@ -3,7 +3,6 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Album;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\ModelTestCase;
 
