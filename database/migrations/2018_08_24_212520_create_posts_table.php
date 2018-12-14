@@ -24,7 +24,6 @@ class CreatePostsTable extends Migration
             //$table->text('meta_keywords');
             $table->boolean('active')->default(false);
             $table->integer('user_id')->unsigned();
-            $table->string('picture_id')->nullable();
             $table->timestamps();
         });
     }
