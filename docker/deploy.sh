@@ -25,11 +25,11 @@ if [[ ! "$(docker images -q ${PICBLOG_IMAGE_PHP} 2> /dev/null)" == "" && ! "$(do
   docker tag ${PICBLOG_IMAGE_NGINX} picblog-nginx-backup
 fi
 echo " * PULLING NEW IMAGES"
-docker-compose -f docker-compose.yml pull
+docker-compose -f ../docker-compose.yml pull
 echo " * PUTTING LARAVEL IN MAINTENANCE MODE"
 docker-compose exec php echo Hello world && docker-compose exec php php artisan down --message="We'll be back soon" --retry=60 || echo "Container is not running"
 echo " * UPDATING RUNNING CONTAINERS"
-docker-compose -f docker-compose.yml up -d --remove-orphans
+docker-compose -f ../docker-compose.yml up -d --remove-orphans
 #echo " * LEAVING MAINTENANCE MODE"
 #docker-compose exec php php artisan up
 #echo " * CLEANING OLD IMAGES"
