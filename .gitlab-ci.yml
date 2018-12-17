@@ -119,8 +119,8 @@ deploy_stagging:
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   - chmod +x docker/*.sh
-  - bash -c 'docker/generate_env.sh stagging'
-  - bash -c 'docker/deploy.sh stagging'
+  - cd docker/ && bash -c 'generate_env.sh stagging'
+  - cd docker/ && bash -c 'deploy.sh stagging'
   except:
     - master
 
