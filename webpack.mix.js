@@ -14,10 +14,9 @@ require('laravel-mix-purgecss');
 
 mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
+    .js('resources/js/admin/admin.js', 'public/js')
+    .js('resources/js/carousel.js', 'public/js')
+    .js('resources/js/tinymce.js', 'public/js')
     .purgeCss();
-
-mix.js('resources/js/admin/admin.js', 'public/js');
-mix.js('resources/js/carousel.js', 'public/js');
-mix.js('resources/js/tinymce.js', 'public/js');
 
 mix.browserSync('localhost:8000');
