@@ -6,7 +6,7 @@ use Faker\Generator as Faker;
 $factory->define(App\Models\Album::class, function (Faker $faker) {
     return [
         'title' => $faker->sentence,
-        'body' => $faker->paragraph($faker->randomDigit),
+        'body' => $faker->paragraph($faker->numberBetween(42, 420)),
         'created_at' => $faker->dateTime(),
         'updated_at' => Carbon::now(),
     ];
