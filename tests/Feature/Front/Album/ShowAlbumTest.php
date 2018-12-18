@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Album;
 use App\Models\Category;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
 
 class ShowAlbumTest extends TestCase
@@ -18,7 +19,7 @@ class ShowAlbumTest extends TestCase
             'body' => 'Some test body, this is a good day!',
         ]);
 
-        $response = $this->get('/albums/' . $album->slug);
+        $response = $this->showAlbum($album);
 
         $response->assertStatus(200);
         $response->assertSee('Test title');
@@ -37,7 +38,7 @@ class ShowAlbumTest extends TestCase
         ]);
         $album->categories()->attach($category);
 
-        $response = $this->get('/albums/' . $album->slug);
+        $response = $this->showAlbum($album);
 
         $response->assertStatus(200);
         $response->assertSee('Test title');
@@ -62,7 +63,7 @@ class ShowAlbumTest extends TestCase
 
         $album->categories()->attach([$categoryA->id, $categoryB->id]);
 
-        $response = $this->get('/albums/' . $album->slug);
+        $response = $this->showAlbum($album);
 
         $response->assertStatus(200);
         $response->assertSee('Test title');
@@ -75,7 +76,7 @@ class ShowAlbumTest extends TestCase
     {
         $album = factory(Album::class)->states(['unpublished', 'passwordLess', 'withUser'])->create();
 
-        $response = $this->get('/albums/' . $album->slug);
+        $response = $this->showAlbum($album);
 
         $response->assertStatus(403);
     }
@@ -85,5 +86,10 @@ class ShowAlbumTest extends TestCase
         $response = $this->get('/albums/same-random-slug');
 
         $response->assertStatus(404);
+    }
+
+    private function showAlbum(Album $album): TestResponse
+    {
+        return $this->get('/albums/' . $album->slug);
     }
 }

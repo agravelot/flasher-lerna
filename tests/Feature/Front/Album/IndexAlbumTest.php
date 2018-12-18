@@ -4,6 +4,7 @@ namespace Tests\Feature\Front\Album;
 
 use App\Models\Album;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
 
 class IndexAlbumTest extends TestCase
@@ -12,17 +13,22 @@ class IndexAlbumTest extends TestCase
 
     public function test_guest_view_nothing_to_show()
     {
-        $response = $this->get('/albums');
+        $response = $this->showAlbums();
 
         $response->assertStatus(200);
         $response->assertSee('Nothing to show');
+    }
+
+    private function showAlbums(): TestResponse
+    {
+        return $this->get('/albums');
     }
 
     public function test_guest_can_view_published_albums()
     {
         $albums = factory(Album::class, 2)->states(['published', 'passwordLess', 'withUser'])->create();
 
-        $response = $this->get('/albums');
+        $response = $this->showAlbums();
 
         $response->assertStatus(200);
         $response->assertSee($albums->get(0)->title);
@@ -35,7 +41,7 @@ class IndexAlbumTest extends TestCase
     {
         $albums = factory(Album::class, 2)->states(['unpublished', 'passwordLess', 'withUser'])->create();
 
-        $response = $this->get('/albums');
+        $response = $this->showAlbums();
 
         $response->assertStatus(200);
         $response->assertDontSee($albums->get(0)->title);
@@ -48,7 +54,7 @@ class IndexAlbumTest extends TestCase
     {
         $albums = factory(Album::class, 2)->states(['published', 'password', 'withUser'])->create();
 
-        $response = $this->get('/albums');
+        $response = $this->showAlbums();
 
         $response->assertStatus(200);
         $response->assertDontSee($albums->get(0)->title);
@@ -61,7 +67,7 @@ class IndexAlbumTest extends TestCase
     {
         $albums = factory(Album::class, 2)->states(['unpublished', 'password', 'withUser'])->create();
 
-        $response = $this->get('/albums');
+        $response = $this->showAlbums();
 
         $response->assertStatus(200);
         $response->assertDontSee($albums->get(0)->title);

@@ -5,6 +5,7 @@ namespace Tests\Feature\Front\Category;
 use App\Models\Album;
 use App\Models\Category;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
 
 class ShowCategoryTest extends TestCase
@@ -15,7 +16,7 @@ class ShowCategoryTest extends TestCase
     {
         $category = factory(Category::class)->create();
 
-        $response = $this->get('/categories/' . $category->slug);
+        $response = $this->showCategory($category);
 
         $response->assertStatus(200);
         $response->assertSee($category->title);
@@ -30,10 +31,10 @@ class ShowCategoryTest extends TestCase
         $albums = factory(Album::class, 2)->states('published', 'passwordLess', 'withUser')->create();
         $category->albums()->attach($albums);
 
-        $response = $this->get('/categories/' . $category->slug);
+        $response = $this->showCategory($category);
 
         $response->assertStatus(200);
-        $response->assertSee($category->title);
+        $response->assertSee($category->name);
         $response->assertSee($category->description);
         $response->assertDontSee('Nothing to show');
         $response->assertSee($albums->get(0)->title);
@@ -54,14 +55,17 @@ class ShowCategoryTest extends TestCase
         $album = factory(Album::class)->states('unpublished', 'passwordLess', 'withUser')->create();
         $category->albums()->attach($album);
 
-        dump($category->albums()->count());
-
-        $response = $this->get('/categories/' . $category->slug);
+        $response = $this->showCategory($category);
 
         $response->assertStatus(200);
         $response->assertSee($category->title);
         $response->assertSee($category->description);
         $response->assertSee('Nothing to show');
         $response->assertDontSee($album->title);
+    }
+
+    private function showCategory(Category $category): TestResponse
+    {
+        return $this->get('/categories/' . $category->slug);
     }
 }
