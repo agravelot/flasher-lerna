@@ -6,7 +6,6 @@ use App\Models\Album;
 use App\Models\Category;
 use App\Repositories\Contracts\CategoryRepository;
 use Illuminate\Support\Collection;
-use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class CategoryRepositoryEloquent.

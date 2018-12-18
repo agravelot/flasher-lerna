@@ -6,7 +6,6 @@ use App\Criteria\PublicAlbumsCriteria;
 use App\Models\Album;
 use App\Repositories\Contracts\AlbumRepository;
 use Illuminate\Support\Facades\Auth;
-use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class AlbumRepositoryEloquent.
@@ -40,31 +39,10 @@ class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepository
     {
         $this->applyCriteria();
         $this->applyScope();
-        $result = $this->model->with('cosplayers.media')->whereSlug($slug)->firstOrFail();
+        $model = $this->model->with('cosplayers.media')->whereSlug($slug)->firstOrFail();
         $this->resetModel();
-        $this->resetScope();
 
-        return $result;
-    }
-
-    /**
-     * Count results of repository.
-     *
-     * @param string $columns
-     *
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
-     *
-     * @return int
-     */
-    public function count($columns = '*'): int
-    {
-        $this->applyCriteria();
-        $this->applyScope();
-        $result = $this->model->count($columns);
-        $this->resetModel();
-        $this->resetScope();
-
-        return $result;
+        return $this->parserResult($model);
     }
 
     /**

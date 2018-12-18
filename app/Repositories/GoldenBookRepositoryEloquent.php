@@ -24,6 +24,8 @@ class GoldenBookRepositoryEloquent extends BaseRepository implements GoldenBookR
 
     /**
      * Boot up the repository, pushing criteria.
+     *
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function boot()
     {

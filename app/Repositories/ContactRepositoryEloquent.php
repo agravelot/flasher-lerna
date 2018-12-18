@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Models\Contact;
 use App\Repositories\Contracts\ContactRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class ContactRepositoryEloquent.
@@ -23,27 +22,9 @@ class ContactRepositoryEloquent extends BaseRepository implements ContactReposit
     }
 
     /**
-     * Count results of repository.
-     *
-     * @param string $columns
+     * Boot up the repository, pushing criteria.
      *
      * @throws \Prettus\Repository\Exceptions\RepositoryException
-     *
-     * @return int
-     */
-    public function count($columns = '*')
-    {
-        $this->applyCriteria();
-        $this->applyScope();
-        $result = $this->model->count($columns);
-        $this->resetModel();
-        $this->resetScope();
-
-        return $result;
-    }
-
-    /**
-     * Boot up the repository, pushing criteria.
      */
     public function boot()
     {

@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Repositories\Contracts\UserRepository;
 use Illuminate\Support\Facades\Hash;
 use Prettus\Repository\Criteria\RequestCriteria;
-use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class UserRepositoryEloquent.
@@ -33,26 +32,6 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     }
 
     /**
-     * Count results of repository.
-     *
-     * @param string $columns
-     *
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
-     *
-     * @return int
-     */
-    public function count($columns = '*')
-    {
-        $this->applyCriteria();
-        $this->applyScope();
-        $result = $this->model->count($columns);
-        $this->resetModel();
-        $this->resetScope();
-
-        return $result;
-    }
-
-    /**
      * Specify Model class name.
      *
      * @return string
@@ -64,6 +43,8 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
 
     /**
      * Boot up the repository, pushing criteria.
+     *
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function boot()
     {

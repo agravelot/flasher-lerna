@@ -7,7 +7,6 @@ use App\Models\Cosplayer;
 use App\Repositories\Contracts\CosplayerRepository;
 use Illuminate\Support\Collection;
 use Prettus\Repository\Criteria\RequestCriteria;
-use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class CosplayerRepositoryEloquent.
@@ -50,26 +49,6 @@ class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRep
         return $this->parserResult($model);
     }
 
-    /**
-     * Count results of repository.
-     *
-     * @param string $columns
-     *
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
-     *
-     * @return int
-     */
-    public function count($columns = '*')
-    {
-        $this->applyCriteria();
-        $this->applyScope();
-        $result = $this->model->count($columns);
-        $this->resetModel();
-        $this->resetScope();
-
-        return $result;
-    }
-
     public function saveRelation(Collection $cosplayers, Album $model): void
     {
         $model->cosplayers()->sync($cosplayers);
@@ -87,6 +66,8 @@ class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRep
 
     /**
      * Boot up the repository, pushing criteria.
+     *
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function boot()
     {
