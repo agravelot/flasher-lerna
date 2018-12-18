@@ -4,7 +4,6 @@ namespace Tests\Unit\Repositories;
 
 use App\Criteria\PublicAlbumsCriteria;
 use App\Models\Album;
-use App\Models\User;
 use App\Repositories\AlbumRepositoryEloquent;
 use App\Repositories\Contracts\AlbumRepository;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -25,42 +24,110 @@ class AlbumRepositoryEloquentTest extends TestCase
         parent::setUp();
 
         $this->albumRepository = new AlbumRepositoryEloquent(App::getInstance());
-        $this->albumRepository->pushCriteria(PublicAlbumsCriteria::class);
     }
 
-    public function test_album_with_a_published_at_date_are_published()
-    {
-        $user = factory(User::class)->create();
-        $publishedAlbumA = factory(Album::class)->state('published')->create(['user_id' => $user->id]);
-        $publishedAlbumB = factory(Album::class)->state('published')->create(['user_id' => $user->id]);
-
-        $publishedAlbums = $this->albumRepository->all();
-
-        $this->assertTrue($publishedAlbums->contains($publishedAlbumA));
-        $this->assertTrue($publishedAlbums->contains($publishedAlbumB));
+    private function withoutPublicCriteria() {
+        $this->albumRepository->popCriteria(PublicAlbumsCriteria::class);
     }
 
-    public function test_album_with_password_are_unpublished()
+    public function test_album_with_a_published_at_date_are_published_with_public_criteria()
     {
-        $user = factory(User::class)->create();
-        $publishedAlbumA = factory(Album::class)->state('password')->create(['user_id' => $user->id]);
-        $publishedAlbumB = factory(Album::class)->state('password')->create(['user_id' => $user->id]);
+        $publishedAlbums = factory(Album::class, 2)->states(['published', 'withUser'])->create();
 
-        $publishedAlbums = $this->albumRepository->all();
+        $view = $this->albumRepository->all();
 
-        $this->assertFalse($publishedAlbums->contains($publishedAlbumA));
-        $this->assertFalse($publishedAlbums->contains($publishedAlbumB));
+        $this->assertTrue($view->contains($publishedAlbums->get(0)));
+        $this->assertTrue($view->contains($publishedAlbums->get(1)));
     }
 
-    public function test_album_with_a_published_at_date_and_password_are_unpublished()
+    public function test_album_with_password_are_unpublished_with_public_criteria()
     {
-        $user = factory(User::class)->create();
-        $publishedAlbumA = factory(Album::class)->state('published')->state('password')->create(['user_id' => $user->id]);
-        $publishedAlbumB = factory(Album::class)->state('published')->state('password')->create(['user_id' => $user->id]);
+        $publishedAlbums = factory(Album::class, 2)->states(['unpublished', 'withUser'])->create();
 
-        $publishedAlbums = $this->albumRepository->all();
+        $view = $this->albumRepository->all();
 
-        $this->assertFalse($publishedAlbums->contains($publishedAlbumA));
-        $this->assertFalse($publishedAlbums->contains($publishedAlbumB));
+        $this->assertFalse($view->contains($publishedAlbums->get(0)));
+        $this->assertFalse($view->contains($publishedAlbums->get(1)));
+    }
+
+    public function test_album_with_a_published_at_date_and_password_are_unpublished_with_public_criteria()
+    {
+        $publishedAlbums = factory(Album::class, 2)->states(['published', 'password', 'withUser'])->create();
+
+        $view = $this->albumRepository->all();
+
+        $this->assertFalse($view->contains($publishedAlbums->get(0)));
+        $this->assertFalse($view->contains($publishedAlbums->get(1)));
+    }
+
+    public function test_count_four_published_albums_should_be_four_with_public_criteria()
+    {
+        factory(Album::class, 4)->states(['published', 'passwordLess', 'withUser'])->create();
+
+        $count = $this->albumRepository->count();
+
+        $this->assertEquals(4, $count);
+    }
+
+    public function test_count_four_unpublished_albums_should_be_zero_with_public_criteria()
+    {
+        factory(Album::class, 4)->states(['unpublished', 'passwordLess', 'withUser'])->create();
+
+        $count = $this->albumRepository->count();
+
+        $this->assertEquals(0, $count);
+    }
+
+    public function test_album_with_a_published_at_date_are_published_without_public_criteria()
+    {
+        $this->withoutPublicCriteria();
+        $publishedAlbums = factory(Album::class, 2)->states(['published', 'withUser'])->create();
+
+        $view = $this->albumRepository->all();
+
+        $this->assertTrue($view->contains($publishedAlbums->get(0)));
+        $this->assertTrue($view->contains($publishedAlbums->get(1)));
+    }
+
+    public function test_album_with_password_are_unpublished_without_public_criteria()
+    {
+        $this->withoutPublicCriteria();
+        $publishedAlbums = factory(Album::class, 2)->states(['unpublished', 'withUser'])->create();
+
+        $view = $this->albumRepository->all();
+
+        $this->assertTrue($view->contains($publishedAlbums->get(0)));
+        $this->assertTrue($view->contains($publishedAlbums->get(1)));
+    }
+
+    public function test_album_with_a_published_at_date_and_password_are_unpublished_without_public_criteria()
+    {
+        $this->withoutPublicCriteria();
+        $publishedAlbums = factory(Album::class, 2)->states(['published', 'password', 'withUser'])->create();
+
+        $view = $this->albumRepository->all();
+
+        $this->assertTrue($view->contains($publishedAlbums->get(0)));
+        $this->assertTrue($view->contains($publishedAlbums->get(1)));
+    }
+
+    public function test_count_four_published_albums_should_be_four_without_public_criteria()
+    {
+        $this->withoutPublicCriteria();
+        factory(Album::class, 4)->states(['published', 'passwordLess', 'withUser'])->create();
+
+        $count = $this->albumRepository->count();
+
+        $this->assertEquals(4, $count);
+    }
+
+    public function test_count_four_unpublished_albums_should_be_zero_without_public_criteria()
+    {
+        $this->withoutPublicCriteria();
+        factory(Album::class, 4)->states(['unpublished', 'passwordLess', 'withUser'])->create();
+
+        $count = $this->albumRepository->count();
+
+        $this->assertEquals(4, $count);
     }
 }
