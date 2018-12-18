@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\Album;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Hash;
 use Tests\ModelTestCase;
 
 class AlbumTest extends ModelTestCase
@@ -91,5 +92,14 @@ class AlbumTest extends ModelTestCase
         $album = factory(Album::class)->states(['unpublished', 'password'])->make();
 
         $this->assertEquals(false, $album->isPublic());
+    }
+
+    public function test_password_should_be_hashed()
+    {
+        $album = factory(Album::class)->make([
+            'password' => 'secret',
+        ]);
+
+        $this->assertTrue(Hash::check('secret', $album->password));
     }
 }

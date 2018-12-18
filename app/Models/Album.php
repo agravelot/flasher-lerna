@@ -5,6 +5,7 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -14,16 +15,20 @@ class Album extends Model implements HasMedia
 {
     use Sluggable, SluggableScopeHelpers, HasMediaTrait;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id',
     ];
 
-    protected $hidden = ['password'];
+    protected $hidden = [
+        'password',
+    ];
+
+    public function setPasswordAttribute($value)
+    {
+        if ($value !== null) {
+            $this->attributes['password'] = Hash::make($value);
+        }
+    }
 
     public function isPublic()
     {

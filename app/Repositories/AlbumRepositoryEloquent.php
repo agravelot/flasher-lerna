@@ -6,7 +6,6 @@ use App\Criteria\PublicAlbumsCriteria;
 use App\Models\Album;
 use App\Repositories\Contracts\AlbumRepository;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
@@ -23,17 +22,9 @@ class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepository
 
     public function create(array $attributes)
     {
-        $attributes['password'] = Hash::make($attributes['password']);
         $attributes['user_id'] = Auth::user()->id;
 
         return parent::create($attributes);
-    }
-
-    public function update(array $attributes, $id)
-    {
-        $attributes['password'] = Hash::make($attributes['password']);
-
-        return parent::update($attributes, $id);
     }
 
     /**
