@@ -44,7 +44,6 @@ class IndexAlbumTest extends TestCase
         $response->assertDontSee($albums->get(1)->body);
     }
 
-
     public function test_guest_can_not_view_albums_with_password()
     {
         $albums = factory(Album::class, 2)->states(['published', 'password', 'withUser'])->create();

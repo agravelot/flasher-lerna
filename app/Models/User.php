@@ -9,8 +9,7 @@ use Lab404\Impersonate\Models\Impersonate;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable;
-    use Impersonate;
+    use Notifiable, Impersonate;
 
     /**
      * The attributes that are mass assignable.

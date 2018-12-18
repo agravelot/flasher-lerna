@@ -32,17 +32,13 @@ class CategoryController extends Controller
     {
         $categories = $this->repository->paginate(10);
 
-        return view('categories.index', [
-            'categories' => $categories,
-        ]);
+        return view('categories.index', ['categories' => $categories]);
     }
 
     /**
      * Display the specified resource.
      *
      * @param string $slug
-     *
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
      * @return \Illuminate\Http\Response
      */

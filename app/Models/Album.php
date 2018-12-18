@@ -27,7 +27,7 @@ class Album extends Model implements HasMedia
 
     public function isPublic()
     {
-        return $this->published_at !== null && $this->password == null;
+        return $this->published_at !== null && $this->password === null;
     }
 
     public function user()

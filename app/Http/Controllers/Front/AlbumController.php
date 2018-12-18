@@ -41,8 +41,8 @@ class AlbumController extends Controller
      *
      * @param string $slug
      *
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
      * @return \Illuminate\Http\Response
      */
