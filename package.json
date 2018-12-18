@@ -18,15 +18,15 @@
         "bulma": "^0.7.*",
         "bulma-extensions": "^2.2",
         "cross-env": "^5.1",
+        "laravel-mix": "4.0.7",
         "laravel-mix-purgecss": "^3.0.0",
         "lodash": "^4.17",
         "onchange": "^5.0",
         "resolve-url-loader": "2.3.1",
-        "sass": "^1.15.2",
-        "sass-loader": "7.*"
+        "sass": "1.15.2",
+        "sass-loader": "7.1.0"
     },
     "dependencies": {
-        "laravel-mix": "4.0.0",
         "node-sass": "^4.11.0",
         "svgo": "^1.1.1",
         "tinymce": "^4.8",
