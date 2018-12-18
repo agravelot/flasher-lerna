@@ -6,7 +6,6 @@ use App\Models\Album;
 use App\Models\Category;
 use App\Repositories\Contracts\CategoryRepository;
 use Illuminate\Support\Collection;
-use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
@@ -19,18 +18,19 @@ class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepos
      *
      * @param $slug
      *
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
-     *
      * @return mixed
      */
     public function findBySlug(string $slug): Category
     {
-        $this->applyCriteria();
-        $this->applyScope();
-        $model = $this->model->with('albums.media', 'albums.categories')->whereSlug($slug)->first();
-        $this->resetModel();
-
-        return $this->parserResult($model);
+        /* @var Category $model */
+        return $this->model->with([
+            'albums.media',
+            'albums.categories',
+            'albums' => function ($query) {
+                $query->whereNotNull('published_at')->whereNull('password');
+            }, ])
+            ->whereSlug($slug)
+            ->firstOrFail();
     }
 
     public function saveRelation(Collection $categories, Album $album): void
@@ -46,13 +46,5 @@ class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepos
     public function model()
     {
         return Category::class;
-    }
-
-    /**
-     * Boot up the repository, pushing criteria.
-     */
-    public function boot()
-    {
-        $this->pushCriteria(app(RequestCriteria::class));
     }
 }

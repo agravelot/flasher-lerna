@@ -57,9 +57,7 @@ class AdminAlbumController extends Controller
     public function index()
     {
         $this->authorize('index', Album::class);
-        $albums = $this->albumRepository->with('media')
-            ->orderBy('updated_at', 'desc')
-            ->paginate(10);
+        $albums = $this->albumRepository->latestWithPagination();
 
         return view('admin.albums.index', [
             'albums' => $albums,

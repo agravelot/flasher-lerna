@@ -41,11 +41,19 @@ class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepository
      *
      * @param $slug
      *
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
+     *
      * @return mixed
      */
     public function findBySlug(string $slug): Album
     {
-        return $this->model->with('cosplayers.media')->whereSlug($slug)->firstOrFail();
+        $this->applyCriteria();
+        $this->applyScope();
+        $result = $this->model->with('cosplayers.media')->whereSlug($slug)->firstOrFail();
+        $this->resetModel();
+        $this->resetScope();
+
+        return $result;
     }
 
     /**
