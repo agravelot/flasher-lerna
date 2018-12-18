@@ -17,6 +17,8 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/admin/admin.js', 'public/js')
     .js('resources/js/carousel.js', 'public/js')
     .js('resources/js/tinymce.js', 'public/js')
-    .purgeCss();
+    .purgeCss()
+    .version()
+    .extract();
 
 mix.browserSync('localhost:8000');
