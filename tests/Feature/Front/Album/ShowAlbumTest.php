@@ -7,7 +7,7 @@ use App\Models\Category;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
-class ViewAlbumTest extends TestCase
+class ShowAlbumTest extends TestCase
 {
     use DatabaseMigrations;
 

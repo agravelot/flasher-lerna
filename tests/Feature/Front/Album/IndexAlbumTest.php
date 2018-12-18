@@ -10,6 +10,14 @@ class IndexAlbumTest extends TestCase
 {
     use DatabaseMigrations;
 
+    public function test_guest_view_nothing_to_show()
+    {
+        $response = $this->get('/albums');
+
+        $response->assertStatus(200);
+        $response->assertSee('Nothing to show');
+    }
+
     public function test_guest_can_view_published_albums()
     {
         $albums = factory(Album::class, 2)->states(['published', 'passwordLess', 'withUser'])->create();
