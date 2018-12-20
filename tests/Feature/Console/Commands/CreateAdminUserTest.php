@@ -43,7 +43,20 @@ class CreateAdminUserTest extends TestCase
             'email' => 'admin@picblog',
             'password' => 'secret',
         ])
-            ->expectsOutput('Admin User not created. See error messages below:')
+            ->expectsOutput('User not created. See error messages below:')
+            ->expectsOutput('The email must be a valid email address.')
+            ->assertExitCode(1);
+    }
+
+    public function test_create_user_with_malformed_username()
+    {
+        $this->artisan('user:create', [
+            'role' => 'admin',
+            'name' => 'admin',
+            'email' => 'admin@picblog',
+            'password' => 'secret',
+        ])
+            ->expectsOutput('User not created. See error messages below:')
             ->expectsOutput('The email must be a valid email address.')
             ->assertExitCode(1);
     }

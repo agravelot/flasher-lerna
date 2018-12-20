@@ -99,7 +99,7 @@ class CreateAdminUser extends Command
         $validator->errors()->all();
 
         if ($validator->fails()) {
-            $this->error('Admin User not created. See error messages below:');
+            $this->error('User not created. See error messages below:');
 
             foreach ($validator->errors()->all() as $error) {
                 $this->warn($error);
