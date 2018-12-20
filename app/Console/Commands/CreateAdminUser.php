@@ -83,7 +83,9 @@ class CreateAdminUser extends Command
         $filter = array_fill_keys(['name', 'email'], '');
         $rules = array_intersect_key((new UserRequest())->rules(), $filter);
 
-        $this->validate($data, $rules);
+        if (!$this->validate($data, $rules)) {
+            return 1;
+        }
         $this->createUser($data);
 
         $this->info('User created successfully');
@@ -91,7 +93,7 @@ class CreateAdminUser extends Command
         return 0;
     }
 
-    private function validate(array $data, array $rules)
+    private function validate(array $data, array $rules): bool
     {
         $validator = Validator::make($data, $rules);
         $validator->errors()->all();
@@ -103,8 +105,9 @@ class CreateAdminUser extends Command
                 $this->warn($error);
             }
 
-            return 1;
+            return false;
         }
+        return true;
     }
 
     private function createUser($data)
