@@ -15,16 +15,17 @@ class CreateAdminUser extends Command
      *
      * @var string
      */
-    protected $signature = 'user:admin:create 
-                            {name : Username} 
-                            {email : Email-address} 
-                            {password : Password}';
+    protected $signature = 'user:create 
+                            {role? : Role} 
+                            {name? : Username} 
+                            {email? : Email-address} 
+                            {password? : Password}';
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create an administrator user';
+    protected $description = 'Create a user';
     /**
      * @var UserRepository
      */
@@ -48,18 +49,37 @@ class CreateAdminUser extends Command
      */
     public function handle()
     {
+        $role = $this->argument('role');
         $username = $this->argument('name');
         $email = $this->argument('email');
         $password = $this->argument('password');
+
+        if ($role === null) {
+            $role = $this->choice('Please select a user role', ['admin', 'user'], 'user');
+        }
+
+        if ($username === null) {
+            $username = $this->ask('Please enter a username');
+        }
+
+
+        if ($email === null) {
+            $email = $this->ask('Enter your user email');
+        }
+
+
+        if ($password === null) {
+            $password = $this->secret('Enter your user password');
+        }
 
         $data = [
             'name' => $username,
             'email' => $email,
             'password' => $password,
-            'role' => 'admin',
+            'role' => $role,
         ];
 
-        // Only get filtered keys
+        // Only get filtered keys for name and email
         $filter = array_fill_keys(['name', 'email'], '');
         $rules = array_intersect_key((new UserRequest())->rules(), $filter);
 
