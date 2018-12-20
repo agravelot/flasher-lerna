@@ -14,10 +14,10 @@ class CreateCosplayersTable extends Migration
         Schema::create('cosplayers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
+            $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->string('picture')->nullable();
             $table->integer('user_id')->unsigned()->nullable();
-            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

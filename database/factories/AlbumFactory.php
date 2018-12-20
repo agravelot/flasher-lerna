@@ -7,14 +7,14 @@ $factory->define(App\Models\Album::class, function (Faker $faker) {
     return [
         'title' => $faker->sentence,
         'body' => $faker->paragraph($faker->numberBetween(42, 420)),
-        'created_at' => $faker->dateTime(),
+        'created_at' => $faker->dateTimeThisYear(),
         'updated_at' => Carbon::now(),
     ];
 });
 
 $factory->state(\App\Models\Album::class, 'published', function (Faker $faker) {
     return [
-        'published_at' => $faker->dateTime,
+        'published_at' => $faker->dateTimeThisYear(),
     ];
 });
 
