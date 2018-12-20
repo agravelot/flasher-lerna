@@ -87,6 +87,7 @@ FROM nevax/docker-php-fpm-alpine-laravel:php7.3 as php
 # Add configurations
 COPY docker/php-fpm/custom.ini /usr/local/etc/php/conf.d/
 COPY docker/php-fpm/custom-supervisord.ini /etc/
+COPY docker/php-fpm/crontab /etc/crontabs/root
 
 # Importing source code
 COPY --chown=1000:1000 . /var/www/html
@@ -116,6 +117,8 @@ CMD php artisan config:clear \
 #        && chown -R 1000:1000 public/vendor \
 # Run queues workers as daemon
         && supervisord -c /etc/custom-supervisord.ini \
+# Add cron for scheduler
+        && crond -c /etc/crontabs \
 # Run php-fpm
 # https://github.com/docker-library/php/blob/master/7.2/alpine3.8/fpm/Dockerfile
         && php-fpm
