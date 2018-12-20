@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Criteria\ActiveGoldenBookPostCriteria;
 use App\Models\GoldenBookPost;
 use App\Repositories\Contracts\GoldenBookRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
@@ -29,6 +30,6 @@ class GoldenBookRepositoryEloquent extends BaseRepository implements GoldenBookR
      */
     public function boot()
     {
-        $this->pushCriteria(app(RequestCriteria::class));
+        $this->pushCriteria(app(ActiveGoldenBookPostCriteria::class));
     }
 }

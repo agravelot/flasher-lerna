@@ -3,13 +3,14 @@
 namespace App\Criteria;
 
 use App\Models\Album;
+use App\Models\GoldenBookPost;
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
  * Class PublicAlbumsCriteria.
  */
-class PublicAlbumsCriteria implements CriteriaInterface
+class ActiveGoldenBookPostCriteria implements CriteriaInterface
 {
     /**
      * Apply criteria in query repository.
@@ -21,7 +22,7 @@ class PublicAlbumsCriteria implements CriteriaInterface
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        /** @var Album $model */
-        return $model->whereNotNull('published_at')->whereNull('password');
+        /** @var GoldenBookPost $model */
+        return $model->where('active', true);
     }
 }

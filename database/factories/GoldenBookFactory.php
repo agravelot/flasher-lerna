@@ -8,8 +8,20 @@ $factory->define(\App\Models\GoldenBookPost::class, function (Faker $faker) {
         'name' => $faker->sentence,
         'email' => $faker->email,
         'body' => $faker->paragraph,
-        'active' => true,
+        'active' => $faker->boolean,
         'created_at' => $faker->dateTime(),
         'updated_at' => Carbon::now(),
+    ];
+});
+
+$factory->state(\App\Models\GoldenBookPost::class, 'active', function () {
+    return [
+        'active' => true,
+    ];
+});
+
+$factory->state(\App\Models\GoldenBookPost::class, 'unactive', function () {
+    return [
+        'active' => false,
     ];
 });
