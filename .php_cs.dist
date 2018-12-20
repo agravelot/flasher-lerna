@@ -1,0 +1,46 @@
+<?php
+
+$fileHeaderComment = <<<COMMENT
+(c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+Unauthorized copying of this file, via any medium is strictly prohibited
+Proprietary and confidential
+Written by Antoine Gravelot <agravelot@orma.fr>
+COMMENT;
+
+$finder = PhpCsFixer\Finder::create()
+    ->notPath('bootstrap/cache')
+    ->notPath('storage')
+    ->notPath('vendor')
+    ->in(__DIR__)
+    ->name('*.php')
+    ->notName('*.blade.php')
+    ->notName('_ide_helper.php')
+    ->ignoreDotFiles(true)
+    ->ignoreVCS(true);
+
+return PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
+    ->setRules([
+        '@Symfony' => true,
+        '@Symfony:risky' => true,
+        'binary_operator_spaces' => ['align_double_arrow' => false],
+        'header_comment' => ['header' => $fileHeaderComment, 'separate' => 'both'],
+        'array_syntax' => ['syntax' => 'short'],
+        'linebreak_after_opening_tag' => true,
+        'not_operator_with_successor_space' => true,
+        'ordered_imports' => true,
+        'phpdoc_order' => true,
+        'yoda_style' => false,
+        'concat_space' => ['spacing' => 'one'],
+        'mb_str_functions' => true,
+        'no_php4_constructor' => true,
+        'no_superfluous_phpdoc_tags' => true,
+        'no_unreachable_default_argument_value' => false,
+        'no_useless_else' => true,
+        'no_useless_return' => true,
+        'php_unit_strict' => true,
+        'semicolon_after_instruction' => true,
+        'strict_comparison' => false,
+        'strict_param' => true,
+    ])
+    ->setFinder($finder);
