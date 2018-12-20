@@ -43,7 +43,8 @@ RUN composer global require hirak/prestissimo \
             --no-dev \
             --optimize-autoloader \
         && php artisan vendor:publish --tag=lfm_public \
-        && php artisan vendor:publish --tag=telescope-assets
+        && php artisan vendor:publish --tag=telescope-assets \
+        && php artisan vendor:publish --tag=horizon-assets
 
 #
 # Nginx server
@@ -95,7 +96,7 @@ COPY --chown=1000:1000 . /var/www/html
 # Importing composer and assets dependencies
 COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/vendor/
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
-COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/public/vendor/
+COPY --chown=1000:1000 --from=vendor /app/public/vendor/ /var/www/html/public/vendor/
 
 # Link storage
 RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
