@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\CreateAdminUser;
+use App\Jobs\GenerateSitemap;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,7 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('sitemap:generate')->daily();
+        $schedule->job(new GenerateSitemap())->daily()->withoutOverlapping();
     }
 
     /**
