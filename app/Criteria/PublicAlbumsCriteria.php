@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace App\Criteria;
 
 use App\Models\Album;
@@ -14,14 +21,11 @@ class PublicAlbumsCriteria implements CriteriaInterface
     /**
      * Apply criteria in query repository.
      *
-     * @param string              $model
-     * @param RepositoryInterface $repository
-     *
-     * @return mixed
+     * @param string $model
      */
     public function apply($model, RepositoryInterface $repository)
     {
-        /** @var Album $model */
+        /* @var Album $model */
         return $model->whereNotNull('published_at')->whereNull('password');
     }
 }

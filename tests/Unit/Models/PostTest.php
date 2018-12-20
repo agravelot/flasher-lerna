@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace Tests\Unit\Models;
 
 use App\Models\Post;
@@ -20,7 +27,7 @@ class PostTest extends ModelTestCase
         $routeKey = $post->getRouteKeyName();
         $post->$$routeKey = $slug;
 
-        $this->assertEquals($$routeKey, $slug);
+        $this->assertSame($$routeKey, $slug);
     }
 
     public function testSlugAsRouteKeyName()
@@ -30,7 +37,7 @@ class PostTest extends ModelTestCase
 
         $excepted = 'slug';
 
-        $this->assertEquals($excepted, $routeKey);
+        $this->assertSame($excepted, $routeKey);
     }
 
     public function testSlugSourceAsTitle()
@@ -40,7 +47,7 @@ class PostTest extends ModelTestCase
 
         $excepted = 'title';
 
-        $this->assertEquals($excepted, $slugSource);
+        $this->assertSame($excepted, $slugSource);
     }
 
     public function testModelConfiguration()

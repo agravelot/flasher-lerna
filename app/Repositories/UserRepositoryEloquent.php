@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace App\Repositories;
 
 use App\Models\Cosplayer;
@@ -52,9 +59,6 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     }
 
     /**
-     * @param User           $user
-     * @param Cosplayer|null $cosplayer
-     *
      * @throws \Exception
      */
     public function setCosplayer(User $user, ?Cosplayer $cosplayer)

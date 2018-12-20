@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace Tests;
 
 use Illuminate\Database\Eloquent\Collection;
@@ -11,7 +18,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 abstract class ModelTestCase extends TestCase
 {
     /**
-     * @param Model  $model
      * @param array  $fillable
      * @param array  $hidden
      * @param array  $guarded
@@ -19,7 +25,6 @@ abstract class ModelTestCase extends TestCase
      * @param array  $casts
      * @param array  $dates
      * @param string $collectionClass
-     * @param null   $table
      * @param string $primaryKey
      * @param null   $connection
      *
@@ -33,7 +38,6 @@ abstract class ModelTestCase extends TestCase
      * - `$casts` -> `getCasts()`: note that method appends incrementing key.
      * - `$dates` -> `getDates()`: note that method appends `[static::CREATED_AT, static::UPDATED_AT]`.
      * - `newCollection()`: assert collection is exact type. Use `assertEquals` on `get_class()` result, but not `assertInstanceOf`.
-     * @param null $slug
      */
     protected function runConfigurationAssertions(
         Model $model,
@@ -49,31 +53,29 @@ abstract class ModelTestCase extends TestCase
         $connection = null,
         $slug = null
     ) {
-        $this->assertEquals($fillable, $model->getFillable());
-        $this->assertEquals($guarded, $model->getGuarded());
-        $this->assertEquals($hidden, $model->getHidden());
-        $this->assertEquals($visible, $model->getVisible());
-        $this->assertEquals($casts, $model->getCasts());
-        $this->assertEquals($dates, $model->getDates());
-        $this->assertEquals($slug ?? $primaryKey, $model->getKeyName());
+        $this->assertSame($fillable, $model->getFillable());
+        $this->assertSame($guarded, $model->getGuarded());
+        $this->assertSame($hidden, $model->getHidden());
+        $this->assertSame($visible, $model->getVisible());
+        $this->assertSame($casts, $model->getCasts());
+        $this->assertSame($dates, $model->getDates());
+        $this->assertSame($slug ?? $primaryKey, $model->getKeyName());
 
         $c = $model->newCollection();
-        $this->assertEquals($collectionClass, get_class($c));
+        $this->assertSame($collectionClass, \get_class($c));
         $this->assertInstanceOf(Collection::class, $c);
 
         if (null !== $connection) {
-            $this->assertEquals($connection, $model->getConnectionName());
+            $this->assertSame($connection, $model->getConnectionName());
         }
 
         if (null !== $table) {
-            $this->assertEquals($table, $model->getTable());
+            $this->assertSame($table, $model->getTable());
         }
     }
 
     /**
      * @param HasMany  $relation
-     * @param Model    $model
-     * @param Model    $related
      * @param string   $key
      * @param string   $parent
      * @param \Closure $queryCheck
@@ -86,28 +88,26 @@ abstract class ModelTestCase extends TestCase
     {
         $this->assertInstanceOf(HasMany::class, $relation);
 
-        if (! is_null($queryCheck)) {
+        if (null !== $queryCheck) {
             $queryCheck->bindTo($this);
             $queryCheck($relation->getQuery(), $model, $relation);
         }
 
-        if (is_null($key)) {
+        if (null === $key) {
             $key = $model->getForeignKey();
         }
 
-        $this->assertEquals($key, $relation->getForeignKeyName());
+        $this->assertSame($key, $relation->getForeignKeyName());
 
-        if (is_null($parent)) {
+        if (null === $parent) {
             $parent = $model->getKeyName();
         }
 
-        $this->assertEquals($model->getTable() . '.' . $parent, $relation->getQualifiedParentKeyName());
+        $this->assertSame($model->getTable() . '.' . $parent, $relation->getQualifiedParentKeyName());
     }
 
     /**
      * @param BelongsTo $relation
-     * @param Model     $model
-     * @param Model     $related
      * @param string    $key
      * @param string    $owner
      * @param \Closure  $queryCheck
@@ -120,24 +120,22 @@ abstract class ModelTestCase extends TestCase
     {
         $this->assertInstanceOf(BelongsTo::class, $relation);
 
-        if (! is_null($queryCheck)) {
+        if (null !== $queryCheck) {
             $queryCheck->bindTo($this);
             $queryCheck($relation->getQuery(), $model, $relation);
         }
 
-        $this->assertEquals($key, $relation->getForeignKey());
+        $this->assertSame($key, $relation->getForeignKey());
 
-        if (is_null($owner)) {
+        if (null === $owner) {
             $owner = $related->getKeyName();
         }
 
-        $this->assertEquals($owner, $relation->getOwnerKey());
+        $this->assertSame($owner, $relation->getOwnerKey());
     }
 
     /**
      * @param BelongsToMany $relation
-     * @param Model         $model
-     * @param Model         $related
      * @param string        $key
      * @param string        $parent
      * @param \Closure      $queryCheck
@@ -150,17 +148,17 @@ abstract class ModelTestCase extends TestCase
     {
         $this->assertInstanceOf(BelongsToMany::class, $relation);
 
-        if (! is_null($queryCheck)) {
+        if (null !== $queryCheck) {
             $queryCheck->bindTo($this);
             $queryCheck($relation->getQuery(), $model, $relation);
         }
 
-        $this->assertEquals($key, $relation->getForeignPivotKeyName());
+        $this->assertSame($key, $relation->getForeignPivotKeyName());
 
-        if (is_null($parent)) {
+        if (null === $parent) {
             $parent = $model->getKeyName();
         }
 
-        $this->assertEquals($model->getTable() . '.' . $parent, $relation->getQualifiedParentKeyName());
+        $this->assertSame($model->getTable() . '.' . $parent, $relation->getQualifiedParentKeyName());
     }
 }

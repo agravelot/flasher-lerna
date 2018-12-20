@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -21,9 +28,6 @@ class AdminUserController extends Controller
 
     /**
      * AdminCosplayerController constructor.
-     *
-     * @param UserRepository      $userRepository
-     * @param CosplayerRepository $cosplayerRepository
      */
     public function __construct(UserRepository $userRepository, CosplayerRepository $cosplayerRepository)
     {
@@ -69,7 +73,6 @@ class AdminUserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param UserRequest $request
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
@@ -91,7 +94,6 @@ class AdminUserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
@@ -108,7 +110,6 @@ class AdminUserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
@@ -130,8 +131,7 @@ class AdminUserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UserRequest $request
-     * @param int         $id
+     * @param int $id
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
@@ -157,7 +157,6 @@ class AdminUserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *

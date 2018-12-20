@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace Tests\Unit\Http\Controllers;
 
 use App\Http\Controllers\Admin\AdminUserController;
@@ -71,7 +78,7 @@ class AdminUserControllerTest extends TestCase
 
         $view = $this->controller->index();
 
-        $this->assertEquals('admin.users.index', $view->getName());
+        $this->assertSame('admin.users.index', $view->getName());
         $this->assertArraySubset(['users' => $users], $view->getData());
     }
 
@@ -87,7 +94,7 @@ class AdminUserControllerTest extends TestCase
 
         $view = $this->controller->create();
 
-        $this->assertEquals('admin.users.create', $view->getName());
+        $this->assertSame('admin.users.create', $view->getName());
     }
 
     public function testShowReturnsView()
@@ -101,7 +108,7 @@ class AdminUserControllerTest extends TestCase
 
         $view = $this->controller->show($user->id);
 
-        $this->assertEquals('admin.users.show', $view->getName());
+        $this->assertSame('admin.users.show', $view->getName());
         $this->assertArraySubset(['user' => $user], $view->getData());
     }
 
@@ -123,7 +130,7 @@ class AdminUserControllerTest extends TestCase
 
         $view = $this->controller->edit($user->id);
 
-        $this->assertEquals('admin.users.edit', $view->getName());
+        $this->assertSame('admin.users.edit', $view->getName());
         $this->assertArraySubset(['user' => $user], $view->getData());
     }
 

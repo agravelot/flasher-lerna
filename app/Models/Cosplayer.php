@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
@@ -61,7 +68,7 @@ class Cosplayer extends Model implements HasMedia
             ->addMediaCollection('avatar')
             ->singleFile()
             ->acceptsFile(function (File $file) {
-                return strpos($file->mimeType, 'image/') === 0;
+                return mb_strpos($file->mimeType, 'image/') === 0;
             });
     }
 

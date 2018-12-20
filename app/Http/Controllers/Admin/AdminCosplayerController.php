@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -17,8 +24,6 @@ class AdminCosplayerController extends Controller
 
     /**
      * AdminCosplayerController constructor.
-     *
-     * @param CosplayerRepository $repository
      */
     public function __construct(CosplayerRepository $repository)
     {
@@ -60,7 +65,6 @@ class AdminCosplayerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param CosplayerRequest $request
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
@@ -90,7 +94,6 @@ class AdminCosplayerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param string $slug
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
@@ -108,7 +111,6 @@ class AdminCosplayerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param string $slug
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
@@ -126,7 +128,6 @@ class AdminCosplayerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param CosplayerRequest $request
      * @param $id
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
@@ -158,7 +159,6 @@ class AdminCosplayerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param string $slug
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException

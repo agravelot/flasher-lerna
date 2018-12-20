@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace Tests\Unit\Repositories;
 
 use App\Criteria\PublicAlbumsCriteria;
@@ -62,7 +69,7 @@ class AlbumRepositoryEloquentTest extends TestCase
 
         $count = $this->albumRepository->count();
 
-        $this->assertEquals(4, $count);
+        $this->assertSame(4, $count);
     }
 
     public function test_count_four_unpublished_albums_should_be_zero()
@@ -71,7 +78,7 @@ class AlbumRepositoryEloquentTest extends TestCase
 
         $count = $this->albumRepository->count();
 
-        $this->assertEquals(0, $count);
+        $this->assertSame(0, $count);
     }
 
     public function test_album_with_a_published_at_date_are_published_without_public_criteria()
@@ -119,7 +126,7 @@ class AlbumRepositoryEloquentTest extends TestCase
 
         $count = $this->albumRepository->count();
 
-        $this->assertEquals(4, $count);
+        $this->assertSame(4, $count);
     }
 
     public function test_count_four_unpublished_albums_should_be_zero_without_public_criteria()
@@ -129,6 +136,6 @@ class AlbumRepositoryEloquentTest extends TestCase
 
         $count = $this->albumRepository->count();
 
-        $this->assertEquals(4, $count);
+        $this->assertSame(4, $count);
     }
 }

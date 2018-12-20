@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace Tests\Feature\Http\Controller\Front;
 
 use App\Models\Cosplayer;
@@ -32,7 +39,7 @@ class IndexCosplayerTest extends TestCase
         $response->assertSee($cosplayers->get(1)->description);
     }
 
-    private function showCosplayers() : TestResponse
+    private function showCosplayers(): TestResponse
     {
         return $this->get('/cosplayers');
     }

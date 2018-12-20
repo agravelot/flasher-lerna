@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -16,8 +23,6 @@ class AdminContactController extends Controller
 
     /**
      * AdminContactController constructor.
-     *
-     * @param ContactRepository $repository
      */
     public function __construct(ContactRepository $repository)
     {
@@ -45,7 +50,6 @@ class AdminContactController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
@@ -62,7 +66,6 @@ class AdminContactController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *

@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace App\Console\Commands;
 
 use App\Http\Requests\UserRequest;
@@ -33,8 +40,6 @@ class CreateAdminUser extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @param UserRepository $repository
      */
     public function __construct(UserRepository $repository)
     {
@@ -44,8 +49,6 @@ class CreateAdminUser extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
     public function handle()
     {
@@ -62,11 +65,9 @@ class CreateAdminUser extends Command
             $username = $this->ask('Please enter a username');
         }
 
-
         if ($email === null) {
             $email = $this->ask('Enter your user email');
         }
-
 
         if ($password === null) {
             $password = $this->secret('Enter your user password');
@@ -83,7 +84,7 @@ class CreateAdminUser extends Command
         $filter = array_fill_keys(['name', 'email'], '');
         $rules = array_intersect_key((new UserRequest())->rules(), $filter);
 
-        if (!$this->validate($data, $rules)) {
+        if (! $this->validate($data, $rules)) {
             return 1;
         }
         $this->createUser($data);
@@ -107,6 +108,7 @@ class CreateAdminUser extends Command
 
             return false;
         }
+
         return true;
     }
 

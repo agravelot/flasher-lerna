@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace Tests\Unit\Models;
 
 use App\Models\Category;
@@ -17,7 +24,7 @@ class CategoryTest extends ModelTestCase
         $routeKey = $post->getRouteKeyName();
         $post->$$routeKey = $slug;
 
-        $this->assertEquals($$routeKey, $slug);
+        $this->assertSame($$routeKey, $slug);
     }
 
     public function testSlugAsRouteKeyName()
@@ -27,7 +34,7 @@ class CategoryTest extends ModelTestCase
 
         $excepted = 'slug';
 
-        $this->assertEquals($excepted, $routeKey);
+        $this->assertSame($excepted, $routeKey);
     }
 
     public function testSlugSourceAsTitle()
@@ -37,7 +44,7 @@ class CategoryTest extends ModelTestCase
 
         $excepted = 'name';
 
-        $this->assertEquals($excepted, $slugSource);
+        $this->assertSame($excepted, $slugSource);
     }
 
     public function testModelConfiguration()

@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace Tests;
 
 use App\Exceptions\Handler;
@@ -14,8 +21,8 @@ abstract class TestCase extends BaseTestCase
 
     protected function assertAuthenticationRequired($uri, $method = 'get', $redirect = '/login')
     {
-        $method = strtolower($method);
-        if (! in_array($method, ['get', 'post', 'put', 'update', 'delete'])) {
+        $method = mb_strtolower($method);
+        if (! \in_array($method, ['get', 'post', 'put', 'update', 'delete'], true)) {
             throw new InvalidArgumentException('Invalid method: ' . $method);
         }
         // Html check

@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace Tests\Feature\Console\Commands;
 
 use App\Models\User;
@@ -72,9 +79,9 @@ class CreateAdminUserTest extends TestCase
 
         $this->assertCount(1, User::all());
         $user = User::find(1);
-        $this->assertEquals('admin', $user->name);
-        $this->assertEquals('admin', $user->role);
-        $this->assertEquals('admin@picblog.com', $user->email);
+        $this->assertSame('admin', $user->name);
+        $this->assertSame('admin', $user->role);
+        $this->assertSame('admin@picblog.com', $user->email);
         $this->assertTrue(Hash::check('secret', $user->password));
     }
 }

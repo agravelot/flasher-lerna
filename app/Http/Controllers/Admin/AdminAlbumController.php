@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace App\Http\Controllers\Admin;
 
 use App\Criteria\PublicAlbumsCriteria;
@@ -30,10 +37,6 @@ class AdminAlbumController extends Controller
 
     /**
      * AdminAlbumController constructor.
-     *
-     * @param AlbumRepository     $albumRepository
-     * @param CategoryRepository  $categoryRepository
-     * @param CosplayerRepository $cosplayerRepository
      */
     public function __construct(AlbumRepository $albumRepository,
                                 CategoryRepository $categoryRepository,
@@ -87,7 +90,6 @@ class AdminAlbumController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param AlbumRequest $request
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
@@ -129,7 +131,6 @@ class AdminAlbumController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param string $slug
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
@@ -147,7 +148,6 @@ class AdminAlbumController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param string $slug
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
@@ -172,7 +172,6 @@ class AdminAlbumController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param AlbumRequest $request
      * @param $id
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
@@ -221,7 +220,6 @@ class AdminAlbumController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param string $slug
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException

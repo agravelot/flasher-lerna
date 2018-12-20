@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace App\Policies;
 
 use App\Models\Category;
@@ -9,10 +16,6 @@ class CategoryPolicy extends Policy
 {
     /**
      * Determine whether the user can view the categorys.
-     *
-     * @param \App\Models\User $user
-     *
-     * @return mixed
      */
     public function index(User $user)
     {
@@ -21,11 +24,6 @@ class CategoryPolicy extends Policy
 
     /**
      * Determine whether the user can view the category.
-     *
-     * @param \App\Models\User $user
-     * @param Category         $category
-     *
-     * @return mixed
      */
     public function view(User $user, Category $category)
     {
@@ -34,10 +32,6 @@ class CategoryPolicy extends Policy
 
     /**
      * Determine whether the user can create categorys.
-     *
-     * @param \App\Models\User $user
-     *
-     * @return mixed
      */
     public function create(User $user)
     {
@@ -47,10 +41,7 @@ class CategoryPolicy extends Policy
     /**
      * Determine whether the user can update the category.
      *
-     * @param \App\Models\User $user
-     * @param Categsory        $category
-     *
-     * @return mixed
+     * @param Categsory $category
      */
     public function update(User $user, Category $category)
     {
@@ -59,11 +50,6 @@ class CategoryPolicy extends Policy
 
     /**
      * Determine whether the user can delete the category.
-     *
-     * @param \App\Models\User $user
-     * @param Category         $category
-     *
-     * @return mixed
      */
     public function delete(User $user, Category $category)
     {
@@ -72,11 +58,6 @@ class CategoryPolicy extends Policy
 
     /**
      * Determine whether the user can restore the category.
-     *
-     * @param \App\Models\User $user
-     * @param Category         $category
-     *
-     * @return mixed
      */
     public function restore(User $user, Category $category)
     {
@@ -85,11 +66,6 @@ class CategoryPolicy extends Policy
 
     /**
      * Determine whether the user can permanently delete the category.
-     *
-     * @param \App\Models\User $user
-     * @param Category         $category
-     *
-     * @return mixed
      */
     public function forceDelete(User $user, Category $category)
     {

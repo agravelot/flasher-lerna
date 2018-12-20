@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
@@ -16,8 +23,6 @@ class AlbumController extends Controller
 
     /**
      * AlbumController constructor.
-     *
-     * @param AlbumRepository $albumRepository
      */
     public function __construct(AlbumRepository $albumRepository)
     {
@@ -39,7 +44,6 @@ class AlbumController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param string $slug
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
@@ -55,8 +59,6 @@ class AlbumController extends Controller
     }
 
     /**
-     * @param string $slug
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      *

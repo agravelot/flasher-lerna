@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace Tests\Unit\Models;
 
 use App\Models\Album;
@@ -18,7 +25,7 @@ class AlbumTest extends ModelTestCase
         $routeKey = $album->getRouteKeyName();
         $album->$$routeKey = $slug;
 
-        $this->assertEquals($$routeKey, $slug);
+        $this->assertSame($$routeKey, $slug);
     }
 
     public function testSlugAsRouteKeyName()
@@ -28,7 +35,7 @@ class AlbumTest extends ModelTestCase
 
         $excepted = 'slug';
 
-        $this->assertEquals($excepted, $routeKey);
+        $this->assertSame($excepted, $routeKey);
     }
 
     public function testSlugSourceAsTitle()
@@ -38,7 +45,7 @@ class AlbumTest extends ModelTestCase
 
         $excepted = 'title';
 
-        $this->assertEquals($excepted, $slugSource);
+        $this->assertSame($excepted, $slugSource);
     }
 
     public function testModelConfiguration()
@@ -70,28 +77,28 @@ class AlbumTest extends ModelTestCase
     {
         $album = factory(Album::class)->states(['published', 'passwordLess'])->make();
 
-        $this->assertEquals(true, $album->isPublic());
+        $this->assertTrue($album->isPublic());
     }
 
     public function test_album_is_private_when_not_published()
     {
         $album = factory(Album::class)->states(['unpublished', 'passwordLess'])->make();
 
-        $this->assertEquals(false, $album->isPublic());
+        $this->assertFalse($album->isPublic());
     }
 
     public function test_album_is_private_when_password_is_defined()
     {
         $album = factory(Album::class)->states(['published', 'password'])->make();
 
-        $this->assertEquals(false, $album->isPublic());
+        $this->assertFalse($album->isPublic());
     }
 
     public function test_album_is_private_when_password_is_defined_and_not_published()
     {
         $album = factory(Album::class)->states(['unpublished', 'password'])->make();
 
-        $this->assertEquals(false, $album->isPublic());
+        $this->assertFalse($album->isPublic());
     }
 
     public function test_password_should_be_hashed()
