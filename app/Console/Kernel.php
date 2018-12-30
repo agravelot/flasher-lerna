@@ -10,6 +10,9 @@
 namespace App\Console;
 
 use App\Console\Commands\CreateAdminUser;
+use App\Jobs\Backup;
+use App\Jobs\BackupClean;
+use App\Jobs\BackupMonitor;
 use App\Jobs\GenerateSitemap;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -31,6 +34,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->job(new GenerateSitemap())->daily()->withoutOverlapping();
+        $schedule->job(new BackupClean())->daily()->at('01:00')->withoutOverlapping();
+        $schedule->job(new Backup())->daily()->at('02:00')->withoutOverlapping();
+        $schedule->job(new BackupMonitor())->daily()->at('03:00')->withoutOverlapping();
     }
 
     /**
