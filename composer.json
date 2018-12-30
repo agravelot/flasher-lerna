@@ -21,6 +21,7 @@
     "predis/predis": "^1.1",
     "prettus/l5-repository": "^2.6",
     "sllh/composer-versions-check": "^2.0",
+    "spatie/laravel-backup": "^5.11",
     "spatie/laravel-medialibrary": "^7.0.0",
     "spatie/laravel-sitemap": "^5.2",
     "unisharp/laravel-filemanager": "dev-master"
