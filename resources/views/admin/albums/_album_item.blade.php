@@ -1,6 +1,6 @@
 <tr>
     <td width="2%">
-        @if ($album->hasPassword())
+        @if (!$album->isPasswordLess())
             <span class="icon is-small has-text-warning">
                 <i class="fas fa-lock"></i>
             </span>
