@@ -24,7 +24,7 @@ class Album extends Model implements HasMedia
     use Sluggable, SluggableScopeHelpers, HasMediaTrait;
 
     protected $fillable = [
-        'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id',
+        'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id', 'password',
     ];
 
     protected $hidden = [
