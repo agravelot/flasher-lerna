@@ -7,7 +7,6 @@
  * Written by Antoine Gravelot <agravelot@orma.fr>
  */
 
-use Carbon\Carbon;
 use Faker\Generator as Faker;
 
 $factory->define(App\Models\Album::class, function (Faker $faker) {

@@ -52,7 +52,7 @@ class AlbumTest extends ModelTestCase
     public function testModelConfiguration()
     {
         $this->runConfigurationAssertions(new Album(), [
-            'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id', 'password'
+            'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id', 'password',
         ],
             ['password']);
     }
@@ -111,40 +111,45 @@ class AlbumTest extends ModelTestCase
         $this->assertTrue(Hash::check('secret', $album->password));
     }
 
-    public function test_album_without_password_is_passwordLess() {
+    public function test_album_without_password_is_passwordLess()
+    {
         /** @var Album $album */
         $album = factory(Album::class)->states(['passwordLess'])->make();
 
         $this->assertTrue($album->isPasswordLess());
     }
 
-    public function test_album_with_password_is_not_passwordLess() {
+    public function test_album_with_password_is_not_passwordLess()
+    {
         /** @var Album $album */
         $album = factory(Album::class)->states(['password'])->make();
 
         $this->assertFalse($album->isPasswordLess());
     }
 
-    public function test_set_published_at_with_true_is_now() {
+    public function test_set_published_at_with_true_is_now()
+    {
         $knownDate = Carbon::create(2018, 5, 21, 12);
         Carbon::setTestNow($knownDate);
         $album = factory(Album::class)->states(['published'])->make();
 
-        $this->assertEquals($knownDate, $album->published_at);
+        $this->assertSame($knownDate, $album->published_at);
     }
 
-    public function test_set_published_at_with_false_is_null() {
+    public function test_set_published_at_with_false_is_null()
+    {
         $album = factory(Album::class)->make();
         $album->published_at = false;
 
         $this->assertNull($album->published_at);
     }
 
-    public function test_set_published_at_with_date() {
+    public function test_set_published_at_with_date()
+    {
         $knownDate = Carbon::create(2018, 5, 21, 12);
         $album = factory(Album::class)->make();
         $album->published_at = $knownDate;
 
-        $this->assertEquals($knownDate, $album->published_at);
+        $this->assertSame($knownDate, $album->published_at);
     }
 }

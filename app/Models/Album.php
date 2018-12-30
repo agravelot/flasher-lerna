@@ -42,7 +42,7 @@ class Album extends Model implements HasMedia
     {
         if ($value === true) {
             $this->attributes['published_at'] = Carbon::now();
-        } elseif ($value === false){
+        } elseif ($value === false) {
             $this->attributes['published_at'] = null;
         } else {
             $this->attributes['published_at'] = $value;
