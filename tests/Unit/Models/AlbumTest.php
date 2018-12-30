@@ -133,7 +133,7 @@ class AlbumTest extends ModelTestCase
         Carbon::setTestNow($knownDate);
         $album = factory(Album::class)->states(['published'])->make();
 
-        $this->assertSame($knownDate, $album->published_at);
+        $this->assertSame($knownDate->format('Y-m-d H:i:s'), $album->published_at->format('Y-m-d H:i:s'));
     }
 
     public function test_set_published_at_with_false_is_null()
