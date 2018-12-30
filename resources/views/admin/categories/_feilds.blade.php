@@ -2,7 +2,7 @@
     <form class="register-form" method="POST" action="{{ $route }}">
         @csrf
 
-        @if (isset($$category))
+        @if (isset($category))
             {{ method_field('PATCH') }}
         @endif
 
@@ -22,7 +22,7 @@
             <div class="control">
                 <textarea class="textarea" id="description" type="text" name="description"
                           placeholder="Enter your description here"
-                          rows="10">{{ old('description', isset($album->description) ? $album->description : null) }}</textarea>
+                          rows="10">{{ old('description', isset($category->description) ? $category->description : null) }}</textarea>
             </div>
             @include('layouts.partials._form_errors', ['data' => 'body'])
         </div>
