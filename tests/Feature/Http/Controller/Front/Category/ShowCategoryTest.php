@@ -31,6 +31,11 @@ class ShowCategoryTest extends TestCase
         $response->assertSee('Nothing to show');
     }
 
+    private function showCategory(Category $category): TestResponse
+    {
+        return $this->get('/categories/' . $category->slug);
+    }
+
     public function test_guest_can_view_a_category_with_albums()
     {
         /** @var Category $category */
@@ -71,8 +76,16 @@ class ShowCategoryTest extends TestCase
         $response->assertDontSee($album->title);
     }
 
-    private function showCategory(Category $category): TestResponse
+    public function test_category_without_description_does_not_show_description_card()
     {
-        return $this->get('/categories/' . $category->slug);
+        /** @var Category $category */
+        $category = factory(Category::class)->create(['description' => '']);
+
+        $response = $this->showCategory($category);
+
+        $response->assertStatus(200);
+        $response->assertSee($category->title);
+        $response->assertDontSee('<p class="has-text-justified">' . $category->description . '</p>');
+        $response->assertSee('Nothing to show');
     }
 }
