@@ -10,6 +10,7 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Album;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
 use Tests\ModelTestCase;
@@ -108,5 +109,42 @@ class AlbumTest extends ModelTestCase
         ]);
 
         $this->assertTrue(Hash::check('secret', $album->password));
+    }
+
+    public function test_album_without_password_is_passwordLess() {
+        /** @var Album $album */
+        $album = factory(Album::class)->states(['passwordLess'])->make();
+
+        $this->assertTrue($album->isPasswordLess());
+    }
+
+    public function test_album_with_password_is_not_passwordLess() {
+        /** @var Album $album */
+        $album = factory(Album::class)->states(['password'])->make();
+
+        $this->assertFalse($album->isPasswordLess());
+    }
+
+    public function test_set_published_at_with_true_is_now() {
+        $knownDate = Carbon::create(2018, 5, 21, 12);
+        Carbon::setTestNow($knownDate);
+        $album = factory(Album::class)->states(['published'])->make();
+
+        $this->assertEquals($knownDate, $album->published_at);
+    }
+
+    public function test_set_published_at_with_false_is_null() {
+        $album = factory(Album::class)->make();
+        $album->published_at = false;
+
+        $this->assertNull($album->published_at);
+    }
+
+    public function test_set_published_at_with_date() {
+        $knownDate = Carbon::create(2018, 5, 21, 12);
+        $album = factory(Album::class)->make();
+        $album->published_at = $knownDate;
+
+        $this->assertEquals($knownDate, $album->published_at);
     }
 }

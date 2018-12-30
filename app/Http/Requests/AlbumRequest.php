@@ -26,7 +26,7 @@ class AlbumRequest extends Request
             'title' => 'string|required|min:2|max:255|unique:albums,id,' . $id,
             'seo_title' => 'nullable',
             'body' => 'nullable|max:65000',
-            'publish' => 'required|boolean',
+            'published_at' => 'required|boolean',
             'password' => 'nullable|string|max:128',
             'categories' => 'array',
             'categories.*' => 'integer|min:1',
