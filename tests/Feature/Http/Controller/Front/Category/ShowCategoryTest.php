@@ -27,7 +27,7 @@ class ShowCategoryTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee($category->title);
-        $response->assertSee($category->description);
+        $response->assertSee($this->getDescriptionElement($category->description));
         $response->assertSee('Nothing to show');
     }
 
@@ -47,7 +47,7 @@ class ShowCategoryTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee($category->name);
-        $response->assertSee($category->description);
+        $response->assertSee($this->getDescriptionElement($category->description));
         $response->assertDontSee('Nothing to show');
         $response->assertSee($albums->get(0)->title);
         $response->assertSee($albums->get(1)->title);
@@ -71,7 +71,7 @@ class ShowCategoryTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee($category->title);
-        $response->assertSee($category->description);
+        $response->assertSee($this->getDescriptionElement($category->description));
         $response->assertSee('Nothing to show');
         $response->assertDontSee($album->title);
     }
@@ -85,7 +85,12 @@ class ShowCategoryTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee($category->title);
-        $response->assertDontSee('<p class="has-text-justified">' . $category->description . '</p>');
+        $response->assertDontSee($this->getDescriptionElement($category->description));
         $response->assertSee('Nothing to show');
+    }
+
+    private function getDescriptionElement(string $description): string
+    {
+        return '<p class="has-text-justified">' . $description . '</p>';
     }
 }
