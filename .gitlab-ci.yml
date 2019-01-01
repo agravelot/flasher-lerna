@@ -47,7 +47,7 @@ unit_test:
   - echo "UNIT TESTS"
   - docker-compose pull
   - chmod +x docker/*.sh
-  - bash -c 'cd docker/ && ./generate_env.sh production'
+  - bash -c 'cd docker/ && ./generate_env.sh stagging'
   - docker-compose up -d
 #  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
 #  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
@@ -65,7 +65,7 @@ integration_test:
   - echo "INTEGRATION TEST"
   - docker-compose pull
   - chmod +x docker/*.sh
-  - bash -c 'cd docker/ && ./generate_env.sh production'
+  - bash -c 'cd docker/ && ./generate_env.sh stagging'
   - docker-compose up -d
   - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
   - docker-compose exec -T php php composer-setup.php
@@ -81,7 +81,7 @@ lint:
   - echo "LINT CODE"
   - docker-compose pull
   - chmod +x docker/*.sh
-  - bash -c 'cd docker/ && ./generate_env.sh production'
+  - bash -c 'cd docker/ && ./generate_env.sh stagging'
   - docker-compose up -d
 #  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
 #  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
@@ -98,7 +98,7 @@ security_audit:
   - echo "SECURITY AUDIT"
   - docker-compose pull
   - chmod +x docker/*.sh
-  - bash -c 'cd docker/ && ./generate_env.sh production'
+  - bash -c 'cd docker/ && ./generate_env.sh stagging'
   - docker-compose up -d
 #  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
 #  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
