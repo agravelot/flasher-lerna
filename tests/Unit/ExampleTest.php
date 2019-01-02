@@ -1,16 +1,20 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ExampleTest extends TestCase
 {
     /**
      * A basic test example.
-     *
-     * @return void
      */
     public function testBasicTest()
     {

@@ -5,7 +5,7 @@ set -o errtrace  # trace ERR through 'time command' and other functions
 set -o nounset   ## set -u : exit the script if you try to use an uninitialised variable
 set -o errexit   ## set -e : exit the script if any statement returns a non-true return value
 
-source docker/init_variables.sh $1
+source init_variables.sh $1
 
 echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
 
@@ -25,12 +25,12 @@ if [[ ! "$(docker images -q ${PICBLOG_IMAGE_PHP} 2> /dev/null)" == "" && ! "$(do
   docker tag ${PICBLOG_IMAGE_NGINX} picblog-nginx-backup
 fi
 echo " * PULLING NEW IMAGES"
-docker-compose -f docker-compose.yml pull
+docker-compose -f ../docker-compose.yml pull
 echo " * PUTTING LARAVEL IN MAINTENANCE MODE"
 docker-compose exec php echo Hello world && docker-compose exec php php artisan down --message="We'll be back soon" --retry=60 || echo "Container is not running"
 echo " * UPDATING RUNNING CONTAINERS"
-docker-compose -f docker-compose.yml up -d --remove-orphans
-echo " * LEAVING MAINTENANCE MODE"
-docker-compose exec php php artisan up
+docker-compose -f ../docker-compose.yml up -d --remove-orphans
+#echo " * LEAVING MAINTENANCE MODE"
+#docker-compose exec php php artisan up
 #echo " * CLEANING OLD IMAGES"
 #ssh -t ${REMOTE} -p $CI_DEPLOY_SSH_PORT "docker-clean images"

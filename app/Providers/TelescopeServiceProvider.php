@@ -1,18 +1,23 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace App\Providers;
 
-use Laravel\Telescope\Telescope;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Telescope\IncomingEntry;
+use Laravel\Telescope\Telescope;
 use Laravel\Telescope\TelescopeApplicationServiceProvider;
 
 class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 {
     /**
      * Register any application services.
-     *
-     * @return void
      */
     public function register()
     {
@@ -34,15 +39,12 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
      * Register the Telescope gate.
      *
      * This gate determines who can access Telescope in non-local environments.
-     *
-     * @return void
      */
     protected function gate()
     {
         Gate::define('viewTelescope', function ($user) {
-            return in_array($user->email, [
-                //
-            ]);
+            return \in_array($user->email, [
+            ], true);
         });
     }
 }

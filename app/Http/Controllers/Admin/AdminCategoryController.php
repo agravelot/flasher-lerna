@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -17,8 +24,6 @@ class AdminCategoryController extends Controller
 
     /**
      * AdminCategoryController constructor.
-     *
-     * @param CategoryRepository $repository
      */
     public function __construct(CategoryRepository $repository)
     {
@@ -46,7 +51,6 @@ class AdminCategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param string $slug
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
@@ -64,7 +68,6 @@ class AdminCategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param string $slug
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
@@ -96,7 +99,6 @@ class AdminCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param CategoryRequest $request
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
@@ -114,8 +116,6 @@ class AdminCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param CategoryRequest $request
-     * @param string          $slug
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
@@ -135,7 +135,6 @@ class AdminCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param string $slug
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException

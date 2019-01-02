@@ -1,7 +1,13 @@
 <?php
 
-return [
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
 
+return [
     /*
     |--------------------------------------------------------------------------
     | Default Filesystem Disk
@@ -42,7 +48,6 @@ return [
     */
 
     'disks' => [
-
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
@@ -51,14 +56,14 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
 
         'uploads' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/uploads',
+            'url' => env('APP_URL') . '/uploads',
             'visibility' => 'public',
         ],
 
@@ -70,7 +75,5 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
         ],
-
     ],
-
 ];

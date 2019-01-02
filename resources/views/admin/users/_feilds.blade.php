@@ -47,7 +47,8 @@
             <div class="field-body">
                 <div class="field">
                     <p class="control">
-                        <input class="input" id="password" type="password" name="password" @if (!isset($user)) required @endif>
+                        <input class="input" id="password" type="password" name="password"
+                               @if (!isset($user)) required @endif>
                     </p>
                     @include('layouts.partials._form_errors', ['data' => 'password'])
                 </div>

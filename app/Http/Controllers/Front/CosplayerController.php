@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
@@ -22,7 +29,6 @@ class CosplayerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Cosplayer $cosplayer
      *
      * @return \Illuminate\Http\Response
      */

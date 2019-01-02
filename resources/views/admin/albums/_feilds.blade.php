@@ -88,13 +88,13 @@
                 <div class="card-content">
                     <div class="control">
                         <label class="radio">
-                            <input type="radio" name="publish"
-                                   value="1" {{ old('publish', isset($album->publish) && $album->publish) ? 'checked="checked"' : null  }}>
+                            <input type="radio" name="published_at"
+                                   value="1" {{ old('published_at', isset($album->published_at) && $album->isPublished()) ? 'checked="checked"' : null  }}>
                             Publish
                         </label>
                         <label class="radio">
-                            <input type="radio" name="publish"
-                                   value="0" {{ old('publish', isset($album->publish) && $album->publish) ? null : 'checked="checked"' }}>
+                            <input type="radio" name="published_at"
+                                   value="0" {{ old('published_at', isset($album->published_at) && $album->isPublished()) ? null : 'checked="checked"' }}>
                             Draft
                         </label>
                     </div>

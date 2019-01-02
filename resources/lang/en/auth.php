@@ -1,7 +1,13 @@
 <?php
 
-return [
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
 
+return [
     /*
     |--------------------------------------------------------------------------
     | Authentication Language Lines
@@ -15,5 +21,4 @@ return [
 
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-
 ];

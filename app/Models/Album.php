@@ -1,10 +1,19 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace App\Models;
 
+use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -14,20 +23,45 @@ class Album extends Model implements HasMedia
 {
     use Sluggable, SluggableScopeHelpers, HasMediaTrait;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
-        'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'publish', 'user_id',
+        'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id', 'password',
     ];
 
-    protected $hidden = ['password'];
+    protected $hidden = [
+        'password',
+    ];
+
+    public function setPasswordAttribute($value)
+    {
+        if ($value !== null) {
+            $this->attributes['password'] = Hash::make($value);
+        }
+    }
+
+    public function setPublishedAtAttribute($value)
+    {
+        if ($value === true) {
+            $this->attributes['published_at'] = Carbon::now();
+        } elseif ($value === false) {
+            $this->attributes['published_at'] = null;
+        } else {
+            $this->attributes['published_at'] = $value;
+        }
+    }
 
     public function isPublic()
     {
-        return $this->publish && $this->password == null;
+        return $this->isPublished() && $this->isPasswordLess();
+    }
+
+    public function isPublished()
+    {
+        return $this->published_at !== null;
+    }
+
+    public function isPasswordLess()
+    {
+        return $this->password === null;
     }
 
     public function user()
@@ -78,7 +112,7 @@ class Album extends Model implements HasMedia
     {
         $this->addMediaCollection('pictures')
             ->acceptsFile(function (File $file) {
-                return strpos($file->mimeType, 'image/') === 0;
+                return mb_strpos($file->mimeType, 'image/') === 0;
             });
     }
 

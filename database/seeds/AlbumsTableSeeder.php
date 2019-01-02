@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -7,15 +14,15 @@ class AlbumsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run()
     {
-        User::all()->each(function ($user)  {
+        User::all()->each(function (User $user) {
             $user->albums()->saveMany(
-                factory(App\Models\Album::class, 2)
-                    ->make()
+                collect()->concat(factory(App\Models\Album::class, 2)->states(['password', 'published'])->make())
+                    ->concat(factory(App\Models\Album::class, 2)->states(['password', 'unpublished'])->make())
+                    ->concat(factory(App\Models\Album::class, 2)->states(['passwordLess', 'unpublished'])->make())
+                    ->concat(factory(App\Models\Album::class, 2)->states(['passwordLess', 'published'])->make())
             );
         });
     }

@@ -1,10 +1,10 @@
 <tr>
     <td width="2%">
-        @if ($album->password)
+        @if (!$album->isPasswordLess())
             <span class="icon is-small has-text-warning">
                 <i class="fas fa-lock"></i>
             </span>
-        @elseif ($album->publish)
+        @elseif ($album->isPublished())
             <span class="icon is-small has-text-success">
                 <i class="fas fa-check"></i>
             </span>

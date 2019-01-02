@@ -1,32 +1,36 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace App\Repositories;
 
+use App\Criteria\PublicAlbumsCriteria;
 use App\Models\Album;
 use App\Repositories\Contracts\AlbumRepository;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class AlbumRepositoryEloquent.
  */
 class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepository
 {
+    public function latestWithPagination()
+    {
+        return parent::with(['media', 'categories'])
+            ->orderBy('created_at', 'desc')
+            ->paginate();
+    }
+
     public function create(array $attributes)
     {
-        $attributes['password'] = Hash::make($attributes['password']);
         $attributes['user_id'] = Auth::user()->id;
 
         return parent::create($attributes);
-    }
-
-    public function update(array $attributes, $id)
-    {
-        $attributes['password'] = Hash::make($attributes['password']);
-
-        return parent::update($attributes, $id);
     }
 
     /**
@@ -42,30 +46,10 @@ class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepository
     {
         $this->applyCriteria();
         $this->applyScope();
-        $model = $this->model->with('cosplayers.media')->whereSlug($slug)->first();
+        $model = $this->model->with('cosplayers.media')->whereSlug($slug)->firstOrFail();
         $this->resetModel();
 
         return $this->parserResult($model);
-    }
-
-    /**
-     * Count results of repository.
-     *
-     * @param string $columns
-     *
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
-     *
-     * @return int
-     */
-    public function count($columns = '*'): int
-    {
-        $this->applyCriteria();
-        $this->applyScope();
-        $result = $this->model->count($columns);
-        $this->resetModel();
-        $this->resetScope();
-
-        return $result;
     }
 
     /**
@@ -80,9 +64,12 @@ class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepository
 
     /**
      * Boot up the repository, pushing criteria.
+     *
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function boot()
     {
-        $this->pushCriteria(app(RequestCriteria::class));
+        // $this->pushCriteria(app(RequestCriteria::class));
+        $this->pushCriteria(PublicAlbumsCriteria::class);
     }
 }

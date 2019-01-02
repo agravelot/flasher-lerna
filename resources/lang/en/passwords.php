@@ -1,7 +1,13 @@
 <?php
 
-return [
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
 
+return [
     /*
     |--------------------------------------------------------------------------
     | Password Reset Language Lines
@@ -18,5 +24,4 @@ return [
     'sent' => 'We have e-mailed your password reset link!',
     'token' => 'This password reset token is invalid.',
     'user' => "We can't find a user with that e-mail address.",
-
 ];

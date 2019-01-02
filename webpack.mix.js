@@ -13,11 +13,26 @@ require('laravel-mix-purgecss');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css')
+    .js('resources/js/admin/admin.js', 'public/js')
+    .js('resources/js/carousel.js', 'public/js')
+    .js('resources/js/tinymce.js', 'public/js')
+    .version()
+    .extract();
+
+mix.sass('resources/sass/app.scss', 'public/css')
+    .sass('resources/sass/error-illustrated.scss', 'public/css')
+    .version()
     .purgeCss();
 
-mix.js('resources/js/admin/admin.js', 'public/js');
-mix.js('resources/js/carousel.js', 'public/js');
-mix.js('resources/js/tinymce.js', 'public/js');
+mix.options({
+    autoprefixer: {
+        options: {
+            browsers: [
+                'last 2 versions',
+            ]
+        }
+    }
+});
+
 
 mix.browserSync('localhost:8000');

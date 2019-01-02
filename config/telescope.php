@@ -1,10 +1,16 @@
 <?php
 
-use Laravel\Telescope\Watchers;
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 use Laravel\Telescope\Http\Middleware\Authorize;
+use Laravel\Telescope\Watchers;
 
 return [
-
     'path' => 'telescope',
 
     /*
@@ -71,12 +77,12 @@ return [
         ],
 
         Watchers\RedisWatcher::class => env('TELESCOPE_REDIS_WATCHER', true),
-        
+
         Watchers\RequestWatcher::class => [
             'enabled' => env('TELESCOPE_REQUEST_WATCHER', true),
             'size_limit' => env('TELESCOPE_REQUEST_SIZE_LIMIT', 64),
         ],
-        
+
         Watchers\ScheduleWatcher::class => env('TELESCOPE_SCHEDULE_WATCHER', true),
     ],
 ];

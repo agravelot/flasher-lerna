@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace App\Exceptions;
 
 use Exception;
@@ -13,7 +20,6 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
     ];
 
     /**
@@ -29,8 +35,7 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param  \Exception $exception
-     * @return void
+     *
      * @throws Exception
      */
     public function report(Exception $exception)
@@ -41,8 +46,8 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $exception)

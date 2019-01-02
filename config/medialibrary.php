@@ -1,7 +1,13 @@
 <?php
 
-return [
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
 
+return [
     /*
      * The disk on which to store added files and derived images by default. Choose
      * one or more of the disks you've configured in config/filesystems.php.
@@ -29,7 +35,7 @@ return [
         /*
          * The domain that should be prepended when generating urls.
          */
-        'domain' => 'https://'.env('AWS_BUCKET').'.s3.amazonaws.com',
+        'domain' => 'https://' . env('AWS_BUCKET') . '.s3.amazonaws.com',
     ],
 
     'remote' => [
@@ -47,7 +53,6 @@ return [
     ],
 
     'responsive_images' => [
-
         /*
         * This class is responsible for calculating the target widths of the responsive
         * images. By default we optimize for filesize and create variations that each are 20%

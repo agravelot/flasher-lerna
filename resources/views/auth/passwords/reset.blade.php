@@ -80,7 +80,8 @@
                             <div class="field-body">
                                 <div class="field">
                                     <p class="control">
-                                        <input class="input" id="password-confirm" type="password" name="password_confirmation" required>
+                                        <input class="input" id="password-confirm" type="password"
+                                               name="password_confirmation" required>
                                     </p>
                                     @include('layouts.partials._form_errors', ['data' => 'password_confirmation'])
                                 </div>
@@ -94,7 +95,7 @@
                             <div class="field-body">
                                 <div class="field is-grouped">
                                     <div class="control">
-                                        <button type="submit" class="button is-primary">Reset Password </button>
+                                        <button type="submit" class="button is-primary">Reset Password</button>
                                     </div>
                                 </div>
                             </div>

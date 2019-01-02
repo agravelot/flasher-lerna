@@ -22,7 +22,7 @@
             <div class="content">
                 <table class="table is-fullwidth is-striped">
                     <tbody>
-                        @each('admin.cosplayers._cosplayer_item', $cosplayers, 'cosplayer', 'layouts.partials._empty')
+                    @each('admin.cosplayers._cosplayer_item', $cosplayers, 'cosplayer', 'layouts.partials._empty')
                     </tbody>
                 </table>
             </div>

@@ -1,10 +1,16 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 use GuzzleHttp\RequestOptions;
 use Spatie\Sitemap\Crawler\Profile;
 
 return [
-
     /*
      * These options will be passed to GuzzleHttp\Client when it is created.
      * For in-depth information on all options see the Guzzle docs:
@@ -12,7 +18,6 @@ return [
      * http://docs.guzzlephp.org/en/stable/request-options.html
      */
     'guzzle_options' => [
-
         /*
          * Whether or not cookies are used in a request.
          */
@@ -53,5 +58,4 @@ return [
      * which urls should be crawled for the sitemap.
      */
     'crawl_profile' => Profile::class,
-
 ];

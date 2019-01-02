@@ -1,9 +1,16 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Auth\VerifiesEmails;
+use Illuminate\Routing\Controller;
 
 class VerificationController extends Controller
 {
@@ -29,8 +36,6 @@ class VerificationController extends Controller
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {

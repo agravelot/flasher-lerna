@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace App\Console\Commands;
 
 use App\Http\Requests\UserRequest;
@@ -15,16 +22,17 @@ class CreateAdminUser extends Command
      *
      * @var string
      */
-    protected $signature = 'user:admin:create 
-                            {name : Username} 
-                            {email : Email-address} 
-                            {password : Password}';
+    protected $signature = 'user:create 
+                            {role? : Role} 
+                            {name? : Username} 
+                            {email? : Email-address} 
+                            {password? : Password}';
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create an administrator user';
+    protected $description = 'Create a user';
     /**
      * @var UserRepository
      */
@@ -32,8 +40,6 @@ class CreateAdminUser extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @param UserRepository $repository
      */
     public function __construct(UserRepository $repository)
     {
@@ -43,27 +49,44 @@ class CreateAdminUser extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
     public function handle()
     {
+        $role = $this->argument('role');
         $username = $this->argument('name');
         $email = $this->argument('email');
         $password = $this->argument('password');
+
+        if ($role === null) {
+            $role = $this->choice('Please select a user role', ['admin', 'user'], 'user');
+        }
+
+        if ($username === null) {
+            $username = $this->ask('Please enter a username');
+        }
+
+        if ($email === null) {
+            $email = $this->ask('Enter your user email');
+        }
+
+        if ($password === null) {
+            $password = $this->secret('Enter your user password');
+        }
 
         $data = [
             'name' => $username,
             'email' => $email,
             'password' => $password,
-            'role' => 'admin',
+            'role' => $role,
         ];
 
-        // Only get filtered keys
+        // Only get filtered keys for name and email
         $filter = array_fill_keys(['name', 'email'], '');
         $rules = array_intersect_key((new UserRequest())->rules(), $filter);
 
-        $this->validate($data, $rules);
+        if (! $this->validate($data, $rules)) {
+            return 1;
+        }
         $this->createUser($data);
 
         $this->info('User created successfully');
@@ -71,20 +94,22 @@ class CreateAdminUser extends Command
         return 0;
     }
 
-    private function validate(array $data, array $rules)
+    private function validate(array $data, array $rules): bool
     {
         $validator = Validator::make($data, $rules);
         $validator->errors()->all();
 
         if ($validator->fails()) {
-            $this->error('Admin User not created. See error messages below:');
+            $this->error('User not created. See error messages below:');
 
             foreach ($validator->errors()->all() as $error) {
                 $this->warn($error);
             }
 
-            return 1;
+            return false;
         }
+
+        return true;
     }
 
     private function createUser($data)

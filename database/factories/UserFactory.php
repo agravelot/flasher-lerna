@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 use Carbon\Carbon;
 use Faker\Generator as Faker;
 
@@ -20,9 +27,21 @@ $factory->define(App\Models\User::class, function (Faker $faker) {
         'email' => $faker->unique()->email,
         'password' => Hash::make('secret'),
         'role' => 'user',
-        'created_at' => Carbon::now(),
-        'updated_at' => Carbon::now(),
         'email_verified_at' => Carbon::now(),
         'remember_token' => str_random(10),
+        'created_at' => $faker->dateTime(),
+        'updated_at' => Carbon::now(),
+    ];
+});
+
+$factory->state(\App\Models\User::class, 'admin', function () {
+    return [
+        'role' => 'admin',
+    ];
+});
+
+$factory->state(\App\Models\User::class, 'user', function () {
+    return [
+        'role' => 'user',
     ];
 });

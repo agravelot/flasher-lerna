@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace App\Repositories;
 
 use App\Models\Cosplayer;
@@ -7,7 +14,6 @@ use App\Models\User;
 use App\Repositories\Contracts\UserRepository;
 use Illuminate\Support\Facades\Hash;
 use Prettus\Repository\Criteria\RequestCriteria;
-use Prettus\Repository\Eloquent\BaseRepository;
 
 /**
  * Class UserRepositoryEloquent.
@@ -33,26 +39,6 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     }
 
     /**
-     * Count results of repository.
-     *
-     * @param string $columns
-     *
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
-     *
-     * @return int
-     */
-    public function count($columns = '*')
-    {
-        $this->applyCriteria();
-        $this->applyScope();
-        $result = $this->model->count($columns);
-        $this->resetModel();
-        $this->resetScope();
-
-        return $result;
-    }
-
-    /**
      * Specify Model class name.
      *
      * @return string
@@ -64,6 +50,8 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
 
     /**
      * Boot up the repository, pushing criteria.
+     *
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function boot()
     {
@@ -71,9 +59,6 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     }
 
     /**
-     * @param User           $user
-     * @param Cosplayer|null $cosplayer
-     *
      * @throws \Exception
      */
     public function setCosplayer(User $user, ?Cosplayer $cosplayer)

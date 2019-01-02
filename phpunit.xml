@@ -37,5 +37,6 @@
         <env name="DB_DATABASE" value="picblog"/>
         <env name="DB_USERNAME" value="root"/>
         <env name="DB_PASSWORD" value=""/>
+        <env name="TELESCOPE_ENABLED" value="false"/>
     </php>
 </phpunit>

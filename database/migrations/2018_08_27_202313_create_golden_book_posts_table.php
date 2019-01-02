@@ -1,15 +1,20 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateGoldenBookPostsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -26,8 +31,6 @@ class CreateGoldenBookPostsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
