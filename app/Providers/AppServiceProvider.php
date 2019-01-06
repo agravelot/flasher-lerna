@@ -9,8 +9,6 @@
 
 namespace App\Providers;
 
-use App\Models\Album;
-use App\Observers\AlbumObserver;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,7 +21,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::defaultView('vendor.pagination.bulma');
         //Paginator::defaultSimpleView('pagination::view');
-        Album::observe(AlbumObserver::class);
     }
 
     /**
