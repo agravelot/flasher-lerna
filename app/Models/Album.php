@@ -19,6 +19,39 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 
+/**
+ * App\Models\Album.
+ *
+ * @property int                                                                          $id
+ * @property string                                                                       $slug
+ * @property string                                                                       $title
+ * @property string|null                                                                  $body
+ * @property string|null                                                                  $published_at
+ * @property string|null                                                                  $password
+ * @property int                                                                          $user_id
+ * @property \Illuminate\Support\Carbon|null                                              $created_at
+ * @property \Illuminate\Support\Carbon|null                                              $updated_at
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Category[]              $categories
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[]               $comments
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Cosplayer[]             $cosplayers
+ * @property \Illuminate\Database\Eloquent\Collection|\Spatie\MediaLibrary\Models\Media[] $media
+ * @property \App\Models\User                                                             $user
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album findSimilarSlugs($attribute, $config, $slug)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereBody($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album wherePublishedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Album extends Model implements HasMedia
 {
     use Sluggable, SluggableScopeHelpers, HasMediaTrait;

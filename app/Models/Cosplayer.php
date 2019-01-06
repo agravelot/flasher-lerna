@@ -17,6 +17,36 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 
+/**
+ * App\Models\Cosplayer.
+ *
+ * @property int                                                                          $id
+ * @property string                                                                       $name
+ * @property string                                                                       $slug
+ * @property string|null                                                                  $description
+ * @property string|null                                                                  $picture
+ * @property int|null                                                                     $user_id
+ * @property \Illuminate\Support\Carbon|null                                              $created_at
+ * @property \Illuminate\Support\Carbon|null                                              $updated_at
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Album[]                 $albums
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Category[]              $categories
+ * @property \Illuminate\Database\Eloquent\Collection|\Spatie\MediaLibrary\Models\Media[] $media
+ * @property \App\Models\User|null                                                        $user
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer findSimilarSlugs($attribute, $config, $slug)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer wherePicture($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Cosplayer extends Model implements HasMedia
 {
     use Sluggable, SluggableScopeHelpers, HasMediaTrait;
