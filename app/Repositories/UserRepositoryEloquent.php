@@ -13,7 +13,6 @@ use App\Models\Cosplayer;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepository;
 use Illuminate\Support\Facades\Hash;
-use Prettus\Repository\Criteria\RequestCriteria;
 
 /**
  * Class UserRepositoryEloquent.
@@ -46,16 +45,6 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     public function model()
     {
         return User::class;
-    }
-
-    /**
-     * Boot up the repository, pushing criteria.
-     *
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
-     */
-    public function boot()
-    {
-        $this->pushCriteria(app(RequestCriteria::class));
     }
 
     /**
