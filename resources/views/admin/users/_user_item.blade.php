@@ -1,9 +1,4 @@
 <tr>
-    <td width="5%">
-        <span class="icon is-small">
-            <i class="fas fa-user"></i>
-        </span>
-    </td>
     <td>
         <a href="{{ route('admin.users.show', ['user' => $user]) }}">{{ $user->name }}</a>
     </td>

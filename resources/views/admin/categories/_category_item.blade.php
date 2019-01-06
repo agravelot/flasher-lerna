@@ -1,9 +1,4 @@
 <tr>
-    <td width="2%">
-        <span class="icon">
-            <i class="fas fa-tags"></i>
-        </span>
-    </td>
     <td>
         <a href="{{ route('admin.categories.show', ['contact' => $category]) }}">{{ $category->name }}</a>
     </td>
