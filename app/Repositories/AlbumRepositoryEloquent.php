@@ -12,7 +12,6 @@ namespace App\Repositories;
 use App\Criteria\PublicAlbumsCriteria;
 use App\Models\Album;
 use App\Repositories\Contracts\AlbumRepository;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * Class AlbumRepositoryEloquent.
@@ -24,13 +23,6 @@ class AlbumRepositoryEloquent extends BaseRepository implements AlbumRepository
         return parent::with(['media', 'categories'])
             ->orderBy('created_at', 'desc')
             ->paginate();
-    }
-
-    public function create(array $attributes)
-    {
-        $attributes['user_id'] = Auth::user()->id;
-
-        return parent::create($attributes);
     }
 
     /**

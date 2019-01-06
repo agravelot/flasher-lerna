@@ -11,13 +11,22 @@ namespace Tests\Feature\Front\Category;
 
 use App\Models\Album;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class ShowCategoryTest extends TestCase
 {
     use DatabaseMigrations;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        Auth::setUser(factory(User::class)->create());
+    }
 
     public function test_guest_can_view_a_category()
     {
@@ -40,7 +49,7 @@ class ShowCategoryTest extends TestCase
     {
         /** @var Category $category */
         $category = factory(Category::class)->create();
-        $albums = factory(Album::class, 2)->states('published', 'passwordLess', 'withUser')->create();
+        $albums = factory(Album::class, 2)->states('published', 'passwordLess')->create();
         $category->albums()->attach($albums);
 
         $response = $this->showCategory($category);
@@ -64,7 +73,7 @@ class ShowCategoryTest extends TestCase
     {
         /** @var Category $category */
         $category = factory(Category::class)->create();
-        $album = factory(Album::class)->states('unpublished', 'passwordLess', 'withUser')->create();
+        $album = factory(Album::class)->states('unpublished', 'passwordLess')->create();
         $category->albums()->attach($album);
 
         $response = $this->showCategory($category);

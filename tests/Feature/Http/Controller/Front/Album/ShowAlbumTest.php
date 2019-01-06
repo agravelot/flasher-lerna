@@ -11,17 +11,26 @@ namespace Tests\Feature;
 
 use App\Models\Album;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class ShowAlbumTest extends TestCase
 {
     use DatabaseMigrations;
 
+    protected function setUp()
+    {
+        parent::setUp();
+
+        Auth::setUser(factory(User::class)->create());
+    }
+
     public function test_guest_can_view_a_published_album()
     {
-        $album = factory(Album::class)->states(['published', 'passwordLess', 'withUser'])->create([
+        $album = factory(Album::class)->states(['published', 'passwordLess'])->create([
             'title' => 'Test title',
             'body' => 'Some test body, this is a good day!',
         ]);
@@ -39,7 +48,7 @@ class ShowAlbumTest extends TestCase
             'name' => 'Category name',
         ]);
 
-        $album = factory(Album::class)->states(['published', 'passwordLess', 'withUser'])->create([
+        $album = factory(Album::class)->states(['published', 'passwordLess'])->create([
             'title' => 'Test title',
             'body' => 'Some test body, this is a good day!',
         ]);
@@ -63,7 +72,7 @@ class ShowAlbumTest extends TestCase
             'name' => 'Category name two',
         ]);
 
-        $album = factory(Album::class)->states(['published', 'passwordLess', 'withUser'])->create([
+        $album = factory(Album::class)->states(['published', 'passwordLess'])->create([
             'title' => 'Test title',
             'body' => 'Some test body, this is a good day!',
         ]);
@@ -81,7 +90,7 @@ class ShowAlbumTest extends TestCase
 
     public function test_guest_cannot_view_unpublished_album_listing()
     {
-        $album = factory(Album::class)->states(['unpublished', 'passwordLess', 'withUser'])->create();
+        $album = factory(Album::class)->states(['unpublished', 'passwordLess'])->create();
 
         $response = $this->showAlbum($album);
 

@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace Tests\Feature\Http\Controller\Front\Category;
 
 use App\Models\Category;
@@ -11,7 +18,6 @@ use Tests\TestCase;
 
 class EditCategoryTest extends TestCase
 {
-
     use DatabaseMigrations;
 
     public function test_admin_can_edit_a_category()
@@ -33,5 +39,4 @@ class EditCategoryTest extends TestCase
     {
         return $this->get('/admin/categories/' . $category->slug . '/edit');
     }
-
 }

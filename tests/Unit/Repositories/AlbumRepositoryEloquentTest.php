@@ -11,10 +11,12 @@ namespace Tests\Unit\Repositories;
 
 use App\Criteria\PublicAlbumsCriteria;
 use App\Models\Album;
+use App\Models\User;
 use App\Repositories\AlbumRepositoryEloquent;
 use App\Repositories\Contracts\AlbumRepository;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class AlbumRepositoryEloquentTest extends TestCase
@@ -30,12 +32,14 @@ class AlbumRepositoryEloquentTest extends TestCase
     {
         parent::setUp();
 
+        Auth::setUser(factory(User::class)->create());
+
         $this->albumRepository = new AlbumRepositoryEloquent(App::getInstance());
     }
 
     public function test_album_with_a_published_at_date_are_published()
     {
-        $publishedAlbums = factory(Album::class, 2)->states(['published', 'withUser'])->create();
+        $publishedAlbums = factory(Album::class, 2)->states(['published'])->create();
 
         $view = $this->albumRepository->all();
 
@@ -45,7 +49,7 @@ class AlbumRepositoryEloquentTest extends TestCase
 
     public function test_album_with_password_are_unpublished()
     {
-        $publishedAlbums = factory(Album::class, 2)->states(['unpublished', 'withUser'])->create();
+        $publishedAlbums = factory(Album::class, 2)->states(['unpublished'])->create();
 
         $view = $this->albumRepository->all();
 
@@ -55,7 +59,7 @@ class AlbumRepositoryEloquentTest extends TestCase
 
     public function test_album_with_a_published_at_date_and_password_are_unpublished()
     {
-        $publishedAlbums = factory(Album::class, 2)->states(['published', 'password', 'withUser'])->create();
+        $publishedAlbums = factory(Album::class, 2)->states(['published', 'password'])->create();
 
         $view = $this->albumRepository->all();
 
@@ -65,7 +69,7 @@ class AlbumRepositoryEloquentTest extends TestCase
 
     public function test_count_four_published_albums_should_be_four()
     {
-        factory(Album::class, 4)->states(['published', 'passwordLess', 'withUser'])->create();
+        factory(Album::class, 4)->states(['published', 'passwordLess'])->create();
 
         $count = $this->albumRepository->count();
 
@@ -74,7 +78,7 @@ class AlbumRepositoryEloquentTest extends TestCase
 
     public function test_count_four_unpublished_albums_should_be_zero()
     {
-        factory(Album::class, 4)->states(['unpublished', 'passwordLess', 'withUser'])->create();
+        factory(Album::class, 4)->states(['unpublished', 'passwordLess'])->create();
 
         $count = $this->albumRepository->count();
 
@@ -84,7 +88,7 @@ class AlbumRepositoryEloquentTest extends TestCase
     public function test_album_with_a_published_at_date_are_published_without_public_criteria()
     {
         $this->withoutPublicCriteria();
-        $publishedAlbums = factory(Album::class, 2)->states(['published', 'withUser'])->create();
+        $publishedAlbums = factory(Album::class, 2)->states(['published'])->create();
 
         $view = $this->albumRepository->all();
 
@@ -100,7 +104,7 @@ class AlbumRepositoryEloquentTest extends TestCase
     public function test_album_with_password_are_unpublished_without_public_criteria()
     {
         $this->withoutPublicCriteria();
-        $publishedAlbums = factory(Album::class, 2)->states(['unpublished', 'withUser'])->create();
+        $publishedAlbums = factory(Album::class, 2)->states(['unpublished'])->create();
 
         $view = $this->albumRepository->all();
 
@@ -111,7 +115,7 @@ class AlbumRepositoryEloquentTest extends TestCase
     public function test_album_with_a_published_at_date_and_password_are_unpublished_without_public_criteria()
     {
         $this->withoutPublicCriteria();
-        $publishedAlbums = factory(Album::class, 2)->states(['published', 'password', 'withUser'])->create();
+        $publishedAlbums = factory(Album::class, 2)->states(['published', 'password'])->create();
 
         $view = $this->albumRepository->all();
 
@@ -122,7 +126,7 @@ class AlbumRepositoryEloquentTest extends TestCase
     public function test_count_four_published_albums_should_be_four_without_public_criteria()
     {
         $this->withoutPublicCriteria();
-        factory(Album::class, 4)->states(['published', 'passwordLess', 'withUser'])->create();
+        factory(Album::class, 4)->states(['published', 'passwordLess'])->create();
 
         $count = $this->albumRepository->count();
 
@@ -132,7 +136,7 @@ class AlbumRepositoryEloquentTest extends TestCase
     public function test_count_four_unpublished_albums_should_be_zero_without_public_criteria()
     {
         $this->withoutPublicCriteria();
-        factory(Album::class, 4)->states(['unpublished', 'passwordLess', 'withUser'])->create();
+        factory(Album::class, 4)->states(['unpublished', 'passwordLess'])->create();
 
         $count = $this->albumRepository->count();
 

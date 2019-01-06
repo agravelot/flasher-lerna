@@ -10,13 +10,22 @@
 namespace Tests\Feature\Front\Album;
 
 use App\Models\Album;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class IndexAlbumTest extends TestCase
 {
     use DatabaseMigrations;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        Auth::setUser(factory(User::class)->create());
+    }
 
     public function test_guest_view_nothing_to_show()
     {
@@ -33,7 +42,7 @@ class IndexAlbumTest extends TestCase
 
     public function test_guest_can_view_published_albums()
     {
-        $albums = factory(Album::class, 2)->states(['published', 'passwordLess', 'withUser'])->create();
+        $albums = factory(Album::class, 2)->states(['published', 'passwordLess'])->create();
 
         $response = $this->showAlbums();
 
@@ -46,7 +55,7 @@ class IndexAlbumTest extends TestCase
 
     public function test_guest_can_not_view_unpublished_albums()
     {
-        $albums = factory(Album::class, 2)->states(['unpublished', 'passwordLess', 'withUser'])->create();
+        $albums = factory(Album::class, 2)->states(['unpublished', 'passwordLess'])->create();
 
         $response = $this->showAlbums();
 
@@ -59,7 +68,7 @@ class IndexAlbumTest extends TestCase
 
     public function test_guest_can_not_view_albums_with_password()
     {
-        $albums = factory(Album::class, 2)->states(['published', 'password', 'withUser'])->create();
+        $albums = factory(Album::class, 2)->states(['published', 'password'])->create();
 
         $response = $this->showAlbums();
 
@@ -72,7 +81,7 @@ class IndexAlbumTest extends TestCase
 
     public function test_guest_can_not_view_unpublished_albums_with_password()
     {
-        $albums = factory(Album::class, 2)->states(['unpublished', 'password', 'withUser'])->create();
+        $albums = factory(Album::class, 2)->states(['unpublished', 'password'])->create();
 
         $response = $this->showAlbums();
 
