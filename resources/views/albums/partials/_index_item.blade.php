@@ -1,4 +1,4 @@
-<div class="column is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-third-fullhd">
+<div class="column is-half-tablet is-one-third-widescreen">
     <a href="{{ route('albums.show', ['album' => $album]) }}">
         <div class="card large">
             <div class="card-image">
