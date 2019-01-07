@@ -1,10 +1,4 @@
 <tr>
-    <td width="2%">
-        <span class="icon is-small">
-            <i class="far fa-images"></i>
-        </span>
-    </td>
-
     <td>
         <p>{{ $goldenBookPost->body }}</p>
     </td>

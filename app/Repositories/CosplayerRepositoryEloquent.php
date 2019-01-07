@@ -13,7 +13,6 @@ use App\Models\Album;
 use App\Models\Cosplayer;
 use App\Repositories\Contracts\CosplayerRepository;
 use Illuminate\Support\Collection;
-use Prettus\Repository\Criteria\RequestCriteria;
 
 /**
  * Class CosplayerRepositoryEloquent.
@@ -68,15 +67,5 @@ class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRep
     public function model()
     {
         return Cosplayer::class;
-    }
-
-    /**
-     * Boot up the repository, pushing criteria.
-     *
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
-     */
-    public function boot()
-    {
-        $this->pushCriteria(app(RequestCriteria::class));
     }
 }

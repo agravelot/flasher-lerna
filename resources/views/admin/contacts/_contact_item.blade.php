@@ -1,8 +1,5 @@
 <tr>
     <td width="5%">
-        <span class="icon">
-               <i class="far fa-address-book"></i>
-        </span>
         {{ $contact->name }}
         <a href="{{ 'mailto:' . $contact->email }}">{{ $contact->email }}</a>
     </td>
