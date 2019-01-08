@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        @include('layouts.partials._messages')
         <div class="columns is-marginless is-centered">
             <div class="column is-7">
                 <nav class="card">
