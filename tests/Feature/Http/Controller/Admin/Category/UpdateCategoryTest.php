@@ -27,51 +27,73 @@ class UpdateCategoryTest extends TestCase
     public function test_admin_can_update_a_category()
     {
         $this->actingAsAdmin();
-
-        /* @var Category $category */
         $category = factory(Category::class)->create();
 
-        $response = $this->updateCategory($category->slug, self::CATEGORY_DATA);
+        $response = $this->updateCategory(self::CATEGORY_DATA, $category);
 
         $this->assertSame(1, Category::count());
-        $response->assertStatus(302);
-        $response->assertRedirect('/admin/categories/' . $category->slug);
+        $response->assertStatus(302)
+            ->assertRedirect('/admin/categories/' . $category->slug);
         $this->followRedirects($response)
             ->assertStatus(200)
             ->assertSee(self::CATEGORY_DATA['name'])
-            ->assertSee(self::CATEGORY_DATA['description'])
-            ->assertDontSee($category->name)
-            ->assertDontSee($category->description);
+            ->assertSee(self::CATEGORY_DATA['description']);
     }
 
-    private function updateCategory(string $slug, array $data): TestResponse
+    private function updateCategory(array $data, Category $category): TestResponse
     {
-        return $this->patch('/admin/categories/' . $slug, $data);
+        session()->setPreviousUrl('/admin/categories/' . $category->slug . '/edit');
+
+        return $this->patch('/admin/categories/' . $category->slug, $data);
+    }
+
+    public function test_admin_can_update_a_categories_with_the_same_name()
+    {
+        $this->actingAsAdmin();
+        $category = factory(Category::class)->create();
+
+        $response = $this->updateCategory([
+            'name' => $category->name,
+            'description' => 'updated description',
+        ], $category);
+
+        $this->assertSame(1, Category::count());
+        $response->assertStatus(302)
+            ->assertRedirect('/admin/categories/' . $category->slug);
+        $this->followRedirects($response)
+            ->assertStatus(200)
+            ->assertSee($category->name)
+            ->assertSee('updated description')
+            ->assertSee('Category successfully updated')
+            ->assertDontSee('The name has already been taken.');
     }
 
     public function test_user_can_not_update_a_category()
     {
         $this->actingAsUser();
-
-        /* @var Category $category */
         $category = factory(Category::class)->create();
 
-        $response = $this->updateCategory($category->slug, self::CATEGORY_DATA);
+        $response = $this->updateCategory(self::CATEGORY_DATA, $category);
 
         $this->assertSame(1, Category::count());
+        $this->assertSame($category->id, $category->fresh()->id);
+        $this->assertSame($category->title, $category->fresh()->title);
+        $this->assertSame($category->description, $category->fresh()->description);
         $response->assertStatus(403);
     }
 
     public function test_guest_can_not_update_a_category_and_is_redirected_to_login()
     {
-        /* @var Category $category */
         $category = factory(Category::class)->create();
 
-        $response = $this->updateCategory($category->slug, self::CATEGORY_DATA);
+        $response = $this->updateCategory(self::CATEGORY_DATA, $category);
 
         $this->assertSame(1, Category::count());
-        $response->assertStatus(302);
-        $response->assertRedirect('/login');
+        $this->assertSame($category->id, $category->fresh()->id);
+        $this->assertSame($category->title, $category->fresh()->title);
+        $this->assertSame($category->description, $category->fresh()->description);
+        $response->assertStatus(302)
+            ->assertRedirect('/login');
     }
 
     protected function setUp()
