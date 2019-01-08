@@ -149,6 +149,9 @@ class Album extends Model implements HasMedia
             });
     }
 
+    /**
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
+     */
     public function registerMediaConversions(Media $media = null)
     {
         $this->addMediaConversion('thumb')

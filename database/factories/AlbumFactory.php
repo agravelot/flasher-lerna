@@ -15,6 +15,7 @@ $withMedias = false;
 /* @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\Models\Album::class, function (Faker $faker) use (&$withMedias) {
     $withMedias = false;
+
     return [
         'title' => $faker->sentence,
         'body' => $faker->paragraph($faker->numberBetween(42, 420)),
@@ -32,6 +33,7 @@ $factory->afterMaking(Album::class, function (Album $album, Faker $faker) use (&
 
 $factory->state(Album::class, 'withMedias', function () use (&$withMedias) {
     $withMedias = true;
+
     return [];
 });
 
