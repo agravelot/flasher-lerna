@@ -9,6 +9,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Category;
+
 class CategoryRequest extends Request
 {
     /**
@@ -18,7 +20,10 @@ class CategoryRequest extends Request
      */
     public function rules()
     {
-        $id = $this->route('category');
+        $id = '';
+        if ($this->method() === 'PATCH') {
+            $id = Category::findBySlugOrFail($this->category)->id;
+        }
 
         return [
             'name' => 'string|required|min:2|max:255|unique:categories,name,' . $id,
