@@ -19,10 +19,10 @@ class AlbumsTableSeeder extends Seeder
     {
         User::all()->each(function (User $user) {
             $user->albums()->saveMany(
-                collect()->concat(factory(App\Models\Album::class, 2)->states(['password', 'published'])->make())
-                    ->concat(factory(App\Models\Album::class, 2)->states(['password', 'unpublished'])->make())
-                    ->concat(factory(App\Models\Album::class, 2)->states(['passwordLess', 'unpublished'])->make())
-                    ->concat(factory(App\Models\Album::class, 2)->states(['passwordLess', 'published'])->make())
+                collect()->concat(factory(App\Models\Album::class, 2)->states(['password', 'published', 'withMedias'])->make())
+                    ->concat(factory(App\Models\Album::class, 2)->states(['password', 'unpublished', 'withMedias'])->make())
+                    ->concat(factory(App\Models\Album::class, 2)->states(['passwordLess', 'unpublished', 'withMedias'])->make())
+                    ->concat(factory(App\Models\Album::class, 2)->states(['passwordLess', 'published', 'withMedias'])->make())
             );
         });
     }
