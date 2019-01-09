@@ -32,14 +32,19 @@ class AlbumRequest extends Request
             'categories.*' => 'integer|min:1',
             'cosplayers' => 'array',
             'cosplayers.*' => 'integer|min:1',
-            'pictures' => 'required|array',
-            'pictures.*' => 'file|image|mimetypes:image/*|max:20000',
 
             //TODO Fix this
             Rule::exists('users')->where(function ($query) {
                 $query->where('user_id', 1);
             }),
         ];
+
+        if ($this->method() === 'POST') {
+            array_merge($rules, [
+                'pictures' => 'required|array',
+                'pictures.*' => 'file|image|mimetypes:image/*|max:20000',
+            ]);
+        }
 
         return $rules;
     }
