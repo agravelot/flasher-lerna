@@ -107,7 +107,8 @@ class AdminCategoryController extends Controller
         $this->authorize('create', Category::class);
         $category = $this->repository->create($request->validated());
 
-        return redirect(route('admin.categories.show', ['category' => $category]));
+        return redirect(route('admin.categories.index'))
+            ->withSuccess('Category successfully added');
     }
 
     /**
@@ -124,7 +125,7 @@ class AdminCategoryController extends Controller
         $this->authorize('update', $category);
         $category = $this->repository->update($request->validated(), $category->id);
 
-        return redirect(route('admin.categories.show', ['category' => $category]))
+        return redirect(route('admin.categories.index'))
             ->withSuccess('Category successfully updated');
     }
 
@@ -142,6 +143,7 @@ class AdminCategoryController extends Controller
         $this->authorize('delete', $category);
         $this->repository->delete($category->id);
 
-        return back()->withSuccess('Category successfully deleted');
+        return redirect(route('admin.categories.index'))
+            ->withSuccess('Category successfully deleted');
     }
 }

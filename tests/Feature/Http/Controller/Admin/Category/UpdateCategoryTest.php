@@ -33,11 +33,11 @@ class UpdateCategoryTest extends TestCase
 
         $this->assertSame(1, Category::count());
         $response->assertStatus(302)
-            ->assertRedirect('/admin/categories/' . $category->slug);
+            ->assertRedirect('/admin/categories');
         $this->followRedirects($response)
             ->assertStatus(200)
             ->assertSee(self::CATEGORY_DATA['name'])
-            ->assertSee(self::CATEGORY_DATA['description']);
+            ->assertDontSee(self::CATEGORY_DATA['description']);
     }
 
     private function updateCategory(array $data, Category $category): TestResponse
@@ -59,12 +59,12 @@ class UpdateCategoryTest extends TestCase
 
         $this->assertSame(1, Category::count());
         $response->assertStatus(302)
-            ->assertRedirect('/admin/categories/' . $category->slug);
+            ->assertRedirect('/admin/categories');
         $this->followRedirects($response)
             ->assertStatus(200)
             ->assertSee($category->name)
-            ->assertSee('updated description')
             ->assertSee('Category successfully updated')
+            ->assertDontSee('updated description')
             ->assertDontSee('The name has already been taken.');
     }
 

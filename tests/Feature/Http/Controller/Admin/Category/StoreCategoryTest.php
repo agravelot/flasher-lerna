@@ -13,7 +13,6 @@ use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Category;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class StoreCategoryTest extends TestCase
@@ -33,11 +32,12 @@ class StoreCategoryTest extends TestCase
 
         $this->assertSame(1, Category::count());
         $response->assertStatus(302)
-            ->assertRedirect('/admin/categories/' . Str::slug(self::CATEGORY_DATA['name']));
+            ->assertRedirect('/admin/categories');
         $this->followRedirects($response)
             ->assertStatus(200)
             ->assertSee(self::CATEGORY_DATA['name'])
-            ->assertSee(self::CATEGORY_DATA['description']);
+            ->assertSee('Category successfully added')
+            ->assertDontSee(self::CATEGORY_DATA['description']);
     }
 
     private function storeCategory(array $data): TestResponse
@@ -51,9 +51,9 @@ class StoreCategoryTest extends TestCase
     {
         $this->actingAsAdmin();
 
-        factory(Category::class)->create(self::CATEGORY_DATA);
+        $category = factory(Category::class)->create();
 
-        $response = $this->storeCategory(self::CATEGORY_DATA);
+        $response = $this->storeCategory(['name' => $category->name]);
 
         $this->assertSame(1, Category::count());
         $response->assertStatus(302)
