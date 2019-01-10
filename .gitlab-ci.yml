@@ -15,8 +15,8 @@ variables:
   CONTAINER_TEST_IMAGE: registry.gitlab.com/nevax/picblog:$CI_BUILD_REF_NAME
   CONTAINER_RELEASE_IMAGE: registry.gitlab.com/nevax/picblog:latest
   CONTAINER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH
-  DOCKER_HOST: tcp://docker:2375
-  DOCKER_DRIVER: overlay2
+#  DOCKER_HOST: tcp://docker:2375
+#  DOCKER_DRIVER: overlay2
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -125,6 +125,22 @@ security_audit:
   - docker-compose exec -T php php composer.phar require pheromone/phpcs-security-audit
   - docker-compose exec -T php sh vendor/pheromone/phpcs-security-audit/symlink.sh
   - docker-compose exec -T vendor/bin/phpcs --standard=./vendor/pheromone/phpcs-security-audit/example_base_ruleset.xml ./vendor/pheromone/phpcs-security-audit/tests.php
+  allow_failure: true
+
+laravel_self_diagnosis:
+  stage: review
+  script:
+    - echo "LARAVEL SELF DIAGNOSIS AUDIT"
+    - docker-compose pull
+    - chmod +x docker/*.sh
+    - bash -c 'cd docker/ && ./generate_env.sh staging'
+    - docker-compose up -d
+    - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    - docker-compose exec -T php php composer-setup.php
+    - docker-compose exec -T php php -r "unlink('composer-setup.php');"
+    - docker-compose exec -T php php composer.phar require beyondcode/laravel-self-diagnosis
+    - docker-compose exec -T php php composer.phar install --no-dev
+    - docker-compose exec -T php php artisan self-diagnosis --env=prod
   allow_failure: true
 
 deploy_staging:
