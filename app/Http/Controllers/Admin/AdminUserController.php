@@ -31,7 +31,6 @@ class AdminUserController extends Controller
      */
     public function __construct(UserRepository $userRepository, CosplayerRepository $cosplayerRepository)
     {
-        $this->middleware(['auth', 'verified']);
         $this->userRepository = $userRepository;
         $this->cosplayerRepository = $cosplayerRepository;
     }

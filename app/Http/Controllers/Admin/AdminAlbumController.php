@@ -42,7 +42,6 @@ class AdminAlbumController extends Controller
                                 CategoryRepository $categoryRepository,
                                 CosplayerRepository $cosplayerRepository)
     {
-        $this->middleware(['auth', 'verified']);
         $this->albumRepository = $albumRepository;
         $this->categoryRepository = $categoryRepository;
         $this->cosplayerRepository = $cosplayerRepository;

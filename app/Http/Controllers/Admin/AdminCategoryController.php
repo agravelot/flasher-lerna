@@ -27,7 +27,6 @@ class AdminCategoryController extends Controller
      */
     public function __construct(CategoryRepository $repository)
     {
-        $this->middleware(['auth', 'verified']);
         $this->repository = $repository;
     }
 

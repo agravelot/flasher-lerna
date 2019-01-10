@@ -27,7 +27,6 @@ class AdminCosplayerController extends Controller
      */
     public function __construct(CosplayerRepository $repository)
     {
-        $this->middleware(['auth', 'verified']);
         $this->repository = $repository;
     }
 
