@@ -12,7 +12,7 @@ use UniSharp\LaravelFilemanager\Lfm;
 Auth::routes(['verify' => true]);
 Route::impersonate();
 
-Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth', ['auth', 'verified']]], function () {
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth', 'verified']], function () {
     Lfm::routes();
 });
 
