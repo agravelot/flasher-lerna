@@ -10,14 +10,14 @@
 namespace Tests\Feature\Console\Commands;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class CreateAdminUserTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function test_create_user_without_argument()
     {
@@ -42,7 +42,7 @@ class CreateAdminUserTest extends TestCase
             ->assertExitCode(0);
     }
 
-    public function test_create_user_with_malformed_email()
+    public function test_can_not_create_user_with_malformed_email()
     {
         $this->artisan('user:create', [
             'role' => 'admin',
@@ -55,7 +55,7 @@ class CreateAdminUserTest extends TestCase
             ->assertExitCode(1);
     }
 
-    public function test_create_user_with_malformed_username()
+    public function test_can_not_create_user_with_malformed_username()
     {
         $this->artisan('user:create', [
             'role' => 'admin',
@@ -78,7 +78,7 @@ class CreateAdminUserTest extends TestCase
         ]);
 
         $this->assertCount(1, User::all());
-        $user = User::find(1);
+        $user = User::all()->get(0);
         $this->assertSame('admin', $user->name);
         $this->assertSame('admin', $user->role);
         $this->assertSame('admin@picblog.com', $user->email);

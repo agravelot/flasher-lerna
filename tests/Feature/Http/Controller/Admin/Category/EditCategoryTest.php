@@ -10,13 +10,13 @@
 namespace Tests\Feature\Http\Controller\Front\Category;
 
 use App\Models\Category;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
 
 class EditCategoryTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function test_guest_can_not_view_edit_page_for_a_category_and_is_redirected_to_login()
     {

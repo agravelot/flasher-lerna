@@ -11,13 +11,13 @@ namespace Tests\Feature\Http\Controller\Front\Category;
 
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Category;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
 
 class DestroyCategoryTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function test_admin_can_destroy_a_category()
     {

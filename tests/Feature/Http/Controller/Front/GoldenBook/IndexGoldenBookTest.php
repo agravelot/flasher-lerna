@@ -10,13 +10,13 @@
 namespace Tests\Feature\Http\Controller\Front\GoldenBook;
 
 use App\Models\GoldenBookPost;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
 
 class IndexGoldenBookTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function test_guest_can_see_empty_golden_book_index()
     {

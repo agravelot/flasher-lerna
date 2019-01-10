@@ -11,13 +11,13 @@ namespace Tests\Feature\Front\Category;
 
 use App\Models\Album;
 use App\Models\Category;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
 
 class ShowCategoryTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function test_guest_can_view_a_category()
     {
@@ -34,6 +34,11 @@ class ShowCategoryTest extends TestCase
     private function showCategory(Category $category): TestResponse
     {
         return $this->get('/categories/' . $category->slug);
+    }
+
+    private function getDescriptionElement(string $description): string
+    {
+        return '<p class="has-text-justified">' . $description . '</p>';
     }
 
     public function test_guest_can_view_a_category_with_albums()
@@ -87,10 +92,5 @@ class ShowCategoryTest extends TestCase
         $response->assertSee($category->title);
         $response->assertDontSee($this->getDescriptionElement($category->description));
         $response->assertSee('Nothing to show');
-    }
-
-    private function getDescriptionElement(string $description): string
-    {
-        return '<p class="has-text-justified">' . $description . '</p>';
     }
 }

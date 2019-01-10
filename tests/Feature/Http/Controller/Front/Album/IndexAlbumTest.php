@@ -10,13 +10,13 @@
 namespace Tests\Feature\Front\Album;
 
 use App\Models\Album;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
 
 class IndexAlbumTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function test_guest_view_nothing_to_show()
     {

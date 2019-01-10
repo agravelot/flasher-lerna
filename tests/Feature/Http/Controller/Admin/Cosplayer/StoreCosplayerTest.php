@@ -11,13 +11,13 @@ namespace Tests\Feature\Http\Controller\Front\Cosplayer;
 
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Cosplayer;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
 
 class StoreCosplayerTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     const CATEGORY_DATA = [
         'name' => 'A cosplayer name',

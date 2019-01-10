@@ -11,13 +11,13 @@ namespace Tests\Feature;
 
 use App\Models\Album;
 use App\Models\Category;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
 
 class ShowAlbumTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function test_guest_can_view_a_published_album()
     {
