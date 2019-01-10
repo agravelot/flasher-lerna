@@ -48,7 +48,7 @@ class CosplayerRepositoryEloquent extends BaseRepository implements CosplayerRep
     {
         $this->applyCriteria();
         $this->applyScope();
-        $model = $this->model->whereSlug($slug)->first();
+        $model = $this->model->whereSlug($slug)->firstOrFail();
         $this->resetModel();
 
         return $this->parserResult($model);
