@@ -28,6 +28,7 @@ cache:
 before_script:
 - touch docker/db/.env docker/nginx/.env docker/php-fpm/.env
 - apk add --no-cache py-pip bash gettext
+- pip install --upgrade pip
 - echo "Installing Docker compose" && pip install docker-compose
 - echo "Docker compose version" && docker-compose version
 - echo "Docker compose validating" && docker-compose config
