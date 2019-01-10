@@ -80,7 +80,8 @@ class AdminUserController extends Controller
     {
         $this->authorize('create', User::class);
         $user = $this->userRepository->create($request->validated());
-        if ($request->has('cosplayer')) {
+
+        if ($request->has('cosplayer') && $request->validated()['cosplayer'] !== null) {
             $cosplayerId = $request->validated()['cosplayer'];
             $cosplayer = $this->cosplayerRepository->findNotLinkedToUser($cosplayerId);
             $this->userRepository->setCosplayer($user, $cosplayer);
@@ -139,7 +140,8 @@ class AdminUserController extends Controller
         $user = $this->userRepository->find($id);
         $this->authorize('update', $user);
         $user = $this->userRepository->update($request->validated(), $id);
-        if ($request->has('cosplayer')) {
+
+        if ($request->has('cosplayer') && $request->validated()['cosplayer'] !== null) {
             $cosplayer = null;
             $cosplayerId = $request->validated()['cosplayer'];
             if ($cosplayerId > 0) {
