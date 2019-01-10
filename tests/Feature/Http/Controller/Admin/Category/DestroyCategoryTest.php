@@ -33,6 +33,7 @@ class DestroyCategoryTest extends TestCase
         $response->assertRedirect('/admin/categories');
         $this->followRedirects($response)
             ->assertStatus(200)
+            ->assertSee('Category successfully deleted')
             ->assertDontSee($category->name)
             ->assertDontSee($category->description);
     }

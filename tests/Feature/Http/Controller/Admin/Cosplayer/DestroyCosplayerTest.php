@@ -33,6 +33,7 @@ class DestroyCosplayerTest extends TestCase
         $response->assertRedirect('/admin/cosplayers');
         $this->followRedirects($response)
             ->assertStatus(200)
+            ->assertSee('Cosplayer successfully deleted')
             ->assertDontSee($cosplayer->name)
             ->assertDontSee($cosplayer->description);
     }

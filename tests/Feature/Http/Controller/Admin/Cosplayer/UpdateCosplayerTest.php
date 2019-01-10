@@ -19,7 +19,7 @@ class UpdateCosplayerTest extends TestCase
 {
     use RefreshDatabase;
 
-    const CATEGORY_DATA = [
+    const COSPLAYER_DATA = [
         'name' => 'A cosplayer name',
         'description' => 'A random description',
     ];
@@ -29,15 +29,15 @@ class UpdateCosplayerTest extends TestCase
         $this->actingAsAdmin();
         $cosplayer = factory(Cosplayer::class)->create();
 
-        $response = $this->updateCosplayer(self::CATEGORY_DATA, $cosplayer);
+        $response = $this->updateCosplayer(self::COSPLAYER_DATA, $cosplayer);
 
         $this->assertSame(1, Cosplayer::count());
         $response->assertStatus(302)
             ->assertRedirect('/admin/cosplayers');
         $this->followRedirects($response)
             ->assertStatus(200)
-            ->assertSee(self::CATEGORY_DATA['name'])
-            ->assertDontSee(self::CATEGORY_DATA['description']);
+            ->assertSee(self::COSPLAYER_DATA['name'])
+            ->assertDontSee(self::COSPLAYER_DATA['description']);
     }
 
     private function updateCosplayer(array $data, Cosplayer $cosplayer): TestResponse
@@ -73,7 +73,7 @@ class UpdateCosplayerTest extends TestCase
         $this->actingAsUser();
         $cosplayer = factory(Cosplayer::class)->create();
 
-        $response = $this->updateCosplayer(self::CATEGORY_DATA, $cosplayer);
+        $response = $this->updateCosplayer(self::COSPLAYER_DATA, $cosplayer);
 
         $this->assertSame(1, Cosplayer::count());
         $this->assertSame($cosplayer->id, $cosplayer->fresh()->id);
@@ -86,7 +86,7 @@ class UpdateCosplayerTest extends TestCase
     {
         $cosplayer = factory(Cosplayer::class)->create();
 
-        $response = $this->updateCosplayer(self::CATEGORY_DATA, $cosplayer);
+        $response = $this->updateCosplayer(self::COSPLAYER_DATA, $cosplayer);
 
         $this->assertSame(1, Cosplayer::count());
         $this->assertSame($cosplayer->id, $cosplayer->fresh()->id);
