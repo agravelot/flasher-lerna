@@ -13,7 +13,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Category::class, function (Faker $faker) {
     return [
-        'name' => $faker->unique()->word,
+        'name' => $faker->unique()->sentence,
         'description' => $faker->paragraph,
         'created_at' => $faker->dateTime(),
         'updated_at' => Carbon::now(),

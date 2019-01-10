@@ -7,40 +7,61 @@
  * Written by Antoine Gravelot <agravelot@orma.fr>
  */
 
+use App\Models\Album;
 use Faker\Generator as Faker;
 
-$factory->define(App\Models\Album::class, function (Faker $faker) {
+$withMedias = false;
+
+/* @var \Illuminate\Database\Eloquent\Factory $factory */
+$factory->define(App\Models\Album::class, function (Faker $faker) use (&$withMedias) {
+    $withMedias = false;
+
     return [
         'title' => $faker->sentence,
         'body' => $faker->paragraph($faker->numberBetween(42, 420)),
     ];
 });
 
-$factory->state(\App\Models\Album::class, 'published', function () {
+$factory->afterMaking(Album::class, function (Album $album, Faker $faker) use (&$withMedias) {
+    if ($withMedias) {
+        foreach (range(1, 5) as $i) {
+            $album->addMediaFromUrl($faker->imageUrl())
+                ->toMediaCollection('pictures');
+        }
+    }
+});
+
+$factory->state(Album::class, 'withMedias', function () use (&$withMedias) {
+    $withMedias = true;
+
+    return [];
+});
+
+$factory->state(Album::class, 'published', function () {
     return [
         'published_at' => true,
     ];
 });
 
-$factory->state(\App\Models\Album::class, 'unpublished', function () {
+$factory->state(Album::class, 'unpublished', function () {
     return [
         'published_at' => null,
     ];
 });
 
-$factory->state(\App\Models\Album::class, 'password', function () {
+$factory->state(Album::class, 'password', function () {
     return [
         'password' => 'secret',
     ];
 });
 
-$factory->state(\App\Models\Album::class, 'passwordLess', function () {
+$factory->state(Album::class, 'passwordLess', function () {
     return [
         'password' => null,
     ];
 });
 
-$factory->state(\App\Models\Album::class, 'withUser', function () {
+$factory->state(Album::class, 'withUser', function () {
     return [
         'user_id' => factory(\App\Models\User::class)->create()->id,
     ];

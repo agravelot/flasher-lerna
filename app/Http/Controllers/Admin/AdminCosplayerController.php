@@ -27,7 +27,6 @@ class AdminCosplayerController extends Controller
      */
     public function __construct(CosplayerRepository $repository)
     {
-        $this->middleware(['auth', 'verified']);
         $this->repository = $repository;
     }
 
@@ -65,7 +64,6 @@ class AdminCosplayerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      *
@@ -88,12 +86,12 @@ class AdminCosplayerController extends Controller
                 ->toMediaCollection('avatar');
         }
 
-        return redirect(route('admin.cosplayers.show', ['cosplayer' => $cosplayer]));
+        return redirect(route('admin.cosplayers.index'))
+            ->withSuccess('Cosplayer successfully added');
     }
 
     /**
      * Display the specified resource.
-     *
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
@@ -111,7 +109,6 @@ class AdminCosplayerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
@@ -128,21 +125,19 @@ class AdminCosplayerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param $id
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(CosplayerRequest $request, $id)
+    public function update(CosplayerRequest $request, string $slug)
     {
-        //TODO Update categories
-        $cosplayer = $this->repository->find($id);
-        $this->authorize('update', $cosplayer);
         $validated = $request->validated();
+        $cosplayer = $this->repository->findBySlug($slug);
+        $this->authorize('update', $cosplayer);
 
-        $cosplayer = $this->repository->update($validated, $id);
+        $cosplayer = $this->repository->update($validated, $cosplayer->id);
 
         $key = 'avatar';
         if (array_key_exists($key, $validated)) {
@@ -153,12 +148,12 @@ class AdminCosplayerController extends Controller
                 ->toMediaCollection('avatar');
         }
 
-        return redirect(route('admin.cosplayers.show', ['cosplayer' => $cosplayer]))->withSuccess('Cosplayers successfully updated');
+        return redirect(route('admin.cosplayers.index'))
+            ->withSuccess('Cosplayer successfully updated');
     }
 
     /**
      * Remove the specified resource from storage.
-     *
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Repository\Exceptions\RepositoryException
@@ -171,6 +166,7 @@ class AdminCosplayerController extends Controller
         $this->authorize('delete', $album);
         $this->repository->delete($album->id);
 
-        return back()->withSuccess('Cosplayer successfully deleted');
+        return redirect(route('admin.cosplayers.index'))
+            ->withSuccess('Cosplayer successfully deleted');
     }
 }

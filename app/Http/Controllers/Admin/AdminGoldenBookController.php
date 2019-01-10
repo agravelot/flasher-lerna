@@ -26,7 +26,6 @@ class AdminGoldenBookController extends Controller
      */
     public function __construct(GoldenBookRepository $repository)
     {
-        $this->middleware(['auth', 'verified']);
         $this->repository = $repository;
     }
 

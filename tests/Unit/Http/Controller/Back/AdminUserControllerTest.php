@@ -14,8 +14,7 @@ use App\Models\Cosplayer;
 use App\Models\User;
 use App\Repositories\Contracts\CosplayerRepository;
 use App\Repositories\Contracts\UserRepository;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Mockery;
@@ -23,7 +22,7 @@ use Tests\TestCase;
 
 class AdminUserControllerTest extends TestCase
 {
-    use DatabaseTransactions, DatabaseMigrations;
+    use RefreshDatabase;
 
     /**
      * @var AdminUserController

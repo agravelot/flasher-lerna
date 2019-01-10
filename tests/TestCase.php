@@ -10,6 +10,7 @@
 namespace Tests;
 
 use App\Exceptions\Handler;
+use App\Models\User;
 use Closure;
 use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
@@ -28,6 +29,18 @@ abstract class TestCase extends BaseTestCase
     {
         parent::__construct($name, $data, $dataName);
         $this->hotfixSqlite();
+    }
+
+    protected function actingAsAdmin()
+    {
+        $admin = factory(User::class)->state('admin')->create();
+        $this->actingAs($admin);
+    }
+
+    protected function actingAsUser()
+    {
+        $admin = factory(User::class)->state('user')->create();
+        $this->actingAs($admin);
     }
 
     public function hotfixSqlite()

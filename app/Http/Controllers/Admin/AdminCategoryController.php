@@ -27,7 +27,6 @@ class AdminCategoryController extends Controller
      */
     public function __construct(CategoryRepository $repository)
     {
-        $this->middleware(['auth', 'verified']);
         $this->repository = $repository;
     }
 
@@ -53,7 +52,6 @@ class AdminCategoryController extends Controller
      *
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
      * @return \Illuminate\Http\Response
      */
@@ -70,7 +68,6 @@ class AdminCategoryController extends Controller
      *
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
      * @return \Illuminate\Http\Response
      */
@@ -99,7 +96,6 @@ class AdminCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      *
@@ -110,15 +106,14 @@ class AdminCategoryController extends Controller
         $this->authorize('create', Category::class);
         $category = $this->repository->create($request->validated());
 
-        return redirect(route('admin.categories.show', ['category' => $category]));
+        return redirect(route('admin.categories.index'))
+            ->withSuccess('Category successfully added');
     }
 
     /**
      * Update the specified resource in storage.
      *
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      *
      * @return \Illuminate\Http\Response
@@ -129,7 +124,8 @@ class AdminCategoryController extends Controller
         $this->authorize('update', $category);
         $category = $this->repository->update($request->validated(), $category->id);
 
-        return redirect(route('admin.categories.show', ['category' => $category]))->withSuccess('Category successfully updated');
+        return redirect(route('admin.categories.index'))
+            ->withSuccess('Category successfully updated');
     }
 
     /**
@@ -137,7 +133,6 @@ class AdminCategoryController extends Controller
      *
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -147,6 +142,7 @@ class AdminCategoryController extends Controller
         $this->authorize('delete', $category);
         $this->repository->delete($category->id);
 
-        return back()->withSuccess('Category successfully deleted');
+        return redirect(route('admin.categories.index'))
+            ->withSuccess('Category successfully deleted');
     }
 }

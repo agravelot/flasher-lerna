@@ -26,7 +26,6 @@ class AdminContactController extends Controller
      */
     public function __construct(ContactRepository $repository)
     {
-        $this->middleware(['auth', 'verified']);
         $this->repository = $repository;
     }
 
@@ -50,7 +49,6 @@ class AdminContactController extends Controller
     /**
      * Display the specified resource.
      *
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return \Illuminate\Http\Response
@@ -65,7 +63,6 @@ class AdminContactController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *

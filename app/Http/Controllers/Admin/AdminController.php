@@ -47,7 +47,6 @@ class AdminController extends Controller
         CosplayerRepository $cosplayerRepository,
         AlbumRepository $albumRepository)
     {
-        $this->middleware(['auth', 'verified']);
         $this->userRepository = $userRepository;
         $this->contactRepository = $contactRepository;
         $this->albumRepository = $albumRepository;
