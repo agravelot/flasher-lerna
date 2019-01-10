@@ -30,6 +30,7 @@ class AdminAlbumController extends Controller
      * @var CategoryRepository
      */
     protected $categoryRepository;
+
     /**
      * @var CosplayerRepository
      */
@@ -232,6 +233,6 @@ class AdminAlbumController extends Controller
 
         $this->albumRepository->delete($album->id);
 
-        return back()->withSuccess('Album successfully deleted');
+        return redirect(route('admin.albums.index'))->withSuccess('Album successfully deleted');
     }
 }

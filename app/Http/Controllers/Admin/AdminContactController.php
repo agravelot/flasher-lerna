@@ -74,6 +74,6 @@ class AdminContactController extends Controller
         $this->authorize('delete', $contact);
         $this->repository->delete($contact->id);
 
-        return back()->withSuccess('Contact successfully deleted');
+        return redirect(route('admin.contacts.index'))->withSuccess('Contact successfully deleted');
     }
 }
