@@ -1,0 +1,85 @@
+<?php
+
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
+namespace Tests\Feature\Http\Controller\Front\GoldenBookPost;
+
+use App\Models\GoldenBookPost;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Tests\TestCase;
+
+class IndexGoldenBookPostTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_admin_can_view_index_page_with_multiple_goldenBookPosts()
+    {
+        $this->actingAsAdmin();
+        $goldenBookPosts = factory(GoldenBookPost::class, 5)
+            ->state('active')
+            ->create();
+
+        $response = $this->showGoldenBookPostIndex();
+
+        $response->assertStatus(200)
+            ->assertDontSee('Nothing to show');
+
+        $goldenBookPosts->each(function (GoldenBookPost $goldenBookPost) use ($response) {
+            $response->assertSee($goldenBookPost->name)
+                ->assertSee($goldenBookPost->email)
+                ->assertSee($goldenBookPost->body);
+        });
+    }
+
+    private function showGoldenBookPostIndex(): TestResponse
+    {
+        return $this->get('/admin/goldenbook');
+    }
+
+    public function test_admin_can_view_index_page_with_one_goldenBookPost()
+    {
+        $this->actingAsAdmin();
+        $goldenBookPost = factory(GoldenBookPost::class)->create();
+
+        $response = $this->showGoldenBookPostIndex();
+
+        $response->assertStatus(200)
+            ->assertSee($goldenBookPost->name)
+            ->assertSee($goldenBookPost->email)
+            ->assertSee($goldenBookPost->body)
+            ->assertDontSee('Nothing to show');
+    }
+
+    public function test_admin_can_view_index_page_with_no_goldenBookPost()
+    {
+        $this->actingAsAdmin();
+
+        $response = $this->showGoldenBookPostIndex();
+
+        $response->assertStatus(200)
+            ->assertSee('Nothing to show');
+    }
+
+    public function test_guest_can_not_view_index_page_for_a_goldenBookPost_and_is_redirected_to_login()
+    {
+        $response = $this->showGoldenBookPostIndex();
+
+        $response->assertStatus(302);
+        $response->assertRedirect('/login');
+    }
+
+    public function test_goldenBookPost_can_not_view_index_page_for_a_goldenBookPost()
+    {
+        $this->actingAsUser();
+
+        $response = $this->showGoldenBookPostIndex();
+
+        $response->assertStatus(403);
+    }
+}
