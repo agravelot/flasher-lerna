@@ -10,7 +10,7 @@
 namespace App\Console\Commands;
 
 use App\Http\Requests\UserRequest;
-use App\Repositories\Contracts\UserRepository;
+use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Validator;
@@ -33,19 +33,6 @@ class CreateAdminUser extends Command
      * @var string
      */
     protected $description = 'Create a user';
-    /**
-     * @var UserRepository
-     */
-    private $repository;
-
-    /**
-     * Create a new command instance.
-     */
-    public function __construct(UserRepository $repository)
-    {
-        $this->repository = $repository;
-        parent::__construct();
-    }
 
     /**
      * Execute the console command.
@@ -114,7 +101,7 @@ class CreateAdminUser extends Command
 
     private function createUser($data)
     {
-        $user = $this->repository->create($data);
+        $user = User::create($data);
         if ($user->markEmailAsVerified()) {
             event(new Verified($user));
         }

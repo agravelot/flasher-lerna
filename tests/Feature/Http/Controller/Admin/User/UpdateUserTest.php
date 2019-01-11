@@ -36,7 +36,8 @@ class UpdateUserTest extends TestCase
 
         $response = $this->updateUser(self::USER_DATA, $user);
 
-        $this->assertSame(1, User::count());
+        $this->assertNotSame($user->name, $user->fresh()->name);
+        $this->assertNotSame($user->email, $user->fresh()->email);
         $response->assertStatus(302)
             ->assertRedirect('/admin/users');
         $this->followRedirects($response)
@@ -52,14 +53,20 @@ class UpdateUserTest extends TestCase
         return $this->patch('/admin/users/' . $user->id, $data);
     }
 
-    public function test_admin_can_update_a_users_with_the_same_name()
+    public function test_admin_can_update_a_users_without_changing_values()
     {
         $this->actingAsAdmin();
         $user = factory(User::class)->create();
 
-        $response = $this->updateUser(self::USER_DATA, $user);
+        $response = $this->updateUser([
+            'name' => $user->name,
+            'email' => $user->email,
+            'cosplayer' => null,
+            'g-recaptcha-response' => '1',
+        ], $user);
 
-        $this->assertSame(1, User::count());
+        $this->assertSame($user->name, $user->fresh()->name);
+        $this->assertSame($user->email, $user->fresh()->email);
         $response->assertStatus(302)
             ->assertRedirect('/admin/users');
         $this->followRedirects($response)
@@ -80,7 +87,6 @@ class UpdateUserTest extends TestCase
 
         $response = $this->updateUser(self::USER_DATA, $user);
 
-        $this->assertSame(1, User::count());
         $this->assertSame($user->title, $user->fresh()->title);
         $this->assertSame($user->email, $user->fresh()->email);
         $response->assertStatus(403);
@@ -92,7 +98,6 @@ class UpdateUserTest extends TestCase
 
         $response = $this->updateUser(self::USER_DATA, $user);
 
-        $this->assertSame(1, User::count());
         $this->assertSame($user->title, $user->fresh()->title);
         $this->assertSame($user->email, $user->fresh()->email);
         $response->assertStatus(302)

@@ -66,7 +66,7 @@ class EditUserTest extends TestCase
     {
         $this->actingAsAdmin();
 
-        $response = $this->showUserEdit(42);
+        $response = $this->showUserEdit(-1);
 
         $response->assertStatus(404);
     }

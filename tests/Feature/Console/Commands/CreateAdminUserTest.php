@@ -77,8 +77,7 @@ class CreateAdminUserTest extends TestCase
             'password' => 'secret',
         ]);
 
-        $this->assertCount(1, User::all());
-        $user = User::all()->get(0);
+        $user = User::latest()->first();
         $this->assertSame('admin', $user->name);
         $this->assertSame('admin', $user->role);
         $this->assertSame('admin@picblog.com', $user->email);

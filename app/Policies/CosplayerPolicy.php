@@ -25,7 +25,7 @@ class CosplayerPolicy extends Policy
     /**
      * Determine whether the user can view the cosplayer.
      */
-    public function view(User $user, Cosplayer $cosplayer)
+    public function view(User $user, ?Cosplayer $cosplayer = null)
     {
         return false;
     }
@@ -41,7 +41,7 @@ class CosplayerPolicy extends Policy
     /**
      * Determine whether the user can update the cosplayer.
      */
-    public function update(User $user, Cosplayer $cosplayer)
+    public function update(User $user, ?Cosplayer $cosplayer = null)
     {
         return false;
     }
@@ -49,7 +49,7 @@ class CosplayerPolicy extends Policy
     /**
      * Determine whether the user can delete the cosplayer.
      */
-    public function delete(User $user, Cosplayer $cosplayer)
+    public function delete(User $user, ?Cosplayer $cosplayer = null)
     {
         return false;
     }

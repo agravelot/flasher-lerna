@@ -18,7 +18,7 @@ class IndexAlbumTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_view_nothing_to_show()
+    public function test_guest_view_no_albums_and_see_nothing_to_show()
     {
         $response = $this->showAlbums();
 

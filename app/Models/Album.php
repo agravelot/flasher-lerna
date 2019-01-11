@@ -9,9 +9,11 @@
 
 namespace App\Models;
 
+use App\Scope\PublicScope;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Spatie\MediaLibrary\File;
@@ -56,6 +58,16 @@ class Album extends Model implements HasMedia
 {
     use Sluggable, SluggableScopeHelpers, HasMediaTrait;
 
+    /**
+     * The "booting" method of the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new PublicScope());
+    }
+
     protected $fillable = [
         'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id', 'password',
     ];
@@ -63,6 +75,19 @@ class Album extends Model implements HasMedia
     protected $hidden = [
         'password',
     ];
+
+    public function scopePublic(Builder $query)
+    {
+        $query->whereNotNull('published_at')
+            ->whereNull('password');
+    }
+
+    public static function latestWithPagination()
+    {
+        return self::with(['media', 'categories'])
+            ->latest()
+            ->paginate(10);
+    }
 
     public function setPasswordAttribute($value)
     {

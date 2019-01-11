@@ -10,25 +10,11 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\AlbumRepositoryEloquent;
-use App\Repositories\Contracts\AlbumRepository;
+use App\Models\Album;
 use Spatie\MediaLibrary\MediaStream;
 
 class AlbumController extends Controller
 {
-    /**
-     * @var AlbumRepositoryEloquent
-     */
-    protected $albumRepository;
-
-    /**
-     * AlbumController constructor.
-     */
-    public function __construct(AlbumRepository $albumRepository)
-    {
-        $this->albumRepository = $albumRepository;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -36,7 +22,7 @@ class AlbumController extends Controller
      */
     public function index()
     {
-        $albums = $this->albumRepository->latestWithPagination();
+        $albums = Album::latestWithPagination();
 
         return view('albums.index', ['albums' => $albums]);
     }
@@ -46,13 +32,12 @@ class AlbumController extends Controller
      *
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
      * @return \Illuminate\Http\Response
      */
     public function show(string $slug)
     {
-        $album = $this->albumRepository->findBySlug($slug);
+        $album = Album::findBySlugOrFail($slug);
         $this->authorize('view', $album);
 
         return view('albums.show', ['album' => $album]);
@@ -60,13 +45,12 @@ class AlbumController extends Controller
 
     /**
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
      * @return MediaStream
      */
     public function download(string $slug)
     {
-        $album = $this->albumRepository->findBySlug($slug);
+        $album = Album::findBySlugOrFail($slug);
         $this->authorize('download', $album);
         $pictures = $album->getMedia('pictures');
 

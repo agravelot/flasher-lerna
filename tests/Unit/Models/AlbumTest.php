@@ -10,14 +10,16 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Album;
+use App\Scope\PublicScope;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
 use Tests\ModelTestCase;
 
 class AlbumTest extends ModelTestCase
 {
-    use WithFaker;
+    use WithFaker, RefreshDatabase;
 
     public function testRouteKeyName()
     {
@@ -64,15 +66,6 @@ class AlbumTest extends ModelTestCase
 
         $this->assertBelongsToManyRelation($relation, $album, new Album(), 'album_id');
     }
-
-    //TODO add test morphToMany
-//    public function testHasManyCategoriesRelationship()
-//    {
-//        $album = new Album();
-//        $relation = $album->categories();
-//
-//        $this->assertHasManyRelation($relation, $album, new Category(), 'user_id');
-//    }
 
     public function test_album_is_public()
     {
@@ -152,5 +145,123 @@ class AlbumTest extends ModelTestCase
         $album->published_at = $knownDate;
 
         $this->assertSame($knownDate->format('Y-m-d H:i:s'), $album->published_at->format('Y-m-d H:i:s'));
+    }
+
+    public function test_album_with_a_published_at_date_are_published()
+    {
+        $publishedAlbums = factory(Album::class, 2)->states(['published', 'withUser'])->create();
+
+        $albums = Album::all();
+
+        $this->assertTrue($albums->contains($publishedAlbums->get(0)));
+        $this->assertTrue($albums->contains($publishedAlbums->get(1)));
+    }
+
+    public function test_album_with_unpublished_are_not_visible()
+    {
+        $publishedAlbums = factory(Album::class, 2)->states(['unpublished', 'passwordLess', 'withUser'])->create();
+
+        $albums = Album::all();
+
+        $this->assertFalse($albums->contains($publishedAlbums->get(0)));
+        $this->assertFalse($albums->contains($publishedAlbums->get(1)));
+    }
+
+    public function test_album_with_a_password_are_not_visible()
+    {
+        $publishedAlbums = factory(Album::class, 2)->states(['published', 'password', 'withUser'])->create();
+
+        $albums = Album::all();
+
+        $this->assertFalse($albums->contains($publishedAlbums->get(0)));
+        $this->assertFalse($albums->contains($publishedAlbums->get(1)));
+    }
+
+    public function test_album_with_a_published_at_date_and_password_are_unpublished()
+    {
+        $publishedAlbums = factory(Album::class, 2)->states(['published', 'password', 'withUser'])->create();
+
+        $albums = Album::all();
+
+        $this->assertFalse($albums->contains($publishedAlbums->get(0)));
+        $this->assertFalse($albums->contains($publishedAlbums->get(1)));
+    }
+
+    public function test_count_four_published_albums_should_be_four()
+    {
+        $albums = factory(Album::class, 4)->states(['published', 'passwordLess', 'withUser'])->create();
+
+        $all = Album::all();
+
+        $this->assertTrue($all->contains($albums->get(0)));
+        $this->assertTrue($all->contains($albums->get(1)));
+        $this->assertTrue($all->contains($albums->get(2)));
+        $this->assertTrue($all->contains($albums->get(3)));
+    }
+
+    public function test_count_four_unpublished_albums_should_be_zero()
+    {
+        $albums = factory(Album::class, 4)->states(['unpublished', 'passwordLess', 'withUser'])->create();
+
+        $all = Album::all();
+
+        $this->assertFalse($all->contains($albums->get(0)));
+        $this->assertFalse($all->contains($albums->get(1)));
+        $this->assertFalse($all->contains($albums->get(2)));
+        $this->assertFalse($all->contains($albums->get(3)));
+    }
+
+    public function test_album_with_a_published_at_date_are_published_without_public_criteria()
+    {
+        $publishedAlbums = factory(Album::class, 2)->states(['published', 'withUser'])->create();
+
+        $albums = Album::withoutGlobalScope(PublicScope::class)->get();
+
+        $this->assertTrue($albums->contains($publishedAlbums->get(0)));
+        $this->assertTrue($albums->contains($publishedAlbums->get(1)));
+    }
+
+    public function test_album_with_password_are_unpublished_without_public_criteria()
+    {
+        $publishedAlbums = factory(Album::class, 2)->states(['unpublished', 'withUser'])->create();
+
+        $albums = Album::withoutGlobalScope(PublicScope::class)->get();
+
+        $this->assertTrue($albums->contains($publishedAlbums->get(0)));
+        $this->assertTrue($albums->contains($publishedAlbums->get(1)));
+    }
+
+    public function test_album_with_a_published_at_date_and_password_are_unpublished_without_public_criteria()
+    {
+        $publishedAlbums = factory(Album::class, 2)->states(['published', 'password', 'withUser'])->create();
+
+        $albums = Album::withoutGlobalScope(PublicScope::class)->get();
+
+        $this->assertTrue($albums->contains($publishedAlbums->get(0)));
+        $this->assertTrue($albums->contains($publishedAlbums->get(1)));
+    }
+
+    public function test_count_four_published_albums_should_be_four_without_public_criteria()
+    {
+        $publishedAlbums = factory(Album::class, 4)->states(['published', 'passwordLess', 'withUser'])->create();
+
+        $albums = Album::withoutGlobalScope(PublicScope::class)->get();
+
+        $this->assertTrue($albums->contains($publishedAlbums->get(0)));
+        $this->assertTrue($albums->contains($publishedAlbums->get(1)));
+        $this->assertTrue($albums->contains($publishedAlbums->get(2)));
+        $this->assertTrue($albums->contains($publishedAlbums->get(3)));
+    }
+
+    public function test_count_four_unpublished_albums_should_be_zero_without_public_criteria()
+    {
+        $publishedAlbums = factory(Album::class, 4)->states(['unpublished', 'passwordLess', 'withUser'])->create();
+
+        $albums = Album::withoutGlobalScope(PublicScope::class)->get();
+
+        $this->assertTrue($albums->contains($publishedAlbums->get(0)));
+        $this->assertTrue($albums->contains($publishedAlbums->get(1)));
+        $this->assertTrue($albums->contains($publishedAlbums->get(2)));
+        $this->assertTrue($albums->contains($publishedAlbums->get(3)));
     }
 }

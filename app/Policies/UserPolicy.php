@@ -40,7 +40,7 @@ class UserPolicy extends Policy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, User $model)
+    public function update(User $user, ?User $model = null)
     {
         return false;
     }
@@ -48,7 +48,7 @@ class UserPolicy extends Policy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user, ?User $model = null)
     {
         return false;
     }

@@ -35,7 +35,10 @@ class StoreUserTest extends TestCase
 
         $response = $this->storeUser(self::USER_DATA);
 
-        $this->assertSame(1, User::count());
+        $latestUser = User::latest()->first();
+        $this->assertSame(self::USER_DATA['name'], $latestUser->name);
+        $this->assertSame(self::USER_DATA['email'], $latestUser->email);
+
         $response->assertStatus(302)
             ->assertRedirect('/admin/users');
         $this->followRedirects($response)
@@ -60,7 +63,7 @@ class StoreUserTest extends TestCase
 
         $response = $this->storeUser(['name' => $user->name]);
 
-        $this->assertSame(1, User::count());
+        $this->assertTrue($user->is(User::latest()->first()));
         $response->assertStatus(302)
             ->assertRedirect('/admin/users/create');
         $this->followRedirects($response)
@@ -76,7 +79,7 @@ class StoreUserTest extends TestCase
 
         $response = $this->storeUser(['email' => $user->email]);
 
-        $this->assertSame(1, User::count());
+        $this->assertTrue($user->is(User::latest()->first()));
         $response->assertStatus(302)
             ->assertRedirect('/admin/users/create');
         $this->followRedirects($response)
@@ -93,7 +96,7 @@ class StoreUserTest extends TestCase
 
         $response = $this->storeUser(self::USER_DATA);
 
-        $this->assertSame(0, User::count());
+        $this->assertNull(User::where('name', self::USER_DATA['name'])->where('email', self::USER_DATA['email'])->first());
         $response->assertStatus(403);
     }
 
