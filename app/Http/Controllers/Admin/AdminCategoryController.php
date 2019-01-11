@@ -12,24 +12,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
-use App\Repositories\CategoryRepositoryEloquent;
-use App\Repositories\Contracts\CategoryRepository;
 
 class AdminCategoryController extends Controller
 {
-    /**
-     * @var CategoryRepositoryEloquent
-     */
-    protected $repository;
-
-    /**
-     * AdminCategoryController constructor.
-     */
-    public function __construct(CategoryRepository $repository)
-    {
-        $this->repository = $repository;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -40,7 +25,7 @@ class AdminCategoryController extends Controller
     public function index()
     {
         $this->authorize('index', Category::class);
-        $categories = $this->repository->paginate(10);
+        $categories = Category::paginate(10);
 
         return view('admin.categories.index', [
             'categories' => $categories,
@@ -57,7 +42,7 @@ class AdminCategoryController extends Controller
      */
     public function show(string $slug)
     {
-        $category = $this->repository->findBySlug($slug);
+        $category = Category::findBySlugOrFail($slug);
         $this->authorize('view', $category);
 
         return view('admin.categories.show', ['category' => $category]);
@@ -73,7 +58,7 @@ class AdminCategoryController extends Controller
      */
     public function edit(string $slug)
     {
-        $category = $this->repository->findBySlug($slug);
+        $category = Category::findBySlugOrFail($slug);
         $this->authorize('update', $category);
 
         return view('admin.categories.edit', ['category' => $category]);
@@ -97,14 +82,13 @@ class AdminCategoryController extends Controller
      * Store a newly created resource in storage.
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      *
      * @return \Illuminate\Http\Response
      */
     public function store(CategoryRequest $request)
     {
         $this->authorize('create', Category::class);
-        $category = $this->repository->create($request->validated());
+        $category = Category::create($request->validated());
 
         return redirect(route('admin.categories.index'))
             ->withSuccess('Category successfully added');
@@ -114,15 +98,14 @@ class AdminCategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      *
      * @return \Illuminate\Http\Response
      */
     public function update(CategoryRequest $request, string $slug)
     {
-        $category = $this->repository->findBySlug($slug);
+        $category = Category::findBySlugOrFail($slug);
         $this->authorize('update', $category);
-        $category = $this->repository->update($request->validated(), $category->id);
+        $category->update($request->validated());
 
         return redirect(route('admin.categories.index'))
             ->withSuccess('Category successfully updated');
@@ -138,9 +121,9 @@ class AdminCategoryController extends Controller
      */
     public function destroy(string $slug)
     {
-        $category = $this->repository->findBySlug($slug);
+        $category = Category::findBySlugOrFail($slug);
         $this->authorize('delete', $category);
-        $this->repository->delete($category->id);
+        $category->delete();
 
         return redirect(route('admin.categories.index'))
             ->withSuccess('Category successfully deleted');

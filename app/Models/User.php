@@ -12,6 +12,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Lab404\Impersonate\Models\Impersonate;
 
 /**
@@ -68,6 +69,13 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function setPasswordAttribute($value)
+    {
+        if ($value !== null) {
+            $this->attributes['password'] = Hash::make($value);
+        }
+    }
 
     public function albums()
     {

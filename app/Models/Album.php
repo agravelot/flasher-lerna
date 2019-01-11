@@ -64,6 +64,13 @@ class Album extends Model implements HasMedia
         'password',
     ];
 
+    public static function latestWithPagination()
+    {
+        return self::with(['media', 'categories'])
+            ->latest()
+            ->paginate(10);
+    }
+
     public function setPasswordAttribute($value)
     {
         if ($value !== null) {

@@ -9,27 +9,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Criteria\ActiveGoldenBookPostCriteria;
 use App\Http\Controllers\Controller;
 use App\Models\GoldenBookPost;
-use App\Repositories\Contracts\GoldenBookRepository;
 
 class AdminGoldenBookController extends Controller
 {
-    /**
-     * @var GoldenBookRepository
-     */
-    protected $goldenBookRepository;
-
-    /**
-     * AdminGoldenBookController constructor.
-     */
-    public function __construct(GoldenBookRepository $goldenBookRepository)
-    {
-        $this->goldenBookRepository = $goldenBookRepository;
-        $this->goldenBookRepository->popCriteria(ActiveGoldenBookPostCriteria::class);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -40,7 +24,7 @@ class AdminGoldenBookController extends Controller
     public function index()
     {
         $this->authorize('index', GoldenBookPost::class);
-        $goldenBookPosts = $this->goldenBookRepository->paginate(10);
+        $goldenBookPosts = GoldenBookPost::paginate(10);
 
         return view('admin.goldenbook.index', [
             'goldenBookPosts' => $goldenBookPosts,
@@ -57,7 +41,7 @@ class AdminGoldenBookController extends Controller
      */
     public function show(int $id)
     {
-        $goldenBookPost = $this->goldenBookRepository->find($id);
+        $goldenBookPost = GoldenBookPost::findOrFail($id);
         $this->authorize('view', $goldenBookPost);
 
         return view('admin.contacts.show', ['contact' => $goldenBookPost]);
@@ -73,9 +57,9 @@ class AdminGoldenBookController extends Controller
      */
     public function destroy(int $id)
     {
-        $goldenBookPost = $this->goldenBookRepository->find($id);
+        $goldenBookPost = GoldenBookPost::findOrFail($id);
         $this->authorize('delete', $goldenBookPost);
-        $this->goldenBookRepository->delete($goldenBookPost->id);
+        $goldenBookPost->delete();
 
         return redirect(route('admin.goldenbook.index'))
             ->withSuccess('Goldenbook post successfully deleted');

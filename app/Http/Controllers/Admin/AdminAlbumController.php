@@ -9,47 +9,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Criteria\PublicAlbumsCriteria;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AlbumRequest;
 use App\Models\Album;
-use App\Repositories\AlbumRepositoryEloquent;
-use App\Repositories\Contracts\AlbumRepository;
-use App\Repositories\Contracts\CategoryRepository;
-use App\Repositories\Contracts\CosplayerRepository;
+use App\Models\Category;
+use App\Models\Cosplayer;
 use Spatie\MediaLibrary\FileAdder\FileAdder;
 
 class AdminAlbumController extends Controller
 {
-    /**
-     * @var AlbumRepositoryEloquent
-     */
-    protected $albumRepository;
-
-    /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
-
-    /**
-     * @var CosplayerRepository
-     */
-    protected $cosplayerRepository;
-
-    /**
-     * AdminAlbumController constructor.
-     */
-    public function __construct(AlbumRepository $albumRepository,
-                                CategoryRepository $categoryRepository,
-                                CosplayerRepository $cosplayerRepository)
-    {
-        $this->albumRepository = $albumRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->cosplayerRepository = $cosplayerRepository;
-
-        $this->albumRepository->popCriteria(PublicAlbumsCriteria::class);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -60,7 +28,7 @@ class AdminAlbumController extends Controller
     public function index()
     {
         $this->authorize('index', Album::class);
-        $albums = $this->albumRepository->latestWithPagination();
+        $albums = Album::latestWithPagination();
 
         return view('admin.albums.index', [
             'albums' => $albums,
@@ -78,8 +46,8 @@ class AdminAlbumController extends Controller
     {
         $this->authorize('create', Album::class);
 
-        $categories = $this->categoryRepository->all();
-        $cosplayers = $this->cosplayerRepository->all();
+        $categories = Category::all();
+        $cosplayers = Cosplayer::all();
 
         return view('admin.albums.create', [
             'categories' => $categories,
@@ -92,7 +60,6 @@ class AdminAlbumController extends Controller
      *
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      * @throws \Exception
      *
      * @return \Illuminate\Http\Response
@@ -103,7 +70,7 @@ class AdminAlbumController extends Controller
 
         $validated = $request->validated();
         /** @var Album $album */
-        $album = $this->albumRepository->create($validated);
+        $album = Album::create($validated);
 
         $album->addAllMediaFromRequest()
             ->each(function ($fileAdder) {
@@ -115,14 +82,14 @@ class AdminAlbumController extends Controller
 
         if (array_key_exists('categories', $validated)) {
             $categoriesIds = $validated['categories'];
-            $categories = $this->categoryRepository->findWhereIn('id', $categoriesIds);
-            $this->categoryRepository->saveRelation($categories, $album);
+            $categories = Category::findWhereIn('id', $categoriesIds);
+            Category::saveRelation($categories, $album);
         }
 
         if (array_key_exists('cosplayers', $validated)) {
             $cosplayersIds = $validated['cosplayers'];
-            $cosplayers = $this->cosplayerRepository->findWhereIn('id', $cosplayersIds);
-            $this->cosplayerRepository->saveRelation($cosplayers, $album);
+            $cosplayers = Cosplayer::findWhereIn('id', $cosplayersIds);
+            Cosplayer::saveRelation($cosplayers, $album);
         }
 
         return redirect(route('admin.albums.show', ['album' => $album]));
@@ -133,13 +100,12 @@ class AdminAlbumController extends Controller
      *
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
      * @return \Illuminate\Http\Response
      */
     public function show(string $slug)
     {
-        $album = $this->albumRepository->findBySlug($slug);
+        $album = Album::findBySlugOrFail($slug);
         $this->authorize('view', $album);
 
         return view('admin.albums.show', ['album' => $album]);
@@ -150,22 +116,18 @@ class AdminAlbumController extends Controller
      *
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
      * @return \Illuminate\Http\Response
      */
     public function edit(string $slug)
     {
-        $album = $this->albumRepository->findBySlug($slug);
+        $album = Album::findBySlugOrFail($slug);
         $this->authorize('update', $album);
-
-        $categories = $this->categoryRepository->all();
-        $cosplayers = $this->cosplayerRepository->all();
 
         return view('admin.albums.edit', [
             'album' => $album,
-            'categories' => $categories,
-            'cosplayers' => $cosplayers,
+            'categories' => Category::all(),
+            'cosplayers' => Cosplayer::all(),
         ]);
     }
 
@@ -175,7 +137,6 @@ class AdminAlbumController extends Controller
      * @param $id
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      * @throws \Exception
      *
      * @return \Illuminate\Http\Response
@@ -183,9 +144,9 @@ class AdminAlbumController extends Controller
     public function update(AlbumRequest $request, $id)
     {
         $validated = $request->validated();
-        $album = $this->albumRepository->find($id);
+        $album = Album::find($id);
         $this->authorize('update', $album);
-        $album = $this->albumRepository->update($validated, $id);
+        $album->update($validated);
 
         // An update can contain no picture
         $key = 'pictures';
@@ -203,18 +164,19 @@ class AdminAlbumController extends Controller
         $key = 'categories';
         if (array_key_exists($key, $validated)) {
             $categoriesIds = $validated[$key];
-            $categories = $this->categoryRepository->findWhereIn('id', $categoriesIds);
-            $this->categoryRepository->saveRelation($categories, $album);
+            $categories = Category::findWhereIn('id', $categoriesIds);
+            Category::saveRelation($categories, $album);
         }
 
         $key = 'cosplayers';
         if (array_key_exists($key, $validated)) {
             $cosplayersIds = $validated[$key];
-            $cosplayers = $this->cosplayerRepository->findWhereIn('id', $cosplayersIds);
-            $this->cosplayerRepository->saveRelation($cosplayers, $album);
+            $cosplayers = Cosplayer::findWhereIn('id', $cosplayersIds);
+            Cosplayer::saveRelation($cosplayers, $album);
         }
 
-        return redirect(route('admin.albums.show', ['album' => $album]))->withSuccess('Album successfully updated');
+        return redirect(route('admin.albums.show', ['album' => $album]))
+            ->withSuccess('Album successfully updated');
     }
 
     /**
@@ -222,17 +184,17 @@ class AdminAlbumController extends Controller
      *
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(string $slug)
     {
-        $album = $this->albumRepository->findBySlug($slug);
+        $album = Album::findBySlugOrFail($slug);
         $this->authorize('delete', $album);
 
-        $this->albumRepository->delete($album->id);
+        $album->delete();
 
-        return redirect(route('admin.albums.index'))->withSuccess('Album successfully deleted');
+        return redirect(route('admin.albums.index'))
+            ->withSuccess('Album successfully deleted');
     }
 }

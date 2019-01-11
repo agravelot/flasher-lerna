@@ -12,7 +12,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
-use App\Repositories\Contracts\UserRepository;
 
 class RegisterController extends Controller
 {
@@ -35,18 +34,13 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = '/';
-    /**
-     * @var UserRepository
-     */
-    private $repository;
 
     /**
      * Create a new controller instance.
      */
-    public function __construct(UserRepository $repository)
+    public function __construct()
     {
         $this->middleware('guest');
-        $this->repository = $repository;
     }
 
     /**
@@ -57,6 +51,6 @@ class RegisterController extends Controller
      */
     protected function create(UserRequest $request)
     {
-        return $this->repository->create($request->validated());
+        return User::create($request->validated());
     }
 }

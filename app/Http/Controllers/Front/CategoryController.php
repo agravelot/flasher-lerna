@@ -10,24 +10,10 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\CategoryRepositoryEloquent;
-use App\Repositories\Contracts\CategoryRepository;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
-    /**
-     * @var CategoryRepositoryEloquent
-     */
-    protected $repository;
-
-    /**
-     * AdminCategoryController constructor.
-     */
-    public function __construct(CategoryRepository $repository)
-    {
-        $this->repository = $repository;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -35,7 +21,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = $this->repository->paginate(10);
+        $categories = Category::paginate(10);
 
         return view('categories.index', ['categories' => $categories]);
     }
@@ -48,7 +34,7 @@ class CategoryController extends Controller
      */
     public function show(string $slug)
     {
-        $category = $this->repository->findBySlug($slug);
+        $category = Category::findBySlugOrFail($slug);
 
         return view('categories.show', ['category' => $category]);
     }
