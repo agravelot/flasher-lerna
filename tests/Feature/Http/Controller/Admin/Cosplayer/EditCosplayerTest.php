@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@orma.fr>
  */
 
-namespace Tests\Feature\Http\Controller\Front\Cosplayer;
+namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 
 use App\Models\Cosplayer;
 use Illuminate\Foundation\Testing\RefreshDatabase;

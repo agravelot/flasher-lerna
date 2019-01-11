@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@orma.fr>
  */
 
-namespace Tests\Feature\Http\Controller\Front\User;
+namespace Tests\Feature\Http\Controller\Admin\User;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;

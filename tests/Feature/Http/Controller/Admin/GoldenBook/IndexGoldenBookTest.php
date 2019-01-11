@@ -7,14 +7,14 @@
  * Written by Antoine Gravelot <agravelot@orma.fr>
  */
 
-namespace Tests\Feature\Http\Controller\Front\GoldenBookPost;
+namespace Tests\Feature\Http\Controller\Admin\GoldenBookPost;
 
 use App\Models\GoldenBookPost;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
 
-class IndexGoldenBookPostTest extends TestCase
+class IndexGoldenBookTest extends TestCase
 {
     use RefreshDatabase;
 
