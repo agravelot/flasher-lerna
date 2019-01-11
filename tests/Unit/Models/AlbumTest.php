@@ -12,13 +12,14 @@ namespace Tests\Unit\Models;
 use App\Models\Album;
 use App\Scope\PublicScope;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
 use Tests\ModelTestCase;
 
 class AlbumTest extends ModelTestCase
 {
-    use WithFaker;
+    use WithFaker, RefreshDatabase;
 
     public function testRouteKeyName()
     {
