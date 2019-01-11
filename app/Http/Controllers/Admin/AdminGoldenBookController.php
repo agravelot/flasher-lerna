@@ -9,24 +9,25 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Criteria\ActiveGoldenBookPostCriteria;
 use App\Http\Controllers\Controller;
 use App\Models\GoldenBookPost;
-use App\Repositories\ContactRepositoryEloquent;
 use App\Repositories\Contracts\GoldenBookRepository;
 
 class AdminGoldenBookController extends Controller
 {
     /**
-     * @var ContactRepositoryEloquent
+     * @var GoldenBookRepository
      */
-    protected $repository;
+    protected $goldenBookRepository;
 
     /**
      * AdminGoldenBookController constructor.
      */
-    public function __construct(GoldenBookRepository $repository)
+    public function __construct(GoldenBookRepository $goldenBookRepository)
     {
-        $this->repository = $repository;
+        $this->goldenBookRepository = $goldenBookRepository;
+        $this->goldenBookRepository->popCriteria(ActiveGoldenBookPostCriteria::class);
     }
 
     /**
@@ -39,7 +40,7 @@ class AdminGoldenBookController extends Controller
     public function index()
     {
         $this->authorize('index', GoldenBookPost::class);
-        $goldenBookPosts = $this->repository->paginate(10);
+        $goldenBookPosts = $this->goldenBookRepository->paginate(10);
 
         return view('admin.goldenbook.index', [
             'goldenBookPosts' => $goldenBookPosts,
@@ -56,7 +57,7 @@ class AdminGoldenBookController extends Controller
      */
     public function show(int $id)
     {
-        $goldenBookPost = $this->repository->find($id);
+        $goldenBookPost = $this->goldenBookRepository->find($id);
         $this->authorize('view', $goldenBookPost);
 
         return view('admin.contacts.show', ['contact' => $goldenBookPost]);
@@ -72,9 +73,9 @@ class AdminGoldenBookController extends Controller
      */
     public function destroy(int $id)
     {
-        $goldenBookPost = $this->repository->find($id);
+        $goldenBookPost = $this->goldenBookRepository->find($id);
         $this->authorize('delete', $goldenBookPost);
-        $this->repository->delete($goldenBookPost->id);
+        $this->goldenBookRepository->delete($goldenBookPost->id);
 
         return redirect(route('admin.goldenbook.index'))
             ->withSuccess('Goldenbook post successfully deleted');
