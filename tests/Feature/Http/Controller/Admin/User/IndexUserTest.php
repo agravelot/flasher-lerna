@@ -21,7 +21,7 @@ class IndexUserTest extends TestCase
     public function test_admin_can_view_index_page_with_multiple_users()
     {
         $this->actingAsAdmin();
-        $users = factory(User::class, 5)->create();
+        $users = factory(User::class, 2)->create();
 
         $response = $this->showUserIndex();
 

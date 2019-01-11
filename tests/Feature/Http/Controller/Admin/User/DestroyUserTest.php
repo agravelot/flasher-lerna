@@ -28,7 +28,7 @@ class DestroyUserTest extends TestCase
 
         $response = $this->deleteUser($user->id);
 
-        $this->assertSame(0, User::count());
+        $this->assertNull($user->fresh());
         $response->assertStatus(302);
         $response->assertRedirect('/admin/users');
         $this->followRedirects($response)
@@ -52,7 +52,7 @@ class DestroyUserTest extends TestCase
 
         $response = $this->deleteUser($user->id);
 
-        $this->assertSame(1, User::count());
+        $this->assertNotNull($user->fresh());
         $response->assertStatus(403);
     }
 
@@ -63,7 +63,7 @@ class DestroyUserTest extends TestCase
 
         $response = $this->deleteUser($user->id);
 
-        $this->assertSame(1, User::count());
+        $this->assertNotNull($user->fresh());
         $response->assertStatus(302);
         $response->assertRedirect('/login');
     }
