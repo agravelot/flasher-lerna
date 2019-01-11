@@ -27,3 +27,5 @@ _ide_helper_models.php
 /public/sitemap\.xml
 
 /storage/medialibrary
+
+phpunit\.xml

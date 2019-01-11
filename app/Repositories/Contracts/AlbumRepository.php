@@ -19,5 +19,5 @@ interface AlbumRepository extends RepositoryInterface
 {
     public function findBySlug(string $slug): Album;
 
-    public function count($columns = '*'): int;
+    public function latestWithPagination();
 }

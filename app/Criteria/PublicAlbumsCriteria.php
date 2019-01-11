@@ -22,6 +22,8 @@ class PublicAlbumsCriteria implements CriteriaInterface
      * Apply criteria in query repository.
      *
      * @param string $model
+     *
+     * @return Album|\Illuminate\Database\Query\Builder
      */
     public function apply($model, RepositoryInterface $repository)
     {
