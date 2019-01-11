@@ -26,10 +26,14 @@
                         <span class="tag">{{ $category->name }}</span>
                     @endforeach
                 </div>
-                <div class="columns is-multiline is-mobile">
-                    {{--// TODO Show related albums ? --}}
-                </div>
             </div>
         </div>
+    </div>
+
+    <div class="container is-centered">
+        <div class="columns is-multiline is-centered">
+            @each('albums.partials._index_item', $cosplayer->albums, 'album', 'layouts.partials._empty')
+        </div>
+        {{--{{ $cosplayer->albums->links() }}--}}
     </div>
 </div>
