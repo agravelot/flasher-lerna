@@ -20,7 +20,7 @@ class UserRequest extends Request
             'email' => 'required|string|email|min:2|max:255|unique:users,email,' . $id,
             'password' => 'nullable|string|min:6|confirmed',
             'cosplayer' => 'nullable|sometimes|integer|exists:cosplayers,id',
-            'g-recaptcha-response' => auth()->check() && auth()->user()->isAdmin() ? '' : 'required|captcha',
+            'g-recaptcha-response' => auth()->check() && auth()->user()->isAdmin() ? 'nullable' : 'required|captcha',
         ];
     }
 }

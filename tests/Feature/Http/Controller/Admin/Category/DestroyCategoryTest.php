@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@orma.fr>
  */
 
-namespace Tests\Feature\Http\Controller\Front\Category;
+namespace Tests\Feature\Http\Controller\Admin\Category;
 
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Category;
@@ -33,6 +33,7 @@ class DestroyCategoryTest extends TestCase
         $response->assertRedirect('/admin/categories');
         $this->followRedirects($response)
             ->assertStatus(200)
+            ->assertSee('Category successfully deleted')
             ->assertDontSee($category->name)
             ->assertDontSee($category->description);
     }

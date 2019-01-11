@@ -76,6 +76,7 @@ class AdminGoldenBookController extends Controller
         $this->authorize('delete', $goldenBookPost);
         $this->repository->delete($goldenBookPost->id);
 
-        return back()->withSuccess('Contact successfully deleted');
+        return redirect(route('admin.goldenbook.index'))
+            ->withSuccess('Goldenbook post successfully deleted');
     }
 }

@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@orma.fr>
  */
 
-namespace Tests\Feature\Http\Controller\Front\Cosplayer;
+namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Cosplayer;
@@ -33,6 +33,7 @@ class DestroyCosplayerTest extends TestCase
         $response->assertRedirect('/admin/cosplayers');
         $this->followRedirects($response)
             ->assertStatus(200)
+            ->assertSee('Cosplayer successfully deleted')
             ->assertDontSee($cosplayer->name)
             ->assertDontSee($cosplayer->description);
     }

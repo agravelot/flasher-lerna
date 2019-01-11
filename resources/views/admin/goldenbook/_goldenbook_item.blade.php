@@ -1,5 +1,9 @@
 <tr>
     <td>
+        <p>{{ $goldenBookPost->name }}</p>
+        <a href="{{ 'mailto:' . $goldenBookPost->email }}">{{ $goldenBookPost->email }}</a>
+    </td>
+    <td>
         <p>{{ $goldenBookPost->body }}</p>
     </td>
 

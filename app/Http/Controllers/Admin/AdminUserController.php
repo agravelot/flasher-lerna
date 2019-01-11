@@ -72,7 +72,6 @@ class AdminUserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return \Illuminate\Http\Response
@@ -81,18 +80,19 @@ class AdminUserController extends Controller
     {
         $this->authorize('create', User::class);
         $user = $this->userRepository->create($request->validated());
-        if ($request->has('cosplayer')) {
+
+        if ($request->has('cosplayer') && $request->validated()['cosplayer'] !== null) {
             $cosplayerId = $request->validated()['cosplayer'];
             $cosplayer = $this->cosplayerRepository->findNotLinkedToUser($cosplayerId);
             $this->userRepository->setCosplayer($user, $cosplayer);
         }
 
-        return redirect(route('admin.users.show', ['user' => $user]));
+        return redirect(route('admin.users.index'))
+            ->withSuccess('User successfully created');
     }
 
     /**
      * Display the specified resource.
-     *
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
@@ -108,7 +108,6 @@ class AdminUserController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
@@ -141,7 +140,8 @@ class AdminUserController extends Controller
         $user = $this->userRepository->find($id);
         $this->authorize('update', $user);
         $user = $this->userRepository->update($request->validated(), $id);
-        if ($request->has('cosplayer')) {
+
+        if ($request->has('cosplayer') && $request->validated()['cosplayer'] !== null) {
             $cosplayer = null;
             $cosplayerId = $request->validated()['cosplayer'];
             if ($cosplayerId > 0) {
@@ -150,12 +150,12 @@ class AdminUserController extends Controller
             $this->userRepository->setCosplayer($user, $cosplayer);
         }
 
-        return redirect(route('admin.users.show', ['user' => $user]))->withSuccess('Users successfully updated');
+        return redirect(route('admin.users.index'))
+            ->withSuccess('User successfully updated');
     }
 
     /**
      * Remove the specified resource from storage.
-     *
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
@@ -167,6 +167,7 @@ class AdminUserController extends Controller
         $this->authorize('delete', $user);
         $this->userRepository->delete($user->id);
 
-        return back()->withSuccess('User successfully deleted');
+        return redirect(route('admin.users.index'))
+            ->withSuccess('User successfully deleted');
     }
 }

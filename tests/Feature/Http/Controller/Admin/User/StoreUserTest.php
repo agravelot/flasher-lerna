@@ -1,0 +1,114 @@
+<?php
+
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
+namespace Tests\Feature\Http\Controller\Admin\User;
+
+use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
+use App\Http\Middleware\VerifyCsrfToken;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Tests\TestCase;
+
+class StoreUserTest extends TestCase
+{
+    use RefreshDatabase;
+
+    const USER_DATA = [
+        'name' => 'A user name',
+        'email' => 'mail@company.com',
+        'password' => 'secret',
+        'password_confirmation' => 'secret',
+        'cosplayer' => null,
+        'g-recaptcha-response' => '1',
+    ];
+
+    public function test_admin_can_store_a_user()
+    {
+        $this->actingAsAdmin();
+
+        $response = $this->storeUser(self::USER_DATA);
+
+        $this->assertSame(1, User::count());
+        $response->assertStatus(302)
+            ->assertRedirect('/admin/users');
+        $this->followRedirects($response)
+            ->assertStatus(200)
+            ->assertSee(self::USER_DATA['name'])
+            ->assertSee('User successfully created')
+            ->assertDontSee(self::USER_DATA['email']);
+    }
+
+    private function storeUser(array $data): TestResponse
+    {
+        session()->setPreviousUrl('/admin/users/create');
+
+        return $this->post('/admin/users', $data);
+    }
+
+    public function test_admin_can_not_create_two_users_with_the_same_name_and_redirect_with_error()
+    {
+        $this->actingAsAdmin();
+
+        $user = factory(User::class)->create();
+
+        $response = $this->storeUser(['name' => $user->name]);
+
+        $this->assertSame(1, User::count());
+        $response->assertStatus(302)
+            ->assertRedirect('/admin/users/create');
+        $this->followRedirects($response)
+            ->assertStatus(200)
+            ->assertSee('The name has already been taken.');
+    }
+
+    public function test_admin_can_not_create_two_users_with_the_same_email_and_redirect_with_error()
+    {
+        $this->actingAsAdmin();
+
+        $user = factory(User::class)->create();
+
+        $response = $this->storeUser(['email' => $user->email]);
+
+        $this->assertSame(1, User::count());
+        $response->assertStatus(302)
+            ->assertRedirect('/admin/users/create');
+        $this->followRedirects($response)
+            ->assertStatus(200)
+            ->assertSee('The email has already been taken.');
+    }
+
+    public function test_user_can_not_store_a_user()
+    {
+        NoCaptcha::shouldReceive('verifyResponse')
+            ->once()
+            ->andReturn(true);
+        $this->actingAsUser();
+
+        $response = $this->storeUser(self::USER_DATA);
+
+        $this->assertSame(0, User::count());
+        $response->assertStatus(403);
+    }
+
+    public function test_guest_can_not_store_a_user_and_is_redirected_to_login()
+    {
+        $response = $this->storeUser(self::USER_DATA);
+
+        $this->assertSame(0, User::count());
+        $response->assertStatus(302)
+            ->assertRedirect('/login');
+    }
+
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->withoutMiddleware(VerifyCsrfToken::class);
+    }
+}

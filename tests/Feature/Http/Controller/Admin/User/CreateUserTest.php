@@ -7,43 +7,43 @@
  * Written by Antoine Gravelot <agravelot@orma.fr>
  */
 
-namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
+namespace Tests\Feature\Http\Controller\Admin\User;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
 
-class CreateCosplayerTest extends TestCase
+class CreateUserTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_can_not_view_create_page_for_a_cosplayer_and_is_redirected_to_login()
+    public function test_guest_can_not_view_create_page_for_a_user_and_is_redirected_to_login()
     {
-        $response = $this->showCosplayerCreate();
+        $response = $this->showUserCreate();
 
         $response->assertStatus(302);
         $response->assertRedirect('/login');
     }
 
-    private function showCosplayerCreate(): TestResponse
+    private function showUserCreate(): TestResponse
     {
-        return $this->get('/admin/cosplayers/create');
+        return $this->get('/admin/users/create');
     }
 
-    public function test_user_can_not_view_create_page_for_a_cosplayer()
+    public function test_user_can_not_view_create_page_for_a_user()
     {
         $this->actingAsUser();
 
-        $response = $this->showCosplayerCreate();
+        $response = $this->showUserCreate();
 
         $response->assertStatus(403);
     }
 
-    public function test_admin_can_view_create_page_for_a_cosplayer()
+    public function test_admin_can_view_create_page_for_a_user()
     {
         $this->actingAsAdmin();
 
-        $response = $this->showCosplayerCreate();
+        $response = $this->showUserCreate();
 
         $response->assertStatus(200);
     }

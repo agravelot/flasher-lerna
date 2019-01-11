@@ -33,13 +33,13 @@ abstract class TestCase extends BaseTestCase
 
     protected function actingAsAdmin()
     {
-        $admin = factory(User::class)->state('admin')->create();
+        $admin = factory(User::class)->state('admin')->make();
         $this->actingAs($admin);
     }
 
     protected function actingAsUser()
     {
-        $admin = factory(User::class)->state('user')->create();
+        $admin = factory(User::class)->state('user')->make();
         $this->actingAs($admin);
     }
 

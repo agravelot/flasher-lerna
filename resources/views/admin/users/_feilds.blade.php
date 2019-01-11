@@ -63,7 +63,7 @@
             <div class="field-body">
                 <div class="field">
                     <p class="control">
-                        <input class="input" id="password-confirm" type="password"
+                        <input class="input" id="password_confirmation" type="password"
                                name="password_confirmation" @if (!isset($user)) required @endif>
                     </p>
                     @include('layouts.partials._form_errors', ['data' => 'password_confirmation'])

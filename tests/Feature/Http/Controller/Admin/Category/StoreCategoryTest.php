@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@orma.fr>
  */
 
-namespace Tests\Feature\Http\Controller\Front\Category;
+namespace Tests\Feature\Http\Controller\Admin\Category;
 
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Category;

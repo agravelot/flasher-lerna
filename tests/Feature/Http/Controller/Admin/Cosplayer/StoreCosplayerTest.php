@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@orma.fr>
  */
 
-namespace Tests\Feature\Http\Controller\Front\Cosplayer;
+namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Cosplayer;
@@ -19,7 +19,7 @@ class StoreCosplayerTest extends TestCase
 {
     use RefreshDatabase;
 
-    const CATEGORY_DATA = [
+    const COSPLAYER_DATA = [
         'name' => 'A cosplayer name',
         'description' => 'A random description',
     ];
@@ -28,16 +28,16 @@ class StoreCosplayerTest extends TestCase
     {
         $this->actingAsAdmin();
 
-        $response = $this->storeCosplayer(self::CATEGORY_DATA);
+        $response = $this->storeCosplayer(self::COSPLAYER_DATA);
 
         $this->assertSame(1, Cosplayer::count());
         $response->assertStatus(302)
             ->assertRedirect('/admin/cosplayers');
         $this->followRedirects($response)
             ->assertStatus(200)
-            ->assertSee(self::CATEGORY_DATA['name'])
+            ->assertSee(self::COSPLAYER_DATA['name'])
             ->assertSee('Cosplayer successfully added')
-            ->assertDontSee(self::CATEGORY_DATA['description']);
+            ->assertDontSee(self::COSPLAYER_DATA['description']);
     }
 
     private function storeCosplayer(array $data): TestResponse
@@ -67,7 +67,7 @@ class StoreCosplayerTest extends TestCase
     {
         $this->actingAsUser();
 
-        $response = $this->storeCosplayer(self::CATEGORY_DATA);
+        $response = $this->storeCosplayer(self::COSPLAYER_DATA);
 
         $this->assertSame(0, Cosplayer::count());
         $response->assertStatus(403);
@@ -75,7 +75,7 @@ class StoreCosplayerTest extends TestCase
 
     public function test_guest_can_not_store_a_cosplayer_and_is_redirected_to_login()
     {
-        $response = $this->storeCosplayer(self::CATEGORY_DATA);
+        $response = $this->storeCosplayer(self::COSPLAYER_DATA);
 
         $this->assertSame(0, Cosplayer::count());
         $response->assertStatus(302)
