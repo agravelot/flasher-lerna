@@ -19,7 +19,6 @@ class Policy
     /**
      * Grant all abilities to administrator.
      *
-     *
      * @return bool
      */
     public function before(User $user)
