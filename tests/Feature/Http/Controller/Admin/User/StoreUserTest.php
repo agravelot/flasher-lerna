@@ -9,6 +9,7 @@
 
 namespace Tests\Feature\Http\Controller\Front\User;
 
+use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -25,6 +26,7 @@ class StoreUserTest extends TestCase
         'password' => 'secret',
         'password_confirmation' => 'secret',
         'cosplayer' => null,
+        'g-recaptcha-response' => '1',
     ];
 
     public function test_admin_can_store_a_user()
@@ -84,14 +86,15 @@ class StoreUserTest extends TestCase
 
     public function test_user_can_not_store_a_user()
     {
+        NoCaptcha::shouldReceive('verifyResponse')
+            ->once()
+            ->andReturn(true);
         $this->actingAsUser();
 
         $response = $this->storeUser(self::USER_DATA);
 
         $this->assertSame(0, User::count());
         $response->assertStatus(403);
-//        $this->followRedirects($response)
-//            ->assertStatus(403);
     }
 
     public function test_guest_can_not_store_a_user_and_is_redirected_to_login()

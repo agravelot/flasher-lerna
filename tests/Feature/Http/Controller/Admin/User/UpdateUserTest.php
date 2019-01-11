@@ -9,6 +9,7 @@
 
 namespace Tests\Feature\Http\Controller\Front\User;
 
+use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -25,6 +26,7 @@ class UpdateUserTest extends TestCase
         'password' => 'secret',
         'password_confirmation' => 'secret',
         'cosplayer' => null,
+        'g-recaptcha-response' => '1',
     ];
 
     public function test_admin_can_update_a_user()
@@ -70,6 +72,9 @@ class UpdateUserTest extends TestCase
 
     public function test_user_can_not_update_a_user()
     {
+        NoCaptcha::shouldReceive('verifyResponse')
+            ->once()
+            ->andReturn(true);
         $this->actingAsUser();
         $user = factory(User::class)->create();
 

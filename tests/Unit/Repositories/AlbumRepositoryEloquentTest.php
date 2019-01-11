@@ -13,7 +13,6 @@ use App\Criteria\PublicAlbumsCriteria;
 use App\Models\Album;
 use App\Repositories\AlbumRepositoryEloquent;
 use App\Repositories\Contracts\AlbumRepository;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
