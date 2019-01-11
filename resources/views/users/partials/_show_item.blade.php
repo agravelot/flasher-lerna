@@ -33,5 +33,15 @@
                 </div>
             </div>
         </div>
+
+
     </div>
+
+    <div class="container is-centered">
+        <div class="columns is-multiline is-centered">
+            @each('albums.partials._index_item', $user->albums, 'album', 'layouts.partials._empty')
+        </div>
+        {{--{{ $user->albums->links() }}--}}
+    </div>
+
 </div>
