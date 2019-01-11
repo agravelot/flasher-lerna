@@ -41,6 +41,7 @@ class AdminGoldenBookController extends Controller
      */
     public function show(int $id)
     {
+        $this->authorize('view', GoldenBookPost::class);
         $goldenBookPost = GoldenBookPost::findOrFail($id);
         $this->authorize('view', $goldenBookPost);
 
@@ -57,6 +58,7 @@ class AdminGoldenBookController extends Controller
      */
     public function destroy(int $id)
     {
+        $this->authorize('delete', GoldenBookPost::class);
         $goldenBookPost = GoldenBookPost::findOrFail($id);
         $this->authorize('delete', $goldenBookPost);
         $goldenBookPost->delete();

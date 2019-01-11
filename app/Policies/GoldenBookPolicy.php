@@ -26,7 +26,7 @@ class GoldenBookPolicy extends Policy
     /**
      * Determine whether the user can view the category.
      */
-    public function view(User $user, GoldenBookPost $goldenBookPost)
+    public function view(User $user, ?GoldenBookPost $goldenBookPost = null)
     {
         return false;
     }
@@ -50,7 +50,7 @@ class GoldenBookPolicy extends Policy
     /**
      * Determine whether the user can delete the category.
      */
-    public function delete(User $user, GoldenBookPost $goldenBookPost)
+    public function delete(User $user, ?GoldenBookPost $goldenBookPost = null)
     {
         return false;
     }

@@ -42,6 +42,7 @@ class AdminCategoryController extends Controller
      */
     public function show(string $slug)
     {
+        $this->authorize('view', Category::class);
         $category = Category::findBySlugOrFail($slug);
         $this->authorize('view', $category);
 
@@ -58,6 +59,7 @@ class AdminCategoryController extends Controller
      */
     public function edit(string $slug)
     {
+        $this->authorize('update', Category::class);
         $category = Category::findBySlugOrFail($slug);
         $this->authorize('update', $category);
 
@@ -88,7 +90,7 @@ class AdminCategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         $this->authorize('create', Category::class);
-        $category = Category::create($request->validated());
+        Category::create($request->validated());
 
         return redirect(route('admin.categories.index'))
             ->withSuccess('Category successfully added');
@@ -103,6 +105,7 @@ class AdminCategoryController extends Controller
      */
     public function update(CategoryRequest $request, string $slug)
     {
+        $this->authorize('update', Category::class);
         $category = Category::findBySlugOrFail($slug);
         $this->authorize('update', $category);
         $category->update($request->validated());
@@ -121,6 +124,7 @@ class AdminCategoryController extends Controller
      */
     public function destroy(string $slug)
     {
+        $this->authorize('delete', Category::class);
         $category = Category::findBySlugOrFail($slug);
         $this->authorize('delete', $category);
         $category->delete();

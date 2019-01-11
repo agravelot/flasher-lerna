@@ -25,7 +25,7 @@ class CategoryPolicy extends Policy
     /**
      * Determine whether the user can view the category.
      */
-    public function view(User $user, Category $category)
+    public function view(User $user, ?Category $category = null)
     {
         return false;
     }
@@ -40,10 +40,8 @@ class CategoryPolicy extends Policy
 
     /**
      * Determine whether the user can update the category.
-     *
-     * @param Categsory $category
      */
-    public function update(User $user, Category $category)
+    public function update(User $user, ?Category $category = null)
     {
         return false;
     }
@@ -51,7 +49,7 @@ class CategoryPolicy extends Policy
     /**
      * Determine whether the user can delete the category.
      */
-    public function delete(User $user, Category $category)
+    public function delete(User $user, ?Category $category = null)
     {
         return false;
     }

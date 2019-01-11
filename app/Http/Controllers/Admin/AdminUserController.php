@@ -96,6 +96,7 @@ class AdminUserController extends Controller
      */
     public function edit(int $id)
     {
+        $this->authorize('update', User::class);
         $user = User::findOrFail($id);
         $this->authorize('update', $user);
 
@@ -118,6 +119,7 @@ class AdminUserController extends Controller
      */
     public function update(UserRequest $request, $id)
     {
+        $this->authorize('update', User::class);
         $user = User::findOrFail($id);
         $this->authorize('update', $user);
         $user->update($request->validated());
@@ -144,6 +146,7 @@ class AdminUserController extends Controller
      */
     public function destroy(int $id)
     {
+        $this->authorize('delete', User::class);
         $user = User::findOrFail($id);
         $this->authorize('delete', $user);
         $user->delete();

@@ -105,6 +105,7 @@ class AdminAlbumController extends Controller
      */
     public function show(string $slug)
     {
+        $this->authorize('view', Album::class);
         $album = Album::findBySlugOrFail($slug);
         $this->authorize('view', $album);
 
@@ -121,6 +122,7 @@ class AdminAlbumController extends Controller
      */
     public function edit(string $slug)
     {
+        $this->authorize('update', Album::class);
         $album = Album::findBySlugOrFail($slug);
         $this->authorize('update', $album);
 
@@ -143,9 +145,10 @@ class AdminAlbumController extends Controller
      */
     public function update(AlbumRequest $request, $id)
     {
-        $validated = $request->validated();
+        $this->authorize('update', Album::class);
         $album = Album::find($id);
         $this->authorize('update', $album);
+        $validated = $request->validated();
         $album->update($validated);
 
         // An update can contain no picture
@@ -189,6 +192,7 @@ class AdminAlbumController extends Controller
      */
     public function destroy(string $slug)
     {
+        $this->authorize('delete', Album::class);
         $album = Album::findBySlugOrFail($slug);
         $this->authorize('delete', $album);
 

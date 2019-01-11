@@ -40,6 +40,7 @@ class AdminContactController extends Controller
      */
     public function show(int $id)
     {
+        $this->authorize('view', Contact::class);
         $contact = Contact::findOrFail($id);
         $this->authorize('view', $contact);
 
@@ -55,6 +56,7 @@ class AdminContactController extends Controller
      */
     public function destroy(int $id)
     {
+        $this->authorize('delete', Contact::class);
         $contact = Contact::findOrFail($id);
         $this->authorize('delete', $contact);
         $contact->delete();

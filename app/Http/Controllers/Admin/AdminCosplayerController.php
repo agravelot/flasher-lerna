@@ -83,6 +83,7 @@ class AdminCosplayerController extends Controller
      */
     public function show(string $slug)
     {
+        $this->authorize('view', Cosplayer::class);
         $cosplayer = Cosplayer::findBySlugOrFail($slug);
         $this->authorize('view', $cosplayer);
 
@@ -98,6 +99,7 @@ class AdminCosplayerController extends Controller
      */
     public function edit(string $slug)
     {
+        $this->authorize('update', Cosplayer::class);
         $cosplayer = Cosplayer::findBySlugOrFail($slug);
         $this->authorize('update', $cosplayer);
 
@@ -113,10 +115,11 @@ class AdminCosplayerController extends Controller
      */
     public function update(CosplayerRequest $request, string $slug)
     {
-        $validated = $request->validated();
+        $this->authorize('update', Cosplayer::class);
         $cosplayer = Cosplayer::findBySlugOrFail($slug);
         $this->authorize('update', $cosplayer);
 
+        $validated = $request->validated();
         $cosplayer->update($validated);
 
         $key = 'avatar';
@@ -141,6 +144,7 @@ class AdminCosplayerController extends Controller
      */
     public function destroy(string $slug)
     {
+        $this->authorize('delete', Cosplayer::class);
         $cosplayer = Cosplayer::findBySlugOrFail($slug);
         $this->authorize('delete', $cosplayer);
         $cosplayer->delete();
