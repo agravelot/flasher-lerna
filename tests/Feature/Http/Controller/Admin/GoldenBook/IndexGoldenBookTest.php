@@ -73,7 +73,6 @@ class IndexGoldenBookTest extends TestCase
             ->assertDontSee($goldenBookPost->body);
     }
 
-
     public function test_admin_can_view_index_page_with_no_goldenBookPost()
     {
         $this->actingAsAdmin();

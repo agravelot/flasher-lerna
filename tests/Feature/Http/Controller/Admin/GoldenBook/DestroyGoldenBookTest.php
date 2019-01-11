@@ -28,7 +28,6 @@ class DestroyGoldenBookTest extends TestCase
             ->state('active')
             ->create();
 
-        $this->disableExceptionHandling();
         $response = $this->deleteGoldenBookPost($goldenBookPost->id);
 
         $this->assertSame(0, GoldenBookPost::count());
@@ -49,8 +48,6 @@ class DestroyGoldenBookTest extends TestCase
     public function test_user_can_not_destroy_a_goldenBookPost()
     {
         $this->actingAsUser();
-
-        /* @var GoldenBookPost $goldenBookPost */
         $goldenBookPost = factory(GoldenBookPost::class)->create();
 
         $response = $this->deleteGoldenBookPost($goldenBookPost->id);
@@ -61,7 +58,6 @@ class DestroyGoldenBookTest extends TestCase
 
     public function test_guest_can_not_destroy_a_goldenBookPost_and_is_redirected_to_login()
     {
-        /* @var GoldenBookPost $goldenBookPost */
         $goldenBookPost = factory(GoldenBookPost::class)->create();
 
         $response = $this->deleteGoldenBookPost($goldenBookPost->id);

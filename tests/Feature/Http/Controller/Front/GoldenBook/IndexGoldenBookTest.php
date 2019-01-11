@@ -20,7 +20,6 @@ class IndexGoldenBookTest extends TestCase
 
     public function test_guest_can_see_empty_golden_book_index()
     {
-        $this->disableExceptionHandling();
         $response = $this->showGoldenBooks();
 
         $response->assertStatus(200);

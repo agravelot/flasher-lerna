@@ -42,7 +42,6 @@ class CreateUserTest extends TestCase
     public function test_admin_can_view_create_page_for_a_user()
     {
         $this->actingAsAdmin();
-        $this->disableExceptionHandling();
 
         $response = $this->showUserCreate();
 
