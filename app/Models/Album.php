@@ -57,23 +57,29 @@ class Album extends Model implements HasMedia
 {
     use Sluggable, SluggableScopeHelpers, HasMediaTrait;
 
-    /**
-     * The "booting" method of the model.
-     */
+    protected $fillable = [
+        'title',
+        'slug',
+        'seo_title',
+        'excerpt',
+        'body',
+        'meta_description',
+        'meta_keywords',
+        'published_at',
+        'user_id',
+        'password',
+    ];
+
+    protected $hidden = [
+        'password',
+    ];
+
     protected static function boot()
     {
         parent::boot();
 
         static::addGlobalScope(new PublicScope());
     }
-
-    protected $fillable = [
-        'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id', 'password',
-    ];
-
-    protected $hidden = [
-        'password',
-    ];
 
     public function scopePublic(Builder $query)
     {

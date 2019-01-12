@@ -47,7 +47,7 @@ class UpdateUserTest extends TestCase
             ->assertDontSee(self::USER_DATA['email']);
     }
 
-    private function updateUser(User $user, int $id ): TestResponse
+    private function updateUser(User $user, int $id): TestResponse
     {
         session()->setPreviousUrl('/admin/users/' . $id . '/edit');
 
@@ -66,7 +66,6 @@ class UpdateUserTest extends TestCase
             'password_confirmation' => '',
             'g-recaptcha-response' => '1',
         ]);
-
 
         $response = $this->updateUser($updateUser, $user->id);
 

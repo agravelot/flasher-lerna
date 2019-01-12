@@ -18,10 +18,8 @@ class StoreAlbumTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_cannot_store_an_album()
+    public function test_admin_can_store_an_album()
     {
-        $this->disableExceptionHandling();
-
         $this->actingAsAdmin();
         $album = factory(Album::class)->make();
 
@@ -37,8 +35,6 @@ class StoreAlbumTest extends TestCase
 
     public function test_admin_cannot_store_an_album_with_published_now()
     {
-        $this->disableExceptionHandling();
-
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('published')->make();
 
