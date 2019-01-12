@@ -65,7 +65,6 @@ class StoreCosplayerTest extends TestCase
 
         $response = $this->storeCosplayer($cosplayer);
 
-
         $this->assertSame(0, Cosplayer::count());
         $response->assertStatus(403);
     }

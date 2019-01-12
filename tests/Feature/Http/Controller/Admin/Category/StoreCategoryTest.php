@@ -19,7 +19,7 @@ class StoreCategoryTest extends TestCase
 {
     use RefreshDatabase;
 
-       public function test_admin_can_store_a_category()
+    public function test_admin_can_store_a_category()
     {
         $this->actingAsAdmin();
         $category = factory(Category::class)->make();

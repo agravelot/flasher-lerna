@@ -68,8 +68,9 @@ class UpdateCategoryTest extends TestCase
     {
         $this->actingAsUser();
         $category = factory(Category::class)->create();
+        $categoryUpdate = factory(Category::class)->make();
 
-        $response = $this->updateCategory(self::CATEGORY_DATA, $category);
+        $response = $this->updateCategory($categoryUpdate, $category->slug);
 
         $this->assertSame(1, Category::count());
         $this->assertSame($category->id, $category->fresh()->id);
@@ -81,8 +82,9 @@ class UpdateCategoryTest extends TestCase
     public function test_guest_can_not_update_a_category_and_is_redirected_to_login()
     {
         $category = factory(Category::class)->create();
+        $categoryUpdate = factory(Category::class)->make();
 
-        $response = $this->updateCategory(self::CATEGORY_DATA, $category);
+        $response = $this->updateCategory($categoryUpdate, $category->slug);
 
         $this->assertSame(1, Category::count());
         $this->assertSame($category->id, $category->fresh()->id);
