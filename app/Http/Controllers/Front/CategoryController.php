@@ -34,7 +34,9 @@ class CategoryController extends Controller
      */
     public function show(string $slug)
     {
-        $category = Category::findBySlugOrFail($slug);
+        $category = Category::with(['albums.media', 'albums.categories'])
+            ->whereSlug($slug)
+            ->firstOrFail();
 
         return view('categories.show', ['category' => $category]);
     }

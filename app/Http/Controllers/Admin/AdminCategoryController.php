@@ -35,7 +35,6 @@ class AdminCategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return \Illuminate\Http\Response
@@ -43,7 +42,9 @@ class AdminCategoryController extends Controller
     public function show(string $slug)
     {
         $this->authorize('view', Category::class);
-        $category = Category::findBySlugOrFail($slug);
+        $category = Category::with(['albums.media', 'albums.categories'])
+            ->whereSlug($slug)
+            ->firstOrFail();
         $this->authorize('view', $category);
 
         return view('admin.categories.show', ['category' => $category]);
@@ -51,7 +52,6 @@ class AdminCategoryController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
@@ -116,7 +116,6 @@ class AdminCategoryController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
