@@ -129,14 +129,6 @@ class AlbumTest extends ModelTestCase
         $this->assertSame($knownDate->format('Y-m-d H:i:s'), $album->published_at->format('Y-m-d H:i:s'));
     }
 
-    public function test_set_published_at_with_false_is_null()
-    {
-        $album = factory(Album::class)->make();
-        $album->published_at = false;
-
-        $this->assertNull($album->published_at);
-    }
-
     public function test_set_published_at_with_date()
     {
         $knownDate = Carbon::create(2018, 5, 21, 12);

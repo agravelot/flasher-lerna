@@ -10,7 +10,6 @@
 namespace App\Models;
 
 use App\Scope\PublicScope;
-use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Builder;
@@ -93,17 +92,6 @@ class Album extends Model implements HasMedia
     {
         if ($value !== null) {
             $this->attributes['password'] = Hash::make($value);
-        }
-    }
-
-    public function setPublishedAtAttribute($value)
-    {
-        if ($value == true) {
-            $this->attributes['published_at'] = Carbon::now();
-        } elseif ($value == false) {
-            $this->attributes['published_at'] = null;
-        } else {
-            $this->attributes['published_at'] = $value;
         }
     }
 

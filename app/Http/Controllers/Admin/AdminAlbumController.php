@@ -14,6 +14,7 @@ use App\Http\Requests\AlbumRequest;
 use App\Models\Album;
 use App\Models\Category;
 use App\Models\Cosplayer;
+use Carbon\Carbon;
 use Spatie\MediaLibrary\FileAdder\FileAdder;
 
 class AdminAlbumController extends Controller
@@ -52,6 +53,7 @@ class AdminAlbumController extends Controller
         return view('admin.albums.create', [
             'categories' => $categories,
             'cosplayers' => $cosplayers,
+            'currentDate' => Carbon::now(),
         ]);
     }
 
@@ -130,6 +132,7 @@ class AdminAlbumController extends Controller
             'album' => $album,
             'categories' => Category::all(),
             'cosplayers' => Cosplayer::all(),
+            'currentDate' => Carbon::now(),
         ]);
     }
 

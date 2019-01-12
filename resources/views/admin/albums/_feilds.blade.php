@@ -89,12 +89,18 @@
                     <div class="control">
                         <label class="radio">
                             <input type="radio" name="published_at"
-                                   value="1" {{ old('published_at', isset($album->published_at) && $album->isPublished()) ? 'checked="checked"' : null  }}>
+                                   value="{{ isset($album->published_at) ? $album->published_at : $currentDate}}"
+                                   {{ old('published_at', isset($album->published_at) && $album->isPublished())
+                                   ? 'checked="checked"' : ''  }}
+                            >
                             Publish
                         </label>
                         <label class="radio">
                             <input type="radio" name="published_at"
-                                   value="0" {{ old('published_at', isset($album->published_at) && $album->isPublished()) ? null : 'checked="checked"' }}>
+                                   value=""
+                                   {{ old('published_at', isset($album->published_at) && $album->isPublished())
+                                   ? '' : 'checked="checked"' }}
+                            >
                             Draft
                         </label>
                     </div>

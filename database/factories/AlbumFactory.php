@@ -9,6 +9,7 @@
 
 use App\Models\Album;
 use Faker\Generator as Faker;
+use Illuminate\Support\Carbon;
 
 $withMedias = false;
 
@@ -40,7 +41,7 @@ $factory->state(Album::class, 'withMedias', function () use (&$withMedias) {
 
 $factory->state(Album::class, 'published', function () {
     return [
-        'published_at' => true,
+        'published_at' => Carbon::now(),
     ];
 });
 
