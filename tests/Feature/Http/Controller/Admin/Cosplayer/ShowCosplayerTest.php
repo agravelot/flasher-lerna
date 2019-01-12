@@ -42,7 +42,7 @@ class ShowCosplayerTest extends TestCase
         $cosplayer = factory(Cosplayer::class)->create();
         $albums = factory(Album::class, 2)
             ->states(['published', 'passwordLess'])
-            ->create(['user_id' => factory(User::class)->create()->id]);
+            ->make(['user_id' => factory(User::class)->create()->id]);
         $cosplayer->albums()->saveMany($albums);
 
         $response = $this->showCosplayer($cosplayer);
