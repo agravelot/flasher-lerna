@@ -14,6 +14,7 @@ use App\Http\Requests\AlbumRequest;
 use App\Models\Album;
 use App\Models\Category;
 use App\Models\Cosplayer;
+use App\Scope\PublicScope;
 use Carbon\Carbon;
 use Spatie\MediaLibrary\FileAdder\FileAdder;
 
@@ -29,7 +30,10 @@ class AdminAlbumController extends Controller
     public function index()
     {
         $this->authorize('index', Album::class);
-        $albums = Album::latestWithPagination();
+        $albums = Album::withoutGlobalScope(PublicScope::class)
+            ->with(['media', 'categories'])
+            ->latest()
+            ->paginate(10);
 
         return view('admin.albums.index', [
             'albums' => $albums,

@@ -22,7 +22,9 @@ class AlbumController extends Controller
      */
     public function index()
     {
-        $albums = Album::latestWithPagination();
+        $albums = Album::with(['media', 'categories'])
+            ->latest()
+            ->paginate(10);
 
         return view('albums.index', ['albums' => $albums]);
     }
