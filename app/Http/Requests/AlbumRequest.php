@@ -33,7 +33,7 @@ class AlbumRequest extends Request
         ];
 
         if ($this->method() === 'POST') {
-            array_merge($rules, [
+            $rules = array_merge($rules, [
                 'pictures' => 'required|array',
                 'pictures.*' => 'file|image|mimetypes:image/*|max:20000',
             ]);
