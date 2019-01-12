@@ -19,6 +19,7 @@ $factory->define(App\Models\Album::class, function (Faker $faker) use (&$withMed
     return [
         'title' => $faker->sentence,
         'body' => $faker->paragraph($faker->numberBetween(42, 420)),
+        'published_at' => $faker->dateTime,
     ];
 });
 
