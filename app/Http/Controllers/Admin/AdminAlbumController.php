@@ -92,7 +92,7 @@ class AdminAlbumController extends Controller
             Cosplayer::saveRelation($cosplayers, $album);
         }
 
-        return redirect(route('admin.albums.show', ['album' => $album]));
+        return redirect(route('admin.albums.index'));
     }
 
     /**
