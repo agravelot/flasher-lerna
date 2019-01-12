@@ -53,8 +53,11 @@ class UpdateUserTest extends TestCase
         return $this->patch('/admin/users/' . $user->id, $data);
     }
 
-    public function test_admin_can_update_a_users_without_changing_values()
+    public function test_admin_can_update_a_users_without_changing_values_and_empty_password()
     {
+        NoCaptcha::shouldReceive('verifyResponse')
+            ->once()
+            ->andReturn(true);
         $this->actingAsAdmin();
         $user = factory(User::class)->create();
 
@@ -62,6 +65,8 @@ class UpdateUserTest extends TestCase
             'name' => $user->name,
             'email' => $user->email,
             'cosplayer' => null,
+            'password' => '',
+            'password_confirmation' => '',
             'g-recaptcha-response' => '1',
         ], $user);
 
