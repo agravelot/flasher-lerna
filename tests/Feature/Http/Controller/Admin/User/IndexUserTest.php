@@ -52,7 +52,7 @@ class IndexUserTest extends TestCase
 
     public function test_admin_can_view_index_page_with_no_user()
     {
-        $this->actingAsAdmin();
+        $this->actingAsAdminNotStored();
 
         $response = $this->showUserIndex();
 

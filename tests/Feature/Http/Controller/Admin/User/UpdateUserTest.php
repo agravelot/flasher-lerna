@@ -31,9 +31,6 @@ class UpdateUserTest extends TestCase
 
     public function test_admin_can_update_a_user()
     {
-        NoCaptcha::shouldReceive('verifyResponse')
-            ->once()
-            ->andReturn(true);
         $this->actingAsAdmin();
         $user = factory(User::class)->create();
         $updateUser = factory(User::class)->make(self::USER_DATA);
@@ -59,9 +56,6 @@ class UpdateUserTest extends TestCase
 
     public function test_admin_can_update_a_users_without_changing_values_and_empty_password()
     {
-        NoCaptcha::shouldReceive('verifyResponse')
-            ->once()
-            ->andReturn(true);
         $this->actingAsAdmin();
         $user = factory(User::class)->create();
         $updateUser = factory(User::class)->make([
