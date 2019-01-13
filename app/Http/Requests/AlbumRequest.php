@@ -30,12 +30,12 @@ class AlbumRequest extends Request
             'categories.*' => 'integer|min:1',
             'cosplayers' => 'array',
             'cosplayers.*' => 'integer|min:1',
+            'pictures.*' => 'sometimes|file|image|mimetypes:image/*|max:20000',
         ];
 
         if ($this->method() === 'POST') {
             $rules = array_merge($rules, [
                 'pictures' => 'required|array',
-                'pictures.*' => 'file|image|mimetypes:image/*|max:20000',
             ]);
         }
 
