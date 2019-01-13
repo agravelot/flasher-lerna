@@ -98,7 +98,8 @@ class AdminAlbumController extends Controller
             Cosplayer::saveRelation($cosplayers, $album);
         }
 
-        return redirect(route('admin.albums.index'));
+        return redirect(route('admin.albums.index'))
+            ->withSuccess('Album successfully created');
     }
 
     /**
@@ -112,7 +113,9 @@ class AdminAlbumController extends Controller
     public function show(string $slug)
     {
         $this->authorize('view', Album::class);
-        $album = Album::findBySlugOrFail($slug);
+        $album = Album::withoutGlobalScope(PublicScope::class)
+            ->whereSlug($slug)
+            ->firstOrFail();
         $this->authorize('view', $album);
 
         return view('admin.albums.show', ['album' => $album]);
@@ -121,7 +124,6 @@ class AdminAlbumController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return \Illuminate\Http\Response
@@ -129,7 +131,9 @@ class AdminAlbumController extends Controller
     public function edit(string $slug)
     {
         $this->authorize('update', Album::class);
-        $album = Album::findBySlugOrFail($slug);
+        $album = Album::withoutGlobalScope(PublicScope::class)
+            ->whereSlug($slug)
+            ->firstOrFail();
         $this->authorize('update', $album);
 
         return view('admin.albums.edit', [
@@ -143,17 +147,16 @@ class AdminAlbumController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param $id
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Exception
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(AlbumRequest $request, $id)
+    public function update(AlbumRequest $request, string $slug)
     {
         $this->authorize('update', Album::class);
-        $album = Album::find($id);
+        $album = Album::withoutGlobalScope(PublicScope::class)
+            ->whereSlug($slug)
+            ->firstOrFail();
         $this->authorize('update', $album);
         $validated = $request->validated();
         $album->update($validated);
@@ -185,13 +188,12 @@ class AdminAlbumController extends Controller
             Cosplayer::saveRelation($cosplayers, $album);
         }
 
-        return redirect(route('admin.albums.show', ['album' => $album]))
+        return redirect(route('admin.albums.index'))
             ->withSuccess('Album successfully updated');
     }
 
     /**
      * Remove the specified resource from storage.
-     *
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
@@ -200,7 +202,9 @@ class AdminAlbumController extends Controller
     public function destroy(string $slug)
     {
         $this->authorize('delete', Album::class);
-        $album = Album::findBySlugOrFail($slug);
+        $album = Album::withoutGlobalScope(PublicScope::class)
+            ->whereSlug($slug)
+            ->firstOrFail();
         $this->authorize('delete', $album);
 
         $album->delete();
