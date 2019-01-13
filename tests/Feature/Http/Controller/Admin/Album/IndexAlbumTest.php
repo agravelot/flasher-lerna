@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace Tests\Feature\Http\Controller\Admin\Album;
 
 use App\Models\Album;
@@ -20,7 +27,6 @@ class IndexAlbumTest extends TestCase
         $response->assertStatus(200)
             ->assertSeeInOrder($albums->pluck('title')->toArray());
     }
-
 
     public function test_admin_can_view_unpublished_albums()
     {
