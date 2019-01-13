@@ -58,6 +58,11 @@ class Category extends Model
         return $this->morphedByMany(Album::class, 'categorizable');
     }
 
+    public function publishedAlbums()
+    {
+        return $this->morphedByMany(PublicAlbum::class, 'categorizable');
+    }
+
     /**
      * Return the sluggable configuration array for this model.
      *

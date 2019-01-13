@@ -34,7 +34,7 @@ class CategoryController extends Controller
      */
     public function show(string $slug)
     {
-        $category = Category::with(['albums.media', 'albums.categories'])
+        $category = Category::with(['publishedAlbums.media', 'publishedAlbums.categories'])
             ->whereSlug($slug)
             ->firstOrFail();
 
