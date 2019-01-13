@@ -22,9 +22,7 @@
                     <p class="has-text-justified">{!! $cosplayer->description  !!}</p>
                 </div>
                 <div class="tags">
-                    @foreach($cosplayer->categories as $category)
-                        <span class="tag">{{ $category->name }}</span>
-                    @endforeach
+                    @each('categories.partials._category_tag', $album->categories, 'category')
                 </div>
             </div>
         </div>
