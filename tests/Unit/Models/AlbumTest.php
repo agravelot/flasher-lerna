@@ -156,7 +156,9 @@ class AlbumTest extends ModelTestCase
 
         $albums = Album::all();
 
-        $this->assertTrue($albums->isEmpty());
+        $this->assertSame(2, Album::count());
+        $this->assertTrue($albums->contains($albums->get(0)));
+        $this->assertTrue($albums->contains($albums->get(1)));
     }
 
     public function test_album_with_a_password_are_not_visible()
@@ -165,7 +167,9 @@ class AlbumTest extends ModelTestCase
 
         $albums = Album::all();
 
-        $this->assertTrue($albums->isEmpty());
+        $this->assertSame(2, Album::count());
+        $this->assertTrue($albums->contains($albums->get(0)));
+        $this->assertTrue($albums->contains($albums->get(1)));
     }
 
     public function test_album_with_a_published_at_date_and_password_are_unpublished()
@@ -174,7 +178,7 @@ class AlbumTest extends ModelTestCase
 
         $albums = Album::all();
 
-        $this->assertSame(0, $albums->count());
+        $this->assertSame(2, $albums->count());
     }
 
     public function test_count_four_published_albums_should_be_four()
@@ -194,9 +198,13 @@ class AlbumTest extends ModelTestCase
     {
         factory(Album::class, 4)->states(['unpublished', 'passwordLess', 'withUser'])->create();
 
-        $all = Album::all();
+        $albums = Album::all();
 
-        $this->assertTrue($all->isEmpty());
+        $this->assertSame(4, Album::count());
+        $this->assertTrue($albums->contains($albums->get(0)));
+        $this->assertTrue($albums->contains($albums->get(1)));
+        $this->assertTrue($albums->contains($albums->get(2)));
+        $this->assertTrue($albums->contains($albums->get(3)));
     }
 
     public function test_album_with_a_published_at_date_are_published_without_public_criteria()
