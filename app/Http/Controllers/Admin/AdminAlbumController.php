@@ -14,7 +14,6 @@ use App\Http\Requests\AlbumRequest;
 use App\Models\Album;
 use App\Models\Category;
 use App\Models\Cosplayer;
-use App\Scope\PublicScope;
 use Carbon\Carbon;
 use Spatie\MediaLibrary\FileAdder\FileAdder;
 
@@ -30,8 +29,7 @@ class AdminAlbumController extends Controller
     public function index()
     {
         $this->authorize('index', Album::class);
-        $albums = Album::withoutGlobalScope(PublicScope::class)
-            ->with(['media', 'categories'])
+        $albums = Album::with(['media', 'categories'])
             ->latest()
             ->paginate(10);
 
@@ -113,8 +111,7 @@ class AdminAlbumController extends Controller
     public function show(string $slug)
     {
         $this->authorize('view', Album::class);
-        $album = Album::withoutGlobalScope(PublicScope::class)
-            ->whereSlug($slug)
+        $album = Album::whereSlug($slug)
             ->firstOrFail();
         $this->authorize('view', $album);
 
@@ -131,8 +128,7 @@ class AdminAlbumController extends Controller
     public function edit(string $slug)
     {
         $this->authorize('update', Album::class);
-        $album = Album::withoutGlobalScope(PublicScope::class)
-            ->whereSlug($slug)
+        $album = Album::whereSlug($slug)
             ->firstOrFail();
         $this->authorize('update', $album);
 
@@ -154,8 +150,7 @@ class AdminAlbumController extends Controller
     public function update(AlbumRequest $request, string $slug)
     {
         $this->authorize('update', Album::class);
-        $album = Album::withoutGlobalScope(PublicScope::class)
-            ->whereSlug($slug)
+        $album = Album::whereSlug($slug)
             ->firstOrFail();
         $this->authorize('update', $album);
         $validated = $request->validated();
@@ -202,8 +197,7 @@ class AdminAlbumController extends Controller
     public function destroy(string $slug)
     {
         $this->authorize('delete', Album::class);
-        $album = Album::withoutGlobalScope(PublicScope::class)
-            ->whereSlug($slug)
+        $album = Album::whereSlug($slug)
             ->firstOrFail();
         $this->authorize('delete', $album);
 

@@ -9,7 +9,6 @@
 
 namespace App\Models;
 
-use App\Scope\PublicScope;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Builder;
@@ -73,13 +72,6 @@ class Album extends Model implements HasMedia
     protected $hidden = [
         'password',
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new PublicScope());
-    }
 
     public function scopePublic(Builder $query)
     {
