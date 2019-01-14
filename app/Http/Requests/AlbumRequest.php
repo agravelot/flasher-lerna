@@ -21,21 +21,21 @@ class AlbumRequest extends Request
         $id = $this->route('album');
 
         $rules = [
-            'title' => 'string|required|min:2|max:255|unique:albums,id,' . $id,
+            'title' => 'required|string|min:2|max:255|unique:albums,id,' . $id,
             'seo_title' => 'nullable',
             'body' => 'nullable|max:65000',
-            'published_at' => 'required|boolean',
-            'password' => 'nullable|string|max:128',
+            'published_at' => 'nullable|date',
+            'private' => 'required|boolean',
             'categories' => 'array',
             'categories.*' => 'integer|min:1',
             'cosplayers' => 'array',
             'cosplayers.*' => 'integer|min:1',
+            'pictures.*' => 'sometimes|file|image|mimetypes:image/*|max:20000',
         ];
 
         if ($this->method() === 'POST') {
-            array_merge($rules, [
+            $rules = array_merge($rules, [
                 'pictures' => 'required|array',
-                'pictures.*' => 'file|image|mimetypes:image/*|max:20000',
             ]);
         }
 

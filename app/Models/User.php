@@ -9,7 +9,9 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Abilities\CanResetPassword;
+use App\Abilities\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailInterface;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
@@ -18,21 +20,36 @@ use Lab404\Impersonate\Models\Impersonate;
 /**
  * App\Models\User.
  *
- * @property int                                                                                                       $id
- * @property string                                                                                                    $name
- * @property string                                                                                                    $email
- * @property string                                                                                                    $password
- * @property string                                                                                                    $role
- * @property string|null                                                                                               $email_verified_at
- * @property string|null                                                                                               $remember_token
- * @property \Illuminate\Support\Carbon|null                                                                           $created_at
- * @property \Illuminate\Support\Carbon|null                                                                           $updated_at
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Album[]                                              $albums
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Contact[]                                            $contact
- * @property \App\Models\Cosplayer                                                                                     $cosplayer
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\GoldenBookPost[]                                     $goldenBookPosts
- * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Post[]                                               $posts
+ * @property int
+ *           $id
+ * @property string
+ *           $name
+ * @property string
+ *           $email
+ * @property string
+ *           $password
+ * @property string
+ *           $role
+ * @property string|null
+ *           $email_verified_at
+ * @property string|null
+ *           $remember_token
+ * @property \Illuminate\Support\Carbon|null
+ *           $created_at
+ * @property \Illuminate\Support\Carbon|null
+ *           $updated_at
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Album[]
+ *           $albums
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Contact[]
+ *           $contact
+ * @property \App\Models\Cosplayer
+ *           $cosplayer
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\GoldenBookPost[]
+ *           $goldenBookPosts
+ * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[]
+ *           $notifications
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Post[]
+ *           $posts
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
@@ -48,9 +65,9 @@ use Lab404\Impersonate\Models\Impersonate;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmailInterface
 {
-    use Notifiable, Impersonate;
+    use MustVerifyEmail, CanResetPassword, Notifiable, Impersonate;
 
     /**
      * The attributes that are mass assignable.

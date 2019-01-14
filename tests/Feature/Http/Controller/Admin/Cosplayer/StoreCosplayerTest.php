@@ -19,41 +19,36 @@ class StoreCosplayerTest extends TestCase
 {
     use RefreshDatabase;
 
-    const COSPLAYER_DATA = [
-        'name' => 'A cosplayer name',
-        'description' => 'A random description',
-    ];
-
     public function test_admin_can_store_a_cosplayer()
     {
         $this->actingAsAdmin();
+        $cosplayer = factory(Cosplayer::class)->make();
 
-        $response = $this->storeCosplayer(self::COSPLAYER_DATA);
+        $response = $this->storeCosplayer($cosplayer);
 
         $this->assertSame(1, Cosplayer::count());
         $response->assertStatus(302)
             ->assertRedirect('/admin/cosplayers');
         $this->followRedirects($response)
             ->assertStatus(200)
-            ->assertSee(self::COSPLAYER_DATA['name'])
+            ->assertSee($cosplayer->name)
             ->assertSee('Cosplayer successfully added')
-            ->assertDontSee(self::COSPLAYER_DATA['description']);
+            ->assertDontSee($cosplayer->description);
     }
 
-    private function storeCosplayer(array $data): TestResponse
+    private function storeCosplayer(Cosplayer $cosplayer): TestResponse
     {
         session()->setPreviousUrl('/admin/cosplayers/create');
 
-        return $this->post('/admin/cosplayers', $data);
+        return $this->post('/admin/cosplayers', $cosplayer->toArray());
     }
 
     public function test_admin_can_not_create_two_cosplayers_with_the_same_name_and_redirect_with_error()
     {
         $this->actingAsAdmin();
-
         $cosplayer = factory(Cosplayer::class)->create();
 
-        $response = $this->storeCosplayer(['name' => $cosplayer->name]);
+        $response = $this->storeCosplayer($cosplayer);
 
         $this->assertSame(1, Cosplayer::count());
         $response->assertStatus(302)
@@ -66,8 +61,9 @@ class StoreCosplayerTest extends TestCase
     public function test_user_can_not_store_a_cosplayer()
     {
         $this->actingAsUser();
+        $cosplayer = factory(Cosplayer::class)->make();
 
-        $response = $this->storeCosplayer(self::COSPLAYER_DATA);
+        $response = $this->storeCosplayer($cosplayer);
 
         $this->assertSame(0, Cosplayer::count());
         $response->assertStatus(403);
@@ -75,7 +71,9 @@ class StoreCosplayerTest extends TestCase
 
     public function test_guest_can_not_store_a_cosplayer_and_is_redirected_to_login()
     {
-        $response = $this->storeCosplayer(self::COSPLAYER_DATA);
+        $cosplayer = factory(Cosplayer::class)->make();
+
+        $response = $this->storeCosplayer($cosplayer);
 
         $this->assertSame(0, Cosplayer::count());
         $response->assertStatus(302)

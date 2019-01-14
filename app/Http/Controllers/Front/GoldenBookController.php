@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GoldenBookRequest;
+use App\Models\ActiveGoldenBookPost;
 use App\Models\GoldenBookPost;
 
 class GoldenBookController extends Controller
@@ -22,7 +23,7 @@ class GoldenBookController extends Controller
      */
     public function index()
     {
-        $goldenBooksPosts = GoldenBookPost::latest()->get();
+        $goldenBooksPosts = ActiveGoldenBookPost::latest()->get();
 
         return view('goldenbook.index', ['goldenBooksPosts' => $goldenBooksPosts]);
     }

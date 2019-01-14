@@ -6,6 +6,7 @@
         'route' => route('admin.albums.store'),
         'categories' => $categories,
         'cosplayers' => $cosplayers,
+        'currentDate' => $currentDate,
     ])
 
 @endsection

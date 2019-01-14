@@ -9,13 +9,10 @@
 
 namespace App\Models;
 
-use App\Scope\PublicScope;
-use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Hash;
 use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -58,53 +55,23 @@ class Album extends Model implements HasMedia
 {
     use Sluggable, SluggableScopeHelpers, HasMediaTrait;
 
-    /**
-     * The "booting" method of the model.
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new PublicScope());
-    }
-
     protected $fillable = [
-        'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id', 'password',
-    ];
-
-    protected $hidden = [
-        'password',
+        'title',
+        'slug',
+        'seo_title',
+        'excerpt',
+        'body',
+        'meta_description',
+        'meta_keywords',
+        'published_at',
+        'user_id',
+        'private',
     ];
 
     public function scopePublic(Builder $query)
     {
         $query->whereNotNull('published_at')
-            ->whereNull('password');
-    }
-
-    public static function latestWithPagination()
-    {
-        return self::with(['media', 'categories'])
-            ->latest()
-            ->paginate(10);
-    }
-
-    public function setPasswordAttribute($value)
-    {
-        if ($value !== null) {
-            $this->attributes['password'] = Hash::make($value);
-        }
-    }
-
-    public function setPublishedAtAttribute($value)
-    {
-        if ($value == true) {
-            $this->attributes['published_at'] = Carbon::now();
-        } elseif ($value == false) {
-            $this->attributes['published_at'] = null;
-        } else {
-            $this->attributes['published_at'] = $value;
-        }
+            ->where('private', false);
     }
 
     public function isPublic()
@@ -119,7 +86,7 @@ class Album extends Model implements HasMedia
 
     public function isPasswordLess()
     {
-        return $this->password === null;
+        return $this->private == false;
     }
 
     public function user()

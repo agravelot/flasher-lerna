@@ -14,7 +14,6 @@ use App\Scope\PublicScope;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Hash;
 use Tests\ModelTestCase;
 
 class AlbumTest extends ModelTestCase
@@ -54,9 +53,8 @@ class AlbumTest extends ModelTestCase
     public function testModelConfiguration()
     {
         $this->runConfigurationAssertions(new Album(), [
-            'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id', 'password',
-        ],
-            ['password']);
+            'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id', 'private',
+        ]);
     }
 
     public function testBelongsToManyAlbumsRelationship()
@@ -95,15 +93,6 @@ class AlbumTest extends ModelTestCase
         $this->assertFalse($album->isPublic());
     }
 
-    public function test_password_should_be_hashed()
-    {
-        $album = factory(Album::class)->make([
-            'password' => 'secret',
-        ]);
-
-        $this->assertTrue(Hash::check('secret', $album->password));
-    }
-
     public function test_album_without_password_is_passwordLess()
     {
         /** @var Album $album */
@@ -129,14 +118,6 @@ class AlbumTest extends ModelTestCase
         $this->assertSame($knownDate->format('Y-m-d H:i:s'), $album->published_at->format('Y-m-d H:i:s'));
     }
 
-    public function test_set_published_at_with_false_is_null()
-    {
-        $album = factory(Album::class)->make();
-        $album->published_at = false;
-
-        $this->assertNull($album->published_at);
-    }
-
     public function test_set_published_at_with_date()
     {
         $knownDate = Carbon::create(2018, 5, 21, 12);
@@ -153,62 +134,66 @@ class AlbumTest extends ModelTestCase
 
         $albums = Album::all();
 
+        $this->assertSame(2, $albums->count());
         $this->assertTrue($albums->contains($publishedAlbums->get(0)));
         $this->assertTrue($albums->contains($publishedAlbums->get(1)));
     }
 
     public function test_album_with_unpublished_are_not_visible()
     {
-        $publishedAlbums = factory(Album::class, 2)->states(['unpublished', 'passwordLess', 'withUser'])->create();
+        factory(Album::class, 2)->states(['unpublished', 'passwordLess', 'withUser'])->create();
 
         $albums = Album::all();
 
-        $this->assertFalse($albums->contains($publishedAlbums->get(0)));
-        $this->assertFalse($albums->contains($publishedAlbums->get(1)));
+        $this->assertSame(2, Album::count());
+        $this->assertTrue($albums->contains($albums->get(0)));
+        $this->assertTrue($albums->contains($albums->get(1)));
     }
 
     public function test_album_with_a_password_are_not_visible()
     {
-        $publishedAlbums = factory(Album::class, 2)->states(['published', 'password', 'withUser'])->create();
+        factory(Album::class, 2)->states(['published', 'password', 'withUser'])->create();
 
         $albums = Album::all();
 
-        $this->assertFalse($albums->contains($publishedAlbums->get(0)));
-        $this->assertFalse($albums->contains($publishedAlbums->get(1)));
+        $this->assertSame(2, Album::count());
+        $this->assertTrue($albums->contains($albums->get(0)));
+        $this->assertTrue($albums->contains($albums->get(1)));
     }
 
     public function test_album_with_a_published_at_date_and_password_are_unpublished()
     {
-        $publishedAlbums = factory(Album::class, 2)->states(['published', 'password', 'withUser'])->create();
+        factory(Album::class, 2)->states(['published', 'password', 'withUser'])->create();
 
         $albums = Album::all();
 
-        $this->assertFalse($albums->contains($publishedAlbums->get(0)));
-        $this->assertFalse($albums->contains($publishedAlbums->get(1)));
+        $this->assertSame(2, $albums->count());
     }
 
     public function test_count_four_published_albums_should_be_four()
     {
-        $albums = factory(Album::class, 4)->states(['published', 'passwordLess', 'withUser'])->create();
+        $publishedAlbums = factory(Album::class, 4)->states(['published', 'passwordLess', 'withUser'])->create();
 
-        $all = Album::all();
+        $albums = Album::all();
 
-        $this->assertTrue($all->contains($albums->get(0)));
-        $this->assertTrue($all->contains($albums->get(1)));
-        $this->assertTrue($all->contains($albums->get(2)));
-        $this->assertTrue($all->contains($albums->get(3)));
+        $this->assertSame(4, $albums->count());
+        $this->assertTrue($albums->contains($publishedAlbums->get(0)));
+        $this->assertTrue($albums->contains($publishedAlbums->get(1)));
+        $this->assertTrue($albums->contains($publishedAlbums->get(2)));
+        $this->assertTrue($albums->contains($publishedAlbums->get(3)));
     }
 
     public function test_count_four_unpublished_albums_should_be_zero()
     {
-        $albums = factory(Album::class, 4)->states(['unpublished', 'passwordLess', 'withUser'])->create();
+        factory(Album::class, 4)->states(['unpublished', 'passwordLess', 'withUser'])->create();
 
-        $all = Album::all();
+        $albums = Album::all();
 
-        $this->assertFalse($all->contains($albums->get(0)));
-        $this->assertFalse($all->contains($albums->get(1)));
-        $this->assertFalse($all->contains($albums->get(2)));
-        $this->assertFalse($all->contains($albums->get(3)));
+        $this->assertSame(4, Album::count());
+        $this->assertTrue($albums->contains($albums->get(0)));
+        $this->assertTrue($albums->contains($albums->get(1)));
+        $this->assertTrue($albums->contains($albums->get(2)));
+        $this->assertTrue($albums->contains($albums->get(3)));
     }
 
     public function test_album_with_a_published_at_date_are_published_without_public_criteria()

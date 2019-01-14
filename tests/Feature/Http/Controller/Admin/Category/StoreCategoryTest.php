@@ -19,55 +19,52 @@ class StoreCategoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    const CATEGORY_DATA = [
-        'name' => 'A category name',
-        'description' => 'A random description',
-    ];
-
     public function test_admin_can_store_a_category()
     {
         $this->actingAsAdmin();
+        $category = factory(Category::class)->make();
 
-        $response = $this->storeCategory(self::CATEGORY_DATA);
+        $response = $this->storeCategory($category);
 
         $this->assertSame(1, Category::count());
         $response->assertStatus(302)
             ->assertRedirect('/admin/categories');
         $this->followRedirects($response)
             ->assertStatus(200)
-            ->assertSee(self::CATEGORY_DATA['name'])
+            ->assertSee($category->name)
             ->assertSee('Category successfully added')
-            ->assertDontSee(self::CATEGORY_DATA['description']);
+            ->assertDontSee($category->description);
     }
 
-    private function storeCategory(array $data): TestResponse
+    private function storeCategory(Category $category): TestResponse
     {
         session()->setPreviousUrl('/admin/categories/create');
 
-        return $this->post('/admin/categories', $data);
+        return $this->post('/admin/categories', $category->toArray());
     }
 
     public function test_admin_can_not_create_two_categories_with_the_same_name_and_redirect_with_error()
     {
         $this->actingAsAdmin();
-
         $category = factory(Category::class)->create();
+        $duplicateNameCategory = factory(Category::class)->make(['name' => $category->name]);
 
-        $response = $this->storeCategory(['name' => $category->name]);
+        $response = $this->storeCategory($duplicateNameCategory);
 
         $this->assertSame(1, Category::count());
         $response->assertStatus(302)
             ->assertRedirect('/admin/categories/create');
         $this->followRedirects($response)
             ->assertStatus(200)
-            ->assertSee(' The name has already been taken.');
+            ->assertSee('The name has already been taken.');
     }
 
     public function test_user_can_not_store_a_category()
     {
         $this->actingAsUser();
+        $category = factory(Category::class)->make();
 
-        $response = $this->storeCategory(self::CATEGORY_DATA);
+        $response = $this->storeCategory($category);
 
         $this->assertSame(0, Category::count());
         $response->assertStatus(403);
@@ -75,7 +72,9 @@ class StoreCategoryTest extends TestCase
 
     public function test_guest_can_not_store_a_category_and_is_redirected_to_login()
     {
-        $response = $this->storeCategory(self::CATEGORY_DATA);
+        $category = factory(Category::class)->make();
+
+        $response = $this->storeCategory($category);
 
         $this->assertSame(0, Category::count());
         $response->assertStatus(302)

@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Models\Album;
+use App\Models\PublicAlbum;
 use Spatie\MediaLibrary\MediaStream;
 
 class AlbumController extends Controller
@@ -22,7 +22,9 @@ class AlbumController extends Controller
      */
     public function index()
     {
-        $albums = Album::latestWithPagination();
+        $albums = PublicAlbum::with(['media', 'categories'])
+            ->latest()
+            ->paginate(10);
 
         return view('albums.index', ['albums' => $albums]);
     }
@@ -37,7 +39,7 @@ class AlbumController extends Controller
      */
     public function show(string $slug)
     {
-        $album = Album::findBySlugOrFail($slug);
+        $album = PublicAlbum::findBySlugOrFail($slug);
         $this->authorize('view', $album);
 
         return view('albums.show', ['album' => $album]);
@@ -50,7 +52,7 @@ class AlbumController extends Controller
      */
     public function download(string $slug)
     {
-        $album = Album::findBySlugOrFail($slug);
+        $album = PublicAlbum::findBySlugOrFail($slug);
         $this->authorize('download', $album);
         $pictures = $album->getMedia('pictures');
 

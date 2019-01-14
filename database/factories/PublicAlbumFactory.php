@@ -8,24 +8,25 @@
  */
 
 use App\Models\Album;
+use App\Models\PublicAlbum;
 use Faker\Generator as Faker;
 use Illuminate\Support\Carbon;
 
 $withMedias = false;
 
 /* @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(Album::class, function (Faker $faker) use (&$withMedias) {
+$factory->define(PublicAlbum::class, function (Faker $faker) use (&$withMedias) {
     $withMedias = false;
 
     return [
         'title' => $faker->sentence,
         'body' => $faker->paragraph($faker->numberBetween(42, 420)),
-        'published_at' => null,
-        'private' => $faker->boolean,
+        'published_at' => Carbon::now(),
+        'private' => false,
     ];
 });
 
-$factory->afterMaking(Album::class, function (Album $album, Faker $faker) use (&$withMedias) {
+$factory->afterMaking(PublicAlbum::class, function (Album $album, Faker $faker) use (&$withMedias) {
     if ($withMedias) {
         foreach (range(1, 5) as $i) {
             $album->addMediaFromUrl($faker->imageUrl())
@@ -34,37 +35,37 @@ $factory->afterMaking(Album::class, function (Album $album, Faker $faker) use (&
     }
 });
 
-$factory->state(Album::class, 'withMedias', function () use (&$withMedias) {
+$factory->state(PublicAlbum::class, 'withMedias', function () use (&$withMedias) {
     $withMedias = true;
 
     return [];
 });
 
-$factory->state(Album::class, 'published', function () {
+$factory->state(PublicAlbum::class, 'published', function () {
     return [
         'published_at' => Carbon::now(),
     ];
 });
 
-$factory->state(Album::class, 'unpublished', function () {
+$factory->state(PublicAlbum::class, 'unpublished', function () {
     return [
         'published_at' => null,
     ];
 });
 
-$factory->state(Album::class, 'password', function () {
+$factory->state(PublicAlbum::class, 'password', function () {
     return [
         'private' => true,
     ];
 });
 
-$factory->state(Album::class, 'passwordLess', function () {
+$factory->state(PublicAlbum::class, 'passwordLess', function () {
     return [
         'private' => false,
     ];
 });
 
-$factory->state(Album::class, 'withUser', function () {
+$factory->state(PublicAlbum::class, 'withUser', function () {
     return [
         'user_id' => factory(\App\Models\User::class)->create()->id,
     ];

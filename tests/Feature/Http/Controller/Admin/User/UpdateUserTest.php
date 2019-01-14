@@ -33,8 +33,9 @@ class UpdateUserTest extends TestCase
     {
         $this->actingAsAdmin();
         $user = factory(User::class)->create();
+        $updateUser = factory(User::class)->make(self::USER_DATA);
 
-        $response = $this->updateUser(self::USER_DATA, $user);
+        $response = $this->updateUser($updateUser, $user->id);
 
         $this->assertNotSame($user->name, $user->fresh()->name);
         $this->assertNotSame($user->email, $user->fresh()->email);
@@ -46,24 +47,27 @@ class UpdateUserTest extends TestCase
             ->assertDontSee(self::USER_DATA['email']);
     }
 
-    private function updateUser(array $data, User $user): TestResponse
+    private function updateUser(User $user, int $id): TestResponse
     {
-        session()->setPreviousUrl('/admin/users/' . $user->id . '/edit');
+        session()->setPreviousUrl('/admin/users/' . $id . '/edit');
 
-        return $this->patch('/admin/users/' . $user->id, $data);
+        return $this->patch('/admin/users/' . $id, $user->toArray());
     }
 
-    public function test_admin_can_update_a_users_without_changing_values()
+    public function test_admin_can_update_a_users_without_changing_values_and_empty_password()
     {
         $this->actingAsAdmin();
         $user = factory(User::class)->create();
-
-        $response = $this->updateUser([
+        $updateUser = factory(User::class)->make([
             'name' => $user->name,
             'email' => $user->email,
             'cosplayer' => null,
+            'password' => '',
+            'password_confirmation' => '',
             'g-recaptcha-response' => '1',
-        ], $user);
+        ]);
+
+        $response = $this->updateUser($updateUser, $user->id);
 
         $this->assertSame($user->name, $user->fresh()->name);
         $this->assertSame($user->email, $user->fresh()->email);
@@ -84,8 +88,9 @@ class UpdateUserTest extends TestCase
             ->andReturn(true);
         $this->actingAsUser();
         $user = factory(User::class)->create();
+        $updateUser = factory(User::class)->make(self::USER_DATA);
 
-        $response = $this->updateUser(self::USER_DATA, $user);
+        $response = $this->updateUser($updateUser, $user->id);
 
         $this->assertSame($user->title, $user->fresh()->title);
         $this->assertSame($user->email, $user->fresh()->email);
@@ -95,8 +100,9 @@ class UpdateUserTest extends TestCase
     public function test_guest_can_not_update_a_user_and_is_redirected_to_login()
     {
         $user = factory(User::class)->create();
+        $updateUser = factory(User::class)->make(self::USER_DATA);
 
-        $response = $this->updateUser(self::USER_DATA, $user);
+        $response = $this->updateUser($updateUser, $user->id);
 
         $this->assertSame($user->title, $user->fresh()->title);
         $this->assertSame($user->email, $user->fresh()->email);

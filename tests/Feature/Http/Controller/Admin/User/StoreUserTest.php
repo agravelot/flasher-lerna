@@ -38,7 +38,6 @@ class StoreUserTest extends TestCase
         $latestUser = User::latest()->first();
         $this->assertSame(self::USER_DATA['name'], $latestUser->name);
         $this->assertSame(self::USER_DATA['email'], $latestUser->email);
-
         $response->assertStatus(302)
             ->assertRedirect('/admin/users');
         $this->followRedirects($response)
@@ -57,13 +56,12 @@ class StoreUserTest extends TestCase
 
     public function test_admin_can_not_create_two_users_with_the_same_name_and_redirect_with_error()
     {
-        $this->actingAsAdmin();
+        $this->actingAsAdminNotStored();
+        factory(User::class)->create(['name' => self::USER_DATA['name']]);
 
-        $user = factory(User::class)->create();
+        $response = $this->storeUser(self::USER_DATA);
 
-        $response = $this->storeUser(['name' => $user->name]);
-
-        $this->assertTrue($user->is(User::latest()->first()));
+        $this->assertSame(1, User::count());
         $response->assertStatus(302)
             ->assertRedirect('/admin/users/create');
         $this->followRedirects($response)
@@ -73,13 +71,12 @@ class StoreUserTest extends TestCase
 
     public function test_admin_can_not_create_two_users_with_the_same_email_and_redirect_with_error()
     {
-        $this->actingAsAdmin();
+        $this->actingAsAdminNotStored();
+        factory(User::class)->create(['email' => self::USER_DATA['email']]);
 
-        $user = factory(User::class)->create();
+        $response = $this->storeUser(self::USER_DATA);
 
-        $response = $this->storeUser(['email' => $user->email]);
-
-        $this->assertTrue($user->is(User::latest()->first()));
+        $this->assertSame(1, User::count());
         $response->assertStatus(302)
             ->assertRedirect('/admin/users/create');
         $this->followRedirects($response)

@@ -62,17 +62,19 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can update the album.
      */
-    public function update(User $user, Album $album)
+    public function update(User $user, ?Album $album = null)
     {
-        return $user->id == $album->user_id;
+//        return $user->id == $album->user_id;
+        return false;
     }
 
     /**
      * Determine whether the user can delete the album.
      */
-    public function delete(User $user, Album $album)
+    public function delete(User $user, ?Album $album = null)
     {
-        return $user->id == $album->user_id;
+//        return $user->id == $album->user_id;
+        return false;
     }
 
     /**

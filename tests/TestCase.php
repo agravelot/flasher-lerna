@@ -31,16 +31,22 @@ abstract class TestCase extends BaseTestCase
         $this->hotfixSqlite();
     }
 
-    protected function actingAsAdmin()
+    protected function actingAsAdminNotStored()
     {
         $admin = factory(User::class)->state('admin')->make();
         $this->actingAs($admin);
     }
 
+    protected function actingAsAdmin()
+    {
+        $admin = factory(User::class)->state('admin')->create();
+        $this->actingAs($admin);
+    }
+
     protected function actingAsUser()
     {
-        $admin = factory(User::class)->state('user')->make();
-        $this->actingAs($admin);
+        $user = factory(User::class)->state('user')->create();
+        $this->actingAs($user);
     }
 
     public function hotfixSqlite()

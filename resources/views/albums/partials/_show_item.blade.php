@@ -63,13 +63,7 @@
                     <p class="has-text-justified">{!! $album->body  !!}</p>
                 </div>
                 <div class="tags">
-                    @foreach($album->categories as $category)
-                        <span class="tag">
-                            <a href="{{ route('categories.show', ['category' => $category]) }}">
-                                {{$category->name}}
-                            </a>
-                        </span>
-                    @endforeach
+                    @each('categories.partials._category_tag', $album->categories, 'category')
                 </div>
                 <div class="columns is-multiline is-mobile">
                     @each('cosplayers.partials._cosplayer_badge', $album->cosplayers, 'cosplayer')

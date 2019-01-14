@@ -22,9 +22,7 @@
                     <p class="has-text-justified">{!! $cosplayer->description  !!}</p>
                 </div>
                 <div class="tags">
-                    @foreach($cosplayer->categories as $category)
-                        <span class="tag">{{ $category->name }}</span>
-                    @endforeach
+                    @each('categories.partials._category_tag', $cosplayer->categories, 'category')
                 </div>
             </div>
         </div>
@@ -32,7 +30,7 @@
 
     <div class="container is-centered">
         <div class="columns is-multiline is-centered">
-            @each('albums.partials._index_item', $cosplayer->albums, 'album', 'layouts.partials._empty')
+            @each('albums.partials._index_item', $cosplayer->publicAlbums, 'album', 'layouts.partials._empty')
         </div>
         {{--{{ $cosplayer->albums->links() }}--}}
     </div>

@@ -9,7 +9,6 @@
 
 namespace App\Models;
 
-use App\Scope\ActiveScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -44,16 +43,6 @@ class GoldenBookPost extends Model
     protected $fillable = [
         'name', 'body', 'email', 'active',
     ];
-
-    /**
-     * The "booting" method of the model.
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new ActiveScope());
-    }
 
     public function scopeActive(Builder $query)
     {
