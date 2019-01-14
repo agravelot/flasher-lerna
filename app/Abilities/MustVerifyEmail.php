@@ -21,6 +21,6 @@ trait MustVerifyEmail
      */
     public function sendEmailVerificationNotification()
     {
-        $this->notify((new VerifyEmail())->onQueue('email'));
+        $this->notify((new VerifyEmail())->onQueue('emails'));
     }
 }
