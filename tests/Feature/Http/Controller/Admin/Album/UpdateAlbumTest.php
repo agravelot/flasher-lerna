@@ -87,7 +87,6 @@ class UpdateAlbumTest extends TestCase
 
     public function test_admin_can_update_an_album_with_published_now()
     {
-        $this->disableExceptionHandling();
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('published')->create();
         $image = UploadedFile::fake()->image('fake.jpg');

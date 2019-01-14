@@ -14,7 +14,6 @@ use App\Scope\PublicScope;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Hash;
 use Tests\ModelTestCase;
 
 class AlbumTest extends ModelTestCase
@@ -54,9 +53,8 @@ class AlbumTest extends ModelTestCase
     public function testModelConfiguration()
     {
         $this->runConfigurationAssertions(new Album(), [
-            'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id', 'password',
-        ],
-            ['password']);
+            'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id', 'private',
+        ]);
     }
 
     public function testBelongsToManyAlbumsRelationship()
@@ -93,15 +91,6 @@ class AlbumTest extends ModelTestCase
         $album = factory(Album::class)->states(['unpublished', 'password'])->make();
 
         $this->assertFalse($album->isPublic());
-    }
-
-    public function test_password_should_be_hashed()
-    {
-        $album = factory(Album::class)->make([
-            'password' => 'secret',
-        ]);
-
-        $this->assertTrue(Hash::check('secret', $album->password));
     }
 
     public function test_album_without_password_is_passwordLess()

@@ -14,13 +14,14 @@ use Illuminate\Support\Carbon;
 $withMedias = false;
 
 /* @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\Models\Album::class, function (Faker $faker) use (&$withMedias) {
+$factory->define(Album::class, function (Faker $faker) use (&$withMedias) {
     $withMedias = false;
 
     return [
         'title' => $faker->sentence,
         'body' => $faker->paragraph($faker->numberBetween(42, 420)),
         'published_at' => null,
+        'private' => $faker->boolean,
     ];
 });
 
@@ -53,13 +54,13 @@ $factory->state(Album::class, 'unpublished', function () {
 
 $factory->state(Album::class, 'password', function () {
     return [
-        'password' => 'secret',
+        'private' => true,
     ];
 });
 
 $factory->state(Album::class, 'passwordLess', function () {
     return [
-        'password' => null,
+        'private' => false,
     ];
 });
 

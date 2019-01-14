@@ -13,7 +13,6 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Hash;
 use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -66,24 +65,13 @@ class Album extends Model implements HasMedia
         'meta_keywords',
         'published_at',
         'user_id',
-        'password',
-    ];
-
-    protected $hidden = [
-        'password',
+        'private',
     ];
 
     public function scopePublic(Builder $query)
     {
         $query->whereNotNull('published_at')
-            ->whereNull('password');
-    }
-
-    public function setPasswordAttribute($value)
-    {
-        if ($value !== null) {
-            $this->attributes['password'] = Hash::make($value);
-        }
+            ->where('private', false);
     }
 
     public function isPublic()
@@ -98,7 +86,7 @@ class Album extends Model implements HasMedia
 
     public function isPasswordLess()
     {
-        return $this->password === null;
+        return $this->private == false;
     }
 
     public function user()

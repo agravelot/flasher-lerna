@@ -33,14 +33,6 @@
                         </div>
                         @include('layouts.partials._form_errors', ['data' => 'body'])
                     </div>
-
-                    <div class="field">
-                        <label class="label">Password</label>
-                        <div class="control">
-                            <input class="input" id="password" type="password" name="password">
-                        </div>
-                        @include('layouts.partials._form_errors', ['data' => 'password'])
-                    </div>
                 </div>
             </div>
 
@@ -90,21 +82,32 @@
                         <label class="radio">
                             <input type="radio" name="published_at"
                                    value="{{ isset($album->published_at) ? $album->published_at : $currentDate}}"
-                                   {{ old('published_at', isset($album->published_at) && $album->isPublished())
-                                   ? 'checked="checked"' : ''  }}
+                                    {{ old('published_at', isset($album->published_at) && $album->isPublished())
+                                    ? 'checked="checked"' : ''  }}
                             >
                             Publish
                         </label>
                         <label class="radio">
                             <input type="radio" name="published_at"
                                    value=""
-                                   {{ old('published_at', isset($album->published_at) && $album->isPublished())
-                                   ? '' : 'checked="checked"' }}
+                                    {{ old('published_at', isset($album->published_at) && $album->isPublished())
+                                    ? '' : 'checked="checked"' }}
                             >
                             Draft
                         </label>
                     </div>
                     @include('layouts.partials._form_errors', ['data' => 'publish'])
+
+                    <div class="field">
+                        <label class="label">Private</label>
+                        <div class="control">
+                            <input type="hidden" name="private" value="0">
+                            <input class="checkbox" id="private" type="checkbox" name="private" value="1"
+                                    {{ old('private', isset($album) && $album->private) ? 'checked="checked"' : '' }}
+                            >
+                        </div>
+                        @include('layouts.partials._form_errors', ['data' => 'private'])
+                    </div>
                 </div>
 
                 <footer class="card-footer">

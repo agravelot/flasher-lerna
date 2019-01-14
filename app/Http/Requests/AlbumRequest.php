@@ -25,7 +25,7 @@ class AlbumRequest extends Request
             'seo_title' => 'nullable',
             'body' => 'nullable|max:65000',
             'published_at' => 'nullable|date',
-            'password' => 'nullable|string|max:128',
+            'private' => 'required|boolean',
             'categories' => 'array',
             'categories.*' => 'integer|min:1',
             'cosplayers' => 'array',

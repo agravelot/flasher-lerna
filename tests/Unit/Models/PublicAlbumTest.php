@@ -13,7 +13,6 @@ use App\Models\PublicAlbum;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Hash;
 use Tests\ModelTestCase;
 
 class PublicAlbumTest extends ModelTestCase
@@ -53,9 +52,8 @@ class PublicAlbumTest extends ModelTestCase
     public function testModelConfiguration()
     {
         $this->runConfigurationAssertions(new PublicAlbum(), [
-            'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id', 'password',
-        ],
-            ['password']);
+            'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id', 'private',
+        ]);
     }
 
     public function testBelongsToManyPublicAlbumsRelationship()
@@ -68,24 +66,15 @@ class PublicAlbumTest extends ModelTestCase
 
     public function test_album_is_public()
     {
-        $album = factory(PublicAlbum::class)->make();
+        $album = factory(PublicAlbum::class)->states(['passwordLess', 'published'])->make();
 
         $this->assertTrue($album->isPublic());
-    }
-
-    public function test_password_should_be_hashed()
-    {
-        $album = factory(PublicAlbum::class)->make([
-            'password' => 'secret',
-        ]);
-
-        $this->assertTrue(Hash::check('secret', $album->password));
     }
 
     public function test_album_without_password_is_passwordLess()
     {
         /** @var PublicAlbum $album */
-        $album = factory(PublicAlbum::class)->make();
+        $album = factory(PublicAlbum::class)->state('passwordLess')->make();
 
         $this->assertTrue($album->isPasswordLess());
     }

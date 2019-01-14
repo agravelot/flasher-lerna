@@ -22,7 +22,7 @@ $factory->define(PublicAlbum::class, function (Faker $faker) use (&$withMedias) 
         'title' => $faker->sentence,
         'body' => $faker->paragraph($faker->numberBetween(42, 420)),
         'published_at' => Carbon::now(),
-        'password' => null,
+        'private' => false,
     ];
 });
 
@@ -55,13 +55,13 @@ $factory->state(PublicAlbum::class, 'unpublished', function () {
 
 $factory->state(PublicAlbum::class, 'password', function () {
     return [
-        'password' => 'secret',
+        'private' => true,
     ];
 });
 
 $factory->state(PublicAlbum::class, 'passwordLess', function () {
     return [
-        'password' => null,
+        'private' => false,
     ];
 });
 
