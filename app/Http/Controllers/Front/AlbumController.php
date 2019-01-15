@@ -10,6 +10,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Album;
 use App\Models\PublicAlbum;
 use Spatie\MediaLibrary\MediaStream;
 
@@ -32,14 +33,15 @@ class AlbumController extends Controller
     /**
      * Display the specified resource.
      *
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return \Illuminate\Http\Response
      */
     public function show(string $slug)
     {
-        $album = PublicAlbum::findBySlugOrFail($slug);
+        $album = PublicAlbum::with(['cosplayers.media'])
+            ->whereSlug($slug)
+            ->firstOrFail();
         $this->authorize('view', $album);
 
         return view('albums.show', ['album' => $album]);
@@ -52,10 +54,12 @@ class AlbumController extends Controller
      */
     public function download(string $slug)
     {
+        $this->authorize('download', Album::class);
         $album = PublicAlbum::findBySlugOrFail($slug);
         $this->authorize('download', $album);
         $pictures = $album->getMedia('pictures');
 
-        return MediaStream::create($album->slug . '.zip')->addMedia($pictures);
+        return MediaStream::create($album->slug . '.zip')
+            ->addMedia($pictures);
     }
 }

@@ -107,7 +107,8 @@ class AdminAlbumController extends Controller
     public function show(string $slug)
     {
         $this->authorize('view', Album::class);
-        $album = Album::whereSlug($slug)
+        $album = Album::with(['cosplayers.media'])
+            ->whereSlug($slug)
             ->firstOrFail();
         $this->authorize('view', $album);
 

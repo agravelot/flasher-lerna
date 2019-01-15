@@ -43,8 +43,9 @@ class AdminCosplayerController extends Controller
     public function create()
     {
         $this->authorize('create', Cosplayer::class);
+        $users = User::with('cosplayer')->get(['id', 'name']);
 
-        return view('admin.cosplayers.create');
+        return view('admin.cosplayers.create', compact('users'));
     }
 
     /**

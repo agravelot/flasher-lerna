@@ -32,8 +32,10 @@ class CosplayerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Cosplayer $cosplayer)
+    public function show(string $slug)
     {
+        $cosplayer = Cosplayer::with(['publicAlbums.media', 'publicAlbums.categories'])->whereSlug($slug)->firstOrFail();
+
         return view('cosplayers.show', ['cosplayer' => $cosplayer]);
     }
 }
