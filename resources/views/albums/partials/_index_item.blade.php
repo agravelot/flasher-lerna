@@ -21,7 +21,7 @@
                         @foreach($album->categories as $category)
                             <div class="tag">
                                 <a href="{{ route('categories.show', ['category' => $category]) }}">
-                                    {{$category->name}}
+                                    {{ $category->name }}
                                 </a>
                             </div>
                         @endforeach
