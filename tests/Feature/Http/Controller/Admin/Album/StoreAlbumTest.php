@@ -10,6 +10,8 @@
 namespace Tests\Feature\Http\Controller\Admin\Album;
 
 use App\Models\Album;
+use App\Models\Category;
+use App\Models\Cosplayer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Http\UploadedFile;
@@ -49,10 +51,91 @@ class StoreAlbumTest extends TestCase
         $response = $this->storeAlbum($album, ['pictures' => array_wrap($image)]);
 
         $this->assertSame(1, Album::count());
+        $this->assertNotNull(Album::first()->media->first);
         $response->assertRedirect('/admin/albums');
         $this->followRedirects($response)
             ->assertSee($album->title)
             ->assertSee('Album successfully created');
+    }
+
+    public function test_admin_can_store_an_album_with_a_category_and_a_picture()
+    {
+        $this->actingAsAdmin();
+        $album = factory(Album::class)->make();
+        $category = factory(Category::class)->create();
+        $image = UploadedFile::fake()->image('fake.jpg');
+
+        $response = $this->storeAlbum($album, [
+            'categories' => array_wrap($category->id),
+            'pictures' => array_wrap($image),
+        ]);
+
+        $this->assertSame(1, Album::count());
+        $this->assertNotNull(Album::first()->categories->first);
+        $response->assertRedirect('/admin/albums');
+        $this->followRedirects($response)
+            ->assertSee($album->title)
+            ->assertSee('Album successfully created');
+    }
+
+    public function test_admin_can_store_an_album_with_an_inexistant_category_and_a_picture()
+    {
+        $this->actingAsAdmin();
+        $album = factory(Album::class)->make();
+        $image = UploadedFile::fake()->image('fake.jpg');
+
+        $response = $this->storeAlbum($album, [
+            'categories' => array_wrap(42),
+            'pictures' => array_wrap($image),
+        ]);
+
+        $this->assertSame(0, Album::count());
+        $response->assertRedirect('/admin/albums/create');
+        $this->followRedirects($response)
+            ->assertSee($album->title)
+            ->assertSee($album->description)
+            ->assertSee('The selected categories.0 is invalid.')
+            ->assertDontSee('Album successfully created');
+    }
+
+    public function test_admin_can_store_an_album_with_a_cosplayer_and_a_picture()
+    {
+        $this->actingAsAdmin();
+        $album = factory(Album::class)->make();
+        $cosplayer = factory(Cosplayer::class)->create();
+        $image = UploadedFile::fake()->image('fake.jpg');
+
+        $response = $this->storeAlbum($album, [
+            'cosplayers' => array_wrap($cosplayer->id),
+            'pictures' => array_wrap($image),
+        ]);
+
+        $this->assertSame(1, Album::count());
+        $this->assertNotNull(Album::first()->categories->first);
+        $response->assertRedirect('/admin/albums');
+        $this->followRedirects($response)
+            ->assertSee($album->title)
+            ->assertSee('Album successfully created');
+    }
+
+    public function test_admin_can_store_an_album_with_an_inexistant_cosplayer_and_a_picture()
+    {
+        $this->actingAsAdmin();
+        $album = factory(Album::class)->make();
+        $image = UploadedFile::fake()->image('fake.jpg');
+
+        $response = $this->storeAlbum($album, [
+            'cosplayers' => array_wrap(42),
+            'pictures' => array_wrap($image),
+        ]);
+
+        $this->assertSame(0, Album::count());
+        $response->assertRedirect('/admin/albums/create');
+        $this->followRedirects($response)
+            ->assertSee($album->title)
+            ->assertSee($album->description)
+            ->assertSee('The selected cosplayers.0 is invalid.')
+            ->assertDontSee('Album successfully created');
     }
 
     public function test_admin_can_store_an_album_with_a_multiple_pictures()

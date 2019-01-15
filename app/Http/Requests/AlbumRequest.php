@@ -27,9 +27,9 @@ class AlbumRequest extends Request
             'published_at' => 'nullable|date',
             'private' => 'required|boolean',
             'categories' => 'array',
-            'categories.*' => 'integer|min:1',
+            'categories.*' => 'integer|min:1|exists:categories,id',
             'cosplayers' => 'array',
-            'cosplayers.*' => 'integer|min:1',
+            'cosplayers.*' => 'integer|min:1|exists:cosplayers,id',
             'pictures.*' => 'sometimes|file|image|mimetypes:image/*|max:20000',
         ];
 
