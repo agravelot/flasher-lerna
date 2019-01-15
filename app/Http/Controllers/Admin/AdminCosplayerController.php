@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CosplayerRequest;
 use App\Models\Cosplayer;
+use App\Models\User;
 
 class AdminCosplayerController extends Controller
 {
@@ -56,9 +57,7 @@ class AdminCosplayerController extends Controller
     public function store(CosplayerRequest $request)
     {
         $this->authorize('create', Cosplayer::class);
-
         $validated = $request->validated();
-
         $cosplayer = Cosplayer::create($validated);
 
         $key = 'avatar';
@@ -102,8 +101,9 @@ class AdminCosplayerController extends Controller
         $this->authorize('update', Cosplayer::class);
         $cosplayer = Cosplayer::findBySlugOrFail($slug);
         $this->authorize('update', $cosplayer);
+        $users = User::with('cosplayer')->get(['id', 'name']);
 
-        return view('admin.cosplayers.edit', ['cosplayer' => $cosplayer]);
+        return view('admin.cosplayers.edit', compact('cosplayer', 'users'));
     }
 
     /**

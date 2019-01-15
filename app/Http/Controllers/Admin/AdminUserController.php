@@ -43,11 +43,8 @@ class AdminUserController extends Controller
     public function create()
     {
         $this->authorize('create', User::class);
-        $cosplayers = Cosplayer::with('user')->get(['id', 'name']);
 
-        return view('admin.users.create', [
-            'cosplayers' => $cosplayers,
-        ]);
+        return view('admin.users.create');
     }
 
     /**
@@ -60,13 +57,7 @@ class AdminUserController extends Controller
     public function store(UserRequest $request)
     {
         $this->authorize('create', User::class);
-        $user = User::create($request->validated());
-
-        if ($request->has('cosplayer') && $request->validated()['cosplayer'] !== null) {
-            $cosplayerId = $request->validated()['cosplayer'];
-            $cosplayer = Cosplayer::findNotLinkedToUser($cosplayerId);
-            $user->cosplayer()->save($cosplayer);
-        }
+        User::create($request->validated());
 
         return redirect(route('admin.users.index'))
             ->withSuccess('User successfully created');
@@ -125,12 +116,11 @@ class AdminUserController extends Controller
         $user->update($request->validated());
 
         if ($request->has('cosplayer') && $request->validated()['cosplayer'] !== null) {
-            $cosplayer = null;
-            $cosplayerId = $request->validated()['cosplayer'];
-            if ($cosplayerId > 0) {
-                $cosplayer = Cosplayer::findNotLinkedToUser($cosplayerId);
+            try {
+                $cosplayer = Cosplayer::findNotLinkedToUser($request->validated()['cosplayer']);
+                $user->cosplayer()->save($cosplayer);
+            } catch (\Exception $e) {
             }
-            $user->cosplayer()->save($cosplayer);
         }
 
         return redirect(route('admin.users.index'))
