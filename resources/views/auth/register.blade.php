@@ -2,6 +2,8 @@
 
 @section('content')
 
+    @include('layouts.partials._messages')
+
     <div class="container has-text-centered">
         <div class="column is-half is-offset-3">
             <h3 class="title has-text-grey">Register</h3>
