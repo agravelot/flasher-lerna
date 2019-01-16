@@ -1,3 +1,8 @@
 .menu-list a, .hero, .card {
   border-radius: 5px
 }
+
+p {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
