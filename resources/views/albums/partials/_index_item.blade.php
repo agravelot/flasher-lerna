@@ -1,6 +1,6 @@
 <div class="column is-half-tablet is-one-third-widescreen">
     <a href="{{ route('albums.show', ['album' => $album]) }}">
-        <div class="card large">
+        <div class="card">
             <div class="card-image">
                 <figure class="image">
                     <img src="{{ $album->getFirstMediaUrl('pictures', 'thumb')  }}" alt="">
@@ -8,16 +8,11 @@
             </div>
 
             <div class="card-content">
-                <div class="media">
-                    <div class="media-content">
-                        <p class="subtitle is-5">{{ $album->title }}</p>
-                    </div>
-                </div>
                 <div class="content">
-
+                    <p class="title is-5">{{ $album->title }}</p>
                 </div>
-                @if (isset($album->categories))
-                    <div class="tags">
+                @if (!$album->categories->isEmpty())
+                    <div class="tags has-margin-top-md">
                         @foreach($album->categories as $category)
                             <div class="tag">
                                 <a href="{{ route('categories.show', ['category' => $category]) }}">
