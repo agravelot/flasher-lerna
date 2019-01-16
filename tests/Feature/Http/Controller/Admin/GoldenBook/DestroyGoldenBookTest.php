@@ -25,7 +25,7 @@ class DestroyGoldenBookTest extends TestCase
 
         /* @var GoldenBookPost $goldenBookPost */
         $goldenBookPost = factory(GoldenBookPost::class)
-            ->state('active')
+            ->state('published')
             ->create();
 
         $response = $this->deleteGoldenBookPost($goldenBookPost->id);

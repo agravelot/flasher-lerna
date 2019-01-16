@@ -33,7 +33,7 @@ class IndexGoldenBookTest extends TestCase
 
     public function test_guest_can_see_active_golden_book_index()
     {
-        $goldenBookPosts = factory(GoldenBookPost::class, 2)->state('active')->create();
+        $goldenBookPosts = factory(GoldenBookPost::class, 2)->state('published')->create();
 
         $response = $this->showGoldenBooks();
 
@@ -49,7 +49,7 @@ class IndexGoldenBookTest extends TestCase
 
     public function test_guest_can_not_see_unactive_golden_book_index()
     {
-        $goldenBookPosts = factory(GoldenBookPost::class, 2)->state('unactive')->create();
+        $goldenBookPosts = factory(GoldenBookPost::class, 2)->state('unpublished')->create();
 
         $response = $this->showGoldenBooks();
 

@@ -22,7 +22,7 @@ class IndexGoldenBookTest extends TestCase
     {
         $this->actingAsAdmin();
         $goldenBookPosts = factory(GoldenBookPost::class, 5)
-            ->state('active')
+            ->state('published')
             ->create();
 
         $response = $this->showGoldenBookPostIndex();
@@ -46,7 +46,7 @@ class IndexGoldenBookTest extends TestCase
     {
         $this->actingAsAdmin();
         $goldenBookPost = factory(GoldenBookPost::class)
-            ->state('active')
+            ->state('published')
             ->create();
 
         $response = $this->showGoldenBookPostIndex();
@@ -62,7 +62,7 @@ class IndexGoldenBookTest extends TestCase
     {
         $this->actingAsAdmin();
         $goldenBookPost = factory(GoldenBookPost::class)
-            ->state('unactive')
+            ->state('unpublished')
             ->create();
 
         $response = $this->showGoldenBookPostIndex();

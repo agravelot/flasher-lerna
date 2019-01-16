@@ -49,6 +49,9 @@ Route::namespace('Admin')->group(function () {
                 ->middleware(['auth', 'verified']);
             Route::resource('goldenbook', 'AdminGoldenBookController')
                 ->middleware(['auth', 'verified']);
+            Route::resource('published-goldenbook', 'AdminPublishedGoldenBookController')
+                ->only('store', 'destroy')
+                ->middleware(['auth', 'verified']);
             Route::resource('cosplayers', 'AdminCosplayerController')
                 ->middleware(['auth', 'verified']);
             Route::resource('users', 'AdminUserController')
