@@ -23,7 +23,7 @@ class GoldenBookController extends Controller
      */
     public function index()
     {
-        $goldenBooksPosts = ActiveGoldenBookPost::latest()->get();
+        $goldenBooksPosts = ActiveGoldenBookPost::latest()->paginate(10);
 
         return view('goldenbook.index', ['goldenBooksPosts' => $goldenBooksPosts]);
     }

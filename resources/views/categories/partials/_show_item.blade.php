@@ -18,7 +18,6 @@
         <div class="columns is-multiline is-centered">
             @each('albums.partials._index_item', $category->publishedAlbums, 'album', 'layouts.partials._empty')
         </div>
-        {{--{{ $category->albums->links() }}--}}
     </div>
 
 </div>
