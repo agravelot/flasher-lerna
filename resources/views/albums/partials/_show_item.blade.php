@@ -2,26 +2,11 @@
 
     <h1 class="title is-2 has-text-centered">{{ $album->title }}</h1>
 
-    <div class="carousel carousel-animated carousel-animate-slide">
-        <div class="carousel-container">
-            @foreach ($album->getMedia('pictures') as $picture)
-                <div class="carousel-item has-background @if ($loop->first) is-active @endif">
-                    {{--<img class="is-background" src="{{ $picture->getUrl() }}" alt="" width="640"--}}
-                    {{--height="310"/>--}}
-                    {{ $picture }}
-                    <div class="title"></div>
-                </div>
-            @endforeach
-        </div>
-        <div class="carousel-navigation is-overlay">
-            <div class="carousel-nav-left">
-                <i class="fa fa-chevron-left" aria-hidden="true"></i>
-            </div>
-            <div class="carousel-nav-right">
-                <i class="fa fa-chevron-right" aria-hidden="true"></i>
-            </div>
-        </div>
-    </div>
+
+    @foreach ($album->getMedia('pictures') as $picture)
+        {{ $picture }}
+    @endforeach
+
 
     <div class="column is-8 is-offset-2">
         <div class="card article">
@@ -73,7 +58,3 @@
         </div>
     </div>
 </div>
-
-@section('js')
-    <script src="{{ mix('js/carousel.js') }}"></script>
-@endsection
