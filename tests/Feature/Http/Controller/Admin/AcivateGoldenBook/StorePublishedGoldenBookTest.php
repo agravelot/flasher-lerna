@@ -15,7 +15,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
 
-class StoreUserTest extends TestCase
+class StorePublishedGoldenBookTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -75,7 +75,6 @@ class StoreUserTest extends TestCase
 
         return $this->post('/admin/published-goldenbook', $data);
     }
-
 
     protected function setUp()
     {

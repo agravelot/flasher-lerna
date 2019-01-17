@@ -11,8 +11,8 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GoldenBookRequest;
-use App\Models\PublishedGoldenBookPost;
 use App\Models\GoldenBookPost;
+use App\Models\PublishedGoldenBookPost;
 
 class GoldenBookController extends Controller
 {

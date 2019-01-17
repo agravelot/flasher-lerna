@@ -106,7 +106,7 @@ class UpdateAlbumTest extends TestCase
         ]);
 
         $this->assertSame(1, Album::count());
-        $response->assertRedirect('/admin/albums/'.$album->slug. '/edit');
+        $response->assertRedirect('/admin/albums/' . $album->slug . '/edit');
         $this->followRedirects($response)
             ->assertSee($album->title)
             ->assertSee($album->description)
@@ -146,7 +146,7 @@ class UpdateAlbumTest extends TestCase
         ]);
 
         $this->assertSame(1, Album::count());
-        $response->assertRedirect('/admin/albums/'.$album->slug. '/edit');
+        $response->assertRedirect('/admin/albums/' . $album->slug . '/edit');
         $this->followRedirects($response)
             ->assertSee($album->title)
             ->assertSee($album->description)

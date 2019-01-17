@@ -167,7 +167,7 @@ class AdminAlbumController extends Controller
         }
 
         if (array_key_exists('categories', $validated)) {
-           $album->setCategoriesFromId($validated['categories']);
+            $album->setCategoriesFromId($validated['categories']);
         }
 
         if (array_key_exists('cosplayers', $validated)) {

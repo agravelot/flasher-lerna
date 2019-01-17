@@ -10,9 +10,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Models\Album;
 use App\Models\PublicAlbum;
-use Spatie\MediaLibrary\MediaStream;
 
 class AlbumController extends Controller
 {

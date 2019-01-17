@@ -20,7 +20,7 @@ class StoreGoldenBookTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_can_post_to_the_golden_book()
+    public function test_guest_can_post_to_the_golden_book_and_is_not_published()
     {
         NoCaptcha::shouldReceive('verifyResponse')
             ->once()

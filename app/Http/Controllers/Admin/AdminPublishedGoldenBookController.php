@@ -10,19 +10,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AlbumRequest;
 use App\Http\Requests\PublishedGoldenBookRequest;
-use App\Models\Album;
-use App\Models\Category;
-use App\Models\Cosplayer;
 use App\Models\GoldenBookPost;
-use Carbon\Carbon;
-use Spatie\MediaLibrary\FileAdder\FileAdder;
 
 class AdminPublishedGoldenBookController extends Controller
 {
-
-
     /**
      * Store a newly created resource in storage.
      *
@@ -36,10 +28,10 @@ class AdminPublishedGoldenBookController extends Controller
         $goldenbookPost = GoldenBookPost::find($request->get('goldenbook_id'));
         $this->authorize('create', $goldenbookPost);
         $goldenbookPost->publish()->save();
+
         return redirect(route('admin.goldenbook.index'))
             ->withSuccess('Goldenbook post published');
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -58,6 +50,4 @@ class AdminPublishedGoldenBookController extends Controller
         return redirect(route('admin.goldenbook.index'))
             ->withSuccess('Goldenbook post unpublished');
     }
-
-
 }
