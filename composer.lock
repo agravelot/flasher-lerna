@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "87863cb9db4a854d9241de034ceefdd4",
+    "content-hash": "c23a1912e6b14d3208e10f3f9414da77",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -1166,48 +1166,6 @@
                 "user"
             ],
             "time": "2018-09-03T13:05:19+00:00"
-        },
-        {
-            "name": "laravel-frontend-presets/bulma",
-            "version": "v2.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laravel-frontend-presets/bulma.git",
-                "reference": "6ab05ed8e411adb4b9273ec978e8ce79234e69f2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laravel-frontend-presets/bulma/zipball/6ab05ed8e411adb4b9273ec978e8ce79234e69f2",
-                "reference": "6ab05ed8e411adb4b9273ec978e8ce79234e69f2",
-                "shasum": ""
-            },
-            "require": {
-                "laravel/framework": "^5.5"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "LaravelFrontendPresets\\BulmaPreset\\BulmaPresetServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "LaravelFrontendPresets\\BulmaPreset\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Bulma Frontend Preset For Laravel Framework 5.5 and Up",
-            "keywords": [
-                "bulma",
-                "laravel",
-                "preset"
-            ],
-            "time": "2018-11-26T17:45:42+00:00"
         },
         {
             "name": "laravel/framework",
@@ -6220,6 +6178,48 @@
                 "schema"
             ],
             "time": "2019-01-14T23:55:14+00:00"
+        },
+        {
+            "name": "laravel-frontend-presets/bulma",
+            "version": "v2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel-frontend-presets/bulma.git",
+                "reference": "6ab05ed8e411adb4b9273ec978e8ce79234e69f2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel-frontend-presets/bulma/zipball/6ab05ed8e411adb4b9273ec978e8ce79234e69f2",
+                "reference": "6ab05ed8e411adb4b9273ec978e8ce79234e69f2",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^5.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LaravelFrontendPresets\\BulmaPreset\\BulmaPresetServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LaravelFrontendPresets\\BulmaPreset\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Bulma Frontend Preset For Laravel Framework 5.5 and Up",
+            "keywords": [
+                "bulma",
+                "laravel",
+                "preset"
+            ],
+            "time": "2018-11-26T17:45:42+00:00"
         },
         {
             "name": "laravel/telescope",
