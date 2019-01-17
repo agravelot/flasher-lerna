@@ -46,20 +46,4 @@ class AlbumController extends Controller
 
         return view('albums.show', ['album' => $album]);
     }
-
-    /**
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return MediaStream
-     */
-    public function download(string $slug)
-    {
-        $this->authorize('download', Album::class);
-        $album = PublicAlbum::findBySlugOrFail($slug);
-        $this->authorize('download', $album);
-        $pictures = $album->getMedia('pictures');
-
-        return MediaStream::create($album->slug . '.zip')
-            ->addMedia($pictures);
-    }
 }

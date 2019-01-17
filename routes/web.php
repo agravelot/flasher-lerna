@@ -20,20 +20,13 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth',
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::namespace('Front')->group(function () {
-    Route::resource('posts', 'PostController')
-        ->only(['index', 'show']);
-    Route::resource('albums', 'AlbumController')
-        ->only(['index', 'show']);
-    Route::get('/albums/{slug}/download', 'AlbumController@download')
-        ->name('album_download');
-    Route::resource('goldenbook', 'GoldenBookController')
-        ->only(['index', 'create', 'store']);
-    Route::resource('cosplayers', 'CosplayerController')
-        ->only(['index', 'show']);
-    Route::resource('categories', 'CategoryController')
-        ->only(['index', 'show']);
-    Route::resource('contact', 'ContactController')
-        ->only(['index', 'store']);
+    Route::resource('posts', 'PostController')->only(['index', 'show']);
+    Route::resource('albums', 'AlbumController')->only(['index', 'show']);
+    Route::resource('download-albums', 'DownloadAlbumController')->only(['show'])->middleware('auth', 'verified');
+    Route::resource('goldenbook', 'GoldenBookController')->only(['index', 'create', 'store']);
+    Route::resource('cosplayers', 'CosplayerController')->only(['index', 'show']);
+    Route::resource('categories', 'CategoryController')->only(['index', 'show']);
+    Route::resource('contact', 'ContactController')->only(['index', 'store']);
 });
 
 //BACK
