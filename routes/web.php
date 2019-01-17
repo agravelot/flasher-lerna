@@ -30,28 +30,19 @@ Route::namespace('Front')->group(function () {
 });
 
 //BACK
-Route::namespace('Admin')->group(function () {
-    Route::name('admin.')->group(function () { // Route Name Prefixe
-        Route::prefix('admin')->group(function () { // Route Prefixe /admin/
-            Route::get('', 'AdminController@dashboard')
-                ->name('dashboard')
-                ->middleware(['auth', 'verified']);
-            Route::resource('albums', 'AdminAlbumController')
-                ->middleware(['auth', 'verified']);
-            Route::resource('categories', 'AdminCategoryController')
-                ->middleware(['auth', 'verified']);
-            Route::resource('goldenbook', 'AdminGoldenBookController')
-                ->middleware(['auth', 'verified']);
-            Route::resource('published-goldenbook', 'AdminPublishedGoldenBookController')
-                ->only('store', 'destroy')
-                ->middleware(['auth', 'verified']);
-            Route::resource('cosplayers', 'AdminCosplayerController')
-                ->middleware(['auth', 'verified']);
-            Route::resource('users', 'AdminUserController')
-                ->middleware(['auth', 'verified']);
-            Route::resource('contacts', 'AdminContactController')
-                ->except('edit', 'update')
-                ->middleware(['auth', 'verified']);
+Route::group(['middleware' => ['web', 'auth', 'verified', 'admin']], function () {
+    Route::namespace('Admin')->group(function () {
+        Route::name('admin.')->group(function () { // Route Name Prefixe
+            Route::prefix('admin')->group(function () { // Route Prefixe /admin/
+                Route::get('', 'AdminController@dashboard')->name('dashboard');
+                Route::resource('albums', 'AdminAlbumController');
+                Route::resource('categories', 'AdminCategoryController');
+                Route::resource('goldenbook', 'AdminGoldenBookController');
+                Route::resource('published-goldenbook', 'AdminPublishedGoldenBookController')->only('store', 'destroy');
+                Route::resource('cosplayers', 'AdminCosplayerController');
+                Route::resource('users', 'AdminUserController');
+                Route::resource('contacts', 'AdminContactController')->except('edit', 'update');
+            });
         });
     });
 });
