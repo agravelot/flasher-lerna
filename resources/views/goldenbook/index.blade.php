@@ -9,5 +9,7 @@
         </a>
 
         @each('goldenbook._goldenbook_item', $goldenBooksPosts, 'goldenBookPost', 'layouts.partials._empty')
+
+        {{ $goldenBooksPosts->links() }}
     </div>
 @endsection

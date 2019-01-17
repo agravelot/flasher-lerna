@@ -55,6 +55,39 @@
         </div>
     </div>
 
+    <div class="field is-horizontal">
+        <div class="field-label">
+            <label class="label">Related user</label>
+        </div>
+
+        <div class="field-body">
+            <div class="field">
+                <div class="control has-icons-left">
+                    <div class="select">
+                        <select name="user_id">
+                            <option value=""> None</option>
+                            @foreach($users as $user )
+                                @php
+                                    $options = null;
+                                    if (isset($cosplayer->user) && $cosplayer->user->id === $user->id) {
+                                        $options = 'selected';
+                                    } elseif (isset($user->cosplayer)) {
+                                        $options = 'disabled';
+                                    }
+                                @endphp
+                                <option value="{{ $user->id }}" {{ $options }}>{{ $user->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <span class="icon is-medium is-left">
+                            <i class="fas fa-user-tag"></i>
+                        </span>
+                </div>
+                @include('layouts.partials._form_errors', ['data' => 'cosplayer'])
+            </div>
+        </div>
+    </div>
+
     <div class="field">
         <div class="control">
             <button class="button is-primary">

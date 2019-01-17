@@ -85,15 +85,11 @@ class AdminAlbumController extends Controller
             });
 
         if (array_key_exists('categories', $validated)) {
-            $categoriesIds = $validated['categories'];
-            $categories = Category::findWhereIn('id', $categoriesIds);
-            Category::saveRelation($categories, $album);
+            $album->setCategoriesFromId($validated['categories']);
         }
 
         if (array_key_exists('cosplayers', $validated)) {
-            $cosplayersIds = $validated['cosplayers'];
-            $cosplayers = Cosplayer::findWhereIn('id', $cosplayersIds);
-            Cosplayer::saveRelation($cosplayers, $album);
+            $album->setCosplayersFromId($validated['cosplayers']);
         }
 
         return redirect(route('admin.albums.index'))
@@ -111,7 +107,8 @@ class AdminAlbumController extends Controller
     public function show(string $slug)
     {
         $this->authorize('view', Album::class);
-        $album = Album::whereSlug($slug)
+        $album = Album::with(['cosplayers.media'])
+            ->whereSlug($slug)
             ->firstOrFail();
         $this->authorize('view', $album);
 
@@ -169,18 +166,12 @@ class AdminAlbumController extends Controller
                 });
         }
 
-        $key = 'categories';
-        if (array_key_exists($key, $validated)) {
-            $categoriesIds = $validated[$key];
-            $categories = Category::findWhereIn('id', $categoriesIds);
-            Category::saveRelation($categories, $album);
+        if (array_key_exists('categories', $validated)) {
+           $album->setCategoriesFromId($validated['categories']);
         }
 
-        $key = 'cosplayers';
-        if (array_key_exists($key, $validated)) {
-            $cosplayersIds = $validated[$key];
-            $cosplayers = Cosplayer::findWhereIn('id', $cosplayersIds);
-            Cosplayer::saveRelation($cosplayers, $album);
+        if (array_key_exists('cosplayers', $validated)) {
+            $album->setCosplayersFromId($validated['cosplayers']);
         }
 
         return redirect(route('admin.albums.index'))

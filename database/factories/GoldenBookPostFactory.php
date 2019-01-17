@@ -15,20 +15,20 @@ $factory->define(\App\Models\GoldenBookPost::class, function (Faker $faker) {
         'name' => $faker->sentence,
         'email' => $faker->email,
         'body' => $faker->paragraph,
-        'active' => $faker->boolean,
+        'published_at' => $faker->dateTime,
         'created_at' => $faker->dateTime(),
         'updated_at' => Carbon::now(),
     ];
 });
 
-$factory->state(\App\Models\GoldenBookPost::class, 'active', function () {
+$factory->state(\App\Models\GoldenBookPost::class, 'published', function () {
     return [
-        'active' => true,
+        'published_at' => Carbon::now(),
     ];
 });
 
-$factory->state(\App\Models\GoldenBookPost::class, 'unactive', function () {
+$factory->state(\App\Models\GoldenBookPost::class, 'unpublished', function () {
     return [
-        'active' => false,
+        'published_at' => null,
     ];
 });

@@ -9,7 +9,7 @@
 
 namespace App\Http\Requests;
 
-class GoldenBookRequest extends Request
+class PublishedGoldenBookRequest extends Request
 {
     /**
      * Get the validation rules that apply to the request.
@@ -18,13 +18,8 @@ class GoldenBookRequest extends Request
      */
     public function rules()
     {
-        $id = $this->route('goldenbook');
-
         return [
-            'name' => 'string|required|min:2|max:255' . $id,
-            'body' => 'string|required|min:42|max:65000',
-            'email' => 'email|required|min:5|max:142',
-            'g-recaptcha-response' => 'required|captcha',
+            'goldenbook_id' => 'required|exists:golden_book_posts,id',
         ];
     }
 }

@@ -22,7 +22,7 @@ class IndexGoldenBookTest extends TestCase
     {
         $this->actingAsAdmin();
         $goldenBookPosts = factory(GoldenBookPost::class, 5)
-            ->state('active')
+            ->state('published')
             ->create();
 
         $response = $this->showGoldenBookPostIndex();
@@ -46,7 +46,7 @@ class IndexGoldenBookTest extends TestCase
     {
         $this->actingAsAdmin();
         $goldenBookPost = factory(GoldenBookPost::class)
-            ->state('active')
+            ->state('published')
             ->create();
 
         $response = $this->showGoldenBookPostIndex();
@@ -62,15 +62,16 @@ class IndexGoldenBookTest extends TestCase
     {
         $this->actingAsAdmin();
         $goldenBookPost = factory(GoldenBookPost::class)
-            ->state('unactive')
+            ->state('unpublished')
             ->create();
 
         $response = $this->showGoldenBookPostIndex();
+
         $response->assertStatus(200)
-            ->assertSee('Nothing to show')
-            ->assertDontSee($goldenBookPost->name)
-            ->assertDontSee($goldenBookPost->email)
-            ->assertDontSee($goldenBookPost->body);
+            ->assertSee($goldenBookPost->name)
+            ->assertSee($goldenBookPost->email)
+            ->assertSee($goldenBookPost->body)
+            ->assertDontSee('Nothing to show');
     }
 
     public function test_admin_can_view_index_page_with_no_goldenBookPost()

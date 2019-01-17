@@ -11,18 +11,16 @@ namespace App\Models;
 
 use App\Abilities\HasParentModelTrait;
 
-class ActiveGoldenBookPost extends GoldenBookPost
+class PublishedGoldenBookPost extends GoldenBookPost
 {
     use HasParentModelTrait;
-
-    protected $table = 'golden_book_posts';
 
     public static function boot()
     {
         parent::boot();
 
         static::addGlobalScope(function ($query) {
-            $query->active();
+            $query->published();
         });
     }
 }

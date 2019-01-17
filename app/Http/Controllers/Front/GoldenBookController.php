@@ -11,7 +11,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GoldenBookRequest;
-use App\Models\ActiveGoldenBookPost;
+use App\Models\PublishedGoldenBookPost;
 use App\Models\GoldenBookPost;
 
 class GoldenBookController extends Controller
@@ -23,7 +23,7 @@ class GoldenBookController extends Controller
      */
     public function index()
     {
-        $goldenBooksPosts = ActiveGoldenBookPost::latest()->get();
+        $goldenBooksPosts = PublishedGoldenBookPost::latest()->paginate(10);
 
         return view('goldenbook.index', ['goldenBooksPosts' => $goldenBooksPosts]);
     }
@@ -40,9 +40,6 @@ class GoldenBookController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     *
-     * @return
      */
     public function store(GoldenBookRequest $request)
     {

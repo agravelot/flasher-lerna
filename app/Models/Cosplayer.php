@@ -51,7 +51,7 @@ class Cosplayer extends Model implements HasMedia
 {
     use Sluggable, SluggableScopeHelpers, HasMediaTrait;
 
-    protected $fillable = ['name', 'description', 'slug'];
+    protected $fillable = ['name', 'description', 'slug', 'user_id'];
 
     public function user()
     {

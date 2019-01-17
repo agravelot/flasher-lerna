@@ -41,12 +41,26 @@ use Illuminate\Database\Eloquent\Model;
 class GoldenBookPost extends Model
 {
     protected $fillable = [
-        'name', 'body', 'email', 'active',
+        'name', 'body', 'email', 'published_at',
     ];
 
-    public function scopeActive(Builder $query)
+    public function isPublished() {
+        return $this->published_at != null;
+    }
+
+    public function scopePublished(Builder $query)
     {
-        $query->where('active', true);
+        $query->whereNotNull('published_at');
+    }
+
+    public function publish() {
+        $this->published_at = $this->freshTimestamp();
+        return $this;
+    }
+
+    public function unpublish() {
+        $this->published_at = null;
+        return $this;
     }
 
     public function user()

@@ -11,6 +11,7 @@ namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Cosplayer;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
@@ -45,6 +46,49 @@ class UpdateCosplayerTest extends TestCase
         session()->setPreviousUrl('/admin/cosplayers/' . $cosplayer->slug . '/edit');
 
         return $this->patch('/admin/cosplayers/' . $cosplayer->slug, $data);
+    }
+
+    public function test_admin_can_update_a_cosplayer_related_to_an_user()
+    {
+        $this->actingAsAdmin();
+        $cosplayer = factory(Cosplayer::class)->create();
+        $user = factory(User::class)->create();
+
+        $response = $this->updateCosplayer(
+            array_merge(self::COSPLAYER_DATA, ['user_id' => $user->id]),
+            $cosplayer
+        );
+
+        $this->assertSame(1, Cosplayer::count());
+        $this->assertNotNull(Cosplayer::first()->user);
+        $response->assertStatus(302)
+            ->assertRedirect('/admin/cosplayers');
+        $this->followRedirects($response)
+            ->assertStatus(200)
+            ->assertSee(self::COSPLAYER_DATA['name'])
+            ->assertSee('Cosplayer successfully updated')
+            ->assertDontSee(self::COSPLAYER_DATA['description']);
+    }
+
+    public function test_admin_can_not_update_a_cosplayer_related_to_an_inexistant_user()
+    {
+        $this->actingAsAdmin();
+        $cosplayer = factory(Cosplayer::class)->create();
+
+        $response = $this->updateCosplayer(
+            array_merge(self::COSPLAYER_DATA, ['user_id' => 42]),
+            $cosplayer
+        );
+
+        $this->assertSame(1, Cosplayer::count());
+        $response->assertStatus(302)
+            ->assertRedirect('/admin/cosplayers/' . $cosplayer->slug . '/edit');
+        $this->followRedirects($response)
+            ->assertStatus(200)
+            ->assertSee(self::COSPLAYER_DATA['name'])
+            ->assertSee(self::COSPLAYER_DATA['description'])
+            ->assertSee('The selected user id is invalid.')
+            ->assertDontSee('Cosplayer successfully updated');
     }
 
     public function test_admin_can_update_a_categories_with_the_same_name()

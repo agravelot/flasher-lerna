@@ -71,40 +71,6 @@
             </div>
         </div>
 
-
-        <div class="field is-horizontal">
-            <div class="field-label">
-                <label class="label">Cosplayer</label>
-            </div>
-
-            <div class="field-body">
-                <div class="field">
-                    <div class="control has-icons-left">
-                        <div class="select">
-                            <select name="cosplayer" id="cosplayer">
-                                <option value=""> None</option>
-                                @foreach($cosplayers as $cosplayer )
-                                    @php
-                                        $options = null;
-                                        if (isset($user->cosplayer) && $user->cosplayer->id === $cosplayer->id) {
-                                            $options = 'selected';
-                                        } elseif (isset($cosplayer->user)) {
-                                            $options = 'disabled';
-                                        }
-                                    @endphp
-                                    <option value="{{ $cosplayer->id }}" {{ $options }}>{{ $cosplayer->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <span class="icon is-medium is-left">
-                            <i class="fas fa-user-tag"></i>
-                        </span>
-                    </div>
-                    @include('layouts.partials._form_errors', ['data' => 'cosplayer'])
-                </div>
-            </div>
-        </div>
-
         <div class="field is-horizontal">
             <div class="field-label"></div>
 
