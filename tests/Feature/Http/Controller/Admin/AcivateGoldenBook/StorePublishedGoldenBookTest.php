@@ -26,11 +26,11 @@ class StoreUserTest extends TestCase
     public function test_admin_can_publish_a_goldenbook_post()
     {
         $this->actingAsAdmin();
-        $goldenbookPost = factory(GoldenBookPost::class)->state('published')->create();
+        $goldenbookPost = factory(GoldenBookPost::class)->state('unpublished')->create();
 
         $response = $this->storePublished(['goldenbook_id' => $goldenbookPost->id]);
 
-        $this->assertNotNull($goldenbookPost->published_at);
+        $this->assertTrue($goldenbookPost->fresh()->isPublished());
         $response->assertRedirect('/admin/goldenbook');
         $this->followRedirects($response)
             ->assertSee('Goldenbook post published');
@@ -49,22 +49,24 @@ class StoreUserTest extends TestCase
 
     public function test_guest_can_not_publish_goldenbook_post_and_is_reirected_to_login()
     {
-        $goldenbookPost = factory(GoldenBookPost::class)->state('published')->create();
+        $goldenbookPost = factory(GoldenBookPost::class)->state('unpublished')->create();
 
         $response = $this->storePublished(['goldenbook_id' => $goldenbookPost->id]);
 
+        $this->assertFalse($goldenbookPost->fresh()->isPublished());
         $response->assertRedirect('/login');
     }
 
     public function test_user_can_not_publish_goldenbook_post()
     {
         $this->actingAsUser();
-        $goldenbookPost = factory(GoldenBookPost::class)->state('published')->create();
+        $goldenbookPost = factory(GoldenBookPost::class)->state('unpublished')->create();
 
         $response = $this->storePublished(['goldenbook_id' => $goldenbookPost->id]);
 
         $this->followRedirects($response)
             ->assertStatus(403);
+        $this->assertFalse($goldenbookPost->fresh()->isPublished());
     }
 
     private function storePublished(array $data): TestResponse

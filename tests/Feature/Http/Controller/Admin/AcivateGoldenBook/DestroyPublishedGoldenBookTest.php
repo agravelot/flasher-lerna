@@ -30,7 +30,8 @@ class DestroyPublishedGoldenBookTest extends TestCase
 
         $response = $this->destroyPublished($goldenbookPost->id);
 
-        $this->assertSame(0, GoldenBookPost::count());
+        $this->assertSame(1, GoldenBookPost::count());
+        $this->assertNull(GoldenBookPost::first()->published_at);
         $response->assertRedirect('/admin/goldenbook');
         $this->followRedirects($response)
             ->assertSee('Goldenbook post unpublished');
@@ -61,6 +62,7 @@ class DestroyPublishedGoldenBookTest extends TestCase
 
         $this->followRedirects($response)
             ->assertStatus(403);
+        $this->assertTrue($goldenbookPost->fresh()->isPublished());
     }
 
     public function test_guest_can_not_ununpublish_a_goldenbook_post()

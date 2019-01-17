@@ -26,18 +26,16 @@ class AdminPublishedGoldenBookController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Exception
      *
      * @return \Illuminate\Http\Response
      */
     public function store(PublishedGoldenBookRequest $request)
     {
-//        $this->authorize('delete', GoldenBookPost::class);
+        $this->authorize('create', GoldenBookPost::class);
         $goldenbookPost = GoldenBookPost::find($request->get('goldenbook_id'));
-//        $this->authorize('delete', $goldenbookPost);
-        $goldenbookPost->publish();
+        $this->authorize('create', $goldenbookPost);
+        $goldenbookPost->publish()->save();
         return redirect(route('admin.goldenbook.index'))
             ->withSuccess('Goldenbook post published');
     }
@@ -46,17 +44,16 @@ class AdminPublishedGoldenBookController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Exception
      *
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $id)
     {
-//        $this->authorize('delete', GoldenBookPost::class);
+        $this->authorize('delete', GoldenBookPost::class);
         $goldenbookPost = GoldenBookPost::findOrFail($id);
-//        $this->authorize('delete', $goldenbookPost);
-        $goldenbookPost->delete();
+        $this->authorize('delete', $goldenbookPost);
+        $goldenbookPost->unpublish()->save();
 
         return redirect(route('admin.goldenbook.index'))
             ->withSuccess('Goldenbook post unpublished');

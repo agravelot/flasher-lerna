@@ -44,6 +44,10 @@ class GoldenBookPost extends Model
         'name', 'body', 'email', 'published_at',
     ];
 
+    public function isPublished() {
+        return $this->published_at != null;
+    }
+
     public function scopePublished(Builder $query)
     {
         $query->whereNotNull('published_at');
@@ -51,6 +55,12 @@ class GoldenBookPost extends Model
 
     public function publish() {
         $this->published_at = $this->freshTimestamp();
+        return $this;
+    }
+
+    public function unpublish() {
+        $this->published_at = null;
+        return $this;
     }
 
     public function user()
