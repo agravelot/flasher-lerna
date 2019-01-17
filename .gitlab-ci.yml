@@ -54,47 +54,15 @@ build_vendor_dev:
     paths:
       - vendor/
 
-unit_test:
+tests:
   stage: test
   script:
-  - echo "UNIT TESTS"
   - docker-compose pull
   - chmod +x docker/*.sh
   - bash -c 'cd docker/ && ./generate_env.sh staging'
   - docker-compose up -d
   - docker cp vendor $(docker-compose ps -q php):/var/www/html/
-  - echo "Running unit tests"
-  - docker-compose exec -T php vendor/bin/phpunit --coverage-text --colors=never --testsuite Unit
-  allow_failure: true
-  dependencies:
-    - build_vendor_dev
-
-feature_test:
-  stage: test
-  script:
-  - echo "FEATURE TEST"
-  - docker-compose pull
-  - chmod +x docker/*.sh
-  - bash -c 'cd docker/ && ./generate_env.sh staging'
-  - docker-compose up -d
-  - docker cp vendor $(docker-compose ps -q php):/var/www/html/
-  - echo "Running feature tests"
-  - docker-compose exec -T php vendor/bin/phpunit --coverage-text --colors=never --testsuite Feature
-  allow_failure: true
-  dependencies:
-    - build_vendor_dev
-
-browser_test:
-  stage: test
-  script:
-    - echo "BROWSER TEST"
-    - docker-compose pull
-    - chmod +x docker/*.sh
-    - bash -c 'cd docker/ && ./generate_env.sh staging'
-    - docker-compose up -d
-    - docker cp vendor $(docker-compose ps -q php):/var/www/html/
-    - echo "Running browser tests"
-    - docker-compose exec -T php vendor/bin/phpunit --coverage-text --colors=never --testsuite Browser
+  - docker-compose exec -T php vendor/bin/phpunit --coverage-text --colors=never
   allow_failure: true
   dependencies:
     - build_vendor_dev
