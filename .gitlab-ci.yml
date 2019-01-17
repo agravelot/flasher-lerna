@@ -46,7 +46,8 @@ build_vendor_dev:
   stage: build
   script:
     - docker build -t vendor_dev -f docker/vendor-dev/Dockerfile .
-    - docker cp -a vendor_dev:/app/vendor .
+    - export VENDOR_DOCKER = $(docker run -d -t vendor_dev tail -f /dev/null)
+    - docker cp -a $VENDOR_DOCKER:/app/vendor .
   artifacts:
     name: "$CI_COMMIT_REF_NAME"
     expire_in: 6h
