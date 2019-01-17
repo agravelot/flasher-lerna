@@ -9,7 +9,4 @@ RUN composer global require hirak/prestissimo \
             --no-progress \
             --profile \
             --no-scripts \
-        && php artisan vendor:publish --tag=lfm_public \
-        && php artisan vendor:publish --tag=telescope-assets \
-        && php artisan vendor:publish --tag=horizon-assets \
         && chown -R 33:33 vendor/

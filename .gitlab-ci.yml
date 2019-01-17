@@ -45,7 +45,7 @@ build:
 build_vendor_dev:
   stage: build
   script:
-    - docker -f docker/vendor-dev/Dockerfile run -t vendor_dev
+    - docker build -t vendor_dev -f docker/vendor-dev/Dockerfile .
     - docker cp -a vendor_dev:/app/vendor .
   artifacts:
     name: "$CI_COMMIT_REF_NAME"
