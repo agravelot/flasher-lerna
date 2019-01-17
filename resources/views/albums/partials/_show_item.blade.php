@@ -18,7 +18,7 @@
                         <div class="field has-addons">
                             @can('download', $album)
                                 <p class="control">
-                                    <a class="button" href="{{ route('album_download', ['album' => $album]) }}">
+                                    <a class="button" href="{{ route('download-albums.show', compact('album')) }}">
                                         <span class="icon is-small">
                                            <i class="fas fa-download"></i>
                                         </span>
