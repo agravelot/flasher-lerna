@@ -18,17 +18,9 @@ variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_DRIVER: overlay2
 
-cache:
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-  - .cache/pip
-  - vendor/
-  - node_modules
-
 before_script:
 - touch docker/db/.env docker/nginx/.env docker/php-fpm/.env
-- apk add --no-cache py-pip bash gettext
-- pip install --upgrade pip
+- apk add --no-cache bash gettext
 - echo "Installing Docker compose" && pip install docker-compose
 - echo "Docker compose version" && docker-compose version
 - echo "Docker compose validating" && docker-compose config
