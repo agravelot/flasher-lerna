@@ -28,7 +28,7 @@ RUN yarn install && yarn production
 #
 # PHP Dependencies
 #
-FROM composer:1.7 as vendor
+FROM composer:1.8 as vendor
 COPY . .
 
 RUN composer global require hirak/prestissimo \
