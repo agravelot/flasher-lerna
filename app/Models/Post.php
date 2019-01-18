@@ -27,7 +27,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Category[] $categories
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[]  $comments
  * @property \App\Models\User                                                $user
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Post findSimilarSlugs($attribute, $config, $slug)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Post newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Post newQuery()

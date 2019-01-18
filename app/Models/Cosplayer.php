@@ -32,7 +32,6 @@ use Spatie\MediaLibrary\Models\Media;
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Category[]              $categories
  * @property \Illuminate\Database\Eloquent\Collection|\Spatie\MediaLibrary\Models\Media[] $media
  * @property \App\Models\User|null                                                        $user
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer findSimilarSlugs($attribute, $config, $slug)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer newQuery()
@@ -46,7 +45,6 @@ use Spatie\MediaLibrary\Models\Media;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereUserId($value)
  * @mixin \Eloquent
- *
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\PublicAlbum[] $publicAlbums
  */
 class Cosplayer extends Model implements HasMedia

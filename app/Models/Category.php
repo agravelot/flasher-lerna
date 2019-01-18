@@ -24,7 +24,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null                              $updated_at
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Album[] $albums
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Post[]  $posts
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category findSimilarSlugs($attribute, $config, $slug)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newQuery()
@@ -36,7 +35,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereUpdatedAt($value)
  * @mixin \Eloquent
- *
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\PublicAlbum[] $publishedAlbums
  */
 class Category extends Model
