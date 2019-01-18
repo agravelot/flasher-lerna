@@ -50,6 +50,11 @@ use Spatie\MediaLibrary\Models\Media;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereUserId($value)
  * @mixin \Eloquent
+ *
+ * @property int $private
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album public()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album wherePrivate($value)
  */
 class Album extends Model implements HasMedia
 {

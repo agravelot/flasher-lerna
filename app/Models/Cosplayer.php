@@ -46,6 +46,8 @@ use Spatie\MediaLibrary\Models\Media;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereUserId($value)
  * @mixin \Eloquent
+ *
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\PublicAlbum[] $publicAlbums
  */
 class Cosplayer extends Model implements HasMedia
 {

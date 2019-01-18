@@ -36,6 +36,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereUpdatedAt($value)
  * @mixin \Eloquent
+ *
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\PublicAlbum[] $publishedAlbums
  */
 class Category extends Model
 {
