@@ -115,14 +115,6 @@ class AdminUserController extends Controller
         $this->authorize('update', $user);
         $user->update($request->validated());
 
-        if ($request->has('cosplayer') && $request->validated()['cosplayer'] !== null) {
-            try {
-                $cosplayer = Cosplayer::findNotLinkedToUser($request->validated()['cosplayer']);
-                $user->cosplayer()->save($cosplayer);
-            } catch (\Exception $e) {
-            }
-        }
-
         return redirect(route('admin.users.index'))
             ->withSuccess('User successfully updated');
     }
