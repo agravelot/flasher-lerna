@@ -10,6 +10,7 @@
 namespace Tests\Feature\Observers;
 
 use App\Models\Album;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Activitylog\Models\Activity;
 use Tests\TestCase;
@@ -18,9 +19,11 @@ class AlbumObserverTest extends TestCase
 {
     use RefreshDatabase;
 
+    private $user;
+
     public function test_creating_an_album_will_store_it_in_activity_logs()
     {
-        $album = factory(Album::class)->state('withUser')->create();
+        $album = factory(Album::class)->create(['user_id' => $this->user->id]);
 
         $this->assertSame(1, Activity::count());
         $this->assertSame($album->id, Activity::latest()->first()->subject_id);
@@ -28,7 +31,7 @@ class AlbumObserverTest extends TestCase
 
     public function test_updating_an_album_will_store_it_in_activity_logs()
     {
-        $album = factory(Album::class)->state('withUser')->create();
+        $album = factory(Album::class)->create(['user_id' => $this->user->id]);
 
         $album->title = 'Some random title';
         $album->save();
@@ -41,7 +44,7 @@ class AlbumObserverTest extends TestCase
 
     public function test_deleting_an_album_will_store_it_in_activity_logs()
     {
-        $album = factory(Album::class)->state('withUser')->create();
+        $album = factory(Album::class)->create(['user_id' => $this->user->id]);
 
         $album->delete();
 
@@ -52,10 +55,19 @@ class AlbumObserverTest extends TestCase
 
     public function test_creating_two_albums_will_store_it_in_activity_logs()
     {
-        $albums = factory(Album::class, 2)->state('withUser')->create();
+        $albums = factory(Album::class, 2)->create(['user_id' => $this->user->id]);
 
         $this->assertSame(2, Activity::count());
         $this->assertSame($albums->get(0)->id, Activity::all()->get(0)->subject_id);
         $this->assertSame($albums->get(1)->id, Activity::all()->get(1)->subject_id);
+    }
+
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->user = factory(User::class)->create();
+        Activity::all()->each(function (Activity $activity) {
+            $activity->delete();
+        });
     }
 }
