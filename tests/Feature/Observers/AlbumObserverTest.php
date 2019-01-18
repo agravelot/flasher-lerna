@@ -39,8 +39,8 @@ class AlbumObserverTest extends TestCase
         $album->delete();
 
         $this->assertSame(2, Activity::count());
-        $this->assertSame($album->id, Activity::find(1)->subject_id);
-        $this->assertSame(null, Activity::find(2)->subject_id);
+        $this->assertSame($album->id, Activity::all()->get(0)->subject_id);
+        $this->assertSame(null, Activity::all()->get(1)->subject_id);
     }
 
 
@@ -49,7 +49,7 @@ class AlbumObserverTest extends TestCase
         $albums = factory(Album::class,2)->state('withUser')->create();
 
         $this->assertSame(2, Activity::count());
-        $this->assertSame($albums->get(0)->id, Activity::find(1)->subject_id);
-        $this->assertSame($albums->get(1)->id, Activity::find(2)->subject_id);
+        $this->assertSame($albums->get(0)->id, Activity::all()->get(0)->subject_id);
+        $this->assertSame($albums->get(1)->id, Activity::all()->get(1)->subject_id);
     }
 }
