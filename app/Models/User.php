@@ -35,6 +35,7 @@ use Lab404\Impersonate\Models\Impersonate;
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\GoldenBookPost[]                                     $goldenBookPosts
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Post[]                                               $posts
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()

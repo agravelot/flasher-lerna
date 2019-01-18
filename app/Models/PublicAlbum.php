@@ -26,6 +26,7 @@ use App\Scope\PublicScope;
  * @property \Illuminate\Support\Carbon|null                                              $created_at
  * @property \Illuminate\Support\Carbon|null                                              $updated_at
  * @property \Illuminate\Database\Eloquent\Collection|\Spatie\MediaLibrary\Models\Media[] $media
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album findSimilarSlugs($attribute, $config, $slug)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PublicAlbum newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PublicAlbum newQuery()

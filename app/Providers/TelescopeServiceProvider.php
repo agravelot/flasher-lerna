@@ -40,8 +40,6 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
     /**
      * Prevent sensitive request details from being logged by Telescope.
-     *
-     * @return void
      */
     protected function hideSensitiveRequestDetails()
     {

@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \App\Models\User|null           $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\GoldenBookPost newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\GoldenBookPost newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\GoldenBookPost query()
@@ -36,7 +37,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\GoldenBookPost whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\GoldenBookPost whereUserId($value)
  * @mixin \Eloquent
+ *
  * @property string|null $published_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\GoldenBookPost published()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\GoldenBookPost wherePublishedAt($value)
  */

@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string                                        $body
  * @property \Illuminate\Database\Eloquent\Model|\Eloquent $commentable
  * @property \App\Models\User                              $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Comment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Comment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Comment query()

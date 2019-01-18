@@ -35,6 +35,7 @@ use Spatie\MediaLibrary\Models\Media;
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Cosplayer[]             $cosplayers
  * @property \Illuminate\Database\Eloquent\Collection|\Spatie\MediaLibrary\Models\Media[] $media
  * @property \App\Models\User                                                             $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album findSimilarSlugs($attribute, $config, $slug)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album newQuery()
@@ -49,7 +50,9 @@ use Spatie\MediaLibrary\Models\Media;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereUserId($value)
  * @mixin \Eloquent
+ *
  * @property int $private
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album public()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album wherePrivate($value)
  */

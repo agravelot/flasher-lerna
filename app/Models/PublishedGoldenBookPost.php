@@ -22,6 +22,7 @@ use App\Abilities\HasParentModelTrait;
  * @property int|null                        $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PublishedGoldenBookPost newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PublishedGoldenBookPost newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\GoldenBookPost published()
