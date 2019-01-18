@@ -14,6 +14,7 @@ use App\Models\Album;
 use App\Models\Contact;
 use App\Models\Cosplayer;
 use App\Models\User;
+use Spatie\Activitylog\Models\Activity;
 
 class AdminController extends Controller
 {
@@ -33,6 +34,7 @@ class AdminController extends Controller
             'albumCount' => Album::count(),
             'cosplayerCount' => Cosplayer::count(),
             'contactCount' => Contact::count(),
+            'activities' => Activity::with(['causer', 'subject'])->latest()->limit(10)->get(),
         ]);
     }
 }
