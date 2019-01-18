@@ -18,7 +18,7 @@
                         <td width="5%"><i class="far fa-bell"></i></td>
                         <td>{{ class_basename($activity->subject) }}
                             has been {{ $activity->getExtraProperty('action') }}
-                            by {{ $activity->causer->name }}</td>
+                            by {{ optional($activity->causer)->name }}</td>
                         <td><a class="button is-small is-primary" href="#">Action</a></td>
                     </tr>
                 @endforeach
