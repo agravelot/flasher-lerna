@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace Tests\Feature\Observers;
 
 use App\Models\Cosplayer;
@@ -40,13 +47,12 @@ class CosplayerObserverTest extends TestCase
 
         $this->assertSame(2, Activity::count());
         $this->assertSame($cosplayer->id, Activity::all()->get(0)->subject_id);
-        $this->assertSame(null, Activity::all()->get(1)->subject_id);
+        $this->assertNull(Activity::all()->get(1)->subject_id);
     }
-
 
     public function test_creating_two_cosplayers_will_store_it_in_activity_logs()
     {
-        $cosplayers = factory(Cosplayer::class,2)->create();
+        $cosplayers = factory(Cosplayer::class, 2)->create();
 
         $this->assertSame(2, Activity::count());
         $this->assertSame($cosplayers->get(0)->id, Activity::all()->get(0)->subject_id);

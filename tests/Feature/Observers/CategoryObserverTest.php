@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@orma.fr>
+ */
+
 namespace Tests\Feature\Observers;
 
 use App\Models\Category;
@@ -40,13 +47,12 @@ class CategoryObserverTest extends TestCase
 
         $this->assertSame(2, Activity::count());
         $this->assertSame($category->id, Activity::all()->get(0)->subject_id);
-        $this->assertSame(null, Activity::all()->get(1)->subject_id);
+        $this->assertNull(Activity::all()->get(1)->subject_id);
     }
-
 
     public function test_creating_two_categorys_will_store_it_in_activity_logs()
     {
-        $categorys = factory(Category::class,2)->create();
+        $categorys = factory(Category::class, 2)->create();
 
         $this->assertSame(2, Activity::count());
         $this->assertSame($categorys->get(0)->id, Activity::all()->get(0)->subject_id);
