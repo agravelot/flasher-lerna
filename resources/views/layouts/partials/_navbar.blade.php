@@ -1,4 +1,4 @@
-<nav class="navbar is-fixed-top has-shadow" role="navigation" aria-label="dropdown navigation">
+<nav class="navbar has-shadow" role="navigation" aria-label="dropdown navigation">
     <div class="container">
         <div class="navbar-brand">
             <a href="{{ url('/') }}" class="navbar-item">{{ config('app.name', 'PicBlog') }}</a>
