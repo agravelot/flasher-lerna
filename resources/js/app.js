@@ -6,8 +6,14 @@
 
 // Bulma NavBar Burger Script
 document.addEventListener('DOMContentLoaded', function () {
+
+    //Functions
+    function getAll(selector) {
+        return Array.prototype.slice.call(document.querySelectorAll(selector), 0);
+    }
+
     // Get all "navbar-burger" elements
-    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+    const $navbarBurgers = getAll('.navbar-burger');
 
     // Check if there are any navbar burgers
     if ($navbarBurgers.length > 0) {
@@ -26,14 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             });
         });
-    }
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-
-    //Functions
-    function getAll(selector) {
-        return Array.prototype.slice.call(document.querySelectorAll(selector), 0);
     }
 
     // Modals
@@ -76,7 +74,26 @@ document.addEventListener('DOMContentLoaded', function () {
         let e = event || window.event;
         if (e.keyCode === 27) {
             closeModals();
-            closeDropdowns();
+            //closeDropdowns();
         }
     });
+
+    let Masonry = require('masonry-layout');
+
+    let grid = document.getElementsByClassName('grid');
+
+    let msnry = new Masonry('.grid',{
+        // use outer width of grid-sizer for columnWidth
+        columnWidth: '.grid-sizer',
+        itemSelector: '.grid-item',
+        percentPosition: true
+    });
+
+    let imagesLoaded = require('imagesloaded');
+
+    imagesLoaded( grid ).on( 'progress', function() {
+        // layout Masonry after each image loads
+        msnry.layout();
+    });
+
 });

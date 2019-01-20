@@ -12,3 +12,30 @@ p {
   overflow-wrap: break-word;
   hyphens: auto;
 }
+
+/* fluid 5 columns */
+.grid-sizer,
+.grid-item {
+  width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  /* 5 columns for larger screens */
+  .grid-sizer,
+  .grid-item {
+    width: 50%;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  /* 5 columns for larger screens */
+  .grid-sizer,
+  .grid-item {
+    width: 33.333%;
+  }
+}
+
+/* 2 columns wide */
+.grid-item--width2 {
+  width: 40%;
+}

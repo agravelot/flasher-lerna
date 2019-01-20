@@ -1,22 +1,14 @@
 <div class="container is-centered has-margin-top-md">
-
     <h1 class="title is-2 has-text-centered">{{ $album->title }}</h1>
 
-    @foreach ($album->getMedia('pictures') as $key => $picture)
-        <a class="modal-button" data-target="modal-{{ $key }}">
-            {{ $picture }}
-        </a>
-
-        <div class="modal" id="modal-{{ $key }}">
-            <div class="modal-background"></div>
-            <div class="modal-content">
-                <p class="image is-4by3">
-                    {{ $picture }}
-                </p>
-            </div>
-            <button class="modal-close is-large" aria-label="close"></button>
-        </div>
-    @endforeach
+    <div class="grid">
+        <div class="grid-sizer"></div>
+        @foreach ($album->getMedia('pictures') as $key => $picture)
+            <a class="modal-button grid-item" data-target="modal-{{ $key }}">
+                {{ $picture }}
+            </a>
+        @endforeach
+    </div>
 
     <div class="column is-10 is-offset-1">
         <div class="card article">
@@ -68,3 +60,15 @@
         </div>
     </div>
 </div>
+
+@foreach ($album->getMedia('pictures') as $key => $picture)
+    <div class="modal" id="modal-{{ $key }}">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <p class="image">
+                {{ $picture }}
+            </p>
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+@endforeach
