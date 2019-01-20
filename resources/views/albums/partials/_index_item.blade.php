@@ -11,17 +11,6 @@
                 <div class="content">
                     <p class="title is-5">{{ $album->title }}</p>
                 </div>
-                @if (!$album->categories->isEmpty())
-                    <div class="tags has-margin-top-md">
-                        @foreach($album->categories as $category)
-                            <div class="tag">
-                                <a href="{{ route('categories.show', ['category' => $category]) }}">
-                                    {{ $category->name }}
-                                </a>
-                            </div>
-                        @endforeach
-                    </div>
-                @endif
             </div>
         </div>
     </a>

@@ -21,7 +21,7 @@ class AlbumController extends Controller
      */
     public function index()
     {
-        $albums = PublicAlbum::with(['media', 'categories'])
+        $albums = PublicAlbum::with(['media'])
             ->latest()
             ->paginate(10);
 
