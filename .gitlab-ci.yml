@@ -54,6 +54,7 @@ tests:
   - bash -c 'cd docker/ && ./generate_env.sh staging'
   - docker-compose up -d
   - docker-compose exec -T cache redis-cli config set maxmemory 41943040
+  - docker-compose exec -T php export APP_ENV=testing
   - docker cp vendor $(docker-compose ps -q php):/var/www/html/
   - docker-compose exec -T php vendor/bin/phpunit --coverage-text --colors=never
   allow_failure: true
@@ -69,6 +70,7 @@ lint:
   - bash -c 'cd docker/ && ./generate_env.sh staging'
   - docker-compose up -d
   - docker-compose exec -T cache redis-cli config set maxmemory 41943040
+  - docker-compose exec -T php export APP_ENV=testing
   - docker cp vendor $(docker-compose ps -q php):/var/www/html/
   - docker-compose exec -T php vendor/bin/php-cs-fixer fix --dry-run --diff
   allow_failure: true
@@ -84,6 +86,7 @@ security_audit:
   - bash -c 'cd docker/ && ./generate_env.sh staging'
   - docker-compose up -d
   - docker-compose exec -T cache redis-cli config set maxmemory 41943040
+  - docker-compose exec -T php export APP_ENV=testing
   - docker cp vendor $(docker-compose ps -q php):/var/www/html/
   - docker-compose exec -T php sh vendor/pheromone/phpcs-security-audit/symlink.sh
   - docker-compose exec -T vendor/bin/phpcs --standard=./vendor/pheromone/phpcs-security-audit/example_base_ruleset.xml ./vendor/pheromone/phpcs-security-audit/tests.php
