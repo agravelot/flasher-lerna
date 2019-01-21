@@ -75,7 +75,6 @@ class UpdateAlbumTest extends TestCase
 
     public function test_admin_can_update_an_album_with_a_category_and_a_picture()
     {
-        $this->disableExceptionHandling();
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
         $category = factory(Category::class)->create();
