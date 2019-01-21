@@ -27,8 +27,8 @@ $factory->define(Album::class, function (Faker $faker) use (&$withMedias) {
 
 $factory->afterMaking(Album::class, function (Album $album, Faker $faker) use (&$withMedias) {
     if ($withMedias) {
-        foreach (range(1, 5) as $i) {
-            $album->addMediaFromUrl($faker->imageUrl())
+        foreach (range(1, 15) as $i) {
+            $album->addMediaFromUrl($faker->imageUrl(640 * $faker->numberBetween(1, 3), 480 * $faker->numberBetween(1, 3)))
                 ->toMediaCollection('pictures');
         }
     }
