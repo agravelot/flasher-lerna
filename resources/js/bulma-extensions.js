@@ -15,4 +15,3 @@
 // bulmaQuickview.attach();
 // bulmaSlider.attach();
 // bulmaSteps.attach();
-

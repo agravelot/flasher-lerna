@@ -5,8 +5,7 @@
  */
 
 // Bulma NavBar Burger Script
-document.addEventListener('DOMContentLoaded', function () {
-
+document.addEventListener('DOMContentLoaded', function() {
     //Functions
     function getAll(selector) {
         return Array.prototype.slice.call(document.querySelectorAll(selector), 0);
@@ -17,11 +16,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Check if there are any navbar burgers
     if ($navbarBurgers.length > 0) {
-
         // Add a click event on each of them
-        $navbarBurgers.forEach(function ($el) {
-            $el.addEventListener('click', function () {
-
+        $navbarBurgers.forEach(function($el) {
+            $el.addEventListener('click', function() {
                 // Get the target from the "data-target" attribute
                 let target = $el.dataset.target;
                 let $target = document.getElementById(target);
@@ -29,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Toggle the class on both the "navbar-burger" and the "navbar-menu"
                 $el.classList.toggle('is-active');
                 $target.classList.toggle('is-active');
-
             });
         });
     }
@@ -38,11 +34,13 @@ document.addEventListener('DOMContentLoaded', function () {
     let rootEl = document.documentElement;
     let $modals = getAll('.modal');
     let $modalButtons = getAll('.modal-button');
-    let $modalCloses = getAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button');
+    let $modalCloses = getAll(
+        '.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button'
+    );
 
     if ($modalButtons.length > 0) {
-        $modalButtons.forEach(function ($el) {
-            $el.addEventListener('click', function () {
+        $modalButtons.forEach(function($el) {
+            $el.addEventListener('click', function() {
                 let target = $el.dataset.target;
                 openModal(target);
             });
@@ -50,8 +48,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if ($modalCloses.length > 0) {
-        $modalCloses.forEach(function ($el) {
-            $el.addEventListener('click', function () {
+        $modalCloses.forEach(function($el) {
+            $el.addEventListener('click', function() {
                 closeModals();
             });
         });
@@ -65,12 +63,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function closeModals() {
         rootEl.classList.remove('is-clipped');
-        $modals.forEach(function ($el) {
+        $modals.forEach(function($el) {
             $el.classList.remove('is-active');
         });
     }
 
-    document.addEventListener('keydown', function (event) {
+    document.addEventListener('keydown', function(event) {
         let e = event || window.event;
         if (e.keyCode === 27) {
             closeModals();
@@ -82,18 +80,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let grid = document.getElementsByClassName('grid');
 
-    let msnry = new Masonry('.grid',{
+    let msnry = new Masonry('.grid', {
         // use outer width of grid-sizer for columnWidth
         columnWidth: '.grid-sizer',
         itemSelector: '.grid-item',
-        percentPosition: true
+        percentPosition: true,
     });
 
     let imagesLoaded = require('imagesloaded');
 
-    imagesLoaded( grid ).on( 'progress', function() {
+    imagesLoaded(grid).on('progress', function() {
         // layout Masonry after each image loads
         msnry.layout();
     });
-
 });
