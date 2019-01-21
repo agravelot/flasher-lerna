@@ -24,19 +24,19 @@ class CategoriesSeeder extends Seeder
 
         Album::all()->each(function ($album) use ($categories) {
             $album->categories()->attach(
-                $categories->random(rand(5, 10))->pluck('id')->toArray()
+                $categories->random(rand(1, 3))->pluck('id')->toArray()
             );
         });
 
         Post::all()->each(function ($posts) use ($categories) {
             $posts->categories()->attach(
-                $categories->random(rand(5, 10))->pluck('id')->toArray()
+                $categories->random(rand(1, 3))->pluck('id')->toArray()
             );
         });
 
         Cosplayer::all()->each(function ($posts) use ($categories) {
             $posts->categories()->attach(
-                $categories->random(rand(5, 10))->pluck('id')->toArray()
+                $categories->random(rand(1, 3))->pluck('id')->toArray()
             );
         });
     }
