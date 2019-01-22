@@ -3,9 +3,9 @@
 @section('content')
     <div class="container">
         @include('layouts.partials._messages')
-        <h1 class="title">Golden book</h1>
+        <h1 class="title">{{ __('Golden book') }}</h1>
         <a href="{{ route('goldenbook.create') }}" class="button is-primary is-outlined is-medium has-margin-md">
-            Write
+            {{ __('Write') }}
         </a>
 
         @each('goldenbook._goldenbook_item', $goldenBooksPosts, 'goldenBookPost', 'layouts.partials._empty')
