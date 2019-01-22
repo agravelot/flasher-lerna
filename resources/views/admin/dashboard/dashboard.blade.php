@@ -5,10 +5,10 @@
         <div class="hero-body">
             <div class="container">
                 <h1 class="title">
-                    Hello, {{ Auth::user()->name }}.
+                    {{ __('Hello') }}, {{ Auth::user()->name }}.
                 </h1>
                 <h2 class="subtitle">
-                    I hope you are having a great day!
+                    {{ __('I hope you are having a great day!') }}
                 </h2>
             </div>
         </div>
@@ -19,28 +19,28 @@
                @can('index', \App\Models\User::class) href="{{ route('admin.users.index') }}" @endcan>
                 <article class="tile is-child box">
                     <p class="title">{{ $userCount }}</p>
-                    <p class="subtitle">Users</p>
+                    <p class="subtitle">{{ __('Users') }}</p>
                 </article>
             </a>
             <a class="tile is-parent"
                @can('index', \App\Models\Album::class) href="{{ route('admin.albums.index') }}" @endcan>
                 <article class="tile is-child box">
                     <p class="title">{{ $albumCount }}</p>
-                    <p class="subtitle">Albums</p>
+                    <p class="subtitle">{{ __('Albums') }}</p>
                 </article>
             </a>
             <a class="tile is-parent"
                @can('index', \App\Models\Cosplayer::class) href="{{ route('admin.cosplayers.index') }}" @endcan>
                 <article class="tile is-child box">
                     <p class="title">{{ $cosplayerCount }}</p>
-                    <p class="subtitle">Cosplayers</p>
+                    <p class="subtitle">{{ __('Cosplayers') }}</p>
                 </article>
             </a>
             <a class="tile is-parent"
                @can('index', \App\Models\Contact::class) href="{{ route('admin.contacts.index') }}" @endcan>
                 <article class="tile is-child box">
                     <p class="title">{{ $contactCount }}</p>
-                    <p class="subtitle">Contacts</p>
+                    <p class="subtitle">{{ __('Contacts') }}</p>
                 </article>
             </a>
         </div>
