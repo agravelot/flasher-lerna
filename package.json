@@ -9,7 +9,8 @@
         "prod": "yarn run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "watch:migrations": "onchange 'database/migrations/*.php' -- php artisan migrate:refresh",
-        "watch:migrations-seeds": "onchange 'database/*/*.php' -- php artisan migrate:refresh --seed"
+        "watch:migrations-seeds": "onchange 'database/*/*.php' -- php artisan migrate:refresh --seed",
+        "format": "prettier --write 'resources/**/*.{css,js,vue}' 'nova-components/**/*.{css,js,vue}'"
     },
     "devDependencies": {
         "@fortawesome/fontawesome-free": "^5.3",
