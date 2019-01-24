@@ -18,6 +18,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\SQLiteBuilder;
 use Illuminate\Database\SQLiteConnection;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Fluent;
 use InvalidArgumentException;
 
@@ -29,24 +30,6 @@ abstract class TestCase extends BaseTestCase
     {
         parent::__construct($name, $data, $dataName);
         $this->hotfixSqlite();
-    }
-
-    protected function actingAsAdminNotStored()
-    {
-        $admin = factory(User::class)->state('admin')->make();
-        $this->actingAs($admin);
-    }
-
-    protected function actingAsAdmin()
-    {
-        $admin = factory(User::class)->state('admin')->create();
-        $this->actingAs($admin);
-    }
-
-    protected function actingAsUser()
-    {
-        $user = factory(User::class)->state('user')->create();
-        $this->actingAs($user);
     }
 
     public function hotfixSqlite()
@@ -73,6 +56,30 @@ abstract class TestCase extends BaseTestCase
                 }
             };
         });
+    }
+
+    protected function setUp()
+    {
+        parent::setUp();
+        App::setLocale('en');
+    }
+
+    protected function actingAsAdminNotStored()
+    {
+        $admin = factory(User::class)->state('admin')->make();
+        $this->actingAs($admin);
+    }
+
+    protected function actingAsAdmin()
+    {
+        $admin = factory(User::class)->state('admin')->create();
+        $this->actingAs($admin);
+    }
+
+    protected function actingAsUser()
+    {
+        $user = factory(User::class)->state('user')->create();
+        $this->actingAs($user);
     }
 
     protected function assertAuthenticationRequired($uri, $method = 'get', $redirect = '/login')
