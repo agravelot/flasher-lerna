@@ -36,6 +36,8 @@ use App\Abilities\HasParentModelTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PublishedGoldenBookPost whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PublishedGoldenBookPost whereUserId($value)
  * @mixin \Eloquent
+ *
+ * @property \App\Models\User|null $user
  */
 class PublishedGoldenBookPost extends GoldenBookPost
 {
