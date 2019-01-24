@@ -29,25 +29,7 @@
                 <a class="navbar-item {{ Request::is('about') ? 'is-active' : '' }}" href="#">{{ __('About') }}</a>
                 <a class="navbar-item {{ Request::is('contact*') ? 'is-active' : '' }}"
                    href="{{ route('contact.index') }}">{{ __('Contact') }}</a>
-                @guest()
-                    {{-- <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link" href="#">
-                            <span class="icon">
-                                <i class="fas fa-globe-africa"></i>
-                            </span>
-                            <span>FR</span>
-                        </a>
-
-                        <div class="navbar-dropdown is-boxed is-right">
-                            <a class="navbar-item" href="#">
-                                FR
-                            </a>
-                            <a class="navbar-item" href="#">
-                                EN
-                            </a>
-                        </div>
-                    </div> --}}
-                @else
+                @auth()
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link" href="#">
                             <span class="icon">
