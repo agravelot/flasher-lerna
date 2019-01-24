@@ -42,6 +42,11 @@ use App\Scope\PublicScope;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PublicAlbum whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PublicAlbum whereUserId($value)
  * @mixin \Eloquent
+ *
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Category[]  $categories
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[]   $comments
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Cosplayer[] $cosplayers
+ * @property \App\Models\User                                                 $user
  */
 class PublicAlbum extends Album
 {

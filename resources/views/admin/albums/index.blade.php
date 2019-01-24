@@ -9,7 +9,7 @@
                     <span class="icon">
                         <i class="fas fa-plus"></i>
                     </span>
-                    <span>Add</span>
+                    <span>{{ __('Add') }}</span>
                 </a>
             </p>
 

@@ -3,14 +3,14 @@
     <aside class="menu">
         <ul class="menu-list">
             <p class="menu-label">
-                Administration
+                {{ __('Administration') }}
             </p>
             <li>
                 <a href="{{ route('admin.dashboard') }}" {{ Request::is('admin') ? 'class=is-active' : '' }}>
                 <span class="icon">
                     <i class="fas fa-home"></i>
                 </span>
-                    Dashboard
+                    {{ __('Dashboard') }}
                 </a>
             </li>
             @can('index', \App\Models\Album::class)
@@ -19,7 +19,7 @@
                     <span class="icon">
                         <i class="fas fa-images"></i>
                     </span>
-                        Albums
+                        {{ __('Albums') }}
                     </a>
                 </li>
             @endcan
@@ -29,7 +29,7 @@
                     <span class="icon">
                         <i class="fas fa-tags"></i>
                     </span>
-                        Categories
+                        {{ __('Categories') }}
                     </a>
                 </li>
             @endcan
@@ -39,7 +39,7 @@
                     <span class="icon">
                         <i class="fas fa-user-tag"></i>
                     </span>
-                        Cosplayers
+                        {{ __('Cosplayers') }}
                     </a>
                 </li>
             @endcan
@@ -49,7 +49,7 @@
                     <span class="icon">
                         <i class="fas fa-user"></i>
                     </span>
-                        Users
+                        {{ __('Users') }}
                     </a>
                 </li>
             @endcan
@@ -59,7 +59,7 @@
                     <span class="icon">
                         <i class="fas fa-pen-fancy"></i>
                     </span>
-                        Contacts
+                        {{ __('Contacts') }}
                     </a>
                 </li>
             @endcan
@@ -69,7 +69,7 @@
                     <span class="icon">
                         <i class="fas fa-book"></i>
                     </span>
-                        Golden book
+                        {{ __('Golden book') }}
                     </a>
                 </li>
             @endcan
@@ -77,7 +77,7 @@
 
 
         <p class="menu-label">
-            Monitoring
+            {{ __('Monitoring') }}
         </p>
         <ul class="menu-list">
             <li>
@@ -85,7 +85,7 @@
                 <span class="icon">
                     <i class="fas fa-tachometer-alt"></i>
                 </span>
-                    Statistics
+                    {{ __('Statistics') }}
                 </a>
             </li>
             <li>
@@ -93,7 +93,7 @@
                 <span class="icon">
                     <i class="fas fa-tasks"></i>
                 </span>
-                    Background tasks
+                    {{ __('Background tasks') }}
                 </a>
             </li>
         </ul>
@@ -104,7 +104,7 @@
                 <span class="icon">
                     <i class="fas fa-chevron-circle-left"></i>
                 </span>
-                    Back to the website
+                    {{ __('Back to the website') }}
                 </a>
             </li>
         </ul>
@@ -113,10 +113,10 @@
 
 <div class="" style="position: fixed; bottom: 42px; left: 10px; z-index: 5;">
     <a class="has-text-info has-margin-top-lg" id="collapse-admin-menu">
-                <span class="icon">
-                    <i class="fas fa-chevron-circle-left"></i>
-                </span>
-        Collapse
+        <span class="icon">
+            <i class="fas fa-chevron-circle-left"></i>
+        </span>
+        {{ __('Collapse') }}
     </a>
 </div>
 

@@ -16,7 +16,7 @@
                 <div class="card-content">
 
                     <div class="field">
-                        <label class="label">Title</label>
+                        <label class="label">{{ __('Title') }}</label>
                         <div class="control">
                             <input class="input" id="title" type="text" name="title"
                                    value="{{ old('title', isset($album->title) ? $album->title : null) }}"
@@ -26,7 +26,7 @@
                     </div>
 
                     <div class="field">
-                        <label class="label">Body</label>
+                        <label class="label">{{ __('Body') }}</label>
                         <div class="control">
                             <textarea class="textarea tinymce" id="body" type="text" name="body"
                                       rows="10">{{ old('body', isset($album->body) ? $album->body : null) }}</textarea>
@@ -39,7 +39,7 @@
             <div class="card has-margin-bottom-md">
                 <div class="card-content">
                     <div class="field">
-                        <label class="label">Pictures</label>
+                        <label class="label">{{ __('Pictures') }}</label>
 
                         @if (isset($album) && $album->getMedia('thumb'))
                             @foreach($album->getMedia('pictures') as $picture)
@@ -56,7 +56,7 @@
                                                 <i class="fas fa-upload"></i>
                                             </span>
                                           <span class="file-label">
-                                                Choose your files…
+                                                {{ __('Choose your files…') }}
                                           </span>
                                         </span>
                                 </label>
@@ -74,7 +74,7 @@
             <div class="card has-margin-bottom-md">
                 <div class="card-header">
                     <div class="card-header-title">
-                        Publish
+                        {{ __('Publish') }}
                     </div>
                 </div>
                 <div class="card-content">
@@ -85,7 +85,7 @@
                                     {{ old('published_at', isset($album->published_at) && $album->isPublished())
                                     ? 'checked="checked"' : ''  }}
                             >
-                            Publish
+                            {{ __('Publish') }}
                         </label>
                         <label class="radio">
                             <input type="radio" name="published_at"
@@ -93,13 +93,13 @@
                                     {{ old('published_at', isset($album->published_at) && $album->isPublished())
                                     ? '' : 'checked="checked"' }}
                             >
-                            Draft
+                            {{ __('Draft') }}
                         </label>
                     </div>
                     @include('layouts.partials._form_errors', ['data' => 'publish'])
 
                     <div class="field">
-                        <label class="label">Private</label>
+                        <label class="label">{{ __('Private') }}</label>
                         <div class="control">
                             <input type="hidden" name="private" value="0">
                             <input class="checkbox" id="private" type="checkbox" name="private" value="1"
@@ -113,7 +113,7 @@
                 <footer class="card-footer">
                     <div class="control card-footer-item">
                         <button class="button is-primary">
-                            Send
+                            {{ __('Send') }}
                         </button>
                     </div>
                 </footer>
@@ -122,7 +122,7 @@
             <div class="card has-margin-bottom-md">
                 <div class="card-header">
                     <div class="card-header-title">
-                        Categories
+                        {{ __('Categories') }}
                     </div>
                 </div>
                 <div class="card-content">
@@ -144,7 +144,7 @@
             <div class="card has-margin-bottom-md">
                 <div class="card-header">
                     <div class="card-header-title">
-                        Cosplayers
+                        {{ __('Cosplayers') }}
                     </div>
                 </div>
                 <div class="card-content">

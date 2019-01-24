@@ -1,7 +1,7 @@
 <div class="card">
     <header class="card-header">
         <p class="card-header-title">
-            Activities
+            {{ __('Activities') }}
         </p>
         <a href="#" class="card-header-icon" aria-label="more options">
             <span class="icon">
@@ -27,6 +27,6 @@
         </div>
     </div>
     <footer class="card-footer">
-        <a href="#" class="card-footer-item">View All</a>
+        <a href="#" class="card-footer-item">{{ __('View All') }}</a>
     </footer>
 </div>

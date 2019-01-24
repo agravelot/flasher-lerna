@@ -5,16 +5,7 @@
         <div class="column">
             <div class="card">
                 <header class="card-header">
-                    <p class="card-header-title">
-                        Contacts
-                        <a href="{{ route('contact.index') }}">
-                            <span class="icon">
-                                <i class="fas fa-plus"></i>
-                            </span>
-                            <span>Add</span>
-                        </a>
-                    </p>
-
+                    <p class="card-header-title">Contacts</p>
                     <a href="#" class="card-header-icon" aria-label="more options">
                         <span class="icon">
                             <i class="fa fa-angle-down" aria-hidden="true"></i>

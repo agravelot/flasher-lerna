@@ -3,18 +3,17 @@
         <nav class="pagination is-centered" role="navigation" aria-label="pagination">
             {{-- Previous Page Link --}}
             @if ($paginator->onFirstPage())
-                <a class="pagination-previous" disabled>Previous</a>
+                <a class="pagination-previous" disabled>@lang('pagination.previous')</a>
             @else
-                <a class="pagination-previous" href="{{ $paginator->previousPageUrl() }}">Previous</a>
+                <a class="pagination-previous" href="{{ $paginator->previousPageUrl() }}">@lang('pagination.previous')</a>
             @endif
 
             {{-- Next Page Link --}}
             @if ($paginator->hasMorePages())
-                <a class="pagination-next" href="{{ $paginator->nextPageUrl() }}">Next Page</a>
+                <a class="pagination-next" href="{{ $paginator->nextPageUrl() }}">@lang('pagination.next')</a>
             @else
                 <a class="pagination-next" disabled>Next Page</a>
             @endif
-
 
             {{-- Pagination Elements --}}
             <ul class="pagination-list">

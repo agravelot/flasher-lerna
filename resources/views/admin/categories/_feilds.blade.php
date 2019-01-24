@@ -7,7 +7,7 @@
         @endif
 
         <div class="field">
-            <label class="label">Name</label>
+            <label class="label">{{ __('Name') }}</label>
             <div class="control">
                 <input class="input" id="name" type="text" name="name"
                        value="{{ old('name', isset($category->name) ? $category->name : null) }}" placeholder="Name"
@@ -18,7 +18,7 @@
 
 
         <div class="field">
-            <label class="label">Description</label>
+            <label class="label">{{ __('Description') }}</label>
             <div class="control">
                 <textarea class="textarea" id="description" type="text" name="description"
                           placeholder="Enter your description here"
@@ -29,7 +29,7 @@
 
         <div class="field">
             <div class="control">
-                <button type="submit" class="button is-primary">Save</button>
+                <button type="submit" class="button is-primary">{{ __('Send') }}</button>
             </div>
         </div>
     </form>
