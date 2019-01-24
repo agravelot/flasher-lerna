@@ -48,6 +48,7 @@ use Spatie\MediaLibrary\Models\Media;
  * @mixin \Eloquent
  *
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\PublicAlbum[] $publicAlbums
+ * @property mixed                                                              $initial
  */
 class Cosplayer extends Model implements HasMedia
 {
@@ -57,7 +58,7 @@ class Cosplayer extends Model implements HasMedia
 
     public function getInitialAttribute()
     {
-        return strtoupper(substr($this->name, 0, 1));
+        return mb_strtoupper(mb_substr($this->name, 0, 1));
     }
 
     public function user()
