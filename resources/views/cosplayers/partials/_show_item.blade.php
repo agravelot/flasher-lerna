@@ -1,9 +1,9 @@
 <div class="container is-centered">
 
-    <figure class="has-text-centered">
+    <figure class="image is-96x96 is-centered">
         <img class="is-rounded" src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb') }}">
-        <h1 class="title is-2">{{ $cosplayer->name }}</h1>
     </figure>
+    <h1 class="has-text-centered title is-2">{{ $cosplayer->name }}</h1>
 
 
     <div class="column is-8 is-offset-2">

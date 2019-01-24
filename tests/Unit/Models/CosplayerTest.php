@@ -62,4 +62,18 @@ class CosplayerTest extends ModelTestCase
 
         $this->assertBelongsToRelation($relation, $cosplayer, new User(), 'user_id');
     }
+
+    public function test_cosplayer_with_a_Tom_as_name_will_have_uppercase_t_as_initial() {
+        $cosplayer = new Cosplayer();
+        $cosplayer->name = 'Tom';
+
+        $this->assertSame('T', $cosplayer->initial);
+    }
+
+    public function test_cosplayer_with_a_tom_lowercase_as_name_will_have_uppercase_t_as_initial() {
+        $cosplayer = new Cosplayer();
+        $cosplayer->name = 'tom';
+
+        $this->assertSame('T', $cosplayer->initial);
+    }
 }

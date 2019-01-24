@@ -55,6 +55,11 @@ class Cosplayer extends Model implements HasMedia
 
     protected $fillable = ['name', 'description', 'slug', 'user_id'];
 
+    public function getInitialAttribute()
+    {
+        return strtoupper(substr($this->name, 0, 1));
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -101,8 +106,7 @@ class Cosplayer extends Model implements HasMedia
 
     public function registerMediaCollections()
     {
-        $this
-            ->addMediaCollection('avatar')
+        $this->addMediaCollection('avatar')
             ->singleFile()
             ->acceptsFile(function (File $file) {
                 return mb_strpos($file->mimeType, 'image/') === 0;
@@ -112,9 +116,8 @@ class Cosplayer extends Model implements HasMedia
     public function registerMediaConversions(Media $media = null)
     {
         $this->addMediaConversion('thumb')
-            ->width(368)
-            ->height(232)
-            ->sharpen(10)
+            ->crop('crop-center', 96, 96)
+            ->sharpen(7)
             ->performOnCollections('avatar');
     }
 }

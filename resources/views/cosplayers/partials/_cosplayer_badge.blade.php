@@ -1,14 +1,16 @@
-<a href="{{route('cosplayers.show', ['cosplayer' => $cosplayer]) }}">
-    <figure class="image column is-2-desktop is-3-tablet is-3-mobile">
+<div class="column is-2-desktop is-3-tablet is-3-mobile">
         @if ($cosplayer->getFirstMediaUrl('avatar'))
-            <img class="is-rounded" src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb') }}">
+            <figure class="is-centered image is-96x96">
+                <img class="is-rounded" src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb') }}">
+            </figure>
         @else
-            <span class="icon has-text-info is-large">
-                <i class="fas fa-user fa-3x"></i>
-            </span>
+            <div class="is-centered avatar-circle">
+                <span class="initials"> {{ $cosplayer->initial }}</span>
+            </div>
         @endif
+    <a href="{{route('cosplayers.show', ['cosplayer' => $cosplayer]) }}">
         <p class="has-text-centered">
             {{ $cosplayer->name }}
         </p>
-    </figure>
-</a>
+    </a>
+</div>
