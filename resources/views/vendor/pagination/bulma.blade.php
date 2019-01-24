@@ -15,7 +15,6 @@
                 <a class="pagination-next" disabled>Next Page</a>
             @endif
 
-
             {{-- Pagination Elements --}}
             <ul class="pagination-list">
                 @foreach ($elements as $element)

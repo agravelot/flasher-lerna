@@ -6,10 +6,10 @@
             <p class="card-header-title">
                 Users
                 <a href="{{ route('admin.users.create') }}">
-                            <span class="icon">
-                                <i class="fas fa-plus"></i>
-                            </span>
-                    <span>Add</span>
+                    <span class="icon">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span>{{ __('Add') }}</span>
                 </a>
             </p>
             <a href="#" class="card-header-icon" aria-label="more options">

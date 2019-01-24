@@ -30,7 +30,7 @@
                 <a class="navbar-item {{ Request::is('contact*') ? 'is-active' : '' }}"
                    href="{{ route('contact.index') }}">{{ __('Contact') }}</a>
                 @guest()
-                    <div class="navbar-item has-dropdown is-hoverable">
+                    {{-- <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link" href="#">
                             <span class="icon">
                                 <i class="fas fa-globe-africa"></i>
@@ -46,7 +46,7 @@
                                 EN
                             </a>
                         </div>
-                    </div>
+                    </div> --}}
                 @else
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link" href="#">
