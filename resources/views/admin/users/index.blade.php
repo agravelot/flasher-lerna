@@ -4,7 +4,7 @@
     <div class="card">
         <header class="card-header">
             <p class="card-header-title">
-                Users
+                {{ __('Users') }}
                 <a href="{{ route('admin.users.create') }}">
                     <span class="icon">
                         <i class="fas fa-plus"></i>

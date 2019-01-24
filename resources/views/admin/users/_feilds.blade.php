@@ -8,7 +8,7 @@
 
         <div class="field is-horizontal">
             <div class="field-label">
-                <label class="label">Name</label>
+                <label class="label">{{ __('Name') }}</label>
             </div>
 
             <div class="field-body">
@@ -25,7 +25,7 @@
 
         <div class="field is-horizontal">
             <div class="field-label">
-                <label class="label">E-mail Address</label>
+                <label class="label">{{ __('Email') }}</label>
             </div>
 
             <div class="field-body">
@@ -41,7 +41,7 @@
 
         <div class="field is-horizontal">
             <div class="field-label">
-                <label class="label">Password</label>
+                <label class="label">{{ __('Password') }}</label>
             </div>
 
             <div class="field-body">
@@ -57,7 +57,7 @@
 
         <div class="field is-horizontal">
             <div class="field-label">
-                <label class="label">Confirm Password</label>
+                <label class="label">{{ __('Confirm password') }}</label>
             </div>
 
             <div class="field-body">
@@ -77,7 +77,7 @@
             <div class="field-body">
                 <div class="field is-grouped">
                     <div class="control">
-                        <button type="submit" class="button is-primary">Register</button>
+                        <button type="submit" class="button is-primary">{{ __('Register') }}</button>
                     </div>
                 </div>
             </div>

@@ -27,5 +27,16 @@
     "Email": "Mail",
     "Message": "Message",
     "Your message here": "Votre message ici",
-    "Send": "Envoyer"
+    "Send": "Envoyer",
+    "Password": "Mot de passe",
+    "Confirm password": "Mot de passe de confirmation",
+    "Description": "Déscription",
+    "Related user": "Utilisateur lié",
+    "Title": "Titre",
+    "Body": "Contenu",
+    "Pictures": "Photos",
+    "Publish": "Publié",
+    "Draft": "Brouillon",
+    "Private": "Privé",
+    "Cosplayers": "Cosplayers"
 }
