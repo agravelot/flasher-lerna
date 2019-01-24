@@ -3,7 +3,7 @@
         <div class="card album">
             <div class="card-image">
                 <figure class="image">
-                    <img src="{{ $album->getFirstMediaUrl('pictures', 'thumb')  }}" alt="">
+                     {{ $album->getFirstMedia('pictures') }}
                 </figure>
             </div>
 
