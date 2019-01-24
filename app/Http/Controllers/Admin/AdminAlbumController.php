@@ -85,11 +85,11 @@ class AdminAlbumController extends Controller
             });
 
         if (array_key_exists('categories', $validated)) {
-            $album->setCategoriesFromId($validated['categories']);
+            $album->categories()->sync($validated['categories'], false);
         }
 
         if (array_key_exists('cosplayers', $validated)) {
-            $album->setCosplayersFromId($validated['cosplayers']);
+            $album->cosplayers()->sync($validated['cosplayers'], false);
         }
 
         return redirect(route('admin.albums.index'))
@@ -167,11 +167,11 @@ class AdminAlbumController extends Controller
         }
 
         if (array_key_exists('categories', $validated)) {
-            $album->setCategoriesFromId($validated['categories']);
+            $album->categories()->sync($validated['categories'], false);
         }
 
         if (array_key_exists('cosplayers', $validated)) {
-            $album->setCosplayersFromId($validated['cosplayers']);
+            $album->cosplayers()->sync($validated['cosplayers'], false);
         }
 
         return redirect(route('admin.albums.index'))

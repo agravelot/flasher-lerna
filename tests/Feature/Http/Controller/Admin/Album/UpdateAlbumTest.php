@@ -204,4 +204,36 @@ class UpdateAlbumTest extends TestCase
         $response->assertStatus(302)
             ->assertRedirect('/login');
     }
+
+    public function test_cosplayer_are_not_declared_twice_after_update()
+    {
+        $this->actingAsAdmin();
+        $album = factory(Album::class)->create();
+        $cosplayer = factory(Cosplayer::class)->create();
+        $album->cosplayers()->save($cosplayer);
+        $image = UploadedFile::fake()->image('fake.jpg');
+
+        $response = $this->updateAlbum($album, [
+            'cosplayers' => array_wrap($cosplayer->id),
+            'pictures' => array_wrap($image),
+        ]);
+
+        $this->assertSame(1, $album->fresh()->cosplayers->count());
+    }
+
+    public function test_category_are_not_declared_twice_after_update()
+    {
+        $this->actingAsAdmin();
+        $album = factory(Album::class)->create();
+        $category = factory(Category::class)->create();
+        $album->categories()->save($category);
+        $image = UploadedFile::fake()->image('fake.jpg');
+
+        $response = $this->updateAlbum($album, [
+            'categories' => array_wrap($category->id),
+            'pictures' => array_wrap($image),
+        ]);
+
+        $this->assertSame(1, $album->fresh()->categories->count());
+    }
 }

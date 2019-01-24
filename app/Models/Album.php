@@ -79,18 +79,6 @@ class Album extends Model implements HasMedia
             ->where('private', false);
     }
 
-    public function setCategoriesFromId(array $id)
-    {
-        $categories = Category::find($id);
-        $this->categories()->saveMany($categories);
-    }
-
-    public function setCosplayersFromId(array $id)
-    {
-        $cosplayers = Cosplayer::find($id);
-        $this->cosplayers()->saveMany($cosplayers);
-    }
-
     public function isPublic()
     {
         return $this->isPublished() && $this->isPasswordLess();
