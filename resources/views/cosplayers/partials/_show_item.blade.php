@@ -1,8 +1,6 @@
 <div class="container is-centered">
 
-    <figure class="image is-96x96 is-centered">
-        <img class="is-rounded" src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb') }}">
-    </figure>
+    @include('cosplayers.partials._cosplayer_avatar', ['cosplayer' => $cosplayer])
     <h1 class="has-text-centered title is-2">{{ $cosplayer->name }}</h1>
 
 
