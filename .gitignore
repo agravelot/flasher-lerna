@@ -28,4 +28,7 @@ _ide_helper_models.php
 
 /storage/medialibrary
 
-phpunit\.xml
+/phpunit.xml
+/infection.log
+/per-mutator.md
+/summary.log

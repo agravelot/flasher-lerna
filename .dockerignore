@@ -11,6 +11,7 @@ _ide_helper_models.php
 Dockerfile
 .php_cs.cache
 sitemap.xml
+.dockerignore
 
 /vendor/
 /node_modules/
@@ -21,7 +22,6 @@ sitemap.xml
 /public/vendor/
 /public/fonts/
 /public/images/
-/public/sitemap\.xml
 /public/storage
 /public/js/
 /public/css/
@@ -35,7 +35,10 @@ sitemap.xml
 /storage/app/public/*
 /bootstrap/cache/**
 
-*.md
+/phpunit.xml
+/infection.log
+/per-mutator.md
+/summary.log
 
 additions:
 '**' matches any number of directories (including zero)
