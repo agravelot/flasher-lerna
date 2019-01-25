@@ -10,39 +10,39 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
-class WaitDatabaseConnection extends Command
+class WaitCacheConnectionAndClear extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'db:wait-connection';
+    protected $signature = 'cache:clear-wait-connection';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Wait until get database connection';
+    protected $description = 'Wait until get cache connection and clear it';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $this->waitConnection();
+        $this->waitConnectionForClear();
     }
 
-    public function waitConnection()
+    public function waitConnectionForClear()
     {
         try {
-            DB::connection()->getPdo();
+            Cache::clear();
         } catch (\Exception $e) {
             sleep(1);
-            $this->waitConnection();
+            $this->waitConnectionForClear();
         }
     }
 }

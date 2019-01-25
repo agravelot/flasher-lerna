@@ -109,7 +109,7 @@ CMD php artisan config:clear \
         && php artisan migrate --force \
 # Optimizing for production
 # https://laravel.com/docs/5.7/deployment#optimization
-        && php artisan cache:clear \
+        && php artisan cache:cache:clear-wait-connection \
         && php artisan view:clear \
         && php artisan optimize \
         && php artisan route:cache \
