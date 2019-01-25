@@ -16,8 +16,7 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/admin/admin.js', 'public/js')
     .js('resources/js/carousel.js', 'public/js')
     .js('resources/js/tinymce.js', 'public/js')
-    .version()
-    .extract();
+    .version();
 
 mix.sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/error-illustrated.scss', 'public/css')
