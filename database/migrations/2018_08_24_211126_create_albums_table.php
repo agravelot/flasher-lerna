@@ -25,7 +25,7 @@ class CreateAlbumsTable extends Migration
             $table->text('body')->nullable();
             $table->dateTime('published_at')->nullable();
             $table->boolean('private');
-            $table->integer('user_id')->unsigned();
+            $table->unsignedInteger('user_id');
             $table->timestamps();
         });
     }

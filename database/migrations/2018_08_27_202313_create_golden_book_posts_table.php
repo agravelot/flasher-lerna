@@ -24,7 +24,7 @@ class CreateGoldenBookPostsTable extends Migration
             $table->string('email');
             $table->text('body');
             $table->dateTime('published_at')->nullable();
-            $table->integer('user_id')->unsigned()->nullable();
+            $table->unsignedInteger('user_id')->nullable();
             $table->timestamps();
         });
     }

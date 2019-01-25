@@ -24,7 +24,7 @@ class CreateCosplayersTable extends Migration
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->string('picture')->nullable();
-            $table->integer('user_id')->unsigned()->nullable();
+            $table->unsignedInteger('user_id')->nullable();
             $table->timestamps();
         });
     }

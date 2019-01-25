@@ -23,12 +23,9 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->string('seo_title')->nullable();
-            //$table->text('excerpt');
             $table->text('body');
-            //$table->text('meta_description');
-            //$table->text('meta_keywords');
             $table->boolean('active')->default(false);
-            $table->integer('user_id')->unsigned();
+            $table->unsignedInteger('user_id');
             $table->timestamps();
         });
     }
