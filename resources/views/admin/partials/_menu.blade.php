@@ -111,7 +111,7 @@
     </aside>
 </div>
 
-<div class="" style="position: fixed; bottom: 42px; left: 10px; z-index: 5;">
+<div class="admin-collapse-button">
     <a class="has-text-info has-margin-top-lg" id="collapse-admin-menu">
         <span class="icon">
             <i class="fas fa-chevron-circle-left"></i>
