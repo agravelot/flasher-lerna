@@ -3,9 +3,7 @@
 @section('content')
     <div class="container">
         <div class="card-content">
-
             <h1 class="title has-text-centered">{{ __('Contact me') }}</h1>
-
             @include('layouts.partials._messages')
 
             <form method="POST" action="{{ route('contact.store') }}">
@@ -15,14 +13,12 @@
                     <div class="field-label">
                         <label class="label">{{ __('Name') }}</label>
                     </div>
-
                     <div class="field-body">
                         <div class="field">
-                            <p class="control">
+                            <div class="control">
                                 <input class="input" id="name" type="text" name="name" value="{{ old('name') }}"
                                        placeholder="{{ __('Name') }}" required autofocus>
-                            </p>
-
+                            </div>
                             @include('layouts.partials._form_errors', ['data' => 'name'])
                         </div>
                     </div>
@@ -32,14 +28,12 @@
                     <div class="field-label">
                         <label class="label">{{ __('Email') }}</label>
                     </div>
-
                     <div class="field-body">
                         <div class="field">
-                            <p class="control">
+                            <div class="control">
                                 <input class="input" id="email" type="text" name="email" value="{{ old('email') }}"
                                        placeholder="{{ __('Email') }}" required autofocus>
-                            </p>
-
+                            </div>
                             @include('layouts.partials._form_errors', ['data' => 'email'])
                         </div>
                     </div>
@@ -49,14 +43,12 @@
                     <div class="field-label">
                         <label class="label">{{ __('Message') }}</label>
                     </div>
-
                     <div class="field-body">
                         <div class="field">
                             <div class="control">
                                 <textarea class="textarea" id="message" type="text" name="message"
                                           rows="10" placeholder="{{ __('Your message here') }}">{{ old('message') }}</textarea>
                             </div>
-
                             @include('layouts.partials._form_errors', ['data' => 'message'])
                         </div>
                     </div>
