@@ -6,7 +6,7 @@
             <div class="card">
                 <header class="card-header">
                     <p class="card-header-title">
-                        Categories
+                        {{ __('Categories') }}
                         <a href="{{ route('admin.categories.create') }}">
                             <span class="icon">
                                 <i class="fas fa-plus"></i>

@@ -1,6 +1,6 @@
 <tr>
     <td>
-        <a href="{{ route('admin.users.show', ['user' => $user]) }}">{{ $user->name }}</a>
+        <a href="{{ route('admin.users.show', compact('user')) }}">{{ $user->name }}</a>
     </td>
     <td width="2%">
         @canImpersonate
@@ -23,14 +23,14 @@
         @endif
     </td>
     <td width="2%">
-        <a href="{{ route('admin.users.edit', ['user' => $user]) }}">
+        <a href="{{ route('admin.users.edit', compact('user')) }}">
             <span class="icon has-text-info">
                 <i class="far fa-edit"></i>
             </span>
         </a>
     </td>
     <td width="2%">
-        <form action="{{ route('admin.users.destroy', ['user' => $user]) }}" method="POST">
+        <form action="{{ route('admin.users.destroy', compact('user')) }}" method="POST">
             {{ method_field('DELETE') }}
             @csrf
             <button class="button is-danger is-inverted is-small">

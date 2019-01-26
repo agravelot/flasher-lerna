@@ -10,7 +10,6 @@
                 <div class="card-content">
                     <div class="media">
                         <div class="media-content has-text-centered">
-                            <p class="title article-title">  {{-- {{ $contact->title }}--}}</p>
                             <div class="tags has-addons level-item">
                                 <span class="tag is-rounded is-info">{{ $contact->email}}</span>
                                 <span class="tag is-rounded">{{ $contact->created_at->toFormattedDateString() }}</span>

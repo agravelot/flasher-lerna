@@ -6,7 +6,7 @@
 <form method="POST" enctype="multipart/form-data" action="{{ $route }}">
     @csrf
 
-    @if (isset($album))
+    @if(isset($album))
         {{ method_field('PATCH') }}
     @endif
 

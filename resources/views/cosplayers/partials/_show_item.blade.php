@@ -1,6 +1,6 @@
 <div class="container is-centered">
 
-    @include('cosplayers.partials._cosplayer_avatar', ['cosplayer' => $cosplayer])
+    @include('cosplayers.partials._cosplayer_avatar', compact('cosplayer'))
     <h1 class="has-text-centered title is-2">{{ $cosplayer->name }}</h1>
 
 

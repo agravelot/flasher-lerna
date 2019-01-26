@@ -4,10 +4,10 @@
         <a href="{{ 'mailto:' . $contact->email }}">{{ $contact->email }}</a>
     </td>
     <td>
-        <a href="{{ route('admin.contacts.show', ['contact' => $contact]) }}">{{ str_limit($contact->message, 150) }}</a>
+        <a href="{{ route('admin.contacts.show', compact('contact')) }}">{{ str_limit($contact->message, 150) }}</a>
     </td>
     <td>
-        <form action="{{ route('admin.contacts.destroy', ['contact' => $contact]) }}" method="POST">
+        <form action="{{ route('admin.contacts.destroy', compact('contact')) }}" method="POST">
             {{ method_field('DELETE') }}
             @csrf
             <button class="button is-danger is-inverted is-small">

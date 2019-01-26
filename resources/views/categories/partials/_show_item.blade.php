@@ -1,6 +1,6 @@
 <div class="container is-centered">
 
-    <h1 class="title is-2 has-text-centered">{{ $category->name }}</h1>
+    <h2 class="title is-2 has-text-centered">{{ $category->name }}</h2>
 
     @if ($category->description)
         <div class="column is-8 is-offset-2">

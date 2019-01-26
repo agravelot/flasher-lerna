@@ -4,7 +4,7 @@
     <section class="hero is-info welcome is-small has-margin-bottom-sm">
         <div class="hero-body">
             <div class="container">
-                <h1 class="title">
+                <h1 class="title is-1">
                     {{ __('Hello') }}, {{ Auth::user()->name }}.
                 </h1>
                 <h2 class="subtitle">

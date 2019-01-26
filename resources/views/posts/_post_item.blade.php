@@ -6,15 +6,12 @@
                      alt="Image" title="" style="">
             </figure>
         </div>
-        <div class="card-content">
-            <div class="media">
-                <div class="media-content">
-                    <p class="subtitle is-6">{{ $post->title }}</p>
-                </div>
-            </div>
-            <div class="content">
+        <div class="content">
+            <div class="card-content">
+                <h6 class="title is-6">{{ $post->title }}</h6>
                 {{ $post->body }}
             </div>
         </div>
     </div>
+</div>
 </div>

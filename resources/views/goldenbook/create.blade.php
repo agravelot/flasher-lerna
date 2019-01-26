@@ -4,7 +4,7 @@
     <div class="container">
         <div class="card-content">
 
-            <h1 class="title has-text-centered">Add your message</h1>
+            <h1 class="title is-1 has-text-centered">{{ __('Add your message') }}</h1>
 
             @include('layouts.partials._messages')
 
@@ -13,7 +13,7 @@
 
                 <div class="field is-horizontal">
                     <div class="field-label">
-                        <label class="label">Name</label>
+                        <label class="label">{{ __('Name') }}</label>
                     </div>
 
                     <div class="field-body">
@@ -30,7 +30,7 @@
 
                 <div class="field is-horizontal">
                     <div class="field-label">
-                        <label class="label">Email</label>
+                        <label class="label">{{ __('Email') }}</label>
                     </div>
 
                     <div class="field-body">
@@ -47,7 +47,7 @@
 
                 <div class="field is-horizontal">
                     <div class="field-label">
-                        <label class="label">Message</label>
+                        <label class="label">{{ __('Message') }}</label>
                     </div>
 
                     <div class="field-body">
@@ -84,7 +84,7 @@
                         <div class="field">
                             <div class="control">
                                 <button class="button is-primary">
-                                    Send
+                                    {{ __('Send') }}
                                 </button>
                             </div>
                         </div>

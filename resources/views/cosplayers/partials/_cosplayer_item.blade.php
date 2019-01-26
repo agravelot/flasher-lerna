@@ -1,5 +1,5 @@
 <div class="column is-half-tablet is-one-third-widescreen">
-    <a href="{{ route('cosplayers.show', ['cosplayer' => $cosplayer]) }}">
+    <a href="{{ route('cosplayers.show', compact('cosplayer')) }}">
         <div class="card large">
             <div class="card-image">
                 <figure class="image">

@@ -19,7 +19,6 @@
                         <td>{{ class_basename($activity->subject) }}
                             has been {{ $activity->getExtraProperty('action') }}
                             by {{ optional($activity->causer)->name }}</td>
-                        <td><a class="button is-small is-primary" href="#">Action</a></td>
                     </tr>
                 @endforeach
                 </tbody>

@@ -3,14 +3,14 @@
         <a href="{{ route('admin.categories.show', ['contact' => $category]) }}">{{ $category->name }}</a>
     </td>
     <td width="2%">
-        <a href="{{ route('admin.categories.edit', ['category' => $category]) }}">
+        <a href="{{ route('admin.categories.edit', compact('category')) }}">
             <span class="icon has-text-info">
                 <i class="far fa-edit"></i>
             </span>
         </a>
     </td>
     <td width="2%">
-        <form action="{{ route('admin.categories.destroy', ['category' => $category]) }}" method="POST">
+        <form action="{{ route('admin.categories.destroy', compact('category')) }}" method="POST">
             {{ method_field('DELETE') }}
             @csrf
             <button class="button is-danger is-inverted is-small">

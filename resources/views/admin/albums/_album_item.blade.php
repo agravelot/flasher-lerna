@@ -15,7 +15,7 @@
         @endif
     </td>
     <td>
-        <a href="{{ route('admin.albums.show', ['album' => $album]) }}">{{ $album->title }}</a>
+        <a href="{{ route('admin.albums.show', compact('album')) }}">{{ $album->title }}</a>
     </td>
     <td width="5%">
         <span class="icon is-small">
@@ -24,14 +24,14 @@
         </span>
     </td>
     <td width="2%">
-        <a href="{{ route('admin.albums.edit', ['album' => $album]) }}">
+        <a href="{{ route('admin.albums.edit', compact('album')) }}">
             <span class="icon has-text-info">
                 <i class="far fa-edit"></i>
             </span>
         </a>
     </td>
     <td width="2%">
-        <form action="{{ route('admin.albums.destroy', ['album' => $album]) }}" method="POST">
+        <form action="{{ route('admin.albums.destroy', compact('album')) }}" method="POST">
             {{ method_field('DELETE') }}
             @csrf
             <button class="button is-danger is-inverted is-small">
