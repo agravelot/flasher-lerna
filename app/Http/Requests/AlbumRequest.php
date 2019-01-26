@@ -22,7 +22,6 @@ class AlbumRequest extends Request
 
         $rules = [
             'title' => 'required|string|min:2|max:255|unique:albums,id,' . $id,
-            'seo_title' => 'nullable',
             'body' => 'nullable|max:65000',
             'published_at' => 'nullable|date',
             'private' => 'required|boolean',
