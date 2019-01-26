@@ -25,7 +25,7 @@ class AlbumController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('albums.index', ['albums' => $albums]);
+        return view('albums.index', compact('albums'));
     }
 
     /**
@@ -42,6 +42,6 @@ class AlbumController extends Controller
             ->firstOrFail();
         $this->authorize('view', $album);
 
-        return view('albums.show', ['album' => $album]);
+        return view('albums.show', compact('album'));
     }
 }

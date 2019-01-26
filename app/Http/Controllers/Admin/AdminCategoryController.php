@@ -27,9 +27,7 @@ class AdminCategoryController extends Controller
         $this->authorize('index', Category::class);
         $categories = Category::paginate(10);
 
-        return view('admin.categories.index', [
-            'categories' => $categories,
-        ]);
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
@@ -47,7 +45,7 @@ class AdminCategoryController extends Controller
             ->firstOrFail();
         $this->authorize('view', $category);
 
-        return view('admin.categories.show', ['category' => $category]);
+        return view('admin.categories.show', compact('category'));
     }
 
     /**
@@ -63,7 +61,7 @@ class AdminCategoryController extends Controller
         $category = Category::findBySlugOrFail($slug);
         $this->authorize('update', $category);
 
-        return view('admin.categories.edit', ['category' => $category]);
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**

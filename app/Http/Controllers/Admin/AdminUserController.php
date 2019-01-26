@@ -75,7 +75,7 @@ class AdminUserController extends Controller
         $user = User::with('albums.media')->findOrFail($id);
         $this->authorize('view', $user);
 
-        return view('admin.users.show', ['user' => $user]);
+        return view('admin.users.show', compact('user'));
     }
 
     /**

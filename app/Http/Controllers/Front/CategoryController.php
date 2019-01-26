@@ -23,7 +23,7 @@ class CategoryController extends Controller
     {
         $categories = Category::paginate(10);
 
-        return view('categories.index', ['categories' => $categories]);
+        return view('categories.index', compact('categories'));
     }
 
     /**
@@ -38,6 +38,6 @@ class CategoryController extends Controller
             ->whereSlug($slug)
             ->firstOrFail();
 
-        return view('categories.show', ['category' => $category]);
+        return view('categories.show', compact('category'));
     }
 }

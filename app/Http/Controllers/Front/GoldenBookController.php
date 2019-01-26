@@ -25,7 +25,7 @@ class GoldenBookController extends Controller
     {
         $goldenBooksPosts = PublishedGoldenBookPost::latest()->paginate(10);
 
-        return view('goldenbook.index', ['goldenBooksPosts' => $goldenBooksPosts]);
+        return view('goldenbook.index', compact('goldenBooksPosts'));
     }
 
     /**

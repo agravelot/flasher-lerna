@@ -87,7 +87,7 @@ class AdminCosplayerController extends Controller
         $cosplayer = Cosplayer::findBySlugOrFail($slug);
         $this->authorize('view', $cosplayer);
 
-        return view('admin.cosplayers.show', ['cosplayer' => $cosplayer]);
+        return view('admin.cosplayers.show', compact('cosplayer'));
     }
 
     /**

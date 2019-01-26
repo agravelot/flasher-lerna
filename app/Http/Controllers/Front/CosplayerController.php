@@ -23,7 +23,7 @@ class CosplayerController extends Controller
     {
         $cosplayers = Cosplayer::all();
 
-        return view('cosplayers.index', ['cosplayers' => $cosplayers]);
+        return view('cosplayers.index', compact('cosplayers'));
     }
 
     /**
@@ -36,6 +36,6 @@ class CosplayerController extends Controller
     {
         $cosplayer = Cosplayer::with(['publicAlbums.media', 'publicAlbums.categories'])->whereSlug($slug)->firstOrFail();
 
-        return view('cosplayers.show', ['cosplayer' => $cosplayer]);
+        return view('cosplayers.show', compact('cosplayer'));
     }
 }

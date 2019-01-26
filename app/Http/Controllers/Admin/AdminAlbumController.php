@@ -33,9 +33,7 @@ class AdminAlbumController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('admin.albums.index', [
-            'albums' => $albums,
-        ]);
+        return view('admin.albums.index', compact('albums'));
     }
 
     /**
@@ -48,15 +46,11 @@ class AdminAlbumController extends Controller
     public function create()
     {
         $this->authorize('create', Album::class);
-
         $categories = Category::all();
         $cosplayers = Cosplayer::all();
+        $currentDate = Carbon::now();
 
-        return view('admin.albums.create', [
-            'categories' => $categories,
-            'cosplayers' => $cosplayers,
-            'currentDate' => Carbon::now(),
-        ]);
+        return view('admin.albums.create', compact('categories', 'cosplayers', 'currentDate'));
     }
 
     /**
@@ -112,7 +106,7 @@ class AdminAlbumController extends Controller
             ->firstOrFail();
         $this->authorize('view', $album);
 
-        return view('admin.albums.show', ['album' => $album]);
+        return view('admin.albums.show', compact('album'));
     }
 
     /**
@@ -125,16 +119,13 @@ class AdminAlbumController extends Controller
     public function edit(string $slug)
     {
         $this->authorize('update', Album::class);
-        $album = Album::whereSlug($slug)
-            ->firstOrFail();
+        $album = Album::whereSlug($slug)->firstOrFail();
         $this->authorize('update', $album);
+        $categories = Category::all();
+        $cosplayers = Cosplayer::all();
+        $currentDate = Carbon::now();
 
-        return view('admin.albums.edit', [
-            'album' => $album,
-            'categories' => Category::all(),
-            'cosplayers' => Cosplayer::all(),
-            'currentDate' => Carbon::now(),
-        ]);
+        return view('admin.albums.edit', compact('album', 'categories', 'cosplayers', 'currentDate'));
     }
 
     /**
@@ -191,7 +182,6 @@ class AdminAlbumController extends Controller
         $album = Album::whereSlug($slug)
             ->firstOrFail();
         $this->authorize('delete', $album);
-
         $album->delete();
 
         return redirect(route('admin.albums.index'))

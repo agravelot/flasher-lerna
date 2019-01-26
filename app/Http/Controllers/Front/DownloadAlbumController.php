@@ -23,7 +23,7 @@ class DownloadAlbumController extends Controller
      */
     public function show(string $slug)
     {
-//        $this->authorize('download', Album::class);
+        $this->authorize('download', Album::class);
         if (auth()->user()->isAdmin()) {
             $album = Album::findBySlugOrFail($slug);
         } else {
