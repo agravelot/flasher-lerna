@@ -21,7 +21,7 @@ class PictureAlbumRequest extends Request
         $id = $this->route('album');
 
         return [
-            'album_slug' => 'required',
+            'album_slug' => 'required|exists:albums,slug',
             'picture' => 'required|file|image|mimetypes:image/*|max:20000',
         ];
     }

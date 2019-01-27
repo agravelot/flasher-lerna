@@ -26,19 +26,31 @@ class StorePictureAlbumTest extends TestCase
         $album = factory(Album::class)->state('published')->create();
         $picture = UploadedFile::fake()->image('fake.jpg');
 
-        $response = $this->storeAlbumPicture($album, $picture);
+        $response = $this->storeAlbumPicture($album->slug, $picture);
 
         $this->assertSame(1, $album->fresh()->getMedia('pictures')->count());
         $this->assertSame($picture->getClientOriginalName(), $album->fresh()->getMedia('pictures')->first()->file_name);
         $response->assertStatus(200);
     }
 
-    public function storeAlbumPicture(Album $album, UploadedFile $picture, array $optional = []): TestResponse
+    public function test_admin_can_not_store_a_picture_to_an_non_existent_album()
+    {
+        $this->actingAsAdmin();
+        /** @var Album $album */
+        $album = factory(Album::class)->state('published')->create();
+        $picture = UploadedFile::fake()->image('fake.jpg');
+
+        $response = $this->storeAlbumPicture('a-random-slug', $picture);
+
+        $response->assertStatus(302);
+    }
+
+    public function storeAlbumPicture(string $albumSlug, UploadedFile $picture = null, array $optional = []): TestResponse
     {
         session()->setPreviousUrl('/admin/albums/create');
 
         return $this->post('/admin/album-pictures',
-            array_merge(['picture' => $picture, 'album_slug' => $album->slug], $optional)
+            array_merge(['picture' => $picture, 'album_slug' => $albumSlug], $optional)
         );
     }
 
@@ -49,7 +61,7 @@ class StorePictureAlbumTest extends TestCase
         $album = factory(Album::class)->state('published')->create();
         $picture = UploadedFile::fake()->image('fake.mp4');
 
-        $response = $this->storeAlbumPicture($album, $picture);
+        $response = $this->storeAlbumPicture($album->slug, $picture);
 
         $this->assertSame(0, $album->fresh()->getMedia('pictures')->count());
         $response->assertStatus(302);
@@ -65,7 +77,7 @@ class StorePictureAlbumTest extends TestCase
         $album = factory(Album::class)->state('published')->create();
         $picture = UploadedFile::fake()->image('fake.jpg');
 
-        $response = $this->storeAlbumPicture($album, $picture);
+        $response = $this->storeAlbumPicture($album->slug, $picture);
 
         $response->assertStatus(403);
     }
@@ -76,7 +88,7 @@ class StorePictureAlbumTest extends TestCase
         $album = factory(Album::class)->states(['published', 'withUser'])->create();
         $picture = UploadedFile::fake()->image('fake.jpg');
 
-        $response = $this->storeAlbumPicture($album, $picture);
+        $response = $this->storeAlbumPicture($album->slug, $picture);
 
         $response->assertRedirect('/login');
         $this->followRedirects($response)
