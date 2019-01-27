@@ -17,6 +17,7 @@
     "laravel/framework": "5.7.*",
     "laravel/horizon": "^2.0",
     "laravel/tinker": "^1.0",
+    "pion/laravel-chunk-upload": "^1.2",
     "sentry/sentry-laravel": "^0.11.0",
     "sllh/composer-versions-check": "^2.0",
     "spatie/laravel-activitylog": "^3.1",
