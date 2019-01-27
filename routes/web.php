@@ -36,6 +36,7 @@ Route::group(['middleware' => ['web', 'auth', 'verified', 'admin']], function ()
             Route::prefix('admin')->group(function () { // Route Prefixe /admin/
                 Route::get('', 'AdminController@dashboard')->name('dashboard');
                 Route::resource('albums', 'AdminAlbumController');
+                Route::resource('album-pictures', 'AdminPictureAlbumController')->only('store');
                 Route::resource('categories', 'AdminCategoryController');
                 Route::resource('goldenbook', 'AdminGoldenBookController');
                 Route::resource('published-goldenbook', 'AdminPublishedGoldenBookController')->only('store', 'destroy');
