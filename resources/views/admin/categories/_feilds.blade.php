@@ -10,7 +10,7 @@
             <label class="label">{{ __('Name') }}</label>
             <div class="control">
                 <input class="input" id="name" type="text" name="name"
-                       value="{{ old('name', isset($category->name) ? $category->name : null) }}" placeholder="Name"
+                       value="{{ old('name', isset($category->name) ? $category->name : null) }}" placeholder="{{ __('Name') }}"
                        required autofocus>
             </div>
             @include('layouts.partials._form_errors', ['data' => 'name'])
