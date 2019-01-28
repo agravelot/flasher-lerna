@@ -66,8 +66,6 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
 
         <div class="column is-one-third">
@@ -174,3 +172,11 @@
         </div>
     </div>
 </form>
+
+@if (isset($album))
+    <form method="post" action="{{ route('admin.album-pictures.store') }}" enctype="multipart/form-data" class="dropzone">
+        @csrf
+        <input type="hidden" name="album_slug" value="{{ $album->slug }}">
+        <input type="file" name="file" style="display: none;">
+    </form>
+@endif
