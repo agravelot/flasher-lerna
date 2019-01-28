@@ -19,6 +19,7 @@
         "bulma": "^0.7.*",
         "bulma-extensions": "^4.0.1",
         "cross-env": "^5.1",
+        "dropzone": "^5.5.1",
         "imagesloaded": "^4.1.4",
         "laravel-mix": "4.0.14",
         "laravel-mix-purgecss": "^4.0.0",
