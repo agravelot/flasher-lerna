@@ -15,6 +15,7 @@ use App\Models\Album;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
+use Spatie\MediaLibrary\Models\Media;
 
 class AdminPictureAlbumController extends Controller
 {
@@ -33,11 +34,9 @@ class AdminPictureAlbumController extends Controller
         /** @var Album $album */
         $album = Album::whereSlug($request->validated()['album_slug'])->firstOrFail();
 
-        // check if the upload is success, throw exception or return response you need
         if ($receiver->isUploaded() === false) {
             throw new UploadMissingFileException();
         }
-        // receive the file
         $save = $receiver->receive();
 
         // check if the upload has not finished (in chunk mode it will send smaller files)
@@ -48,16 +47,21 @@ class AdminPictureAlbumController extends Controller
 
             return response()->json([
                 'done' => $handler->getPercentageDone(),
+                'status' => true,
             ]);
         }
 
-        return response()->json(
-            $album->addMedia($save->getFile())
-                ->preservingOriginal()
-                ->withResponsiveImages()
-                ->toMediaCollection('pictures')
-                ->getUrl('thumb')
-        );
+        /** @var Media $file */
+        $file = $album->addMedia($save->getFile())
+            ->preservingOriginal()
+            ->withResponsiveImages()
+            ->toMediaCollection('pictures');
+
+        return response()->json([
+            'path' => $file->getUrl(),
+            'name' => $file->file_name,
+            'mime_type' => $file->mime_type,
+        ]);
     }
 
     /**
