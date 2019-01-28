@@ -18,11 +18,9 @@ class PictureAlbumRequest extends Request
      */
     public function rules()
     {
-        $id = $this->route('album');
-
         return [
             'album_slug' => 'required|exists:albums,slug',
-            'picture' => 'required|file|image|mimetypes:image/*|max:20000',
+            'picture' => 'nullable',
         ];
     }
 }
