@@ -75,23 +75,4 @@ document.addEventListener('DOMContentLoaded', function() {
             //closeDropdowns();
         }
     });
-
-    let grid = document.getElementsByClassName('grid');
-
-    if (grid.length > 0) {
-        let Masonry = require('masonry-layout');
-        let msnry = new Masonry('.grid', {
-            // use outer width of grid-sizer for columnWidth
-            columnWidth: '.grid-sizer',
-            itemSelector: '.grid-item',
-            percentPosition: true,
-        });
-
-        let imagesLoaded = require('imagesloaded');
-
-        imagesLoaded(grid).on('progress', function() {
-            // layout Masonry after each image loads
-            msnry.layout();
-        });
-    }
 });

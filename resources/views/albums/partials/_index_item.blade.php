@@ -1,9 +1,9 @@
-<div class="column is-half-tablet is-one-third-widescreen">
+<div class="brick">
     <a href="{{ route('albums.show', compact('album'))  }}">
         <div class="card album">
             <div class="card-image">
                 <figure class="image">
-                     {{ $album->getFirstMedia('pictures') }}
+                    {{ $album->getFirstMedia('pictures') }}
                 </figure>
             </div>
 

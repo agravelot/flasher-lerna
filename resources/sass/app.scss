@@ -1,11 +1,11 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,600');
-
-// Variables
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,600,700');
+// Bulma CSS Framework
 @import "bulma";
-
+// Custom spacer helper with bulma syntax
 @import "spacer-helper";
-
+// Custom masonry in pure css
+@import "masonry";
 @import "custom";
-
+// FontAwesome
 @import "fontawsome";

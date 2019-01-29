@@ -1,12 +1,13 @@
 <div class="container is-centered has-margin-top-md">
     <h1 class="title is-2 has-text-centered">{{ $album->title }}</h1>
 
-    <div class="grid">
-        <div class="grid-sizer"></div>
+    <div class="masonry gutterless">
         @foreach ($album->getMedia('pictures') as $key => $picture)
-            <a class="modal-button grid-item" data-target="modal-{{ $key }}">
-                {{ $picture }}
-            </a>
+            <div class="brick">
+                <a class="modal-button" data-target="modal-{{ $key }}">
+                    {{ $picture }}
+                </a>
+            </div>
         @endforeach
     </div>
 
@@ -59,9 +60,9 @@
     <div class="modal" id="modal-{{ $key }}">
         <div class="modal-background"></div>
         <div class="modal-content">
-            <p class="image">
+            <div class="image">
                 {{ $picture }}
-            </p>
+            </div>
         </div>
         <button class="modal-close is-large" aria-label="close"></button>
     </div>
