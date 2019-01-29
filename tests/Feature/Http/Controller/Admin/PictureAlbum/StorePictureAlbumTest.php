@@ -32,7 +32,7 @@ class StorePictureAlbumTest extends TestCase
         $this->assertSame($picture->getClientOriginalName(), $album->fresh()->getMedia('pictures')->first()->file_name);
         $response->assertStatus(201)
             ->assertExactJson([
-                'path' => '/storage/1/fake.jpg',
+                'path' => $album->fresh()->getFirstMediaUrl('pictures'),
                 'name' => 'fake.jpg',
                 'mime_type' => 'image/jpeg',
             ]);
