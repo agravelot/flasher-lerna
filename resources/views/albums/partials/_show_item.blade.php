@@ -3,11 +3,9 @@
 
     <div class="masonry gutterless">
         @foreach ($album->getMedia('pictures') as $key => $picture)
-            <div class="brick">
-                <a class="modal-button" data-target="modal-{{ $key }}">
-                    {{ $picture }}
-                </a>
-            </div>
+            <a class="modal-button brick has-anchor" data-target="modal-{{ $key }}">
+                {{ $picture }}
+            </a>
         @endforeach
     </div>
 
