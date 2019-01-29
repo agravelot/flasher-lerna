@@ -7,8 +7,6 @@
  * Written by Antoine Gravelot <agravelot@orma.fr>
  */
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,6 +18,15 @@ use Illuminate\Http\Request;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
+//TODO Implement JWT auth
+//Route::middleware('auth:api')->group(function () {
+Route::namespace('Admin')->group(function () {
+    Route::name('admin.')->group(function () { // Route Name Prefixe
+        Route::prefix('admin')->group(function () { // Route Prefixe /admin/
+            Route::resource('album-pictures', 'AdminPictureAlbumController')->only('store');
+        });
+    });
+});
 //});
+
+

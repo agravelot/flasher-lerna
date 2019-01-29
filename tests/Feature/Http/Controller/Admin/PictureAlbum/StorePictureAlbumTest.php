@@ -42,7 +42,7 @@ class StorePictureAlbumTest extends TestCase
     {
         session()->setPreviousUrl('/admin/albums/create');
 
-        return $this->post('/admin/album-pictures',
+        return $this->post('/api/admin/album-pictures',
             array_merge(['file' => $picture, 'album_slug' => $albumSlug], $optional)
         );
     }
@@ -105,8 +105,6 @@ class StorePictureAlbumTest extends TestCase
 
         $response = $this->storeAlbumPicture($album->slug, $picture);
 
-        $response->assertRedirect('/login');
-        $this->followRedirects($response)
-            ->assertStatus(200);
+        $response->assertStatus(403);
     }
 }
