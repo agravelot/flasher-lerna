@@ -20,7 +20,7 @@ class PictureAlbumRequest extends Request
     {
         return [
             'album_slug' => 'required|exists:albums,slug',
-            'picture' => 'nullable',
+            'file' => 'required|file|mimetypes:application/octet-stream,image/*|max:20000',
         ];
     }
 }

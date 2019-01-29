@@ -43,15 +43,13 @@ class StorePictureAlbumTest extends TestCase
         session()->setPreviousUrl('/admin/albums/create');
 
         return $this->post('/admin/album-pictures',
-            array_merge(['picture' => $picture, 'album_slug' => $albumSlug], $optional)
+            array_merge(['file' => $picture, 'album_slug' => $albumSlug], $optional)
         );
     }
 
     public function test_admin_can_not_store_a_picture_to_an_non_existent_album()
     {
         $this->actingAsAdmin();
-        /** @var Album $album */
-        $album = factory(Album::class)->state('published')->create();
         $picture = UploadedFile::fake()->image('fake.jpg');
 
         $response = $this->storeAlbumPicture('a-random-slug', $picture);
@@ -59,13 +57,16 @@ class StorePictureAlbumTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function storeAlbumPicture(string $albumSlug, UploadedFile $picture = null, array $optional = []): TestResponse
+    public function test_admin_can_not_store_an_empty_picture_to_an_album()
     {
-        session()->setPreviousUrl('/admin/albums/create');
+        $this->actingAsAdmin();
+        /** @var Album $album */
+        $album = factory(Album::class)->state('published')->create();
 
-        return $this->post('/admin/album-pictures',
-            array_merge(['picture' => $picture, 'album_slug' => $albumSlug], $optional)
-        );
+        $response = $this->storeAlbumPicture($album->slug);
+
+        $this->assertSame(0, $album->fresh()->getMedia('pictures')->count());
+        $response->assertStatus(302);
     }
 
     public function test_admin_can_store_a_video_to_an_album()
@@ -81,7 +82,7 @@ class StorePictureAlbumTest extends TestCase
         $response->assertStatus(302);
         $this->followRedirects($response)
             ->assertStatus(200)
-            ->assertSee('The picture must be an image');
+            ->assertSee('The file must be a file of type');
     }
 
     public function test_user_cannot_store_a_picture_to_an_album()
