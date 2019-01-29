@@ -9,7 +9,7 @@
 
             <div class="card-content">
                 <div class="content">
-                    <h5 class="title is-5">{{ $album->title }}</h5>
+                    <p class="title is-5">{{ $album->title }}</p>
                 </div>
             </div>
         </div>
