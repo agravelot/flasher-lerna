@@ -15,7 +15,7 @@
     @endif
 
     <div class="container is-centered">
-        <div class="columns is-multiline is-centered">
+        <div class="masonry">
             @each('albums.partials._index_item', $category->publishedAlbums, 'album', 'layouts.partials._empty')
         </div>
     </div>
