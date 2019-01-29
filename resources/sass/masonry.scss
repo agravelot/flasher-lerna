@@ -13,10 +13,11 @@
 }
 
 /* Masonry image effects */
-.masonry .brick img {
-  transition: all .5s ease-in-out;
-  backface-visibility: hidden; /* Remove Image flickering on hover */
-}
+// Removed because "backface-visibility: hidden" will reduce fps
+//.masonry .brick img {
+//  transition: all .5s ease-in-out;
+//  backface-visibility: hidden; /* Remove Image flickering on hover */
+//}
 
 .masonry .brick:hover img {
   opacity: .75;
