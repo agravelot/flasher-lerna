@@ -61,7 +61,7 @@ class AdminPictureAlbumController extends Controller
             'path' => $file->getUrl(),
             'name' => $file->file_name,
             'mime_type' => $file->mime_type,
-        ]);
+        ], 201);
     }
 
     /**

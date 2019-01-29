@@ -30,7 +30,21 @@ class StorePictureAlbumTest extends TestCase
 
         $this->assertSame(1, $album->fresh()->getMedia('pictures')->count());
         $this->assertSame($picture->getClientOriginalName(), $album->fresh()->getMedia('pictures')->first()->file_name);
-        $response->assertStatus(200);
+        $response->assertStatus(201)
+            ->assertExactJson([
+                'path' => '/storage/1/fake.jpg',
+                'name' => 'fake.jpg',
+                'mime_type' => 'image/jpeg',
+            ]);
+    }
+
+    public function storeAlbumPicture(string $albumSlug, UploadedFile $picture = null, array $optional = []): TestResponse
+    {
+        session()->setPreviousUrl('/admin/albums/create');
+
+        return $this->post('/admin/album-pictures',
+            array_merge(['picture' => $picture, 'album_slug' => $albumSlug], $optional)
+        );
     }
 
     public function test_admin_can_not_store_a_picture_to_an_non_existent_album()
