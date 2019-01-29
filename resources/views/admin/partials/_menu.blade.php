@@ -2,9 +2,9 @@
     transform-origin: bottom left;">
     <aside class="menu">
         <ul class="menu-list">
-            <p class="menu-label">
+            <li class="menu-label">
                 {{ __('Administration') }}
-            </p>
+            </li>
             <li>
                 <a href="{{ route('admin.dashboard') }}" {{ Request::is('admin') ? 'class=is-active' : '' }}>
                 <span class="icon">
@@ -76,9 +76,9 @@
         </ul>
 
 
-        <p class="menu-label">
+        <li class="menu-label">
             {{ __('Monitoring') }}
-        </p>
+        </li>
         <ul class="menu-list">
             <li>
                 <a>
