@@ -32,12 +32,6 @@ class AlbumRequest extends Request
             'pictures.*' => 'sometimes|file|image|mimetypes:image/*|max:20000',
         ];
 
-        if ($this->method() === 'POST') {
-            $rules = array_merge($rules, [
-                'pictures' => 'required|array',
-            ]);
-        }
-
         return $rules;
     }
 }

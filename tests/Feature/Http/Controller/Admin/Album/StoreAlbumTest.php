@@ -21,18 +21,19 @@ class StoreAlbumTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_not_store_an_album_without_a_picture()
+    public function test_admin_can_store_an_album_without_a_picture()
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->make();
 
         $response = $this->storeAlbum($album);
 
-        $this->assertSame(0, Album::count());
-        $response->assertRedirect('/admin/albums/create');
+        $this->assertSame(1, Album::count());
+        $this->assertNotNull(Album::first()->media->first);
+        $response->assertRedirect('/admin/albums');
         $this->followRedirects($response)
             ->assertSee($album->title)
-            ->assertSee('The pictures field is required.');
+            ->assertSee('Album successfully created');
     }
 
     public function storeAlbum(Album $album, array $optional = []): TestResponse
