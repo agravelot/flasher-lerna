@@ -4,6 +4,8 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+require('./fontawsome');
+
 // Bulma NavBar Burger Script
 document.addEventListener('DOMContentLoaded', function() {
     //Functions
