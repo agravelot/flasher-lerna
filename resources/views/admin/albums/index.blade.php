@@ -15,7 +15,7 @@
 
             <a href="#" class="card-header-icon" aria-label="more options">
                 <span class="icon">
-                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
                 </span>
             </a>
         </header>

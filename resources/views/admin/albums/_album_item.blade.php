@@ -20,13 +20,13 @@
     <td width="5%">
         <span class="icon is-small">
             <span class="has-margin-sm has-text-grey">{{ $album->media->count() }}</span>
-            <i class="far fa-images has-text-grey-light"></i>
+            <i class="fas fa-images has-text-grey-light"></i>
         </span>
     </td>
     <td width="2%">
         <a href="{{ route('admin.albums.edit', compact('album')) }}">
             <span class="icon has-text-info">
-                <i class="far fa-edit"></i>
+                <i class="fas fa-edit"></i>
             </span>
         </a>
     </td>
@@ -36,7 +36,7 @@
             @csrf
             <button class="button is-danger is-inverted is-small">
                 <span class="icon has-text-danger">
-                    <i class="far fa-trash-alt"></i>
+                    <i class="fas fa-trash-alt"></i>
                 </span>
             </button>
         </form>

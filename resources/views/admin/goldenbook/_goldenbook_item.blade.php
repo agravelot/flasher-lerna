@@ -33,7 +33,7 @@
             @csrf
             <button type="submit" class="button is-danger is-inverted is-small">
                 <span class="icon has-text-danger">
-                    <i class="far fa-trash-alt"></i>
+                    <i class="fas fa-trash-alt"></i>
                 </span>
             </button>
         </form>

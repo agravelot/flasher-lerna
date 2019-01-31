@@ -53,11 +53,11 @@
             <div class="card has-margin-bottom-sm">
                 <header class="card-header">
                     <p class="card-header-title">
-                        Inventory Search
+                        {{ __('Inventory Search') }}
                     </p>
                     <a href="#" class="card-header-icon" aria-label="more options">
                         <span class="icon">
-                            <i class="fa fa-angle-down" aria-hidden="true"></i>
+                            <i class="fas fa-angle-down" aria-hidden="true"></i>
                         </span>
                     </a>
                 </header>
@@ -66,10 +66,10 @@
                         <div class="control has-icons-left has-icons-right">
                             <input class="input is-large" type="text" placeholder="">
                             <span class="icon is-medium is-left">
-                                <i class="fa fa-search"></i>
+                                <i class="fas fa-search"></i>
                             </span>
                             <span class="icon is-medium is-right">
-                                <i class="fa fa-check"></i>
+                                <i class="fas fa-check"></i>
                             </span>
                         </div>
                     </div>
@@ -78,11 +78,11 @@
             <div class="card has-margin-bottom-sm">
                 <header class="card-header">
                     <p class="card-header-title">
-                        User Search
+                        {{ __('User Search') }}
                     </p>
                     <a href="#" class="card-header-icon" aria-label="more options">
                         <span class="icon">
-                            <i class="fa fa-angle-down" aria-hidden="true"></i>
+                            <i class="fas fa-angle-down" aria-hidden="true"></i>
                         </span>
                     </a>
                 </header>
@@ -91,10 +91,10 @@
                         <div class="control has-icons-left has-icons-right">
                             <input class="input is-large" type="text" placeholder="">
                             <span class="icon is-medium is-left">
-                                <i class="fa fa-search"></i>
+                                <i class="fas fa-search"></i>
                             </span>
                             <span class="icon is-medium is-right">
-                                <i class="fa fa-check"></i>
+                                <i class="fas fa-check"></i>
                             </span>
                         </div>
                     </div>
