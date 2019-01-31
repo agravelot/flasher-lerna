@@ -32,5 +32,4 @@ mix.options({
     }
 });
 
-
 mix.browserSync('localhost:8000');
