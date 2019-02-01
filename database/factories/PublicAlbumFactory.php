@@ -22,6 +22,7 @@ $factory->define(PublicAlbum::class, function (Faker $faker) use (&$withMedias) 
         'title' => $faker->sentence,
         'body' => $faker->paragraph($faker->numberBetween(42, 420)),
         'published_at' => Carbon::now(),
+        'created_at' => Carbon::now(),
         'private' => false,
     ];
 });
@@ -29,7 +30,7 @@ $factory->define(PublicAlbum::class, function (Faker $faker) use (&$withMedias) 
 $factory->afterMaking(PublicAlbum::class, function (Album $album, Faker $faker) use (&$withMedias) {
     if ($withMedias) {
         foreach (range(1, 5) as $i) {
-            $album->addMediaFromUrl($faker->imageUrl())
+            $album->addMediaFromUrl($faker->imageUrl(640 * $faker->numberBetween(1, 3), 480 * $faker->numberBetween(1, 3)))
                 ->toMediaCollection('pictures');
         }
     }
