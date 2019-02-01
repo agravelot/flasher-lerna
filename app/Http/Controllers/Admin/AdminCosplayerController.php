@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CosplayerRequest;
 use App\Models\Cosplayer;
 use App\Models\User;
+use Illuminate\Support\Arr;
 
 class AdminCosplayerController extends Controller
 {
@@ -62,7 +63,7 @@ class AdminCosplayerController extends Controller
         $cosplayer = Cosplayer::create($validated);
 
         $key = 'avatar';
-        if (array_key_exists($key, $validated)) {
+        if (Arr::exists($validated, $key)) {
             $cosplayer
                 ->addMedia($validated[$key])
                 ->preservingOriginal()
@@ -124,7 +125,7 @@ class AdminCosplayerController extends Controller
         $cosplayer->update($validated);
 
         $key = 'avatar';
-        if (array_key_exists($key, $validated)) {
+        if (Arr::exists($validated, $key)) {
             $cosplayer
                 ->addMedia($validated[$key])
                 ->preservingOriginal()

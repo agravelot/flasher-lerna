@@ -15,6 +15,7 @@ use App\Models\Album;
 use App\Models\Category;
 use App\Models\Cosplayer;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Spatie\MediaLibrary\FileAdder\FileAdder;
 
 class AdminAlbumController extends Controller
@@ -78,11 +79,11 @@ class AdminAlbumController extends Controller
                     ->toMediaCollection('pictures');
             });
 
-        if (array_key_exists('categories', $validated)) {
+        if (Arr::exists($validated, 'categories')) {
             $album->categories()->sync($validated['categories'], false);
         }
 
-        if (array_key_exists('cosplayers', $validated)) {
+        if (Arr::exists($validated, 'cosplayers')) {
             $album->cosplayers()->sync($validated['cosplayers'], false);
         }
 
@@ -146,7 +147,7 @@ class AdminAlbumController extends Controller
 
         // An update can contain no picture
         $key = 'pictures';
-        if (array_key_exists($key, $validated)) {
+        if (Arr::exists($validated, $key)) {
             /* @var Album $album */
             $album->addAllMediaFromRequest()
                 ->each(function ($fileAdder) {
@@ -157,11 +158,11 @@ class AdminAlbumController extends Controller
                 });
         }
 
-        if (array_key_exists('categories', $validated)) {
+        if (Arr::exists($validated, 'categories')) {
             $album->categories()->sync($validated['categories'], false);
         }
 
-        if (array_key_exists('cosplayers', $validated)) {
+        if (Arr::exists($validated, 'cosplayers')) {
             $album->cosplayers()->sync($validated['cosplayers'], false);
         }
 
