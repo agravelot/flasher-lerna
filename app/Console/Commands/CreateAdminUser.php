@@ -13,7 +13,6 @@ use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Console\Command;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 
 class CreateAdminUser extends Command
