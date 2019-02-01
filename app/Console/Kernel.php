@@ -37,7 +37,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(new BackupClean())->daily()->at('01:00')->withoutOverlapping();
         $schedule->job(new Backup())->daily()->at('02:00')->withoutOverlapping();
         $schedule->job(new BackupMonitor())->daily()->at('03:00')->withoutOverlapping();
-        $schedule->command('telescope:prune --hours=48')->daily();
+        //$schedule->command('telescope:prune --hours=48')->daily();
         $schedule->command('medialibrary:regenerate --only-missing')->daily();
     }
 
