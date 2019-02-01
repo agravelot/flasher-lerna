@@ -55,13 +55,11 @@
 </div>
 
 @foreach ($album->getMedia('pictures') as $key => $picture)
-    <div class="modal" id="modal-{{ $key }}">
+    <div id="modal-{{ $key }}" class="modal modal-fx-fadeInScale">
         <div class="modal-background"></div>
-        <div class="modal-content">
-            <div class="image">
-                {{ $picture }}
-            </div>
+        <div class="modal-content is-huge is-image">
+            {{ $picture }}
         </div>
-        <button class="modal-close is-large" aria-label="close"></button>
+        <button class="modal-close is-large" aria-label="{{ __('close') }}"></button>
     </div>
 @endforeach
