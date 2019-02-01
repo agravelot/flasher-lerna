@@ -19,33 +19,34 @@
 //  backface-visibility: hidden; /* Remove Image flickering on hover */
 //}
 
-.masonry .brick:hover img {
-  opacity: .75;
-}
-
 /* Bordered masonry */
 .masonry.bordered {
   column-rule: 1px solid #eee;
   column-gap: 50px;
+
+  .brick {
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
+
+    &:hover img {
+      opacity: .75;
+    }
+  }
 }
 
-.masonry.bordered .brick {
-  padding-bottom: 25px;
-  margin-bottom: 25px;
-  border-bottom: 1px solid #eee;
-}
 
 /* Gutterless masonry */
 .masonry.gutterless {
   column-gap: 0;
-}
 
-.masonry.gutterless .brick {
-  margin-bottom: 0;
-}
+  .brick {
+    margin-bottom: 0;
+  }
 
-.masonry.gutterless .brick.has-anchor {
-  margin-bottom: -0.6rem;
+  .brick.has-anchor {
+    margin-bottom: -0.6rem;
+  }
 }
 
 /* Masonry on tablets */
@@ -57,14 +58,6 @@
 
 /* Masonry on big screens */
 @media only screen and (min-width: 1024px) {
-  .desc {
-    font-size: 1.25em;
-  }
-
-  .intro {
-    letter-spacing: 1px;
-  }
-
   .masonry {
     column-count: 3;
   }
