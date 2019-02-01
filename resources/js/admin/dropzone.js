@@ -19,21 +19,4 @@ if (document.getElementsByClassName('dropzone').length > 0) {
         retryChunks: true,
         // paramName: 'picture'
     });
-
-    // Append token to the request - required for web routes
-    myDropzone.on('sending', function(file, xhr, formData) {
-        // formData.append("_token", token);
-        console.log('sending...');
-    });
-
-    myDropzone.on('complete', function(file, xhr, formData) {
-        console.log('COMPLETE');
-        console.log(myDropzone.files);
-    });
-
-    myDropzone.on('uploadprogress', function(file, progress, bytesSent) {
-        console.log('file...' + file.size);
-        console.log('progress...' + progress);
-        console.log('bytesSent...' + bytesSent);
-    });
 }
