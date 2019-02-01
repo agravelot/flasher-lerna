@@ -18,6 +18,7 @@ mix.js('resources/js/app.js', 'public/js')
     .version();
 
 mix.sass('resources/sass/app.scss', 'public/css')
+    .sass('resources/sass/modal.scss', 'public/css')
     .sass('resources/sass/error-illustrated.scss', 'public/css')
     .version()
     .purgeCss();
