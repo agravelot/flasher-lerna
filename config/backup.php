@@ -148,7 +148,7 @@ return [
             'name' => config('app.name'),
             'disks' => ['local'],
             'newestBackupsShouldNotBeOlderThanDays' => 1,
-            'storageUsedMayNotBeHigherThanMegabytes' => 5000,
+            'storageUsedMayNotBeHigherThanMegabytes' => 50000,
         ],
 
         /*
@@ -203,7 +203,7 @@ return [
              * After cleaning up the backups remove the oldest backup until
              * this amount of megabytes has been reached.
              */
-            'deleteOldestBackupsWhenUsingMoreMegabytesThan' => 5000,
+            'deleteOldestBackupsWhenUsingMoreMegabytesThan' => 50000,
         ],
     ],
 ];
