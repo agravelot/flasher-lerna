@@ -44,6 +44,7 @@
     "pheromone/phpcs-security-audit": "^2.0",
     "phploc/phploc": "*",
     "phpmd/phpmd": "^2.6",
+    "phpmetrics/phpmetrics": "^2.4",
     "phpunit/phpunit": "^7.4",
     "squizlabs/php_codesniffer": "*"
   },
