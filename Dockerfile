@@ -1,14 +1,3 @@
-FROM nginx:alpine as certs
-RUN apk add --no-cache openssl
-RUN openssl req -new -passin pass:client11 -out lib/client1.csr \
-                         -subj "/C=FR/ST=France" \
-                         -newkey rsa:2048 -days 365 -nodes -x509 \
-                         -keyout default_ssl.key -out default_ssl.crt
-
-FROM certbot/certbot as letsencrypt
-#COPY --from=certs default_ssl.crt /etc/letsencrypt/keys/default_ssl.crt
-#COPY --from=certs default_ssl.key /etc/letsencrypt/keys/default_ssl.key
-
 FROM nginx:alpine as nginx_config
 COPY docker/nginx/conf /etc/nginx
 RUN apk add --no-cache bash \
@@ -67,11 +56,6 @@ RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
         && chown -h 1000:1000 /var/www/html/public/storage \
         && ln -s /var/www/html/storage/sitemap.xml /var/www/html/public/sitemap.xml \
         && chown -h 1000:1000 /var/www/html/public/sitemap.xml
-
-RUN mkdir -p /etc/nginx/certs/keys/
-
-COPY --from=certs default_ssl.crt /etc/nginx/certs/keys/default_ssl.crt
-COPY --from=certs default_ssl.key /etc/nginx/certs/keys/default_ssl.key
 
 # Importing webpack assets
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public

@@ -35,31 +35,15 @@ services:
       target: nginx
     restart: always
     ports:
-    - 80:80
-    - 443:443
+    - 8080:80
     env_file: ./docker/nginx/.env
     volumes:
     - storage:/var/www/html/storage:ro
     - public_vendor:/var/www/html/public/vendor:ro
-#    - certs:/etc/nginx/certs:ro
     depends_on:
     - php
-    - letsencrypt
     links:
     - php
-    - letsencrypt
-
-  letsencrypt:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: letsencrypt
-    volumes:
-      - certs:/etc/letsencrypt:rw
-    ports:
-      - 80
-      - 443
-    command: certonly -d example.com --text --agree-tos --email some@email.com --rsa-key-size 4096 --renew-by-default --preferred-challenges http-01 --non-interactive
 
   cache:
     image: redis:5.0-alpine
@@ -80,4 +64,8 @@ volumes:
   db-data:
   storage:
   public_vendor:
-  certs:
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
