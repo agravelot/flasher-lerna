@@ -71,7 +71,7 @@ lint:
   - docker-compose up -d
   - docker-compose exec -T cache redis-cli config set maxmemory 41943040
   - docker cp vendor $(docker-compose ps -q php):/var/www/html/
-  - docker-compose exec -e APP_ENV=testing -T php APP_ENV=testing vendor/bin/php-cs-fixer fix --dry-run --diff
+  - docker-compose exec -e APP_ENV=testing -T php php vendor/bin/php-cs-fixer fix --dry-run --diff
   allow_failure: true
   dependencies:
     - build_vendor_dev
@@ -87,7 +87,7 @@ security_audit:
   - docker-compose exec -T cache redis-cli config set maxmemory 41943040
   - docker cp vendor $(docker-compose ps -q php):/var/www/html/
   - docker-compose exec -e APP_ENV=testing -T php sh vendor/pheromone/phpcs-security-audit/symlink.sh
-  - docker-compose exec -e APP_ENV=testing -T APP_ENV=testing vendor/bin/phpcs --standard=./vendor/pheromone/phpcs-security-audit/example_base_ruleset.xml ./vendor/pheromone/phpcs-security-audit/tests.php
+  - docker-compose exec -e APP_ENV=testing -T php php vendor/bin/phpcs --standard=./vendor/pheromone/phpcs-security-audit/example_base_ruleset.xml ./vendor/pheromone/phpcs-security-audit/tests.php
   allow_failure: true
   dependencies:
     - build_vendor_dev
