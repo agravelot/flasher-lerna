@@ -31,7 +31,7 @@ require('tinymce/plugins/insertdatetime');
 require('tinymce/plugins/media');
 require('tinymce/plugins/nonbreaking');
 require('tinymce/plugins/save');
-require('tinymce/plugins/table');
+// require('tinymce/plugins/table');
 require('tinymce/plugins/contextmenu');
 require('tinymce/plugins/directionality');
 // require('tinymce/plugins/emoticons/index');
