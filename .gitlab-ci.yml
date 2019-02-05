@@ -56,7 +56,7 @@ tests:
   - docker-compose up -d
   - docker-compose exec -T cache redis-cli config set maxmemory 41943040
   - docker cp vendor $(docker-compose ps -q php):/var/www/html/
-  - docker-compose exec -e APP_ENV=testing -T php vendor/bin/phpunit --coverage-text --colors=never --process-isolation
+  - docker-compose exec -e APP_ENV=testing -T php vendor/bin/phpunit --coverage-text --colors=never
   allow_failure: true
   dependencies:
     - build_vendor_dev
