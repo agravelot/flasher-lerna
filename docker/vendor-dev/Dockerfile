@@ -9,4 +9,6 @@ RUN composer global require hirak/prestissimo \
             --no-progress \
             --profile \
             --no-scripts \
+            --optimize-autoloader \
+            --classmap-authoritative \
         && chown -R 33:33 vendor/
