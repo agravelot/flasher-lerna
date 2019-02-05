@@ -9,6 +9,8 @@
   "type": "project",
   "require": {
     "php": "^7.2.0",
+    "ext-gd": "*",
+    "ext-imagick": "*",
     "anhskohbo/no-captcha": "^3.0",
     "beyondcode/laravel-self-diagnosis": "^1.0",
     "cviebrock/eloquent-sluggable": "^4.6",
