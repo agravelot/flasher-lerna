@@ -10,6 +10,7 @@
 namespace Tests;
 
 use App\Exceptions\Handler;
+use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\User;
 use Closure;
 use Exception;
@@ -62,6 +63,7 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
         App::setLocale('en');
+        $this->withoutMiddleware(VerifyCsrfToken::class);
     }
 
     protected function actingAsAdminNotStored()
