@@ -54,7 +54,7 @@ let editor_config = {
     plugins: [
         'advlist autolink lists link image preview hr anchor',
         'searchreplace wordcount visualblocks visualchars fullscreen',
-        'insertdatetime media nonbreaking save table contextmenu directionality',
+        'insertdatetime media nonbreaking save contextmenu directionality',
         'template paste textcolor colorpicker textpattern',
     ],
     toolbar:
