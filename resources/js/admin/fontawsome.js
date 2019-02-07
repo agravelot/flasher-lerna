@@ -18,6 +18,7 @@ import {
     faTrashAlt,
     faExternalLinkAlt,
     faUpload,
+    faSignInAlt,
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -37,6 +38,7 @@ library.add(
     faTrashAlt,
     faExternalLinkAlt,
     faUpload,
+    faSignInAlt,
 );
 
 library.add(faBell, faStickyNote, faEdit, faTrashAlt);
