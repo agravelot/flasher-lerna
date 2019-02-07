@@ -27,11 +27,7 @@
         @endif
     </td>
 
-    <td width="2%">
-        <a class="button modal-button is-danger is-inverted is-small" data-target="modal-delete-{{ $goldenBookPost->id }}">
-            <span class="icon has-text-danger">
-                <i class="fas fa-trash-alt"></i>
-            </span>
-        </a>
+    <td>
+        @include('admin.partials._delete_button', ['key' => $goldenBookPost->id])
     </td>
 </tr>

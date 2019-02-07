@@ -2,18 +2,10 @@
     <td>
         <a href="{{ route('admin.users.show', compact('user')) }}">{{ $user->name }}</a>
     </td>
-    <td width="2%">
-        @canImpersonate
-        @canBeImpersonated($user)
-        <a href="{{ route('impersonate', ['user' => $user->id]) }}">
-                        <span class="icon has-text-info">
-                            <i class="fas fa-sign-in-alt"></i>
-                        </span>
-        </a>
-        @endCanBeImpersonated
-        @endCanImpersonate
+    <td>
+
     </td>
-    <td width="2%">
+    <td>
         @if (isset($user->cosplayer))
             <a href="{{ route('admin.cosplayers.show', ['cosplayer' => $user->cosplayer]) }}">
                 <span class="icon has-text-info">
@@ -22,18 +14,19 @@
             </a>
         @endif
     </td>
-    <td width="2%">
-        <a href="{{ route('admin.users.edit', compact('user')) }}">
+    <td>
+        @canImpersonate
+        @canBeImpersonated($user)
+        <a href="{{ route('impersonate', ['user' => $user->id]) }}">
             <span class="icon has-text-info">
-                <i class="far fa-edit"></i>
+                <i class="fas fa-sign-in-alt"></i>
             </span>
         </a>
+        @endCanBeImpersonated
+        @endCanImpersonate
     </td>
-    <td width="2%">
-        <a class="button modal-button is-danger is-inverted is-small" data-target="modal-delete-{{ $user->id }}">
-            <span class="icon has-text-danger">
-                <i class="fas fa-trash-alt"></i>
-            </span>
-        </a>
+    <td>
+        @include('admin.partials._edit_delete_buttons', ['route' => route('admin.users.edit', compact('user')), 'key' => $user->id])
+
     </td>
 </tr>

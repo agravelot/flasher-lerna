@@ -15,7 +15,7 @@
                 <tbody>
                 @foreach($activities as $activity)
                     <tr>
-                        <td width="5%"><i class="far fa-bell"></i></td>
+                        <td><i class="far fa-bell"></i></td>
                         <td>{{ class_basename($activity->subject) }}
                             has been {{ $activity->getExtraProperty('action') }}
                             by {{ optional($activity->causer)->name }}</td>

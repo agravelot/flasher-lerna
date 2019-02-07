@@ -1,5 +1,5 @@
 <tr>
-    <td width="2%">
+    <td>
         @if (!$album->isPasswordLess())
             <span class="icon is-small has-text-warning">
                 <i class="fas fa-lock"></i>
@@ -17,24 +17,15 @@
     <td>
         <a href="{{ route('admin.albums.show', compact('album')) }}">{{ $album->title }}</a>
     </td>
-    <td width="5%">
+    <td></td>
+    <td>
         <span class="icon is-small">
             <span class="has-margin-sm has-text-grey">{{ $album->media->count() }}</span>
             <i class="fas fa-images has-text-grey-light"></i>
         </span>
     </td>
-    <td width="2%">
-        <a href="{{ route('admin.albums.edit', compact('album')) }}">
-            <span class="icon has-text-info">
-                <i class="fas fa-edit"></i>
-            </span>
-        </a>
-    </td>
-    <td width="2%">
-        <a class="button modal-button is-danger is-inverted is-small" data-target="modal-delete-{{ $album->id }}">
-            <span class="icon has-text-danger">
-                <i class="fas fa-trash-alt"></i>
-            </span>
-        </a>
+    <td>
+        @include('admin.partials._edit_delete_buttons', ['route' => route('admin.albums.edit', compact('album')), 'key' => $album->id])
     </td>
 </tr>
+
