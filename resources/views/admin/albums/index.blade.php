@@ -21,7 +21,7 @@
         </header>
         <div class="card-table">
             <div class="content">
-                <table class="table is-fullwidth is-striped is-hoverable">
+                <table class="table is-striped is-hoverable">
                     <tbody>
                     @each('admin.albums._album_item', $albums, 'album', 'layouts.partials._empty')
                     </tbody>

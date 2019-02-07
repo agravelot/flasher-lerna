@@ -6,8 +6,7 @@
     <td>
         <p>{{ $goldenBookPost->body }}</p>
     </td>
-
-    <td >
+    <td>
         @if ($goldenBookPost->isPublished())
             <form action="{{ route('admin.published-goldenbook.destroy', compact('goldenBookPost')) }}" method="POST">
                 {{ method_field('DELETE') }}
@@ -26,7 +25,6 @@
             </form>
         @endif
     </td>
-
     <td>
         @include('admin.partials._delete_button', ['key' => $goldenBookPost->id])
     </td>

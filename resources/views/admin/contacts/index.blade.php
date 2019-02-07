@@ -14,7 +14,7 @@
                 </header>
                 <div class="card-table">
                     <div class="content">
-                        <table class="table is-fullwidth is-striped">
+                        <table class="table is-hoverable is-striped">
                             <tbody>
                             @each('admin.contacts._contact_item', $contacts, 'contact', 'layouts.partials._empty')
                             </tbody>
