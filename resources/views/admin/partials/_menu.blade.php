@@ -73,8 +73,18 @@
                     </a>
                 </li>
             @endcan
-        </ul>
 
+            @can('index', \App\Models\SocialMedia::class)
+                <li>
+                    <a href="{{ route('admin.social-medias.index') }}" {{ Request::is('admin/social-medias*') ? 'class=is-active' : '' }}>
+                    <span class="icon">
+                        <i class="fas fa-external-link-alt"></i>
+                    </span>
+                        {{ __('Social medias') }}
+                    </a>
+                </li>
+            @endcan
+        </ul>
 
         <li class="menu-label">
             {{ __('Monitoring') }}

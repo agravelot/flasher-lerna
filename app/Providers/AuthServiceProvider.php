@@ -14,12 +14,14 @@ use App\Models\Category;
 use App\Models\Contact;
 use App\Models\Cosplayer;
 use App\Models\GoldenBookPost;
+use App\Models\SocialMedia;
 use App\Models\User;
 use App\Policies\AlbumPolicy;
 use App\Policies\CategoryPolicy;
 use App\Policies\ContactPolicy;
 use App\Policies\CosplayerPolicy;
 use App\Policies\GoldenBookPolicy;
+use App\Policies\SocialMediaPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -38,6 +40,7 @@ class AuthServiceProvider extends ServiceProvider
         User::class => UserPolicy::class,
         Category::class => CategoryPolicy::class,
         GoldenBookPost::class => GoldenBookPolicy::class,
+        SocialMedia::class => SocialMediaPolicy::class,
     ];
 
     /**

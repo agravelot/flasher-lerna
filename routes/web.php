@@ -39,6 +39,7 @@ Route::group(['middleware' => ['web', 'auth', 'verified', 'admin']], function ()
                 Route::resource('album-pictures', 'AdminPictureAlbumController')->only('store');
                 Route::resource('categories', 'AdminCategoryController');
                 Route::resource('goldenbook', 'AdminGoldenBookController');
+                Route::resource('social-medias', 'AdminSocialMediaController')->except('show');
                 Route::resource('published-goldenbook', 'AdminPublishedGoldenBookController')->only('store', 'destroy');
                 Route::resource('cosplayers', 'AdminCosplayerController');
                 Route::resource('users', 'AdminUserController');
