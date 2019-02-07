@@ -1,7 +1,7 @@
 <div class="column is-one-fifth" id="admin-menu" style="transition: all 0.6s cubic-bezier(0.945, 0.020, 0.270, 0.665);
     transform-origin: bottom left;">
     <aside class="menu">
-        <ul class="menu-list">
+        <ul class="menu-list has-margin-bottom-md">
             <li class="menu-label">
                 {{ __('Administration') }}
             </li>
@@ -86,10 +86,10 @@
             @endcan
         </ul>
 
-        <li class="menu-label">
-            {{ __('Monitoring') }}
-        </li>
         <ul class="menu-list">
+            <li class="menu-label">
+                {{ __('Monitoring') }}
+            </li>
             <li>
                 <a>
                 <span class="icon">
