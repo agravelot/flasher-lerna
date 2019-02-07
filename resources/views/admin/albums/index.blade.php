@@ -29,5 +29,8 @@
             </div>
         </div>
     </div>
+    @foreach($albums as $album)
+        @include('admin.partials._modal_confirm_delete', ['key' => $album->id, 'route' => route('admin.albums.destroy', compact('album'))])
+    @endforeach
     {{ $albums->links() }}
 @endsection

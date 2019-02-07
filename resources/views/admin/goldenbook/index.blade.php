@@ -25,6 +25,9 @@
                     </div>
                 </div>
             </div>
+            @foreach($goldenBookPosts as $goldenBookPost)
+                @include('admin.partials._modal_confirm_delete', ['key' => $goldenBookPost->id, 'route' => route('admin.goldenbook.destroy', compact('goldenBookPost'))])
+            @endforeach
             {{ $goldenBookPosts->links() }}
         </div>
     </div>

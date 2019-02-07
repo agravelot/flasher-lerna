@@ -22,6 +22,9 @@
                     </div>
                 </div>
             </div>
+            @foreach($contacts as $contact)
+                @include('admin.partials._modal_confirm_delete', ['key' => $contact->id, 'route' => route('admin.contacts.destroy', compact('contact'))])
+            @endforeach
             {{ $contacts->links() }}
         </div>
     </div>

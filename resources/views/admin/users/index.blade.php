@@ -28,5 +28,8 @@
             </div>
         </div>
     </div>
+    @foreach($users as $user)
+        @include('admin.partials._modal_confirm_delete', ['key' => $user->id, 'route' => route('admin.users.destroy', compact('user'))])
+    @endforeach
     {{ $users->links() }}
 @endsection

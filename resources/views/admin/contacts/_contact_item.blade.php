@@ -7,15 +7,10 @@
         <a href="{{ route('admin.contacts.show', compact('contact')) }}">{{ str_limit($contact->message, 150) }}</a>
     </td>
     <td>
-        <form action="{{ route('admin.contacts.destroy', compact('contact')) }}" method="POST">
-            {{ method_field('DELETE') }}
-            @csrf
-            <button class="button is-danger is-inverted is-small">
-                <span class="icon has-text-danger">
-                    <i class="fas fa-trash-alt"></i>
-                </span>
-            </button>
-
-        </form>
+        <a class="button modal-button is-danger is-inverted is-small" data-target="modal-delete-{{ $contact->id }}">
+            <span class="icon has-text-danger">
+                <i class="fas fa-trash-alt"></i>
+            </span>
+        </a>
     </td>
 </tr>

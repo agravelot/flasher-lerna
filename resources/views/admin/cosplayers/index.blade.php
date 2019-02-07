@@ -28,5 +28,8 @@
             </div>
         </div>
     </div>
+    @foreach($cosplayers as $cosplayer)
+        @include('admin.partials._modal_confirm_delete', ['key' => $cosplayer->id, 'route' => route('admin.cosplayers.destroy', compact('cosplayer'))])
+    @endforeach
     {{ $cosplayers->links() }}
 @endsection

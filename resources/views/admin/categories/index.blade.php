@@ -31,6 +31,9 @@
                     </div>
                 </div>
             </div>
+            @foreach($categories as $category)
+                @include('admin.partials._modal_confirm_delete', ['key' => $category->id, 'route' => route('admin.categories.destroy', compact('category'))])
+            @endforeach
             {{ $categories->links() }}
         </div>
     </div>

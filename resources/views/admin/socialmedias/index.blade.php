@@ -31,6 +31,9 @@
                     </div>
                 </div>
             </div>
+            @foreach($socialMedias as $socialMedia)
+                @include('admin.partials._modal_confirm_delete', ['key' => $socialMedia->id, 'route' => route('admin.social-medias.destroy', compact('socialMedia'))])
+            @endforeach
             {{ $socialMedias->links() }}
         </div>
     </div>

@@ -8,15 +8,10 @@
         </a>
     </td>
     <td width="2%">
-        <form action="{{ route('admin.social-medias.destroy', compact('socialMedia')) }}" method="POST">
-            {{ method_field('DELETE') }}
-            @csrf
-            <button class="button is-danger is-inverted is-small">
-                <span class="icon has-text-danger">
-                    <i class="fas fa-trash-alt"></i>
-                </span>
-            </button>
-
-        </form>
+        <a class="button modal-button is-danger is-inverted is-small" data-target="modal-delete-{{ $socialMedia->id }}">
+            <span class="icon has-text-danger">
+                <i class="fas fa-trash-alt"></i>
+            </span>
+        </a>
     </td>
 </tr>
