@@ -2,7 +2,6 @@
     <div class="modal-background"></div>
     <div class="modal-content">
         <div class="card">
-
             <section class="modal-card-body is-titleless">
                 <div class="media">
                     <div class="media-content"><p>{{ __('Are you sure?') }}</p></div>
@@ -16,7 +15,7 @@
                     {{ method_field('DELETE') }}
                     @csrf
                     <button class="button is-danger">
-                        {{ __('OK') }}
+                        {{ __('Yes') }}
                     </button>
                 </form>
             </footer>
