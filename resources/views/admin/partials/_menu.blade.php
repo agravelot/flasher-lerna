@@ -1,5 +1,4 @@
-<div class="column is-one-fifth" id="admin-menu" style="transition: all 0.6s cubic-bezier(0.945, 0.020, 0.270, 0.665);
-    transform-origin: bottom left;">
+<div class="column is-one-fifth" id="admin-menu">
     <aside class="menu">
         <ul class="menu-list has-margin-bottom-md">
             <li class="menu-label">
