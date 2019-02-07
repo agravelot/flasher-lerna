@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d40dc5a24f8a4719be9256f6507cbbf7",
+    "content-hash": "59fa0b442ad9a1e626e3b9adeb9cf46c",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -2001,16 +2001,16 @@
         },
         {
             "name": "nexmo/client",
-            "version": "1.6.1",
+            "version": "1.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nexmo/nexmo-php.git",
-                "reference": "3dc03ca1dab726a23b757110897740e54304fc65"
+                "reference": "2f79f67f24225ea627ee14578e98c96276cdd4c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nexmo/nexmo-php/zipball/3dc03ca1dab726a23b757110897740e54304fc65",
-                "reference": "3dc03ca1dab726a23b757110897740e54304fc65",
+                "url": "https://api.github.com/repos/Nexmo/nexmo-php/zipball/2f79f67f24225ea627ee14578e98c96276cdd4c5",
+                "reference": "2f79f67f24225ea627ee14578e98c96276cdd4c5",
                 "shasum": ""
             },
             "require": {
@@ -2045,7 +2045,7 @@
                 }
             ],
             "description": "PHP Client for using Nexmo's API.",
-            "time": "2019-01-02T09:06:47+00:00"
+            "time": "2019-02-07T11:14:34+00:00"
         },
         {
             "name": "nicmart/tree",
@@ -3636,16 +3636,16 @@
         },
         {
             "name": "spatie/laravel-sitemap",
-            "version": "5.2.7",
+            "version": "5.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-sitemap.git",
-                "reference": "9a8a58c4cfbcb7a7f46ce78e01d7be4bd7e8f93d"
+                "reference": "5fa183bb7a3e39235ddd7cd4732ac1bec3dc1264"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-sitemap/zipball/9a8a58c4cfbcb7a7f46ce78e01d7be4bd7e8f93d",
-                "reference": "9a8a58c4cfbcb7a7f46ce78e01d7be4bd7e8f93d",
+                "url": "https://api.github.com/repos/spatie/laravel-sitemap/zipball/5fa183bb7a3e39235ddd7cd4732ac1bec3dc1264",
+                "reference": "5fa183bb7a3e39235ddd7cd4732ac1bec3dc1264",
                 "shasum": ""
             },
             "require": {
@@ -3691,7 +3691,7 @@
                 "laravel-sitemap",
                 "spatie"
             ],
-            "time": "2018-11-05T13:42:06+00:00"
+            "time": "2019-02-06T21:58:53+00:00"
         },
         {
             "name": "spatie/pdf-to-image",
