@@ -16,6 +16,7 @@ import {
     faTasks,
     faUserTag,
     faTrashAlt,
+    faExternalLinkAlt,
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -33,6 +34,7 @@ library.add(
     faPlus,
     faLock,
     faTrashAlt,
+    faExternalLinkAlt,
 );
 
 library.add(faBell, faStickyNote, faEdit, faTrashAlt);
