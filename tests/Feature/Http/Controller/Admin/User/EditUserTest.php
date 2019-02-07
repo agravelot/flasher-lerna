@@ -62,7 +62,7 @@ class EditUserTest extends TestCase
         $response->assertSee($user->email);
     }
 
-    public function test_admin_can_not_edit_inexistent_user()
+    public function test_admin_can_not_edit_non_existent_user()
     {
         $this->actingAsAdmin();
 

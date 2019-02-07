@@ -62,7 +62,7 @@ class EditCategoryTest extends TestCase
         $response->assertSee($category->description);
     }
 
-    public function test_admin_can_not_edit_inexistent_category()
+    public function test_admin_can_not_edit_non_existent_category()
     {
         $this->actingAsAdmin();
 

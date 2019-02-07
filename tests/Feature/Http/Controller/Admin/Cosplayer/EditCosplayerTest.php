@@ -62,7 +62,7 @@ class EditCosplayerTest extends TestCase
         $response->assertSee($cosplayer->description);
     }
 
-    public function test_admin_can_not_edit_inexistent_cosplayer()
+    public function test_admin_can_not_edit_non_existent_cosplayer()
     {
         $this->actingAsAdmin();
 
