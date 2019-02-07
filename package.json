@@ -25,6 +25,7 @@
         "cross-env": "^5.1",
         "dropzone": "^5.5.1",
         "laravel-mix": "4.0.14",
+        "laravel-mix-bundle-analyzer": "^1.0.2",
         "laravel-mix-purgecss": "^4.0.0",
         "lodash": "^4.17",
         "node-sass": "^4.11.0",
