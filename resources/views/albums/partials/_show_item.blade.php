@@ -58,7 +58,7 @@
     <div id="modal-{{ $key }}" class="modal modal-fx-fadeInScale">
         <div class="modal-background"></div>
         <div class="modal-content is-huge is-image">
-            {{ $picture }}
+            <img srcset="{{ $picture->getSrcset() }}" src="{{ $picture->getUrl() }}" alt="{{ $picture->name }}">
         </div>
         <button class="modal-close is-large" aria-label="{{ __('close') }}"></button>
     </div>
