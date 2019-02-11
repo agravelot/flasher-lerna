@@ -1,7 +1,7 @@
 <a class="brick" href="{{ route('albums.show', compact('album'))  }}">
     <div class="card album">
         <div class="card-image">
-            <figure class="image">
+            <figure>
                 {{ $album->getFirstMedia('pictures') }}
             </figure>
         </div>
