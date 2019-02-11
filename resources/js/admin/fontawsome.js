@@ -1,5 +1,5 @@
-import {dom, library} from '@fortawesome/fontawesome-svg-core'
-import {faBell, faEdit, faStickyNote} from '@fortawesome/free-regular-svg-icons'
+import { dom, library } from '@fortawesome/fontawesome-svg-core';
+import { faBell, faEdit, faStickyNote } from '@fortawesome/free-regular-svg-icons';
 // We are only using the wanted icons
 import {
     faAngleDown,
@@ -19,7 +19,7 @@ import {
     faExternalLinkAlt,
     faUpload,
     faSignInAlt,
-} from '@fortawesome/free-solid-svg-icons'
+} from '@fortawesome/free-solid-svg-icons';
 
 library.add(
     faImages,
@@ -38,7 +38,7 @@ library.add(
     faTrashAlt,
     faExternalLinkAlt,
     faUpload,
-    faSignInAlt,
+    faSignInAlt
 );
 
 library.add(faBell, faStickyNote, faEdit, faTrashAlt);

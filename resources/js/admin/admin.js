@@ -1,3 +1,3 @@
 import './menu';
 import './dropzone';
-import './fontawsome'
+import './fontawsome';
