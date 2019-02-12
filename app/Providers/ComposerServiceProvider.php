@@ -21,6 +21,8 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->singleton(SocialMediaComposer::class);
+        $this->app->singleton(CategoriesComposer::class);
     }
 
     /**
