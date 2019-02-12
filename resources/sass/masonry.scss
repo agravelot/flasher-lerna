@@ -1,12 +1,12 @@
 /* Masonry grid */
 .masonry {
-  column-gap: 30px;
+  column-gap: 16px;
   column-fill: initial;
 }
 
 /* Masonry item */
 .masonry .brick {
-  margin-bottom: 30px;
+  margin-bottom: 16px;
   display: inline-block; /* Fix the misalignment of items */
   vertical-align: top; /* Keep the item on the very top */
 }
