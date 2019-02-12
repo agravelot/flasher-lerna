@@ -10,7 +10,7 @@
             <label class="label">{{ __('Name') }}</label>
             <div class="control">
                 <input class="input" id="name" type="text" name="name"
-                       value="{{ old('name', isset($category->name) ? $category->name : null) }}" placeholder="{{ __('Name') }}"
+                       value="{{ old('name', $category->name ?? null ) }}" placeholder="{{ __('Name') }}"
                        required autofocus>
             </div>
             @include('layouts.partials._form_errors', ['data' => 'name'])
@@ -22,7 +22,7 @@
             <div class="control">
                 <textarea class="textarea" id="description" type="text" name="description"
                           placeholder="Enter your description here"
-                          rows="10">{{ old('description', isset($category->description) ? $category->description : null) }}</textarea>
+                          rows="10">{{ old('description', $category->description ?? null) }}</textarea>
             </div>
             @include('layouts.partials._form_errors', ['data' => 'body'])
         </div>

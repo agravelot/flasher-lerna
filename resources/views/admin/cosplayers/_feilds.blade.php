@@ -14,7 +14,7 @@
         <label class="label">{{ __('Name') }}</label>
         <div class="control">
             <input class="input" id="name" type="text" name="name"
-                   value="{{ old('name', isset($cosplayer->name) ? $cosplayer->name : null) }}"
+                   value="{{ old('name', $cosplayer->name ?? null) }}"
                    required autofocus>
         </div>
         @include('layouts.partials._form_errors', ['data' => 'name'])
@@ -24,7 +24,7 @@
         <label class="label">{{ __('Description') }}</label>
         <div class="control">
                 <textarea class="textarea tinymce" id="description" type="text" name="description"
-                          rows="10">{{ old('description', isset($cosplayer->description) ? $cosplayer->description : null) }}</textarea>
+                          rows="10">{{ old('description', $cosplayer->description ?? null) }}</textarea>
         </div>
         @include('layouts.partials._form_errors', ['data' => 'description'])
     </div>
