@@ -9,6 +9,8 @@
 
 namespace App\Providers;
 
+use App\Http\ViewComposers\CategoriesComposer;
+use App\Http\ViewComposers\SocialMediaComposer;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -26,9 +28,7 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer(
-            'layouts.partials._navbar_socials',
-            'App\Http\ViewComposers\SocialMediaComposer'
-        );
+        View::composer('layouts.partials._navbar_socials', SocialMediaComposer::class);
+        View::composer('layouts.partials._navbar_categories', CategoriesComposer::class);
     }
 }
