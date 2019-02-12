@@ -24,7 +24,7 @@
   "Add": "Ajouter",
   "Name": "Nom",
   "Contact me": "Me contacter",
-  "Email": "Mail",
+  "Email": "Adresse électronique",
   "Message": "Message",
   "Your message here": "Votre message ici",
   "Send": "Envoyer",
@@ -46,5 +46,16 @@
   "No": "Non",
   "Cancel": "Annuler",
   "Are you sure?": "Êtes-vous sûr ?",
-  "Discover my albums": "Découvrez mes albums"
+  "Discover my albums": "Découvrez mes albums",
+  "Sign Up": "S'enregistrer",
+  "Forgot Password": "Mot de passe oublié",
+  "Login": "Se connecter",
+  "Please login to proceed.": "Veuillez vous connecter pour continuer.",
+  "Your Password": "Votre mot de passe",
+  "Remember me": "Se souvenir de moi",
+  "Register": "S'enregistrer",
+  "Please register to proceed.": "Veuillez vous enregistrer pour continuer.",
+  "Confirm Password": "Confirmation mot de passe",
+  "Reset Password": "Reinitialisation du mot de passe",
+  "Send Password Reset Link": "Envoyer le lien de réinitialisation"
 }

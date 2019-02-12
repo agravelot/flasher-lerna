@@ -6,7 +6,7 @@
         <div class="column is-5">
             <div class="card">
                 <header class="card-header">
-                    <p class="card-header-title">Reset Password</p>
+                    <p class="card-header-title">{{ __('Reset Password') }}</p>
                 </header>
 
                 <div class="card-content">
@@ -23,7 +23,7 @@
                         <div class="field">
                             <p class="control has-icons-left">
                                 <input class="input" id="email" type="email" name="email"
-                                       value="{{ old('email') }}" placeholder="E-Mail" required autofocus>
+                                       value="{{ old('email') }}" placeholder="{{ __('Email') }}" required autofocus>
                                 <span class="icon is-small is-left">
                                             <i class="fas fa-envelope"></i>
                                         </span>
@@ -38,7 +38,7 @@
                                 <div class="field is-grouped">
                                     <div class="control">
                                         <button type="submit" class="button is-primary">
-                                            Send Password Reset Link
+                                            {{ __('Send Password Reset Link') }}
                                         </button>
                                     </div>
                                 </div>
