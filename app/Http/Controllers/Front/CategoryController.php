@@ -29,6 +29,8 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param string $slug
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(string $slug)

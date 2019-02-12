@@ -32,6 +32,7 @@ trait RegistersUsers
     /**
      * Handle a registration request for the application.
      *
+     * @param UserRequest $request
      *
      * @return \Illuminate\Http\Response
      */
@@ -59,6 +60,9 @@ trait RegistersUsers
 
     /**
      * The user has been registered.
+     *
+     * @param Request $request
+     * @param         $user
      */
     protected function registered(Request $request, $user)
     {

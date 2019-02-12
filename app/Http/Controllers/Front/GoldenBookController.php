@@ -40,6 +40,10 @@ class GoldenBookController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @param GoldenBookRequest $request
+     *
+     * @return
      */
     public function store(GoldenBookRequest $request)
     {

@@ -36,7 +36,6 @@ return PhpCsFixer\Config::create()
         'concat_space' => ['spacing' => 'one'],
         'mb_str_functions' => true,
         'no_php4_constructor' => true,
-        'no_superfluous_phpdoc_tags' => true,
         'no_unreachable_default_argument_value' => false,
         'no_useless_else' => true,
         'no_useless_return' => true,

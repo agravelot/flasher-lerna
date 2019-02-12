@@ -16,6 +16,10 @@ class ContactPolicy extends Policy
 {
     /**
      * Determine whether the user can view the contacts.
+     *
+     * @param User $user
+     *
+     * @return bool
      */
     public function index(User $user)
     {
@@ -24,6 +28,11 @@ class ContactPolicy extends Policy
 
     /**
      * Determine whether the user can view the contact.
+     *
+     * @param User    $user
+     * @param Contact $contact
+     *
+     * @return bool
      */
     public function view(User $user, Contact $contact)
     {
@@ -32,6 +41,10 @@ class ContactPolicy extends Policy
 
     /**
      * Determine whether the user can create contacts.
+     *
+     * @param User $user
+     *
+     * @return bool
      */
     public function create(User $user)
     {
@@ -40,6 +53,11 @@ class ContactPolicy extends Policy
 
     /**
      * Determine whether the user can update the contact.
+     *
+     * @param User    $user
+     * @param Contact $contact
+     *
+     * @return bool
      */
     public function update(User $user, Contact $contact)
     {
@@ -48,6 +66,11 @@ class ContactPolicy extends Policy
 
     /**
      * Determine whether the user can delete the contact.
+     *
+     * @param User    $user
+     * @param Contact $contact
+     *
+     * @return bool
      */
     public function delete(User $user, Contact $contact)
     {
@@ -56,6 +79,11 @@ class ContactPolicy extends Policy
 
     /**
      * Determine whether the user can restore the contact.
+     *
+     * @param User    $user
+     * @param Contact $contact
+     *
+     * @return bool
      */
     public function restore(User $user, Contact $contact)
     {
@@ -64,6 +92,11 @@ class ContactPolicy extends Policy
 
     /**
      * Determine whether the user can permanently delete the contact.
+     *
+     * @param User    $user
+     * @param Contact $contact
+     *
+     * @return bool
      */
     public function forceDelete(User $user, Contact $contact)
     {

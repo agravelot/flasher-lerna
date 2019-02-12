@@ -34,6 +34,8 @@ class AdminContactController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param int $id
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return \Illuminate\Http\Response
@@ -50,7 +52,10 @@ class AdminContactController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param int $id
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Exception
      *
      * @return \Illuminate\Http\RedirectResponse
      */

@@ -50,6 +50,8 @@ class AdminUserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param UserRequest $request
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return \Illuminate\Http\Response
@@ -66,6 +68,8 @@ class AdminUserController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param int $id
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return \Illuminate\Http\Response
@@ -80,6 +84,8 @@ class AdminUserController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     *
+     * @param int $id
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
@@ -102,7 +108,8 @@ class AdminUserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param int $id
+     * @param UserRequest $request
+     * @param int         $id
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
@@ -122,7 +129,10 @@ class AdminUserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param int $id
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Exception
      *
      * @return \Illuminate\Http\Response
      */

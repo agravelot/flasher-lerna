@@ -58,8 +58,9 @@ class AdminAlbumController extends Controller
      * Store a newly created resource in storage.
      *
      *
+     * @param AlbumRequest $request
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Exception
      *
      * @return \Illuminate\Http\Response
      */
@@ -95,6 +96,8 @@ class AdminAlbumController extends Controller
      * Display the specified resource.
      *
      *
+     * @param string $slug
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return \Illuminate\Http\Response
@@ -112,6 +115,8 @@ class AdminAlbumController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     *
+     * @param string $slug
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
@@ -131,6 +136,9 @@ class AdminAlbumController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
+     * @param AlbumRequest $request
+     * @param string       $slug
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
@@ -173,7 +181,10 @@ class AdminAlbumController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param string $slug
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Exception
      *
      * @return \Illuminate\Http\RedirectResponse
      */
