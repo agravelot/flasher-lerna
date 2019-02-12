@@ -4,7 +4,7 @@
             <div class="icon is-large has-margin-sm">
                 <i class="fas fa-3x fa-sad-tear"></i>
             </div>
-            <div class="is-6">Nothing to show</div>
+            <div class="is-6">{{ __('Nothing to show') }}</div>
         </div>
     </div>
 </div>

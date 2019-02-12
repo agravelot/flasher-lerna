@@ -1,16 +1,15 @@
-<div class="column is-one-fifth" id="admin-menu" style="transition: all 0.6s cubic-bezier(0.945, 0.020, 0.270, 0.665);
-    transform-origin: bottom left;">
+<div class="column is-one-fifth" id="admin-menu">
     <aside class="menu">
-        <ul class="menu-list">
-            <p class="menu-label">
-                Administration
-            </p>
+        <ul class="menu-list has-margin-bottom-md">
+            <li class="menu-label">
+                {{ __('Administration') }}
+            </li>
             <li>
                 <a href="{{ route('admin.dashboard') }}" {{ Request::is('admin') ? 'class=is-active' : '' }}>
                 <span class="icon">
                     <i class="fas fa-home"></i>
                 </span>
-                    Dashboard
+                    {{ __('Dashboard') }}
                 </a>
             </li>
             @can('index', \App\Models\Album::class)
@@ -19,7 +18,7 @@
                     <span class="icon">
                         <i class="fas fa-images"></i>
                     </span>
-                        Albums
+                        {{ __('Albums') }}
                     </a>
                 </li>
             @endcan
@@ -29,7 +28,7 @@
                     <span class="icon">
                         <i class="fas fa-tags"></i>
                     </span>
-                        Categories
+                        {{ __('Categories') }}
                     </a>
                 </li>
             @endcan
@@ -39,7 +38,7 @@
                     <span class="icon">
                         <i class="fas fa-user-tag"></i>
                     </span>
-                        Cosplayers
+                        {{ __('Cosplayers') }}
                     </a>
                 </li>
             @endcan
@@ -49,7 +48,7 @@
                     <span class="icon">
                         <i class="fas fa-user"></i>
                     </span>
-                        Users
+                        {{ __('Users') }}
                     </a>
                 </li>
             @endcan
@@ -59,7 +58,7 @@
                     <span class="icon">
                         <i class="fas fa-pen-fancy"></i>
                     </span>
-                        Contacts
+                        {{ __('Contacts') }}
                     </a>
                 </li>
             @endcan
@@ -69,23 +68,33 @@
                     <span class="icon">
                         <i class="fas fa-book"></i>
                     </span>
-                        Golden book
+                        {{ __('Golden book') }}
+                    </a>
+                </li>
+            @endcan
+
+            @can('index', \App\Models\SocialMedia::class)
+                <li>
+                    <a href="{{ route('admin.social-medias.index') }}" {{ Request::is('admin/social-medias*') ? 'class=is-active' : '' }}>
+                    <span class="icon">
+                        <i class="fas fa-external-link-alt"></i>
+                    </span>
+                        {{ __('Social medias') }}
                     </a>
                 </li>
             @endcan
         </ul>
 
-
-        <p class="menu-label">
-            Monitoring
-        </p>
         <ul class="menu-list">
+            <li class="menu-label">
+                {{ __('Monitoring') }}
+            </li>
             <li>
                 <a>
                 <span class="icon">
                     <i class="fas fa-tachometer-alt"></i>
                 </span>
-                    Statistics
+                    {{ __('Statistics') }}
                 </a>
             </li>
             <li>
@@ -93,7 +102,7 @@
                 <span class="icon">
                     <i class="fas fa-tasks"></i>
                 </span>
-                    Background tasks
+                    {{ __('Background tasks') }}
                 </a>
             </li>
         </ul>
@@ -104,20 +113,20 @@
                 <span class="icon">
                     <i class="fas fa-chevron-circle-left"></i>
                 </span>
-                    Back to the website
+                    {{ __('Back to the website') }}
                 </a>
             </li>
         </ul>
     </aside>
 </div>
 
-<div class="" style="position: fixed; bottom: 42px; left: 10px; z-index: 5;">
-        <a class="has-text-info has-margin-top-lg" id="collapse-admin-menu" >
-                <span class="icon">
-                    <i class="fas fa-chevron-circle-left"></i>
-                </span>
-            Collapse
-        </a>
+<div class="admin-collapse-button">
+    <a class="has-text-info has-margin-top-lg" id="collapse-admin-menu">
+        <span class="icon">
+            <i class="fas fa-chevron-circle-left"></i>
+        </span>
+        {{ __('Collapse') }}
+    </a>
 </div>
 
 @section('js')

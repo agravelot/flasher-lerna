@@ -1,37 +1,21 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
+use App\Models\Cosplayer;
 use App\Models\User;
-use App\Repositories\Contracts\CosplayerRepository;
-use App\Repositories\Contracts\UserRepository;
 
 class AdminUserController extends Controller
 {
-    /**
-     * @var UserRepository
-     */
-    protected $userRepository;
-    /**
-     * @var CosplayerRepository
-     */
-    protected $cosplayerRepository;
-
-    /**
-     * AdminCosplayerController constructor.
-     *
-     * @param UserRepository      $userRepository
-     * @param CosplayerRepository $cosplayerRepository
-     */
-    public function __construct(UserRepository $userRepository, CosplayerRepository $cosplayerRepository)
-    {
-        $this->middleware(['auth', 'verified']);
-        $this->userRepository = $userRepository;
-        $this->cosplayerRepository = $cosplayerRepository;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -42,7 +26,7 @@ class AdminUserController extends Controller
     public function index()
     {
         $this->authorize('index', User::class);
-        $users = $this->userRepository->with('cosplayer')->paginate(10);
+        $users = User::with('cosplayer')->paginate(10);
 
         return view('admin.users.index', [
             'users' => $users,
@@ -59,17 +43,12 @@ class AdminUserController extends Controller
     public function create()
     {
         $this->authorize('create', User::class);
-        $cosplayers = $this->cosplayerRepository->with('user')->all(['id', 'name']);
 
-        return view('admin.users.create', [
-            'cosplayers' => $cosplayers,
-        ]);
+        return view('admin.users.create');
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param UserRequest $request
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
@@ -78,20 +57,14 @@ class AdminUserController extends Controller
     public function store(UserRequest $request)
     {
         $this->authorize('create', User::class);
-        $user = $this->userRepository->create($request->validated());
-        if ($request->has('cosplayer')) {
-            $cosplayerId = $request->validated()['cosplayer'];
-            $cosplayer = $this->cosplayerRepository->findNotLinkedToUser($cosplayerId);
-            $this->userRepository->setCosplayer($user, $cosplayer);
-        }
+        User::create($request->validated());
 
-        return redirect(route('admin.users.show', ['user' => $user]));
+        return redirect(route('admin.users.index'))
+            ->withSuccess('User successfully created');
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param int $id
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
@@ -99,16 +72,14 @@ class AdminUserController extends Controller
      */
     public function show(int $id)
     {
-        $user = $this->userRepository->find($id);
+        $user = User::with('albums.media')->findOrFail($id);
         $this->authorize('view', $user);
 
-        return view('admin.users.show', ['user' => $user]);
+        return view('admin.users.show', compact('user'));
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param int $id
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
@@ -116,10 +87,11 @@ class AdminUserController extends Controller
      */
     public function edit(int $id)
     {
-        $user = $this->userRepository->find($id);
+        $this->authorize('update', User::class);
+        $user = User::findOrFail($id);
         $this->authorize('update', $user);
 
-        $cosplayers = $this->cosplayerRepository->with('user')->all(['id', 'name']);
+        $cosplayers = Cosplayer::with('user')->get(['id', 'name']);
 
         return view('admin.users.edit', [
             'user' => $user,
@@ -130,8 +102,7 @@ class AdminUserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UserRequest $request
-     * @param int         $id
+     * @param int $id
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
@@ -139,25 +110,17 @@ class AdminUserController extends Controller
      */
     public function update(UserRequest $request, $id)
     {
-        $user = $this->userRepository->find($id);
+        $this->authorize('update', User::class);
+        $user = User::findOrFail($id);
         $this->authorize('update', $user);
-        $user = $this->userRepository->update($request->validated(), $id);
-        if ($request->has('cosplayer')) {
-            $cosplayer = null;
-            $cosplayerId = $request->validated()['cosplayer'];
-            if ($cosplayerId > 0) {
-                $cosplayer = $this->cosplayerRepository->findNotLinkedToUser($cosplayerId);
-            }
-            $this->userRepository->setCosplayer($user, $cosplayer);
-        }
+        $user->update($request->validated());
 
-        return redirect(route('admin.users.show', ['user' => $user]))->withSuccess('Users successfully updated');
+        return redirect(route('admin.users.index'))
+            ->withSuccess('User successfully updated');
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param int $id
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
@@ -165,10 +128,12 @@ class AdminUserController extends Controller
      */
     public function destroy(int $id)
     {
-        $user = $this->userRepository->find($id);
+        $this->authorize('delete', User::class);
+        $user = User::findOrFail($id);
         $this->authorize('delete', $user);
-        $this->userRepository->delete($user->id);
+        $user->delete();
 
-        return back()->withSuccess('User successfully deleted');
+        return redirect(route('admin.users.index'))
+            ->withSuccess('User successfully deleted');
     }
 }

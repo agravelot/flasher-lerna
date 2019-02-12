@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
@@ -16,18 +23,19 @@ class CosplayerController extends Controller
     {
         $cosplayers = Cosplayer::all();
 
-        return view('cosplayers.index', ['cosplayers' => $cosplayers]);
+        return view('cosplayers.index', compact('cosplayers'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Cosplayer $cosplayer
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Cosplayer $cosplayer)
+    public function show(string $slug)
     {
-        return view('cosplayers.show', ['cosplayer' => $cosplayer]);
+        $cosplayer = Cosplayer::with(['publicAlbums.media', 'publicAlbums.categories'])->whereSlug($slug)->firstOrFail();
+
+        return view('cosplayers.show', compact('cosplayer'));
     }
 }

@@ -1,5 +1,5 @@
-<div class="column is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-third-fullhd">
-    <a href="{{ route('cosplayers.show', ['cosplayer' => $cosplayer]) }}">
+<div class="column is-half-tablet is-one-third-widescreen">
+    <a href="{{ route('cosplayers.show', compact('cosplayer')) }}">
         <div class="card large">
             <div class="card-image">
                 <figure class="image">
@@ -12,18 +12,11 @@
             <div class="card-content">
                 <div class="media">
                     <div class="media-content">
-                        <p class="subtitle is-5">{{ $cosplayer->title }}</p>
+                        <p class="subtitle is-5">{{ $cosplayer->name }}</p>
                     </div>
                 </div>
-                <div class="content">
-                    <div class="tags">
-                        <span class="tag">One</span>
-                        <span class="tag">Two</span>
-                        <span class="tag">Three</span>
-                    </div>
-
-                    {{--{{ $album->body }}--}}
-
+                <div>
+                    {{ $cosplayer->description }}
                 </div>
             </div>
         </div>

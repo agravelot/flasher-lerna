@@ -6,7 +6,7 @@
 <form method="POST" enctype="multipart/form-data" action="{{ $route }}">
     @csrf
 
-    @if (isset($album))
+    @if(isset($album))
         {{ method_field('PATCH') }}
     @endif
 
@@ -16,7 +16,7 @@
                 <div class="card-content">
 
                     <div class="field">
-                        <label class="label">Title</label>
+                        <label class="label">{{ __('Title') }}</label>
                         <div class="control">
                             <input class="input" id="title" type="text" name="title"
                                    value="{{ old('title', isset($album->title) ? $album->title : null) }}"
@@ -26,20 +26,12 @@
                     </div>
 
                     <div class="field">
-                        <label class="label">Body</label>
+                        <label class="label">{{ __('Body') }}</label>
                         <div class="control">
                             <textarea class="textarea tinymce" id="body" type="text" name="body"
                                       rows="10">{{ old('body', isset($album->body) ? $album->body : null) }}</textarea>
                         </div>
                         @include('layouts.partials._form_errors', ['data' => 'body'])
-                    </div>
-
-                    <div class="field">
-                        <label class="label">Password</label>
-                        <div class="control">
-                            <input class="input" id="password" type="password" name="password">
-                        </div>
-                        @include('layouts.partials._form_errors', ['data' => 'password'])
                     </div>
                 </div>
             </div>
@@ -47,7 +39,7 @@
             <div class="card has-margin-bottom-md">
                 <div class="card-content">
                     <div class="field">
-                        <label class="label">Pictures</label>
+                        <label class="label">{{ __('Pictures') }}</label>
 
                         @if (isset($album) && $album->getMedia('thumb'))
                             @foreach($album->getMedia('pictures') as $picture)
@@ -64,7 +56,7 @@
                                                 <i class="fas fa-upload"></i>
                                             </span>
                                           <span class="file-label">
-                                                Choose your files…
+                                                {{ __('Choose your files…') }}
                                           </span>
                                         </span>
                                 </label>
@@ -74,37 +66,52 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
 
         <div class="column is-one-third">
             <div class="card has-margin-bottom-md">
                 <div class="card-header">
                     <div class="card-header-title">
-                        Publish
+                        {{ __('Publish') }}
                     </div>
                 </div>
                 <div class="card-content">
                     <div class="control">
                         <label class="radio">
-                            <input type="radio" name="publish"
-                                   value="1" {{ old('publish', isset($album->publish) && $album->publish) ? 'checked="checked"' : null  }}>
-                            Publish
+                            <input type="radio" name="published_at"
+                                   value="{{ isset($album->published_at) ? $album->published_at : $currentDate}}"
+                                    {{ old('published_at', isset($album->published_at) && $album->isPublished())
+                                    ? 'checked="checked"' : ''  }}
+                            >
+                            {{ __('Publish') }}
                         </label>
                         <label class="radio">
-                            <input type="radio" name="publish"
-                                   value="0" {{ old('publish', isset($album->publish) && $album->publish) ? null : 'checked="checked"' }}>
-                            Draft
+                            <input type="radio" name="published_at"
+                                   value=""
+                                    {{ old('published_at', isset($album->published_at) && $album->isPublished())
+                                    ? '' : 'checked="checked"' }}
+                            >
+                            {{ __('Draft') }}
                         </label>
                     </div>
                     @include('layouts.partials._form_errors', ['data' => 'publish'])
+
+                    <div class="field">
+                        <label class="label">{{ __('Private') }}</label>
+                        <div class="control">
+                            <input type="hidden" name="private" value="0">
+                            <input class="checkbox" id="private" type="checkbox" name="private" value="1"
+                                    {{ old('private', isset($album) && $album->private) ? 'checked="checked"' : '' }}
+                            >
+                        </div>
+                        @include('layouts.partials._form_errors', ['data' => 'private'])
+                    </div>
                 </div>
 
                 <footer class="card-footer">
                     <div class="control card-footer-item">
                         <button class="button is-primary">
-                            Send
+                            {{ __('Send') }}
                         </button>
                     </div>
                 </footer>
@@ -113,7 +120,7 @@
             <div class="card has-margin-bottom-md">
                 <div class="card-header">
                     <div class="card-header-title">
-                        Categories
+                        {{ __('Categories') }}
                     </div>
                 </div>
                 <div class="card-content">
@@ -135,7 +142,7 @@
             <div class="card has-margin-bottom-md">
                 <div class="card-header">
                     <div class="card-header-title">
-                        Cosplayers
+                        {{ __('Cosplayers') }}
                     </div>
                 </div>
                 <div class="card-content">
@@ -165,3 +172,11 @@
         </div>
     </div>
 </form>
+
+@if (isset($album))
+    <form method="post" action="{{ route('admin.album-pictures.store') }}" enctype="multipart/form-data" class="dropzone">
+        @csrf
+        <input type="hidden" name="album_slug" value="{{ $album->slug }}">
+        <input type="file" name="file" style="display: none;">
+    </form>
+@endif

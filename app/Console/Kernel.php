@@ -1,8 +1,19 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 namespace App\Console;
 
 use App\Console\Commands\CreateAdminUser;
+use App\Jobs\Backup;
+use App\Jobs\BackupClean;
+use App\Jobs\BackupMonitor;
+use App\Jobs\GenerateSitemap;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -14,28 +25,28 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        CreateAdminUser::class
+        CreateAdminUser::class,
     ];
 
     /**
      * Define the application's command schedule.
-     *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
-     * @return void
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('sitemap:generate')->daily();
+        $schedule->job(new GenerateSitemap())->daily()->withoutOverlapping();
+        $schedule->job(new BackupClean())->daily()->at('01:00')->withoutOverlapping();
+        $schedule->job(new Backup())->daily()->at('02:00')->withoutOverlapping();
+        $schedule->job(new BackupMonitor())->daily()->at('03:00')->withoutOverlapping();
+        //$schedule->command('telescope:prune --hours=48')->daily();
+        $schedule->command('medialibrary:regenerate --only-missing')->daily();
     }
 
     /**
      * Register the commands for the application.
-     *
-     * @return void
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

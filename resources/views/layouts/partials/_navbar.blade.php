@@ -1,4 +1,4 @@
-<nav class="navbar is-fixed-top has-shadow" role="navigation" aria-label="dropdown navigation">
+<nav class="navbar has-shadow" role="navigation" aria-label="dropdown navigation">
     <div class="container">
         <div class="navbar-brand">
             <a href="{{ url('/') }}" class="navbar-item">{{ config('app.name', 'PicBlog') }}</a>
@@ -16,38 +16,21 @@
             <div class="navbar-start">
                 {{-- <a class="navbar-item {{ Request::is('posts*') ? 'is-active' : '' }}" href="{{ route('posts.index') }}">Posts</a>--}}
                 <a class="navbar-item {{ Request::is('albums*') ? 'is-active' : '' }}"
-                   href="{{ route('albums.index') }}">Albums</a>
-                <a class="navbar-item {{ Request::is('categories*') ? 'is-active' : '' }}"
-                   href="{{ route('categories.index') }}">Categories</a>
+                   href="{{ route('albums.index') }}">{{ __('Albums') }}</a>
+                {{--<a class="navbar-item {{ Request::is('categories*') ? 'is-active' : '' }}"--}}
+                   {{--href="{{ route('categories.index') }}">{{ __('Categories') }}</a>--}}
+                @include('layouts.partials._navbar_categories')
                 <a class="navbar-item {{ Request::is('goldenbook*') ? 'is-active' : '' }}"
-                   href="{{ route('goldenbook.index') }}">Golden book</a>
+                   href="{{ route('goldenbook.index') }}">{{ __('Golden book') }}</a>
             </div>
 
             @include('layouts.partials._navbar_socials', ['desktop' => true])
 
             <div class="navbar-end">
-                <a class="navbar-item {{ Request::is('about') ? 'is-active' : '' }}" href="#">About</a>
+                <a class="navbar-item {{ Request::is('about') ? 'is-active' : '' }}" href="#">{{ __('About') }}</a>
                 <a class="navbar-item {{ Request::is('contact*') ? 'is-active' : '' }}"
-                   href="{{ route('contact.index') }}">Contact</a>
-                @guest()
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link" href="#">
-                            <span class="icon">
-                                <i class="fas fa-globe-africa"></i>
-                            </span>
-                            <span>FR</span>
-                        </a>
-
-                        <div class="navbar-dropdown is-boxed is-right">
-                            <a class="navbar-item" href="#">
-                                FR
-                            </a>
-                            <a class="navbar-item" href="#">
-                                EN
-                            </a>
-                        </div>
-                    </div>
-                @else
+                   href="{{ route('contact.index') }}">{{ __('Contact') }}</a>
+                @auth()
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link" href="#">
                             <span class="icon">
@@ -61,16 +44,16 @@
                             @can('dashboard')
                                 <a class="navbar-item  {{ Request::is('admin*') ? 'is-active' : '' }} "
                                    href="{{ route('admin.dashboard') }}">
-                                    Admin
+                                    {{ __('Admin') }}
                                 </a>
                             @endcan
                             <a class="navbar-item {{ Request::is('') ? 'is-active' : '' }}" href="#">
-                                Settings
+                                {{ __('Settings') }}
                             </a>
                             <hr class="navbar-divider">
                             <a class="navbar-item has-text-danger" href="{{ route('logout') }}"
                                onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                Logout
+                                {{ __('Logout') }}
                             </a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST"

@@ -1,31 +1,22 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CosplayerRequest;
 use App\Models\Cosplayer;
-use App\Repositories\Contracts\CosplayerRepository;
-use App\Repositories\CosplayerRepositoryEloquent;
+use App\Models\User;
+use Illuminate\Support\Arr;
 
 class AdminCosplayerController extends Controller
 {
-    /**
-     * @var CosplayerRepositoryEloquent
-     */
-    protected $repository;
-
-    /**
-     * AdminCosplayerController constructor.
-     *
-     * @param CosplayerRepository $repository
-     */
-    public function __construct(CosplayerRepository $repository)
-    {
-        $this->middleware(['auth', 'verified']);
-        $this->repository = $repository;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -36,7 +27,7 @@ class AdminCosplayerController extends Controller
     public function index()
     {
         $this->authorize('index', Cosplayer::class);
-        $cosplayers = $this->repository->orderBy('updated_at')->paginate(10);
+        $cosplayers = Cosplayer::orderBy('updated_at')->paginate(10);
 
         return view('admin.cosplayers.index', [
             'cosplayers' => $cosplayers,
@@ -53,30 +44,26 @@ class AdminCosplayerController extends Controller
     public function create()
     {
         $this->authorize('create', Cosplayer::class);
+        $users = User::with('cosplayer')->get(['id', 'name']);
 
-        return view('admin.cosplayers.create');
+        return view('admin.cosplayers.create', compact('users'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param CosplayerRequest $request
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      *
      * @return \Illuminate\Http\Response
      */
     public function store(CosplayerRequest $request)
     {
         $this->authorize('create', Cosplayer::class);
-
         $validated = $request->validated();
-
-        $cosplayer = $this->repository->create($validated);
+        $cosplayer = Cosplayer::create($validated);
 
         $key = 'avatar';
-        if (array_key_exists($key, $validated)) {
+        if (Arr::exists($validated, $key)) {
             $cosplayer
                 ->addMedia($validated[$key])
                 ->preservingOriginal()
@@ -84,67 +71,61 @@ class AdminCosplayerController extends Controller
                 ->toMediaCollection('avatar');
         }
 
-        return redirect(route('admin.cosplayers.show', ['cosplayer' => $cosplayer]));
+        return redirect(route('admin.cosplayers.index'))
+            ->withSuccess('Cosplayer successfully added');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param string $slug
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
      * @return \Illuminate\Http\Response
      */
     public function show(string $slug)
     {
-        $cosplayer = $this->repository->findBySlug($slug);
+        $this->authorize('view', Cosplayer::class);
+        $cosplayer = Cosplayer::findBySlugOrFail($slug);
         $this->authorize('view', $cosplayer);
 
-        return view('admin.cosplayers.show', ['cosplayer' => $cosplayer]);
+        return view('admin.cosplayers.show', compact('cosplayer'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param string $slug
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
      * @return \Illuminate\Http\Response
      */
     public function edit(string $slug)
     {
-        $cosplayer = $this->repository->findBySlug($slug);
+        $this->authorize('update', Cosplayer::class);
+        $cosplayer = Cosplayer::findBySlugOrFail($slug);
         $this->authorize('update', $cosplayer);
+        $users = User::with('cosplayer')->get(['id', 'name']);
 
-        return view('admin.cosplayers.edit', ['cosplayer' => $cosplayer]);
+        return view('admin.cosplayers.edit', compact('cosplayer', 'users'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param CosplayerRequest $request
-     * @param $id
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(CosplayerRequest $request, $id)
+    public function update(CosplayerRequest $request, string $slug)
     {
-        //TODO Update categories
-        $cosplayer = $this->repository->find($id);
+        $this->authorize('update', Cosplayer::class);
+        $cosplayer = Cosplayer::findBySlugOrFail($slug);
         $this->authorize('update', $cosplayer);
-        $validated = $request->validated();
 
-        $cosplayer = $this->repository->update($validated, $id);
+        $validated = $request->validated();
+        $cosplayer->update($validated);
 
         $key = 'avatar';
-        if (array_key_exists($key, $validated)) {
+        if (Arr::exists($validated, $key)) {
             $cosplayer
                 ->addMedia($validated[$key])
                 ->preservingOriginal()
@@ -152,25 +133,25 @@ class AdminCosplayerController extends Controller
                 ->toMediaCollection('avatar');
         }
 
-        return redirect(route('admin.cosplayers.show', ['cosplayer' => $cosplayer]))->withSuccess('Cosplayers successfully updated');
+        return redirect(route('admin.cosplayers.index'))
+            ->withSuccess('Cosplayer successfully updated');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param string $slug
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
      * @return \Illuminate\Http\Response
      */
     public function destroy(string $slug)
     {
-        $album = $this->repository->findBySlug($slug);
-        $this->authorize('delete', $album);
-        $this->repository->delete($album->id);
+        $this->authorize('delete', Cosplayer::class);
+        $cosplayer = Cosplayer::findBySlugOrFail($slug);
+        $this->authorize('delete', $cosplayer);
+        $cosplayer->delete();
 
-        return back()->withSuccess('Cosplayer successfully deleted');
+        return redirect(route('admin.cosplayers.index'))
+            ->withSuccess('Cosplayer successfully deleted');
     }
 }

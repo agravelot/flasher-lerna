@@ -5,23 +5,7 @@ set -o errtrace  # trace ERR through 'time command' and other functions
 set -o nounset   ## set -u : exit the script if you try to use an uninitialised variable
 set -o errexit   ## set -e : exit the script if any statement returns a non-true return value
 
-if [[ $1 == "production" ]]; then
-# Production
-    SSH_PRIVATE_KEY=${CI_PRODUCTION_SSH_PRIVATE_KEY}
-    SSH_USER=${CI_PRODUCTION_SSH_USER}
-    CI_DEPLOY_SSH_PORT=${CI_PRODUCTION_DEPLOY_SSH_PORT}
-    CI_DEPLOY_URI=${CI_PRODUCTION_DEPLOY_URI}
-else
-# Stagging
-    SSH_PRIVATE_KEY=${CI_STAGGING_SSH_PRIVATE_KEY}
-    SSH_USER=${CI_STAGGING_SSH_USER}
-    CI_DEPLOY_SSH_PORT=${CI_STAGGING_DEPLOY_SSH_PORT}
-    CI_DEPLOY_URI=${CI_STAGGING_DEPLOY_URI}
-fi
-
-REMOTE=$SSH_USER@${CI_DEPLOY_URI}
-PICBLOG_IMAGE_PHP=registry.gitlab.com/nevax/picblog/picblog_php
-PICBLOG_IMAGE_NGINX=registry.gitlab.com/nevax/picblog/picblog_nginx
+source init_variables.sh $1
 
 echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
 
@@ -41,8 +25,12 @@ if [[ ! "$(docker images -q ${PICBLOG_IMAGE_PHP} 2> /dev/null)" == "" && ! "$(do
   docker tag ${PICBLOG_IMAGE_NGINX} picblog-nginx-backup
 fi
 echo " * PULLING NEW IMAGES"
-docker-compose -f docker-compose.yml pull
+docker-compose -f ../docker-compose.yml pull
+echo " * PUTTING LARAVEL IN MAINTENANCE MODE"
+docker-compose exec php echo Hello world && docker-compose exec php php artisan down --message="We'll be back soon" --retry=60 || echo "Container is not running"
 echo " * UPDATING RUNNING CONTAINERS"
-docker-compose -f docker-compose.yml up -d --remove-orphans
+docker-compose -f ../docker-compose.yml up -d --remove-orphans
+#echo " * LEAVING MAINTENANCE MODE"
+#docker-compose exec php php artisan up
 #echo " * CLEANING OLD IMAGES"
 #ssh -t ${REMOTE} -p $CI_DEPLOY_SSH_PORT "docker-clean images"

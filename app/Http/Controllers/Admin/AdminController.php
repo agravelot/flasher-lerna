@@ -1,62 +1,27 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\AlbumRepositoryEloquent;
-use App\Repositories\ContactRepositoryEloquent;
-use App\Repositories\Contracts\AlbumRepository;
-use App\Repositories\Contracts\ContactRepository;
-use App\Repositories\Contracts\CosplayerRepository;
-use App\Repositories\Contracts\UserRepository;
-use App\Repositories\CosplayerRepositoryEloquent;
-use App\Repositories\UserRepositoryEloquent;
+use App\Models\Album;
+use App\Models\Contact;
+use App\Models\Cosplayer;
+use App\Models\User;
+use Spatie\Activitylog\Models\Activity;
 
 class AdminController extends Controller
 {
     /**
-     * @var UserRepositoryEloquent
-     */
-    protected $userRepository;
-    /**
-     * @var ContactRepositoryEloquent
-     */
-    protected $contactRepository;
-    /**
-     * @var AlbumRepositoryEloquent
-     */
-    protected $albumRepository;
-    /**
-     * @var CosplayerRepositoryEloquent
-     */
-    protected $cosplayerRepository;
-
-    /**
-     * AdminController constructor.
-     *
-     * @param UserRepository      $userRepository
-     * @param ContactRepository   $contactRepository
-     * @param CosplayerRepository $cosplayerRepository
-     * @param AlbumRepository     $albumRepository
-     */
-    public function __construct(
-        UserRepository $userRepository,
-        ContactRepository $contactRepository,
-        CosplayerRepository $cosplayerRepository,
-        AlbumRepository $albumRepository)
-    {
-        $this->middleware(['auth', 'verified']);
-        $this->userRepository = $userRepository;
-        $this->contactRepository = $contactRepository;
-        $this->albumRepository = $albumRepository;
-        $this->cosplayerRepository = $cosplayerRepository;
-    }
-
-    /**
      * Display dashboard.
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
      * @return \Illuminate\Http\Response
      */
@@ -64,16 +29,12 @@ class AdminController extends Controller
     {
         $this->authorize('dashboard');
 
-        $userCount = $this->userRepository->count();
-        $albumCount = $this->albumRepository->count();
-        $cosplayerCount = $this->cosplayerRepository->count();
-        $contactCount = $this->contactRepository->count();
-
         return view('admin.dashboard.dashboard', [
-            'userCount' => $userCount,
-            'albumCount' => $albumCount,
-            'cosplayerCount' => $cosplayerCount,
-            'contactCount' => $contactCount,
+            'userCount' => User::count(),
+            'albumCount' => Album::count(),
+            'cosplayerCount' => Cosplayer::count(),
+            'contactCount' => Contact::count(),
+            'activities' => Activity::with(['causer', 'subject'])->latest()->limit(10)->get(),
         ]);
     }
 }

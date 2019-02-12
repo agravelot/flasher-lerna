@@ -1,7 +1,13 @@
 <?php
 
-return [
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
 
+return [
     /*
     |--------------------------------------------------------------------------
     | Default Broadcaster
@@ -29,7 +35,6 @@ return [
     */
 
     'connections' => [
-
         'pusher' => [
             'driver' => 'pusher',
             'key' => env('PUSHER_APP_KEY'),
@@ -53,7 +58,5 @@ return [
         'null' => [
             'driver' => 'null',
         ],
-
     ],
-
 ];

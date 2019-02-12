@@ -2,6 +2,8 @@
 
 @section('content')
 
+    @include('layouts.partials._messages')
+
     <div class="container has-text-centered">
         <div class="column is-half is-offset-3">
             <h3 class="title has-text-grey">Register</h3>
@@ -52,7 +54,7 @@
                             <input class="input" id="password-confirm" type="password"
                                    name="password_confirmation" placeholder="Confirm Password" required>
                             <span class="icon is-small is-left">
-                                <i class="fas fa-user"></i>
+                                <i class="fas fa-key"></i>
                             </span>
                         </p>
                         @include('layouts.partials._form_errors', ['data' => 'password_confirmation'])

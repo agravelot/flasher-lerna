@@ -1,11 +1,17 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
-use App\Repositories\Contracts\UserRepository;
 
 class RegisterController extends Controller
 {
@@ -27,31 +33,24 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
-    /**
-     * @var UserRepository
-     */
-    private $repository;
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
-     *
-     * @param UserRepository $repository
      */
-    public function __construct(UserRepository $repository)
+    public function __construct()
     {
         $this->middleware('guest');
-        $this->repository = $repository;
     }
 
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param UserRequest $request
+     *
      * @return User|\Illuminate\Database\Eloquent\Model
      */
     protected function create(UserRequest $request)
     {
-        return $this->repository->create($request->validated());
+        return User::create($request->validated());
     }
 }

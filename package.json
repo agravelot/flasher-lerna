@@ -3,29 +3,40 @@
     "scripts": {
         "dev": "yarn run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "watch": "yarn run development -- --watch",
-        "watch-poll": "yarn run watch -- --watch-poll",
+        "watch": "yarn run development --watch",
+        "watch-poll": "yarn run watch --watch-poll",
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "yarn run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "watch:migrations": "onchange 'database/migrations/*.php' -- php artisan migrate:refresh",
-        "watch:migrations-seeds": "onchange 'database/*/*.php' -- php artisan migrate:refresh --seed"
+        "watch:migrations-seeds": "onchange 'database/*/*.php' -- php artisan migrate:refresh --seed",
+        "format": "prettier --write 'resources/**/*.{css,js,vue}' 'nova-components/**/*.{css,js,vue}'"
     },
     "devDependencies": {
-        "@fortawesome/fontawesome-free": "^5.3",
+        "@fortawesome/fontawesome-svg-core": "^1.2.13",
+        "@fortawesome/free-brands-svg-icons": "^5.7.0",
+        "@fortawesome/free-regular-svg-icons": "^5.7.0",
+        "@fortawesome/free-solid-svg-icons": "^5.7.0",
         "browser-sync": "^2",
         "browser-sync-webpack-plugin": "^2.0",
         "bulma": "^0.7.*",
-        "bulma-extensions": "^2.2",
+        "bulma-extensions": "^4.0.1",
+        "bulma-modal-fx": "^1.1.1",
         "cross-env": "^5.1",
-        "laravel-mix": "^2.0",
-        "laravel-mix-purgecss": "^3.0.0",
+        "dropzone": "^5.5.1",
+        "laravel-mix": "4.0.14",
+        "laravel-mix-bundle-analyzer": "^1.0.2",
+        "laravel-mix-purgecss": "^4.0.0",
         "lodash": "^4.17",
-        "onchange": "^5.0"
-    },
-    "dependencies": {
-        "svgo": "svg/svgo",
+        "node-sass": "^4.11.0",
+        "onchange": "^5.0",
+        "prettier": "1.16.0",
+        "resolve-url-loader": "^2.3.1",
+        "sass": "1.16.0",
+        "sass-loader": "7.1.0",
+        "svgo": "^1.1.1",
         "tinymce": "^4.8",
-        "tinymce-i18n": "^18.10"
+        "tinymce-i18n": "^18.10",
+        "vue-template-compiler": "^2.5.22"
     }
 }

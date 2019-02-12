@@ -1,12 +1,18 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 namespace Tests\Unit\Models;
 
-use App\Models\Album;
 use App\Models\Cosplayer;
 use App\Models\User;
-use Tests\ModelTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Tests\ModelTestCase;
 
 class CosplayerTest extends ModelTestCase
 {
@@ -19,31 +25,33 @@ class CosplayerTest extends ModelTestCase
         $routeKey = $post->getRouteKeyName();
         $post->$$routeKey = $slug;
 
-        $this->assertEquals($$routeKey, $slug);
+        $this->assertSame($$routeKey, $slug);
     }
 
-    public function testSlugAsRouteKeyName() {
+    public function testSlugAsRouteKeyName()
+    {
         $post = new Cosplayer();
         $routeKey = $post->getRouteKeyName();
 
-        $excepted = "slug";
+        $excepted = 'slug';
 
-        $this->assertEquals($excepted, $routeKey);
+        $this->assertSame($excepted, $routeKey);
     }
 
-    public function testSlugSourceAsTitle() {
+    public function testSlugSourceAsTitle()
+    {
         $post = new Cosplayer();
         $slugSource = $post->sluggable()['slug']['source'];
 
-        $excepted = "name";
+        $excepted = 'name';
 
-        $this->assertEquals($excepted, $slugSource);
+        $this->assertSame($excepted, $slugSource);
     }
 
     public function testModelConfiguration()
     {
         $this->runConfigurationAssertions(new Cosplayer(), [
-            'name', 'description', 'slug'
+            'name', 'description', 'slug', 'user_id',
         ]);
     }
 
@@ -53,5 +61,21 @@ class CosplayerTest extends ModelTestCase
         $relation = $cosplayer->user();
 
         $this->assertBelongsToRelation($relation, $cosplayer, new User(), 'user_id');
+    }
+
+    public function test_cosplayer_with_a_Tom_as_name_will_have_uppercase_t_as_initial()
+    {
+        $cosplayer = new Cosplayer();
+        $cosplayer->name = 'Tom';
+
+        $this->assertSame('T', $cosplayer->initial);
+    }
+
+    public function test_cosplayer_with_a_tom_lowercase_as_name_will_have_uppercase_t_as_initial()
+    {
+        $cosplayer = new Cosplayer();
+        $cosplayer->name = 'tom';
+
+        $this->assertSame('T', $cosplayer->initial);
     }
 }

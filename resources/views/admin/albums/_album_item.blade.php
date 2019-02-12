@@ -1,10 +1,10 @@
 <tr>
-    <td width="2%">
-        @if ($album->password)
+    <td>
+        @if (!$album->isPasswordLess())
             <span class="icon is-small has-text-warning">
                 <i class="fas fa-lock"></i>
             </span>
-        @elseif ($album->publish)
+        @elseif ($album->isPublished())
             <span class="icon is-small has-text-success">
                 <i class="fas fa-check"></i>
             </span>
@@ -15,30 +15,17 @@
         @endif
     </td>
     <td>
-        <a href="{{ route('admin.albums.show', ['album' => $album]) }}">{{ $album->title }}</a>
+        <a href="{{ route('admin.albums.show', compact('album')) }}">{{ $album->title }}</a>
     </td>
-    <td width="5%">
+    <td></td>
+    <td>
         <span class="icon is-small">
             <span class="has-margin-sm has-text-grey">{{ $album->media->count() }}</span>
-            <i class="far fa-images has-text-grey-light"></i>
+            <i class="fas fa-images has-text-grey-light"></i>
         </span>
     </td>
-    <td width="2%">
-        <a href="{{ route('admin.albums.edit', ['album' => $album]) }}">
-            <span class="icon has-text-info">
-                <i class="far fa-edit"></i>
-            </span>
-        </a>
-    </td>
-    <td width="2%">
-        <form action="{{ route('admin.albums.destroy', ['album' => $album]) }}" method="POST">
-            {{ method_field('DELETE') }}
-            @csrf
-            <button class="button is-danger is-inverted is-small">
-                <span class="icon has-text-danger">
-                    <i class="far fa-trash-alt"></i>
-                </span>
-            </button>
-        </form>
+    <td>
+        @include('admin.partials._edit_delete_buttons', ['route' => route('admin.albums.edit', compact('album')), 'key' => $album->id])
     </td>
 </tr>
+

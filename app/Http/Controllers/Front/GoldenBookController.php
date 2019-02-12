@@ -1,23 +1,21 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GoldenBookRequest;
-use App\Repositories\Contracts\GoldenBookRepository;
+use App\Models\GoldenBookPost;
+use App\Models\PublishedGoldenBookPost;
 
 class GoldenBookController extends Controller
 {
-    /**
-     * @var GoldenBookRepository
-     */
-    private $repository;
-
-    public function __construct(GoldenBookRepository $repository)
-    {
-        $this->repository = $repository;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -25,9 +23,9 @@ class GoldenBookController extends Controller
      */
     public function index()
     {
-        $goldenBooksPosts = $this->repository->orderBy('created_at', 'desc')->all();
+        $goldenBooksPosts = PublishedGoldenBookPost::latest()->paginate(10);
 
-        return view('goldenbook.index', ['goldenBooksPosts' => $goldenBooksPosts]);
+        return view('goldenbook.index', compact('goldenBooksPosts'));
     }
 
     /**
@@ -42,16 +40,13 @@ class GoldenBookController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param GoldenBookRequest $request
-     *
-     * @return
      */
     public function store(GoldenBookRequest $request)
     {
         $validated = $request->validated();
-        $this->repository->create($validated);
+        GoldenBookPost::create($validated);
 
-        return redirect()->route('goldenbook.index')->withSuccess('Your message has been added to the golden book');
+        return redirect()->route('goldenbook.index')
+            ->withSuccess('Your message has been added to the golden book');
     }
 }

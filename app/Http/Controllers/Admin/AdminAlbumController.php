@@ -1,49 +1,25 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AlbumRequest;
 use App\Models\Album;
-use App\Repositories\AlbumRepositoryEloquent;
-use App\Repositories\Contracts\AlbumRepository;
-use App\Repositories\Contracts\CategoryRepository;
-use App\Repositories\Contracts\CosplayerRepository;
+use App\Models\Category;
+use App\Models\Cosplayer;
+use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Spatie\MediaLibrary\FileAdder\FileAdder;
 
 class AdminAlbumController extends Controller
 {
-    /**
-     * @var AlbumRepositoryEloquent
-     */
-    protected $albumRepository;
-
-    /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
-    /**
-     * @var CosplayerRepository
-     */
-    protected $cosplayerRepository;
-
-    /**
-     * AdminAlbumController constructor.
-     *
-     * @param AlbumRepository     $albumRepository
-     * @param CategoryRepository  $categoryRepository
-     * @param CosplayerRepository $cosplayerRepository
-     */
-    public function __construct(AlbumRepository $albumRepository,
-                                CategoryRepository $categoryRepository,
-                                CosplayerRepository $cosplayerRepository)
-    {
-        $this->middleware(['auth', 'verified']);
-        $this->albumRepository = $albumRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->cosplayerRepository = $cosplayerRepository;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -54,13 +30,11 @@ class AdminAlbumController extends Controller
     public function index()
     {
         $this->authorize('index', Album::class);
-        $albums = $this->albumRepository->with('media')
-            ->orderBy('updated_at', 'desc')
+        $albums = Album::with(['media', 'categories'])
+            ->latest()
             ->paginate(10);
 
-        return view('admin.albums.index', [
-            'albums' => $albums,
-        ]);
+        return view('admin.albums.index', compact('albums'));
     }
 
     /**
@@ -73,23 +47,18 @@ class AdminAlbumController extends Controller
     public function create()
     {
         $this->authorize('create', Album::class);
+        $categories = Category::all();
+        $cosplayers = Cosplayer::all();
+        $currentDate = Carbon::now();
 
-        $categories = $this->categoryRepository->all();
-        $cosplayers = $this->cosplayerRepository->all();
-
-        return view('admin.albums.create', [
-            'categories' => $categories,
-            'cosplayers' => $cosplayers,
-        ]);
+        return view('admin.albums.create', compact('categories', 'cosplayers', 'currentDate'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param AlbumRequest $request
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
      * @throws \Exception
      *
      * @return \Illuminate\Http\Response
@@ -100,7 +69,7 @@ class AdminAlbumController extends Controller
 
         $validated = $request->validated();
         /** @var Album $album */
-        $album = $this->albumRepository->create($validated);
+        $album = Album::create($validated);
 
         $album->addAllMediaFromRequest()
             ->each(function ($fileAdder) {
@@ -110,86 +79,75 @@ class AdminAlbumController extends Controller
                     ->toMediaCollection('pictures');
             });
 
-        if (array_key_exists('categories', $validated)) {
-            $categoriesIds = $validated['categories'];
-            $categories = $this->categoryRepository->findWhereIn('id', $categoriesIds);
-            $this->categoryRepository->saveRelation($categories, $album);
+        if (Arr::exists($validated, 'categories')) {
+            $album->categories()->sync($validated['categories'], false);
         }
 
-        if (array_key_exists('cosplayers', $validated)) {
-            $cosplayersIds = $validated['cosplayers'];
-            $cosplayers = $this->cosplayerRepository->findWhereIn('id', $cosplayersIds);
-            $this->cosplayerRepository->saveRelation($cosplayers, $album);
+        if (Arr::exists($validated, 'cosplayers')) {
+            $album->cosplayers()->sync($validated['cosplayers'], false);
         }
 
-        return redirect(route('admin.albums.show', ['album' => $album]));
+        return redirect(route('admin.albums.index'))
+            ->withSuccess('Album successfully created');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param string $slug
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
      * @return \Illuminate\Http\Response
      */
     public function show(string $slug)
     {
-        $album = $this->albumRepository->findBySlug($slug);
+        $this->authorize('view', Album::class);
+        $album = Album::with(['cosplayers.media'])
+            ->whereSlug($slug)
+            ->firstOrFail();
         $this->authorize('view', $album);
 
-        return view('admin.albums.show', ['album' => $album]);
+        return view('admin.albums.show', compact('album'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param string $slug
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
      * @return \Illuminate\Http\Response
      */
     public function edit(string $slug)
     {
-        $album = $this->albumRepository->findBySlug($slug);
+        $this->authorize('update', Album::class);
+        $album = Album::whereSlug($slug)->firstOrFail();
         $this->authorize('update', $album);
+        $categories = Category::all();
+        $cosplayers = Cosplayer::all();
+        $currentDate = Carbon::now();
 
-        $categories = $this->categoryRepository->all();
-        $cosplayers = $this->cosplayerRepository->all();
-
-        return view('admin.albums.edit', [
-            'album' => $album,
-            'categories' => $categories,
-            'cosplayers' => $cosplayers,
-        ]);
+        return view('admin.albums.edit', compact('album', 'categories', 'cosplayers', 'currentDate'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param AlbumRequest $request
-     * @param $id
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
-     * @throws \Exception
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(AlbumRequest $request, $id)
+    public function update(AlbumRequest $request, string $slug)
     {
-        $validated = $request->validated();
-        $album = $this->albumRepository->find($id);
+        $this->authorize('update', Album::class);
+        $album = Album::whereSlug($slug)
+            ->firstOrFail();
         $this->authorize('update', $album);
-        $album = $this->albumRepository->update($validated, $id);
+        $validated = $request->validated();
+        $album->update($validated);
 
         // An update can contain no picture
         $key = 'pictures';
-        if (array_key_exists($key, $validated)) {
+        if (Arr::exists($validated, $key)) {
             /* @var Album $album */
             $album->addAllMediaFromRequest()
                 ->each(function ($fileAdder) {
@@ -200,40 +158,34 @@ class AdminAlbumController extends Controller
                 });
         }
 
-        $key = 'categories';
-        if (array_key_exists($key, $validated)) {
-            $categoriesIds = $validated[$key];
-            $categories = $this->categoryRepository->findWhereIn('id', $categoriesIds);
-            $this->categoryRepository->saveRelation($categories, $album);
+        if (Arr::exists($validated, 'categories')) {
+            $album->categories()->sync($validated['categories'], false);
         }
 
-        $key = 'cosplayers';
-        if (array_key_exists($key, $validated)) {
-            $cosplayersIds = $validated[$key];
-            $cosplayers = $this->cosplayerRepository->findWhereIn('id', $cosplayersIds);
-            $this->cosplayerRepository->saveRelation($cosplayers, $album);
+        if (Arr::exists($validated, 'cosplayers')) {
+            $album->cosplayers()->sync($validated['cosplayers'], false);
         }
 
-        return redirect(route('admin.albums.show', ['album' => $album]))->withSuccess('Album successfully updated');
+        return redirect(route('admin.albums.index'))
+            ->withSuccess('Album successfully updated');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param string $slug
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(string $slug)
     {
-        $album = $this->albumRepository->findBySlug($slug);
+        $this->authorize('delete', Album::class);
+        $album = Album::whereSlug($slug)
+            ->firstOrFail();
         $this->authorize('delete', $album);
+        $album->delete();
 
-        $this->albumRepository->delete($album->id);
-
-        return back()->withSuccess('Album successfully deleted');
+        return redirect(route('admin.albums.index'))
+            ->withSuccess('Album successfully deleted');
     }
 }

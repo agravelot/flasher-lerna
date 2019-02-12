@@ -18,20 +18,14 @@ variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_DRIVER: overlay2
 
-cache:
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-  - .cache/pip
-  - vendor/
-  - node_modules
-
 before_script:
 - touch docker/db/.env docker/nginx/.env docker/php-fpm/.env
-- apk add --no-cache py-pip bash gettext
-- echo "Installing Docker compose" && pip install docker-compose
-- echo "Docker compose version" && docker-compose version
-- echo "Docker compose validating" && docker-compose config
-- echo "Login to gitlab registry" && docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
+- apk add --no-cache bash gettext py-pip
+- pip install docker-compose
+- docker-compose version
+- docker-compose config
+- docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
+- docker network create nginx-proxy
 
 build:
   stage: build
@@ -41,32 +35,31 @@ build:
   - docker push registry.gitlab.com/nevax/picblog/picblog_php:latest
   - docker push registry.gitlab.com/nevax/picblog/picblog_nginx:latest
 
-unit_test:
-  stage: test
+build_vendor_dev:
+  stage: build
   script:
-  - echo "UNIT TESTS"
-  - docker-compose pull
-  - chmod +x docker/*.sh
-  - bash -c 'docker/generate_env.sh'
-  - docker-compose up -d
-  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
-  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
-  - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-  - docker-compose exec -T php php composer-setup.php
-  - docker-compose exec -T php php -r "unlink('composer-setup.php');"
-  - docker-compose exec -T php php composer.phar require phpunit/phpunit
-  - docker-compose exec -T php vendor/bin/phpunit  --coverage-text --colors=never
-  allow_failure: true
+    - docker build -t vendor_dev -f docker/vendor-dev/Dockerfile .
+    - export VENDOR_DOCKER=$(docker run -d -t vendor_dev tail -f /dev/null)
+    - docker cp -a $VENDOR_DOCKER:/app/vendor .
+  artifacts:
+    name: "$CI_COMMIT_REF_NAME"
+    expire_in: 6h
+    paths:
+      - vendor/
 
-integration_test:
+tests:
   stage: test
   script:
-  - echo "INTEGRATION TEST"
   - docker-compose pull
   - chmod +x docker/*.sh
-  - bash -c 'docker/generate_env.sh'
+  - bash -c 'cd docker/ && ./generate_env.sh staging'
   - docker-compose up -d
-  - docker-compose exec -T php echo "Run test here"
+  - docker-compose exec -T cache redis-cli config set maxmemory 41943040
+  - docker cp vendor $(docker-compose ps -q php):/var/www/html/
+  - docker-compose exec -e APP_ENV=testing -T php vendor/bin/phpunit --coverage-text --colors=never
+  allow_failure: true
+  dependencies:
+    - build_vendor_dev
 
 lint:
   stage: review
@@ -74,16 +67,14 @@ lint:
   - echo "LINT CODE"
   - docker-compose pull
   - chmod +x docker/*.sh
-  - bash -c 'docker/generate_env.sh'
+  - bash -c 'cd docker/ && ./generate_env.sh staging'
   - docker-compose up -d
-  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
-  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
-  - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-  - docker-compose exec -T php php composer-setup.php
-  - docker-compose exec -T php php -r "unlink('composer-setup.php');"
-  - docker-compose exec -T php php composer.phar require pheromone/phpcs-security-audit
-  - docker-compose exec -T php vendor/bin/php-cs-fixer fix --dry-run --diff
+  - docker-compose exec -T cache redis-cli config set maxmemory 41943040
+  - docker cp vendor $(docker-compose ps -q php):/var/www/html/
+  - docker-compose exec -e APP_ENV=testing -T php php vendor/bin/php-cs-fixer fix --dry-run --diff
   allow_failure: true
+  dependencies:
+    - build_vendor_dev
 
 security_audit:
   stage: review
@@ -91,29 +82,30 @@ security_audit:
   - echo "SECURITY AUDIT"
   - docker-compose pull
   - chmod +x docker/*.sh
-  - bash -c 'docker/generate_env.sh'
+  - bash -c 'cd docker/ && ./generate_env.sh staging'
   - docker-compose up -d
-  - docker-compose exec -T php apk add --no-cache autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c
-  - docker-compose exec -T php pecl install xdebug && docker-php-ext-enable xdebug
-  - docker-compose exec -T php php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-  - docker-compose exec -T php php composer-setup.php
-  - docker-compose exec -T php php -r "unlink('composer-setup.php');"
-  - docker-compose exec -T php php composer.phar require pheromone/phpcs-security-audit
-  - docker-compose exec -T php sh vendor/pheromone/phpcs-security-audit/symlink.sh
-  - docker-compose exec -T vendor/bin/phpcs --standard=./vendor/pheromone/phpcs-security-audit/example_base_ruleset.xml ./vendor/pheromone/phpcs-security-audit/tests.php
+  - docker-compose exec -T cache redis-cli config set maxmemory 41943040
+  - docker cp vendor $(docker-compose ps -q php):/var/www/html/
+  - docker-compose exec -e APP_ENV=testing -T php sh vendor/pheromone/phpcs-security-audit/symlink.sh
+  - docker-compose exec -e APP_ENV=testing -T php php vendor/bin/phpcs --standard=./vendor/pheromone/phpcs-security-audit/example_base_ruleset.xml ./vendor/pheromone/phpcs-security-audit/tests.php
   allow_failure: true
+  dependencies:
+    - build_vendor_dev
 
-deploy_stagging:
+deploy_staging:
   stage: deploy
   script:
-  - echo "Deploying stagging"
+  - echo "Deploying staging"
   - apk add --no-cache openssh-client socat bash
   - eval $(ssh-agent -s)
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   - chmod +x docker/*.sh
-  - bash -c 'docker/generate_env.sh'
-  - bash -c 'docker/deploy.sh stagging'
+  - bash -c 'cd docker/ && ./generate_env.sh staging'
+  - bash -c 'cd docker/ && ./deploy.sh staging'
+  environment:
+    name: staging
+    url: https://nevax.awsmppl.com
   except:
     - master
 
@@ -126,7 +118,11 @@ deploy_production:
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   - chmod +x docker/*.sh
-  - bash -c 'docker/generate_env.sh'
-  - bash -c 'docker/deploy.sh production'
+  - bash -c 'cd docker/ && ./generate_env.sh production'
+  - bash -c 'cd docker/ && ./deploy.sh production'
+  environment:
+    name: production
+    url: https://agravelot.com
+  when: manual
   only:
   - master

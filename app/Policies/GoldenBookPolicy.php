@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 namespace App\Policies;
 
 use App\Models\Category;
@@ -10,10 +17,6 @@ class GoldenBookPolicy extends Policy
 {
     /**
      * Determine whether the user can view the categorys.
-     *
-     * @param \App\Models\User $user
-     *
-     * @return mixed
      */
     public function index(User $user)
     {
@@ -22,23 +25,14 @@ class GoldenBookPolicy extends Policy
 
     /**
      * Determine whether the user can view the category.
-     *
-     * @param \App\Models\User $user
-     * @param GoldenBookPost   $goldenBookPost
-     *
-     * @return mixed
      */
-    public function view(User $user, GoldenBookPost $goldenBookPost)
+    public function view(User $user, ?GoldenBookPost $goldenBookPost = null)
     {
         return false;
     }
 
     /**
      * Determine whether the user can create golden book post.
-     *
-     * @param \App\Models\User $user
-     *
-     * @return mixed
      */
     public function create(User $user)
     {
@@ -47,11 +41,6 @@ class GoldenBookPolicy extends Policy
 
     /**
      * Determine whether the user can update the category.
-     *
-     * @param \App\Models\User $user
-     * @param GoldenBookPost   $goldenBookPost
-     *
-     * @return mixed
      */
     public function update(User $user, GoldenBookPost $goldenBookPost)
     {
@@ -60,24 +49,14 @@ class GoldenBookPolicy extends Policy
 
     /**
      * Determine whether the user can delete the category.
-     *
-     * @param \App\Models\User $user
-     * @param GoldenBookPost   $goldenBookPost
-     *
-     * @return mixed
      */
-    public function delete(User $user, GoldenBookPost $goldenBookPost)
+    public function delete(User $user, ?GoldenBookPost $goldenBookPost = null)
     {
         return false;
     }
 
     /**
      * Determine whether the user can restore the category.
-     *
-     * @param \App\Models\User $user
-     * @param GoldenBookPost   $goldenBookPost
-     *
-     * @return mixed
      */
     public function restore(User $user, GoldenBookPost $goldenBookPost)
     {
@@ -86,11 +65,6 @@ class GoldenBookPolicy extends Policy
 
     /**
      * Determine whether the user can permanently delete the category.
-     *
-     * @param \App\Models\User $user
-     * @param GoldenBookPost   $goldenBookPost
-     *
-     * @return mixed
      */
     public function forceDelete(User $user, GoldenBookPost $goldenBookPost)
     {

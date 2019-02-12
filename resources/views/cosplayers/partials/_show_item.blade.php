@@ -1,9 +1,7 @@
 <div class="container is-centered">
 
-    <figure class="has-text-centered">
-        <img class="is-rounded" src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb') }}">
-        <h1 class="title is-2">{{ $cosplayer->name }}</h1>
-    </figure>
+    @include('cosplayers.partials._cosplayer_avatar', compact('cosplayer'))
+    <h1 class="has-text-centered title is-2">{{ $cosplayer->name }}</h1>
 
 
     <div class="column is-8 is-offset-2">
@@ -22,14 +20,16 @@
                     <p class="has-text-justified">{!! $cosplayer->description  !!}</p>
                 </div>
                 <div class="tags">
-                    @foreach($cosplayer->categories as $category)
-                        <span class="tag">{{ $category->name }}</span>
-                    @endforeach
-                </div>
-                <div class="columns is-multiline is-mobile">
-                    {{--// TODO Show related albums ? --}}
+                    @each('categories.partials._category_tag', $cosplayer->categories, 'category')
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="container is-centered">
+        <div class="masonry">
+        @each('albums.partials._index_item', $cosplayer->publicAlbums, 'album', 'layouts.partials._empty')
+        </div>
+        {{--{{ $cosplayer->albums->links() }}--}}
     </div>
 </div>

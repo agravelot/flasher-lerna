@@ -1,28 +1,19 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\CategoryRepositoryEloquent;
-use App\Repositories\Contracts\CategoryRepository;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
-    /**
-     * @var CategoryRepositoryEloquent
-     */
-    protected $repository;
-
-    /**
-     * AdminCategoryController constructor.
-     *
-     * @param CategoryRepository $repository
-     */
-    public function __construct(CategoryRepository $repository)
-    {
-        $this->repository = $repository;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -30,26 +21,23 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = $this->repository->paginate(10);
+        $categories = Category::paginate(10);
 
-        return view('categories.index', [
-            'categories' => $categories,
-        ]);
+        return view('categories.index', compact('categories'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param string $slug
-     *
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      *
      * @return \Illuminate\Http\Response
      */
     public function show(string $slug)
     {
-        $category = $this->repository->findBySlug($slug);
+        $category = Category::with(['publishedAlbums.media', 'publishedAlbums.categories'])
+            ->whereSlug($slug)
+            ->firstOrFail();
 
-        return view('categories.show', ['category' => $category]);
+        return view('categories.show', compact('category'));
     }
 }

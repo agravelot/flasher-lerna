@@ -11,13 +11,13 @@
 
                     <a href="#" class="card-header-icon" aria-label="more options">
                         <span class="icon">
-                            <i class="fa fa-angle-down" aria-hidden="true"></i>
+                            <i class="fas fa-angle-down" aria-hidden="true"></i>
                         </span>
                     </a>
                 </header>
                 <div class="card-table">
                     <div class="content">
-                        <table class="table is-fullwidth is-striped">
+                        <table class="table is-hoverable is-striped">
                             <tbody>
                             @each('admin.goldenbook._goldenbook_item', $goldenBookPosts, 'goldenBookPost', 'layouts.partials._empty')
                             </tbody>
@@ -25,6 +25,9 @@
                     </div>
                 </div>
             </div>
+            @foreach($goldenBookPosts as $goldenBookPost)
+                @include('admin.partials._modal_confirm_delete', ['key' => $goldenBookPost->id, 'route' => route('admin.goldenbook.destroy', compact('goldenBookPost'))])
+            @endforeach
             {{ $goldenBookPosts->links() }}
         </div>
     </div>

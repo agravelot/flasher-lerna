@@ -1,8 +1,9 @@
 <div class="card has-margin-md">
     <div class="card-content">
-        <div class="content">
+        <p class="content">
             {{ $goldenBookPost->body }}
-        </div>
-        <p class="is-small">- {{ $goldenBookPost->name }} at {{ $goldenBookPost->created_at->toFormattedDateString() }}</p>
+        </p>
+        <p class="is-small">- {{ $goldenBookPost->name }}
+            at {{ $goldenBookPost->created_at->toFormattedDateString() }}</p>
     </div>
 </div>

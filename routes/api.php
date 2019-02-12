@@ -1,6 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +18,13 @@ use Illuminate\Http\Request;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
+//TODO Implement JWT auth
+//Route::middleware('auth:api')->group(function () {
+Route::namespace('Admin')->group(function () {
+    Route::name('admin.')->group(function () { // Route Name Prefixe
+        Route::prefix('admin')->group(function () { // Route Prefixe /admin/
+            Route::apiResource('album-pictures', 'AdminPictureAlbumController')->only('store');
+        });
+    });
+});
 //});

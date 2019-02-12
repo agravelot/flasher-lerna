@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 use App\Models\Album;
 use App\Models\Category;
 use App\Models\Cosplayer;
@@ -10,8 +17,6 @@ class CategoriesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run()
     {
@@ -19,19 +24,19 @@ class CategoriesSeeder extends Seeder
 
         Album::all()->each(function ($album) use ($categories) {
             $album->categories()->attach(
-                $categories->random(rand(5, 10))->pluck('id')->toArray()
+                $categories->random(rand(1, 3))->pluck('id')->toArray()
             );
         });
 
         Post::all()->each(function ($posts) use ($categories) {
             $posts->categories()->attach(
-                $categories->random(rand(5, 10))->pluck('id')->toArray()
+                $categories->random(rand(1, 3))->pluck('id')->toArray()
             );
         });
 
         Cosplayer::all()->each(function ($posts) use ($categories) {
             $posts->categories()->attach(
-                $categories->random(rand(5, 10))->pluck('id')->toArray()
+                $categories->random(rand(1, 3))->pluck('id')->toArray()
             );
         });
     }

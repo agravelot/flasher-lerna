@@ -1,30 +1,19 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
-use App\Repositories\ContactRepositoryEloquent;
-use App\Repositories\Contracts\ContactRepository;
 
 class AdminContactController extends Controller
 {
-    /**
-     * @var ContactRepositoryEloquent
-     */
-    protected $repository;
-
-    /**
-     * AdminContactController constructor.
-     *
-     * @param ContactRepository $repository
-     */
-    public function __construct(ContactRepository $repository)
-    {
-        $this->middleware(['auth', 'verified']);
-        $this->repository = $repository;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -35,7 +24,7 @@ class AdminContactController extends Controller
     public function index()
     {
         $this->authorize('index', Contact::class);
-        $contacts = $this->repository->paginate(10);
+        $contacts = Contact::paginate(10);
 
         return view('admin.contacts.index', [
             'contacts' => $contacts,
@@ -45,15 +34,14 @@ class AdminContactController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return \Illuminate\Http\Response
      */
     public function show(int $id)
     {
-        $contact = $this->repository->find($id);
+        $this->authorize('view', Contact::class);
+        $contact = Contact::findOrFail($id);
         $this->authorize('view', $contact);
 
         return view('admin.contacts.show', ['contact' => $contact]);
@@ -62,18 +50,18 @@ class AdminContactController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
-     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(int $id)
     {
-        $contact = $this->repository->find($id);
+        $this->authorize('delete', Contact::class);
+        $contact = Contact::findOrFail($id);
         $this->authorize('delete', $contact);
-        $this->repository->delete($contact->id);
+        $contact->delete();
 
-        return back()->withSuccess('Contact successfully deleted');
+        return redirect(route('admin.contacts.index'))
+            ->withSuccess('Contact successfully deleted');
     }
 }

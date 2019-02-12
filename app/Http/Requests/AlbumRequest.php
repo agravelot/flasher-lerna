@@ -1,8 +1,13 @@
 <?php
 
-namespace App\Http\Requests;
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
 
-use Illuminate\Validation\Rule;
+namespace App\Http\Requests;
 
 class AlbumRequest extends Request
 {
@@ -16,22 +21,15 @@ class AlbumRequest extends Request
         $id = $this->route('album');
 
         $rules = [
-            'title' => 'string|required|min:2|max:255|unique:albums,id,'.$id,
-            'seo_title' => 'nullable',
+            'title' => 'required|string|min:2|max:255|unique:albums,id,' . $id,
             'body' => 'nullable|max:65000',
-            'publish' => 'required|boolean',
-            'password' => 'nullable|string|max:128',
+            'published_at' => 'nullable|date',
+            'private' => 'required|boolean',
             'categories' => 'array',
-            'categories.*' => 'integer|min:1',
+            'categories.*' => 'integer|min:1|exists:categories,id',
             'cosplayers' => 'array',
-            'cosplayers.*' => 'integer|min:1',
-            'pictures' => 'required|array',
-            'pictures.*' => 'file|image|mimetypes:image/*|max:20000',
-
-            //TODO Fix this
-            Rule::exists('users')->where(function ($query) {
-                $query->where('user_id', 1);
-            }),
+            'cosplayers.*' => 'integer|min:1|exists:cosplayers,id',
+            'pictures.*' => 'sometimes|file|image|mimetypes:image/*|max:20000',
         ];
 
         return $rules;
