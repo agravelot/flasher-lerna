@@ -10,6 +10,7 @@
 namespace App\Models;
 
 use App\Abilities\HasSlugRouteKey;
+use App\Abilities\HasTitleAsSlug;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
@@ -42,7 +43,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Category extends Model
 {
-    use Sluggable, SluggableScopeHelpers, HasSlugRouteKey;
+    use Sluggable, SluggableScopeHelpers, HasSlugRouteKey, HasTitleAsSlug;
 
     /**
      * The attributes that are mass assignable.
@@ -79,19 +80,5 @@ class Category extends Model
     public function publishedAlbums()
     {
         return $this->morphedByMany(PublicAlbum::class, 'categorizable');
-    }
-
-    /**
-     * Return the sluggable configuration array for this model.
-     *
-     * @return array
-     */
-    public function sluggable()
-    {
-        return [
-            'slug' => [
-                'source' => 'name',
-            ],
-        ];
     }
 }

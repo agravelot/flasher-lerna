@@ -10,6 +10,7 @@
 namespace App\Models;
 
 use App\Abilities\HasSlugRouteKey;
+use App\Abilities\HasTitleAsSlug;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Builder;
@@ -59,7 +60,7 @@ use Spatie\MediaLibrary\Models\Media;
  */
 class Album extends Model implements HasMedia
 {
-    use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey;
+    use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey, HasTitleAsSlug;
 
     /**
      * The attributes that are mass assignable.
@@ -158,20 +159,6 @@ class Album extends Model implements HasMedia
     public function cosplayers()
     {
         return $this->belongsToMany(Cosplayer::class);
-    }
-
-    /**
-     * Return the sluggable configuration array for this model.
-     *
-     * @return array
-     */
-    public function sluggable()
-    {
-        return [
-            'slug' => [
-                'source' => 'title',
-            ],
-        ];
     }
 
     /**

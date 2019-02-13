@@ -10,6 +10,7 @@
 namespace App\Models;
 
 use App\Abilities\HasSlugRouteKey;
+use App\Abilities\HasTitleAsSlug;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -46,7 +47,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Post extends Model
 {
-    use Sluggable, HasSlugRouteKey;
+    use Sluggable, HasSlugRouteKey, HasTitleAsSlug;
 
     /**
      * The attributes that are mass assignable.
@@ -75,19 +76,5 @@ class Post extends Model
     public function categories()
     {
         return $this->morphToMany(Category::class, 'categorizable');
-    }
-
-    /**
-     * Return the sluggable configuration array for this model.
-     *
-     * @return array
-     */
-    public function sluggable()
-    {
-        return [
-            'slug' => [
-                'source' => 'title',
-            ],
-        ];
     }
 }
