@@ -9,8 +9,8 @@
 
 namespace App\Models;
 
+use App\Abilities\HasNameAsSlug;
 use App\Abilities\HasSlugRouteKey;
-use App\Abilities\HasTitleAsSlug;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
@@ -43,7 +43,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Category extends Model
 {
-    use Sluggable, SluggableScopeHelpers, HasSlugRouteKey, HasTitleAsSlug;
+    use Sluggable, SluggableScopeHelpers, HasSlugRouteKey, HasNameAsSlug;
 
     /**
      * The attributes that are mass assignable.
