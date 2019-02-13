@@ -15,9 +15,12 @@
     @endif
 
     <div class="container is-centered">
-        <div class="masonry">
-            @each('albums.partials._index_item', $category->publishedAlbums, 'album', 'layouts.partials._empty')
-        </div>
+        @if ($category->publishedAlbums->isEmpty())
+            @include('layouts.partials._empty')
+        @else
+            <div class="masonry">
+                @each('albums.partials._index_item', $category->publishedAlbums, 'album')
+            </div>
+        @endif
     </div>
-
 </div>
