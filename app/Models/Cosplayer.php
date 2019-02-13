@@ -9,6 +9,7 @@
 
 namespace App\Models;
 
+use App\Abilities\HasSlugRouteKey;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
@@ -52,7 +53,7 @@ use Spatie\MediaLibrary\Models\Media;
  */
 class Cosplayer extends Model implements HasMedia
 {
-    use Sluggable, SluggableScopeHelpers, HasMediaTrait;
+    use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey;
 
     /**
      * The attributes that are mass assignable.
@@ -123,16 +124,6 @@ class Cosplayer extends Model implements HasMedia
                 'source' => 'name',
             ],
         ];
-    }
-
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
-    public function getRouteKeyName()
-    {
-        return 'slug';
     }
 
     /**

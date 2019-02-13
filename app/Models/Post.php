@@ -9,6 +9,7 @@
 
 namespace App\Models;
 
+use App\Abilities\HasSlugRouteKey;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -45,7 +46,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Post extends Model
 {
-    use Sluggable;
+    use Sluggable, HasSlugRouteKey;
 
     /**
      * The attributes that are mass assignable.
@@ -88,15 +89,5 @@ class Post extends Model
                 'source' => 'title',
             ],
         ];
-    }
-
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
-    public function getRouteKeyName()
-    {
-        return 'slug';
     }
 }
