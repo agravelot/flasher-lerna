@@ -39,8 +39,18 @@ use Illuminate\Database\Eloquent\Model;
  */
 class SocialMedia extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = ['name', 'icon', 'url', 'color', 'active'];
 
+    /**
+     * Scope for active social medias.
+     *
+     * @return SocialMedia
+     */
     public function scopeActive()
     {
         return $this->where('active', true);

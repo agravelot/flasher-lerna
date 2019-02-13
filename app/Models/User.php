@@ -72,6 +72,11 @@ class User extends Authenticatable implements MustVerifyEmailInterface
         'password', 'remember_token',
     ];
 
+    /**
+     * Hash the password.
+     *
+     * @param $value
+     */
     public function setPasswordAttribute($value)
     {
         if ($value !== null) {
@@ -79,36 +84,71 @@ class User extends Authenticatable implements MustVerifyEmailInterface
         }
     }
 
+    /**
+     * Return the albums posted by this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function albums()
     {
         return $this->hasMany(Album::class);
     }
 
+    /**
+     * Return the posts posted by this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function posts()
     {
         return $this->hasMany(Post::class);
     }
 
+    /**
+     * Return the linked cosplayer to this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function cosplayer()
     {
         return $this->hasOne(Cosplayer::class);
     }
 
+    /**
+     * Return the contact from this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function contact()
     {
         return $this->hasMany(Contact::class);
     }
 
+    /**
+     * Return the golden book posts by this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function goldenBookPosts()
     {
         return $this->hasMany(GoldenBookPost::class);
     }
 
+    /**
+     * Return if this user has the ability to impersonate.
+     *
+     * @return bool
+     */
     public function canImpersonate()
     {
         return $this->isAdmin();
     }
 
+    /**
+     * Return if this user is an admin.
+     *
+     * @return bool
+     */
     public function isAdmin()
     {
         return $this->role === 'admin';

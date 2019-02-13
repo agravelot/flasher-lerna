@@ -50,16 +50,31 @@ class Category extends Model
      */
     protected $fillable = ['name', 'slug', 'description'];
 
+    /**
+     * Posts relationships.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
     public function posts()
     {
         return $this->morphedByMany(Post::class, 'categorizable');
     }
 
+    /**
+     * Albums relationships.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
     public function albums()
     {
         return $this->morphedByMany(Album::class, 'categorizable');
     }
 
+    /**
+     * Album relationship, only published.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
     public function publishedAlbums()
     {
         return $this->morphedByMany(PublicAlbum::class, 'categorizable');

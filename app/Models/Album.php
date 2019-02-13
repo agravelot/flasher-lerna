@@ -60,6 +60,11 @@ class Album extends Model implements HasMedia
 {
     use Sluggable, SluggableScopeHelpers, HasMediaTrait;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'title',
         'slug',
@@ -73,42 +78,82 @@ class Album extends Model implements HasMedia
         'private',
     ];
 
+    /**
+     * Scope for public albums.
+     *
+     * @param Builder $query
+     */
     public function scopePublic(Builder $query)
     {
         $query->whereNotNull('published_at')
             ->where('private', false);
     }
 
+    /**
+     * Return if the album is public.
+     *
+     * @return bool
+     */
     public function isPublic()
     {
         return $this->isPublished() && $this->isPasswordLess();
     }
 
+    /**
+     * Return if the album is published.
+     *
+     * @return bool
+     */
     public function isPublished()
     {
         return $this->published_at !== null;
     }
 
+    /**
+     * Return if the album is password less.
+     *
+     * @return bool
+     */
     public function isPasswordLess()
     {
         return $this->private == false;
     }
 
+    /**
+     * Return the related user to this album.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Return all the comments of this albums.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
 
+    /**
+     * Return all the categories of this album.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
     public function categories()
     {
         return $this->morphToMany(Category::class, 'categorizable');
     }
 
+    /**
+     * Return all the cosplayers of this album.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function cosplayers()
     {
         return $this->belongsToMany(Cosplayer::class);
@@ -138,6 +183,9 @@ class Album extends Model implements HasMedia
         return 'slug';
     }
 
+    /**
+     * Register the collections of this album.
+     */
     public function registerMediaCollections()
     {
         $this->addMediaCollection('pictures')

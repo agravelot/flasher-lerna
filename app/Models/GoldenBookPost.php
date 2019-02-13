@@ -45,20 +45,40 @@ use Illuminate\Database\Eloquent\Model;
  */
 class GoldenBookPost extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'name', 'body', 'email', 'published_at',
     ];
 
+    /**
+     * Return if the golden book post is published or not.
+     *
+     * @return bool
+     */
     public function isPublished()
     {
         return $this->published_at != null;
     }
 
+    /**
+     * Scope for published golden book posts.
+     *
+     * @param Builder $query
+     */
     public function scopePublished(Builder $query)
     {
         $query->whereNotNull('published_at');
     }
 
+    /**
+     * Publish the album.
+     *
+     * @return $this
+     */
     public function publish()
     {
         $this->published_at = $this->freshTimestamp();
@@ -66,6 +86,11 @@ class GoldenBookPost extends Model
         return $this;
     }
 
+    /**
+     * Un-publish the album.
+     *
+     * @return $this
+     */
     public function unpublish()
     {
         $this->published_at = null;
@@ -73,6 +98,11 @@ class GoldenBookPost extends Model
         return $this;
     }
 
+    /**
+     * Return the related user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
