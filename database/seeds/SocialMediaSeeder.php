@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-use App\SocialMedia;
+use App\Models\SocialMedia;
 use Illuminate\Database\Seeder;
 
 class SocialMediaSeeder extends Seeder
