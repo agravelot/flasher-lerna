@@ -52,8 +52,6 @@ class PublicAlbum extends Album
 {
     use HasParentModelTrait, HasParentMediaTrait;
 
-    protected $table = 'albums';
-
     protected static function boot()
     {
         parent::boot();
