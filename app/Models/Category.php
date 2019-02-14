@@ -9,6 +9,8 @@
 
 namespace App\Models;
 
+use App\Abilities\HasNameAsSlug;
+use App\Abilities\HasSlugRouteKey;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
@@ -41,7 +43,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Category extends Model
 {
-    use Sluggable, SluggableScopeHelpers;
+    use Sluggable, SluggableScopeHelpers, HasSlugRouteKey, HasNameAsSlug;
 
     /**
      * The attributes that are mass assignable.
@@ -50,42 +52,33 @@ class Category extends Model
      */
     protected $fillable = ['name', 'slug', 'description'];
 
+    /**
+     * Posts relationships.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
     public function posts()
     {
         return $this->morphedByMany(Post::class, 'categorizable');
     }
 
+    /**
+     * Albums relationships.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
     public function albums()
     {
         return $this->morphedByMany(Album::class, 'categorizable');
     }
 
+    /**
+     * Album relationship, only published.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
     public function publishedAlbums()
     {
         return $this->morphedByMany(PublicAlbum::class, 'categorizable');
-    }
-
-    /**
-     * Return the sluggable configuration array for this model.
-     *
-     * @return array
-     */
-    public function sluggable()
-    {
-        return [
-            'slug' => [
-                'source' => 'name',
-            ],
-        ];
-    }
-
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
-    public function getRouteKeyName()
-    {
-        return 'slug';
     }
 }

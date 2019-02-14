@@ -31,6 +31,8 @@ class AlbumController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param string $slug
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return \Illuminate\Http\Response

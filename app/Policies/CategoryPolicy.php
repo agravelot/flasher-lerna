@@ -16,6 +16,10 @@ class CategoryPolicy extends Policy
 {
     /**
      * Determine whether the user can view the categorys.
+     *
+     * @param User $user
+     *
+     * @return bool
      */
     public function index(User $user)
     {
@@ -24,6 +28,11 @@ class CategoryPolicy extends Policy
 
     /**
      * Determine whether the user can view the category.
+     *
+     * @param User          $user
+     * @param Category|null $category
+     *
+     * @return bool
      */
     public function view(User $user, ?Category $category = null)
     {
@@ -32,6 +41,10 @@ class CategoryPolicy extends Policy
 
     /**
      * Determine whether the user can create categorys.
+     *
+     * @param User $user
+     *
+     * @return bool
      */
     public function create(User $user)
     {
@@ -40,6 +53,11 @@ class CategoryPolicy extends Policy
 
     /**
      * Determine whether the user can update the category.
+     *
+     * @param User          $user
+     * @param Category|null $category
+     *
+     * @return bool
      */
     public function update(User $user, ?Category $category = null)
     {
@@ -48,6 +66,11 @@ class CategoryPolicy extends Policy
 
     /**
      * Determine whether the user can delete the category.
+     *
+     * @param User          $user
+     * @param Category|null $category
+     *
+     * @return bool
      */
     public function delete(User $user, ?Category $category = null)
     {
@@ -56,6 +79,11 @@ class CategoryPolicy extends Policy
 
     /**
      * Determine whether the user can restore the category.
+     *
+     * @param User     $user
+     * @param Category $category
+     *
+     * @return bool
      */
     public function restore(User $user, Category $category)
     {
@@ -64,6 +92,11 @@ class CategoryPolicy extends Policy
 
     /**
      * Determine whether the user can permanently delete the category.
+     *
+     * @param User     $user
+     * @param Category $category
+     *
+     * @return bool
      */
     public function forceDelete(User $user, Category $category)
     {

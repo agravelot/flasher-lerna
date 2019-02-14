@@ -16,6 +16,10 @@ class SocialMediaPolicy extends Policy
 {
     /**
      * Determine whether the user can view the socialMedias.
+     *
+     * @param User $user
+     *
+     * @return bool
      */
     public function index(User $user)
     {
@@ -24,6 +28,11 @@ class SocialMediaPolicy extends Policy
 
     /**
      * Determine whether the user can view the socialMedia.
+     *
+     * @param User             $user
+     * @param SocialMedia|null $socialMedia
+     *
+     * @return bool
      */
     public function view(User $user, ?SocialMedia $socialMedia = null)
     {
@@ -32,6 +41,10 @@ class SocialMediaPolicy extends Policy
 
     /**
      * Determine whether the user can create socialMedias.
+     *
+     * @param User $user
+     *
+     * @return bool
      */
     public function create(User $user)
     {
@@ -40,6 +53,11 @@ class SocialMediaPolicy extends Policy
 
     /**
      * Determine whether the user can update the socialMedia.
+     *
+     * @param User             $user
+     * @param SocialMedia|null $socialMedia
+     *
+     * @return bool
      */
     public function update(User $user, ?SocialMedia $socialMedia = null)
     {
@@ -48,6 +66,11 @@ class SocialMediaPolicy extends Policy
 
     /**
      * Determine whether the user can delete the socialMedia.
+     *
+     * @param User             $user
+     * @param SocialMedia|null $socialMedia
+     *
+     * @return bool
      */
     public function delete(User $user, ?SocialMedia $socialMedia = null)
     {
@@ -56,6 +79,11 @@ class SocialMediaPolicy extends Policy
 
     /**
      * Determine whether the user can restore the socialMedia.
+     *
+     * @param User        $user
+     * @param SocialMedia $socialMedia
+     *
+     * @return bool
      */
     public function restore(User $user, SocialMedia $socialMedia)
     {
@@ -64,6 +92,11 @@ class SocialMediaPolicy extends Policy
 
     /**
      * Determine whether the user can permanently delete the socialMedia.
+     *
+     * @param User        $user
+     * @param SocialMedia $socialMedia
+     *
+     * @return bool
      */
     public function forceDelete(User $user, SocialMedia $socialMedia)
     {

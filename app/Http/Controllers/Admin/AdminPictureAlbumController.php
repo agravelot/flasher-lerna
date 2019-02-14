@@ -23,8 +23,11 @@ class AdminPictureAlbumController extends Controller
      * Store a newly created resource in storage.
      *
      *
+     * @param PictureAlbumRequest $request
+     * @param FileReceiver        $receiver
+     *
+     * @throws UploadMissingFileException
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Exception
      *
      * @return string
      */
@@ -67,7 +70,10 @@ class AdminPictureAlbumController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param string $slug
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Exception
      *
      * @return \Illuminate\Http\RedirectResponse
      */

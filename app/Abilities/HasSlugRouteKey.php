@@ -7,16 +7,17 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-use App\Models\SocialMedia;
-use Illuminate\Database\Seeder;
+namespace App\Abilities;
 
-class SocialMediaSeeder extends Seeder
+trait HasSlugRouteKey
 {
     /**
-     * Run the database seeds.
+     * Get the route key for the model.
+     *
+     * @return string
      */
-    public function run()
+    public function getRouteKeyName()
     {
-        factory(SocialMedia::class, 5)->create();
+        return 'slug';
     }
 }

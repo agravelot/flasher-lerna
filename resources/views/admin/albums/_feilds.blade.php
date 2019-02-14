@@ -19,7 +19,7 @@
                         <label class="label">{{ __('Title') }}</label>
                         <div class="control">
                             <input class="input" id="title" type="text" name="title"
-                                   value="{{ old('title', isset($album->title) ? $album->title : null) }}"
+                                   value="{{ old('title', $album->title ?? null) }}"
                                    required autofocus>
                         </div>
                         @include('layouts.partials._form_errors', ['data' => 'title'])
@@ -29,7 +29,7 @@
                         <label class="label">{{ __('Body') }}</label>
                         <div class="control">
                             <textarea class="textarea tinymce" id="body" type="text" name="body"
-                                      rows="10">{{ old('body', isset($album->body) ? $album->body : null) }}</textarea>
+                                      rows="10">{{ old('body', $album->body ?? null) }}</textarea>
                         </div>
                         @include('layouts.partials._form_errors', ['data' => 'body'])
                     </div>
@@ -79,9 +79,9 @@
                     <div class="control">
                         <label class="radio">
                             <input type="radio" name="published_at"
-                                   value="{{ isset($album->published_at) ? $album->published_at : $currentDate}}"
+                                   value="{{ $album->published_at ?? $currentDate}}"
                                     {{ old('published_at', isset($album->published_at) && $album->isPublished())
-                                    ? 'checked="checked"' : ''  }}
+                                    ? 'checked="checked"' : null  }}
                             >
                             {{ __('Publish') }}
                         </label>
@@ -89,7 +89,7 @@
                             <input type="radio" name="published_at"
                                    value=""
                                     {{ old('published_at', isset($album->published_at) && $album->isPublished())
-                                    ? '' : 'checked="checked"' }}
+                                    ? null : 'checked="checked"' }}
                             >
                             {{ __('Draft') }}
                         </label>

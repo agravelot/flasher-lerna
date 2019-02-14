@@ -9,6 +9,8 @@
 
 namespace App\Models;
 
+use App\Abilities\HasNameAsSlug;
+use App\Abilities\HasSlugRouteKey;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
@@ -52,59 +54,68 @@ use Spatie\MediaLibrary\Models\Media;
  */
 class Cosplayer extends Model implements HasMedia
 {
-    use Sluggable, SluggableScopeHelpers, HasMediaTrait;
+    use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey, HasNameAsSlug;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = ['name', 'description', 'slug', 'user_id'];
 
+    /**
+     * Return the initials of the cosplayer.
+     *
+     * @return bool|false|mixed|string|string[]|null
+     */
     public function getInitialAttribute()
     {
         return mb_strtoupper(mb_substr($this->name, 0, 1));
     }
 
+    /**
+     * Return the linked user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Return the albums posted by this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function albums()
     {
         return $this->belongsToMany(Album::class);
     }
 
+    /**
+     * Return the public albums posted by this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function publicAlbums()
     {
         return $this->belongsToMany(PublicAlbum::class, 'album_cosplayer');
     }
 
+    /**
+     * Return the categories related to this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
     public function categories()
     {
         return $this->morphToMany(Category::class, 'categorizable');
     }
 
     /**
-     * Return the sluggable configuration array for this model.
-     *
-     * @return array
+     * Defining the media collections.
      */
-    public function sluggable()
-    {
-        return [
-            'slug' => [
-                'source' => 'name',
-            ],
-        ];
-    }
-
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
-
     public function registerMediaCollections()
     {
         $this->addMediaCollection('avatar')
@@ -114,6 +125,13 @@ class Cosplayer extends Model implements HasMedia
             });
     }
 
+    /**
+     * Register the media conversions.
+     *
+     * @param Media|null $media
+     *
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
+     */
     public function registerMediaConversions(Media $media = null)
     {
         $this->addMediaConversion('thumb')

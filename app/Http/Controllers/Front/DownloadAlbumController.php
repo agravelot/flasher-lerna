@@ -17,6 +17,8 @@ use Spatie\MediaLibrary\MediaStream;
 class DownloadAlbumController extends Controller
 {
     /**
+     * @param string $slug
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return MediaStream

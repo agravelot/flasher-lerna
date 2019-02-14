@@ -44,6 +44,11 @@ class Contact extends Model
      */
     protected $fillable = ['name', 'email', 'message'];
 
+    /**
+     * Return the related user of this contact (is nullable).
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);

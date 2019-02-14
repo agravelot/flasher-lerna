@@ -7,16 +7,21 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-use App\Models\SocialMedia;
-use Illuminate\Database\Seeder;
+namespace App\Abilities;
 
-class SocialMediaSeeder extends Seeder
+trait HasNameAsSlug
 {
     /**
-     * Run the database seeds.
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
      */
-    public function run()
+    public function sluggable(): array
     {
-        factory(SocialMedia::class, 5)->create();
+        return [
+            'slug' => [
+                'source' => 'name',
+            ],
+        ];
     }
 }

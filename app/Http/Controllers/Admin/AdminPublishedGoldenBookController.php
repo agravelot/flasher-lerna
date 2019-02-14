@@ -18,7 +18,9 @@ class AdminPublishedGoldenBookController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @throws \Exception
+     * @param PublishedGoldenBookRequest $request
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return \Illuminate\Http\Response
      */
@@ -36,7 +38,9 @@ class AdminPublishedGoldenBookController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @throws \Exception
+     * @param int $id
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return \Illuminate\Http\Response
      */

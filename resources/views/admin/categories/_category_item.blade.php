@@ -1,6 +1,6 @@
 <tr>
     <td>
-        <a href="{{ route('admin.categories.show', ['contact' => $category]) }}">{{ $category->name }}</a>
+        <a href="{{ route('admin.categories.show', ['category' => $category]) }}">{{ $category->name }}</a>
     </td>
     <td></td>
     <td>

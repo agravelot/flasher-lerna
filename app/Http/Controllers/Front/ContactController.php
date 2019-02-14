@@ -28,6 +28,7 @@ class ContactController extends Controller
     /**
      * Store a newly created resource in storage.
      *
+     * @param ContactStoreRequest $request
      *
      * @return \Illuminate\Http\Response
      */

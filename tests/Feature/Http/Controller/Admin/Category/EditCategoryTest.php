@@ -25,10 +25,10 @@ class EditCategoryTest extends TestCase
 
         $response = $this->showCategoryEdit($category->slug);
 
-        $response->assertStatus(302);
-        $response->assertRedirect('/login');
-        $response->assertDontSee($category->name);
-        $response->assertDontSee($category->description);
+        $response->assertStatus(302)
+            ->assertRedirect('/login')
+            ->assertDontSee($category->name)
+            ->assertDontSee($category->description);
     }
 
     private function showCategoryEdit(string $slug): TestResponse
@@ -45,8 +45,6 @@ class EditCategoryTest extends TestCase
         $response = $this->showCategoryEdit($category->slug);
 
         $response->assertStatus(403);
-        $response->assertDontSee($category->name);
-        $response->assertDontSee($category->description);
     }
 
     public function test_admin_can_view_edit_page_for_a_category()
@@ -57,9 +55,9 @@ class EditCategoryTest extends TestCase
 
         $response = $this->showCategoryEdit($category->slug);
 
-        $response->assertStatus(200);
-        $response->assertSee($category->name);
-        $response->assertSee($category->description);
+        $response->assertStatus(200)
+            ->assertSee($category->name)
+            ->assertSee($category->description);
     }
 
     public function test_admin_can_not_edit_non_existent_category()
