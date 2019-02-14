@@ -16,6 +16,7 @@ socat \
   &
 export DOCKER_HOST=unix:///tmp/docker.sock
 export COMPOSE_PROJECT_NAME=picblog
+export TRUSTED_PROXIES=$(docker network inspect nginx-proxy --format='{{ (index .IPAM.Config 0).Subnet }}')
 echo " * LOGIN WITH GITLAB-CI TOKEN"
 docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
 # backup current image if already present locally
@@ -26,8 +27,8 @@ if [[ ! "$(docker images -q ${PICBLOG_IMAGE_PHP} 2> /dev/null)" == "" && ! "$(do
 fi
 echo " * PULLING NEW IMAGES"
 docker-compose -f ../docker-compose.yml pull
-echo " * PUTTING LARAVEL IN MAINTENANCE MODE"
-docker-compose exec php echo Hello world && docker-compose exec php php artisan down --message="We'll be back soon" --retry=60 || echo "Container is not running"
+#echo " * PUTTING LARAVEL IN MAINTENANCE MODE"
+#docker-compose exec php echo Hello world && docker-compose exec php php artisan down --message="We'll be back soon" --retry=60 || echo "Container is not running"
 echo " * UPDATING RUNNING CONTAINERS"
 docker-compose -f ../docker-compose.yml up -d --remove-orphans
 #echo " * LEAVING MAINTENANCE MODE"
