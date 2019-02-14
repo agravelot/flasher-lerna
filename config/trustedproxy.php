@@ -21,7 +21,8 @@ return [
      * of your proxy (e.g. if using ELB or similar).
      *
      */
-    'proxies' => explode(',', env('TRUSTED_PROXIES')), // [<ip addresses>,], '*', '<ip addresses>,'
+//    'proxies' => explode(',', env('TRUSTED_PROXIES')), // [<ip addresses>,], '*', '<ip addresses>,'
+    'proxies' => '*', // [<ip addresses>,], '*', '<ip addresses>,'
 
     /*
      * To trust one or more specific proxies that connect
