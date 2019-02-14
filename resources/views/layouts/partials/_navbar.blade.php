@@ -51,7 +51,7 @@
                                 {{ __('Settings') }}
                             </a>
                             <hr class="navbar-divider">
-                            <a class="navbar-item has-text-danger" href="{{ route('logout') }}"
+                            <a class="navbar-item has-text-danger"
                                onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                 {{ __('Logout') }}
                             </a>
