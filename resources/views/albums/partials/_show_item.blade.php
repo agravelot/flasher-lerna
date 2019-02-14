@@ -19,7 +19,7 @@
                                 <span class="icon is-small">
                                     <i class="fas fa-download"></i>
                                 </span>
-                                <span>Download</span>
+                                <span>{{ __('Download') }}</span>
                             </a>
                         </div>
                     @endcan
@@ -29,7 +29,7 @@
                                 <span class="icon is-small">
                                     <i class="fas fa-edit"></i>
                                 </span>
-                                <span>Edit</span>
+                                <span>{{ __('Edit') }}</span>
                             </a>
                         </div>
                     @endcan
