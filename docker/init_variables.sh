@@ -26,6 +26,7 @@ else
 fi
 
 export APP_ENV=$1
+export TRUSTED_PROXIES=$(docker network inspect nginx-proxy --format='{{ (index .IPAM.Config 0).Subnet }}')
 
 REMOTE=$SSH_USER@${CI_DEPLOY_URI}
 PICBLOG_IMAGE_PHP=registry.gitlab.com/nevax/picblog/picblog_php
