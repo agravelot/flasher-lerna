@@ -105,7 +105,7 @@ deploy_staging:
   - bash -c 'cd docker/ && ./deploy.sh staging'
   environment:
     name: staging
-    url: https://nevax.awsmppl.com
+    url: https://staging.picblog.agravelot.com
   except:
     - master
 
@@ -122,7 +122,7 @@ deploy_production:
   - bash -c 'cd docker/ && ./deploy.sh production'
   environment:
     name: production
-    url: https://agravelot.com
-  when: manual
+    url: https://picblog.agravelot.com
+#  when: manual
   only:
   - master
