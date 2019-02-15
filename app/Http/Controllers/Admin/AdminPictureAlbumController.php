@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PictureAlbumRequest;
 use App\Models\Album;
+use Illuminate\Http\Request;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
@@ -70,22 +71,20 @@ class AdminPictureAlbumController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param string $slug
+     * @param string  $slug
+     * @param Request $request
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Exception
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(string $slug)
+    public function destroy(string $slug, Request $request)
     {
         $this->authorize('delete', Album::class);
-        $album = Album::whereSlug($slug)
-            ->firstOrFail();
+        $album = Album::whereSlug($slug)->firstOrFail();
         $this->authorize('delete', $album);
-        $album->delete();
+        $album->getMedia('pictures')->get($request->get('media_id'))->delete();
 
-        return redirect(route('admin.albums.index'))
-            ->withSuccess('Album successfully deleted');
+        return response()->json(null, 204);
     }
 }
