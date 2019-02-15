@@ -174,7 +174,7 @@
 </form>
 
 @if (isset($album))
-    <form method="post" action="{{ route('admin.albums.pictures.store', compact('album')) }}" enctype="multipart/form-data" class="dropzone">
+    <form method="post" action="{{ route('admin.album-pictures.store') }}" enctype="multipart/form-data" class="dropzone">
         @csrf
         <input type="hidden" name="album_slug" value="{{ $album->slug }}">
         <input type="file" name="file" style="display: none;">
