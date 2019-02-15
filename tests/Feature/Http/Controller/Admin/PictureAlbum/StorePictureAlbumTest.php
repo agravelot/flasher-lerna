@@ -42,7 +42,7 @@ class StorePictureAlbumTest extends TestCase
     {
         session()->setPreviousUrl('/admin/albums/create');
 
-        return $this->post('/api/admin/album-pictures',
+        return $this->post('/api/admin/albums/' . $albumSlug . '/pictures',
             array_merge(['file' => $picture, 'album_slug' => $albumSlug], $optional)
         );
     }
