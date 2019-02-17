@@ -36,7 +36,7 @@ class DeletePictureAlbumTest extends TestCase
     {
         session()->setPreviousUrl('/admin/albums');
 
-        return $this->delete('/admin/album-pictures/' . $albumSlug,
+        return $this->delete('/api/admin/album-pictures/' . $albumSlug,
             array_merge(['media_id' => $mediaId], $optional)
         );
     }
