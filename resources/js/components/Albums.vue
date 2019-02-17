@@ -3,7 +3,7 @@
     <section>
       <button
         class="button field is-danger"
-        @click="deleteSelectedAlbums"
+        @click="confirmDeleteSelectedAlbums"
         :disabled="!checkedRows.length"
       >
         <b-icon pack="fas" icon="trash-alt"></b-icon>
@@ -158,10 +158,19 @@ export default {
             this.sortOrder = order;
             this.fetchAlbums();
         },
-        deleteSelectedAlbums() {
-            if (confirm('Are you sure?')) {
-                this.checkedRows.forEach(el => this.deleteAlbum(el));
-            }
+        confirmDeleteSelectedAlbums() {
+            this.$dialog.confirm({
+                title: 'Deleting Albums',
+                message:
+                    'Are you sure you want to <b>delete</b> these albums? This action cannot be undone.',
+                confirmText: 'Delete Albums',
+                type: 'is-danger',
+                hasIcon: true,
+                onConfirm: () => {
+                    this.checkedRows.forEach(el => this.deleteAlbum(el));
+                    this.$toast.open('Albums deleted!');
+                },
+            });
         },
         /**
          * Delete album from slug
