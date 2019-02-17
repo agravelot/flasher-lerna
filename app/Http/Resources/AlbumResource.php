@@ -22,11 +22,12 @@ class AlbumResource extends JsonResource
      */
     public function toArray($request)
     {
-//        return parent::toArray($request);
         return [
             'id' => $this->id,
             'slug' => $this->slug,
             'title' => $this->title,
+            'body' => $this->body,
+            'published_at' => $this->published_at,
         ];
     }
 }

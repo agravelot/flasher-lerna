@@ -1,0 +1,152 @@
+<template>
+  <div>
+    <section>
+      <b-field grouped group-multiline>
+        <div class="control">
+          <b-switch v-model="showDetailIcon">Show detail icon</b-switch>
+        </div>
+      </b-field>
+
+      <b-table
+        :data="albums"
+        :loading="loading"
+        striped
+        hoverable
+        mobile-cards
+        paginated
+        backend-pagination
+        :total="total"
+        per-page="10"
+        @page-change="onPageChange"
+        backend-sorting
+        :default-sort-direction="defaultSortOrder"
+        :default-sort="[sortField, sortOrder]"
+        @sort="onSort"
+        :opened-detailed="defaultOpenedDetails"
+        detailed
+        detail-key="id"
+        :show-detail-icon="showDetailIcon"
+        icon-pack="fas"
+      >
+        <template slot-scope="album">
+          <b-table-column
+            field="id"
+            label="ID"
+            width="40"
+            numeric
+            sortable
+            centered
+          >{{ album.row.id }}</b-table-column>
+
+          <b-table-column field="title" label="Title" sortable>
+            <template v-if="showDetailIcon">{{ album.row.title }}</template>
+            <template v-else>
+              <a @click="toggle(album.row)">{{ album.row.title }}</a>
+            </template>
+          </b-table-column>
+
+          <b-table-column field="date" label="Published at" sortable centered>
+            <span class="tag is-success">{{ new Date(album.row.published_at).toLocaleDateString() }}</span>
+          </b-table-column>
+        </template>
+
+        <template slot="detail" slot-scope="album">
+          <article class="media">
+            <figure class="media-left">
+              <p class="image is-64x64">
+                <img src="https://via.placeholder.com/128">
+              </p>
+            </figure>
+            <div class="media-content">
+              <div class="content">
+                <p>
+                  <strong>{{ album.row.title }}</strong>
+                  <small>{{ album.row.published_at }}</small>
+                  <br>
+                  {{ album.row.body | truncate(80)}}
+                </p>
+              </div>
+            </div>
+          </article>
+        </template>
+      </b-table>
+    </section>
+  </div>
+</template>
+
+<script>
+import Buefy from 'buefy';
+import 'buefy/dist/buefy.css';
+
+Vue.use(Buefy);
+
+export default {
+    data() {
+        return {
+            albums: [],
+            total: 0,
+            loading: false,
+            sortField: 'title',
+            sortOrder: 'desc',
+            defaultSortOrder: 'desc',
+            page: 1,
+            perPage: 10,
+            showDetailIcon: true,
+            defaultOpenedDetails: []
+        };
+    },
+    created() {
+        this.fetchAlbums();
+    },
+    // mounted() {
+    //     this.fetchAlbums();
+    // },
+    filters: {
+        /**
+         * Filter to truncate string, accepts a length parameter
+         */
+        truncate(value, length) {
+            return value.length > length ? value.substr(0, length) + '...' : value;
+        },
+    },
+    methods: {
+        fetchAlbums() {
+            this.loading = true;
+            const params = [`page=${this.page}`].join('&');
+
+            fetch(`/api/admin/albums?${params}`)
+                .then(res => res.json())
+                .then(res => {
+                    this.total = res.meta.total;
+                    this.total = res.meta.total;
+                    this.albums = res.data;
+                    this.loading = false;
+                })
+                .catch(err => {
+                    this.albums = [];
+                    this.total = 0;
+                    this.loading = false;
+                    throw error;
+                });
+        },
+        toggle(row) {
+            this.$refs.table.toggleDetails(row);
+        },
+        /*
+         * Handle page-change event
+         */
+        onPageChange(page) {
+            this.page = page;
+            this.fetchAlbums();
+        },
+        /*
+         * Handle sort event
+         */
+        onSort(field, order) {
+            this.sortField = field;
+            this.sortOrder = order;
+            this.fetchAlbums();
+        },
+    },
+};
+</script>
