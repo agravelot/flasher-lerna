@@ -9,7 +9,7 @@
 
 namespace App\Http\Requests;
 
-class PictureAlbumRequest extends Request
+class StorePictureAlbumRequest extends Request
 {
     /**
      * Get the validation rules that apply to the request.

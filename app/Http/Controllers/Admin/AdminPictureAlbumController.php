@@ -10,11 +10,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PictureAlbumRequest;
+use App\Http\Requests\StorePictureAlbumRequest;
 use App\Models\Album;
 use Illuminate\Http\Request;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
-use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Spatie\MediaLibrary\Models\Media;
 
@@ -23,16 +22,15 @@ class AdminPictureAlbumController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     *
-     * @param PictureAlbumRequest $request
-     * @param FileReceiver        $receiver
+     * @param StorePictureAlbumRequest $request
+     * @param FileReceiver             $receiver
      *
      * @throws UploadMissingFileException
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return string
      */
-    public function store(PictureAlbumRequest $request, FileReceiver $receiver)
+    public function store(StorePictureAlbumRequest $request, FileReceiver $receiver)
     {
         $this->authorize('create', Album::class);
         /** @var Album $album */
