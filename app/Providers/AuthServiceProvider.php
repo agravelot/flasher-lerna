@@ -25,6 +25,7 @@ use App\Policies\SocialMediaPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -51,5 +52,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('dashboard', 'App\Policies\AdminPolicy@dashboard');
+
+        Passport::routes();
     }
 }

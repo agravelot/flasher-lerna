@@ -16,6 +16,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Lab404\Impersonate\Models\Impersonate;
+use Laravel\Passport\HasApiTokens;
 
 /**
  * App\Models\User.
@@ -52,7 +53,7 @@ use Lab404\Impersonate\Models\Impersonate;
  */
 class User extends Authenticatable implements MustVerifyEmailInterface
 {
-    use MustVerifyEmail, CanResetPassword, Notifiable, Impersonate;
+    use MustVerifyEmail, CanResetPassword, Notifiable, Impersonate, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
