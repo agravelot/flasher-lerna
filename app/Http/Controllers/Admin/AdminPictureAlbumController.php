@@ -71,17 +71,16 @@ class AdminPictureAlbumController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param string  $slug
      * @param Request $request
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(string $slug, Request $request)
+    public function destroy(Request $request)
     {
         $this->authorize('delete', Album::class);
-        $album = Album::whereSlug($slug)->firstOrFail();
+        $album = Album::whereSlug($request->get('album_slug'))->firstOrFail();
         $this->authorize('delete', $album);
         $album->getMedia('pictures')->get($request->get('media_id'))->delete();
 
