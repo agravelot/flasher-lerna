@@ -46,11 +46,8 @@ class AdminPictureAlbumController extends Controller
         // check if the upload has not finished (in chunk mode it will send smaller files)
         if (! $save->isFinished()) {
             // we are in chunk mode, lets send the current progress
-            /** @var AbstractHandler $handler */
-            $handler = $save->handler();
-
             return response()->json([
-                'done' => $handler->getPercentageDone(),
+                'done' => $save->handler()->getPercentageDone(),
                 'status' => true,
             ]);
         }
