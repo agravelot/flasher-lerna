@@ -20,9 +20,12 @@
 
 //TODO Implement JWT auth
 //Route::middleware('auth:api')->group(function () {
-Route::namespace('Admin')->group(function () {
-    Route::name('admin.')->group(function () { // Route Name Prefixe
-        Route::prefix('admin')->group(function () { // Route Prefixe /admin/
+Route::name('api.admin.')->group(function () { // Route Name Prefixe
+    Route::prefix('admin')->group(function () { // Route Prefixe /admin/
+        Route::namespace('Api\Admin')->group(function () {
+            Route::apiResource('albums', 'AdminAlbumController');
+        });
+        Route::namespace('Admin')->group(function () {
             Route::apiResource('album-pictures', 'AdminPictureAlbumController')->only('store', 'destroy');
         });
     });

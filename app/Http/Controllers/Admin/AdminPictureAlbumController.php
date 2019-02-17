@@ -81,7 +81,7 @@ class AdminPictureAlbumController extends Controller
         $this->authorize('delete', $album);
         $deleted = optional($album->getMedia('pictures')->get($request->get('media_id')))->delete();
 
-        if ($deleted === null || !$deleted){
+        if ($deleted === null || ! $deleted) {
             return response()->json(['error' => 'media not found'], 400);
         }
 
