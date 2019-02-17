@@ -1,11 +1,14 @@
 <template>
   <div>
     <section>
-      <b-field grouped group-multiline>
-        <div class="control">
-          <b-switch v-model="showDetailIcon">Show detail icon</b-switch>
-        </div>
-      </b-field>
+      <button
+        class="button field is-danger"
+        @click="deleteSelectedAlbums"
+        :disabled="!checkedRows.length"
+      >
+        <b-icon pack="fas" icon="trash-alt"></b-icon>
+        <span>Delete checked</span>
+      </button>
 
       <b-table
         :data="albums"
@@ -27,6 +30,8 @@
         detail-key="id"
         :show-detail-icon="showDetailIcon"
         icon-pack="fas"
+        checkable
+        :checked-rows.sync="checkedRows"
       >
         <template slot-scope="album">
           <b-table-column
@@ -69,6 +74,11 @@
             </div>
           </article>
         </template>
+
+        <template slot="bottom-left">
+          <b>Total checked</b>
+          : {{ checkedRows.length }}
+        </template>
       </b-table>
     </section>
   </div>
@@ -92,7 +102,8 @@ export default {
             page: 1,
             perPage: 10,
             showDetailIcon: true,
-            defaultOpenedDetails: []
+            defaultOpenedDetails: [],
+            checkedRows: [],
         };
     },
     created() {
@@ -146,6 +157,26 @@ export default {
             this.sortField = field;
             this.sortOrder = order;
             this.fetchAlbums();
+        },
+        deleteSelectedAlbums() {
+            if (confirm('Are you sure?')) {
+                this.checkedRows.forEach(el => this.deleteAlbum(el));
+            }
+        },
+        /**
+         * Delete album from slug
+         */
+        deleteAlbum(album) {
+            fetch(`/api/admin/albums/${album.slug}`, {
+                method: 'delete',
+            })
+                // .then(res => res.json())
+                .then(res => {
+                    this.fetchAlbums();
+                })
+                .catch(err => {
+                    throw err;
+                });
         },
     },
 };
