@@ -10,6 +10,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DeletePictureAlbumRequest;
 use App\Http\Requests\StorePictureAlbumRequest;
 use App\Models\Album;
 use Illuminate\Http\Request;
@@ -69,15 +70,20 @@ class AdminPictureAlbumController extends Controller
      * @param string  $albumSlug
      * @param Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(string $albumSlug, Request $request)
+    public function destroy(string $albumSlug, DeletePictureAlbumRequest $request)
     {
         $this->authorize('delete', Album::class);
         $album = Album::whereSlug($albumSlug)->firstOrFail();
         $this->authorize('delete', $album);
-        $album->getMedia('pictures')->get($request->get('media_id'))->delete();
+        $deleted = optional($album->getMedia('pictures')->get($request->get('media_id')))->delete();
+
+        if ($deleted === null || !$deleted){
+            return response()->json(['error' => 'media not found'], 400);
+        }
 
         return response()->json(null, 204);
     }

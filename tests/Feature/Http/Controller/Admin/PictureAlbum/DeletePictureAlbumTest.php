@@ -20,7 +20,6 @@ class DeletePictureAlbumTest extends TestCase
 
     public function test_admin_can_delete_a_picture_to_an_album()
     {
-        $this->disableExceptionHandling();
         $this->actingAsAdmin();
         /** @var Album $album */
         $album = factory(Album::class)->states(['published', 'withMedias'])->create();
@@ -31,6 +30,56 @@ class DeletePictureAlbumTest extends TestCase
         $this->assertSame(14, $album->fresh()->getMedia('pictures')->count());
         $response->assertStatus(204);
     }
+
+    public function test_admin_can_not_delete_a_non_existent_picture_to_an_album()
+    {
+        $this->actingAsAdmin();
+        /** @var Album $album */
+        $album = factory(Album::class)->states(['published', 'withMedias'])->create();
+        $this->assertSame(15, $album->getMedia('pictures')->count());
+
+        $response = $this->deleteAlbumPicture($album->slug, 100);
+
+        $this->assertSame(15, $album->fresh()->getMedia('pictures')->count());
+        $response->assertStatus(400);
+    }
+
+    public function test_admin_can_not_delete_a_non_filled_picture_to_an_album()
+    {
+        $this->actingAsAdmin();
+        /** @var Album $album */
+        $album = factory(Album::class)->states(['published', 'withMedias'])->create();
+        $this->assertSame(15, $album->getMedia('pictures')->count());
+
+        $response = $this->deleteAlbumPicture($album->slug);
+
+        $this->assertSame(15, $album->fresh()->getMedia('pictures')->count());
+        $response->assertStatus(302);
+    }
+
+    public function test_user_can_not_delete_a_picture_to_an_album()
+    {
+        $this->actingAsUser();
+        /** @var Album $album */
+        $album = factory(Album::class)->states(['published', 'withMedias'])->create();
+        $this->assertSame(15, $album->getMedia('pictures')->count());
+
+        $response = $this->deleteAlbumPicture($album->slug);
+
+        $this->assertSame(15, $album->fresh()->getMedia('pictures')->count());
+        $response->assertStatus(403);
+    }
+
+//    public function test_guest_can_not_delete_a_picture_to_an_album()
+//    {
+//        $album = factory(Album::class)->states(['published', 'withMedias'])->create();
+//        $this->assertSame(15, $album->getMedia('pictures')->count());
+//
+//        $response = $this->deleteAlbumPicture($album->slug);
+//
+//        $this->assertSame(15, $album->fresh()->getMedia('pictures')->count());
+//        $response->assertRedirect('/login');
+//    }
 
     public function deleteAlbumPicture(string $albumSlug, int $mediaId = null, array $optional = []): TestResponse
     {
