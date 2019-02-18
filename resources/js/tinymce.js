@@ -42,7 +42,7 @@ require('tinymce/plugins/colorpicker');
 require('tinymce/plugins/textpattern');
 require('tinymce/plugins/textcolor');
 
-let editor_config = {
+const editorConfig = {
     path_absolute: '/',
     selector: 'textarea.tinymce',
     language: 'fr_FR',
@@ -60,8 +60,8 @@ let editor_config = {
     toolbar:
         'insertfile undo redo | styleselect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media',
     relative_urls: false,
-    file_browser_callback: function(field_name, url, type, win) {
-        let x =
+    file_browser_callback(fieldName, url, type, win) {
+        const x =
             window.innerWidth ||
             document.documentElement.clientWidth ||
             document.getElementsByTagName('body')[0].clientWidth;
@@ -70,11 +70,11 @@ let editor_config = {
             document.documentElement.clientHeight ||
             document.getElementsByTagName('body')[0].clientHeight;
 
-        let cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
+        let cmsURL = `${editorConfig.path_absolute}laravel-filemanager?field_name=${fieldName}`;
         if (type === 'image') {
-            cmsURL = cmsURL + '&type=Images';
+            cmsURL += '&type=Images';
         } else {
-            cmsURL = cmsURL + '&type=Files';
+            cmsURL += '&type=Files';
         }
 
         tinyMCE.activeEditor.windowManager.open({
@@ -88,4 +88,4 @@ let editor_config = {
     },
 };
 
-tinymce.init(editor_config);
+tinymce.init(editorConfig);

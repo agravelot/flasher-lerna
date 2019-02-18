@@ -1,13 +1,13 @@
-if (document.getElementsByClassName('dropzone').length > 0) {
-    require('dropzone/dist/dropzone.css');
-    // require('dropzone/dist/dropzone-amd-module');
-    let Dropzone = require('dropzone/dist/dropzone');
+import 'dropzone/dist/dropzone.css';
+// require('dropzone/dist/dropzone-amd-module');
+import Dropzone, { autoDiscover } from 'dropzone/dist/dropzone';
 
-    Dropzone.autoDiscover = false;
+if (document.getElementsByClassName('dropzone').length > 0) {
+    autoDiscover = false;
 
     // var token = $('input[name=_token]').val();
 
-    let myDropzone = new Dropzone('.dropzone', {
+    const myDropzone = new Dropzone('.dropzone', {
         // Setup chunking
         chunking: true,
         method: 'POST',

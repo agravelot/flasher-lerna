@@ -4,6 +4,10 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import './menu';
+import './dropzone';
+import './fontawsome';
+
 window.Vue = require('vue');
 
 /**
@@ -26,10 +30,5 @@ Vue.component('albums', require('../components/Albums.vue').default);
  */
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
 });
-
-
-import './menu';
-import './dropzone';
-import './fontawsome';

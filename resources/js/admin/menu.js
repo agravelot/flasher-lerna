@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
     const $adminMenu = document.getElementById('admin-menu');
     const $collapseAdminMenuButton = document.getElementById('collapse-admin-menu');
     const $icon = $collapseAdminMenuButton
@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .getElementsByTagName('i')
         .item(0);
 
-    $collapseAdminMenuButton.addEventListener('click', function() {
+    $collapseAdminMenuButton.addEventListener('click', () => {
         if ($adminMenu.style.display === 'none') {
             $adminMenu.style.display = 'block';
             $icon.classList.remove('fa-flip-horizontal');
@@ -15,6 +15,5 @@ document.addEventListener('DOMContentLoaded', function() {
             $adminMenu.style.display = 'none';
             $icon.classList.add('fa-flip-horizontal');
         }
-        //TODO Animate collapse
     });
 });
