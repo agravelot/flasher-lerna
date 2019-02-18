@@ -176,10 +176,7 @@ export default {
          * Delete album from slug
          */
         deleteAlbum(album) {
-            fetch(`/api/admin/albums/${album.slug}`, {
-                method: 'delete',
-            })
-                // .then(res => res.json())
+            axios.delete(`/api/admin/albums/${album.slug}`)
                 .then(res => {
                     this.fetchAlbums();
                 })
