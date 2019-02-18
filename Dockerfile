@@ -93,7 +93,7 @@ CMD php artisan config:clear \
         && php artisan db:wait-connection \
         && php artisan cache:clear-wait-connection \
         && php artisan migrate --force \
-        && php artisan passport:keys
+        && php artisan passport:keys \
 # Optimizing for production
 # https://laravel.com/docs/5.7/deployment#optimization
         && php artisan view:clear \
