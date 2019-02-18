@@ -22,6 +22,7 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Fluent;
 use InvalidArgumentException;
+use Laravel\Passport\Passport;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -76,12 +77,14 @@ abstract class TestCase extends BaseTestCase
     {
         $admin = factory(User::class)->state('admin')->create();
         $this->actingAs($admin);
+        Passport::actingAs($admin, ['*']);
     }
 
     protected function actingAsUser()
     {
         $user = factory(User::class)->state('user')->create();
         $this->actingAs($user);
+        Passport::actingAs($user, ['*']);
     }
 
     protected function assertAuthenticationRequired($uri, $method = 'get', $redirect = '/login')

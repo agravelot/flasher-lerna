@@ -125,8 +125,8 @@ export default {
             this.loading = true;
             const params = [`page=${this.page}`].join('&');
 
-            fetch(`/api/admin/albums?${params}`)
-                .then(res => res.json())
+            axios.get(`/api/admin/albums?${params}`)
+                .then(res => res.data)
                 .then(res => {
                     this.total = res.meta.total;
                     this.total = res.meta.total;
@@ -137,7 +137,7 @@ export default {
                     this.albums = [];
                     this.total = 0;
                     this.loading = false;
-                    throw error;
+                    throw err;
                 });
         },
         toggle(row) {
