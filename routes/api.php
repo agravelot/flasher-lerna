@@ -19,7 +19,7 @@
  */
 
 //TODO Implement JWT auth
-Route::middleware('auth:api')->group(function () {
+Route::middleware(['auth:api', 'verified', 'admin'])->group(function () {
     Route::name('api.admin.')->group(function () { // Route Name Prefixe
         Route::prefix('admin')->group(function () { // Route Prefixe /admin/
             Route::namespace('Api\Admin')->group(function () {
