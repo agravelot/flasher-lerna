@@ -27,7 +27,7 @@ class AdminAlbumController extends Controller
      */
     public function index()
     {
-//        $this->authorize('index', Album::class);
+        $this->authorize('index', Album::class);
         return AlbumResource::collection(Album::with(['media', 'categories'])
             ->latest()
             ->paginate(10));
@@ -44,7 +44,7 @@ class AdminAlbumController extends Controller
      */
     public function store(AlbumRequest $request)
     {
-//        $this->authorize('create', Album::class);
+        $this->authorize('create', Album::class);
         $validated = $request->validated();
         /** @var Album $album */
         $album = Album::create($validated);
@@ -80,11 +80,11 @@ class AdminAlbumController extends Controller
      */
     public function show(string $slug)
     {
-//        $this->authorize('view', Album::class);
+        $this->authorize('view', Album::class);
         $album = Album::with(['cosplayers.media'])
             ->whereSlug($slug)
             ->firstOrFail();
-//        $this->authorize('view', $album);
+        $this->authorize('view', $album);
 
         return new AlbumResource($album);
     }
@@ -101,10 +101,10 @@ class AdminAlbumController extends Controller
      */
     public function update(AlbumRequest $request, string $slug)
     {
-//        $this->authorize('update', Album::class);
+        $this->authorize('update', Album::class);
         $album = Album::whereSlug($slug)
             ->firstOrFail();
-//        $this->authorize('update', $album);
+        $this->authorize('update', $album);
         $validated = $request->validated();
         $album->update($validated);
 
@@ -144,10 +144,10 @@ class AdminAlbumController extends Controller
      */
     public function destroy(string $slug)
     {
-//        $this->authorize('delete', Album::class);
+        $this->authorize('delete', Album::class);
         $album = Album::whereSlug($slug)
             ->firstOrFail();
-//        $this->authorize('delete', $album);
+        $this->authorize('delete', $album);
         $album->delete();
 
         return response()->json(null, 204);

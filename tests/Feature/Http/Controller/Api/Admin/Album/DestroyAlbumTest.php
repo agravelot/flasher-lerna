@@ -40,7 +40,6 @@ class DestroyAlbumTest extends TestCase
     public function test_user_can_not_destroy_a_album()
     {
         $this->actingAsUser();
-
         /* @var Album $album */
         $album = factory(Album::class)->create();
 

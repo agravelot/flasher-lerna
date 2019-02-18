@@ -29,16 +29,12 @@ class UpdateAlbumTest extends TestCase
         $response = $this->updateAlbum($album);
 
         $this->assertSame(1, Album::count());
-        $response->assertRedirect('/api/admin/albums');
-        $this->followRedirects($response)
-            ->assertSee('Album successfully updated');
+        $response->assertStatus(200);
     }
 
     public function updateAlbum(Album $album, array $optional = []): TestResponse
     {
-        session()->setPreviousUrl('/admin/albums/' . $album->slug . '/edit');
-
-        return $this->patch('/admin/albums/' . $album->slug, array_merge($album->toArray(), $optional));
+        return $this->patch('/api/admin/albums/' . $album->slug, array_merge($album->toArray(), $optional));
     }
 
     public function test_admin_can_update_an_album_with_a_picture()
@@ -50,10 +46,7 @@ class UpdateAlbumTest extends TestCase
         $response = $this->updateAlbum($album, ['pictures' => array_wrap($image)]);
 
         $this->assertSame(1, Album::count());
-        $response->assertRedirect('/api/admin/albums');
-        $this->followRedirects($response)
-            ->assertSee($album->title)
-            ->assertSee('Album successfully updated');
+        $response->assertStatus(200);
     }
 
     public function test_admin_can_update_an_album_with_a_multiple_pictures()
@@ -67,10 +60,7 @@ class UpdateAlbumTest extends TestCase
         $response = $this->updateAlbum($album, ['pictures' => array_wrap($images->toArray())]);
 
         $this->assertSame(1, Album::count());
-        $response->assertRedirect('/api/admin/albums');
-        $this->followRedirects($response)
-            ->assertSee($album->title)
-            ->assertSee('Album successfully updated');
+        $response->assertStatus(200);
     }
 
     public function test_admin_can_update_an_album_with_a_category_and_a_picture()
@@ -87,13 +77,10 @@ class UpdateAlbumTest extends TestCase
 
         $this->assertSame(1, Album::count());
         $this->assertNotNull(Album::first()->categories->first);
-        $response->assertRedirect('/api/admin/albums');
-        $this->followRedirects($response)
-            ->assertSee($album->title)
-            ->assertSee('Album successfully updated');
+        $response->assertStatus(200);
     }
 
-    public function test_admin_can_update_an_album_with_an_inexistant_category_and_a_picture()
+    public function test_admin_can_update_an_album_with_an_non_existent_category_and_a_picture()
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
@@ -105,12 +92,7 @@ class UpdateAlbumTest extends TestCase
         ]);
 
         $this->assertSame(1, Album::count());
-        $response->assertRedirect('/admin/albums/' . $album->slug . '/edit');
-        $this->followRedirects($response)
-            ->assertSee($album->title)
-            ->assertSee($album->description)
-            ->assertSee('The selected categories.0 is invalid.')
-            ->assertDontSee('Album successfully updated');
+        $response->assertStatus(422);
     }
 
     public function test_admin_can_update_an_album_with_a_cosplayer_and_a_picture()
@@ -127,13 +109,10 @@ class UpdateAlbumTest extends TestCase
 
         $this->assertSame(1, Album::count());
         $this->assertNotNull(Album::first()->categories->first);
-        $response->assertRedirect('/api/admin/albums');
-        $this->followRedirects($response)
-            ->assertSee($album->title)
-            ->assertSee('Album successfully updated');
+        $response->assertStatus(200);
     }
 
-    public function test_admin_can_update_an_album_with_an_inexistant_cosplayer_and_a_picture()
+    public function test_admin_can_update_an_album_with_an_non_existent_cosplayer_and_a_picture()
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
@@ -145,12 +124,7 @@ class UpdateAlbumTest extends TestCase
         ]);
 
         $this->assertSame(1, Album::count());
-        $response->assertRedirect('/admin/albums/' . $album->slug . '/edit');
-        $this->followRedirects($response)
-            ->assertSee($album->title)
-            ->assertSee($album->description)
-            ->assertSee('The selected cosplayers.0 is invalid.')
-            ->assertDontSee('Album successfully updated');
+        $response->assertStatus(200);
     }
 
     public function test_admin_can_not_update_an_album_with_a_video()
@@ -162,9 +136,7 @@ class UpdateAlbumTest extends TestCase
         $response = $this->updateAlbum($album, ['pictures' => array_wrap($image)]);
 
         $this->assertSame(1, Album::count());
-        $response->assertRedirect('/admin/albums/' . $album->slug . '/edit');
-        $this->followRedirects($response)
-            ->assertSee('The pictures.0 must be an image.');
+        $response->assertStatus(422);
     }
 
     public function test_admin_can_update_an_album_with_published_now()
@@ -176,10 +148,7 @@ class UpdateAlbumTest extends TestCase
         $response = $this->updateAlbum($album, ['pictures' => array_wrap($image)]);
 
         $this->assertSame(1, Album::count());
-        $response->assertRedirect('/api/admin/albums');
-        $this->followRedirects($response)
-            ->assertSee($album->title)
-            ->assertSee('Album successfully updated');
+        $response->assertStatus(200);
     }
 
     public function test_user_cannot_update_an_album()
