@@ -91,10 +91,11 @@ RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
 CMD php artisan config:clear \
 # Update database
         && php artisan db:wait-connection \
+        && php artisan cache:clear-wait-connection \
         && php artisan migrate --force \
+        && php artisan passport:keys
 # Optimizing for production
 # https://laravel.com/docs/5.7/deployment#optimization
-        && php artisan cache:clear-wait-connection \
         && php artisan view:clear \
         && php artisan optimize \
         && php artisan route:cache \
