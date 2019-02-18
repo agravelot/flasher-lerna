@@ -1,87 +1,95 @@
 <template>
-  <div>
-    <section>
-      <button
-        class="button field is-danger"
-        @click="confirmDeleteSelectedAlbums"
-        :disabled="!checkedRows.length"
-      >
-        <b-icon pack="fas" icon="trash-alt"></b-icon>
-        <span>Delete checked</span>
-      </button>
+    <div>
+        <section>
+            <button
+                class="button field is-danger"
+                @click="confirmDeleteSelectedAlbums"
+                :disabled="!checkedRows.length"
+            >
+                <b-icon pack="fas" icon="trash-alt"></b-icon>
+                <span>Delete checked</span>
+            </button>
 
-      <b-table
-        :data="albums"
-        :loading="loading"
-        striped
-        hoverable
-        mobile-cards
-        paginated
-        backend-pagination
-        :total="total"
-        per-page="10"
-        @page-change="onPageChange"
-        backend-sorting
-        :default-sort-direction="defaultSortOrder"
-        :default-sort="[sortField, sortOrder]"
-        @sort="onSort"
-        :opened-detailed="defaultOpenedDetails"
-        detailed
-        detail-key="id"
-        :show-detail-icon="showDetailIcon"
-        icon-pack="fas"
-        checkable
-        :checked-rows.sync="checkedRows"
-      >
-        <template slot-scope="album">
-          <b-table-column
-            field="id"
-            label="ID"
-            width="40"
-            numeric
-            sortable
-            centered
-          >{{ album.row.id }}</b-table-column>
+            <b-table
+                :data="albums"
+                :loading="loading"
+                striped
+                hoverable
+                mobile-cards
+                paginated
+                backend-pagination
+                :total="total"
+                :per-page="perPage"
+                @page-change="onPageChange"
+                backend-sorting
+                :default-sort-direction="defaultSortOrder"
+                :default-sort="[sortField, sortOrder]"
+                @sort="onSort"
+                :opened-detailed="defaultOpenedDetails"
+                detailed
+                detail-key="id"
+                :show-detail-icon="showDetailIcon"
+                icon-pack="fas"
+                checkable
+                :checked-rows.sync="checkedRows"
+            >
+                <template slot-scope="album">
+                    <b-table-column field="id" label="ID" width="40" numeric sortable
+                        >{{ album.row.id }}
+                    </b-table-column>
 
-          <b-table-column field="title" label="Title" sortable>
-            <template v-if="showDetailIcon">{{ album.row.title }}</template>
-            <template v-else>
-              <a @click="toggle(album.row)">{{ album.row.title }}</a>
-            </template>
-          </b-table-column>
+                    <b-table-column field="title" label="Title" sortable>
+                        <template v-if="showDetailIcon">{{ album.row.title }}</template>
+                        <template v-else>
+                            <a @click="toggle(album.row)">{{ album.row.title }}</a>
+                        </template>
+                    </b-table-column>
 
-          <b-table-column field="date" label="Published at" sortable centered>
-            <span class="tag is-success">{{ new Date(album.row.published_at).toLocaleDateString() }}</span>
-          </b-table-column>
-        </template>
+                    <b-table-column field="date" label="Published at" sortable centered>
+                        <span class="tag is-success">{{
+                            new Date(album.row.published_at).toLocaleDateString()
+                        }}</span>
+                    </b-table-column>
+                </template>
 
-        <template slot="detail" slot-scope="album">
-          <article class="media">
-            <figure class="media-left">
-              <p class="image is-64x64">
-                <img src="https://via.placeholder.com/128">
-              </p>
-            </figure>
-            <div class="media-content">
-              <div class="content">
-                <p>
-                  <strong>{{ album.row.title }}</strong>
-                  <small>{{ album.row.published_at }}</small>
-                  <br>
-                  {{ album.row.body | truncate(80)}}
-                </p>
-              </div>
-            </div>
-          </article>
-        </template>
+                <template slot="detail" slot-scope="album">
+                    <article class="media">
+                        <figure class="media-left">
+                            <p class="image is-64x64">
+                                <img src="https://via.placeholder.com/128" />
+                            </p>
+                        </figure>
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <strong>{{ album.row.title }}</strong>
+                                    <small>{{ album.row.published_at }}</small>
+                                    <br />
+                                    {{ album.row.body | truncate(80) }}
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+                </template>
 
-        <template slot="bottom-left">
-          <b>Total checked</b>
-          : {{ checkedRows.length }}
-        </template>
-      </b-table>
-    </section>
-  </div>
+                <template slot="empty">
+                    <section class="section">
+                        <div class="content has-text-grey has-text-centered">
+                            <p>
+                                <b-icon pack="fas" icon="sad-tear" size="is-large"> </b-icon>
+                            </p>
+                            <p>Nothing here.</p>
+                        </div>
+                    </section>
+                </template>
+
+                <template slot="bottom-left">
+                    <b>Total checked</b>
+                    : {{ checkedRows.length }}
+                </template>
+            </b-table>
+        </section>
+    </div>
 </template>
 
 <script>
@@ -94,16 +102,16 @@ export default {
     data() {
         return {
             albums: [],
+            defaultOpenedDetails: [],
+            checkedRows: [],
             total: 0,
+            page: 1,
+            perPage: 10,
             loading: false,
+            showDetailIcon: true,
             sortField: 'title',
             sortOrder: 'desc',
             defaultSortOrder: 'desc',
-            page: 1,
-            perPage: 10,
-            showDetailIcon: true,
-            defaultOpenedDetails: [],
-            checkedRows: [],
         };
     },
     created() {
@@ -125,10 +133,12 @@ export default {
             this.loading = true;
             const params = [`page=${this.page}`].join('&');
 
-            axios.get(`/api/admin/albums?${params}`)
+            axios
+                .get(`/api/admin/albums?${params}`)
                 .then(res => res.data)
                 .then(res => {
-                    this.total = res.meta.total;
+                    console.log(res);
+                    this.perPage = res.meta.per_page;
                     this.total = res.meta.total;
                     this.albums = res.data;
                     this.loading = false;
@@ -176,7 +186,8 @@ export default {
          * Delete album from slug
          */
         deleteAlbum(album) {
-            axios.delete(`/api/admin/albums/${album.slug}`)
+            axios
+                .delete(`/api/admin/albums/${album.slug}`)
                 .then(res => {
                     this.fetchAlbums();
                 })
