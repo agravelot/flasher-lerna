@@ -30,7 +30,7 @@ Route::namespace('Front')->group(function () {
 });
 
 //BACK
-Route::group(['middleware' => ['web', 'auth', 'verified', 'admin']], function () {
+Route::middleware(['web', 'auth', 'verified', 'admin'])->group(function () {
     Route::namespace('Admin')->group(function () {
         Route::name('admin.')->group(function () { // Route Name Prefixe
             Route::prefix('admin')->group(function () { // Route Prefixe /admin/
