@@ -168,37 +168,36 @@
 </form>
 
 @if (isset($album))
-    <form method="post" action="{{ route('admin.album-pictures.store') }}" enctype="multipart/form-data"
+    <form method="post" action="{{ route('api.admin.album-pictures.store') }}" enctype="multipart/form-data"
           class="dropzone has-margin-bottom-md">
         @csrf
         <input type="hidden" name="album_slug" value="{{ $album->slug }}">
         <input type="file" name="file" style="display: none;">
     </form>
-@endif
 
+    <div class="card">
+        <div class="card-content">
+            <div class="field">
+                <label class="label">{{ __('Pictures') }}</label>
 
-<div class="card">
-    <div class="card-content">
-        <div class="field">
-            <label class="label">{{ __('Pictures') }}</label>
-
-            @if (isset($album) && $album->getMedia('thumb'))
-                @foreach($album->getMedia('pictures') as $key => $picture)
-                    {{ $picture('thumb') }}
-                    <a class="button has-text-danger"
-                       onclick="event.preventDefault();document.getElementById('delete-picture-{{ $key }}').submit();">
-                        {{ __('Delete') }}
-                    </a>
-                    <form id="delete-picture-{{ $key }}" method="POST" style="display: none;"
-                          action="{{ route('admin.album-pictures.destroy', compact('album')) }}">
-                        @csrf
-                        @method('DELETE')
-                        <input type="hidden" name="album_slug" value="{{ $album->slug }}">
-                        <input type="hidden" name="media_id" value="{{ $key }}">
-                        <input type="submit" value="" style="display: none;">
-                    </form>
-                @endforeach
-            @endif
+                @if ($album->getMedia('thumb'))
+                    @foreach($album->getMedia('pictures') as $key => $picture)
+                        {{ $picture('thumb') }}
+                        <a class="button has-text-danger"
+                           onclick="event.preventDefault();document.getElementById('delete-picture-{{ $key }}').submit();">
+                            {{ __('Delete') }}
+                        </a>
+                        <form id="delete-picture-{{ $key }}" method="POST" style="display: none;"
+                              action="{{ route('api.admin.album-pictures.destroy', compact('album')) }}">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" name="album_slug" value="{{ $album->slug }}">
+                            <input type="hidden" name="media_id" value="{{ $key }}">
+                            <input type="submit" value="" style="display: none;">
+                        </form>
+                    @endforeach
+                @endif
+            </div>
         </div>
     </div>
-</div>
+@endif
