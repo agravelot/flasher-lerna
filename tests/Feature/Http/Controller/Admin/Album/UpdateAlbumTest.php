@@ -93,7 +93,7 @@ class UpdateAlbumTest extends TestCase
             ->assertSee('Album successfully updated');
     }
 
-    public function test_admin_can_update_an_album_with_an_inexistant_category_and_a_picture()
+    public function test_admin_can_update_an_album_with_an_non_existant_category_and_a_picture()
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
@@ -133,7 +133,7 @@ class UpdateAlbumTest extends TestCase
             ->assertSee('Album successfully updated');
     }
 
-    public function test_admin_can_update_an_album_with_an_inexistant_cosplayer_and_a_picture()
+    public function test_admin_can_update_an_album_with_an_non_existant_cosplayer_and_a_picture()
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();

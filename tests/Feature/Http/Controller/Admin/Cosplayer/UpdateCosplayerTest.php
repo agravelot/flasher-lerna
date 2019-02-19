@@ -70,7 +70,7 @@ class UpdateCosplayerTest extends TestCase
             ->assertDontSee(self::COSPLAYER_DATA['description']);
     }
 
-    public function test_admin_can_not_update_a_cosplayer_related_to_an_inexistant_user()
+    public function test_admin_can_not_update_a_cosplayer_related_to_an_non_existant_user()
     {
         $this->actingAsAdmin();
         $cosplayer = factory(Cosplayer::class)->create();

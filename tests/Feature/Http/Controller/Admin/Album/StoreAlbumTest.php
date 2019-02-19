@@ -79,7 +79,7 @@ class StoreAlbumTest extends TestCase
             ->assertSee('Album successfully created');
     }
 
-    public function test_admin_can_store_an_album_with_an_inexistant_category_and_a_picture()
+    public function test_admin_can_store_an_album_with_an_non_existant_category_and_a_picture()
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->make();
@@ -119,7 +119,7 @@ class StoreAlbumTest extends TestCase
             ->assertSee('Album successfully created');
     }
 
-    public function test_admin_can_store_an_album_with_an_inexistant_cosplayer_and_a_picture()
+    public function test_admin_can_store_an_album_with_an_non_existant_cosplayer_and_a_picture()
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->make();
