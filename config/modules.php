@@ -1,7 +1,13 @@
 <?php
 
-return [
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
 
+return [
     /*
     |--------------------------------------------------------------------------
     | Module Namespace
@@ -176,7 +182,7 @@ return [
     */
     'register' => [
         'translations' => true,
-        /**
+        /*
          * load files on boot or register method
          *
          * Note: boot not compatible with asgardcms

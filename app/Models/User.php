@@ -50,6 +50,9 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRole($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
  * @mixin \Eloquent
+ *
+ * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
+ * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[]  $tokens
  */
 class User extends Authenticatable implements MustVerifyEmailInterface
 {
