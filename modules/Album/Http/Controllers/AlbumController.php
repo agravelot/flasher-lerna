@@ -1,12 +1,19 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 namespace Modules\Album\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AlbumRequest;
-use App\Http\Resources\AlbumResource;
-use App\Models\Album;
 use Illuminate\Support\Arr;
+use Modules\Album\Entities\Album;
+use Modules\Album\Http\Requests\AlbumRequest;
+use Modules\Album\Transformers\AlbumResource;
 use Spatie\MediaLibrary\FileAdder\FileAdder;
 
 class AlbumController extends Controller

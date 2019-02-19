@@ -7,16 +7,16 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace App\Http\Resources;
+namespace Modules\Album\Transformers;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\Resource;
 
-class AlbumResource extends JsonResource
+class AlbumResource extends Resource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request
      *
      * @return array
      */
