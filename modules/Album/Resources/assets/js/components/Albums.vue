@@ -140,14 +140,15 @@ export default {
     methods: {
         fetchAlbums() {
             this.loading = true;
-            const sortOrder = ((this.sortOrder === 'asc') ? '+' : '-');
-            const params = [
-                `page=${this.page}`,
-                `sort=${sortOrder}${this.sortField}`,
-            ].join('&');
-
+            const sortOrder = ((this.sortOrder === 'asc') ? '' : '-');
+            
             axios
-                .get(`/api/admin/albums?${params}`)
+                .get('/api/admin/albums', {
+                    params: {
+                        page: this.page,
+                        sort: sortOrder + this.sortField
+                    }
+                })
                 .then(res => res.data)
                 .then(res => {
                     console.log(res);
