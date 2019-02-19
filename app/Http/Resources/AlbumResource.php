@@ -26,8 +26,9 @@ class AlbumResource extends JsonResource
             'id' => $this->id,
             'slug' => $this->slug,
             'title' => $this->title,
-            'body' => $this->body,
             'published_at' => $this->published_at,
+            'body' => $this->body,
+            'private' => $this->private,
         ];
     }
 }

@@ -45,10 +45,21 @@
                         </template>
                     </b-table-column>
 
-                    <b-table-column field="date" label="Published at" sortable centered>
-                        <span class="tag is-success">{{
-                            new Date(album.row.published_at).toLocaleDateString()
-                        }}</span>
+                    <b-table-column field="status" label="Status" sortable centered>
+                         <span v-if="album.row.private === 1" class="tag is-danger"
+                               v-bind:title="'This album is private' | trans">
+                            {{ 'Private' | trans }}
+                        </span>
+                        <span v-else-if="typeof album.row.published_at === 'string'" class="tag is-success"
+                              v-bind:title="new Date(album.row.published_at).toLocaleDateString()">
+                            {{ 'Published' | trans }}
+                        </span>
+                        <span v-else class="tag is-dark"
+                              v-bind:title="'This album is a draft'">
+                            {{ 'Draft' | trans }}
+                        </span>
+
+
                     </b-table-column>
                 </template>
 
