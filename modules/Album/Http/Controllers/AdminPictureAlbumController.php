@@ -7,13 +7,12 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace App\Http\Controllers\Admin;
+namespace Modules\Album\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\DeletePictureAlbumRequest;
-use App\Http\Requests\StorePictureAlbumRequest;
-use App\Models\Album;
-use Illuminate\Http\Request;
+use Modules\Album\Entities\Album;
+use Modules\Album\Http\Requests\DeletePictureAlbumRequest;
+use Modules\Album\Http\Requests\StorePictureAlbumRequest;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Spatie\MediaLibrary\Models\Media;
@@ -67,12 +66,11 @@ class AdminPictureAlbumController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param string  $albumSlug
-     * @param Request $request
-     *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @param string                    $albumSlug
+     * @param DeletePictureAlbumRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(string $albumSlug, DeletePictureAlbumRequest $request)
     {
