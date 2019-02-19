@@ -60,7 +60,7 @@ Vue.component(
     require('../components/passport/PersonalAccessTokens.vue').default
 );
 
-Vue.component('albums', require('../components/Albums.vue').default);
+Vue.component('albums', require('../../../modules/Album/Resources/assets/js/components/Albums.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
