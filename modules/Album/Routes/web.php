@@ -7,6 +7,6 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-Route::prefix('album')->group(function () {
-    Route::get('/', 'AlbumController@index');
-});
+//Route::prefix('albums')->group(function () {
+//    Route::get('/', 'AlbumController@index');
+//});
