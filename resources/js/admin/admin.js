@@ -52,12 +52,12 @@ Vue.component('passport-clients', require('../components/passport/Clients.vue').
 
 Vue.component(
     'passport-authorized-clients',
-    require('../components/passport/AuthorizedClients.vue').default,
+    require('../components/passport/AuthorizedClients.vue').default
 );
 
 Vue.component(
     'passport-personal-access-tokens',
-    require('../components/passport/PersonalAccessTokens.vue').default,
+    require('../components/passport/PersonalAccessTokens.vue').default
 );
 
 Vue.component('albums', require('../components/Albums.vue').default);

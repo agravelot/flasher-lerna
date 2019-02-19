@@ -21,7 +21,7 @@ import {
     faSignInAlt,
     faAngleRight,
     faAngleLeft,
-    faArrowUp
+    faArrowUp,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
