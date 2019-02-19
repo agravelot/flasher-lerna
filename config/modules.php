@@ -67,7 +67,7 @@ return [
         |
         */
 
-        'modules' => base_path('Modules'),
+        'modules' => base_path('modules'),
         /*
         |--------------------------------------------------------------------------
         | Modules assets path
@@ -148,10 +148,10 @@ return [
     */
 
     'composer' => [
-        'vendor' => 'nwidart',
+        'vendor' => 'nevax',
         'author' => [
-            'name' => 'Nicolas Widart',
-            'email' => 'n.widart@gmail.com',
+            'name' => 'Antoine GRAVELOT',
+            'email' => 'antoine.gravelot@hotmail.fr',
         ],
     ],
     /*
