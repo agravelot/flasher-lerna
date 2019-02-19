@@ -1,9 +1,9 @@
 import 'dropzone/dist/dropzone.css';
+let Dropzone = require('dropzone/dist/dropzone');
 // require('dropzone/dist/dropzone-amd-module');
-import Dropzone, { autoDiscover } from 'dropzone/dist/dropzone';
 
 if (document.getElementsByClassName('dropzone').length > 0) {
-    autoDiscover = false;
+    Dropzone.autoDiscover = false;
 
     // var token = $('input[name=_token]').val();
 
@@ -18,5 +18,8 @@ if (document.getElementsByClassName('dropzone').length > 0) {
         acceptedFiles: 'image/*',
         retryChunks: true,
         // paramName: 'picture'
+        headers: {
+            'X-CSRF-Token': document.head.querySelector('meta[name="csrf-token"]').content,
+        }
     });
 }
