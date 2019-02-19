@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Tests\Feature\Http\Controller\Api\Admin\Album;
+namespace Modules\Album\Tests\Feature\Http\Controller\Api\Admin\Album;
 
 use App\Models\Album;
 use Illuminate\Foundation\Testing\RefreshDatabase;
