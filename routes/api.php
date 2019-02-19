@@ -23,7 +23,7 @@
 Route::namespace('Admin')->group(function () {
     Route::name('admin.')->group(function () { // Route Name Prefixe
         Route::prefix('admin')->group(function () { // Route Prefixe /admin/
-            Route::apiResource('album-pictures', 'AdminPictureAlbumController')->only('store');
+            Route::apiResource('album-pictures', 'AdminPictureAlbumController')->only('store', 'destroy');
         });
     });
 });

@@ -10,10 +10,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PictureAlbumRequest;
+use App\Http\Requests\DeletePictureAlbumRequest;
+use App\Http\Requests\StorePictureAlbumRequest;
 use App\Models\Album;
+use Illuminate\Http\Request;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
-use Pion\Laravel\ChunkUpload\Handler\AbstractHandler;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Spatie\MediaLibrary\Models\Media;
 
@@ -22,16 +23,15 @@ class AdminPictureAlbumController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     *
-     * @param PictureAlbumRequest $request
-     * @param FileReceiver        $receiver
+     * @param StorePictureAlbumRequest $request
+     * @param FileReceiver             $receiver
      *
      * @throws UploadMissingFileException
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return string
      */
-    public function store(PictureAlbumRequest $request, FileReceiver $receiver)
+    public function store(StorePictureAlbumRequest $request, FileReceiver $receiver)
     {
         $this->authorize('create', Album::class);
         /** @var Album $album */
@@ -45,11 +45,8 @@ class AdminPictureAlbumController extends Controller
         // check if the upload has not finished (in chunk mode it will send smaller files)
         if (! $save->isFinished()) {
             // we are in chunk mode, lets send the current progress
-            /** @var AbstractHandler $handler */
-            $handler = $save->handler();
-
             return response()->json([
-                'done' => $handler->getPercentageDone(),
+                'done' => $save->handler()->getPercentageDone(),
                 'status' => true,
             ]);
         }
@@ -70,22 +67,24 @@ class AdminPictureAlbumController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param string $slug
+     * @param string  $albumSlug
+     * @param Request $request
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Exception
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(string $slug)
+    public function destroy(string $albumSlug, DeletePictureAlbumRequest $request)
     {
         $this->authorize('delete', Album::class);
-        $album = Album::whereSlug($slug)
-            ->firstOrFail();
+        $album = Album::whereSlug($albumSlug)->firstOrFail();
         $this->authorize('delete', $album);
-        $album->delete();
+        $deleted = optional($album->getMedia('pictures')->get($request->get('media_id')))->delete();
 
-        return redirect(route('admin.albums.index'))
-            ->withSuccess('Album successfully deleted');
+        if ($deleted === null || !$deleted){
+            return response()->json(['error' => 'media not found'], 400);
+        }
+
+        return response()->json(null, 204);
     }
 }
