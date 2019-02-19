@@ -1,13 +1,6 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
-namespace App\Http\Controllers\Api\Admin;
+namespace Modules\Album\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AlbumRequest;
@@ -16,7 +9,7 @@ use App\Models\Album;
 use Illuminate\Support\Arr;
 use Spatie\MediaLibrary\FileAdder\FileAdder;
 
-class AdminAlbumController extends Controller
+class AlbumController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,6 +21,7 @@ class AdminAlbumController extends Controller
     public function index()
     {
         $this->authorize('index', Album::class);
+
         return AlbumResource::collection(Album::with(['media', 'categories'])
             ->latest()
             ->paginate(10));
