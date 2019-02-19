@@ -183,18 +183,10 @@
                 @if ($album->getMedia('thumb'))
                     @foreach($album->getMedia('pictures') as $key => $picture)
                         {{ $picture('thumb') }}
-                        <a class="button has-text-danger"
-                           onclick="event.preventDefault();document.getElementById('delete-picture-{{ $key }}').submit();">
+                        <a class="button has-text-danger delete-album-picture" data-album-slug="{{ $album->slug }}" data-picture-key="{{ $key }}"
+                           onclick="event.preventDefault();">
                             {{ __('Delete') }}
                         </a>
-                        <form id="delete-picture-{{ $key }}" method="POST" style="display: none;"
-                              action="{{ route('api.admin.album-pictures.destroy', compact('album')) }}">
-                            @csrf
-                            @method('DELETE')
-                            <input type="hidden" name="album_slug" value="{{ $album->slug }}">
-                            <input type="hidden" name="media_id" value="{{ $key }}">
-                            <input type="submit" value="" style="display: none;">
-                        </form>
                     @endforeach
                 @endif
             </div>

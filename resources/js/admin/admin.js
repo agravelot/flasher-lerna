@@ -88,3 +88,27 @@ const app = new Vue({
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+let deleteAlbumPictureBtn = document.getElementsByClassName('delete-album-picture');
+console.log(deleteAlbumPictureBtn);
+Array.from(deleteAlbumPictureBtn).forEach(function (el) {
+   el.addEventListener('click', event => {
+       deleteAlbumPicture(el.dataset.albumSlug, el.dataset.pictureKey);
+   })
+});
+
+function deleteAlbumPicture(slug, $key) {
+    axios.delete(`/api/admin/album-pictures/${slug}`, {
+        data: {
+            media_id: $key
+        }
+    })
+        .then(res => res.data)
+        .then(res => {
+            alert('Picture deleted!')
+        })
+        .catch(err => {
+            alert('something want wrong.');
+            throw err;
+        });
+}

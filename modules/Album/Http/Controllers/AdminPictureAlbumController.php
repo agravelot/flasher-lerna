@@ -16,6 +16,7 @@ use Modules\Album\Http\Requests\StorePictureAlbumRequest;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Spatie\MediaLibrary\Models\Media;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class AdminPictureAlbumController extends Controller
 {
@@ -69,19 +70,22 @@ class AdminPictureAlbumController extends Controller
      * @param string                    $albumSlug
      * @param DeletePictureAlbumRequest $request
      *
-     * @return \Illuminate\Http\RedirectResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(string $albumSlug, DeletePictureAlbumRequest $request)
     {
         $this->authorize('delete', Album::class);
         $album = Album::whereSlug($albumSlug)->firstOrFail();
         $this->authorize('delete', $album);
-        $deleted = optional($album->getMedia('pictures')->get($request->get('media_id')))->delete();
+        $picture = $album->getMedia('pictures')->get($request->get('media_id'));
 
-        if ($deleted === null || ! $deleted) {
-            return response()->json(['error' => 'media not found'], 400);
+        if (! $picture) {
+            throw new UnprocessableEntityHttpException('media not found');
         }
+
+        $picture->delete();
 
         return response()->json(null, 204);
     }
