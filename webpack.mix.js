@@ -1,5 +1,9 @@
 let mix = require('laravel-mix');
 require('laravel-mix-purgecss');
+require('laravel-mix-merge-manifest');
+
+/* Allow multiple Laravel Mix applications*/
+mix.mergeManifest();
 
 /*
  |--------------------------------------------------------------------------
