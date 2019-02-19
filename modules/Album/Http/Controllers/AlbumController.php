@@ -15,6 +15,7 @@ use Modules\Album\Entities\Album;
 use Modules\Album\Http\Requests\AlbumRequest;
 use Modules\Album\Transformers\AlbumResource;
 use Spatie\MediaLibrary\FileAdder\FileAdder;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class AlbumController extends Controller
 {
@@ -29,9 +30,9 @@ class AlbumController extends Controller
     {
         $this->authorize('index', Album::class);
 
-        return AlbumResource::collection(Album::with(['media', 'categories'])
-            ->latest()
-            ->paginate(10));
+        return AlbumResource::collection(
+            QueryBuilder::for(Album::class)->paginate(10)
+        );
     }
 
     /**

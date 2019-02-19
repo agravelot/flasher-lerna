@@ -58,8 +58,6 @@
                               v-bind:title="'This album is a draft'">
                             {{ 'Draft' | trans }}
                         </span>
-
-
                     </b-table-column>
                 </template>
 
@@ -120,7 +118,7 @@ export default {
             perPage: 10,
             loading: false,
             showDetailIcon: true,
-            sortField: 'title',
+            sortField: 'id',
             sortOrder: 'desc',
             defaultSortOrder: 'desc',
         };
@@ -142,7 +140,11 @@ export default {
     methods: {
         fetchAlbums() {
             this.loading = true;
-            const params = [`page=${this.page}`].join('&');
+            const sortOrder = ((this.sortOrder === 'asc') ? '+' : '-');
+            const params = [
+                `page=${this.page}`,
+                `sort=${sortOrder}${this.sortField}`,
+            ].join('&');
 
             axios
                 .get(`/api/admin/albums?${params}`)
