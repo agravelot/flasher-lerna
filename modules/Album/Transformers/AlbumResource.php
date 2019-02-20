@@ -29,6 +29,7 @@ class AlbumResource extends Resource
             'published_at' => $this->published_at,
             'body' => $this->body,
             'private' => $this->private,
+            'media' => $this->media,
         ];
     }
 }
