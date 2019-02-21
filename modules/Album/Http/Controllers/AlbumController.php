@@ -10,8 +10,8 @@
 namespace Modules\Album\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Album;
 use Illuminate\Support\Arr;
-use Modules\Album\Entities\Album;
 use Modules\Album\Http\Requests\AlbumRequest;
 use Modules\Album\Transformers\AlbumIndexResource;
 use Modules\Album\Transformers\AlbumShowResource;
