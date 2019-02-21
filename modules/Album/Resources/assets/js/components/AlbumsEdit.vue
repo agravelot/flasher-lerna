@@ -18,7 +18,6 @@
                     </div>
                 </div>
             </div>
-            <!--<input type="checkbox" v-model="album.private">-->
             <p>
                 Private
                 <label>
@@ -77,11 +76,21 @@
                 <button class="btn btn-primary">Create</button>
             </div>
         </form>
+
+        <vue-dropzone ref="myVueDropzone" v-on:vdropzone-sending="sendingEvent" v-on:vdropzone-complete="refreshMedias"
+                      :options="dropzoneOptions"></vue-dropzone>
     </div>
 </template>
 
 <script>
+    import vue2Dropzone from 'vue2-dropzone';
+    import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+
+
     export default {
+        components: {
+            vueDropzone: vue2Dropzone
+        },
         data() {
             return {
                 album: {},
@@ -89,7 +98,24 @@
                 filteredCosplayers: [],
                 tags: [],
                 isSelectOnly: false,
-                allowNew: true
+                allowNew: true,
+                dropzoneOptions: {
+                    url: '/api/admin/album-pictures',
+                    thumbnailWidth: 200,
+                    addRemoveLinks: true,
+                    // Setup chunking
+                    chunking: true,
+                    method: 'POST',
+                    maxFilesize: 400000000,
+                    chunkSize: 1000000,
+                    // If true, the individual chunks of a file are being uploaded simultaneously.
+                    // parallelChunkUploads: true,
+                    acceptedFiles: 'image/*',
+                    retryChunks: true,
+                    headers: {
+                        'X-CSRF-Token': document.head.querySelector('meta[name="csrf-token"]').content,
+                    },
+                }
             }
         },
         created() {
@@ -103,6 +129,9 @@
                 })
         },
         methods: {
+            sendingEvent(file, xhr, formData) {
+                formData.append('album_slug', this.album.slug);
+            },
             addAlbum() {
                 console.log(this.album);
                 let uri = '/api/admin/albums';
@@ -131,6 +160,16 @@
                         .toLowerCase()
                         .indexOf(text.toLowerCase()) >= 0
                 })
+            },
+            refreshMedias() {
+                this.axios.get(`/api/admin/albums/${this.$route.params.slug}`)
+                    .then(res => res.data)
+                    .then(res => {
+                        this.album.medias = res.data.medias;
+                    })
+                    .catch(err => {
+                        throw err;
+                    })
             }
         }
     }
