@@ -5,27 +5,26 @@
  */
 
 import './menu';
-import './dropzone';
+// import './dropzone';
 import './fontawsome';
 import VueRouter from 'vue-router';
 import App from './views/App';
 import Home from './views/Home';
-import UsersIndex from "./views/UsersIndex";
+import UsersIndex from './views/UsersIndex';
 import Buefy from 'buefy';
 import 'buefy/dist/buefy.css';
-import AlbumsIndex from "../../../modules/Album/Resources/assets/js/components/AlbumsIndex";
+import AlbumsIndex from '../../../modules/Album/Resources/assets/js/components/AlbumsIndex';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
-import AlbumsShow from "../../../modules/Album/Resources/assets/js/components/AlbumsShow";
-import AlbumsCreate from "../../../modules/Album/Resources/assets/js/components/AlbumsCreate";
-import AlbumsEdit from "../../../modules/Album/Resources/assets/js/components/AlbumsEdit";
+import AlbumsShow from '../../../modules/Album/Resources/assets/js/components/AlbumsShow';
+import AlbumsCreate from '../../../modules/Album/Resources/assets/js/components/AlbumsCreate';
+import AlbumsEdit from '../../../modules/Album/Resources/assets/js/components/AlbumsEdit';
 
 window.Vue = require('vue');
 
 // window._ = require('lodash');
 
 Vue.use(Buefy);
-
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -60,7 +59,7 @@ const router = new VueRouter({
         {
             path: '/admin-spa/',
             name: 'home',
-            component: Home
+            component: Home,
         },
         {
             path: '/admin-spa/albums',
@@ -126,7 +125,7 @@ const router = new VueRouter({
 
 const app = new Vue({
     el: '#app',
-    components: {App},
+    components: { App },
     router,
 });
 
@@ -148,7 +147,7 @@ const app = new Vue({
 // });
 
 let deleteAlbumPictureBtn = document.getElementsByClassName('delete-album-picture');
-Array.from(deleteAlbumPictureBtn).forEach(function (el) {
+Array.from(deleteAlbumPictureBtn).forEach(function(el) {
     el.addEventListener('click', event => {
         deleteAlbumPicture(el.parentNode);
     });

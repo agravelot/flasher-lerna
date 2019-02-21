@@ -67,7 +67,7 @@
             </b-field>
             <div v-for="media in album.medias">
                 <img v-bind:src="media.thumb" v-bind:alt="media.name">
-                <a class="button has-text-danger">
+                <a class="button has-text-danger" v-on:click="deleteAlbumPicture(album.slug, media.id)">
                     Delete
                 </a>
             </div>
@@ -170,6 +170,24 @@
                     .catch(err => {
                         throw err;
                     })
+            },
+            deleteAlbumPicture(albumSlug, mediaId) {
+                return this.axios.delete(`/api/admin/album-pictures/${albumSlug}`, {
+                    data: {
+                        media_id: mediaId,
+                    },
+                })
+                    .then(res => {
+                        this.refreshMedias();
+                        this.$toast.open({
+                            message: 'Picture successfully deleted!',
+                            type: 'is-success'
+                        });
+                    })
+                    .catch(err => {
+                        alert('Something went wrong.');
+                        throw err;
+                    });
             }
         }
     }
