@@ -39,7 +39,7 @@
                     </b-table-column>
 
                     <b-table-column field="title" label="Title" sortable>
-                        <template v-if="showDetailIcon">{{ album.row.title }}</template>
+                        <template v-if="showDetailIcon"><a v-bind:href="`/admin/albums/${album.row.slug}/edit`">{{ album.row.title }}</a></template>
                         <template v-else>
                             <a @click="toggle(album.row)">{{ album.row.title }}</a>
                         </template>
