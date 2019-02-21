@@ -138,7 +138,7 @@ export default {
         fetchAlbums() {
             this.loading = true;
             const sortOrder = ((this.sortOrder === 'asc') ? '' : '-');
-            
+
             Vue.axios.get('/api/admin/albums', {
                     params: {
                         page: this.page,
@@ -156,8 +156,31 @@ export default {
                     this.albums = [];
                     this.total = 0;
                     this.loading = false;
+                    this.$snackbar.open({
+                        message: 'Unable to load albums, maybe you are offline?',
+                        type: 'is-danger',
+                        position: 'is-top',
+                        actionText: 'Retry',
+                        indefinite: true,
+                        onAction: () => {
+                            this.fetchAlbums();
+                        }
+                    });
                     throw err;
                 });
+        },
+        showSuccess(message) {
+            this.$toast.open({
+                message: message,
+                type: 'is-success',
+            });
+        },
+        showError(message) {
+            this.$toast.open({
+                message: message,
+                type: 'is-danger',
+                duration: 5000,
+            });
         },
         toggle(row) {
             this.$refs.table.toggleDetails(row);
@@ -186,23 +209,26 @@ export default {
                 type: 'is-danger',
                 hasIcon: true,
                 onConfirm: () => {
-                    this.checkedRows.forEach(el => this.deleteAlbum(el));
-                    this.$toast.open('Albums deleted!');
+                    this.deleteSelectedAlbums();
                 },
             });
         },
         /**
          * Delete album from slug
          */
-        deleteAlbum(album) {
-            Vue.axios
-                .delete(`/api/admin/albums/${album.slug}`)
-                .then(res => {
-                    this.fetchAlbums();
-                })
-                .catch(err => {
-                    throw err;
-                });
+        deleteSelectedAlbums() {
+            this.checkedRows.forEach(album =>{
+                Vue.axios
+                    .delete(`/api/admin/albums/${album.slug}`)
+                    .then(res => {
+                        this.showSuccess('Albums deleted');
+                    })
+                    .catch(err => {
+                        this.showError(`Unable to delete album <br> <small>${err.message}</small>`);
+                        throw err;
+                    });
+            });
+            this.fetchAlbums();
         },
     },
 };
