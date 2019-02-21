@@ -8,14 +8,14 @@ import './menu';
 // import './dropzone';
 import './fontawsome';
 import VueRouter from 'vue-router';
+import Buefy from 'buefy';
+import VueAxios from 'vue-axios';
+import axios from 'axios';
 import App from './views/App';
 import Home from './views/Home';
 import UsersIndex from './views/UsersIndex';
-import Buefy from 'buefy';
 import 'buefy/dist/buefy.css';
 import AlbumsIndex from '../../../modules/Album/Resources/assets/js/components/AlbumsIndex';
-import VueAxios from 'vue-axios';
-import axios from 'axios';
 import AlbumsShow from '../../../modules/Album/Resources/assets/js/components/AlbumsShow';
 import AlbumsCreate from '../../../modules/Album/Resources/assets/js/components/AlbumsCreate';
 import AlbumsEdit from '../../../modules/Album/Resources/assets/js/components/AlbumsEdit';
@@ -24,18 +24,16 @@ window.Vue = require('vue');
 
 // window._ = require('lodash');
 
-Vue.use(Buefy);
+window.Vue.use(Buefy);
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
-Vue.use(VueAxios, axios);
+window.Vue.use(VueAxios, axios);
 
-// window.axios = require('axios');
-
-Vue.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.Vue.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
@@ -43,50 +41,50 @@ Vue.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  * a simple convenience so we don't have to attach every token manually.
  */
 
-let token = document.head.querySelector('meta[name="csrf-token"]');
+const token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-    Vue.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+  window.Vue.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
-Vue.use(VueRouter);
+window.Vue.use(VueRouter);
 
 const router = new VueRouter({
-    mode: 'history',
-    routes: [
-        {
-            path: '/admin-spa/',
-            name: 'home',
-            component: Home,
-        },
-        {
-            path: '/admin-spa/albums',
-            name: 'albums.index',
-            component: AlbumsIndex,
-        },
-        {
-            path: '/admin-spa/create',
-            name: 'albums.create',
-            component: AlbumsCreate,
-        },
-        {
-            path: '/admin-spa/:slug',
-            name: 'albums.show',
-            component: AlbumsShow,
-        },
-        {
-            path: '/admin-spa/:slug/edit',
-            name: 'albums.edit',
-            component: AlbumsEdit,
-        },
-        {
-            path: '/admin-spa/users',
-            name: 'users.index',
-            component: UsersIndex,
-        },
-    ],
+  mode: 'history',
+  routes: [
+    {
+      path: '/admin-spa/',
+      name: 'home',
+      component: Home,
+    },
+    {
+      path: '/admin-spa/albums',
+      name: 'albums.index',
+      component: AlbumsIndex,
+    },
+    {
+      path: '/admin-spa/create',
+      name: 'albums.create',
+      component: AlbumsCreate,
+    },
+    {
+      path: '/admin-spa/:slug',
+      name: 'albums.show',
+      component: AlbumsShow,
+    },
+    {
+      path: '/admin-spa/:slug/edit',
+      name: 'albums.edit',
+      component: AlbumsEdit,
+    },
+    {
+      path: '/admin-spa/users',
+      name: 'users.index',
+      component: UsersIndex,
+    },
+  ],
 });
 
 /**
@@ -124,9 +122,9 @@ const router = new VueRouter({
  */
 
 const app = new Vue({
-    el: '#app',
-    components: { App },
-    router,
+  el: '#app',
+  components: { App },
+  router,
 });
 
 /**
@@ -146,25 +144,25 @@ const app = new Vue({
 //     encrypted: true
 // });
 
-let deleteAlbumPictureBtn = document.getElementsByClassName('delete-album-picture');
-Array.from(deleteAlbumPictureBtn).forEach(function(el) {
-    el.addEventListener('click', event => {
-        deleteAlbumPicture(el.parentNode);
-    });
-});
-
 function deleteAlbumPicture(element) {
-    return axios
-        .delete(`/api/admin/album-pictures/${element.dataset.albumSlug}`, {
-            data: {
-                media_id: element.dataset.pictureId,
-            },
-        })
-        .then(res => {
-            element.parentNode.removeChild(element);
-        })
-        .catch(err => {
-            alert('Something want wrong.');
-            throw err;
-        });
+  return axios
+    .delete(`/api/admin/album-pictures/${element.dataset.albumSlug}`, {
+      data: {
+        media_id: element.dataset.pictureId,
+      },
+    })
+    .then(() => {
+      element.parentNode.removeChild(element);
+    })
+    .catch((err) => {
+      alert('Something want wrong.');
+      throw err;
+    });
 }
+
+const deleteAlbumPictureBtn = document.getElementsByClassName('delete-album-picture');
+Array.from(deleteAlbumPictureBtn).forEach((el) => {
+  el.addEventListener('click', () => {
+    deleteAlbumPicture(el.parentNode);
+  });
+});
