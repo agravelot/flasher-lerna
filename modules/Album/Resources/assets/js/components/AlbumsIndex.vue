@@ -102,10 +102,6 @@
 </template>
 
 <script>
-import Buefy from 'buefy';
-import 'buefy/dist/buefy.css';
-
-Vue.use(Buefy);
 
 export default {
     data() {
@@ -142,7 +138,7 @@ export default {
             this.loading = true;
             const sortOrder = ((this.sortOrder === 'asc') ? '' : '-');
             
-            axios.get('/api/admin/albums', {
+            Vue.axios.get('/api/admin/albums', {
                     params: {
                         page: this.page,
                         sort: sortOrder + this.sortField
@@ -198,7 +194,7 @@ export default {
          * Delete album from slug
          */
         deleteAlbum(album) {
-            axios
+            Vue.axios
                 .delete(`/api/admin/albums/${album.slug}`)
                 .then(res => {
                     this.fetchAlbums();

@@ -11,7 +11,7 @@ namespace Modules\Album\Transformers;
 
 use Illuminate\Http\Resources\Json\Resource;
 
-class AlbumResource extends Resource
+class AlbumShowResource extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -30,6 +30,8 @@ class AlbumResource extends Resource
             'body' => $this->body,
             'private' => $this->private,
             'media' => $this->media,
+            'categories' => $this->categories,
+            'cosplayers' => $this->cosplayer,
         ];
     }
 }

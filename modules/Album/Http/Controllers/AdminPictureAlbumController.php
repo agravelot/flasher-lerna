@@ -13,7 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Album;
 use Modules\Album\Http\Requests\DeletePictureAlbumRequest;
 use Modules\Album\Http\Requests\StorePictureAlbumRequest;
-use Modules\Album\Transformers\AlbumResource;
+use Modules\Album\Transformers\AlbumIndexResource;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Spatie\MediaLibrary\Models\Media;
@@ -89,6 +89,6 @@ class AdminPictureAlbumController extends Controller
 
         $album->media->firstWhere('id', $media_id)->delete();
 
-        return (new AlbumResource($album))->response()->setStatusCode(204);
+        return (new AlbumIndexResource($album))->response()->setStatusCode(204);
     }
 }

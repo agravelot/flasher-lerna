@@ -13,7 +13,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Arr;
 use Modules\Album\Entities\Album;
 use Modules\Album\Http\Requests\AlbumRequest;
-use Modules\Album\Transformers\AlbumResource;
+use Modules\Album\Transformers\AlbumIndexResource;
+use Modules\Album\Transformers\AlbumShowResource;
 use Spatie\MediaLibrary\FileAdder\FileAdder;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -30,7 +31,7 @@ class AlbumController extends Controller
     {
         $this->authorize('index', Album::class);
 
-        return AlbumResource::collection(
+        return AlbumIndexResource::collection(
             QueryBuilder::for(Album::class)->paginate(10)
         );
     }
@@ -42,7 +43,7 @@ class AlbumController extends Controller
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
-     * @return AlbumResource
+     * @return AlbumIndexResource
      */
     public function store(AlbumRequest $request)
     {
@@ -67,7 +68,7 @@ class AlbumController extends Controller
             $album->cosplayers()->sync($validated['cosplayers'], false);
         }
 
-        return new AlbumResource($album);
+        return new AlbumIndexResource($album);
     }
 
     /**
@@ -78,7 +79,7 @@ class AlbumController extends Controller
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
-     * @return AlbumResource
+     * @return AlbumShowResource
      */
     public function show(string $slug)
     {
@@ -88,7 +89,7 @@ class AlbumController extends Controller
             ->firstOrFail();
         $this->authorize('view', $album);
 
-        return new AlbumResource($album);
+        return new AlbumShowResource($album);
     }
 
     /**
@@ -99,7 +100,7 @@ class AlbumController extends Controller
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      *
-     * @return AlbumResource
+     * @return AlbumIndexResource
      */
     public function update(AlbumRequest $request, string $slug)
     {
@@ -131,7 +132,7 @@ class AlbumController extends Controller
             $album->cosplayers()->sync($validated['cosplayers'], false);
         }
 
-        return new AlbumResource($album);
+        return new AlbumIndexResource($album);
     }
 
     /**
