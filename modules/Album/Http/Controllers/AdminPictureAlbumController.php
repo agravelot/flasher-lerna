@@ -10,7 +10,7 @@
 namespace Modules\Album\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Modules\Album\Entities\Album;
+use App\Models\Album;
 use Modules\Album\Http\Requests\DeletePictureAlbumRequest;
 use Modules\Album\Http\Requests\StorePictureAlbumRequest;
 use Modules\Album\Transformers\AlbumResource;
@@ -72,6 +72,7 @@ class AdminPictureAlbumController extends Controller
      * @param DeletePictureAlbumRequest $request
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Exception
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -80,13 +81,13 @@ class AdminPictureAlbumController extends Controller
         $this->authorize('delete', Album::class);
         $album = Album::whereSlug($albumSlug)->firstOrFail();
         $this->authorize('delete', $album);
-        $picture = $album->getMedia('pictures')->get($request->get('media_id'));
+        $media_id = (int) ($request->media_id);
 
-        if (! $picture) {
+        if (! $album->media->pluck('id')->containsStrict($media_id)) {
             throw new UnprocessableEntityHttpException('media not found');
         }
 
-        $picture->delete();
+        $album->media->firstWhere('id', $media_id)->delete();
 
         return (new AlbumResource($album))->response()->setStatusCode(204);
     }

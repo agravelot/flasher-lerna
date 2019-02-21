@@ -142,8 +142,7 @@ export default {
             this.loading = true;
             const sortOrder = ((this.sortOrder === 'asc') ? '' : '-');
             
-            axios
-                .get('/api/admin/albums', {
+            axios.get('/api/admin/albums', {
                     params: {
                         page: this.page,
                         sort: sortOrder + this.sortField
@@ -151,7 +150,6 @@ export default {
                 })
                 .then(res => res.data)
                 .then(res => {
-                    console.log(res);
                     this.perPage = res.meta.per_page;
                     this.total = res.meta.total;
                     this.albums = res.data;

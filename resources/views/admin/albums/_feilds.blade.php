@@ -179,15 +179,17 @@
         <div class="card-content">
             <div class="field">
                 <label class="label">{{ __('Pictures') }}</label>
-
                 @if ($album->getMedia('thumb'))
-                    @foreach($album->getMedia('pictures') as $key => $picture)
-                        {{ $picture('thumb') }}
-                        <a class="button has-text-danger delete-album-picture" data-album-slug="{{ $album->slug }}" data-picture-key="{{ $key }}"
-                           onclick="event.preventDefault();">
-                            {{ __('Delete') }}
-                        </a>
-                    @endforeach
+                    <div> {{--Important placeholder to use indexOf--}}
+                    @foreach($album->getMedia('pictures') as $picture)
+                            <div data-album-slug="{{ $album->slug }}" data-picture-id="{{ $picture->id }}">
+                                {{ $picture('thumb') }}
+                                <a class="button has-text-danger delete-album-picture">
+                                    {{ __('Delete') }}
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
                 @endif
             </div>
         </div>

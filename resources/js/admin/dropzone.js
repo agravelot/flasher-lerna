@@ -20,6 +20,6 @@ if (document.getElementsByClassName('dropzone').length > 0) {
         // paramName: 'picture'
         headers: {
             'X-CSRF-Token': document.head.querySelector('meta[name="csrf-token"]').content,
-        }
+        },
     });
 }
