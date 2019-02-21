@@ -39,24 +39,25 @@
                     </b-table-column>
 
                     <b-table-column field="title" label="Title" sortable>
-                        <template v-if="showDetailIcon"><a v-bind:href="`/admin/albums/${album.row.slug}/edit`">{{ album.row.title }}</a></template>
-                        <template v-else>
-                            <a @click="toggle(album.row)">{{ album.row.title }}</a>
-                        </template>
+                        <!--<template v-if="showDetailIcon"><a v-bind:href="`/admin/albums/${album.row.slug}/edit`">{{ album.row.title }}</a></template>-->
+                        <router-link :to="{name: 'albums.edit', params: { slug: album.row.slug }}">{{ album.row.title }}</router-link>
+                        <!--<template v-else>-->
+                            <!--<a @click="toggle(album.row)">{{ album.row.title }}</a>-->
+                        <!--</template>-->
                     </b-table-column>
 
                     <b-table-column field="status" label="Status" sortable centered>
                          <span v-if="album.row.private === 1" class="tag is-danger"
-                               v-bind:title="'This album is private' | trans">
-                            {{ 'Private' | trans }}
+                               v-bind:title="'This album is private'">
+                            {{ 'Private' }}
                         </span>
                         <span v-else-if="typeof album.row.published_at === 'string'" class="tag is-success"
                               v-bind:title="new Date(album.row.published_at).toLocaleDateString()">
-                            {{ 'Published' | trans }}
+                            {{ 'Published' }}
                         </span>
                         <span v-else class="tag is-dark"
                               v-bind:title="'This album is a draft'">
-                            {{ 'Draft' | trans }}
+                            {{ 'Draft' }}
                         </span>
                     </b-table-column>
                 </template>

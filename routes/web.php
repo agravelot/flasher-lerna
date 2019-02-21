@@ -47,3 +47,5 @@ Route::middleware(['web', 'auth', 'verified', 'admin'])->group(function () {
         });
     });
 });
+
+Route::get('/admin-spa/{any}', 'SpaController@index')->where('any', '.*');
