@@ -32,7 +32,7 @@ class AlbumController extends Controller
         $this->authorize('index', Album::class);
 
         return AlbumIndexResource::collection(
-            QueryBuilder::for(Album::class)->paginate(10)
+            QueryBuilder::for(Album::class)->with('media')->paginate(10)
         );
     }
 
