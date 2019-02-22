@@ -29,7 +29,7 @@ class AlbumShowResource extends Resource
             'published_at' => $this->published_at,
             'body' => $this->body,
             'private' => $this->private,
-            'medias' => MediaResource::collection($this->media),
+            'pictures' => MediaResource::collection($this->media),
             'categories' => $this->categories,
             'cosplayers' => $this->cosplayer,
         ];

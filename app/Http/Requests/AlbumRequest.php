@@ -25,11 +25,10 @@ class AlbumRequest extends Request
             'body' => 'nullable|max:65000',
             'published_at' => 'nullable|date',
             'private' => 'required|boolean',
-            'categories' => 'array',
-            'categories.*' => 'integer|min:1|exists:categories,id',
-            'cosplayers' => 'array',
-            'cosplayers.*' => 'integer|min:1|exists:cosplayers,id',
-            'pictures.*' => 'sometimes|file|image|mimetypes:image/*|max:20000',
+            'categories' => 'nullable|array',
+            'categories.*.id' => 'integer|min:1|exists:categories,id',
+            'cosplayers' => 'nullable|array',
+            'cosplayers.*.id' => 'integer|min:1|exists:cosplayers,id',
         ];
 
         return $rules;

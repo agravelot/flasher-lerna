@@ -1,17 +1,14 @@
 <template>
     <div>
-        <h1>Create A Post</h1>
-        <form @submit.prevent="addAlbum">
+        <h1>Update album</h1>
+        <form @submit.prevent="updateAlbum">
 
             <label>Title:</label>
             <input type="text" class="input form-control" v-model="album.title">
 
             <quill-editor v-model="album.body"
                           ref="myQuillEditor"
-                          :options="editorOption"
-                          @blur="onEditorBlur($event)"
-                          @focus="onEditorFocus($event)"
-                          @ready="onEditorReady($event)">
+                          :options="editorOption">
             </quill-editor>
 
 
@@ -66,15 +63,15 @@
                         @typing="getFilteredCosplayers">
                 </b-taginput>
             </b-field>
-            <div v-for="media in album.medias">
-                <img v-bind:src="media.thumb" v-bind:alt="media.name">
-                <a class="button has-text-danger" v-on:click="deleteAlbumPicture(album.slug, media.id)">
+            <div v-for="picture in album.pictures">
+                <img v-bind:src="picture.thumb" v-bind:alt="picture.name">
+                <a class="button has-text-danger" v-on:click="deleteAlbumPicture(album.slug, picture.id)">
                     Delete
                 </a>
             </div>
 
             <div class="form-group">
-                <button class="btn btn-primary">Create</button>
+                <button class="btn btn-primary">Update</button>
             </div>
         </form>
 
@@ -86,7 +83,6 @@
 <script>
     import vue2Dropzone from 'vue2-dropzone';
     import 'vue2-dropzone/dist/vue2Dropzone.min.css'
-    // require styles
     import 'quill/dist/quill.core.css'
     import 'quill/dist/quill.snow.css'
     import 'quill/dist/quill.bubble.css'
@@ -145,15 +141,20 @@
             sendingEvent(file, xhr, formData) {
                 formData.append('album_slug', this.album.slug);
             },
-            addAlbum() {
-                this.axios.post('/api/admin/albums', this.album)
+            updateAlbum() {
+                this.axios.patch(`/api/admin/albums/${this.$route.params.slug}`, this.album)
                     .then(res => res.data)
                     .then(res => {
                         console.log(res);
                         this.$router.push({name: 'albums.index'});
                     })
                     .catch(res => {
-                        console.log(res);
+                        this.$toast.open({
+                            message: `Unable to update the album <br><small>${res.message}</small>`,
+                            type: 'is-danger',
+                            duration: 5000,
+                        });
+                        console.log(res.response.data.errors);
                     });
             },
             getFilteredCategories(text) {

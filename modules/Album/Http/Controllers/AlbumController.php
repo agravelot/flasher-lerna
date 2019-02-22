@@ -52,14 +52,6 @@ class AlbumController extends Controller
         /** @var Album $album */
         $album = Album::create($validated);
 
-        $album->addAllMediaFromRequest()
-            ->each(function ($fileAdder) {
-                /* @var FileAdder $fileAdder */
-                $fileAdder->preservingOriginal()
-                    ->withResponsiveImages()
-                    ->toMediaCollection('pictures');
-            });
-
         if (Arr::exists($validated, 'categories')) {
             $album->categories()->sync($validated['categories'], false);
         }
@@ -111,25 +103,12 @@ class AlbumController extends Controller
         $validated = $request->validated();
         $album->update($validated);
 
-        // An update can contain no picture
-        $key = 'pictures';
-        if (Arr::exists($validated, $key)) {
-            /* @var Album $album */
-            $album->addAllMediaFromRequest()
-                ->each(function ($fileAdder) {
-                    /* @var FileAdder $fileAdder */
-                    $fileAdder->preservingOriginal()
-                        ->withResponsiveImages()
-                        ->toMediaCollection('pictures');
-                });
-        }
-
         if (Arr::exists($validated, 'categories')) {
-            $album->categories()->sync($validated['categories'], false);
+            $album->categories()->sync(collect($request->input('categories'))->pluck('id'), false);
         }
 
         if (Arr::exists($validated, 'cosplayers')) {
-            $album->cosplayers()->sync($validated['cosplayers'], false);
+            $album->cosplayers()->sync(collect($request->input('cosplayers'))->pluck('id'), false);
         }
 
         return new AlbumIndexResource($album);
