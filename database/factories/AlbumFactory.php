@@ -19,7 +19,7 @@ $factory->define(Album::class, function (Faker $faker) use (&$withMedias) {
 
     return [
         'title' => $faker->sentence,
-        'body' => $faker->paragraph($faker->numberBetween(42, 420)),
+        'body' => $faker->randomHtml($faker->numberBetween(2, 6)),
         'published_at' => null,
         'private' => $faker->boolean,
     ];
