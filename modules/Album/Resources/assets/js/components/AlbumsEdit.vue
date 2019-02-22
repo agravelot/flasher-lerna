@@ -1,82 +1,92 @@
 <template>
     <div>
-        <h1>Update album</h1>
-        <form @submit.prevent="updateAlbum">
+        <h1 class="title">Update album</h1>
+        <b-tabs type="is-boxed" size="is-medium" class="block">
+            <b-tab-item label="Album" icon-pack="fas" icon="info">
+                <form @submit.prevent="updateAlbum">
 
-            <label>Title:</label>
-            <input type="text" class="input form-control" v-model="album.title">
+                    <b-field label="Title">
+                        <b-input v-model="album.title"></b-input>
+                    </b-field>
 
-            <quill-editor v-model="album.body"
-                          ref="myQuillEditor"
-                          :options="editorOption">
-            </quill-editor>
+                    <quill-editor v-model="album.body" ref="myQuillEditor" :options="editorOption"></quill-editor>
+
+                    <b-field label="Enter some categories">
+                        <b-taginput
+                                v-model="album.categories"
+                                :data="filteredCategories"
+                                autocomplete
+                                :allow-new="false"
+                                field="name"
+                                placeholder="Add a category"
+                                icon-pack="fas"
+                                icon="tag"
+                                @typing="getFilteredCategories">
+                        </b-taginput>
+                    </b-field>
+
+                    <b-field label="Enter some cosplayers">
+                        <b-taginput
+                                v-model="album.cosplayers"
+                                :data="filteredCosplayers"
+                                autocomplete
+                                :allow-new="false"
+                                field="name"
+                                placeholder="Add a cosplayer"
+                                icon-pack="fas"
+                                icon="user-tag"
+                                @typing="getFilteredCosplayers">
+                        </b-taginput>
+                    </b-field>
 
 
-            <div class="control">
-                Private
-                <label class="radio">
-                    <input type="radio" v-model="album.private" v-bind:value="1">
-                    Yes
-                </label>
-                <label class="radio">
-                    <input type="radio" v-model="album.private" v-bind:value="0">
-                    No
-                </label>
-            </div>
+                    <button class="button is-primary">Update</button>
+                </form>
 
-            <div class="control">
-                Published
-                <label class="radio">
-                    <input type="radio" v-model="album.published_at" v-bind:value="album.published_at">
-                    Yes
-                </label>
-                <label class="radio">
-                    <input type="radio" v-model="album.published_at" value="">
-                    No
-                </label>
-            </div>
+            </b-tab-item>
+            <b-tab-item label="Pictures" icon-pack="fas" icon="images">
+                <vue-dropzone ref="myVueDropzone" :options="dropzoneOptions" v-on:vdropzone-sending="sendingEvent"
+                              v-on:vdropzone-complete="refreshMedias"></vue-dropzone>
+                <div v-for="picture in album.pictures">
+                    <img v-bind:src="picture.thumb" v-bind:alt="picture.name">
+                    <a class="button has-text-danger" v-on:click="deleteAlbumPicture(album.slug, picture.id)">
+                        Delete
+                    </a>
+                </div>
+            </b-tab-item>
+            <b-tab-item label="Settings" icon-pack="fas" icon="cog">
+                <div class="block">
+                    <b-radio v-model="album.private" native-value="0">
+                        Public
+                    </b-radio>
+                    <b-radio v-model="album.private" native-value="1">
+                        Private
+                    </b-radio>
+                </div>
 
-            <b-field label="Enter some categories">
-                <b-taginput
-                        v-model="album.categories"
-                        :data="filteredCategories"
-                        autocomplete
-                        :allow-new="false"
-                        field="name"
-                        icon="label"
-                        placeholder="Add a category"
-                        icon-pack="fas"
-                        @typing="getFilteredCategories">
-                </b-taginput>
-            </b-field>
+                <div class="block">
+                    <b-radio v-model="album.published_at" type="is-success" native-value="album.published_at">
+                        Published
+                    </b-radio>
+                    <b-radio v-model="album.published_at" native-value=null>
+                        Draft
+                    </b-radio>
+                </div>
 
-            <b-field label="Enter some cosplayers">
-                <b-taginput
-                        v-model="album.cosplayers"
-                        :data="filteredCosplayers"
-                        autocomplete
-                        :allow-new="false"
-                        field="name"
-                        icon="label"
-                        placeholder="Add a cosplayer"
-                        icon-pack="fas"
-                        @typing="getFilteredCosplayers">
-                </b-taginput>
-            </b-field>
-            <div v-for="picture in album.pictures">
-                <img v-bind:src="picture.thumb" v-bind:alt="picture.name">
-                <a class="button has-text-danger" v-on:click="deleteAlbumPicture(album.slug, picture.id)">
-                    Delete
-                </a>
-            </div>
+                <!--<div class="control">-->
+                <!--Published-->
+                <!--<label class="radio">-->
+                <!--<input type="radio" v-model="album.published_at" v-bind:value="album.published_at">-->
+                <!--Yes-->
+                <!--</label>-->
+                <!--<label class="radio">-->
+                <!--<input type="radio" v-model="album.published_at" value="">-->
+                <!--No-->
+                <!--</label>-->
+                <!--</div>-->
+            </b-tab-item>
+        </b-tabs>
 
-            <div class="form-group">
-                <button class="btn btn-primary">Update</button>
-            </div>
-        </form>
-
-        <vue-dropzone ref="myVueDropzone" v-on:vdropzone-sending="sendingEvent" v-on:vdropzone-complete="refreshMedias"
-                      :options="dropzoneOptions"></vue-dropzone>
     </div>
 </template>
 
@@ -121,6 +131,7 @@
                     // parallelChunkUploads: true,
                     acceptedFiles: 'image/*',
                     retryChunks: true,
+                    dictDefaultMessage: "<i class='fas fa-images'></i> Upload",
                     headers: {
                         'X-CSRF-Token': document.head.querySelector('meta[name="csrf-token"]').content,
                     },
@@ -146,7 +157,12 @@
                     .then(res => res.data)
                     .then(res => {
                         console.log(res);
-                        this.$router.push({name: 'albums.index'});
+                        this.$toast.open({
+                            message: `Album updated`,
+                            type: 'is-success',
+                            duration: 5000,
+                        });
+                        // this.$router.push({name: 'albums.index'});
                     })
                     .catch(res => {
                         this.$toast.open({
@@ -185,7 +201,7 @@
                 this.axios.get(`/api/admin/albums/${this.$route.params.slug}`)
                     .then(res => res.data)
                     .then(res => {
-                        this.album.medias = res.data.medias;
+                        this.album.pictures = res.data.pictures;
                     })
                     .catch(err => {
                         throw err;

@@ -22,6 +22,9 @@ import {
   faAngleRight,
   faAngleLeft,
   faArrowUp,
+  faTag,
+  faInfo,
+  faCog,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -45,6 +48,9 @@ library.add(
   faAngleRight,
   faAngleLeft,
   faArrowUp,
+  faTag,
+  faInfo,
+  faCog,
 );
 
 library.add(faBell, faStickyNote, faEdit, faTrashAlt);
