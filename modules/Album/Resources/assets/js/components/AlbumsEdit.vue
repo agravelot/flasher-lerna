@@ -2,44 +2,43 @@
     <div>
         <h1>Create A Post</h1>
         <form @submit.prevent="addAlbum">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Title:</label>
-                        <input type="text" class="form-control" v-model="album.title">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Body:</label>
-                        <textarea class="form-control" v-model="album.body" rows="5"></textarea>
-                    </div>
-                </div>
-            </div>
-            <p>
+
+            <label>Title:</label>
+            <input type="text" class="input form-control" v-model="album.title">
+
+            <quill-editor v-model="album.body"
+                          ref="myQuillEditor"
+                          :options="editorOption"
+                          @blur="onEditorBlur($event)"
+                          @focus="onEditorFocus($event)"
+                          @ready="onEditorReady($event)">
+            </quill-editor>
+
+
+            <div class="control">
                 Private
-                <label>
-                    Yes
+                <label class="radio">
                     <input type="radio" v-model="album.private" v-bind:value="1">
+                    Yes
                 </label>
-                <label>
-                    No
+                <label class="radio">
                     <input type="radio" v-model="album.private" v-bind:value="0">
+                    No
                 </label>
-            </p>
-            <p>
+            </div>
+
+            <div class="control">
                 Published
-                <label>
-                    Public
+                <label class="radio">
                     <input type="radio" v-model="album.published_at" v-bind:value="album.published_at">
+                    Yes
                 </label>
-                <label>
-                    Draft
+                <label class="radio">
                     <input type="radio" v-model="album.published_at" value="">
+                    No
                 </label>
-            </p>
+            </div>
+
             <b-field label="Enter some categories">
                 <b-taginput
                         v-model="album.categories"
@@ -49,6 +48,7 @@
                         field="name"
                         icon="label"
                         placeholder="Add a category"
+                        icon-pack="fas"
                         @typing="getFilteredCategories">
                 </b-taginput>
             </b-field>
@@ -62,6 +62,7 @@
                         field="name"
                         icon="label"
                         placeholder="Add a cosplayer"
+                        icon-pack="fas"
                         @typing="getFilteredCosplayers">
                 </b-taginput>
             </b-field>
@@ -85,11 +86,18 @@
 <script>
     import vue2Dropzone from 'vue2-dropzone';
     import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+    // require styles
+    import 'quill/dist/quill.core.css'
+    import 'quill/dist/quill.snow.css'
+    import 'quill/dist/quill.bubble.css'
+
+    import {quillEditor} from 'vue-quill-editor'
 
 
     export default {
         components: {
-            vueDropzone: vue2Dropzone
+            vueDropzone: vue2Dropzone,
+            quillEditor,
         },
         data() {
             return {
@@ -99,6 +107,11 @@
                 tags: [],
                 isSelectOnly: false,
                 allowNew: true,
+                editorOption: {
+                    placeholder: 'Enter your description...',
+                    theme: 'snow',
+                    // scrollingContainer: 'overflow-y: auto'
+                },
                 dropzoneOptions: {
                     url: '/api/admin/album-pictures',
                     thumbnailWidth: 200,
@@ -133,9 +146,7 @@
                 formData.append('album_slug', this.album.slug);
             },
             addAlbum() {
-                console.log(this.album);
-                let uri = '/api/admin/albums';
-                this.axios.post(uri, this.album)
+                this.axios.post('/api/admin/albums', this.album)
                     .then(res => res.data)
                     .then(res => {
                         console.log(res);
@@ -146,20 +157,28 @@
                     });
             },
             getFilteredCategories(text) {
-                this.filteredCategories = this.album.categories.filter((option) => {
-                    return option.name
-                        .toString()
-                        .toLowerCase()
-                        .indexOf(text.toLowerCase()) >= 0
-                })
+                this.axios.get('/api/admin/categories')
+                    .then(res => res.data)
+                    .then(res => {
+                        this.filteredCategories = res.filter((option) => {
+                            return option.name
+                                .toString()
+                                .toLowerCase()
+                                .indexOf(text.toLowerCase()) >= 0
+                        })
+                    });
             },
             getFilteredCosplayers(text) {
-                this.filteredCategories = this.album.cosplayers.filter((option) => {
-                    return option.name
-                        .toString()
-                        .toLowerCase()
-                        .indexOf(text.toLowerCase()) >= 0
-                })
+                this.axios.get('/api/admin/cosplayers')
+                    .then(res => res.data)
+                    .then(res => {
+                        this.filteredCosplayers = res.filter((option) => {
+                            return option.name
+                                .toString()
+                                .toLowerCase()
+                                .indexOf(text.toLowerCase()) >= 0
+                        })
+                    });
             },
             refreshMedias() {
                 this.axios.get(`/api/admin/albums/${this.$route.params.slug}`)
