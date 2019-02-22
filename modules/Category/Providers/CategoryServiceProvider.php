@@ -1,9 +1,16 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 namespace Modules\Category\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\ServiceProvider;
 
 class CategoryServiceProvider extends ServiceProvider
 {
@@ -16,8 +23,6 @@ class CategoryServiceProvider extends ServiceProvider
 
     /**
      * Boot the application events.
-     *
-     * @return void
      */
     public function boot()
     {
@@ -30,8 +35,6 @@ class CategoryServiceProvider extends ServiceProvider
 
     /**
      * Register the service provider.
-     *
-     * @return void
      */
     public function register()
     {
@@ -40,33 +43,29 @@ class CategoryServiceProvider extends ServiceProvider
 
     /**
      * Register config.
-     *
-     * @return void
      */
     protected function registerConfig()
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('category.php'),
+            __DIR__ . '/../Config/config.php' => config_path('category.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php', 'category'
+            __DIR__ . '/../Config/config.php', 'category'
         );
     }
 
     /**
      * Register views.
-     *
-     * @return void
      */
     public function registerViews()
     {
         $viewPath = resource_path('views/modules/category');
 
-        $sourcePath = __DIR__.'/../Resources/views';
+        $sourcePath = __DIR__ . '/../Resources/views';
 
         $this->publishes([
-            $sourcePath => $viewPath
-        ],'views');
+            $sourcePath => $viewPath,
+        ], 'views');
 
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
             return $path . '/modules/category';
@@ -75,8 +74,6 @@ class CategoryServiceProvider extends ServiceProvider
 
     /**
      * Register translations.
-     *
-     * @return void
      */
     public function registerTranslations()
     {
@@ -85,14 +82,12 @@ class CategoryServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'category');
         } else {
-            $this->loadTranslationsFrom(__DIR__ .'/../Resources/lang', 'category');
+            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'category');
         }
     }
 
     /**
      * Register an additional directory of factories.
-     * 
-     * @return void
      */
     public function registerFactories()
     {
