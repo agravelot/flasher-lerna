@@ -41,7 +41,7 @@
                         v-model="album.categories"
                         :data="filteredCategories"
                         autocomplete
-                        allow-new
+                        :allow-new="false"
                         field="name"
                         icon="label"
                         placeholder="Add a category"
@@ -55,7 +55,7 @@
                         v-model="album.cosplayers"
                         :data="filteredCosplayers"
                         autocomplete
-                        allow-new
+                        :allow-new="false"
                         field="name"
                         icon="label"
                         placeholder="Add a cosplayer"
