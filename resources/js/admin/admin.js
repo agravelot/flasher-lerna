@@ -55,32 +55,32 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     {
-      path: '/admin-spa/',
+      path: '/admin/spa/',
       name: 'home',
       component: Home,
     },
     {
-      path: '/admin-spa/albums',
+      path: '/admin/spa/albums',
       name: 'albums.index',
       component: AlbumsIndex,
     },
     {
-      path: '/admin-spa/create',
+      path: '/admin/spa/create',
       name: 'albums.create',
       component: AlbumsCreate,
     },
     {
-      path: '/admin-spa/:slug',
+      path: '/admin/spa/:slug',
       name: 'albums.show',
       component: AlbumsShow,
     },
     {
-      path: '/admin-spa/:slug/edit',
+      path: '/admin/spa/:slug/edit',
       name: 'albums.edit',
       component: AlbumsEdit,
     },
     {
-      path: '/admin-spa/users',
+      path: '/admin/spa/users',
       name: 'users.index',
       component: UsersIndex,
     },
