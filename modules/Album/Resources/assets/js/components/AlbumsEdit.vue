@@ -39,6 +39,35 @@
                         </b-taginput>
                     </b-field>
 
+                    <div class="block">
+                        <b-radio v-model="album.private" native-value=0>
+                            Public
+                        </b-radio>
+                        <b-radio v-model="album.private" native-value=1>
+                            Private
+                        </b-radio>
+                    </div>
+
+                    <div class="block">
+                        <b-radio v-model="album.published_at" type="is-success" native-value="album.published_at">
+                            Published
+                        </b-radio>
+                        <b-radio v-model="album.published_at" native-value=null>
+                            Draft
+                        </b-radio>
+                    </div>
+
+                    <!--<div class="control">-->
+                    <!--Published-->
+                    <!--<label class="radio">-->
+                    <!--<input type="radio" v-model="album.published_at" v-bind:value="album.published_at">-->
+                    <!--Yes-->
+                    <!--</label>-->
+                    <!--<label class="radio">-->
+                    <!--<input type="radio" v-model="album.published_at" value="">-->
+                    <!--No-->
+                    <!--</label>-->
+                    <!--</div>-->
 
                     <button class="button is-primary">Update</button>
                 </form>
@@ -54,36 +83,8 @@
                     </a>
                 </div>
             </b-tab-item>
-            <b-tab-item label="Settings" icon-pack="fas" icon="cog">
-                <div class="block">
-                    <b-radio v-model="album.private" native-value="0">
-                        Public
-                    </b-radio>
-                    <b-radio v-model="album.private" native-value="1">
-                        Private
-                    </b-radio>
-                </div>
+            <b-tab-item label="Prévualisation" icon-pack="fas" icon="eye">
 
-                <div class="block">
-                    <b-radio v-model="album.published_at" type="is-success" native-value="album.published_at">
-                        Published
-                    </b-radio>
-                    <b-radio v-model="album.published_at" native-value=null>
-                        Draft
-                    </b-radio>
-                </div>
-
-                <!--<div class="control">-->
-                <!--Published-->
-                <!--<label class="radio">-->
-                <!--<input type="radio" v-model="album.published_at" v-bind:value="album.published_at">-->
-                <!--Yes-->
-                <!--</label>-->
-                <!--<label class="radio">-->
-                <!--<input type="radio" v-model="album.published_at" value="">-->
-                <!--No-->
-                <!--</label>-->
-                <!--</div>-->
             </b-tab-item>
         </b-tabs>
 
@@ -108,9 +109,11 @@
         data() {
             return {
                 album: {},
+                allCategories: [],
+                allCosplayers: [],
                 filteredCategories: [],
                 filteredCosplayers: [],
-                tags: [],
+                // tags: [],
                 isSelectOnly: false,
                 allowNew: true,
                 editorOption: {
@@ -128,7 +131,7 @@
                     maxFilesize: 400000000,
                     chunkSize: 1000000,
                     // If true, the individual chunks of a file are being uploaded simultaneously.
-                    // parallelChunkUploads: true,
+                    parallelChunkUploads: true,
                     acceptedFiles: 'image/*',
                     retryChunks: true,
                     dictDefaultMessage: "<i class='fas fa-images'></i> Upload",
@@ -139,16 +142,39 @@
             }
         },
         created() {
-            this.axios.get(`/api/admin/albums/${this.$route.params.slug}`)
-                .then(res => res.data)
-                .then(res => {
-                    this.album = res.data;
-                })
-                .catch(err => {
-                    throw err;
-                })
+            this.fetchData();
         },
         methods: {
+            fetchData() {
+                this.axios.get(`/api/admin/albums/${this.$route.params.slug}`)
+                    .then(res => res.data)
+                    .then(res => {
+                        this.album = res.data;
+                    })
+                    .catch(err => {
+                        throw err;
+                    });
+                this.axios.get('/api/admin/categories')
+                    .then(res => res.data)
+                    .then(res => {
+                        this.allCategories = res.data;
+                        console.log('fetc categ');
+                        console.log(this.allCategories);
+                    })
+                    .catch(err => {
+                        throw err;
+                    });
+                this.axios.get('/api/admin/cosplayers')
+                    .then(res => res.data)
+                    .then(res => {
+                        this.allCosplayers = res.data;
+                        console.log('fetc cospla');
+                        console.log(this.allCosplayers);
+                    })
+                    .catch(err => {
+                        throw err;
+                    });
+            },
             sendingEvent(file, xhr, formData) {
                 formData.append('album_slug', this.album.slug);
             },
@@ -174,28 +200,23 @@
                     });
             },
             getFilteredCategories(text) {
-                this.axios.get('/api/admin/categories')
-                    .then(res => res.data)
-                    .then(res => {
-                        this.filteredCategories = res.filter((option) => {
-                            return option.name
-                                .toString()
-                                .toLowerCase()
-                                .indexOf(text.toLowerCase()) >= 0
-                        })
-                    });
+                this.filteredCategories = this.allCategories.filter((option) => {
+                    console.log(option);
+
+                    return option.name
+                        .toString()
+                        .toLowerCase()
+                        .indexOf(text.toLowerCase()) >= 0
+                });
             },
             getFilteredCosplayers(text) {
-                this.axios.get('/api/admin/cosplayers')
-                    .then(res => res.data)
-                    .then(res => {
-                        this.filteredCosplayers = res.filter((option) => {
-                            return option.name
-                                .toString()
-                                .toLowerCase()
-                                .indexOf(text.toLowerCase()) >= 0
-                        })
-                    });
+                this.filteredCosplayers = this.allCosplayers.filter((option) => {
+                    console.log(option);
+                    return option.name
+                        .toString()
+                        .toLowerCase()
+                        .indexOf(text.toLowerCase()) >= 0
+                });
             },
             refreshMedias() {
                 this.axios.get(`/api/admin/albums/${this.$route.params.slug}`)
