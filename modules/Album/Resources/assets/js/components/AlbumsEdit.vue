@@ -48,30 +48,27 @@
                         </b-taginput>
                     </b-field>
 
-                    <b-field label="Private ? Public ?"
-                             :type="errors.private ? 'is-danger' : ''"
-                             :message="errors.private ? errors.private[0] : null">
-                        <div class="block">
-                            <b-radio v-model="album.private" native-value=0>
-                                Public
-                            </b-radio>
-                            <b-radio v-model="album.private" native-value=1>
-                                Private
-                            </b-radio>
+                    <b-field label="Should this album be published?"
+                             :type="errors.published_at ? 'is-danger' : ''"
+                             :message="errors.published_at ? errors.published_at[0] : null">
+                        <div class="field">
+                            <b-switch v-model="album.published_at"
+                                      :true-value="album.published_at || new Date()"
+                                      :false-value=null>
+                                {{ album.published_at ? 'Published' : 'Draft' }}
+                            </b-switch>
                         </div>
                     </b-field>
 
-                    <b-field label="Private ? Public ?"
-                             :type="errors.published_at ? 'is-danger' : ''"
-                             :message="errors.published_at ? errors.published_at[0] : null">
-                        <div class="block">
-                            <b-radio v-model="album.published_at" type="is-success"
-                                     v-bind:value="album.published_at ? album.published_at : new Date()">
-                                Published
-                            </b-radio>
-                            <b-radio v-model="album.published_at" native-value=null>
-                                Draft
-                            </b-radio>
+                    <b-field label="Should it be accessible publicly?"
+                             :type="errors.private ? 'is-danger' : ''"
+                             :message="errors.private ? errors.private[0] : null">
+                        <div class="field">
+                            <b-switch v-model.numeric="album.private"
+                                      :true-value=1
+                                      :false-value=0>
+                                {{ album.private ? 'Publicly' : 'Private' }}
+                            </b-switch>
                         </div>
                     </b-field>
 
