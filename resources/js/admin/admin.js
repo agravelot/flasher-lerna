@@ -14,7 +14,7 @@ import axios from 'axios';
 import App from './views/App';
 import Home from './views/Home';
 import UsersIndex from './views/UsersIndex';
-import 'buefy/dist/buefy.css';
+import '../../sass/buefy.scss';
 import AlbumsIndex from '../../../modules/Album/Resources/assets/js/components/AlbumsIndex';
 import AlbumsShow from '../../../modules/Album/Resources/assets/js/components/AlbumsShow';
 import AlbumsCreate from '../../../modules/Album/Resources/assets/js/components/AlbumsCreate';
