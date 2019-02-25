@@ -5,13 +5,20 @@
             <b-tab-item label="Album" icon-pack="fas" icon="info">
                 <form @submit.prevent="updateAlbum">
 
-                    <b-field label="Title">
-                        <b-input v-model="album.title"></b-input>
+                    <b-field label="Title"
+                             :type="errors.title ? 'is-danger' : ''"
+                             :message="errors.title ? errors.title[0] : null">
+                        <b-input type="text"
+                                 v-model="album.title"
+                                 maxlength="30">
+                        </b-input>
                     </b-field>
 
                     <quill-editor v-model="album.body" ref="myQuillEditor" :options="editorOption"></quill-editor>
 
-                    <b-field label="Enter some categories">
+                    <b-field label="Enter some categories"
+                             :type="errors.categories ? 'is-danger' : ''"
+                             :message="errors.categories ? errors.categories[0] : null">
                         <b-taginput
                                 v-model="album.categories"
                                 :data="filteredCategories"
@@ -25,7 +32,9 @@
                         </b-taginput>
                     </b-field>
 
-                    <b-field label="Enter some cosplayers">
+                    <b-field label="Enter some cosplayers"
+                             :type="errors.cosplayers ? 'is-danger' : ''"
+                             :message="errors.cosplayers ? errors.cosplayers[0] : null">
                         <b-taginput
                                 v-model="album.cosplayers"
                                 :data="filteredCosplayers"
@@ -39,35 +48,32 @@
                         </b-taginput>
                     </b-field>
 
-                    <div class="block">
-                        <b-radio v-model="album.private" native-value=0>
-                            Public
-                        </b-radio>
-                        <b-radio v-model="album.private" native-value=1>
-                            Private
-                        </b-radio>
-                    </div>
+                    <b-field label="Private ? Public ?"
+                             :type="errors.private ? 'is-danger' : ''"
+                             :message="errors.private ? errors.private[0] : null">
+                        <div class="block">
+                            <b-radio v-model="album.private" native-value=0>
+                                Public
+                            </b-radio>
+                            <b-radio v-model="album.private" native-value=1>
+                                Private
+                            </b-radio>
+                        </div>
+                    </b-field>
 
-                    <div class="block">
-                        <b-radio v-model="album.published_at" type="is-success" native-value="album.published_at">
-                            Published
-                        </b-radio>
-                        <b-radio v-model="album.published_at" native-value=null>
-                            Draft
-                        </b-radio>
-                    </div>
-
-                    <!--<div class="control">-->
-                    <!--Published-->
-                    <!--<label class="radio">-->
-                    <!--<input type="radio" v-model="album.published_at" v-bind:value="album.published_at">-->
-                    <!--Yes-->
-                    <!--</label>-->
-                    <!--<label class="radio">-->
-                    <!--<input type="radio" v-model="album.published_at" value="">-->
-                    <!--No-->
-                    <!--</label>-->
-                    <!--</div>-->
+                    <b-field label="Private ? Public ?"
+                             :type="errors.published_at ? 'is-danger' : ''"
+                             :message="errors.published_at ? errors.published_at[0] : null">
+                        <div class="block">
+                            <b-radio v-model="album.published_at" type="is-success"
+                                     v-bind:value="album.published_at ? album.published_at : new Date()">
+                                Published
+                            </b-radio>
+                            <b-radio v-model="album.published_at" native-value=null>
+                                Draft
+                            </b-radio>
+                        </div>
+                    </b-field>
 
                     <button class="button is-primary">Update</button>
                 </form>
@@ -108,6 +114,7 @@
         },
         data() {
             return {
+                errors: {},
                 album: {},
                 allCategories: [],
                 allCosplayers: [],
@@ -158,8 +165,6 @@
                     .then(res => res.data)
                     .then(res => {
                         this.allCategories = res.data;
-                        console.log('fetc categ');
-                        console.log(this.allCategories);
                     })
                     .catch(err => {
                         throw err;
@@ -168,8 +173,6 @@
                     .then(res => res.data)
                     .then(res => {
                         this.allCosplayers = res.data;
-                        console.log('fetc cospla');
-                        console.log(this.allCosplayers);
                     })
                     .catch(err => {
                         throw err;
@@ -182,7 +185,6 @@
                 this.axios.patch(`/api/admin/albums/${this.$route.params.slug}`, this.album)
                     .then(res => res.data)
                     .then(res => {
-                        console.log(res);
                         this.$toast.open({
                             message: `Album updated`,
                             type: 'is-success',
@@ -190,19 +192,17 @@
                         });
                         // this.$router.push({name: 'albums.index'});
                     })
-                    .catch(res => {
+                    .catch(err => {
                         this.$toast.open({
-                            message: `Unable to update the album <br><small>${res.message}</small>`,
+                            message: `Unable to update the album <br><small>${err.message}</small>`,
                             type: 'is-danger',
                             duration: 5000,
                         });
-                        console.log(res.response.data.errors);
+                        this.errors = err.response.data.errors;
                     });
             },
             getFilteredCategories(text) {
                 this.filteredCategories = this.allCategories.filter((option) => {
-                    console.log(option);
-
                     return option.name
                         .toString()
                         .toLowerCase()
@@ -211,7 +211,6 @@
             },
             getFilteredCosplayers(text) {
                 this.filteredCosplayers = this.allCosplayers.filter((option) => {
-                    console.log(option);
                     return option.name
                         .toString()
                         .toLowerCase()
