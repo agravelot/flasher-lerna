@@ -191,7 +191,7 @@
                     })
                     .catch(err => {
                         this.$toast.open({
-                            message: `Unable to update the album <br><small>${err.message}</small>`,
+                            message: `Unable to update the album <br><small>${err.response.data.message}</small>`,
                             type: 'is-danger',
                             duration: 5000,
                         });
