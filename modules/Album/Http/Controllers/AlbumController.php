@@ -15,7 +15,6 @@ use Illuminate\Support\Arr;
 use Modules\Album\Http\Requests\AlbumRequest;
 use Modules\Album\Transformers\AlbumIndexResource;
 use Modules\Album\Transformers\AlbumShowResource;
-use Spatie\MediaLibrary\FileAdder\FileAdder;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class AlbumController extends Controller

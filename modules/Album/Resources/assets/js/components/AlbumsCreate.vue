@@ -3,7 +3,6 @@
         <h1 class="title">Create album</h1>
 
         <form @submit.prevent="createAlbum">
-            <
             <b-field label="Title"
                      :type="errors.title ? 'is-danger' : ''"
                      :message="errors.title ? errors.title[0] : null">
