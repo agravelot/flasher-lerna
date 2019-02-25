@@ -53,9 +53,9 @@
                              :message="errors.published_at ? errors.published_at[0] : null">
                         <div class="field">
                             <b-switch v-model="album.published_at"
-                                      :true-value="album.published_at || new Date()"
+                                      :true-value="album.published_at || new Date().toISOString().slice(0, 19).replace('T', ' ')"
                                       :false-value=null>
-                                {{ album.published_at ? 'Published' : 'Draft' }}
+                                {{ album.published_at ? 'Yes' : 'No' }}
                             </b-switch>
                         </div>
                     </b-field>
@@ -65,9 +65,9 @@
                              :message="errors.private ? errors.private[0] : null">
                         <div class="field">
                             <b-switch v-model.numeric="album.private"
-                                      :true-value=1
-                                      :false-value=0>
-                                {{ album.private ? 'Publicly' : 'Private' }}
+                                      :true-value=0
+                                      :false-value=1>
+                                {{ album.private ? 'No' : 'Yes' }}
                             </b-switch>
                         </div>
                     </b-field>
@@ -97,17 +97,13 @@
 <script>
     import vue2Dropzone from 'vue2-dropzone';
     import 'vue2-dropzone/dist/vue2Dropzone.min.css'
-    import 'quill/dist/quill.core.css'
-    import 'quill/dist/quill.snow.css'
-    import 'quill/dist/quill.bubble.css'
-
-    import {quillEditor} from 'vue-quill-editor'
-
+    import AlbumDesc from './AlbumDesc';
 
     export default {
+        extends: AlbumDesc,
         components: {
             vueDropzone: vue2Dropzone,
-            quillEditor,
+            'album-desc': AlbumDesc,
         },
         data() {
             return {
@@ -117,14 +113,8 @@
                 allCosplayers: [],
                 filteredCategories: [],
                 filteredCosplayers: [],
-                // tags: [],
                 isSelectOnly: false,
                 allowNew: true,
-                editorOption: {
-                    placeholder: 'Enter your description...',
-                    theme: 'snow',
-                    // scrollingContainer: 'overflow-y: auto'
-                },
                 dropzoneOptions: {
                     url: '/api/admin/album-pictures',
                     thumbnailWidth: 200,
