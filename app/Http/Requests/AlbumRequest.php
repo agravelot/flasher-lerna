@@ -21,7 +21,7 @@ class AlbumRequest extends Request
         $id = $this->route('album');
 
         $rules = [
-            'title' => 'required|string|min:2|max:255|unique:albums,title,' . $id,
+            'title' => 'required|string|min:2|max:255|unique:albums,id,' . $id,
             'body' => 'nullable|max:65000',
             'published_at' => 'nullable|date',
             'private' => 'required|boolean',
