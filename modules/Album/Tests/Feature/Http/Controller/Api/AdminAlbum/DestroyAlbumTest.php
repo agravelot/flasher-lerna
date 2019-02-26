@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Album\Tests\Feature\Http\Controller\Api\Admin\Album;
+namespace Modules\Album\Tests\Feature\Http\Controller\Api\AdminAlbum;
 
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Album;
@@ -34,7 +34,7 @@ class DestroyAlbumTest extends TestCase
 
     private function deleteAlbum(string $slug): TestResponse
     {
-        return $this->delete('/api/admin/albums/' . $slug);
+        return $this->json('delete', '/api/admin/albums/' . $slug);
     }
 
     public function test_user_can_not_destroy_a_album()
@@ -57,7 +57,7 @@ class DestroyAlbumTest extends TestCase
         $response = $this->deleteAlbum($album->slug);
 
         $this->assertSame(1, Album::count());
-        $response->assertStatus(403);
+        $response->assertStatus(401);
     }
 
     protected function setUp()

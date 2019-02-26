@@ -42,7 +42,6 @@ class CreateSocialMediaTest extends TestCase
     public function test_admin_can_view_create_page_for_a_social_media()
     {
         $this->actingAsAdmin();
-        $this->disableExceptionHandling();
 
         $response = $this->showSocialMediaCreate();
 

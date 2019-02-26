@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Album\Tests\Feature\Http\Controller\Api\Admin\Album;
+namespace Modules\Album\Tests\Feature\Http\Controller\Api\AdminAlbum;
 
 use App\Models\Album;
 use App\Models\Category;
@@ -34,7 +34,7 @@ class UpdateAlbumTest extends TestCase
 
     public function updateAlbum(Album $album, array $optional = []): TestResponse
     {
-        return $this->patch('/api/admin/albums/' . $album->slug, array_merge($album->toArray(), $optional));
+        return $this->json('patch', '/api/admin/albums/' . $album->slug, array_merge($album->toArray(), $optional));
     }
 
     public function test_admin_can_update_an_album_with_a_picture()
@@ -68,6 +68,7 @@ class UpdateAlbumTest extends TestCase
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
         $category = factory(Category::class)->create();
+        $category->save();
         $image = UploadedFile::fake()->image('fake.jpg');
 
         $response = $this->updateAlbum($album, [
@@ -112,7 +113,7 @@ class UpdateAlbumTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_admin_can_update_an_album_with_an_non_existent_cosplayer_and_a_picture()
+    public function test_admin_can_not_update_an_album_with_an_non_existent_cosplayer_and_a_picture()
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
@@ -124,18 +125,6 @@ class UpdateAlbumTest extends TestCase
         ]);
 
         $this->assertSame(1, Album::count());
-        $response->assertStatus(200);
-    }
-
-    public function test_admin_can_not_update_an_album_with_a_video()
-    {
-        $this->actingAsAdmin();
-        $album = factory(Album::class)->create();
-        $image = UploadedFile::fake()->image('fake.mp4');
-
-        $response = $this->updateAlbum($album, ['pictures' => array_wrap($image)]);
-
-        $this->assertSame(1, Album::count());
         $response->assertStatus(422);
     }
 
@@ -143,9 +132,8 @@ class UpdateAlbumTest extends TestCase
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('published')->create();
-        $image = UploadedFile::fake()->image('fake.jpg');
 
-        $response = $this->updateAlbum($album, ['pictures' => array_wrap($image)]);
+        $response = $this->updateAlbum($album);
 
         $this->assertSame(1, Album::count());
         $response->assertStatus(200);
@@ -170,8 +158,7 @@ class UpdateAlbumTest extends TestCase
         $response = $this->updateAlbum($album);
 
         $this->assertSame(1, Album::count());
-        $response->assertStatus(302)
-            ->assertRedirect('/login');
+        $response->assertStatus(401);
     }
 
     public function test_cosplayer_are_not_declared_twice_after_update()

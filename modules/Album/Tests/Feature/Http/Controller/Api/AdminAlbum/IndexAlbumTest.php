@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Album\Tests\Feature\Http\Controller\Api\Admin\Album;
+namespace Modules\Album\Tests\Feature\Http\Controller\Api\AdminAlbum;
 
 use App\Models\Album;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -22,7 +22,7 @@ class IndexAlbumTest extends TestCase
         $this->actingAsAdmin();
         $albums = factory(Album::class, 5)->state('published')->create();
 
-        $response = $this->get('/api/admin/albums');
+        $response = $this->json('get', '/api/admin/albums');
 
         $response->assertStatus(200)
             ->assertSeeInOrder($albums->pluck('title')->toArray());
@@ -33,7 +33,7 @@ class IndexAlbumTest extends TestCase
         $this->actingAsAdmin();
         $albums = factory(Album::class, 5)->state('unpublished')->create();
 
-        $response = $this->get('/api/admin/albums');
+        $response = $this->json('get', '/api/admin/albums');
 
         $response->assertStatus(200)
             ->assertSeeInOrder($albums->pluck('title')->toArray());
@@ -44,7 +44,7 @@ class IndexAlbumTest extends TestCase
         $this->actingAsAdmin();
         $albums = factory(Album::class, 5)->state('password')->create();
 
-        $response = $this->get('/api/admin/albums');
+        $response = $this->json('get', '/api/admin/albums');
 
         $response->assertStatus(200)
             ->assertSeeInOrder($albums->pluck('title')->toArray());
@@ -55,7 +55,7 @@ class IndexAlbumTest extends TestCase
         $this->actingAsAdmin();
         $albums = factory(Album::class, 5)->state('passwordLess')->create();
 
-        $response = $this->get('/api/admin/albums');
+        $response = $this->json('get', '/api/admin/albums');
 
         $response->assertStatus(200);
     }
@@ -64,15 +64,15 @@ class IndexAlbumTest extends TestCase
     {
         $this->actingAsUser();
 
-        $response = $this->get('/api/admin/albums');
+        $response = $this->json('get', '/api/admin/albums');
 
         $response->assertStatus(403);
     }
 
     public function test_guest_can_not_view_index()
     {
-        $response = $this->get('/api/admin/albums');
+        $response = $this->json('get', '/api/admin/albums');
 
-        $response->assertStatus(403);
+        $response->assertStatus(401);
     }
 }

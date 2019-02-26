@@ -156,20 +156,6 @@ class StoreAlbumTest extends TestCase
             ->assertSee('Album successfully created');
     }
 
-    public function test_admin_can_not_store_an_album_with_a_video()
-    {
-        $this->actingAsAdmin();
-        $album = factory(Album::class)->make();
-        $image = UploadedFile::fake()->image('fake.mp4');
-
-        $response = $this->storeAlbum($album, ['pictures' => array_wrap($image)]);
-
-        $this->assertSame(0, Album::count());
-        $response->assertRedirect('/admin/albums/create');
-        $this->followRedirects($response)
-            ->assertSee('The pictures.0 must be an image.');
-    }
-
     public function test_admin_can_store_an_album_with_published_now()
     {
         $this->actingAsAdmin();

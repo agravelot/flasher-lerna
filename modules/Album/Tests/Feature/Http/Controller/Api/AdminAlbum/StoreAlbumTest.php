@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Album\Tests\Feature\Http\Controller\Api\Admin\Album;
+namespace Modules\Album\Tests\Feature\Http\Controller\Api\AdminAlbum;
 
 use App\Models\Album;
 use App\Models\Category;
@@ -37,7 +37,7 @@ class StoreAlbumTest extends TestCase
     {
         session()->setPreviousUrl('/admin/albums/create');
 
-        return $this->post('/api/admin/albums', array_merge($album->toArray(), $optional));
+        return $this->json('post', '/api/admin/albums', array_merge($album->toArray(), $optional));
     }
 
     public function test_admin_can_store_an_album_with_a_picture()
@@ -131,18 +131,6 @@ class StoreAlbumTest extends TestCase
         $response->assertStatus(201);
     }
 
-    public function test_admin_can_not_store_an_album_with_a_video()
-    {
-        $this->actingAsAdmin();
-        $album = factory(Album::class)->make();
-        $image = UploadedFile::fake()->image('fake.mp4');
-
-        $response = $this->storeAlbum($album, ['pictures' => array_wrap($image)]);
-
-        $this->assertSame(0, Album::count());
-        $response->assertStatus(422);
-    }
-
     public function test_admin_can_store_an_album_with_published_now()
     {
         $this->actingAsAdmin();
@@ -174,6 +162,6 @@ class StoreAlbumTest extends TestCase
         $response = $this->storeAlbum($album);
 
         $this->assertSame(0, Album::count());
-        $response->assertStatus(403);
+        $response->assertStatus(401);
     }
 }

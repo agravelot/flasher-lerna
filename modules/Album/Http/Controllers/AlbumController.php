@@ -103,11 +103,11 @@ class AlbumController extends Controller
         $album->update($validated);
 
         if (Arr::exists($validated, 'categories')) {
-            $album->categories()->sync(collect($request->input('categories'))->pluck('id'), false);
+            $album->categories()->sync($request->input('categories'), false);
         }
 
         if (Arr::exists($validated, 'cosplayers')) {
-            $album->cosplayers()->sync(collect($request->input('cosplayers'))->pluck('id'), false);
+            $album->cosplayers()->sync($request->input('cosplayers'), false);
         }
 
         return new AlbumIndexResource($album);
