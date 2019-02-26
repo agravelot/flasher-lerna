@@ -62,10 +62,6 @@ class Album extends Model implements HasMedia
 {
     use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey, HasTitleAsSlug;
 
-    protected $casts = [
-        'published_at' => 'date',
-    ];
-
     /**
      * The attributes that are mass assignable.
      *
