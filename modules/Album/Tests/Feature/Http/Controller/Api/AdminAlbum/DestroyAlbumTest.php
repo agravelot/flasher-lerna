@@ -60,7 +60,7 @@ class DestroyAlbumTest extends TestCase
         $response->assertStatus(401);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->withoutMiddleware(VerifyCsrfToken::class);

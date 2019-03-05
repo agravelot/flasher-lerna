@@ -76,7 +76,7 @@ class StorePublishedGoldenBookTest extends TestCase
         return $this->post('/admin/published-goldenbook', $data);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->withoutMiddleware(VerifyCsrfToken::class);

@@ -7,14 +7,8 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-use UniSharp\LaravelFilemanager\Lfm;
-
 Auth::routes(['verify' => true]);
 Route::impersonate();
-
-Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth', 'verified']], function () {
-    Lfm::routes();
-});
 
 //FRONT
 Route::namespace('Front')->group(function () {

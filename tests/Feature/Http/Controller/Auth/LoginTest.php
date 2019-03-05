@@ -17,7 +17,7 @@ class LoginTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         session()->setPreviousUrl('/login');
