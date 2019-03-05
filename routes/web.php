@@ -17,11 +17,10 @@ Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth',
 });
 
 //FRONT
-Route::get('/', 'HomeController@index')->name('home');
-
 Route::namespace('Front')->group(function () {
-    Route::resource('posts', 'PostController')->only(['index', 'show']);
-    Route::resource('albums', 'AlbumController')->only(['index', 'show']);
+    Route::get('/', 'AlbumController@index')->name('albums.index');
+    Route::get('albums/{album_slug}', 'AlbumController@show')->name('albums.show');
+//    Route::resource('posts', 'PostController')->only(['index', 'show']);
     Route::resource('download-albums', 'DownloadAlbumController')->only(['show'])->middleware('auth', 'verified');
     Route::resource('goldenbook', 'GoldenBookController')->only(['index', 'create', 'store']);
     Route::resource('cosplayers', 'CosplayerController')->only(['index', 'show']);
