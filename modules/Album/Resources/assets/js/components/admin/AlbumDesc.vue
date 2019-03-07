@@ -83,7 +83,6 @@
         components: {
             quillEditor,
         },
-        // props: ['album'],
         data() {
             return {
                 errors: {},

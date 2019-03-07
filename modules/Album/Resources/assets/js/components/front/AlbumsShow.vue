@@ -16,13 +16,9 @@ export default {
     created() {
         this.fetchAlbum();
     },
-    // mounted() {
-    //     this.fetchAlbum();
-    // },
     methods: {
         fetchAlbum() {
-            Vue.axios.get(`/api/admin/albums/${this.$route.params.slug}`, {
-                })
+            Vue.axios.get(`/api/admin/albums/${this.$route.params.slug}`)
                 .then(res => res.data)
                 .then(res => {
                     this.album = res.data;
