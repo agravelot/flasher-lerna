@@ -7,6 +7,7 @@
 <script>
 
 export default {
+    name: "AlbumsShow",
     data() {
         return {
             albums: null,

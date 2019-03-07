@@ -100,6 +100,7 @@
     import AlbumDesc from './AlbumDesc';
 
     export default {
+        name: "AlbumsEdit",
         extends: AlbumDesc,
         components: {
             vueDropzone: vue2Dropzone,

@@ -105,6 +105,7 @@
 <script>
 
 export default {
+    name: "AlbumsIndex",
     data() {
         return {
             albums: [],

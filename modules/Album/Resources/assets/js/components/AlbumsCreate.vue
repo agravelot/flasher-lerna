@@ -80,6 +80,7 @@
     import AlbumDesc from './AlbumDesc';
 
     export default {
+        name: "AlbumsCreate",
         extends: AlbumDesc,
         components: {
             'album-desc': AlbumDesc,
