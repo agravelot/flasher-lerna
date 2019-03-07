@@ -116,6 +116,11 @@ const router = new VueRouter({
 //     require('../../../modules/Album/Resources/assets/js/components/AlbumsIndex.vue').default
 // );
 
+Vue.component(
+    'albums-masonry',
+    require('../../modules/Album/Resources/assets/js/components/AlbumsMasonry').default
+);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

@@ -1,12 +1,6 @@
 @extends('admin.admin')
 
 @section('admin-content')
-    <div id="app">
-        <div class="container">
-            <albums></albums>
-        </div>
-    </div>
-
     <div class="card">
         <header class="card-header">
             <p class="card-header-title">

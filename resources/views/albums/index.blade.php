@@ -5,6 +5,10 @@
         <h1 class="title">{{ __('My albums') }}</h1>
         <h2 class="subtitle">{{ __('Discover my albums') }}</h2>
 
+        <div id="app">
+            <albums-masonry></albums-masonry>
+        </div>
+
         @if($albums->isEmpty())
             @include('layouts.partials._empty')
         @else

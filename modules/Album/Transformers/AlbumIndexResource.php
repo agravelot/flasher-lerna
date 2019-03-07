@@ -30,6 +30,7 @@ class AlbumIndexResource extends Resource
             'body' => $this->body,
             'private' => $this->private,
             'pictures' => $this->media,
+            'media' => new MediaResource($this->getFirstMedia('pictures')),
         ];
     }
 }

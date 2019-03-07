@@ -11,14 +11,13 @@ namespace Modules\Album\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Album;
-use App\Models\PublicAlbum;
 use Illuminate\Support\Arr;
 use Modules\Album\Http\Requests\AlbumRequest;
 use Modules\Album\Transformers\AlbumIndexResource;
 use Modules\Album\Transformers\AlbumShowResource;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class AlbumController extends Controller
+class AdminAlbumController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -32,7 +31,7 @@ class AlbumController extends Controller
         $this->authorize('index', Album::class);
 
         return AlbumIndexResource::collection(
-            QueryBuilder::for(PublicAlbum::class)->with('media')->latest()->paginate(10)
+            QueryBuilder::for(Album::class)->with('media')->paginate(10)
         );
     }
 

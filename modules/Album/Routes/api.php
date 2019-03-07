@@ -8,10 +8,13 @@
  */
 
 Route::middleware(['auth:api', 'verified', 'admin'])->group(function () {
-    Route::name('api.admin.')->group(function () {
-        Route::prefix('admin')->group(function () {
-            Route::apiResource('albums', 'AlbumController');
-            Route::apiResource('album-pictures', 'AdminPictureAlbumController')->only('store', 'destroy');
+    Route::name('api.')->group(function () {
+        Route::apiResource('albums', 'AlbumController');
+        Route::name('api.admin.')->group(function () {
+            Route::prefix('admin')->group(function () {
+                Route::apiResource('albums', 'AdminAlbumController');
+                Route::apiResource('album-pictures', 'AdminPictureAlbumController')->only('store', 'destroy');
+            });
         });
     });
 });
