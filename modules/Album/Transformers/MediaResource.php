@@ -29,6 +29,7 @@ class MediaResource extends Resource
             'mine_type' => $this->mine_type,
             'size' => $this->size,
             'thumb' => $this->getUrl('thumb'),
+            'src_set' => $this->getSrcset(),
         ];
     }
 }
