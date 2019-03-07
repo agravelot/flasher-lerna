@@ -8,12 +8,6 @@
                     <p class="card-header-title">
                         Golden book posts
                     </p>
-
-                    <a href="#" class="card-header-icon" aria-label="more options">
-                        <span class="icon">
-                            <i class="fas fa-angle-down" aria-hidden="true"></i>
-                        </span>
-                    </a>
                 </header>
                 <div class="card-table">
                     <div class="content">

@@ -56,7 +56,7 @@ class StoreCosplayerTest extends TestCase
             ->assertDontSee($cosplayer->description);
     }
 
-    public function test_admin_can_not_store_a_cosplayer_related_to_an_inexistant_user()
+    public function test_admin_can_not_store_a_cosplayer_related_to_an_non_existant_user()
     {
         $this->actingAsAdmin();
         $cosplayer = factory(Cosplayer::class)->make();
@@ -118,7 +118,7 @@ class StoreCosplayerTest extends TestCase
             ->assertRedirect('/login');
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->withoutMiddleware(VerifyCsrfToken::class);

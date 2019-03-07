@@ -25,7 +25,7 @@ class DeletePictureAlbumTest extends TestCase
         $album = factory(Album::class)->states(['published', 'withMedias'])->create();
         $this->assertSame(15, $album->getMedia('pictures')->count());
 
-        $response = $this->deleteAlbumPicture($album->slug, 1);
+        $response = $this->deleteAlbumPicture($album->slug, $album->getFirstMedia('pictures')->id);
 
         $this->assertSame(14, $album->fresh()->getMedia('pictures')->count());
         $response->assertStatus(204);
@@ -38,10 +38,11 @@ class DeletePictureAlbumTest extends TestCase
         $album = factory(Album::class)->states(['published', 'withMedias'])->create();
         $this->assertSame(15, $album->getMedia('pictures')->count());
 
-        $response = $this->deleteAlbumPicture($album->slug, 100);
+        $response = $this->deleteAlbumPicture($album->slug, 10000);
 
         $this->assertSame(15, $album->fresh()->getMedia('pictures')->count());
-        $response->assertStatus(400);
+
+        $response->assertStatus(422);
     }
 
     public function test_admin_can_not_delete_a_non_filled_picture_to_an_album()
@@ -54,7 +55,7 @@ class DeletePictureAlbumTest extends TestCase
         $response = $this->deleteAlbumPicture($album->slug);
 
         $this->assertSame(15, $album->fresh()->getMedia('pictures')->count());
-        $response->assertStatus(302);
+        $response->assertStatus(422);
     }
 
     public function test_user_can_not_delete_a_picture_to_an_album()
@@ -67,7 +68,7 @@ class DeletePictureAlbumTest extends TestCase
         $response = $this->deleteAlbumPicture($album->slug);
 
         $this->assertSame(15, $album->fresh()->getMedia('pictures')->count());
-        $response->assertStatus(403);
+        $response->assertStatus(422);
     }
 
 //    public function test_guest_can_not_delete_a_picture_to_an_album()
@@ -85,7 +86,7 @@ class DeletePictureAlbumTest extends TestCase
     {
         session()->setPreviousUrl('/admin/albums');
 
-        return $this->delete('/api/admin/album-pictures/' . $albumSlug,
+        return $this->json('delete', '/api/admin/album-pictures/' . $albumSlug,
             array_merge(['media_id' => $mediaId], $optional)
         );
     }

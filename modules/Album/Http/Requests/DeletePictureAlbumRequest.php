@@ -7,9 +7,11 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace App\Http\Requests;
+namespace Modules\Album\Http\Requests;
 
-class StorePictureAlbumRequest extends Request
+use App\Http\Requests\Request;
+
+class DeletePictureAlbumRequest extends Request
 {
     /**
      * Get the validation rules that apply to the request.
@@ -19,8 +21,7 @@ class StorePictureAlbumRequest extends Request
     public function rules()
     {
         return [
-            'album_slug' => 'required|exists:albums,slug',
-            'file' => 'required|file|mimetypes:application/octet-stream,image/*|max:20000',
+            'media_id' => 'required',
         ];
     }
 }

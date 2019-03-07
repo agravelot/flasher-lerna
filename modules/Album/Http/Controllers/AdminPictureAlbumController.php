@@ -7,16 +7,17 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace App\Http\Controllers\Admin;
+namespace Modules\Album\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\DeletePictureAlbumRequest;
-use App\Http\Requests\StorePictureAlbumRequest;
 use App\Models\Album;
-use Illuminate\Http\Request;
+use Modules\Album\Http\Requests\DeletePictureAlbumRequest;
+use Modules\Album\Http\Requests\StorePictureAlbumRequest;
+use Modules\Album\Transformers\AlbumIndexResource;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Spatie\MediaLibrary\Models\Media;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class AdminPictureAlbumController extends Controller
 {
@@ -67,24 +68,27 @@ class AdminPictureAlbumController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param string  $albumSlug
-     * @param Request $request
+     * @param string                    $albumSlug
+     * @param DeletePictureAlbumRequest $request
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Exception
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(string $albumSlug, DeletePictureAlbumRequest $request)
     {
         $this->authorize('delete', Album::class);
         $album = Album::whereSlug($albumSlug)->firstOrFail();
         $this->authorize('delete', $album);
-        $deleted = optional($album->getMedia('pictures')->get($request->get('media_id')))->delete();
+        $media_id = (int) ($request->media_id);
 
-        if ($deleted === null || !$deleted){
-            return response()->json(['error' => 'media not found'], 400);
+        if (! $album->media->pluck('id')->containsStrict($media_id)) {
+            throw new UnprocessableEntityHttpException('media not found');
         }
 
-        return response()->json(null, 204);
+        $album->media->firstWhere('id', $media_id)->delete();
+
+        return (new AlbumIndexResource($album))->response()->setStatusCode(204);
     }
 }

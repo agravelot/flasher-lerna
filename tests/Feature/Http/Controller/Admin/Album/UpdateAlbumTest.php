@@ -93,7 +93,7 @@ class UpdateAlbumTest extends TestCase
             ->assertSee('Album successfully updated');
     }
 
-    public function test_admin_can_update_an_album_with_an_inexistant_category_and_a_picture()
+    public function test_admin_can_update_an_album_with_an_non_existant_category_and_a_picture()
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
@@ -133,7 +133,7 @@ class UpdateAlbumTest extends TestCase
             ->assertSee('Album successfully updated');
     }
 
-    public function test_admin_can_update_an_album_with_an_inexistant_cosplayer_and_a_picture()
+    public function test_admin_can_update_an_album_with_an_non_existant_cosplayer_and_a_picture()
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
@@ -151,20 +151,6 @@ class UpdateAlbumTest extends TestCase
             ->assertSee($album->description)
             ->assertSee('The selected cosplayers.0 is invalid.')
             ->assertDontSee('Album successfully updated');
-    }
-
-    public function test_admin_can_not_update_an_album_with_a_video()
-    {
-        $this->actingAsAdmin();
-        $album = factory(Album::class)->create();
-        $image = UploadedFile::fake()->image('fake.mp4');
-
-        $response = $this->updateAlbum($album, ['pictures' => array_wrap($image)]);
-
-        $this->assertSame(1, Album::count());
-        $response->assertRedirect('/admin/albums/' . $album->slug . '/edit');
-        $this->followRedirects($response)
-            ->assertSee('The pictures.0 must be an image.');
     }
 
     public function test_admin_can_update_an_album_with_published_now()

@@ -28,7 +28,7 @@ class IndexAlbumTest extends TestCase
 
     private function showAlbums(): TestResponse
     {
-        return $this->get('/albums');
+        return $this->get(route('albums.index'));
     }
 
     public function test_guest_can_view_published_albums()

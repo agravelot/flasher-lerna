@@ -44,7 +44,7 @@ class DestroyPublishedGoldenBookTest extends TestCase
         return $this->delete('/admin/published-goldenbook/' . $id, $data);
     }
 
-    public function test_admin_can_not_unpublish_an_inexistant_goldenbook_post()
+    public function test_admin_can_not_unpublish_an_non_existant_goldenbook_post()
     {
         $this->actingAsAdmin();
 
@@ -74,7 +74,7 @@ class DestroyPublishedGoldenBookTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->withoutMiddleware(VerifyCsrfToken::class);

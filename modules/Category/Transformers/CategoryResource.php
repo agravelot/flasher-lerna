@@ -7,19 +7,21 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace App\Http\Requests;
+namespace Modules\Category\Transformers;
 
-class DeletePictureAlbumRequest extends Request
+use Illuminate\Http\Resources\Json\Resource;
+
+class CategoryResource extends Resource
 {
     /**
-     * Get the validation rules that apply to the request.
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request
      *
      * @return array
      */
-    public function rules()
+    public function toArray($request)
     {
-        return [
-            'media_id' => 'required',
-        ];
+        return parent::toArray($request);
     }
 }

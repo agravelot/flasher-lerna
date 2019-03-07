@@ -43,7 +43,7 @@ class RedirectIfAuthenticatedTest extends TestCase
         $response = $m->handle($request, $next, $guard);
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertSame(route('home'), $response->headers->get('Location'));
+        $this->assertSame(url('/'), $response->headers->get('Location'));
         $this->assertSame(302, $response->status());
     }
 

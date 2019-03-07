@@ -15,8 +15,8 @@
         <div class="navbar-menu" id="navMenu">
             <div class="navbar-start">
                 {{-- <a class="navbar-item {{ Request::is('posts*') ? 'is-active' : '' }}" href="{{ route('posts.index') }}">Posts</a>--}}
-                <a class="navbar-item {{ Request::is('albums*') ? 'is-active' : '' }}"
-                   href="{{ route('albums.index') }}">{{ __('Albums') }}</a>
+                {{--<a class="navbar-item {{ Request::is('albums*') ? 'is-active' : '' }}"--}}
+                   {{--href="{{ route('albums.index') }}">{{ __('Albums') }}</a>--}}
                 {{--<a class="navbar-item {{ Request::is('categories*') ? 'is-active' : '' }}"--}}
                    {{--href="{{ route('categories.index') }}">{{ __('Categories') }}</a>--}}
                 @include('layouts.partials._navbar_categories')

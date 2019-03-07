@@ -42,7 +42,7 @@ class IndexAlbumTest extends TestCase
     public function test_admin_can_view_secured_albums()
     {
         $this->actingAsAdmin();
-        $albums = factory(Album::class, 5)->state('password')->create();
+        $albums = factory(Album::class, 5)->states(['published', 'password'])->create();
 
         $response = $this->get('/admin/albums');
 

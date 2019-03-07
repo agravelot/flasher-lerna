@@ -1,0 +1,25 @@
+{
+    "name": "nevax/category",
+    "description": "",
+    "authors": [
+        {
+            "name": "Antoine GRAVELOT",
+            "email": "antoine.gravelot@hotmail.fr"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Category\\Providers\\CategoryServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Category\\": ""
+        }
+    }
+}

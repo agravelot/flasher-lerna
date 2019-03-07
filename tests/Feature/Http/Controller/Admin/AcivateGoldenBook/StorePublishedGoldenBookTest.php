@@ -36,7 +36,7 @@ class StorePublishedGoldenBookTest extends TestCase
             ->assertSee('Goldenbook post published');
     }
 
-    public function test_admin_can_not_publish_an_inexistant_goldenbook_post()
+    public function test_admin_can_not_publish_an_non_existant_goldenbook_post()
     {
         $this->actingAsAdmin();
 
@@ -76,7 +76,7 @@ class StorePublishedGoldenBookTest extends TestCase
         return $this->post('/admin/published-goldenbook', $data);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->withoutMiddleware(VerifyCsrfToken::class);

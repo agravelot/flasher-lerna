@@ -44,19 +44,19 @@ class CreateAdminUser extends Command
         $email = $this->argument('email');
         $password = $this->argument('password');
 
-        if ($role === null) {
+        if (!$role) {
             $role = $this->choice('Please select a user role', ['admin', 'user'], 'user');
         }
 
-        if ($username === null) {
+        if (!$username) {
             $username = $this->ask('Please enter a username');
         }
 
-        if ($email === null) {
+        if (!$email) {
             $email = $this->ask('Enter your user email');
         }
 
-        if ($password === null) {
+        if (!$password) {
             $password = $this->secret('Enter your user password');
         }
 
@@ -71,12 +71,11 @@ class CreateAdminUser extends Command
         $filter = array_fill_keys(['name', 'email'], '');
         $rules = array_intersect_key((new UserRequest())->rules(), $filter);
 
-        if (! $this->validate($data, $rules)) {
+        if (!$this->validate($data, $rules)) {
             return 1;
         }
-        $this->createUser($data);
 
-        $this->info('User created successfully');
+        $this->create($data);
 
         return 0;
     }
@@ -84,7 +83,6 @@ class CreateAdminUser extends Command
     private function validate(array $data, array $rules): bool
     {
         $validator = Validator::make($data, $rules);
-        $validator->errors()->all();
 
         if ($validator->fails()) {
             $this->error('User not created. See error messages below:');
@@ -99,11 +97,12 @@ class CreateAdminUser extends Command
         return true;
     }
 
-    private function createUser($data)
+    private function create($data)
     {
         $user = User::create($data);
         if ($user->markEmailAsVerified()) {
             event(new Verified($user));
         }
+        $this->info('User created successfully');
     }
 }

@@ -16,15 +16,6 @@
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+ */
 
-//TODO Implement JWT auth
-//Route::middleware('auth:api')->group(function () {
-Route::namespace('Admin')->group(function () {
-    Route::name('admin.')->group(function () { // Route Name Prefixe
-        Route::prefix('admin')->group(function () { // Route Prefixe /admin/
-            Route::apiResource('album-pictures', 'AdminPictureAlbumController')->only('store', 'destroy');
-        });
-    });
-});
-//});
+// Please see Modules folder for more routes

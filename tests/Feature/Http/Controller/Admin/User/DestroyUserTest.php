@@ -68,7 +68,7 @@ class DestroyUserTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->withoutMiddleware(VerifyCsrfToken::class);

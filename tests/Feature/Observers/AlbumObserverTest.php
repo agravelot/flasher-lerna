@@ -62,7 +62,7 @@ class AlbumObserverTest extends TestCase
         $this->assertSame($albums->get(1)->id, Activity::all()->get(1)->subject_id);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->user = factory(User::class)->create();
