@@ -40,7 +40,7 @@
 
                     <b-table-column field="title" label="Title" sortable>
                         <!--<template v-if="showDetailIcon"><a v-bind:href="`/admin/albums/${album.row.slug}/edit`">{{ album.row.title }}</a></template>-->
-                        <router-link :to="{name: 'albums.edit', params: { slug: album.row.slug }}">{{ album.row.title }}</router-link>
+                        <router-link :to="{name: 'admin.albums.edit', params: { slug: album.row.slug }}">{{ album.row.title }}</router-link>
                         <!--<template v-else>-->
                             <!--<a @click="toggle(album.row)">{{ album.row.title }}</a>-->
                         <!--</template>-->

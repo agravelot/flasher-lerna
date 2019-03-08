@@ -178,7 +178,7 @@
                             type: 'is-success',
                             duration: 5000,
                         });
-                        // this.$router.push({name: 'albums.index'});
+                        // this.$router.push({name: 'admin.albums.index'});
                     })
                     .catch(err => {
                         this.$toast.open({

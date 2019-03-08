@@ -62,27 +62,27 @@ const router = new VueRouter({
     },
     {
       path: '/admin/spa/albums',
-      name: 'albums.index',
+      name: 'admin.albums.index',
       component: AlbumsIndex,
     },
     {
       path: '/admin/spa/create',
-      name: 'albums.create',
+      name: 'admin.albums.create',
       component: AlbumsCreate,
     },
     {
       path: '/admin/spa/:slug',
-      name: 'albums.show',
+      name: 'admin.albums.show',
       component: AlbumsShow,
     },
     {
       path: '/admin/spa/:slug/edit',
-      name: 'albums.edit',
+      name: 'admin.albums.edit',
       component: AlbumsEdit,
     },
     {
       path: '/admin/spa/users',
-      name: 'users.index',
+      name: 'admin.users.index',
       component: UsersIndex,
     },
   ],

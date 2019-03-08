@@ -105,7 +105,7 @@
                             message: `Album successfully created`,
                             type: 'is-success',
                         });
-                        this.$router.push({name: 'albums.edit', params: {slug: res.data.slug}});
+                        this.$router.push({name: 'admin.albums.edit', params: {slug: res.data.slug}});
                     })
                     .catch(err => {
                         this.$toast.open({
