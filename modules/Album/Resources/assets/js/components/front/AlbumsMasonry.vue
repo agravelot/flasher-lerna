@@ -35,10 +35,6 @@
 </template>
 
 <script>
-    import VueMasonry from 'vue-masonry-css'
-
-    window.Vue.use(VueMasonry);
-
     export default {
         name: "AlbumsMasonry",
         data() {
@@ -87,7 +83,7 @@
                 });
             },
             fetchAlbums() {
-                Vue.axios.get('/api/albums', {
+                this.axios.get('/api/albums', {
                     params: {
                         page: this.page,
                     }
