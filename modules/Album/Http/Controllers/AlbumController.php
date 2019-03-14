@@ -10,10 +10,7 @@
 namespace Modules\Album\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Album;
 use App\Models\PublicAlbum;
-use Illuminate\Support\Arr;
-use Modules\Album\Http\Requests\AlbumRequest;
 use Modules\Album\Transformers\AlbumIndexResource;
 use Modules\Album\Transformers\AlbumShowResource;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -41,7 +38,7 @@ class AlbumController extends Controller
      */
     public function show(string $slug)
     {
-        $album = PublicAlbum::with(['cosplayers.media'])
+        $album = PublicAlbum::with(['media', 'cosplayers.media'])
             ->whereSlug($slug)
             ->firstOrFail();
 
