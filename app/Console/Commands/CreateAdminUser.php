@@ -44,19 +44,19 @@ class CreateAdminUser extends Command
         $email = $this->argument('email');
         $password = $this->argument('password');
 
-        if (!$role) {
+        if (! $role) {
             $role = $this->choice('Please select a user role', ['admin', 'user'], 'user');
         }
 
-        if (!$username) {
+        if (! $username) {
             $username = $this->ask('Please enter a username');
         }
 
-        if (!$email) {
+        if (! $email) {
             $email = $this->ask('Enter your user email');
         }
 
-        if (!$password) {
+        if (! $password) {
             $password = $this->secret('Enter your user password');
         }
 
@@ -71,7 +71,7 @@ class CreateAdminUser extends Command
         $filter = array_fill_keys(['name', 'email'], '');
         $rules = array_intersect_key((new UserRequest())->rules(), $filter);
 
-        if (!$this->validate($data, $rules)) {
+        if (! $this->validate($data, $rules)) {
             return 1;
         }
 

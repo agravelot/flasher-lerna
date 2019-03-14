@@ -8,15 +8,5 @@
         <div id="app">
             <albums-masonry></albums-masonry>
         </div>
-
-        {{--@if($albums->isEmpty())--}}
-            {{--@include('layouts.partials._empty')--}}
-        {{--@else--}}
-            {{--<div class="masonry">--}}
-                {{--@each('albums.partials._index_item', $albums, 'album')--}}
-            {{--</div>--}}
-        {{--@endif--}}
-
-        {{--{{ $albums->links() }}--}}
     </div>
 @endsection
