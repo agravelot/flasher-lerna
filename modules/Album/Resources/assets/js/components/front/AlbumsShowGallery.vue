@@ -30,28 +30,26 @@
                             <span>Edit</span>
                         </a>
                     </div>
-                    </div>
+                </div>
 
                 <div class="tags has-addons level-item">
-                    <!--<span class="tag is-rounded is-info">{{'@' . $album->user->name}}</span>-->
-                    <!--<span class="tag is-rounded">{{ $album->created_at->toFormattedDateString() }}</span>-->
+                    <span class="tag is-rounded is-info">@{{ album.user.name }}</span>
+                    <span class="tag is-rounded">{{ album.created_at }}</span>
                     </div>
                 <div v-if="album.body" class="content article-body">
                     <p class="has-text-justified" v-html="album.body"></p>
                     </div>
-                <div class="tags">
+                <div v-if="album.categories" class="tags">
                     <!--@each('categories.partials._category_tag', $album->categories, 'category')-->
                     </div>
-                <div class="columns is-multiline is-mobile">
+                <div v-if="album.cosplayers" class="columns is-multiline is-mobile">
                     <!--@each('cosplayers.partials._cosplayer_badge', $album->cosplayers, 'cosplayer')-->
-                    </div>
 
                 </div>
             </div>
         </div>
-        </div>
 
-    <!--{{&#45;&#45;@foreach ($album->getMedia('pictures') as $key => $picture)&#45;&#45;}}-->
+         <!--{{&#45;&#45;@foreach ($album->getMedia('pictures') as $key => $picture)&#45;&#45;}}-->
     <!--{{&#45;&#45;<div id="modal-{{ $key }}" class="modal modal-fx-fadeInScale">&#45;&#45;}}-->
     <!--{{&#45;&#45;<div class="modal-background"></div>&#45;&#45;}}-->
     <!--{{&#45;&#45;<div class="modal-content is-huge is-image">&#45;&#45;}}-->
@@ -60,7 +58,9 @@
     <!--{{&#45;&#45;<button class="modal-close is-large" aria-label="{{ __('close') }}"></button>&#45;&#45;}}-->
     <!--{{&#45;&#45;</div>&#45;&#45;}}-->
     <!--{{&#45;&#45;@endforeach&#45;&#45;}}-->
-    
+    </div>
+    </div>
+
 </template>
 
 <script>
