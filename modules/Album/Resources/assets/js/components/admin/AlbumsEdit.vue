@@ -212,6 +212,11 @@
                         this.album.medias = res.data.medias;
                     })
                     .catch(err => {
+                        this.$toast.open({
+                            message: `Unable to refresh the album <br><small>${err.response.data.message}</small>`,
+                            type: 'is-danger',
+                            duration: 5000,
+                        });
                         throw err;
                     })
             },
@@ -229,7 +234,6 @@
                         });
                     })
                     .catch(err => {
-                        alert('Something went wrong.');
                         throw err;
                     });
             }
