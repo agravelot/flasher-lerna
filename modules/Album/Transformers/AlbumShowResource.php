@@ -9,7 +9,9 @@
 
 namespace Modules\Album\Transformers;
 
+use App\Models\Album;
 use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Support\Facades\Auth;
 
 class AlbumShowResource extends Resource
 {
@@ -32,6 +34,14 @@ class AlbumShowResource extends Resource
             'medias' => MediaResource::collection($this->media),
             'categories' => $this->categories,
             'cosplayers' => $this->cosplayer,
+            'download' => $this->when(
+                Auth::guard('api')->check() && Auth::guard('api')->user()->can('download', Album::findOrFail($this->id)),
+                route('download-albums.show', ['slug' => $this->slug])
+            ),
+            'edit' => $this->when(
+                Auth::guard('api')->check() && Auth::guard('api')->user()->can('update', Album::findOrFail($this->id)),
+                route('admin.albums.edit', ['slug' => $this->slug])
+            ),
         ];
     }
 }

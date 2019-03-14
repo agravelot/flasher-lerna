@@ -13,7 +13,54 @@
                 </figure>
             </a>
         </masonry>
-    </div>
+
+        <div class="column is-10 is-offset-1">
+        <div class="card article">
+            <div class="card-content has-text-centered">
+                <div class="field has-addons">
+                    <div v-if="album.download" class="control">
+                        <a class="button" :href="album.download">
+                            <span class="icon is-small"><i class="fas fa-download"></i></span>
+                            <span>Download</span>
+                        </a>
+                    </div>
+                    <div v-if="album.edit" class="control">
+                        <a class="button" :href="album.edit">
+                            <span class="icon is-small"><i class="fas fa-edit"></i></span>
+                            <span>Edit</span>
+                        </a>
+                    </div>
+                    </div>
+
+                <div class="tags has-addons level-item">
+                    <!--<span class="tag is-rounded is-info">{{'@' . $album->user->name}}</span>-->
+                    <!--<span class="tag is-rounded">{{ $album->created_at->toFormattedDateString() }}</span>-->
+                    </div>
+                <div v-if="album.body" class="content article-body">
+                    <p class="has-text-justified" v-html="album.body"></p>
+                    </div>
+                <div class="tags">
+                    <!--@each('categories.partials._category_tag', $album->categories, 'category')-->
+                    </div>
+                <div class="columns is-multiline is-mobile">
+                    <!--@each('cosplayers.partials._cosplayer_badge', $album->cosplayers, 'cosplayer')-->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        </div>
+
+    <!--{{&#45;&#45;@foreach ($album->getMedia('pictures') as $key => $picture)&#45;&#45;}}-->
+    <!--{{&#45;&#45;<div id="modal-{{ $key }}" class="modal modal-fx-fadeInScale">&#45;&#45;}}-->
+    <!--{{&#45;&#45;<div class="modal-background"></div>&#45;&#45;}}-->
+    <!--{{&#45;&#45;<div class="modal-content is-huge is-image">&#45;&#45;}}-->
+        <!--{{&#45;&#45;<img srcset="{{ $picture->getSrcset() }}" src="{{ $picture->getUrl() }}" alt="{{ $picture->name }}">&#45;&#45;}}-->
+        <!--{{&#45;&#45;</div>&#45;&#45;}}-->
+    <!--{{&#45;&#45;<button class="modal-close is-large" aria-label="{{ __('close') }}"></button>&#45;&#45;}}-->
+    <!--{{&#45;&#45;</div>&#45;&#45;}}-->
+    <!--{{&#45;&#45;@endforeach&#45;&#45;}}-->
+    
 </template>
 
 <script>
