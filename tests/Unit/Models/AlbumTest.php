@@ -54,7 +54,12 @@ class AlbumTest extends ModelTestCase
     {
         $this->runConfigurationAssertions(new Album(), [
             'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id', 'private',
-        ], [], ['*'], [], ['id' => 'int', 'published_at' => 'datetime']);
+        ], [], ['*'], [], [
+            'id' => 'int',
+            'published_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'created_at' => 'datetime',
+        ]);
     }
 
     public function testBelongsToManyAlbumsRelationship()

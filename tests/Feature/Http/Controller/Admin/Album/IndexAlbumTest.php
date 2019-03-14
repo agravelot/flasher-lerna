@@ -11,18 +11,24 @@ namespace Tests\Feature\Http\Controller\Admin\Album;
 
 use App\Models\Album;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
 
 class IndexAlbumTest extends TestCase
 {
     use RefreshDatabase;
 
+    private function getAlbums(): TestResponse
+    {
+        return  $this->json('get', '/admin/albums');
+    }
+
     public function test_admin_can_view_published_albums()
     {
         $this->actingAsAdmin();
         $albums = factory(Album::class, 5)->state('published')->create();
 
-        $response = $this->get('/admin/albums');
+        $response = $this->getAlbums();
 
         $response->assertStatus(200)
             ->assertSeeInOrder($albums->pluck('title')->toArray());
@@ -33,7 +39,7 @@ class IndexAlbumTest extends TestCase
         $this->actingAsAdmin();
         $albums = factory(Album::class, 5)->state('unpublished')->create();
 
-        $response = $this->get('/admin/albums');
+        $response = $this->getAlbums();
 
         $response->assertStatus(200)
             ->assertSeeInOrder($albums->pluck('title')->toArray());
@@ -44,7 +50,7 @@ class IndexAlbumTest extends TestCase
         $this->actingAsAdmin();
         $albums = factory(Album::class, 5)->states(['published', 'password'])->create();
 
-        $response = $this->get('/admin/albums');
+        $response = $this->getAlbums();
 
         $response->assertStatus(200)
             ->assertSeeInOrder($albums->pluck('title')->toArray());
@@ -55,7 +61,7 @@ class IndexAlbumTest extends TestCase
         $this->actingAsAdmin();
         $albums = factory(Album::class, 5)->state('passwordLess')->create();
 
-        $response = $this->get('/admin/albums');
+        $response = $this->getAlbums();
 
         $response->assertStatus(200)
             ->assertSeeInOrder($albums->pluck('title')->toArray());
@@ -65,17 +71,15 @@ class IndexAlbumTest extends TestCase
     {
         $this->actingAsUser();
 
-        $response = $this->get('/admin/albums');
+        $response = $this->getAlbums();
 
         $response->assertStatus(403);
     }
 
     public function test_guest_can_not_view_index()
     {
-        $response = $this->get('/admin/albums');
+        $response = $this->getAlbums();
 
-        $response->assertRedirect('/login');
-        $this->followRedirects($response)
-            ->assertStatus(200);
+        $response->assertStatus(401);
     }
 }
