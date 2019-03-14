@@ -24,14 +24,17 @@
 
         <div class="has-margin-md"></div>
 
-        <b-pagination
-                v-on:change="onPageChanged"
-                :total="total"
-                :current.sync="page"
-                order="is-centered"
-                icon-pack="fas"
-                :per-page="perPage">
-        </b-pagination>
+        <div v-if="total > perPage">
+            <b-pagination
+                    v-on:change="onPageChanged"
+                    :total="total"
+                    :current.sync="page"
+                    order="is-centered"
+                    icon-pack="fas"
+                    :per-page="perPage">
+            </b-pagination>
+        </div>
+
     </div>
 </template>
 
