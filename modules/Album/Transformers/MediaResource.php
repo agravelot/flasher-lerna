@@ -28,6 +28,7 @@ class MediaResource extends Resource
             'file_name' => $this->file_name,
             'mine_type' => $this->mine_type,
             'size' => $this->size,
+            'url' => $this->getUrl(),
             'thumb' => $this->getUrl('thumb'),
             'src_set' => $this->getSrcset(),
         ];

@@ -9,11 +9,9 @@
 
 namespace Modules\Album\Transformers;
 
-use App\Models\Album;
 use Illuminate\Http\Resources\Json\Resource;
-use Illuminate\Support\Facades\Auth;
 
-class CategoryResource extends Resource
+class CosplayerResource extends Resource
 {
     /**
      * Transform the resource into an array.

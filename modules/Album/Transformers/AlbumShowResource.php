@@ -16,10 +16,11 @@ use Illuminate\Support\Facades\Auth;
 class AlbumShowResource extends Resource
 {
     /**
-     * Check if the user has the ability to according to the policy
+     * Check if the user has the ability to according to the policy.
      *
      * @param string $permission
      * @param Album  $album
+     *
      * @return bool
      */
     private function checkCan(string $permission, Album $album)
@@ -36,16 +37,18 @@ class AlbumShowResource extends Resource
      */
     public function toArray($request)
     {
+//        download, edit as metadata
         return [
             'id' => $this->id,
             'slug' => $this->slug,
             'title' => $this->title,
             'published_at' => $this->published_at,
+            'created_at' => $this->created_at,
             'body' => $this->body,
             'private' => $this->private,
             'medias' => MediaResource::collection($this->media),
-            'categories' => $this->categories,
-            'cosplayers' => $this->cosplayer,
+            'categories' => CategoryResource::collection($this->categories),
+            'cosplayers' => CosplayerResource::collection($this->cosplayers),
             'download' => $this->when(
                 $this->checkCan('download', Album::findOrFail($this->id)),
                 route('download-albums.show', ['slug' => $this->slug])
@@ -54,6 +57,7 @@ class AlbumShowResource extends Resource
                 $this->checkCan('update', Album::findOrFail($this->id)),
                 route('admin.albums.edit', ['slug' => $this->slug])
             ),
+            'user' => new UserResource($this->user),
         ];
     }
 }
