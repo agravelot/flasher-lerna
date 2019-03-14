@@ -64,6 +64,8 @@ class Album extends Model implements HasMedia
 
     protected $casts = [
       'published_at' => 'datetime',
+      'updated_at' => 'datetime',
+      'created_at' => 'datetime',
     ];
 
     /**
