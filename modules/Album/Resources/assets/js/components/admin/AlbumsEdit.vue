@@ -87,7 +87,7 @@
                 </div>
             </b-tab-item>
             <b-tab-item label="Prévualisation" icon-pack="fas" icon="eye">
-
+                <album-show-gallery></album-show-gallery>
             </b-tab-item>
         </b-tabs>
 
@@ -98,6 +98,7 @@
     import vue2Dropzone from 'vue2-dropzone';
     import 'vue2-dropzone/dist/vue2Dropzone.min.css'
     import AlbumDesc from './AlbumDesc';
+    import AlbumsShowGallery from './../front/AlbumsShowGallery';
 
     export default {
         name: "AlbumsEdit",
@@ -105,6 +106,7 @@
         components: {
             vueDropzone: vue2Dropzone,
             'album-desc': AlbumDesc,
+            'album-show-gallery': AlbumsShowGallery,
         },
         data() {
             return {

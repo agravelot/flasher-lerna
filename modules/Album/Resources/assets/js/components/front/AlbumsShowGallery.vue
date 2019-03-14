@@ -102,7 +102,12 @@
                 });
             },
             fetchAlbum() {
-                this.axios.get(`/api/albums/${window.location.pathname.split('/')[window.location.pathname.split('/').length -1]}`)
+                let slug = window.location.pathname.split('/')[window.location.pathname.split('/').length -1];
+                // Workaround until moved to vue router
+                if (slug === 'edit') {
+                    slug = this.$route.params.slug;
+                }
+                this.axios.get(`/api/albums/${slug}`)
                     .then(res => res.data)
                     .then(res => {
                         this.loading = false;
