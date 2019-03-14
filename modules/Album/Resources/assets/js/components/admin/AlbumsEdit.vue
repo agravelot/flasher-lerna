@@ -79,7 +79,7 @@
             <b-tab-item label="Pictures" icon-pack="fas" icon="images">
                 <vue-dropzone ref="myVueDropzone" :options="dropzoneOptions" v-on:vdropzone-sending="sendingEvent"
                               v-on:vdropzone-complete="refreshMedias"></vue-dropzone>
-                <div v-for="picture in album.pictures">
+                <div v-for="picture in album.medias">
                     <img v-bind:src="picture.thumb" v-bind:alt="picture.name">
                     <a class="button has-text-danger" v-on:click="deleteAlbumPicture(album.slug, picture.id)">
                         Delete
@@ -209,7 +209,7 @@
                 this.axios.get(`/api/admin/albums/${this.$route.params.slug}`)
                     .then(res => res.data)
                     .then(res => {
-                        this.album.pictures = res.data.pictures;
+                        this.album.medias = res.data.medias;
                     })
                     .catch(err => {
                         throw err;

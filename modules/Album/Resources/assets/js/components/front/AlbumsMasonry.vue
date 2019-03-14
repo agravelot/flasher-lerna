@@ -2,20 +2,19 @@
     <div>
         <!--TODO Add nothing to show-->
         <masonry :gutter="{default: '30px', 700: '15px'}"
-                :cols="{default: 3, 1000: 2, 700: 1, 400: 1}">
-            <a v-for="(album, index) in albums" :key="index" :href="'/albums/' + album.slug" class="has-margin-right-md">
-                <div class="card album">
-                    <div v-if="album.media" class="card-image">
-                        <figure class="image">
-                            <img v-if="album.media.src_set" class="responsive-media"
-                                 :srcset="album.media.src_set" :alt="album.media.name" sizes="1px">
-                            <img v-else :src="album.media.thumb" :alt="album.media.name">
-                        </figure>
-                    </div>
-                    <div class="card-content">
-                        <div class="content">
-                            <p class="is-5">{{ album.title }}</p>
-                        </div>
+                 :cols="{default: 3, 1000: 2, 700: 1, 400: 1}">
+            <a v-for="(album, index) in albums" :key="index" :href="'/albums/' + album.slug"
+               class="card album has-margin-right-md">
+                <div v-if="album.media" class="card-image">
+                    <figure class="image">
+                        <img v-if="album.media.src_set" class="responsive-media"
+                             :srcset="album.media.src_set" :alt="album.media.name" sizes="1px">
+                        <img v-else :src="album.media.thumb" :alt="album.media.name">
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="content">
+                        <p class="is-5">{{ album.title }}</p>
                     </div>
                 </div>
             </a>
