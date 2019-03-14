@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1c6a64a4c70b6666a8e4ac33e0690a17",
+    "content-hash": "ff9e9ca242825465c8cc65c78682b6a9",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -1579,16 +1579,16 @@
         },
         {
             "name": "laravel/horizon",
-            "version": "v3.0.2",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/horizon.git",
-                "reference": "dd7698ee6b5901a02b276ffa7eff78aeda9033c2"
+                "reference": "1ab57492f66014849b51364315c875b7f76bb435"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/horizon/zipball/dd7698ee6b5901a02b276ffa7eff78aeda9033c2",
-                "reference": "dd7698ee6b5901a02b276ffa7eff78aeda9033c2",
+                "url": "https://api.github.com/repos/laravel/horizon/zipball/1ab57492f66014849b51364315c875b7f76bb435",
+                "reference": "1ab57492f66014849b51364315c875b7f76bb435",
                 "shasum": ""
             },
             "require": {
@@ -1644,7 +1644,7 @@
                 "laravel",
                 "queue"
             ],
-            "time": "2019-03-05T10:31:56+00:00"
+            "time": "2019-03-06T08:00:23+00:00"
         },
         {
             "name": "laravel/passport",
@@ -2388,16 +2388,16 @@
         },
         {
             "name": "nwidart/laravel-modules",
-            "version": "4.0.0",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nWidart/laravel-modules.git",
-                "reference": "d487d9be3bfd6b7365678fd805d9ba5f0dd8295c"
+                "reference": "0efd81aef05419a9d032e5bbd7859dd8a67cb7e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nWidart/laravel-modules/zipball/d487d9be3bfd6b7365678fd805d9ba5f0dd8295c",
-                "reference": "d487d9be3bfd6b7365678fd805d9ba5f0dd8295c",
+                "url": "https://api.github.com/repos/nWidart/laravel-modules/zipball/0efd81aef05419a9d032e5bbd7859dd8a67cb7e3",
+                "reference": "0efd81aef05419a9d032e5bbd7859dd8a67cb7e3",
                 "shasum": ""
             },
             "require": {
@@ -2454,7 +2454,7 @@
                 "nwidart",
                 "rad"
             ],
-            "time": "2018-09-30T10:02:46+00:00"
+            "time": "2019-03-04T09:50:46+00:00"
         },
         {
             "name": "ocramius/package-versions",
@@ -3951,16 +3951,16 @@
         },
         {
             "name": "spatie/browsershot",
-            "version": "3.26.2",
+            "version": "3.26.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/browsershot.git",
-                "reference": "c572e805cc66e93b879507f4634ec1aaac0ec149"
+                "reference": "241321f88d7f65868dbe936db910d9012aa98eaa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/browsershot/zipball/c572e805cc66e93b879507f4634ec1aaac0ec149",
-                "reference": "c572e805cc66e93b879507f4634ec1aaac0ec149",
+                "url": "https://api.github.com/repos/spatie/browsershot/zipball/241321f88d7f65868dbe936db910d9012aa98eaa",
+                "reference": "241321f88d7f65868dbe936db910d9012aa98eaa",
                 "shasum": ""
             },
             "require": {
@@ -4003,7 +4003,7 @@
                 "screenshot",
                 "webpage"
             ],
-            "time": "2019-02-01T10:17:45+00:00"
+            "time": "2019-03-06T10:07:51+00:00"
         },
         {
             "name": "spatie/crawler",
@@ -4448,16 +4448,16 @@
         },
         {
             "name": "spatie/laravel-query-builder",
-            "version": "1.15.2",
+            "version": "1.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-query-builder.git",
-                "reference": "c75c93aaa908b8c25ee0ff3b5a6bd28c37f73862"
+                "reference": "62a5746164dbd89b0f7e90e4d59aed56cdf613d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-query-builder/zipball/c75c93aaa908b8c25ee0ff3b5a6bd28c37f73862",
-                "reference": "c75c93aaa908b8c25ee0ff3b5a6bd28c37f73862",
+                "url": "https://api.github.com/repos/spatie/laravel-query-builder/zipball/62a5746164dbd89b0f7e90e4d59aed56cdf613d5",
+                "reference": "62a5746164dbd89b0f7e90e4d59aed56cdf613d5",
                 "shasum": ""
             },
             "require": {
@@ -4501,7 +4501,7 @@
                 "laravel-query-builder",
                 "spatie"
             ],
-            "time": "2019-02-28T11:44:11+00:00"
+            "time": "2019-03-06T10:13:36+00:00"
         },
         {
             "name": "spatie/laravel-sitemap",
@@ -6040,16 +6040,16 @@
         },
         {
             "name": "vlucas/phpdotenv",
-            "version": "v3.3.2",
+            "version": "v3.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vlucas/phpdotenv.git",
-                "reference": "1ee9369cfbf26cfcf1f2515d98f15fab54e9647a"
+                "reference": "dbcc609971dd9b55f48b8008b553d79fd372ddde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/1ee9369cfbf26cfcf1f2515d98f15fab54e9647a",
-                "reference": "1ee9369cfbf26cfcf1f2515d98f15fab54e9647a",
+                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/dbcc609971dd9b55f48b8008b553d79fd372ddde",
+                "reference": "dbcc609971dd9b55f48b8008b553d79fd372ddde",
                 "shasum": ""
             },
             "require": {
@@ -6088,7 +6088,7 @@
                 "env",
                 "environment"
             ],
-            "time": "2019-01-30T10:43:17+00:00"
+            "time": "2019-03-06T09:39:45+00:00"
         },
         {
             "name": "zendframework/zend-diactoros",
@@ -7847,16 +7847,16 @@
         },
         {
             "name": "laravel/telescope",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/telescope.git",
-                "reference": "d7a3ca4338b1a1527b8d19a5d62015a468f8ca56"
+                "reference": "2b976e5d6f5273d8ac86e2db9487386dd27a19ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/telescope/zipball/d7a3ca4338b1a1527b8d19a5d62015a468f8ca56",
-                "reference": "d7a3ca4338b1a1527b8d19a5d62015a468f8ca56",
+                "url": "https://api.github.com/repos/laravel/telescope/zipball/2b976e5d6f5273d8ac86e2db9487386dd27a19ef",
+                "reference": "2b976e5d6f5273d8ac86e2db9487386dd27a19ef",
                 "shasum": ""
             },
             "require": {
@@ -7906,7 +7906,7 @@
                 "laravel",
                 "monitoring"
             ],
-            "time": "2019-03-05T13:47:35+00:00"
+            "time": "2019-03-05T14:07:56+00:00"
         },
         {
             "name": "maximebf/debugbar",
@@ -11664,7 +11664,8 @@
     "platform": {
         "php": "^7.2.0",
         "ext-gd": "*",
-        "ext-imagick": "*"
+        "ext-imagick": "*",
+        "ext-json": "*"
     },
     "platform-dev": []
 }
