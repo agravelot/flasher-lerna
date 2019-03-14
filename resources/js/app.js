@@ -19,13 +19,14 @@ import AlbumsIndex from '../../modules/Album/Resources/assets/js/components/admi
 import AlbumsShow from '../../modules/Album/Resources/assets/js/components/front/AlbumsShowGallery';
 import AlbumsCreate from '../../modules/Album/Resources/assets/js/components/admin/AlbumsCreate';
 import AlbumsEdit from '../../modules/Album/Resources/assets/js/components/admin/AlbumsEdit';
-require('./admin/fontawsome');
-require('bulma-modal-fx/src/_js/modal-fx');
-window.Vue = require('vue');
 
 // window._ = require('lodash');
 
-import VueMasonry from 'vue-masonry-css'
+import VueMasonry from 'vue-masonry-css';
+
+require('./admin/fontawsome');
+require('bulma-modal-fx/src/_js/modal-fx');
+window.Vue = require('vue');
 
 window.Vue.use(VueMasonry);
 
@@ -121,13 +122,13 @@ const router = new VueRouter({
 // );
 
 Vue.component(
-    'albums-masonry',
-    require('../../modules/Album/Resources/assets/js/components/front/AlbumsMasonry').default
+  'albums-masonry',
+  require('../../modules/Album/Resources/assets/js/components/front/AlbumsMasonry').default,
 );
 
 Vue.component(
-    'albums-show-gallery',
-    require('../../modules/Album/Resources/assets/js/components/front/AlbumsShowGallery').default
+  'albums-show-gallery',
+  require('../../modules/Album/Resources/assets/js/components/front/AlbumsShowGallery').default,
 );
 
 /**

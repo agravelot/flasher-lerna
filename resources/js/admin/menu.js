@@ -3,10 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const collapseAdminMenuButton = document.getElementById('collapse-admin-menu');
   if (collapseAdminMenuButton) {
     const icon = collapseAdminMenuButton
-        .getElementsByTagName('span')
-        .item(0)
-        .getElementsByTagName('i')
-        .item(0);
+      .getElementsByTagName('span')
+      .item(0)
+      .getElementsByTagName('i')
+      .item(0);
 
     collapseAdminMenuButton.addEventListener('click', () => {
       if (adminMenu.style.display === 'none') {

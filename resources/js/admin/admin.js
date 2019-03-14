@@ -5,23 +5,23 @@
  */
 
 function deleteAlbumPicture(element) {
-    return axios.delete(`/api/admin/album-pictures/${element.dataset.albumSlug}`, {
-        data: {
-            media_id: element.dataset.pictureId,
-        },
+  return axios.delete(`/api/admin/album-pictures/${element.dataset.albumSlug}`, {
+    data: {
+      media_id: element.dataset.pictureId,
+    },
+  })
+    .then(() => {
+      element.parentNode.removeChild(element);
     })
-        .then(() => {
-            element.parentNode.removeChild(element);
-        })
-        .catch((err) => {
-            alert('Something want wrong.');
-            throw err;
-        });
+    .catch((err) => {
+      alert('Something want wrong.');
+      throw err;
+    });
 }
 
 const deleteAlbumPictureBtn = document.getElementsByClassName('delete-album-picture');
 Array.from(deleteAlbumPictureBtn).forEach((el) => {
-    el.addEventListener('click', () => {
-        deleteAlbumPicture(el.parentNode);
-    });
+  el.addEventListener('click', () => {
+    deleteAlbumPicture(el.parentNode);
+  });
 });
