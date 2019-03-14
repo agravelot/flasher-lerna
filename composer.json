@@ -11,6 +11,7 @@
     "php": "^7.2.0",
     "ext-gd": "*",
     "ext-imagick": "*",
+    "ext-json": "*",
     "anhskohbo/no-captcha": "^3.0",
     "beyondcode/laravel-self-diagnosis": "^1.0",
     "cviebrock/eloquent-sluggable": "^4.8",
