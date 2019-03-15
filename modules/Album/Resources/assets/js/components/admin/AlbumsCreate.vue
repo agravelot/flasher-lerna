@@ -90,12 +90,33 @@
                 album: {
                   private: 1,
                 },
+                allCategories: [],
+                allCosplayers: [],
                 isSelectOnly: false,
             }
         },
         created() {
+            this.fetchData();
         },
         methods: {
+            fetchData() {
+                this.axios.get('/api/admin/categories')
+                    .then(res => res.data)
+                    .then(res => {
+                        this.allCategories = res.data;
+                    })
+                    .catch(err => {
+                        throw err;
+                    });
+                this.axios.get('/api/admin/cosplayers')
+                    .then(res => res.data)
+                    .then(res => {
+                        this.allCosplayers = res.data;
+                    })
+                    .catch(err => {
+                        throw err;
+                    });
+            },
             createAlbum() {
                 this.axios.post(`/api/admin/albums/`, this.album)
                     .then(res => res.data)
