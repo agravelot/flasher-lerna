@@ -15,7 +15,6 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -204,7 +203,6 @@ class Album extends Model implements HasMedia
             ->height(232)
             ->sharpen(10)
             ->optimize()
-            ->format(Manipulations::FORMAT_WEBP)
             ->performOnCollections('pictures');
     }
 }
