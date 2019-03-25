@@ -107,7 +107,7 @@
                 if (slug === 'edit') {
                     slug = this.$route.params.slug;
                 }
-                this.axios.get(`/api/albums/${slug}`)
+                this.axios.get(`/api/admin/albums/${slug}`)
                     .then(res => res.data)
                     .then(res => {
                         this.loading = false;
