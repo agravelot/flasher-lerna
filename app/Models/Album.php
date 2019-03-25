@@ -168,6 +168,21 @@ class Album extends Model implements HasMedia
     }
 
     /**
+     * Add media to 'pictures' collection
+     *
+     * @param string|\Symfony\Component\HttpFoundation\File\UploadedFile $media
+     *
+     * @return Media
+     */
+    public function addPicture($media)
+    {
+        return $this->addMedia($media)
+            ->preservingOriginal()
+            ->withResponsiveImages()
+            ->toMediaCollection('pictures');
+    }
+
+    /**
      * Register the collections of this album.
      */
     public function registerMediaCollections()
