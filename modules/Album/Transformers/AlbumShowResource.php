@@ -60,7 +60,7 @@ class AlbumShowResource extends Resource
                     $this->checkCan('update', Album::findOrFail($this->id)),
                     route('admin.albums.edit', ['slug' => $this->slug])
                 ),
-            ]
+            ],
         ];
     }
 }

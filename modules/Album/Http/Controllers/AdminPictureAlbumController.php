@@ -16,7 +16,6 @@ use Modules\Album\Http\Requests\StorePictureAlbumRequest;
 use Modules\Album\Transformers\AlbumIndexResource;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
-use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class AdminPictureAlbumController extends Controller
