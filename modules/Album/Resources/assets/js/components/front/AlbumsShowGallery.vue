@@ -33,18 +33,39 @@
                 </div>
 
                 <div class="tags has-addons level-item">
-                    <span class="tag is-rounded is-info">@{{ album.user.name }}</span>
+                    <span v-if="album.user" class="tag is-rounded is-info">@{{ album.user.name }}</span>
                     <span class="tag is-rounded">{{ album.created_at }}</span>
                     </div>
                 <div v-if="album.body" class="content article-body">
                     <p class="has-text-justified" v-html="album.body"></p>
                     </div>
                 <div v-if="album.categories" class="tags">
-                    <!--@each('categories.partials._category_tag', $album->categories, 'category')-->
-                    </div>
+                    <span v-for="category in album.categories" class="tag">
+                        <a :href="category.links.related">
+                            {{ category.name }}
+                        </a>
+                    </span>
+                </div>
                 <div v-if="album.cosplayers" class="columns is-multiline is-mobile">
                     <!--@each('cosplayers.partials._cosplayer_badge', $album->cosplayers, 'cosplayer')-->
-
+                    <div v-for="cosplayer in album.cosplayers" class="column is-2-desktop is-4-tablet is-6-mobile">
+                        <!--@include('cosplayers.partials._cosplayer_avatar', compact('cosplayer'))-->
+                        <!--@if ($cosplayer->getFirstMediaUrl('avatar'))-->
+                            <!--<figure class="is-centered image is-96x96">-->
+                                <!--<img class="is-rounded" src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb') }}">-->
+                            <!--</figure>-->
+                        <!--@else-->
+                            <!--<div class="is-centered avatar-circle">-->
+                                <!--<span class="initials"> {{ $cosplayer->initial }}</span>-->
+                            <!--</div>-->
+                        <!--@endif-->
+                        <!--TODO Add link-->
+                        <a :href="cosplayer.links.related">
+                            <p class="has-text-centered">
+                                {{ cosplayer.name }}
+                            </p>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

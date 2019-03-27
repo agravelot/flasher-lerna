@@ -24,6 +24,9 @@ class CategoryResource extends Resource
     {
         return [
            'name' => $this->name,
+            'links' => [
+                'related' => route('categories.show', ['category' => $this]),
+            ],
         ];
     }
 }
