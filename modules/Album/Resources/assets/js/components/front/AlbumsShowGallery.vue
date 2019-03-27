@@ -18,14 +18,14 @@
         <div class="card article">
             <div class="card-content has-text-centered">
                 <div class="field has-addons">
-                    <div v-if="album.download" class="control">
-                        <a class="button" :href="album.download">
+                    <div v-if="album.links && album.links.download" class="control">
+                        <a class="button" :href="album.links.download">
                             <span class="icon is-small"><i class="fas fa-download"></i></span>
                             <span>Download</span>
                         </a>
                     </div>
-                    <div v-if="album.edit" class="control">
-                        <a class="button" :href="album.edit">
+                    <div v-if="album.links && album.links.edit" class="control">
+                        <a class="button" :href="album.links.edit">
                             <span class="icon is-small"><i class="fas fa-edit"></i></span>
                             <span>Edit</span>
                         </a>
