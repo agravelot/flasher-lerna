@@ -38,7 +38,8 @@ class AlbumShowResource extends Resource
      */
     public function toArray($request)
     {
-//        download, edit as metadata
+        $album = Album::findOrFail($this->id);
+
         return [
             'id' => $this->id,
             'slug' => $this->slug,
@@ -53,11 +54,11 @@ class AlbumShowResource extends Resource
             'user' => new UserResource($this->user),
             'links' => [
                 'download' => $this->when(
-                    $this->checkCan('download', Album::findOrFail($this->id)),
+                    $this->checkCan('download', $album),
                     route('download-albums.show', ['slug' => $this->slug])
                 ),
                 'edit' => $this->when(
-                    $this->checkCan('update', Album::findOrFail($this->id)),
+                    $this->checkCan('update', $album),
                     route('admin.albums.edit', ['slug' => $this->slug])
                 ),
             ],
