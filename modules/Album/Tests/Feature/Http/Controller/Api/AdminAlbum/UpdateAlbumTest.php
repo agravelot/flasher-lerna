@@ -224,7 +224,6 @@ class UpdateAlbumTest extends TestCase
         $this->actingAsAdmin();
         /** @var Album $album */
         $album = factory(Album::class)->state('published')->create();
-        /** @var Collection $categories */
 
         $this->assertTrue($album->isPublished());
         $response = $this->updateAlbum($album, [
@@ -239,7 +238,6 @@ class UpdateAlbumTest extends TestCase
         $this->actingAsAdmin();
         /** @var Album $album */
         $album = factory(Album::class)->state('unpublished')->create();
-        /** @var Collection $categories */
 
         $this->assertFalse($album->isPublished());
         $response = $this->updateAlbum($album, [
