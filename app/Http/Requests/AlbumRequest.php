@@ -23,7 +23,7 @@ class AlbumRequest extends Request
         $rules = [
             'title' => 'required|string|min:2|max:255|unique:albums,id,' . $id,
             'body' => 'nullable|max:65000',
-            'published_at' => 'nullable|date',
+            'published_at' => 'nullable|date', //2015-06-10 01:10:25
             'private' => 'required|boolean',
             'categories' => 'nullable|array',
             'categories.*.id' => 'integer|min:1|exists:categories,id',
@@ -32,5 +32,12 @@ class AlbumRequest extends Request
         ];
 
         return $rules;
+    }
+
+    protected function prepareForValidation()
+    {
+        if ($this->has('published_at')) {
+            $this->merge(['published_at' => new \DateTime($this->published_at)]);
+        }
     }
 }
