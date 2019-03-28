@@ -25,7 +25,8 @@ class AlbumShowResource extends Resource
      */
     private function checkCan(string $permission, Album $album)
     {
-        return Auth::guard('api')->check() && Auth::guard('api')->user()->can($permission, $album);
+        return Auth::guard('api')->check()
+            && Auth::guard('api')->user()->can($permission, $album);
     }
 
     /**
@@ -37,7 +38,8 @@ class AlbumShowResource extends Resource
      */
     public function toArray($request)
     {
-//        download, edit as metadata
+        $album = Album::findOrFail($this->id);
+
         return [
             'id' => $this->id,
             'slug' => $this->slug,
@@ -49,15 +51,17 @@ class AlbumShowResource extends Resource
             'medias' => MediaResource::collection($this->media),
             'categories' => CategoryResource::collection($this->categories),
             'cosplayers' => CosplayerResource::collection($this->cosplayers),
-            'download' => $this->when(
-                $this->checkCan('download', Album::findOrFail($this->id)),
-                route('download-albums.show', ['slug' => $this->slug])
-            ),
-            'edit' => $this->when(
-                $this->checkCan('update', Album::findOrFail($this->id)),
-                route('admin.albums.edit', ['slug' => $this->slug])
-            ),
             'user' => new UserResource($this->user),
+            'links' => [
+                'download' => $this->when(
+                    $this->checkCan('download', $album),
+                    route('download-albums.show', ['slug' => $this->slug])
+                ),
+                'edit' => $this->when(
+                    $this->checkCan('update', $album),
+                    route('admin.albums.edit', ['slug' => $this->slug])
+                ),
+            ],
         ];
     }
 }

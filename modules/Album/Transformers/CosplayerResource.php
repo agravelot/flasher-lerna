@@ -24,6 +24,9 @@ class CosplayerResource extends Resource
     {
         return [
            'name' => $this->name,
+            'links' => [
+                'related' => route('cosplayers.show', ['cosplayer' => $this]),
+            ],
         ];
     }
 }

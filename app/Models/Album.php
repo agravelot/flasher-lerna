@@ -15,6 +15,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -168,6 +169,21 @@ class Album extends Model implements HasMedia
     }
 
     /**
+     * Add media to 'pictures' collection.
+     *
+     * @param string|\Symfony\Component\HttpFoundation\File\UploadedFile $media
+     *
+     * @return Media
+     */
+    public function addPicture($media)
+    {
+        return $this->addMedia($media)
+            ->preservingOriginal()
+            ->withResponsiveImages()
+            ->toMediaCollection('pictures');
+    }
+
+    /**
      * Register the collections of this album.
      */
     public function registerMediaCollections()
@@ -190,6 +206,7 @@ class Album extends Model implements HasMedia
             ->height(232)
             ->sharpen(10)
             ->optimize()
+            ->format(Manipulations::FORMAT_WEBP)
             ->performOnCollections('pictures');
     }
 }

@@ -16,7 +16,6 @@ use Modules\Album\Http\Requests\StorePictureAlbumRequest;
 use Modules\Album\Transformers\AlbumIndexResource;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
-use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class AdminPictureAlbumController extends Controller
@@ -52,16 +51,12 @@ class AdminPictureAlbumController extends Controller
             ]);
         }
 
-        /** @var Media $file */
-        $file = $album->addMedia($save->getFile())
-            ->preservingOriginal()
-            ->withResponsiveImages()
-            ->toMediaCollection('pictures');
+        $media = $album->addPicture($save->getFile());
 
         return response()->json([
-            'path' => $file->getUrl(),
-            'name' => $file->file_name,
-            'mime_type' => $file->mime_type,
+            'path' => $media->getUrl(),
+            'name' => $media->file_name,
+            'mime_type' => $media->mime_type,
         ], 201);
     }
 

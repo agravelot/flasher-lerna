@@ -25,7 +25,10 @@ class AlbumController extends Controller
     public function index()
     {
         return AlbumIndexResource::collection(
-            QueryBuilder::for(PublicAlbum::class)->with('media')->latest()->paginate(10)
+            QueryBuilder::for(PublicAlbum::class)
+                ->with('media')
+                ->latest()
+                ->paginate(10)
         );
     }
 
