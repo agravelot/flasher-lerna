@@ -14,7 +14,6 @@ use App\Models\Category;
 use App\Models\Cosplayer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class StoreAlbumTest extends TestCase
@@ -44,9 +43,8 @@ class StoreAlbumTest extends TestCase
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->make();
-        $image = UploadedFile::fake()->image('fake.jpg');
 
-        $response = $this->storeAlbum($album, ['pictures' => array_wrap($image)]);
+        $response = $this->storeAlbum($album);
 
         $this->assertSame(1, Album::count());
         $this->assertNotNull(Album::first()->media->first);
@@ -58,11 +56,9 @@ class StoreAlbumTest extends TestCase
         $this->actingAsAdmin();
         $album = factory(Album::class)->make();
         $category = factory(Category::class)->create();
-        $image = UploadedFile::fake()->image('fake.jpg');
 
         $response = $this->storeAlbum($album, [
             'categories' => [['id' => $category->id]],
-            'pictures' => array_wrap($image),
         ]);
 
         $this->assertSame(1, Album::count());
@@ -74,11 +70,9 @@ class StoreAlbumTest extends TestCase
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->make();
-        $image = UploadedFile::fake()->image('fake.jpg');
 
         $response = $this->storeAlbum($album, [
             'categories' => [['id' => 42]],
-            'pictures' => array_wrap($image),
         ]);
 
         $this->assertSame(0, Album::count());
@@ -91,11 +85,9 @@ class StoreAlbumTest extends TestCase
         $this->actingAsAdmin();
         $album = factory(Album::class)->make();
         $cosplayer = factory(Cosplayer::class)->create();
-        $image = UploadedFile::fake()->image('fake.jpg');
 
         $response = $this->storeAlbum($album, [
             'cosplayers' => [['id' => $cosplayer->id]],
-            'pictures' => array_wrap($image),
         ]);
 
         $this->assertSame(1, Album::count());
@@ -120,11 +112,8 @@ class StoreAlbumTest extends TestCase
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->make();
-        $images = collect()
-            ->push(UploadedFile::fake()->image('fake.jpg'))
-            ->push(UploadedFile::fake()->image('fake.jpg'));
 
-        $response = $this->storeAlbum($album, ['pictures' => array_wrap($images->toArray())]);
+        $response = $this->storeAlbum($album);
 
         $this->assertSame(1, Album::count());
         $response->assertStatus(201);
@@ -134,9 +123,8 @@ class StoreAlbumTest extends TestCase
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('published')->make();
-        $image = UploadedFile::fake()->image('fake.jpg');
 
-        $response = $this->storeAlbum($album, ['pictures' => array_wrap($image)]);
+        $response = $this->storeAlbum($album);
 
         $this->assertSame(1, Album::count());
         $response->assertStatus(201);
@@ -146,11 +134,8 @@ class StoreAlbumTest extends TestCase
     {
         $this->actingAsUser();
         $album = factory(Album::class)->make();
-        $image = UploadedFile::fake()->image('fake.jpg');
 
-        $response = $this->storeAlbum($album, [
-            'pictures' => array_wrap($image),
-        ]);
+        $response = $this->storeAlbum($album);
 
         $this->assertSame(0, Album::count());
         $response->assertStatus(403);
