@@ -12,7 +12,6 @@ namespace Modules\Album\Tests\Feature\Http\Controller\Api\AdminAlbum;
 use App\Models\Album;
 use App\Models\Category;
 use App\Models\Cosplayer;
-use Carbon\Carbon;
 use DateTime;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
@@ -140,7 +139,7 @@ class UpdateAlbumTest extends TestCase
         $response->assertStatus(401);
     }
 
-    public function test_cosplayer_are_not_declared_twice_after_update()
+    public function test_cosplayer_are_not_saved_twice_after_update()
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
@@ -154,7 +153,7 @@ class UpdateAlbumTest extends TestCase
         $this->assertSame(1, $album->fresh()->cosplayers->count());
     }
 
-    public function test_category_are_not_declared_twice_after_update()
+    public function test_category_are_not_saved_twice_after_update()
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
@@ -175,7 +174,7 @@ class UpdateAlbumTest extends TestCase
         $album = factory(Album::class)->create();
 
         $response = $this->updateAlbum($album, [
-            'published_at' => Carbon::now()->format(DateTime::ATOM),
+            'published_at' => (new DateTime())->format(DateTime::ISO8601),
         ]);
 
         $this->assertSame(1, Album::count());
@@ -218,5 +217,35 @@ class UpdateAlbumTest extends TestCase
         $this->assertCount(4, $album->fresh()->categories);
         $this->assertSame(1, Album::count());
         $response->assertStatus(200);
+    }
+
+    public function test_album_update_a_published_album_to_unpublished()
+    {
+        $this->actingAsAdmin();
+        /** @var Album $album */
+        $album = factory(Album::class)->state('published')->create();
+        /** @var Collection $categories */
+
+        $this->assertTrue($album->isPublished());
+        $response = $this->updateAlbum($album, [
+            'published_at' => null,
+        ]);
+
+        $this->assertFalse($album->fresh()->isPublished());
+    }
+
+    public function test_album_update_an_unpublished_album_to_published()
+    {
+        $this->actingAsAdmin();
+        /** @var Album $album */
+        $album = factory(Album::class)->state('unpublished')->create();
+        /** @var Collection $categories */
+
+        $this->assertFalse($album->isPublished());
+        $response = $this->updateAlbum($album, [
+            'published_at' => (new \DateTime())->format(DateTime::ISO8601),
+        ]);
+
+        $this->assertTrue($album->fresh()->isPublished());
     }
 }
