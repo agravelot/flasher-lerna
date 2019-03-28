@@ -103,11 +103,11 @@ class AdminAlbumController extends Controller
         $album->update($validated);
 
         if (Arr::exists($validated, 'categories')) {
-            $album->categories()->sync(collect($validated['categories'])->pluck('id'), false);
+            $album->categories()->sync(collect($validated['categories'])->pluck('id'), true);
         }
 
         if (Arr::exists($validated, 'cosplayers')) {
-            $album->cosplayers()->sync(collect($validated['cosplayers'])->pluck('id'), false);
+            $album->cosplayers()->sync(collect($validated['cosplayers'])->pluck('id'), true);
         }
 
         return new AlbumShowResource($album);
