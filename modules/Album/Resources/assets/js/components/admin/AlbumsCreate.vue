@@ -51,7 +51,7 @@
                      :message="errors.published_at ? errors.published_at[0] : null">
                 <div class="field">
                     <b-switch v-model="album.published_at"
-                              :true-value="album.published_at || new Date().toISOString().slice(0, 19).replace('T', ' ')"
+                              :true-value="album.published_at || new Date().toISOString()"
                               :false-value=null>
                         {{ album.published_at ? 'Yes' : 'No' }}
                     </b-switch>
