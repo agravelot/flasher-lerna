@@ -52,14 +52,14 @@ class AdminAlbumController extends Controller
         $album = Album::create($validated);
 
         if (Arr::exists($validated, 'categories')) {
-            $album->categories()->sync($validated['categories'], false);
+            $album->categories()->sync(collect($validated['categories'])->pluck('id'), false);
         }
 
         if (Arr::exists($validated, 'cosplayers')) {
-            $album->cosplayers()->sync($validated['cosplayers'], false);
+            $album->cosplayers()->sync(collect($validated['cosplayers'])->pluck('id'), false);
         }
 
-        return new AlbumIndexResource($album);
+        return new AlbumShowResource($album);
     }
 
     /**
@@ -103,14 +103,14 @@ class AdminAlbumController extends Controller
         $album->update($validated);
 
         if (Arr::exists($validated, 'categories')) {
-            $album->categories()->sync($request->input('categories'), false);
+            $album->categories()->sync(collect($validated['categories'])->pluck('id'), false);
         }
 
         if (Arr::exists($validated, 'cosplayers')) {
-            $album->cosplayers()->sync($request->input('cosplayers'), false);
+            $album->cosplayers()->sync(collect($validated['cosplayers'])->pluck('id'), false);
         }
 
-        return new AlbumIndexResource($album);
+        return new AlbumShowResource($album);
     }
 
     /**

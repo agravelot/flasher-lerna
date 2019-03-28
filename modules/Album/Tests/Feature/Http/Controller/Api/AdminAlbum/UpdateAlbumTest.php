@@ -41,9 +41,8 @@ class UpdateAlbumTest extends TestCase
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
-        $image = UploadedFile::fake()->image('fake.jpg');
 
-        $response = $this->updateAlbum($album, ['pictures' => array_wrap($image)]);
+        $response = $this->updateAlbum($album);
 
         $this->assertSame(1, Album::count());
         $response->assertStatus(200);
@@ -53,27 +52,23 @@ class UpdateAlbumTest extends TestCase
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
-        $images = collect()
-            ->push(UploadedFile::fake()->image('fake.jpg'))
-            ->push(UploadedFile::fake()->image('fake.jpg'));
 
-        $response = $this->updateAlbum($album, ['pictures' => array_wrap($images->toArray())]);
+        $response = $this->updateAlbum($album);
 
         $this->assertSame(1, Album::count());
         $response->assertStatus(200);
     }
 
-    public function test_admin_can_update_an_album_with_a_category_and_a_picture()
+    public function test_admin_can_update_an_album_with_a_category()
     {
+        $this->disableExceptionHandling();
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
         $category = factory(Category::class)->create();
         $category->save();
-        $image = UploadedFile::fake()->image('fake.jpg');
 
         $response = $this->updateAlbum($album, [
-            'categories' => array_wrap($category->id),
-            'pictures' => array_wrap($image),
+            'categories' => [['id' => $category->id]],
         ]);
 
         $this->assertSame(1, Album::count());
@@ -85,11 +80,9 @@ class UpdateAlbumTest extends TestCase
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
-        $image = UploadedFile::fake()->image('fake.jpg');
 
         $response = $this->updateAlbum($album, [
-            'categories' => array_wrap(42),
-            'pictures' => array_wrap($image),
+            'categories' => [['id' => 42]],
         ]);
 
         $this->assertSame(1, Album::count());
@@ -101,11 +94,9 @@ class UpdateAlbumTest extends TestCase
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
         $cosplayer = factory(Cosplayer::class)->create();
-        $image = UploadedFile::fake()->image('fake.jpg');
 
         $response = $this->updateAlbum($album, [
-            'cosplayers' => array_wrap($cosplayer->id),
-            'pictures' => array_wrap($image),
+            'cosplayers' => [['id' => $cosplayer->id]],
         ]);
 
         $this->assertSame(1, Album::count());
@@ -117,11 +108,9 @@ class UpdateAlbumTest extends TestCase
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
-        $image = UploadedFile::fake()->image('fake.jpg');
 
         $response = $this->updateAlbum($album, [
-            'cosplayers' => array_wrap(42),
-            'pictures' => array_wrap($image),
+            'cosplayers' => [['id' => 42]],
         ]);
 
         $this->assertSame(1, Album::count());
@@ -143,9 +132,8 @@ class UpdateAlbumTest extends TestCase
     {
         $this->actingAsUser();
         $album = factory(Album::class)->create();
-        $image = UploadedFile::fake()->image('fake.jpg');
 
-        $response = $this->updateAlbum($album, ['pictures' => array_wrap($image)]);
+        $response = $this->updateAlbum($album);
 
         $this->assertSame(1, Album::count());
         $response->assertStatus(403);
@@ -167,11 +155,9 @@ class UpdateAlbumTest extends TestCase
         $album = factory(Album::class)->create();
         $cosplayer = factory(Cosplayer::class)->create();
         $album->cosplayers()->save($cosplayer);
-        $image = UploadedFile::fake()->image('fake.jpg');
 
         $response = $this->updateAlbum($album, [
             'cosplayers' => array_wrap($cosplayer->id),
-            'pictures' => array_wrap($image),
         ]);
 
         $this->assertSame(1, $album->fresh()->cosplayers->count());
@@ -183,11 +169,9 @@ class UpdateAlbumTest extends TestCase
         $album = factory(Album::class)->create();
         $category = factory(Category::class)->create();
         $album->categories()->save($category);
-        $image = UploadedFile::fake()->image('fake.jpg');
 
         $response = $this->updateAlbum($album, [
             'categories' => array_wrap($category->id),
-            'pictures' => array_wrap($image),
         ]);
 
         $this->assertSame(1, $album->fresh()->categories->count());

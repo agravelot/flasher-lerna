@@ -26,9 +26,9 @@ class AlbumRequest extends Request
             'published_at' => 'nullable|date',
             'private' => 'required|boolean',
             'categories' => 'nullable|array',
-            'categories.*' => 'integer|min:1|exists:categories,id',
+            'categories.*.id' => 'integer|min:1|exists:categories,id',
             'cosplayers' => 'nullable|array',
-            'cosplayers.*' => 'integer|min:1|exists:cosplayers,id',
+            'cosplayers.*.id' => 'integer|min:1|exists:cosplayers,id',
         ];
 
         return $rules;
