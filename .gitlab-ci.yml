@@ -20,7 +20,7 @@ variables:
 
 before_script:
 - touch docker/db/.env docker/nginx/.env docker/php-fpm/.env
-- apk add --no-cache bash gettext py-pip gcc python2-dev libc-dev libffi-dev
+- apk add --no-cache bash gettext py-pip gcc python2-dev libc-dev libffi-dev openssl-dev
 - pip install docker-compose
 - docker-compose version
 - docker-compose config
