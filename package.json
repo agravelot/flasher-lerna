@@ -10,13 +10,14 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "watch:migrations": "onchange 'database/migrations/*.php' -- php artisan migrate:refresh",
         "watch:migrations-seeds": "onchange 'database/*/*.php' -- php artisan migrate:refresh --seed",
-        "format": "eslint --ext .jsx,.js resources/ --fix ; prettier --write 'resources/**/*.{css,vue}' 'nova-components/**/*.{css,vue}'"
+        "format": "eslint --ext .jsx,.js resources/ --fix ; prettier --write 'resources/**/*.{css,vue}' 'nova-components/**/*.{css,vue,ts}'"
     },
     "devDependencies": {
         "@fortawesome/fontawesome-svg-core": "^1.2.13",
         "@fortawesome/free-brands-svg-icons": "^5.7.0",
         "@fortawesome/free-regular-svg-icons": "^5.7.0",
         "@fortawesome/free-solid-svg-icons": "^5.7.0",
+        "@types/node": "^11.12.1",
         "axios": "^0.18.0",
         "browser-sync": "^2",
         "browser-sync-webpack-plugin": "^2.0",
@@ -44,7 +45,9 @@
         "svgo": "^1.1.1",
         "tinymce": "^4.8",
         "tinymce-i18n": "^18.10",
-        "vue": "^2.5.17",
+        "ts-loader": "^5.3.3",
+        "typescript": "^3.3.4000",
+        "vue": "^2.6.10",
         "vue-masonry-css": "^1.0.3",
         "vue-quill-editor": "^3.0.6",
         "vue-template-compiler": "^2.5.22",
@@ -52,6 +55,7 @@
     },
     "dependencies": {
         "vue-axios": "^2.1.4",
+        "vue-class-component": "^7.0.2",
         "vue-router": "^3.0.2"
     }
 }

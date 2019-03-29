@@ -16,8 +16,8 @@ mix.mergeManifest();
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .js('resources/js/admin/admin.js', 'public/js')
+mix.ts('resources/js/app.ts', 'public/js')
+    .ts('resources/js/admin/admin.ts', 'public/js')
     .js('resources/js/tinymce.js', 'public/js')
     .version();
 

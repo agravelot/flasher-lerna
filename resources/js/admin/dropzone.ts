@@ -3,6 +3,8 @@ import 'dropzone/dist/dropzone.css';
 const Dropzone = require('dropzone/dist/dropzone');
 // require('dropzone/dist/dropzone-amd-module');
 
+const token: HTMLMetaElement | null = document.head.querySelector('meta[name="csrf-token"]');
+
 if (document.getElementsByClassName('dropzone').length > 0) {
   Dropzone.autoDiscover = false;
 
@@ -18,7 +20,7 @@ if (document.getElementsByClassName('dropzone').length > 0) {
     retryChunks: true,
     // paramName: 'picture'
     headers: {
-      'X-CSRF-Token': document.head.querySelector('meta[name="csrf-token"]').content,
+      'X-CSRF-Token': token && token.content,
     },
   });
 }
