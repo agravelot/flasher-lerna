@@ -6,16 +6,18 @@
 
 import Vue from "vue"
 import App from './admin/views/App.vue';
-import router  from './router';
+import router from './router';
 
+import 'bulma-modal-fx/src/_js/modal-fx';
+import './bootstrap'
 import './admin/menu';
-// import './dropzone';
 import './fontawsome';
 import './admin/fontawsome';
-import 'bulma-modal-fx/src/_js/modal-fx';
 import './bulma'
-import './bootstrap'
 import './vue-masonry'
+// import './dropzone';
+
+import AlbumsMasonry from '../../modules/Album/Resources/assets/js/components/front/AlbumsMasonry.vue';
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -25,7 +27,9 @@ import './vue-masonry'
 
 const app = new Vue({
     el: '#app',
-    components: { App },
-    router, 
+    components: {App},
+    router,
 });
+
+Vue.component('albums-masonry', AlbumsMasonry);
 

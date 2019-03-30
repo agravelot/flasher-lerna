@@ -94,151 +94,156 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+    import Vue from 'vue';
+    import Component from 'vue-class-component';
+
     import vue2Dropzone from 'vue2-dropzone';
     import 'vue2-dropzone/dist/vue2Dropzone.min.css'
     import AlbumDesc from './AlbumDesc';
     import AlbumsShowGallery from './../front/AlbumsShowGallery';
 
-    export default {
+    @Component({
         name: "AlbumsEdit",
-        extends: AlbumDesc,
         components: {
             vueDropzone: vue2Dropzone,
             'album-desc': AlbumDesc,
             'album-show-gallery': AlbumsShowGallery,
         },
-        data() {
-            return {
-                errors: {},
-                album: {},
-                allCategories: [],
-                allCosplayers: [],
-                filteredCategories: [],
-                filteredCosplayers: [],
-                isSelectOnly: false,
-                allowNew: true,
-                dropzoneOptions: {
-                    url: '/api/admin/album-pictures',
-                    thumbnailWidth: 200,
-                    addRemoveLinks: true,
-                    // Setup chunking
-                    chunking: true,
-                    method: 'POST',
-                    maxFilesize: 400000000,
-                    chunkSize: 1000000,
-                    // If true, the individual chunks of a file are being uploaded simultaneously.
-                    // parallelChunkUploads: true,
-                    acceptedFiles: 'image/*',
-                    retryChunks: true,
-                    dictDefaultMessage: "<i class='fas fa-images'></i> Upload",
-                    headers: {
-                        'X-CSRF-Token': document.head.querySelector('meta[name="csrf-token"]').content,
-                    },
-                }
+        extends: AlbumDesc,
+    })
+    export default class AlbumsEdit extends AlbumDesc {
+
+        isSelectOnly: boolean = false;
+        allowNew: boolean = false;
+        dropzoneOptions: object = {
+            url: '/api/admin/album-pictures',
+            thumbnailWidth: 200,
+            addRemoveLinks: true,
+            // Setup chunking
+            chunking: true,
+            method: 'POST',
+            maxFilesize: 400000000,
+            chunkSize: 1000000,
+            // If true, the individual chunks of a file are being uploaded simultaneously.
+            // parallelChunkUploads: true,
+            acceptedFiles: 'image/*',
+            retryChunks: true,
+            dictDefaultMessage: "<i class='fas fa-images'></i> Upload",
+            headers: {
+                'X-CSRF-Token': (<HTMLMetaElement>document.head.querySelector('meta[name="csrf-token"]')).content
             }
-        },
-        created() {
+        };
+
+        created(): void {
             this.fetchData();
-        },
-        methods: {
-            fetchData() {
-                this.axios.get(`/api/admin/albums/${this.$route.params.slug}`)
-                    .then(res => res.data)
-                    .then(res => {
-                        this.album = res.data;
-                    })
-                    .catch(err => {
-                        throw err;
-                    });
-                this.axios.get('/api/admin/categories')
-                    .then(res => res.data)
-                    .then(res => {
-                        this.allCategories = res.data;
-                    })
-                    .catch(err => {
-                        throw err;
-                    });
-                this.axios.get('/api/admin/cosplayers')
-                    .then(res => res.data)
-                    .then(res => {
-                        this.allCosplayers = res.data;
-                    })
-                    .catch(err => {
-                        throw err;
-                    });
-            },
-            sendingEvent(file, xhr, formData) {
-                formData.append('album_slug', this.album.slug);
-            },
-            updateAlbum() {
-                this.axios.patch(`/api/admin/albums/${this.$route.params.slug}`, this.album)
-                    .then(res => res.data)
-                    .then(res => {
-                        this.$toast.open({
-                            message: `Album updated`,
-                            type: 'is-success',
-                            duration: 5000,
-                        });
-                        // this.$router.push({name: 'admin.albums.index'});
-                    })
-                    .catch(err => {
-                        this.$toast.open({
-                            message: `Unable to update the album <br><small>${err.response.data.message}</small>`,
-                            type: 'is-danger',
-                            duration: 5000,
-                        });
-                        this.errors = err.response.data.errors;
-                    });
-            },
-            getFilteredCategories(text) {
-                this.filteredCategories = this.allCategories.filter((option) => {
-                    return option.name
-                        .toString()
-                        .toLowerCase()
-                        .indexOf(text.toLowerCase()) >= 0
-                });
-            },
-            getFilteredCosplayers(text) {
-                this.filteredCosplayers = this.allCosplayers.filter((option) => {
-                    return option.name
-                        .toString()
-                        .toLowerCase()
-                        .indexOf(text.toLowerCase()) >= 0
-                });
-            },
-            refreshMedias() {
-                this.axios.get(`/api/admin/albums/${this.$route.params.slug}`)
-                    .then(res => res.data)
-                    .then(res => {
-                        this.album.medias = res.data.medias;
-                    })
-                    .catch(err => {
-                        this.$toast.open({
-                            message: `Unable to refresh the album <br><small>${err.response.data.message}</small>`,
-                            type: 'is-danger',
-                            duration: 5000,
-                        });
-                        throw err;
-                    })
-            },
-            deleteAlbumPicture(albumSlug, mediaId) {
-                return this.axios.delete(`/api/admin/album-pictures/${albumSlug}`, {
-                    data: {
-                        media_id: mediaId,
-                    },
+        }
+
+        fetchData(): void {
+            this.axios.get(`/api/admin/albums/${this.$route.params.slug}`)
+                .then(res => res.data)
+                .then(res => {
+                    this.album = res.data;
                 })
-                    .then(res => {
-                        this.refreshMedias();
-                        this.$toast.open({
-                            message: 'Picture successfully deleted!',
-                            type: 'is-success'
-                        });
-                    })
-                    .catch(err => {
-                        throw err;
-                    });
+                .catch(err => {
+                    throw err;
+                });
+            this.axios.get('/api/admin/categories')
+                .then(res => res.data)
+                .then(res => {
+                    this.allCategories = res.data;
+                })
+                .catch(err => {
+                    throw err;
+                });
+            this.axios.get('/api/admin/cosplayers')
+                .then(res => res.data)
+                .then(res => {
+                    this.allCosplayers = res.data;
+                })
+                .catch(err => {
+                    throw err;
+                });
+        }
+
+        sendingEvent(file: File, xhr: XMLHttpRequest, formData: FormData): void {
+            if (!this.album.slug) {
+                throw new DOMException('album slug is null');
             }
+            formData.append('album_slug', (<string> this.album.slug));
+        }
+
+        updateAlbum(): void {
+            this.axios.patch(`/api/admin/albums/${this.$route.params.slug}`, this.album)
+                .then(res => res.data)
+                .then(res => {
+                    this.$toast.open({
+                        message: `Album updated`,
+                        type: 'is-success',
+                        duration: 5000,
+                    });
+                    // this.$router.push({name: 'admin.albums.index'});
+                })
+                .catch(err => {
+                    this.$toast.open({
+                        message: `Unable to update the album <br><small>${err.response.data.message}</small>`,
+                        type: 'is-danger',
+                        duration: 5000,
+                    });
+                    this.errors = err.response.data.errors;
+                });
+        }
+
+        getFilteredCategories(text: string): void {
+            this.filteredCategories = this.allCategories.filter((option) => {
+                return option.name
+                    .toString()
+                    .toLowerCase()
+                    .indexOf(text.toLowerCase()) >= 0
+            });
+        }
+
+        getFilteredCosplayers(text: string): void {
+            this.filteredCosplayers = this.allCosplayers.filter((option) => {
+                return option.name
+                    .toString()
+                    .toLowerCase()
+                    .indexOf(text.toLowerCase()) >= 0
+            });
+        }
+
+        refreshMedias(): void {
+            this.axios.get(`/api/admin/albums/${this.$route.params.slug}`)
+                .then(res => res.data)
+                .then(res => {
+                    this.album.medias = res.data.medias;
+                })
+                .catch(err => {
+                    this.$toast.open({
+                        message: `Unable to refresh the album <br><small>${err.response.data.message}</small>`,
+                        type: 'is-danger',
+                        duration: 5000,
+                    });
+                    throw err;
+                })
+        }
+
+        deleteAlbumPicture(albumSlug: void, mediaId: number) {
+            return this.axios.delete(`/api/admin/album-pictures/${albumSlug}`, {
+                data: {
+                    media_id: mediaId,
+                },
+            })
+                .then(res => {
+                    this.refreshMedias();
+                    this.$toast.open({
+                        message: 'Picture successfully deleted!',
+                        type: 'is-success'
+                    });
+                })
+                .catch(err => {
+                    throw err;
+                });
         }
     }
 </script>

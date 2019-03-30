@@ -3,7 +3,7 @@ require('laravel-mix-merge-manifest');
 
 mix.setPublicPath('../../public').mergeManifest();
 
-mix.js(__dirname + '/Resources/assets/js/app.js', 'js/album.js')
+mix.js(__dirname + '/Resources/assets/js/app.ts', 'js/album.js')
     .sass( __dirname + '/Resources/assets/sass/app.scss', 'css/album.css');
 
 if (mix.inProduction()) {

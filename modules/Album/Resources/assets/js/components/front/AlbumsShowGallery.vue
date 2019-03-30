@@ -84,77 +84,80 @@
 
 </template>
 
-<script>
-    export default {
+<script lang="ts">
+    import Component from 'vue-class-component';
+    import VueBuefy from "../../../../../../../resources/js/buefy";
+
+    @Component({
         name: "AlbumsShowGallery",
-        data() {
-            return {
-                album: {},
-            }
-        },
-        updated() {
+    })
+    export default class Home extends VueBuefy {
+
+        private album: object = {};
+        loading: boolean = false;
+
+        updated() : void {
             this.$nextTick(() => {
                 this.onResize();
             });
-        },
-        created() {
+        }
+
+        created() : void {
             if (window) {
                 window.addEventListener('resize', this.onResize)
             }
-        },
+        }
 
-        beforeDestroy() {
+        beforeDestroy() : void {
             window.removeEventListener('resize', this.onResize)
-        },
-        mounted() {
+        }
+
+        mounted() : void {
             this.fetchAlbum();
             this.$nextTick(() => {
                 this.onResize();
             });
-        },
-        methods: {
-            onResize() {
-                this.refreshSizes();
-            },
-            refreshSizes() {
-                const responsiveMedias = document.getElementsByClassName('responsive-media');
-                Array.from(responsiveMedias).forEach((el) => {
-                    el.sizes = `${Math.ceil((el.getBoundingClientRect().width / window.innerWidth) * 100)}vw`;
-                });
-            },
-            fetchAlbum() {
-                let slug = window.location.pathname.split('/')[window.location.pathname.split('/').length -1];
-                // Workaround until moved to vue router
-                if (slug === 'edit') {
-                    slug = this.$route.params.slug;
-                }
-                this.axios.get(`/api/albums/${slug}`)
-                    .then(res => res.data)
-                    .then(res => {
-                        this.loading = false;
-                        this.album = res.data;
-                    })
-                    .catch(err => {
-                            this.album = {};
-                            this.loading = false;
-                            this.$snackbar.open({
-                                message: 'Unable to load album, maybe you are offline?',
-                                type: 'is-danger',
-                                position: 'is-top',
-                                actionText: 'Retry',
-                                indefinite: true,
-                                onAction: () => {
-                                    this.fetchAlbum();
-                                }
-                            });
-                            throw err;
-                        }
-                    );
+        }
+
+        onResize() : void {
+            this.refreshSizes();
+        }
+
+        refreshSizes() : void {
+            const responsiveMedias : HTMLCollectionOf<Element> = document.getElementsByClassName('responsive-media');
+            Array.from(responsiveMedias).forEach((el : Element) : void => {
+                (<HTMLImageElement> el).sizes = `${Math.ceil((el.getBoundingClientRect().width / window.innerWidth) * 100)}vw`;
+            });
+        }
+
+        fetchAlbum() : void {
+            let slug = window.location.pathname.split('/')[window.location.pathname.split('/').length -1];
+            // Workaround until moved to vue router
+            if (slug === 'edit') {
+                slug = this.$route.params.slug;
             }
+            this.axios.get(`/api/albums/${slug}`)
+                .then(res => res.data)
+                .then(res => {
+                    this.loading = false;
+                    this.album = res.data;
+                })
+                .catch(err => {
+                        this.album = {};
+                        this.loading = false;
+                        this.$snackbar.open({
+                            message: 'Unable to load album, maybe you are offline?',
+                            type: 'is-danger',
+                            position: 'is-top',
+                            actionText: 'Retry',
+                            indefinite: true,
+                            onAction: () => {
+                                this.fetchAlbum();
+                            }
+                        });
+                        throw err;
+                    }
+                );
         }
     }
 </script>
-
-<style scoped>
-
-</style>

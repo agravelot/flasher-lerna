@@ -38,89 +38,93 @@
     </div>
 </template>
 
-<script>
-    export default {
+<script lang="ts">
+    import Component from 'vue-class-component';
+    import VueBuefy from "../../../../../../../resources/js/buefy";
+
+    @Component({
         name: "AlbumsMasonry",
-        data() {
-            return {
-                albums: [],
-                total: null,
-                perPage: null,
-                page: 1,
-            }
-        },
-        updated() {
+    })
+    export default class AlbumsMasonry extends VueBuefy {
+
+        protected albums: Array<object> = [];
+        protected total: number = 0;
+        protected perPage: number = 0;
+        protected page: number = 1;
+        protected loading: boolean = false;
+
+        updated(): void {
             this.$nextTick(() => {
                 this.onResize();
             });
-        },
-        created() {
+        }
+
+        created(): void {
             if (window) {
                 window.addEventListener('resize', this.onResize)
             }
-        },
+        }
 
-        beforeDestroy() {
+        beforeDestroy(): void {
             window.removeEventListener('resize', this.onResize)
-        },
+        }
+
         mounted() {
             this.fetchAlbums();
             this.$nextTick(() => {
                 this.onResize();
             });
-        },
-        methods: {
-            onPageChanged(page) {
-                this.$nextTick(() => {
-                    this.onResize();
-                });
-                this.page = page;
-                this.fetchAlbums();
-            },
-            onResize() {
-                this.refreshSizes();
-            },
-            refreshSizes() {
-                const responsiveMedias = document.getElementsByClassName('responsive-media');
-                Array.from(responsiveMedias).forEach((el) => {
-                    el.sizes = `${Math.ceil((el.getBoundingClientRect().width / window.innerWidth) * 100)}vw`;
-                });
-            },
-            fetchAlbums() {
-                this.axios.get('/api/albums', {
-                    params: {
-                        page: this.page,
-                    }
+        }
+
+        onPageChanged(page: number): void {
+            this.$nextTick(() => {
+                this.onResize();
+            });
+            this.page = page;
+            this.fetchAlbums();
+        }
+
+        onResize() {
+            this.refreshSizes();
+        }
+
+        refreshSizes(): void {
+            const responsiveMedias: HTMLCollectionOf<Element> = document.getElementsByClassName('responsive-media');
+            Array.from(responsiveMedias).forEach((el: Element) => {
+                (<HTMLImageElement> el).sizes = `${Math.ceil((el.getBoundingClientRect().width / window.innerWidth) * 100)}vw`;
+            });
+        }
+
+        fetchAlbums(): void {
+            this.axios.get('/api/albums', {
+                params: {
+                    page: this.page,
+                }
+            })
+                .then(res => res.data)
+                .then(res => {
+                    this.perPage = res.meta.per_page;
+                    this.total = res.meta.total;
+                    this.albums = res.data;
+                    this.loading = false;
                 })
-                    .then(res => res.data)
-                    .then(res => {
-                        this.perPage = res.meta.per_page;
-                        this.total = res.meta.total;
-                        this.albums = res.data;
+                .catch(err => {
+                        this.albums = [];
+                        this.total = 0;
                         this.loading = false;
-                    })
-                    .catch(err => {
-                            this.albums = [];
-                            this.total = 0;
-                            this.loading = false;
-                            this.$snackbar.open({
-                                message: 'Unable to load albums, maybe you are offline?',
-                                type: 'is-danger',
-                                position: 'is-top',
-                                actionText: 'Retry',
-                                indefinite: true,
-                                onAction: () => {
-                                    this.fetchAlbums();
-                                }
-                            });
-                            throw err;
-                        }
-                    );
-            }
+                        this.$snackbar.open({
+                            message: 'Unable to load albums, maybe you are offline?',
+                            type: 'is-danger',
+                            position: 'is-top',
+                            actionText: 'Retry',
+                            indefinite: true,
+                            onAction: () => {
+                                this.fetchAlbums();
+                            }
+                        });
+                        throw err;
+                    }
+                );
         }
     }
 </script>
-
-<style scoped>
-
-</style>

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Buefy from 'buefy';
-Vue.use(Buefy);
 import '../sass/buefy.scss';
+Vue.use(Buefy);
 
 export default class VueBuefy extends Vue {
     $dialog: any;
@@ -9,4 +9,5 @@ export default class VueBuefy extends Vue {
     $modal: any;
     $snackbar: any;
     $toast: any;
+    $refs: any;
 }
