@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const adminMenu: HTMLElement | null = document.getElementById('admin-menu');
-    const collapseAdminMenuButton: HTMLElement | null = document.getElementById('collapse-admin-menu');
+    const collapseAdminMenuButton: HTMLElement | null = document.getElementById(
+        'collapse-admin-menu'
+    );
     if (collapseAdminMenuButton && adminMenu) {
         // @ts-ignore
         const icon = collapseAdminMenuButton
@@ -11,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (icon) {
             collapseAdminMenuButton.addEventListener('click', () => {
-
                 if (adminMenu.style.display === 'none') {
                     adminMenu.style.display = 'block';
                     icon.classList.remove('fa-flip-horizontal');

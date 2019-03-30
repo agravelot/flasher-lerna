@@ -1,5 +1,5 @@
 import './menu';
-import Vue from "vue"
+import Vue from 'vue';
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -7,9 +7,9 @@ import Vue from "vue"
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-function deleteAlbumPicture(el: (HTMLOrSVGElement & Node)): Promise<void> {
-    return Vue.axios.delete(`/api/admin/album-pictures/${el.dataset.albumSlug}`,
-        {
+function deleteAlbumPicture(el: HTMLOrSVGElement & Node): Promise<void> {
+    return Vue.axios
+        .delete(`/api/admin/album-pictures/${el.dataset.albumSlug}`, {
             data: {
                 media_id: el.dataset.pictureId,
             },
@@ -17,7 +17,7 @@ function deleteAlbumPicture(el: (HTMLOrSVGElement & Node)): Promise<void> {
         .then(() => {
             el.parentNode && el.parentNode.removeChild(el);
         })
-        .catch((err) => {
+        .catch(err => {
             alert('Something want wrong.');
             throw err;
         });

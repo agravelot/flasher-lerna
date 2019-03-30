@@ -1,4 +1,4 @@
-import Vue from "vue";
+import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import Home from './admin/views/Home.vue';
@@ -45,5 +45,5 @@ const routes: Array<any> = [
 
 export default new VueRouter({
     mode: 'history',
-    routes
+    routes,
 });

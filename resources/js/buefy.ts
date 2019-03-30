@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue from 'vue';
 import Buefy from 'buefy';
 import '../sass/buefy.scss';
 Vue.use(Buefy);

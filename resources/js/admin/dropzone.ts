@@ -6,21 +6,21 @@ const Dropzone = require('dropzone/dist/dropzone');
 const token: HTMLMetaElement | null = document.head.querySelector('meta[name="csrf-token"]');
 
 if (document.getElementsByClassName('dropzone').length > 0) {
-  Dropzone.autoDiscover = false;
+    Dropzone.autoDiscover = false;
 
-  const myDropzone = new Dropzone('.dropzone', {
-    // Setup chunking
-    chunking: true,
-    method: 'POST',
-    maxFilesize: 400000000,
-    chunkSize: 1000000,
-    // If true, the individual chunks of a file are being uploaded simultaneously.
-    // parallelChunkUploads: true,
-    acceptedFiles: 'image/*',
-    retryChunks: true,
-    // paramName: 'picture'
-    headers: {
-      'X-CSRF-Token': token && token.content,
-    },
-  });
+    const myDropzone = new Dropzone('.dropzone', {
+        // Setup chunking
+        chunking: true,
+        method: 'POST',
+        maxFilesize: 400000000,
+        chunkSize: 1000000,
+        // If true, the individual chunks of a file are being uploaded simultaneously.
+        // parallelChunkUploads: true,
+        acceptedFiles: 'image/*',
+        retryChunks: true,
+        // paramName: 'picture'
+        headers: {
+            'X-CSRF-Token': token && token.content,
+        },
+    });
 }

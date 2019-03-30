@@ -4,17 +4,17 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-import Vue from "vue"
+import Vue from 'vue';
 import App from './admin/views/App.vue';
 import router from './router';
 
 import 'bulma-modal-fx/src/_js/modal-fx';
-import './bootstrap'
+import './bootstrap';
 import './admin/menu';
 import './fontawsome';
 import './admin/fontawsome';
-import './bulma'
-import './vue-masonry'
+import './bulma';
+import './vue-masonry';
 // import './dropzone';
 
 import AlbumsMasonry from '../../modules/Album/Resources/assets/js/components/front/AlbumsMasonry.vue';
@@ -27,9 +27,8 @@ import AlbumsMasonry from '../../modules/Album/Resources/assets/js/components/fr
 
 const app = new Vue({
     el: '#app',
-    components: {App},
+    components: { App },
     router,
 });
 
 Vue.component('albums-masonry', AlbumsMasonry);
-
