@@ -19,7 +19,20 @@ mix.mergeManifest();
 mix.ts('resources/js/app.ts', 'public/js')
     .ts('resources/js/admin/admin.ts', 'public/js')
     .js('resources/js/tinymce.js', 'public/js')
-    .version();
+    .version()
+    .extract([
+        'vue',
+        'buefy',
+        'axios',
+        'vue-axios',
+        '@fortawesome/fontawesome-svg-core',
+        '@fortawesome/free-brands-svg-icons',
+        '@fortawesome/free-regular-svg-icons',
+        '@fortawesome/free-solid-svg-icons',
+        // 'bulma-modal-fx',
+        'vue2-dropzone',
+    ])
+;
 
 mix.sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/error-illustrated.scss', 'public/css')
