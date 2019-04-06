@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,600,700');
-
 // Import Bulma's core
 @import "~bulma/sass/utilities/_all";
 
@@ -8,9 +6,3 @@
 // Import Bulma and Buefy styles
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
-
-// Custom spacer helper with bulma syntax
-@import "spacer-helper";
-
-@import "modal";
-@import "custom";
