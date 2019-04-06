@@ -55,7 +55,6 @@
         "resolve-url-loader": "^2.3.1",
         "sass": "1.16.0",
         "sass-loader": "7.1.0",
-        "sass-resources-loader": "^2.0.0",
         "svgo": "^1.1.1",
         "tinymce": "^4.8",
         "tinymce-i18n": "^18.10",
