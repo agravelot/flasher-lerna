@@ -56,17 +56,15 @@ use Spatie\MediaLibrary\Models\Media;
  *
  * @property int $private
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album public()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album public ()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album wherePrivate($value)
  */
 class Album extends Model implements HasMedia
 {
     use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey, HasTitleAsSlug;
 
-    protected $casts = [
-      'published_at' => 'datetime',
-      'updated_at' => 'datetime',
-      'created_at' => 'datetime',
+    protected $dates = [
+        'published_at', 'updated_at', 'created_at',
     ];
 
     /**
