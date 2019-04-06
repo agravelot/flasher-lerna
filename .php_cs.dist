@@ -7,10 +7,17 @@ Proprietary and confidential
 Written by Antoine Gravelot <agravelot@hotmail.fr>
 COMMENT;
 
+$excludes = [
+    'vendor',
+    'storage',
+    'node_modules',
+    'bootstrap',
+    'public',
+    'server.php',
+];
+
 $finder = PhpCsFixer\Finder::create()
-    ->notPath('bootstrap/cache')
-    ->notPath('storage')
-    ->notPath('vendor')
+    ->exclude($excludes)
     ->notPath('public/index.php')
     ->notPath('server.php')
     ->in(__DIR__)
@@ -25,16 +32,20 @@ return PhpCsFixer\Config::create()
     ->setRules([
         '@Symfony' => true,
         '@Symfony:risky' => true,
-        'binary_operator_spaces' => ['align_double_arrow' => false],
+//        'binary_operator_spaces' => ['align_double_arrow' => false],
+        'binary_operator_spaces' => ['operators' => ['=>' => null]],
         'header_comment' => ['header' => $fileHeaderComment, 'separate' => 'both'],
         'array_syntax' => ['syntax' => 'short'],
         'linebreak_after_opening_tag' => true,
         'not_operator_with_successor_space' => true,
+//        'ordered_imports' => ['sortAlgorithm' => 'length'],
         'ordered_imports' => true,
         'phpdoc_order' => true,
+        'phpdoc_no_empty_return' => false,
         'yoda_style' => false,
         'concat_space' => ['spacing' => 'one'],
         'mb_str_functions' => true,
+        'new_with_braces' => true,
         'no_php4_constructor' => true,
         'no_unreachable_default_argument_value' => false,
         'no_useless_else' => true,

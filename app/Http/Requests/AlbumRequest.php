@@ -36,7 +36,7 @@ class AlbumRequest extends Request
 
     protected function prepareForValidation()
     {
-        if ($this->has('published_at')) {
+        if ($this->has('published_at') && $this->published_at !== null) {
             $this->merge(['published_at' => new \DateTime($this->published_at)]);
         }
     }
