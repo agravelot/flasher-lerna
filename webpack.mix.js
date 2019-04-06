@@ -34,7 +34,6 @@ mix.ts('resources/js/app.ts', 'public/js')
     ]);
 
 mix.sass('resources/sass/app.scss', 'public/css')
-    .sass('resources/sass/modal.scss', 'public/css')
     .sass('resources/sass/error-illustrated.scss', 'public/css')
     .version()
     .purgeCss();

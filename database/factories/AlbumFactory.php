@@ -9,6 +9,7 @@
 
 use App\Models\Album;
 use Faker\Generator as Faker;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Carbon;
 
 $withMedias = false;
@@ -28,8 +29,12 @@ $factory->define(Album::class, function (Faker $faker) use (&$withMedias) {
 $factory->afterMaking(Album::class, function (Album $album, Faker $faker) use (&$withMedias) {
     if ($withMedias) {
         foreach (range(1, 15) as $i) {
-            $album->addMediaFromUrl($faker->imageUrl(640 * $faker->numberBetween(1, 3), 480 * $faker->numberBetween(1, 3)))
-                ->toMediaCollection('pictures');
+            $album->addPicture(UploadedFile::fake()->image('fake.jpg'));
+//            $album->addMediaFromUrl(
+//                $faker->imageUrl(
+//                    640 * $faker->numberBetween(1, 3),
+//                    480 * $faker->numberBetween(1, 3))
+//            )->toMediaCollection('pictures');
         }
     }
 });

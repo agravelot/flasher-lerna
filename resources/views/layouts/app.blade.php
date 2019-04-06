@@ -12,7 +12,6 @@
 
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
-    <link href="{{ mix('css/modal.css') }}" rel="stylesheet">
     @yield('head')
 </head>
 <body>
