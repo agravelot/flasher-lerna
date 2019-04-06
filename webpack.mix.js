@@ -19,7 +19,19 @@ mix.mergeManifest();
 mix.ts('resources/js/app.ts', 'public/js')
     .ts('resources/js/admin/admin.ts', 'public/js')
     .js('resources/js/tinymce.js', 'public/js')
-    .version();
+    .version()
+    .extract([
+        'vue',
+        'buefy',
+        'axios',
+        'vue-axios',
+        '@fortawesome/fontawesome-svg-core',
+        '@fortawesome/free-brands-svg-icons',
+        '@fortawesome/free-regular-svg-icons',
+        '@fortawesome/free-solid-svg-icons',
+        // 'bulma-modal-fx',
+        'vue2-dropzone',
+    ]);
 
 mix.sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/modal.scss', 'public/css')
@@ -28,6 +40,11 @@ mix.sass('resources/sass/app.scss', 'public/css')
     .purgeCss();
 
 mix.options({
+    extractVueStyles: true,
+    globalVueStyles: 'resources/sass/buefy.scss',
+    vue: {
+        esModule: true,
+    },
     autoprefixer: {
         options: {
             browsers: [
@@ -37,4 +54,5 @@ mix.options({
     }
 });
 
-mix.browserSync('localhost:8000');
+mix.browserSync('localhost:8000')
+    .disableNotifications();
