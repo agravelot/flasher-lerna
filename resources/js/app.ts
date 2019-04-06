@@ -7,7 +7,7 @@
 import Vue from 'vue';
 import App from './admin/views/App.vue';
 import AlbumsMasonry from '../../modules/Album/Resources/assets/js/components/front/AlbumsMasonry.vue';
-import AlbumsShowGallery from '../../modules/Album/Resources/assets/js/components/front/AlbumsShowGallery.vue'
+import AlbumsShowGallery from '../../modules/Album/Resources/assets/js/components/front/AlbumsShowGallery.vue';
 import router from './router';
 
 import 'bulma-modal-fx/src/_js/modal-fx';

@@ -30,6 +30,6 @@ Array.from(deleteAlbumPictureBtn).forEach((el: Element) => {
         throw new DOMException('element does not have parent node');
     }
     el.addEventListener('click', () => {
-        deleteAlbumPicture(<HTMLOrSVGElement & Node & ParentNode> parentNode);
+        deleteAlbumPicture(<HTMLOrSVGElement & Node & ParentNode>parentNode);
     });
 });
