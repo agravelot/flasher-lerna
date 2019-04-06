@@ -7,8 +7,8 @@ import Vue from 'vue';
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-function deleteAlbumPicture(el: HTMLOrSVGElement & Node): Promise<void> {
-    return Vue.axios
+function deleteAlbumPicture(el: HTMLOrSVGElement & Node): void {
+    Vue.axios
         .delete(`/api/admin/album-pictures/${el.dataset.albumSlug}`, {
             data: {
                 media_id: el.dataset.pictureId,
@@ -25,10 +25,11 @@ function deleteAlbumPicture(el: HTMLOrSVGElement & Node): Promise<void> {
 
 const deleteAlbumPictureBtn = document.getElementsByClassName('delete-album-picture');
 Array.from(deleteAlbumPictureBtn).forEach((el: Element) => {
-    if (!el.parentNode) {
+    let parentNode = el.parentNode;
+    if (!parentNode) {
         throw new DOMException('element does not have parent node');
     }
     el.addEventListener('click', () => {
-        deleteAlbumPicture(el.parentNode);
+        deleteAlbumPicture(<HTMLOrSVGElement & Node & ParentNode> parentNode);
     });
 });
