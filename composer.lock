@@ -236,16 +236,16 @@
         },
         {
             "name": "clue/stream-filter",
-            "version": "v1.4.0",
+            "version": "v1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/clue/php-stream-filter.git",
-                "reference": "d80fdee9b3a7e0d16fc330a22f41f3ad0eeb09d0"
+                "reference": "5a58cc30a8bd6a4eb8f856adf61dd3e013f53f71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/clue/php-stream-filter/zipball/d80fdee9b3a7e0d16fc330a22f41f3ad0eeb09d0",
-                "reference": "d80fdee9b3a7e0d16fc330a22f41f3ad0eeb09d0",
+                "url": "https://api.github.com/repos/clue/php-stream-filter/zipball/5a58cc30a8bd6a4eb8f856adf61dd3e013f53f71",
+                "reference": "5a58cc30a8bd6a4eb8f856adf61dd3e013f53f71",
                 "shasum": ""
             },
             "require": {
@@ -260,7 +260,7 @@
                     "Clue\\StreamFilter\\": "src/"
                 },
                 "files": [
-                    "src/functions.php"
+                    "src/functions_include.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -284,7 +284,7 @@
                 "stream_filter_append",
                 "stream_filter_register"
             ],
-            "time": "2017-08-18T09:54:01+00:00"
+            "time": "2019-04-09T12:31:48+00:00"
         },
         {
             "name": "cocur/slugify",
@@ -4450,16 +4450,16 @@
         },
         {
             "name": "spatie/laravel-activitylog",
-            "version": "3.3.0",
+            "version": "3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-activitylog.git",
-                "reference": "eedee0f1a123adf5c94a7a463ddd0b17de63443c"
+                "reference": "3d7cb418148a80d5c1afe07657c1771965851d1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-activitylog/zipball/eedee0f1a123adf5c94a7a463ddd0b17de63443c",
-                "reference": "eedee0f1a123adf5c94a7a463ddd0b17de63443c",
+                "url": "https://api.github.com/repos/spatie/laravel-activitylog/zipball/3d7cb418148a80d5c1afe07657c1771965851d1c",
+                "reference": "3d7cb418148a80d5c1afe07657c1771965851d1c",
                 "shasum": ""
             },
             "require": {
@@ -4518,7 +4518,7 @@
                 "spatie",
                 "user"
             ],
-            "time": "2019-04-05T10:27:44+00:00"
+            "time": "2019-04-09T14:53:05+00:00"
         },
         {
             "name": "spatie/laravel-backup",
@@ -4679,16 +4679,16 @@
         },
         {
             "name": "spatie/laravel-query-builder",
-            "version": "1.17.0",
+            "version": "1.17.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-query-builder.git",
-                "reference": "3a30aa48911c26fa86728360b6cee30e9c010bc0"
+                "reference": "f7c4a6d1ac19a08f8b8848e829d3b304132cdc6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-query-builder/zipball/3a30aa48911c26fa86728360b6cee30e9c010bc0",
-                "reference": "3a30aa48911c26fa86728360b6cee30e9c010bc0",
+                "url": "https://api.github.com/repos/spatie/laravel-query-builder/zipball/f7c4a6d1ac19a08f8b8848e829d3b304132cdc6e",
+                "reference": "f7c4a6d1ac19a08f8b8848e829d3b304132cdc6e",
                 "shasum": ""
             },
             "require": {
@@ -4732,7 +4732,7 @@
                 "laravel-query-builder",
                 "spatie"
             ],
-            "time": "2019-03-11T09:33:55+00:00"
+            "time": "2019-04-09T14:29:08+00:00"
         },
         {
             "name": "spatie/laravel-sitemap",
@@ -7220,16 +7220,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "1.8.4",
+            "version": "1.8.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "bc364c2480c17941e2135cfc568fa41794392534"
+                "reference": "949b116f9e7d98d8d276594fed74b580d125c0e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/bc364c2480c17941e2135cfc568fa41794392534",
-                "reference": "bc364c2480c17941e2135cfc568fa41794392534",
+                "url": "https://api.github.com/repos/composer/composer/zipball/949b116f9e7d98d8d276594fed74b580d125c0e6",
+                "reference": "949b116f9e7d98d8d276594fed74b580d125c0e6",
                 "shasum": ""
             },
             "require": {
@@ -7296,7 +7296,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2019-02-11T09:52:10+00:00"
+            "time": "2019-04-09T15:46:48+00:00"
         },
         {
             "name": "composer/spdx-licenses",
