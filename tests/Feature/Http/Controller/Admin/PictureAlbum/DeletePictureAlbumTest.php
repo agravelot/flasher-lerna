@@ -68,7 +68,7 @@ class DeletePictureAlbumTest extends TestCase
         $response = $this->deleteAlbumPicture($album->slug);
 
         $this->assertSame(15, $album->fresh()->getMedia('pictures')->count());
-        $response->assertStatus(422);
+        $response->assertStatus(403);
     }
 
 //    public function test_guest_can_not_delete_a_picture_to_an_album()
