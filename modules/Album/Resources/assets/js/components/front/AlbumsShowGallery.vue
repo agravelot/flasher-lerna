@@ -1,11 +1,11 @@
 <template>
-    <div class="container is-centered has-margin-top-md">
+    <div class="container is-centered has-margin-top-md" v-if="this.album">
         <h1 class="title is-2 has-text-centered">{{ album.title }}</h1>
 
         <!--TODO Add nothing to show-->
         <masonry :gutter="{default: '0px'}"
                  :cols="{default: 3, 1000: 2, 700: 1, 400: 1}">
-            <a v-for="(media, index) in album.medias" :key="index">
+            <a v-for="(media, index) in album.medias" :key="index" @click="openPicture(media)">
                 <figure class="image">
                     <img v-if="media.src_set" class="responsive-media" :srcset="media.src_set" :src="media.thumb"
                          :alt="media.name" sizes="1px">
@@ -15,71 +15,70 @@
         </masonry>
 
         <div class="column is-10 is-offset-1">
-        <div class="card article">
-            <div class="card-content has-text-centered">
-                <div class="field has-addons">
-                    <div v-if="album.links && album.links.download" class="control">
-                        <a class="button" :href="album.links.download">
-                            <span class="icon is-small"><i class="fas fa-download"></i></span>
-                            <span>Download</span>
-                        </a>
+            <div class="card article">
+                <div class="card-content has-text-centered">
+                    <div class="field has-addons">
+                        <div v-if="album.links && album.links.download" class="control">
+                            <a class="button" :href="album.links.download">
+                                <span class="icon is-small"><i class="fas fa-download"></i></span>
+                                <span>Download</span>
+                            </a>
+                        </div>
+                        <div v-if="album.links && album.links.edit" class="control">
+                            <a class="button" :href="album.links.edit">
+                                <span class="icon is-small"><i class="fas fa-edit"></i></span>
+                                <span>Edit</span>
+                            </a>
+                        </div>
                     </div>
-                    <div v-if="album.links && album.links.edit" class="control">
-                        <a class="button" :href="album.links.edit">
-                            <span class="icon is-small"><i class="fas fa-edit"></i></span>
-                            <span>Edit</span>
-                        </a>
-                    </div>
-                </div>
 
-                <div class="tags has-addons level-item">
-                    <span v-if="album.user" class="tag is-rounded is-info">@{{ album.user.name }}</span>
-                    <span class="tag is-rounded">{{ album.created_at }}</span>
+                    <div class="tags has-addons level-item">
+                        <span v-if="album.user" class="tag is-rounded is-info">@{{ album.user.name }}</span>
+                        <span class="tag is-rounded">{{ album.created_at }}</span>
                     </div>
-                <div v-if="album.body" class="content article-body">
-                    <p class="has-text-justified" v-html="album.body"></p>
+                    <div v-if="album.body" class="content article-body">
+                        <p class="has-text-justified" v-html="album.body"></p>
                     </div>
-                <div v-if="album.categories" class="tags">
+                    <div v-if="album.categories" class="tags">
                     <span v-for="category in album.categories" class="tag">
                         <a :href="category.links.related">
                             {{ category.name }}
                         </a>
                     </span>
-                </div>
-                <div v-if="album.cosplayers" class="columns is-multiline is-mobile">
-                    <!--@each('cosplayers.partials._cosplayer_badge', $album->cosplayers, 'cosplayer')-->
-                    <div v-for="cosplayer in album.cosplayers" class="column is-2-desktop is-4-tablet is-6-mobile">
-                        <!--@include('cosplayers.partials._cosplayer_avatar', compact('cosplayer'))-->
-                        <!--@if ($cosplayer->getFirstMediaUrl('avatar'))-->
+                    </div>
+                    <div v-if="album.cosplayers" class="columns is-multiline is-mobile">
+                        <!--@each('cosplayers.partials._cosplayer_badge', $album->cosplayers, 'cosplayer')-->
+                        <div v-for="cosplayer in album.cosplayers" class="column is-2-desktop is-4-tablet is-6-mobile">
+                            <!--@include('cosplayers.partials._cosplayer_avatar', compact('cosplayer'))-->
+                            <!--@if ($cosplayer->getFirstMediaUrl('avatar'))-->
                             <!--<figure class="is-centered image is-96x96">-->
-                                <!--<img class="is-rounded" src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb') }}">-->
+                            <!--<img class="is-rounded" src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb') }}">-->
                             <!--</figure>-->
-                        <!--@else-->
+                            <!--@else-->
                             <!--<div class="is-centered avatar-circle">-->
-                                <!--<span class="initials"> {{ $cosplayer->initial }}</span>-->
+                            <!--<span class="initials"> {{ $cosplayer->initial }}</span>-->
                             <!--</div>-->
-                        <!--@endif-->
-                        <!--TODO Add link-->
-                        <a :href="cosplayer.links.related">
-                            <p class="has-text-centered">
-                                {{ cosplayer.name }}
-                            </p>
-                        </a>
+                            <!--@endif-->
+                            <!--TODO Add link-->
+                            <a :href="cosplayer.links.related">
+                                <p class="has-text-centered">
+                                    {{ cosplayer.name }}
+                                </p>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-         <!--{{&#45;&#45;@foreach ($album->getMedia('pictures') as $key => $picture)&#45;&#45;}}-->
-    <!--{{&#45;&#45;<div id="modal-{{ $key }}" class="modal modal-fx-fadeInScale">&#45;&#45;}}-->
-    <!--{{&#45;&#45;<div class="modal-background"></div>&#45;&#45;}}-->
-    <!--{{&#45;&#45;<div class="modal-content is-huge is-image">&#45;&#45;}}-->
-        <!--{{&#45;&#45;<img srcset="{{ $picture->getSrcset() }}" src="{{ $picture->getUrl() }}" alt="{{ $picture->name }}">&#45;&#45;}}-->
-        <!--{{&#45;&#45;</div>&#45;&#45;}}-->
-    <!--{{&#45;&#45;<button class="modal-close is-large" aria-label="{{ __('close') }}"></button>&#45;&#45;}}-->
-    <!--{{&#45;&#45;</div>&#45;&#45;}}-->
-    <!--{{&#45;&#45;@endforeach&#45;&#45;}}-->
-    </div>
+            <div v-if="openedPicture" class="modal is-active modal-fx-fadeInScale">
+                <div class="modal-background" @click="closePicture()"></div>
+                <div class="modal-content is-huge is-image">
+                    <img :srcset="openedPicture.src_set" :src="openedPicture.thumb" :alt="openedPicture.name">
+                </div>
+                <button class="modal-close is-large" aria-label="close" @click="closePicture()"></button>
+            </div>
+
+        </div>
     </div>
 
 </template>
@@ -93,45 +92,55 @@
     })
     export default class Home extends VueBuefy {
 
-        private album: object = {};
+        private album: object = null;
+        private openedPicture: object = null;
         loading: boolean = false;
 
-        updated() : void {
+        updated(): void {
             this.$nextTick(() => {
                 this.onResize();
             });
         }
 
-        created() : void {
+        created(): void {
             if (window) {
                 window.addEventListener('resize', this.onResize)
             }
         }
 
-        beforeDestroy() : void {
+        beforeDestroy(): void {
             window.removeEventListener('resize', this.onResize)
         }
 
-        mounted() : void {
+        mounted(): void {
             this.fetchAlbum();
             this.$nextTick(() => {
                 this.onResize();
             });
         }
 
-        onResize() : void {
+        openPicture(media: object): void {
+            console.log(media);
+            this.openedPicture = media;
+        }
+
+        closePicture() : void {
+            this.openedPicture = null;
+        }
+
+        onResize(): void {
             this.refreshSizes();
         }
 
-        refreshSizes() : void {
-            const responsiveMedias : HTMLCollectionOf<Element> = document.getElementsByClassName('responsive-media');
-            Array.from(responsiveMedias).forEach((el : Element) : void => {
-                (<HTMLImageElement> el).sizes = `${Math.ceil((el.getBoundingClientRect().width / window.innerWidth) * 100)}vw`;
+        refreshSizes(): void {
+            const responsiveMedias: HTMLCollectionOf<Element> = document.getElementsByClassName('responsive-media');
+            Array.from(responsiveMedias).forEach((el: Element): void => {
+                (<HTMLImageElement>el).sizes = `${Math.ceil((el.getBoundingClientRect().width / window.innerWidth) * 100)}vw`;
             });
         }
 
-        fetchAlbum() : void {
-            let slug = window.location.pathname.split('/')[window.location.pathname.split('/').length -1];
+        fetchAlbum(): void {
+            let slug = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
             // Workaround until moved to vue router
             if (slug === 'edit') {
                 slug = this.$route.params.slug;
