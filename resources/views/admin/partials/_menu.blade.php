@@ -109,7 +109,7 @@
 
         <ul class="menu-list">
             <li>
-                <a class="has-text-info has-margin-top-lg" href="{{ route('home') }}">
+                <a class="has-text-info has-margin-top-lg" href="{{ url('/')}}">
                 <span class="icon">
                     <i class="fas fa-chevron-circle-left"></i>
                 </span>

@@ -9,7 +9,6 @@
 
 namespace Tests\Feature\Http\Controller\Admin\User;
 
-use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -86,9 +85,6 @@ class StoreUserTest extends TestCase
 
     public function test_user_can_not_store_a_user()
     {
-        NoCaptcha::shouldReceive('verifyResponse')
-            ->once()
-            ->andReturn(true);
         $this->actingAsUser();
 
         $response = $this->storeUser(self::USER_DATA);
@@ -106,7 +102,7 @@ class StoreUserTest extends TestCase
             ->assertRedirect('/login');
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->withoutMiddleware(VerifyCsrfToken::class);

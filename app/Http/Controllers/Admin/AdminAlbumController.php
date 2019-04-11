@@ -15,17 +15,26 @@ use App\Models\Album;
 use App\Models\Category;
 use App\Models\Cosplayer;
 use Carbon\Carbon;
+use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Spatie\MediaLibrary\FileAdder\FileAdder;
 
 class AdminAlbumController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Album::class);
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -40,9 +49,9 @@ class AdminAlbumController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -60,9 +69,9 @@ class AdminAlbumController extends Controller
      *
      * @param AlbumRequest $request
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(AlbumRequest $request)
     {
@@ -96,37 +105,24 @@ class AdminAlbumController extends Controller
      * Display the specified resource.
      *
      *
-     * @param string $slug
+     * @param Album $album
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function show(string $slug)
+    public function show(Album $album)
     {
-        $this->authorize('view', Album::class);
-        $album = Album::with(['cosplayers.media'])
-            ->whereSlug($slug)
-            ->firstOrFail();
-        $this->authorize('view', $album);
-
         return view('admin.albums.show', compact('album'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param string $slug
+     * @param Album $album
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function edit(string $slug)
+    public function edit(Album $album)
     {
-        $this->authorize('update', Album::class);
-        $album = Album::whereSlug($slug)->firstOrFail();
-        $this->authorize('update', $album);
         $categories = Category::all();
         $cosplayers = Cosplayer::all();
         $currentDate = Carbon::now();
@@ -138,18 +134,12 @@ class AdminAlbumController extends Controller
      * Update the specified resource in storage.
      *
      * @param AlbumRequest $request
-     * @param string       $slug
+     * @param Album        $album
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function update(AlbumRequest $request, string $slug)
+    public function update(AlbumRequest $request, Album $album)
     {
-        $this->authorize('update', Album::class);
-        $album = Album::whereSlug($slug)
-            ->firstOrFail();
-        $this->authorize('update', $album);
         $validated = $request->validated();
         $album->update($validated);
 
@@ -181,19 +171,14 @@ class AdminAlbumController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param string $slug
+     * @param Album $album
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Exception
+     * @throws Exception
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function destroy(string $slug)
+    public function destroy(Album $album)
     {
-        $this->authorize('delete', Album::class);
-        $album = Album::whereSlug($slug)
-            ->firstOrFail();
-        $this->authorize('delete', $album);
         $album->delete();
 
         return redirect(route('admin.albums.index'))

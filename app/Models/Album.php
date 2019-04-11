@@ -55,12 +55,19 @@ use Spatie\MediaLibrary\Models\Media;
  *
  * @property int $private
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album public()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album public ()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album wherePrivate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album public()
  */
 class Album extends Model implements HasMedia
 {
     use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey, HasTitleAsSlug;
+
+    protected $with = ['media', 'cosplayers.media'];
+
+    protected $dates = [
+        'published_at', 'updated_at', 'created_at',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -159,6 +166,21 @@ class Album extends Model implements HasMedia
     public function cosplayers()
     {
         return $this->belongsToMany(Cosplayer::class);
+    }
+
+    /**
+     * Add media to 'pictures' collection.
+     *
+     * @param string|\Symfony\Component\HttpFoundation\File\UploadedFile $media
+     *
+     * @return Media
+     */
+    public function addPicture($media)
+    {
+        return $this->addMedia($media)
+            ->preservingOriginal()
+            ->withResponsiveImages()
+            ->toMediaCollection('pictures');
     }
 
     /**

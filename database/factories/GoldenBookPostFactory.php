@@ -7,27 +7,28 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
+use App\Models\GoldenBookPost;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
 
-$factory->define(\App\Models\GoldenBookPost::class, function (Faker $faker) {
+$factory->define(GoldenBookPost::class, function (Faker $faker) {
     return [
         'name' => $faker->sentence,
         'email' => $faker->email,
         'body' => $faker->paragraph,
-        'published_at' => $faker->dateTime,
-        'created_at' => $faker->dateTime(),
+        'published_at' => Carbon::now(),
+        'created_at' => Carbon::now(),
         'updated_at' => Carbon::now(),
     ];
 });
 
-$factory->state(\App\Models\GoldenBookPost::class, 'published', function () {
+$factory->state(GoldenBookPost::class, 'published', function (Faker $faker) {
     return [
         'published_at' => Carbon::now(),
     ];
 });
 
-$factory->state(\App\Models\GoldenBookPost::class, 'unpublished', function () {
+$factory->state(GoldenBookPost::class, 'unpublished', function () {
     return [
         'published_at' => null,
     ];

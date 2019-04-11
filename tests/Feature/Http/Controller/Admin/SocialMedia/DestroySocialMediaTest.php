@@ -22,7 +22,6 @@ class DestroySocialMediaTest extends TestCase
     public function test_admin_can_destroy_a_socialMedia()
     {
         $this->actingAsAdmin();
-        $this->disableExceptionHandling();
 
         /* @var SocialMedia $socialMedia */
         $socialMedia = factory(SocialMedia::class)->create();
@@ -68,7 +67,7 @@ class DestroySocialMediaTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->withoutMiddleware(VerifyCsrfToken::class);

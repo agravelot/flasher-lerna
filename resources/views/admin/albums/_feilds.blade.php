@@ -41,12 +41,6 @@
                     <div class="field">
                         <label class="label">{{ __('Pictures') }}</label>
 
-                        @if (isset($album) && $album->getMedia('thumb'))
-                            @foreach($album->getMedia('pictures') as $picture)
-                                {{ $picture('thumb') }}
-                            @endforeach
-                        @endif
-
                         <div class="control">
                             <div class="file">
                                 <label class="file-label">
@@ -174,9 +168,30 @@
 </form>
 
 @if (isset($album))
-    <form method="post" action="{{ route('admin.album-pictures.store') }}" enctype="multipart/form-data" class="dropzone">
-        @csrf
-        <input type="hidden" name="album_slug" value="{{ $album->slug }}">
-        <input type="file" name="file" style="display: none;">
-    </form>
+    <div class="card">
+        <div class="card-content">
+            <div class="field">
+                <label class="label">{{ __('Pictures') }}</label>
+                @if ($album->getMedia('thumb'))
+                    <div> {{--Important placeholder to use indexOf--}}
+                        @foreach($album->getMedia('pictures') as $picture)
+                            <div data-album-slug="{{ $album->slug }}" data-picture-id="{{ $picture->id }}">
+                                {{ $picture('thumb') }}
+                                <a class="button has-text-danger delete-album-picture">
+                                    {{ __('Delete') }}
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+
+            <form method="post" action="{{ route('api.admin.album-pictures.store') }}" enctype="multipart/form-data"
+                  class="dropzone has-margin-bottom-md">
+                @csrf
+                <input type="hidden" name="album_slug" value="{{ $album->slug }}">
+                <input type="file" name="file" style="display: none;">
+            </form>
+        </div>
+    </div>
 @endif

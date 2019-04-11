@@ -1,0 +1,25 @@
+{
+    "name": "nevax/album",
+    "description": "",
+    "authors": [
+        {
+            "name": "Antoine GRAVELOT",
+            "email": "antoine.gravelot@hotmail.fr"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Album\\Providers\\AlbumServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Album\\": ""
+        }
+    }
+}

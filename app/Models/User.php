@@ -16,6 +16,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Lab404\Impersonate\Models\Impersonate;
+use Laravel\Passport\HasApiTokens;
 
 /**
  * App\Models\User.
@@ -49,10 +50,13 @@ use Lab404\Impersonate\Models\Impersonate;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRole($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
  * @mixin \Eloquent
+ *
+ * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
+ * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[]  $tokens
  */
 class User extends Authenticatable implements MustVerifyEmailInterface
 {
-    use MustVerifyEmail, CanResetPassword, Notifiable, Impersonate;
+    use MustVerifyEmail, CanResetPassword, Notifiable, Impersonate, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.

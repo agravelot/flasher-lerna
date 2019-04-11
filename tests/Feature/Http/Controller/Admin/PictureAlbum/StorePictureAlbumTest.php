@@ -31,7 +31,7 @@ class StorePictureAlbumTest extends TestCase
         $this->assertSame(1, $album->fresh()->getMedia('pictures')->count());
         $this->assertSame($picture->getClientOriginalName(), $album->fresh()->getMedia('pictures')->first()->file_name);
         $response->assertStatus(201)
-            ->assertExactJson([
+            ->assertJson([
                 'path' => $album->fresh()->getFirstMediaUrl('pictures'),
                 'name' => 'fake.jpg',
                 'mime_type' => 'image/jpeg',
@@ -42,7 +42,7 @@ class StorePictureAlbumTest extends TestCase
     {
         session()->setPreviousUrl('/admin/albums/create');
 
-        return $this->post('/api/admin/album-pictures',
+        return $this->json('post', '/api/admin/album-pictures',
             array_merge(['file' => $picture, 'album_slug' => $albumSlug], $optional)
         );
     }
@@ -54,7 +54,7 @@ class StorePictureAlbumTest extends TestCase
 
         $response = $this->storeAlbumPicture('a-random-slug', $picture);
 
-        $response->assertStatus(302);
+        $response->assertStatus(422);
     }
 
     public function test_admin_can_not_store_an_empty_picture_to_an_album()
@@ -66,10 +66,10 @@ class StorePictureAlbumTest extends TestCase
         $response = $this->storeAlbumPicture($album->slug);
 
         $this->assertSame(0, $album->fresh()->getMedia('pictures')->count());
-        $response->assertStatus(302);
+        $response->assertStatus(422);
     }
 
-    public function test_admin_can_store_a_video_to_an_album()
+    public function test_admin_can_not_store_a_video_to_an_album()
     {
         $this->actingAsAdmin();
         /** @var Album $album */
@@ -79,10 +79,7 @@ class StorePictureAlbumTest extends TestCase
         $response = $this->storeAlbumPicture($album->slug, $picture);
 
         $this->assertSame(0, $album->fresh()->getMedia('pictures')->count());
-        $response->assertStatus(302);
-        $this->followRedirects($response)
-            ->assertStatus(200)
-            ->assertSee('The file must be a file of type');
+        $response->assertStatus(422);
     }
 
     public function test_user_cannot_store_a_picture_to_an_album()
@@ -105,6 +102,6 @@ class StorePictureAlbumTest extends TestCase
 
         $response = $this->storeAlbumPicture($album->slug, $picture);
 
-        $response->assertStatus(403);
+        $response->assertStatus(401);
     }
 }

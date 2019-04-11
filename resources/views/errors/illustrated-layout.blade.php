@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ app()->getLocale() }}" class="has-navbar-fixed-top">
+<html lang="{{ app()->getLocale() }}">
     <head>
         <title>@yield('title')</title>
 

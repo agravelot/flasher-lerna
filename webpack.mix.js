@@ -1,5 +1,9 @@
 let mix = require('laravel-mix');
 require('laravel-mix-purgecss');
+require('laravel-mix-merge-manifest');
+
+/* Allow multiple Laravel Mix applications*/
+mix.mergeManifest();
 
 /*
  |--------------------------------------------------------------------------
@@ -12,13 +16,25 @@ require('laravel-mix-purgecss');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .js('resources/js/admin/admin.js', 'public/js')
+mix.ts('resources/js/app.ts', 'public/js')
+    .ts('resources/js/admin/admin.ts', 'public/js')
     .js('resources/js/tinymce.js', 'public/js')
-    .version();
+    .version()
+    .extract([
+        'vue',
+        'buefy',
+        'axios',
+        'vue-axios',
+        '@fortawesome/fontawesome-svg-core',
+        '@fortawesome/free-brands-svg-icons',
+        '@fortawesome/free-regular-svg-icons',
+        '@fortawesome/free-solid-svg-icons',
+        // 'bulma-modal-fx',
+        'vue2-dropzone',
+    ])
+;
 
 mix.sass('resources/sass/app.scss', 'public/css')
-    .sass('resources/sass/modal.scss', 'public/css')
     .sass('resources/sass/error-illustrated.scss', 'public/css')
     .version()
     .purgeCss();

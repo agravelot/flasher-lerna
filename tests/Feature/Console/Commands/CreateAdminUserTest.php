@@ -28,6 +28,7 @@ class CreateAdminUserTest extends TestCase
             ->expectsQuestion('Enter your user password', 'admin')
             ->expectsOutput('User created successfully')
             ->assertExitCode(0);
+        $this->assertCount(1, User::all());
     }
 
     public function test_create_user_with_argument()
@@ -40,6 +41,7 @@ class CreateAdminUserTest extends TestCase
         ])
             ->expectsOutput('User created successfully')
             ->assertExitCode(0);
+        $this->assertCount(1, User::all());
     }
 
     public function test_can_not_create_user_with_malformed_email()
@@ -53,6 +55,7 @@ class CreateAdminUserTest extends TestCase
             ->expectsOutput('User not created. See error messages below:')
             ->expectsOutput('The email must be a valid email address.')
             ->assertExitCode(1);
+        $this->assertCount(0, User::all());
     }
 
     public function test_can_not_create_user_with_malformed_username()
@@ -66,6 +69,7 @@ class CreateAdminUserTest extends TestCase
             ->expectsOutput('User not created. See error messages below:')
             ->expectsOutput('The email must be a valid email address.')
             ->assertExitCode(1);
+        $this->assertCount(0, User::all());
     }
 
     public function test_create_user_with_argument_is_stores_in_database()
@@ -77,7 +81,7 @@ class CreateAdminUserTest extends TestCase
             'password' => 'secret',
         ]);
 
-        $user = User::latest()->first();
+        $this->assertNotNull($user = User::latest()->first());
         $this->assertSame('admin', $user->name);
         $this->assertSame('admin', $user->role);
         $this->assertSame('admin@picblog.com', $user->email);
