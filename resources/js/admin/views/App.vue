@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import VueBuefy from "../../buefy";
+import VueBuefy from '../../buefy';
 @Component
 export default class App extends VueBuefy {}
 </script>
