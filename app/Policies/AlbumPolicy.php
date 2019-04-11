@@ -111,7 +111,7 @@ class AlbumPolicy extends Policy
      */
     public function restore(User $user, Album $album)
     {
-        return $user->id == $album->user_id;
+        return false;
     }
 
     /**
@@ -124,6 +124,6 @@ class AlbumPolicy extends Policy
      */
     public function forceDelete(User $user, Album $album)
     {
-        return $user->id == $album->user_id;
+        return false;
     }
 }
