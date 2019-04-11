@@ -60,9 +60,7 @@
         }
 
         created(): void {
-            if (window) {
-                window.addEventListener('resize', this.onResize)
-            }
+            window.addEventListener('resize', this.onResize)
         }
 
         beforeDestroy(): void {

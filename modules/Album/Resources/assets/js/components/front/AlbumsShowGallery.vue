@@ -103,9 +103,7 @@
         }
 
         created(): void {
-            if (window) {
-                window.addEventListener('resize', this.onResize)
-            }
+            window.addEventListener('resize', this.onResize)
         }
 
         beforeDestroy(): void {
@@ -120,11 +118,10 @@
         }
 
         openPicture(media: object): void {
-            console.log(media);
             this.openedPicture = media;
         }
 
-        closePicture() : void {
+        closePicture(): void {
             this.openedPicture = null;
         }
 
