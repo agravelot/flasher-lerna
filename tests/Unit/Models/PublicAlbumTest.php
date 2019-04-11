@@ -53,7 +53,11 @@ class PublicAlbumTest extends ModelTestCase
     {
         $this->runConfigurationAssertions(new PublicAlbum(), [
             'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'published_at', 'user_id', 'private',
-        ], [], ['*'], [], ['id' => 'int', 'published_at' => 'datetime']);
+        ], [], ['*'], [], ['id' => 'int'], [
+            'published_at',
+            'updated_at',
+            'created_at',
+        ]);
     }
 
     public function testBelongsToManyPublicAlbumsRelationship()

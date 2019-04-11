@@ -51,7 +51,7 @@
                      :message="errors.published_at ? errors.published_at[0] : null">
                 <div class="field">
                     <b-switch v-model="album.published_at"
-                              :true-value="album.published_at || new Date().toISOString().slice(0, 19).replace('T', ' ')"
+                              :true-value="album.published_at || new Date().toISOString()"
                               :false-value=null>
                         {{ album.published_at ? 'Yes' : 'No' }}
                     </b-switch>
@@ -76,45 +76,62 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+    import Component from 'vue-class-component';
     import AlbumDesc from './AlbumDesc';
 
-    export default {
+    @Component({
+        name: "AlbumsCreate",
         extends: AlbumDesc,
         components: {
             'album-desc': AlbumDesc,
         },
-        data() {
-            return {
-                album: {
-                  private: 1,
-                },
-                isSelectOnly: false,
-            }
-        },
+    })
+    export default class AlbumsCreate extends AlbumDesc {
+        isSelectOnly: boolean = false;
+
         created() {
-        },
-        methods: {
-            createAlbum() {
-                this.axios.post(`/api/admin/albums/`, this.album)
-                    .then(res => res.data)
-                    .then(res => {
-                        console.log(res);
-                        this.$toast.open({
-                            message: `Album successfully created`,
-                            type: 'is-success',
-                        });
-                        this.$router.push({name: 'albums.edit', params: {slug: res.data.slug}});
-                    })
-                    .catch(err => {
-                        this.$toast.open({
-                            message: `Unable to create the album <br><small>${err.response.data.message}</small>`,
-                            type: 'is-danger',
-                            duration: 5000,
-                        });
-                        this.errors = err.response.data.errors;
+            this.fetchData();
+        }
+
+        fetchData() {
+            this.axios.get('/api/admin/categories')
+                .then(res => res.data)
+                .then(res => {
+                    this.allCategories = res.data;
+                })
+                .catch(err => {
+                    throw err;
+                });
+            this.axios.get('/api/admin/cosplayers')
+                .then(res => res.data)
+                .then(res => {
+                    this.allCosplayers = res.data;
+                })
+                .catch(err => {
+                    throw err;
+                });
+        }
+
+        createAlbum() {
+            this.axios.post(`/api/admin/albums/`, this.album)
+                .then(res => res.data)
+                .then(res => {
+                    console.log(res);
+                    this.$toast.open({
+                        message: `Album successfully created`,
+                        type: 'is-success',
                     });
-            },
+                    this.$router.push({name: 'admin.albums.edit', params: {slug: res.data.slug}});
+                })
+                .catch(err => {
+                    this.$toast.open({
+                        message: `Unable to create the album <br><small>${err.response.data.message}</small>`,
+                        type: 'is-danger',
+                        duration: 5000,
+                    });
+                    this.errors = err.response.data.errors;
+                });
         }
     }
 </script>

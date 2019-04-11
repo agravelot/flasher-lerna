@@ -9,10 +9,11 @@
 
 namespace Modules\Cosplayer\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Cosplayer;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use Modules\Cosplayer\Transformers\CosplayerResource;
 
 class CosplayerController extends Controller
@@ -20,7 +21,7 @@ class CosplayerController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AnonymousResourceCollection
      */
     public function index()
     {

@@ -9,6 +9,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
+
 class AlbumRequest extends Request
 {
     /**
@@ -21,16 +23,23 @@ class AlbumRequest extends Request
         $id = $this->route('album');
 
         $rules = [
-            'title' => 'required|string|min:2|max:255|unique:albums,id,' . $id,
+            'title' => ['required', 'string', 'min:2', 'max:255', Rule::unique('albums')->ignore($id)],
             'body' => 'nullable|max:65000',
-            'published_at' => 'nullable|date',
+            'published_at' => 'nullable|date', //2015-06-10 01:10:25
             'private' => 'required|boolean',
             'categories' => 'nullable|array',
-            'categories.*' => 'integer|min:1|exists:categories,id',
+            'categories.*.id' => 'integer|min:1|exists:categories,id',
             'cosplayers' => 'nullable|array',
-            'cosplayers.*' => 'integer|min:1|exists:cosplayers,id',
+            'cosplayers.*.id' => 'integer|min:1|exists:cosplayers,id',
         ];
 
         return $rules;
+    }
+
+    protected function prepareForValidation()
+    {
+        if ($this->has('published_at') && $this->published_at !== null) {
+            $this->merge(['published_at' => new \DateTime($this->published_at)]);
+        }
     }
 }

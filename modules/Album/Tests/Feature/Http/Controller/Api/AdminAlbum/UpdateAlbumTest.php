@@ -12,17 +12,19 @@ namespace Modules\Album\Tests\Feature\Http\Controller\Api\AdminAlbum;
 use App\Models\Album;
 use App\Models\Category;
 use App\Models\Cosplayer;
+use DateTime;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 class UpdateAlbumTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_update_an_album_without_a_picture()
+    public function test_admin_can_update_an_album()
     {
+        $this->disableExceptionHandling();
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
 
@@ -37,43 +39,15 @@ class UpdateAlbumTest extends TestCase
         return $this->json('patch', '/api/admin/albums/' . $album->slug, array_merge($album->toArray(), $optional));
     }
 
-    public function test_admin_can_update_an_album_with_a_picture()
-    {
-        $this->actingAsAdmin();
-        $album = factory(Album::class)->create();
-        $image = UploadedFile::fake()->image('fake.jpg');
-
-        $response = $this->updateAlbum($album, ['pictures' => array_wrap($image)]);
-
-        $this->assertSame(1, Album::count());
-        $response->assertStatus(200);
-    }
-
-    public function test_admin_can_update_an_album_with_a_multiple_pictures()
-    {
-        $this->actingAsAdmin();
-        $album = factory(Album::class)->create();
-        $images = collect()
-            ->push(UploadedFile::fake()->image('fake.jpg'))
-            ->push(UploadedFile::fake()->image('fake.jpg'));
-
-        $response = $this->updateAlbum($album, ['pictures' => array_wrap($images->toArray())]);
-
-        $this->assertSame(1, Album::count());
-        $response->assertStatus(200);
-    }
-
-    public function test_admin_can_update_an_album_with_a_category_and_a_picture()
+    public function test_admin_can_update_an_album_with_a_new_category()
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
         $category = factory(Category::class)->create();
         $category->save();
-        $image = UploadedFile::fake()->image('fake.jpg');
 
         $response = $this->updateAlbum($album, [
-            'categories' => array_wrap($category->id),
-            'pictures' => array_wrap($image),
+            'categories' => [['id' => $category->id]],
         ]);
 
         $this->assertSame(1, Album::count());
@@ -85,27 +59,23 @@ class UpdateAlbumTest extends TestCase
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
-        $image = UploadedFile::fake()->image('fake.jpg');
 
         $response = $this->updateAlbum($album, [
-            'categories' => array_wrap(42),
-            'pictures' => array_wrap($image),
+            'categories' => [['id' => 42]],
         ]);
 
         $this->assertSame(1, Album::count());
         $response->assertStatus(422);
     }
 
-    public function test_admin_can_update_an_album_with_a_cosplayer_and_a_picture()
+    public function test_admin_can_update_an_album_with_a_cosplayer()
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
         $cosplayer = factory(Cosplayer::class)->create();
-        $image = UploadedFile::fake()->image('fake.jpg');
 
         $response = $this->updateAlbum($album, [
-            'cosplayers' => array_wrap($cosplayer->id),
-            'pictures' => array_wrap($image),
+            'cosplayers' => [['id' => $cosplayer->id]],
         ]);
 
         $this->assertSame(1, Album::count());
@@ -113,15 +83,13 @@ class UpdateAlbumTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_admin_can_not_update_an_album_with_an_non_existent_cosplayer_and_a_picture()
+    public function test_admin_can_not_update_an_album_with_an_non_existent_cosplayer()
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
-        $image = UploadedFile::fake()->image('fake.jpg');
 
         $response = $this->updateAlbum($album, [
-            'cosplayers' => array_wrap(42),
-            'pictures' => array_wrap($image),
+            'cosplayers' => [['id' => 42]],
         ]);
 
         $this->assertSame(1, Album::count());
@@ -143,9 +111,8 @@ class UpdateAlbumTest extends TestCase
     {
         $this->actingAsUser();
         $album = factory(Album::class)->create();
-        $image = UploadedFile::fake()->image('fake.jpg');
 
-        $response = $this->updateAlbum($album, ['pictures' => array_wrap($image)]);
+        $response = $this->updateAlbum($album);
 
         $this->assertSame(1, Album::count());
         $response->assertStatus(403);
@@ -161,35 +128,113 @@ class UpdateAlbumTest extends TestCase
         $response->assertStatus(401);
     }
 
-    public function test_cosplayer_are_not_declared_twice_after_update()
+    public function test_cosplayer_are_not_saved_twice_after_update()
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
         $cosplayer = factory(Cosplayer::class)->create();
         $album->cosplayers()->save($cosplayer);
-        $image = UploadedFile::fake()->image('fake.jpg');
 
         $response = $this->updateAlbum($album, [
-            'cosplayers' => array_wrap($cosplayer->id),
-            'pictures' => array_wrap($image),
+            'cosplayers' => [['id' => $cosplayer->id]],
         ]);
 
+        $response->assertStatus(200);
         $this->assertSame(1, $album->fresh()->cosplayers->count());
     }
 
-    public function test_category_are_not_declared_twice_after_update()
+    public function test_category_are_not_saved_twice_after_update()
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
         $category = factory(Category::class)->create();
         $album->categories()->save($category);
-        $image = UploadedFile::fake()->image('fake.jpg');
 
         $response = $this->updateAlbum($album, [
-            'categories' => array_wrap($category->id),
-            'pictures' => array_wrap($image),
+            'categories' => [['id' => $category->id]],
         ]);
 
+        $response->assertStatus(200);
         $this->assertSame(1, $album->fresh()->categories->count());
+    }
+
+    public function test_album_can_be_updated_with_a_new_published_at_date()
+    {
+        $this->actingAsAdmin();
+        /** @var Album $album */
+        $album = factory(Album::class)->create();
+
+        $response = $this->updateAlbum($album, [
+            'published_at' => (new DateTime())->format(DateTime::ISO8601),
+        ]);
+
+        $this->assertSame(1, Album::count());
+        $response->assertStatus(200);
+    }
+
+    public function test_album_with_categories_can_un_attach()
+    {
+        $this->actingAsAdmin();
+        /** @var Album $album */
+        $album = factory(Album::class)->create();
+        $category = factory(Category::class)->create();
+        $album->categories()->save($category);
+        $this->assertCount(1, $album->categories);
+
+        $response = $this->updateAlbum($album, [
+            'categories' => [],
+        ]);
+
+        $this->assertCount(0, $album->fresh()->categories);
+        $this->assertSame(1, Album::count());
+        $response->assertStatus(200);
+    }
+
+    public function test_album_with_multiple_categories_can_un_attach_one()
+    {
+        $this->actingAsAdmin();
+        /** @var Album $album */
+        $album = factory(Album::class)->create();
+        /** @var Collection $categories */
+        $categories = factory(Category::class, 5)->create();
+        $album->categories()->attach($categories);
+        $this->assertCount(5, $album->categories);
+
+        $categories->shift();
+        $response = $this->updateAlbum($album, [
+            'categories' => $categories,
+        ]);
+
+        $this->assertCount(4, $album->fresh()->categories);
+        $this->assertSame(1, Album::count());
+        $response->assertStatus(200);
+    }
+
+    public function test_album_update_a_published_album_to_unpublished()
+    {
+        $this->actingAsAdmin();
+        /** @var Album $album */
+        $album = factory(Album::class)->state('published')->create();
+
+        $this->assertTrue($album->isPublished());
+        $response = $this->updateAlbum($album, [
+            'published_at' => null,
+        ]);
+
+        $this->assertFalse($album->fresh()->isPublished());
+    }
+
+    public function test_album_update_an_unpublished_album_to_published()
+    {
+        $this->actingAsAdmin();
+        /** @var Album $album */
+        $album = factory(Album::class)->state('unpublished')->create();
+
+        $this->assertFalse($album->isPublished());
+        $response = $this->updateAlbum($album, [
+            'published_at' => (new \DateTime())->format(DateTime::ISO8601),
+        ]);
+
+        $this->assertTrue($album->fresh()->isPublished());
     }
 }

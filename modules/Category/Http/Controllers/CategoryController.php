@@ -9,10 +9,11 @@
 
 namespace Modules\Category\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use Modules\Category\Transformers\CategoryResource;
 
 class CategoryController extends Controller
@@ -20,7 +21,7 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AnonymousResourceCollection
      */
     public function index()
     {

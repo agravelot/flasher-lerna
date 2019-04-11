@@ -2,63 +2,64 @@
     <div>
         <section>
             <button
-                class="button field is-danger"
-                @click="confirmDeleteSelectedAlbums"
-                :disabled="!checkedRows.length"
+                    class="button field is-danger"
+                    @click="confirmDeleteSelectedAlbums"
+                    :disabled="!checkedRows.length"
             >
                 <b-icon pack="fas" icon="trash-alt"></b-icon>
                 <span>Delete checked</span>
             </button>
 
             <b-table
-                :data="albums"
-                :loading="loading"
-                striped
-                hoverable
-                mobile-cards
-                paginated
-                backend-pagination
-                :total="total"
-                :per-page="perPage"
-                @page-change="onPageChange"
-                backend-sorting
-                :default-sort-direction="defaultSortOrder"
-                :default-sort="[sortField, sortOrder]"
-                @sort="onSort"
-                :opened-detailed="defaultOpenedDetails"
-                detailed
-                detail-key="id"
-                :show-detail-icon="showDetailIcon"
-                icon-pack="fas"
-                checkable
-                :checked-rows.sync="checkedRows"
+                    :data="albums"
+                    :loading="loading"
+                    striped
+                    hoverable
+                    mobile-cards
+                    paginated
+                    backend-pagination
+                    :total="total"
+                    :per-page="perPage"
+                    @page-change="onPageChange"
+                    backend-sorting
+                    :default-sort-direction="defaultSortOrder"
+                    :default-sort="[sortField, sortOrder]"
+                    @sort="onSort"
+                    :opened-detailed="defaultOpenedDetails"
+                    detailed
+                    detail-key="id"
+                    :show-detail-icon="showDetailIcon"
+                    icon-pack="fas"
+                    checkable
+                    :checked-rows.sync="checkedRows"
             >
                 <template slot-scope="album">
-                    <b-table-column field="id" label="ID" width="40" numeric sortable
-                        >{{ album.row.id }}
+                    <b-table-column field="id" label="ID" width="40" numeric sortable>{{ album.row.id }}
                     </b-table-column>
 
                     <b-table-column field="title" label="Title" sortable>
                         <!--<template v-if="showDetailIcon"><a v-bind:href="`/admin/albums/${album.row.slug}/edit`">{{ album.row.title }}</a></template>-->
-                        <router-link :to="{name: 'albums.edit', params: { slug: album.row.slug }}">{{ album.row.title }}</router-link>
+                        <router-link
+                                :to="{name: 'admin.albums.edit', params: { slug: album.row.slug }}"
+                        >{{ album.row.title }}
+                        </router-link>
                         <!--<template v-else>-->
-                            <!--<a @click="toggle(album.row)">{{ album.row.title }}</a>-->
+                        <!--<a @click="toggle(album.row)">{{ album.row.title }}</a>-->
                         <!--</template>-->
                     </b-table-column>
 
                     <b-table-column field="status" label="Status" sortable centered>
-                         <span v-if="album.row.private === 1" class="tag is-danger"
-                               v-bind:title="'This album is private'">
-                            {{ 'Private' }}
-                        </span>
-                        <span v-else-if="typeof album.row.published_at === 'string'" class="tag is-success"
-                              v-bind:title="new Date(album.row.published_at).toLocaleDateString()">
-                            {{ 'Published' }}
-                        </span>
-                        <span v-else class="tag is-dark"
-                              v-bind:title="'This album is a draft'">
-                            {{ 'Draft' }}
-                        </span>
+            <span
+                    v-if="album.row.private === 1"
+                    class="tag is-danger"
+                    v-bind:title="'This album is private'"
+            >{{ 'Private' }}</span>
+                        <span
+                                v-else-if="typeof album.row.published_at === 'string'"
+                                class="tag is-success"
+                                v-bind:title="new Date(album.row.published_at).toLocaleDateString()"
+                        >{{ 'Published' }}</span>
+                        <span v-else class="tag is-dark" v-bind:title="'This album is a draft'">{{ 'Draft' }}</span>
                     </b-table-column>
                 </template>
 
@@ -66,7 +67,7 @@
                     <article class="media">
                         <figure class="media-left">
                             <p class="image is-64x64">
-                                <img src="https://via.placeholder.com/128" />
+                                <img src="https://via.placeholder.com/128">
                             </p>
                         </figure>
                         <div class="media-content">
@@ -74,7 +75,7 @@
                                 <p>
                                     <strong>{{ album.row.title }}</strong>
                                     <small>{{ album.row.published_at }}</small>
-                                    <br />
+                                    <br>
                                     {{ album.row.body | truncate(80) }}
                                 </p>
                             </div>
@@ -86,7 +87,7 @@
                     <section class="section">
                         <div class="content has-text-grey has-text-centered">
                             <p>
-                                <b-icon pack="fas" icon="sad-tear" size="is-large"> </b-icon>
+                                <b-icon pack="fas" icon="sad-tear" size="is-large"></b-icon>
                             </p>
                             <p>Nothing here.</p>
                         </div>
@@ -102,49 +103,52 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+    import Vue from 'vue';
+    import Component from 'vue-class-component';
+    import VueBuefy from "../../../../../../../resources/js/buefy";
+    import Album from '../../album';
 
-export default {
-    data() {
-        return {
-            albums: [],
-            defaultOpenedDetails: [],
-            checkedRows: [],
-            total: 0,
-            page: 1,
-            perPage: 10,
-            loading: false,
-            showDetailIcon: true,
-            sortField: 'id',
-            sortOrder: 'desc',
-            defaultSortOrder: 'desc',
-        };
-    },
-    created() {
-        this.fetchAlbums();
-    },
-    // mounted() {
-    //     this.fetchAlbums();
-    // },
-    filters: {
-        /**
-         * Filter to truncate string, accepts a length parameter
-         */
-        truncate(value, length) {
-            return value.length > length ? value.substr(0, length) + '...' : value;
-        },
-    },
-    methods: {
-        fetchAlbums() {
+    @Component({
+        name: "AlbumsIndex",
+        filters: {
+            /**
+             * Filter to truncate string, accepts a length parameter
+             */
+            truncate(value: string, length: number): string {
+                return value.length > length ? value.substr(0, length) + '...' : value;
+            }
+        }
+    })
+    export default class AlbumsIndex extends VueBuefy {
+
+        private albums: Array<Album> = [];
+        //TODO Clearer types
+        defaultOpenedDetails: Array<any> = [];
+        private checkedRows: Array<any> = [];
+        private total: number = 0;
+        private page: number = 1;
+        perPage: number = 10;
+        private loading: boolean = false;
+        private sortField: string = 'id';
+        private sortOrder: string = 'desc';
+        showDetailIcon: boolean = true;
+        defaultSortOrder: string = 'desc';
+
+        created(): void {
+            this.fetchAlbums();
+        }
+
+        fetchAlbums(): void {
             this.loading = true;
             const sortOrder = ((this.sortOrder === 'asc') ? '' : '-');
 
             Vue.axios.get('/api/admin/albums', {
-                    params: {
-                        page: this.page,
-                        sort: sortOrder + this.sortField
-                    }
-                })
+                params: {
+                    page: this.page,
+                    sort: sortOrder + this.sortField
+                }
+            })
                 .then(res => res.data)
                 .then(res => {
                     this.perPage = res.meta.per_page;
@@ -168,39 +172,45 @@ export default {
                     });
                     throw err;
                 });
-        },
-        showSuccess(message) {
+        }
+
+        showSuccess(message: string): void {
             this.$toast.open({
                 message: message,
                 type: 'is-success',
             });
-        },
-        showError(message) {
+        }
+
+        showError(message: string): void {
             this.$toast.open({
                 message: message,
                 type: 'is-danger',
                 duration: 5000,
             });
-        },
-        toggle(row) {
+        }
+
+        toggle(row: object): void {
             this.$refs.table.toggleDetails(row);
-        },
+        }
+
         /*
          * Handle page-change event
          */
-        onPageChange(page) {
+        onPageChange(page: number): void {
             this.page = page;
             this.fetchAlbums();
-        },
+        }
+
         /*
          * Handle sort event
          */
-        onSort(field, order) {
+        onSort(field: string, order: string): void {
             this.sortField = field;
             this.sortOrder = order;
             this.fetchAlbums();
-        },
-        confirmDeleteSelectedAlbums() {
+        }
+
+        confirmDeleteSelectedAlbums(): void {
             this.$dialog.confirm({
                 title: 'Deleting Albums',
                 message:
@@ -212,12 +222,13 @@ export default {
                     this.deleteSelectedAlbums();
                 },
             });
-        },
+        }
+
         /**
          * Delete album from slug
          */
-        deleteSelectedAlbums() {
-            this.checkedRows.forEach(album =>{
+        deleteSelectedAlbums(): void {
+            this.checkedRows.forEach(album => {
                 Vue.axios
                     .delete(`/api/admin/albums/${album.slug}`)
                     .then(res => {
@@ -229,7 +240,6 @@ export default {
                     });
             });
             this.fetchAlbums();
-        },
-    },
-};
+        }
+    }
 </script>

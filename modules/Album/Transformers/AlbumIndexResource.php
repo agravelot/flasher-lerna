@@ -27,9 +27,8 @@ class AlbumIndexResource extends Resource
             'slug' => $this->slug,
             'title' => $this->title,
             'published_at' => $this->published_at,
-            'body' => $this->body,
             'private' => $this->private,
-            'pictures' => $this->media,
+            'media' => new MediaResource($this->getFirstMedia('pictures')),
         ];
     }
 }
