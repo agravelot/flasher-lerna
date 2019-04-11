@@ -10,17 +10,24 @@
 namespace Modules\Album\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Album;
 use App\Models\PublicAlbum;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Modules\Album\Transformers\AlbumIndexResource;
 use Modules\Album\Transformers\AlbumShowResource;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class AlbumController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Album::class);
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AnonymousResourceCollection
      */
     public function index()
     {
@@ -35,16 +42,12 @@ class AlbumController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param string $slug
+     * @param Album $album
      *
      * @return AlbumShowResource
      */
-    public function show(string $slug)
+    public function show(Album $album)
     {
-        $album = PublicAlbum::with(['media', 'cosplayers.media'])
-            ->whereSlug($slug)
-            ->firstOrFail();
-
         return new AlbumShowResource($album);
     }
 }

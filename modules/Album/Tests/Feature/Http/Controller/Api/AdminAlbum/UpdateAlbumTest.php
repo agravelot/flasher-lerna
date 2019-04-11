@@ -22,8 +22,9 @@ class UpdateAlbumTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_update_an_album_without_a_picture()
+    public function test_admin_can_update_an_album()
     {
+        $this->disableExceptionHandling();
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
 
@@ -38,20 +39,8 @@ class UpdateAlbumTest extends TestCase
         return $this->json('patch', '/api/admin/albums/' . $album->slug, array_merge($album->toArray(), $optional));
     }
 
-    public function test_admin_can_update_an_album()
-    {
-        $this->actingAsAdmin();
-        $album = factory(Album::class)->create();
-
-        $response = $this->updateAlbum($album);
-
-        $this->assertSame(1, Album::count());
-        $response->assertStatus(200);
-    }
-
     public function test_admin_can_update_an_album_with_a_new_category()
     {
-        $this->disableExceptionHandling();
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
         $category = factory(Category::class)->create();
@@ -150,6 +139,7 @@ class UpdateAlbumTest extends TestCase
             'cosplayers' => [['id' => $cosplayer->id]],
         ]);
 
+        $response->assertStatus(200);
         $this->assertSame(1, $album->fresh()->cosplayers->count());
     }
 
@@ -164,6 +154,7 @@ class UpdateAlbumTest extends TestCase
             'categories' => [['id' => $category->id]],
         ]);
 
+        $response->assertStatus(200);
         $this->assertSame(1, $album->fresh()->categories->count());
     }
 

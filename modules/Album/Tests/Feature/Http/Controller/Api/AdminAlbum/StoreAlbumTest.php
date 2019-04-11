@@ -81,7 +81,6 @@ class StoreAlbumTest extends TestCase
 
     public function test_admin_can_store_an_album_with_a_cosplayer_and_a_picture()
     {
-        $this->disableExceptionHandling();
         $this->actingAsAdmin();
         $album = factory(Album::class)->make();
         $cosplayer = factory(Cosplayer::class)->create();
