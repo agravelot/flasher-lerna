@@ -7,6 +7,8 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
+use Modules\Album\UrlGenerator\RelativeLocalUrlGenerator;
+
 return [
     /*
      * The disk on which to store added files and derived images by default. Choose
@@ -79,7 +81,8 @@ return [
      * When urls to files get generated, this class will be called. Leave empty
      * if your files are stored locally above the site root or on s3.
      */
-    'url_generator' => null,
+    'url_generator' => RelativeLocalUrlGenerator::class,
+//    'url_generator' => null,
 
     /*
      * The class that contains the strategy for determining a media file's path.
