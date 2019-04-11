@@ -9,6 +9,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
+
 class AlbumRequest extends Request
 {
     /**
@@ -21,7 +23,7 @@ class AlbumRequest extends Request
         $id = $this->route('album');
 
         $rules = [
-            'title' => 'required|string|min:2|max:255|unique:albums,id,' . $id,
+            'title' => ['required', 'string', 'min:2', 'max:255', Rule::unique('albums')->ignore($id)],
             'body' => 'nullable|max:65000',
             'published_at' => 'nullable|date', //2015-06-10 01:10:25
             'private' => 'required|boolean',
