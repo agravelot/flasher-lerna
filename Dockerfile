@@ -32,7 +32,7 @@ RUN composer global require hirak/prestissimo \
             --no-dev \
             --optimize-autoloader \
             --classmap-authoritative
-RUN php artisan vendor:publish --tag=telescope-assets
+RUN php artisan telescope:publish
 RUN php artisan vendor:publish --tag=horizon-assets
 
 #
