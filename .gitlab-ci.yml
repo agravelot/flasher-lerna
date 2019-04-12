@@ -34,6 +34,11 @@ build:
   - docker-compose build
   - docker push registry.gitlab.com/nevax/picblog/picblog_php:latest
   - docker push registry.gitlab.com/nevax/picblog/picblog_nginx:latest
+  artifacts:
+    name: "build_logs"
+    expire_in: 2d
+    paths:
+      - storage/logs/
 
 build_vendor_dev:
   stage: build
