@@ -37,6 +37,7 @@ build:
   artifacts:
     name: "build_logs"
     expire_in: 1 week
+    when: always
     paths:
       - storage/logs/
 
