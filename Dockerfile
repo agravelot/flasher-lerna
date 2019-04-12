@@ -31,9 +31,9 @@ RUN composer global require hirak/prestissimo \
             # Production only
             --no-dev \
             --optimize-autoloader \
-            --classmap-authoritative \
-        && php artisan vendor:publish --tag=telescope-assets \
-        && php artisan vendor:publish --tag=horizon-assets
+            --classmap-authoritative
+RUN php artisan vendor:publish --tag=telescope-assets
+RUN php artisan vendor:publish --tag=horizon-assets
 
 #
 # Nginx server
