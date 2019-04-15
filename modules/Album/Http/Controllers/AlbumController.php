@@ -42,11 +42,11 @@ class AlbumController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Album $album
+     * @param PublicAlbum $album
      *
      * @return AlbumShowResource
      */
-    public function show(Album $album)
+    public function show(PublicAlbum $album)
     {
         return new AlbumShowResource($album);
     }

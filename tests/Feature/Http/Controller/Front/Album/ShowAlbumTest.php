@@ -91,7 +91,7 @@ class ShowAlbumTest extends TestCase
 
         $response = $this->showAlbum($album);
 
-        $response->assertStatus(403);
+        $response->assertStatus(404);
     }
 
     public function test_bad_slug_redirect_page_not_found()
