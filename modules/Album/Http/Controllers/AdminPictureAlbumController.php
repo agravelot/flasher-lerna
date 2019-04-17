@@ -14,9 +14,10 @@ use App\Models\Album;
 use Modules\Album\Http\Requests\DeletePictureAlbumRequest;
 use Modules\Album\Http\Requests\StorePictureAlbumRequest;
 use Modules\Album\Transformers\AlbumIndexResource;
+use Modules\Album\Transformers\CompleteUploadPictureResource;
+use Modules\Album\Transformers\ProcessingUploadPictureResource;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class AdminPictureAlbumController extends Controller
 {
@@ -43,26 +44,18 @@ class AdminPictureAlbumController extends Controller
         if ($receiver->isUploaded() === false) {
             throw new UploadMissingFileException();
         }
+
         $save = $receiver->receive();
 
         // check if the upload has not finished (in chunk mode it will send smaller files)
         if (! $save->isFinished()) {
             // we are in chunk mode, lets send the current progress
-            //TODO Use resource
-            return response()->json([
-                'done' => $save->handler()->getPercentageDone(),
-                'status' => true,
-            ]);
+            return new ProcessingUploadPictureResource($save);
         }
 
         $media = $album->addPicture($save->getFile());
 
-        //TODO Use resource
-        return response()->json([
-            'path' => $media->getUrl(),
-            'name' => $media->file_name,
-            'mime_type' => $media->mime_type,
-        ], 201);
+        return (new CompleteUploadPictureResource($media))->response()->setStatusCode(201);
     }
 
     /**
@@ -75,7 +68,7 @@ class AdminPictureAlbumController extends Controller
      */
     public function destroy(Album $album, DeletePictureAlbumRequest $request)
     {
-        $album->media->firstWhere('id', $request->media_id)->delete();
+        $album->media->firstWhere('id', $request->get('media_id'))->delete();
 
         return (new AlbumIndexResource($album))->response()->setStatusCode(204);
     }
