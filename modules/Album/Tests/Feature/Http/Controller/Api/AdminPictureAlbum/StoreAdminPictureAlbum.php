@@ -74,7 +74,7 @@ class StoreAdminPictureAlbum extends TestCase
 
         $response = $this->storeAlbumPicture($album, $image);
 
-        $this->assertSame("/storage/1/fake.jpg", $album->fresh()->media->get(0)->getUrl());
+        $this->assertSame('/storage/1/fake.jpg', $album->fresh()->media->get(0)->getUrl());
     }
 
     public function storeAlbumPicture(Album $album, $media, array $optional = []): TestResponse
