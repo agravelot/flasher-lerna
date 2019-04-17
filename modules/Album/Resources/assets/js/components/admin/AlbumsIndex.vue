@@ -1,11 +1,17 @@
 <template>
     <div>
         <section>
-            <button
-                    class="button field is-danger"
+
+            <router-link :to="{ name: 'admin.albums.create' }">
+                <button class="button field is-success">
+                    <b-icon pack="fas" icon="plus"></b-icon>
+                    <span>New</span>
+                </button>
+            </router-link>
+
+            <button class="button field is-danger"
                     @click="confirmDeleteSelectedAlbums"
-                    :disabled="!checkedRows.length"
-            >
+                    :disabled="!checkedRows.length">
                 <b-icon pack="fas" icon="trash-alt"></b-icon>
                 <span>Delete checked</span>
             </button>
@@ -27,64 +33,37 @@
                     @sort="onSort"
                     icon-pack="fas"
                     checkable
-                    :checked-rows.sync="checkedRows"
-            >
+                    :checked-rows.sync="checkedRows">
                 <template slot-scope="album">
-                    <b-table-column field="id" label="ID" width="40" numeric sortable>{{ album.row.id }}
+                    <b-table-column field="id" label="ID" width="40" numeric sortable>
+                        {{ album.row.id }}
                     </b-table-column>
 
                     <b-table-column field="title" label="Title" sortable>
-                        <!--<template v-if="showDetailIcon"><a v-bind:href="`/admin/albums/${album.row.slug}/edit`">{{ album.row.title }}</a></template>-->
-                        <router-link
-                                :to="{name: 'admin.albums.edit', params: { slug: album.row.slug }}">
+                        <router-link :to="{name: 'admin.albums.edit', params: { slug: album.row.slug }}">
                             {{ album.row.title }}
                         </router-link>
-                        <!--<template v-else>-->
-                        <!--<a @click="toggle(album.row)">{{ album.row.title }}</a>-->
-                        <!--</template>-->
                     </b-table-column>
 
                     <b-table-column field="status" label="Status" sortable centered>
-            <span
-                    v-if="album.row.private === 1"
+            <span v-if="album.row.private === 1"
                     class="tag is-danger"
-                    v-bind:title="'This album is private'"
-            >{{ 'Private' }}</span>
-                        <span
-                                v-else-if="typeof album.row.published_at === 'string'"
+                    v-bind:title="'This album is private'" >
+                {{ 'Private' }}
+            </span>
+                        <span v-else-if="typeof album.row.published_at === 'string'"
                                 class="tag is-success"
-                                v-bind:title="new Date(album.row.published_at).toLocaleDateString()"
-                        >{{ 'Published' }}</span>
+                                v-bind:title="new Date(album.row.published_at).toLocaleDateString()">
+                            {{ 'Published' }}
+                        </span>
                         <span v-else class="tag is-dark" v-bind:title="'This album is a draft'">{{ 'Draft' }}</span>
                     </b-table-column>
-                </template>
-
-                <template slot="detail" slot-scope="album">
-                    <article class="media">
-                        <figure class="media-left">
-                            <p class="image is-64x64">
-                                <img src="https://via.placeholder.com/128">
-                            </p>
-                        </figure>
-                        <div class="media-content">
-                            <div class="content">
-                                <p>
-                                    <strong>{{ album.row.title }}</strong>
-                                    <small>{{ album.row.published_at }}</small>
-                                    <br>
-                                    {{ album.row.body | truncate(80) }}
-                                </p>
-                            </div>
-                        </div>
-                    </article>
                 </template>
 
                 <template slot="empty">
                     <section class="section">
                         <div class="content has-text-grey has-text-centered">
-                            <p>
-                                <b-icon pack="fas" icon="sad-tear" size="is-large"></b-icon>
-                            </p>
+                            <p><b-icon pack="fas" icon="sad-tear" size="is-large"></b-icon></p>
                             <p>Nothing here.</p>
                         </div>
                     </section>
