@@ -14,7 +14,7 @@ $factory->define(App\Models\Cosplayer::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'description' => $faker->paragraph,
-        'created_at' => $faker->dateTime('now'),
+        'created_at' => Carbon::now(),
         'updated_at' => Carbon::now(),
     ];
 });
