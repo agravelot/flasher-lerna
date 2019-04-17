@@ -75,14 +75,12 @@ class AdminPictureAlbumController extends Controller
      */
     public function destroy(Album $album, DeletePictureAlbumRequest $request)
     {
-        $media_id = (int) ($request->media_id);
-
         //TODO Move in request
-        if (! $album->media->pluck('id')->containsStrict($media_id)) {
+        if (! $album->media->pluck('id')->containsStrict($request->media_id)) {
             throw new UnprocessableEntityHttpException('media not found');
         }
 
-        $album->media->firstWhere('id', $media_id)->delete();
+        $album->media->firstWhere('id', $request->media_id)->delete();
 
         return (new AlbumIndexResource($album))->response()->setStatusCode(204);
     }

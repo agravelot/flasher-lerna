@@ -18,7 +18,7 @@ Route::middleware(['auth:api', 'verified', 'admin'])->group(function () {
             Route::apiResource('album-pictures', 'AdminPictureAlbumController')
                 ->only('store', 'destroy')
                 ->parameters([
-                    'album-pictures' => 'album'
+                    'album-pictures' => 'album',
                 ]);
         });
     });
