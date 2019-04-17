@@ -81,7 +81,7 @@ class AlbumPolicy extends Policy
      *
      * @return bool
      */
-    public function update(User $user, ?Album $album = null)
+    public function update(User $user, Album $album)
     {
 //        return $user->id == $album->user_id;
         return false;
@@ -95,7 +95,7 @@ class AlbumPolicy extends Policy
      *
      * @return bool
      */
-    public function delete(User $user, ?Album $album = null)
+    public function delete(User $user, Album $album)
     {
 //        return $user->id == $album->user_id;
         return false;
