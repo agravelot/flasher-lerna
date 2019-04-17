@@ -20,6 +20,11 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class AdminPictureAlbumController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Album::class);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -27,13 +32,11 @@ class AdminPictureAlbumController extends Controller
      * @param FileReceiver             $receiver
      *
      * @throws UploadMissingFileException
-     * @throws \Illuminate\Auth\Access\AuthorizationException
      *
      * @return string
      */
     public function store(StorePictureAlbumRequest $request, FileReceiver $receiver)
     {
-        $this->authorize('create', Album::class);
         /** @var Album $album */
         $album = Album::whereSlug($request->validated()['album_slug'])->firstOrFail();
 
@@ -45,6 +48,7 @@ class AdminPictureAlbumController extends Controller
         // check if the upload has not finished (in chunk mode it will send smaller files)
         if (! $save->isFinished()) {
             // we are in chunk mode, lets send the current progress
+            //TODO Use resource
             return response()->json([
                 'done' => $save->handler()->getPercentageDone(),
                 'status' => true,
@@ -53,6 +57,7 @@ class AdminPictureAlbumController extends Controller
 
         $media = $album->addPicture($save->getFile());
 
+        //TODO User resource
         return response()->json([
             'path' => $media->getUrl(),
             'name' => $media->file_name,
@@ -63,21 +68,16 @@ class AdminPictureAlbumController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param string                    $albumSlug
+     * @param Album                     $album
      * @param DeletePictureAlbumRequest $request
-     *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Exception
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(string $albumSlug, DeletePictureAlbumRequest $request)
+    public function destroy(Album $album, DeletePictureAlbumRequest $request)
     {
-        $this->authorize('delete', Album::class);
-        $album = Album::whereSlug($albumSlug)->firstOrFail();
-        $this->authorize('delete', $album);
         $media_id = (int) ($request->media_id);
 
+        //TODO Move in request
         if (! $album->media->pluck('id')->containsStrict($media_id)) {
             throw new UnprocessableEntityHttpException('media not found');
         }
