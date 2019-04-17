@@ -14,7 +14,6 @@ use App\Models\Album;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Arr;
 use Modules\Album\Http\Requests\AlbumRequest;
 use Modules\Album\Transformers\AlbumIndexResource;
 use Modules\Album\Transformers\AlbumShowResource;
@@ -50,13 +49,13 @@ class AdminAlbumController extends Controller
     {
         $album = Album::create($request->validated());
 
-        if ($request->has( 'categories')) {
+        if ($request->has('categories')) {
             $album->categories()->sync(
                 collect($request->get('categories'))->pluck('id'), false
             );
         }
 
-        if ($request->has( 'cosplayers')) {
+        if ($request->has('cosplayers')) {
             $album->cosplayers()->sync(
                 collect($request->get('cosplayers'))->pluck('id'), false
             );
@@ -97,7 +96,7 @@ class AdminAlbumController extends Controller
             );
         }
 
-        if ($request->has( 'cosplayers')) {
+        if ($request->has('cosplayers')) {
             $album->load('cosplayers')->cosplayers()->sync(
                 collect($request->get('cosplayers'))->pluck('id'), true
             );

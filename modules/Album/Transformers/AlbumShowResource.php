@@ -41,25 +41,25 @@ class AlbumShowResource extends Resource
         $album = Album::newModelInstance($this);
 
         return [
-            'id' => $this->id,
-            'slug' => $this->slug,
-            'title' => $this->title,
-            'published_at' => $this->published_at,
-            'created_at' => $this->created_at,
-            'body' => $this->body,
-            'private' => $this->private,
-            'medias' => MediaResource::collection($this->media),
-            'categories' => CategoryResource::collection($this->categories),
-            'cosplayers' => CosplayerResource::collection($this->cosplayers),
-            'user' => new UserResource($this->user),
+            'id' => $album->id,
+            'slug' => $album->slug,
+            'title' => $album->title,
+            'published_at' => $album->published_at,
+            'created_at' => $album->created_at,
+            'body' => $album->body,
+            'private' => $album->private,
+            'medias' => MediaResource::collection($album->media),
+            'categories' => CategoryResource::collection($album->categories),
+            'cosplayers' => CosplayerResource::collection($album->cosplayers),
+            'user' => new UserResource($album->user),
             'links' => [
                 'download' => $this->when(
                     $this->checkCan('download', $album),
-                    route('download-albums.show', ['slug' => $this->slug])
+                    route('download-albums.show', ['slug' => $album->slug])
                 ),
                 'edit' => $this->when(
                     $this->checkCan('update', $album),
-                    route('admin.albums.edit', ['slug' => $this->slug])
+                    route('admin.albums.edit', ['slug' => $album->slug])
                 ),
             ],
         ];
