@@ -23,6 +23,7 @@ class MediaResource extends Resource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'file_name' => $this->file_name,
             'thumb' => $this->getUrl('thumb'),
