@@ -15,7 +15,11 @@ Route::namespace('Front')->group(function () {
     Route::get('/', 'AlbumController@index')->name('albums.index');
     Route::get('albums/{album_slug}', 'AlbumController@show')->name('albums.show');
 //    Route::resource('posts', 'PostController')->only(['index', 'show']);
-    Route::resource('download-albums', 'DownloadAlbumController')->only(['show'])->middleware('auth', 'verified');
+    Route::resource('download-albums', 'DownloadAlbumController')->only(['show'])
+        ->middleware('auth', 'verified')
+        ->parameters([
+            'download-albums' => 'album',
+        ]);
     Route::resource('goldenbook', 'GoldenBookController')->only(['index', 'create', 'store']);
     Route::resource('cosplayers', 'CosplayerController')->only(['index', 'show']);
     Route::resource('categories', 'CategoryController')->only(['index', 'show']);
