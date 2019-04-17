@@ -240,6 +240,11 @@
                     });
                 })
                 .catch(err => {
+                    this.$toast.open({
+                        message: `Unable to delete the picture`,
+                        type: 'is-danger',
+                        duration: 5000,
+                    });
                     throw err;
                 });
         }
