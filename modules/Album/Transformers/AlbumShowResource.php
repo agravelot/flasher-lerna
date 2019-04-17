@@ -38,7 +38,7 @@ class AlbumShowResource extends Resource
      */
     public function toArray($request)
     {
-        $album = Album::findOrFail($this->id);
+        $album = Album::newModelInstance($this);
 
         return [
             'id' => $this->id,
