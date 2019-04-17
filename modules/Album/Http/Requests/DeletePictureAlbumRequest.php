@@ -10,6 +10,9 @@
 namespace Modules\Album\Http\Requests;
 
 use App\Http\Requests\Request;
+use App\Models\Album;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Validation\Rule;
 
 class DeletePictureAlbumRequest extends Request
 {
@@ -21,7 +24,13 @@ class DeletePictureAlbumRequest extends Request
     public function rules()
     {
         return [
-            'media_id' => 'required|integer|exists:media,id',
+            'media_id' => [
+                'required', 'integer',
+                Rule::exists('media', 'id')->where(function (Builder $query) {
+                    $query->where('model_type', Album::class)
+                        ->where('model_id', $this->album->id);
+                }),
+            ],
         ];
     }
 }

@@ -57,7 +57,7 @@ class AdminPictureAlbumController extends Controller
 
         $media = $album->addPicture($save->getFile());
 
-        //TODO User resource
+        //TODO Use resource
         return response()->json([
             'path' => $media->getUrl(),
             'name' => $media->file_name,
@@ -75,11 +75,6 @@ class AdminPictureAlbumController extends Controller
      */
     public function destroy(Album $album, DeletePictureAlbumRequest $request)
     {
-        //TODO Move in request
-        if (! $album->media->pluck('id')->containsStrict($request->media_id)) {
-            throw new UnprocessableEntityHttpException('media not found');
-        }
-
         $album->media->firstWhere('id', $request->media_id)->delete();
 
         return (new AlbumIndexResource($album))->response()->setStatusCode(204);
