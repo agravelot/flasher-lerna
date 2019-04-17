@@ -21,7 +21,7 @@ class DeletePictureAlbumRequest extends Request
     public function rules()
     {
         return [
-            'media_id' => 'required|int|exists:albums,id',
+            'media_id' => 'required|integer|exists:media,id',
         ];
     }
 }
