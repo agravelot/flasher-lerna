@@ -62,7 +62,7 @@ class Album extends Model implements HasMedia
 {
     use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey, HasTitleAsSlug;
 
-    protected $with = ['media', 'cosplayers.media'];
+    protected $with = ['media'];
 
     protected $dates = [
         'published_at', 'updated_at', 'created_at',

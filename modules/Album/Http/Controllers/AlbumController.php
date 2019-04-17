@@ -48,6 +48,8 @@ class AlbumController extends Controller
      */
     public function show(PublicAlbum $album)
     {
+        $album->load('categories', 'cosplayers.media');
+
         return new AlbumShowResource($album);
     }
 }

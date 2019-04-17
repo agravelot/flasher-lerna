@@ -72,6 +72,7 @@ class AdminAlbumController extends Controller
      */
     public function show(Album $album)
     {
+        $album->load('categories', 'cosplayers.media');
         return new AlbumShowResource($album);
     }
 
@@ -89,10 +90,12 @@ class AdminAlbumController extends Controller
         $album->update($validated);
 
         if (Arr::exists($validated, 'categories')) {
+            $album->load('categories');
             $album->categories()->sync(collect($validated['categories'])->pluck('id'), true);
         }
 
         if (Arr::exists($validated, 'cosplayers')) {
+            $album->load('cosplayers');
             $album->cosplayers()->sync(collect($validated['cosplayers'])->pluck('id'), true);
         }
 
