@@ -49,7 +49,7 @@ class CreateAdminUserTest extends TestCase
         $this->artisan('user:create', [
             'role' => 'admin',
             'name' => 'admin',
-            'email' => 'admin@picblog',
+            'email' => 'admin',
             'password' => 'secret',
         ])
             ->expectsOutput('User not created. See error messages below:')
@@ -63,7 +63,7 @@ class CreateAdminUserTest extends TestCase
         $this->artisan('user:create', [
             'role' => 'admin',
             'name' => 'admin',
-            'email' => 'admin@picblog',
+            'email' => 'admin',
             'password' => 'secret',
         ])
             ->expectsOutput('User not created. See error messages below:')
