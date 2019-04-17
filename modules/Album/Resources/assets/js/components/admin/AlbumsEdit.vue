@@ -99,7 +99,7 @@
     import vue2Dropzone from 'vue2-dropzone';
     import 'vue2-dropzone/dist/vue2Dropzone.min.css'
     import AlbumDesc from './AlbumDesc';
-    import AlbumsShowGallery from './../front/AlbumsShowGallery';
+    import AlbumsShowGallery from './AlbumsShowGallery';
 
     @Component({
         name: "AlbumsEdit",

@@ -90,10 +90,10 @@
     @Component({
         name: "AlbumsShowGallery",
     })
-    export default class Home extends VueBuefy {
+    export default class AlbumsShowGallery extends VueBuefy {
 
-        private album: object = null;
-        private openedPicture: object = null;
+        protected album: object = null;
+        protected openedPicture: object = null;
         loading: boolean = false;
 
         updated(): void {
