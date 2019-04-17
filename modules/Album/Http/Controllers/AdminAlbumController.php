@@ -48,16 +48,18 @@ class AdminAlbumController extends Controller
      */
     public function store(AlbumRequest $request)
     {
-        $validated = $request->validated();
-        /** @var Album $album */
-        $album = Album::create($validated);
+        $album = Album::create($request->validated());
 
-        if (Arr::exists($validated, 'categories')) {
-            $album->categories()->sync(collect($validated['categories'])->pluck('id'), false);
+        if ($request->has( 'categories')) {
+            $album->categories()->sync(
+                collect($request->get('categories'))->pluck('id'), false
+            );
         }
 
-        if (Arr::exists($validated, 'cosplayers')) {
-            $album->cosplayers()->sync(collect($validated['cosplayers'])->pluck('id'), false);
+        if ($request->has( 'cosplayers')) {
+            $album->cosplayers()->sync(
+                collect($request->get('cosplayers'))->pluck('id'), false
+            );
         }
 
         return new AlbumShowResource($album);
@@ -87,18 +89,17 @@ class AdminAlbumController extends Controller
      */
     public function update(Album $album, AlbumRequest $request)
     {
-        $validated = $request->validated();
-        $album->update($validated);
+        $album->update($request->validated());
 
-        if (Arr::exists($validated, 'categories')) {
+        if ($request->has('categories')) {
             $album->load('categories')->categories()->sync(
-                collect($validated['categories'])->pluck('id'), true
+                collect($request->get('categories'))->pluck('id'), true
             );
         }
 
-        if (Arr::exists($validated, 'cosplayers')) {
+        if ($request->has( 'cosplayers')) {
             $album->load('cosplayers')->cosplayers()->sync(
-                collect($validated['cosplayers'])->pluck('id'), true
+                collect($request->get('cosplayers'))->pluck('id'), true
             );
         }
 
