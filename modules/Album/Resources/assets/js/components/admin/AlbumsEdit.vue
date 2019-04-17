@@ -226,8 +226,8 @@
                 })
         }
 
-        deleteAlbumPicture(albumSlug: void, mediaId: number) {
-            return this.axios.delete(`/api/admin/album-pictures/${albumSlug}`, {
+        deleteAlbumPicture(albumSlug: string, mediaId: number) : void {
+            this.axios.delete(`/api/admin/album-pictures/${albumSlug}`, {
                 data: {
                     media_id: mediaId,
                 },
