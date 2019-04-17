@@ -57,7 +57,6 @@ use Spatie\MediaLibrary\Models\Media;
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album public ()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album wherePrivate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album public()
  */
 class Album extends Model implements HasMedia
 {
@@ -77,11 +76,7 @@ class Album extends Model implements HasMedia
     protected $fillable = [
         'title',
         'slug',
-        'seo_title',
-        'excerpt',
         'body',
-        'meta_description',
-        'meta_keywords',
         'published_at',
         'user_id',
         'private',
