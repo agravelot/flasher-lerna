@@ -66,6 +66,17 @@ class StoreAdminPictureAlbum extends TestCase
         $response->assertStatus(401);
     }
 
+    public function test_uploaded_image_path_is_relative()
+    {
+        $this->actingAsAdmin();
+        $album = factory(Album::class)->state('withUser')->create();
+        $image = UploadedFile::fake()->image('fake.jpg');
+
+        $response = $this->storeAlbumPicture($album, $image);
+
+        $this->assertSame("/storage/1/fake.jpg", $album->fresh()->media->get(0)->getUrl());
+    }
+
     public function storeAlbumPicture(Album $album, $media, array $optional = []): TestResponse
     {
         session()->setPreviousUrl('/admin/albums/create');
