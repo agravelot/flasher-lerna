@@ -31,10 +31,6 @@ RUN composer global require hirak/prestissimo \
             # Production only
             --no-dev \
             --classmap-authoritative
-RUN composer dump-autoload -a
-RUN php artisan telescope:publish -vvv >storage/debug 2>&1 || true
-RUN php artisan vendor:publish --tag=horizon-assets -vvv >storage/debug 2>&1 || true
-RUN echo storage/debug
 
 #
 # Nginx server
@@ -87,6 +83,11 @@ COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
 RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
         && chown -h 1000:1000 /var/www/html/public/storage
 
+# Check composer reqs
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+RUN composer check-platform-reqs
+RUN rm -f /usr/bin/composer
+
 # Clean laravel cache
 CMD php artisan config:clear \
 # Update database
@@ -94,6 +95,8 @@ CMD php artisan config:clear \
         && php artisan cache:clear-wait-connection \
         && php artisan migrate --force \
         && php artisan passport:keys \
+        && php artisan telescope:publish \
+        && php artisan vendor:publish --tag=horizon-assets \
 # Optimizing for production
 # https://laravel.com/docs/5.7/deployment#optimization
         && php artisan view:clear \
