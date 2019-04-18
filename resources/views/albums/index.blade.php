@@ -6,7 +6,7 @@
         <h2 class="subtitle">{{ __('Discover my albums') }}</h2>
 
         <div id="app">
-            <albums-masonry></albums-masonry>
+            <albums-masonry :data="{{ $albums }}"></albums-masonry>
         </div>
     </div>
 @endsection
