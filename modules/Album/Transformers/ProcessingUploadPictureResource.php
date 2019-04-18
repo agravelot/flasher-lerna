@@ -22,7 +22,8 @@ class ProcessingUploadPictureResource extends JsonResource
      */
     public function toArray($request)
     {
-        //TODO Remove data
+        self::withoutWrapping();
+
         return [
             'done' => $this->handler()->getPercentageDone(),
             'status' => true,

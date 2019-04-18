@@ -10,7 +10,6 @@
 namespace Modules\Album\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Spatie\MediaLibrary\Models\Media;
 
 class CompleteUploadPictureResource extends JsonResource
 {
@@ -23,13 +22,12 @@ class CompleteUploadPictureResource extends JsonResource
      */
     public function toArray($request)
     {
-//        $media = Media::newModelInstance($this);
-        //TODO Remove data
-        $media = $this;
+        self::withoutWrapping();
+
         return [
-            'path' => $media->getUrl(),
-            'name' => $media->file_name,
-            'mime_type' => $media->mime_type,
+            'path' => $this->getUrl(),
+            'name' => $this->file_name,
+            'mime_type' => $this->mime_type,
         ];
     }
 }
