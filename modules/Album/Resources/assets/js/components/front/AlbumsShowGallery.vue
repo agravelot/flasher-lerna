@@ -114,7 +114,7 @@
         }
 
         mounted(): void {
-            this.album = this.data.data
+            this.album = this.data.data;
 
             if (!this.album) {
                 console.warn('Album is not eager loaded, requesting...');

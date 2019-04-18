@@ -37,11 +37,11 @@ class AlbumController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  string  $slug
+     * @param string $slug
      *
-     * @return Response
      * @throws AuthorizationException
      *
+     * @return Response
      */
     public function show(string $slug)
     {

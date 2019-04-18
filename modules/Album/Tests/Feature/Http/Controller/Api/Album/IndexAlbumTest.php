@@ -20,7 +20,7 @@ class IndexAlbumTest extends TestCase
     public function test_admin_can_view_published_albums()
     {
         $this->actingAsAdmin();
-        $album = factory(Album::class)->states(['published' , 'passwordLess'])->create();
+        $album = factory(Album::class)->states(['published', 'passwordLess'])->create();
 
         $response = $this->json('get', '/api/albums');
 
