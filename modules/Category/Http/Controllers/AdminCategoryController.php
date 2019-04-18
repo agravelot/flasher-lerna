@@ -11,10 +11,12 @@ namespace Modules\Category\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 use Modules\Category\Transformers\CategoryResource;
 
-class CategoryController extends Controller
+class AdminCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,6 +29,17 @@ class CategoryController extends Controller
     }
 
     /**
+     * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+    }
+
+    /**
      * Show the specified resource.
      *
      * @param Category $category
@@ -36,5 +49,25 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         return new CategoryResource($category);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function update(Request $request)
+    {
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return Response
+     */
+    public function destroy()
+    {
     }
 }
