@@ -41,11 +41,15 @@
 <script lang="ts">
     import Component from 'vue-class-component';
     import VueBuefy from "../../../../../../../resources/js/buefy";
+    import {Prop} from "vue-property-decorator";
 
     @Component({
         name: "AlbumsMasonry",
     })
     export default class AlbumsMasonry extends VueBuefy {
+
+        @Prop()
+        data: Array<any>;
 
         protected albums: Array<object> = [];
         protected total: number = 0;
@@ -68,16 +72,20 @@
         }
 
         mounted() {
-            this.fetchAlbums();
+            this.albums = this.data.data;
+            this.perPage = this.data.meta.per_page;
+            this.total = this.data.meta.total;
+            this.loading = false;
+            if (!this.albums) {
+                console.warn('Albums not eager loaded, requesting server...');
+                this.fetchAlbums();
+            }
             this.$nextTick(() => {
                 this.onResize();
             });
         }
 
         onPageChanged(page: number): void {
-            this.$nextTick(() => {
-                this.onResize();
-            });
             this.page = page;
             this.fetchAlbums();
         }

@@ -1,5 +1,6 @@
 <template>
-    <div class="container is-centered has-margin-top-md" v-if="this.album">
+
+    <div v-if="this.album" class="container is-centered has-margin-top-md">
         <h1 class="title is-2 has-text-centered">{{ album.title }}</h1>
 
         <!--TODO Add nothing to show-->
@@ -59,8 +60,7 @@
                             <!--<span class="initials"> {{ $cosplayer->initial }}</span>-->
                             <!--</div>-->
                             <!--@endif-->
-                            <!--TODO Add link-->
-                            <a :href="cosplayer.links.related">
+                            <a  :href="cosplayer.links.related">
                                 <p class="has-text-centered">
                                     {{ cosplayer.name }}
                                 </p>
@@ -85,12 +85,15 @@
 
 <script lang="ts">
     import Component from 'vue-class-component';
+    import {Prop} from "vue-property-decorator";
     import VueBuefy from "../../../../../../../resources/js/buefy";
 
     @Component({
         name: "AlbumsShowGallery",
     })
     export default class AlbumsShowGallery extends VueBuefy {
+
+        @Prop([Object, null]) readonly data : object|null;
 
         protected album: object = null;
         protected openedPicture: object = null;
@@ -111,7 +114,12 @@
         }
 
         mounted(): void {
-            this.fetchAlbum();
+            this.album = this.data.data
+
+            if (!this.album) {
+                console.warn('Album is not eager loaded, requesting...');
+                this.fetchAlbum();
+            }
             this.$nextTick(() => {
                 this.onResize();
             });
