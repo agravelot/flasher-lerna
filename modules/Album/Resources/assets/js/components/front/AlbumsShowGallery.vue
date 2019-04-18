@@ -93,7 +93,7 @@
     })
     export default class AlbumsShowGallery extends VueBuefy {
 
-        @Prop([Object, null]) readonly data : object|null;
+        @Prop() readonly data : any;
 
         protected album: object = null;
         protected openedPicture: object = null;

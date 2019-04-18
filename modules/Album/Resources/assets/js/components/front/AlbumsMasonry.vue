@@ -48,8 +48,7 @@
     })
     export default class AlbumsMasonry extends VueBuefy {
 
-        @Prop()
-        data: Array<any>;
+        @Prop() readonly data: any;
 
         protected albums: Array<object> = [];
         protected total: number = 0;
