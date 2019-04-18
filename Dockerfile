@@ -59,7 +59,7 @@ RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
 
 # Importing webpack assets
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
-COPY --chown=1000:1000 --from=vendor /app/public/vendor/ /var/www/html/public/vendor/
+#COPY --chown=1000:1000 --from=vendor /app/public/vendor/ /var/www/html/public/vendor/
 
 CMD envsubst '\$NGINX_HOST' < /etc/nginx/nginx.inlined.conf > /etc/nginx/nginx.conf \
         && exec nginx -g 'daemon off;'
@@ -80,7 +80,7 @@ COPY --chown=1000:1000 . /var/www/html
 # Importing composer and assets dependencies
 COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/vendor/
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
-COPY --chown=1000:1000 --from=vendor /app/public/vendor/ /var/www/html/public/vendor/
+#COPY --chown=1000:1000 --from=vendor /app/public/vendor/ /var/www/html/public/vendor/
 
 # Link storage
 RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
