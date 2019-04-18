@@ -34,6 +34,7 @@ RUN composer global require hirak/prestissimo \
 RUN composer dump-autoload -a
 RUN php artisan telescope:publish -vvv >storage/debug 2>&1 || true
 RUN php artisan vendor:publish --tag=horizon-assets -vvv >storage/debug 2>&1 || true
+RUN echo storage/debug
 
 #
 # Nginx server
