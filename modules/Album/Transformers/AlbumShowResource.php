@@ -12,23 +12,10 @@ namespace Modules\Album\Transformers;
 use App\Models\Album;
 use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\Facades\Auth;
+use Modules\Category\Transformers\CategoryResource;
 
 class AlbumShowResource extends Resource
 {
-    /**
-     * Check if the user has the ability to according to the policy.
-     *
-     * @param string $permission
-     * @param Album  $album
-     *
-     * @return bool
-     */
-    private function checkCan(string $permission, Album $album)
-    {
-        return Auth::guard('api')->check()
-            && Auth::guard('api')->user()->can($permission, $album);
-    }
-
     /**
      * Transform the resource into an array.
      *
@@ -63,5 +50,19 @@ class AlbumShowResource extends Resource
                 ),
             ],
         ];
+    }
+
+    /**
+     * Check if the user has the ability to according to the policy.
+     *
+     * @param string $permission
+     * @param Album  $album
+     *
+     * @return bool
+     */
+    private function checkCan(string $permission, Album $album)
+    {
+        return Auth::guard('api')->check()
+            && Auth::guard('api')->user()->can($permission, $album);
     }
 }
