@@ -8,7 +8,7 @@
  */
 
 return [
-    'middleware' => ['web', 'auth', 'verified'],
+    'middleware' => ['web', 'auth', 'verified', 'admin'],
 
     /*
     |--------------------------------------------------------------------------
