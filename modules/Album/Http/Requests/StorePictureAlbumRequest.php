@@ -22,7 +22,7 @@ class StorePictureAlbumRequest extends Request
     {
         return [
             'album_slug' => 'required|exists:albums,slug',
-            'file' => 'required|file|mimetypes:application/octet-stream,image/*|max:20000',
+            'file' => 'required|file|max:20000',
         ];
     }
 }
