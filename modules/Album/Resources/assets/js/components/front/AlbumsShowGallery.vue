@@ -9,8 +9,8 @@
             <a v-for="(media, index) in album.medias" :key="index" @click="openPicture(media)">
                 <figure class="image">
                     <img v-if="media.src_set" class="responsive-media" :srcset="media.src_set" :src="media.thumb"
-                         :alt="media.name" sizes="1px">
-                    <img v-else :src="media.thumb" :alt="media.name">
+                         :alt="media.name" sizes="1px" loading="auto">
+                    <img v-else :src="media.thumb" :alt="media.name" loading="auto">
                 </figure>
             </a>
         </masonry>

@@ -9,8 +9,8 @@
                     <div v-if="album.media" class="card-image">
                         <figure class="image">
                             <img v-if="album.media.src_set" class="responsive-media"
-                                 :srcset="album.media.src_set" :alt="album.media.name" sizes="1px">
-                            <img v-else :src="album.media.thumb" :alt="album.media.name">
+                                 :srcset="album.media.src_set" :alt="album.media.name" sizes="1px" loading="auto">
+                            <img v-else :src="album.media.thumb" :alt="album.media.name" loading="auto">
                         </figure>
                     </div>
                     <div class="card-content">
