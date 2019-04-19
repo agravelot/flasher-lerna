@@ -9,10 +9,10 @@
 
 namespace App\Providers;
 
-use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         if ($this->app->isLocal()) {
-            $this->app->register(IdeHelperServiceProvider::class);
+            $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
     }
 }

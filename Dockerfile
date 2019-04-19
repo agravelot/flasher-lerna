@@ -31,9 +31,6 @@ RUN composer global require hirak/prestissimo \
             # Production only
             --no-dev \
             --classmap-authoritative
-RUN composer dump-autoload -a
-#RUN php artisan telescope:publish -vvv
-RUN php artisan vendor:publish --tag=horizon-assets -vvv
 
 #
 # Nginx server
@@ -59,7 +56,7 @@ RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
 
 # Importing webpack assets
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
-COPY --chown=1000:1000 --from=vendor /app/public/vendor/ /var/www/html/public/vendor/
+#COPY --chown=1000:1000 --from=vendor /app/public/vendor/ /var/www/html/public/vendor/
 
 CMD envsubst '\$NGINX_HOST' < /etc/nginx/nginx.inlined.conf > /etc/nginx/nginx.conf \
         && exec nginx -g 'daemon off;'
@@ -80,11 +77,16 @@ COPY --chown=1000:1000 . /var/www/html
 # Importing composer and assets dependencies
 COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/vendor/
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
-COPY --chown=1000:1000 --from=vendor /app/public/vendor/ /var/www/html/public/vendor/
+#COPY --chown=1000:1000 --from=vendor /app/public/vendor/ /var/www/html/public/vendor/
 
 # Link storage
 RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
         && chown -h 1000:1000 /var/www/html/public/storage
+
+# Check composer reqs
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+RUN composer check-platform-reqs
+RUN rm -f /usr/bin/composer
 
 # Clean laravel cache
 CMD php artisan config:clear \
@@ -93,6 +95,8 @@ CMD php artisan config:clear \
         && php artisan cache:clear-wait-connection \
         && php artisan migrate --force \
         && php artisan passport:keys \
+        && php artisan telescope:publish \
+        && php artisan vendor:publish --tag=horizon-assets \
 # Optimizing for production
 # https://laravel.com/docs/5.7/deployment#optimization
         && php artisan view:clear \
