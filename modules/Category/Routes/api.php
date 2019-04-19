@@ -8,11 +8,13 @@
  */
 
 Route::middleware(['auth:api', 'verified', 'admin'])->group(function () {
-    Route::name('api.admin.')->group(function () {
-        Route::prefix('admin')->group(function () {
-            Route::apiResource('categories', 'AdminCategoryController');
+    Route::name('api.')->group(function () {
+        Route::apiResource('categories', 'CategoryController');
+        Route::name('admin.')->group(function () {
+            Route::prefix('admin')->group(function () {
+                Route::apiResource('categories', 'AdminCategoryController');
+            });
         });
     });
 });
 
-Route::apiResource('categories', 'CategoryController');
