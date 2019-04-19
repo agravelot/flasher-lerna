@@ -124,7 +124,7 @@
             maxFilesize: 400000000,
             chunkSize: 1000000,
             // If true, the individual chunks of a file are being uploaded simultaneously.
-            parallelChunkUploads: true,
+            // parallelChunkUploads: true,
             acceptedFiles: 'image/*',
             retryChunks: true,
             dictDefaultMessage: "<i class='fas fa-images'></i> Upload",
