@@ -96,7 +96,7 @@ CMD php artisan config:clear \
         && php artisan migrate --force \
         && php artisan passport:keys \
         && php artisan telescope:publish \
-        && php artisan vendor:publish --tag=horizon-assets \
+        && php artisan horizon:assets \
 # Optimizing for production
 # https://laravel.com/docs/5.7/deployment#optimization
         && php artisan view:clear \
