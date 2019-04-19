@@ -1,0 +1,14 @@
+{
+    "name": "Cosplayer",
+    "alias": "cosplayer",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\Cosplayer\\Providers\\CosplayerServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

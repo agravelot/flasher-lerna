@@ -125,13 +125,13 @@ abstract class ModelTestCase extends TestCase
             $queryCheck($relation->getQuery(), $model, $relation);
         }
 
-        $this->assertSame($key, $relation->getForeignKey());
+        $this->assertSame($key, $relation->getForeignKeyName());
 
         if (null === $owner) {
             $owner = $related->getKeyName();
         }
 
-        $this->assertSame($owner, $relation->getOwnerKey());
+        $this->assertSame($owner, $relation->getOwnerKeyName());
     }
 
     /**

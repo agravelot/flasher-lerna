@@ -36,7 +36,7 @@ class ShowAlbumTest extends TestCase
 
     private function showAlbum(Album $album): TestResponse
     {
-        return $this->get('/albums/' . $album->slug);
+        return $this->json('get', '/api/albums/' . $album->slug);
     }
 
     public function test_guest_can_view_a_published_album_with_category()
@@ -96,7 +96,7 @@ class ShowAlbumTest extends TestCase
 
     public function test_bad_slug_redirect_page_not_found()
     {
-        $response = $this->get('/albums/same-random-slug');
+        $response = $this->get('/albums/some-random-slug');
 
         $response->assertStatus(404);
     }

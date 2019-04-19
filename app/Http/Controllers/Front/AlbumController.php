@@ -11,13 +11,17 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\PublicAlbum;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\Response;
+use Modules\Album\Transformers\AlbumIndexResource;
+use Modules\Album\Transformers\AlbumShowResource;
 
 class AlbumController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -25,7 +29,9 @@ class AlbumController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('albums.index', compact('albums'));
+        return view('albums.index', [
+            'albums' => AlbumIndexResource::collection($albums)->response()->getContent(),
+        ]);
     }
 
     /**
@@ -33,9 +39,9 @@ class AlbumController extends Controller
      *
      * @param string $slug
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(string $slug)
     {
@@ -44,6 +50,8 @@ class AlbumController extends Controller
             ->firstOrFail();
         $this->authorize('view', $album);
 
-        return view('albums.show', compact('album'));
+        return view('albums.show', [
+            'album' => (new AlbumShowResource($album))->response()->getContent(),
+        ]);
     }
 }

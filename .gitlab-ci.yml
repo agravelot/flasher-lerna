@@ -20,7 +20,7 @@ variables:
 
 before_script:
 - touch docker/db/.env docker/nginx/.env docker/php-fpm/.env
-- apk add --no-cache bash gettext py-pip
+- apk add --no-cache bash gettext py-pip gcc python2-dev libc-dev libffi-dev openssl-dev make
 - pip install docker-compose
 - docker-compose version
 - docker-compose config
@@ -34,6 +34,12 @@ build:
   - docker-compose build
   - docker push registry.gitlab.com/nevax/picblog/picblog_php:latest
   - docker push registry.gitlab.com/nevax/picblog/picblog_nginx:latest
+  artifacts:
+    name: "build_logs"
+    expire_in: 1 week
+    when: always
+    paths:
+      - storage/logs/
 
 build_vendor_dev:
   stage: build
@@ -76,21 +82,21 @@ lint:
   dependencies:
     - build_vendor_dev
 
-security_audit:
-  stage: review
-  script:
-  - echo "SECURITY AUDIT"
-  - docker-compose pull
-  - chmod +x docker/*.sh
-  - bash -c 'cd docker/ && ./generate_env.sh staging'
-  - docker-compose up -d
-  - docker-compose exec -T cache redis-cli config set maxmemory 41943040
-  - docker cp vendor $(docker-compose ps -q php):/var/www/html/
-  - docker-compose exec -e APP_ENV=testing -T php sh vendor/pheromone/phpcs-security-audit/symlink.sh
-  - docker-compose exec -e APP_ENV=testing -T php php vendor/bin/phpcs --standard=./vendor/pheromone/phpcs-security-audit/example_base_ruleset.xml ./vendor/pheromone/phpcs-security-audit/tests.php
-  allow_failure: true
-  dependencies:
-    - build_vendor_dev
+#security_audit:
+#  stage: review
+#  script:
+#  - echo "SECURITY AUDIT"
+#  - docker-compose pull
+#  - chmod +x docker/*.sh
+#  - bash -c 'cd docker/ && ./generate_env.sh staging'
+#  - docker-compose up -d
+#  - docker-compose exec -T cache redis-cli config set maxmemory 41943040
+#  - docker cp vendor $(docker-compose ps -q php):/var/www/html/
+#  - docker-compose exec -e APP_ENV=testing -T php sh vendor/pheromone/phpcs-security-audit/symlink.sh
+#  - docker-compose exec -e APP_ENV=testing -T php php vendor/bin/phpcs --standard=./vendor/pheromone/phpcs-security-audit/example_base_ruleset.xml ./vendor/pheromone/phpcs-security-audit/tests.php
+#  allow_failure: true
+#  dependencies:
+#    - build_vendor_dev
 
 deploy_staging:
   stage: deploy

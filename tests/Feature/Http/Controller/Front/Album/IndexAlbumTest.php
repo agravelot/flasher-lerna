@@ -22,13 +22,13 @@ class IndexAlbumTest extends TestCase
     {
         $response = $this->showAlbums();
 
-        $response->assertStatus(200);
-        $response->assertSee('Nothing to show');
+        $response->assertStatus(200)
+            ->assertJson(['data' => []]);
     }
 
     private function showAlbums(): TestResponse
     {
-        return $this->get('/albums');
+        return $this->json('get', route('api.albums.index'));
     }
 
     public function test_guest_can_view_published_albums()
@@ -50,11 +50,10 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->showAlbums();
 
-        $response->assertStatus(200);
-        $response->assertDontSee($albums->get(0)->title);
-        $response->assertDontSee($albums->get(0)->body);
-        $response->assertDontSee($albums->get(1)->title);
-        $response->assertDontSee($albums->get(1)->body);
+        $response->assertStatus(200)
+            ->assertJson([
+                'data' => [],
+            ]);
     }
 
     public function test_guest_can_not_view_albums_with_password()
@@ -63,11 +62,10 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->showAlbums();
 
-        $response->assertStatus(200);
-        $response->assertDontSee($albums->get(0)->title);
-        $response->assertDontSee($albums->get(0)->body);
-        $response->assertDontSee($albums->get(1)->title);
-        $response->assertDontSee($albums->get(1)->body);
+        $response->assertStatus(200)
+            ->assertJson([
+                'data' => [],
+            ]);
     }
 
     public function test_guest_can_not_view_unpublished_albums_with_password()
@@ -76,10 +74,9 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->showAlbums();
 
-        $response->assertStatus(200);
-        $response->assertDontSee($albums->get(0)->title);
-        $response->assertDontSee($albums->get(0)->body);
-        $response->assertDontSee($albums->get(1)->title);
-        $response->assertDontSee($albums->get(1)->body);
+        $response->assertStatus(200)
+            ->assertJson([
+                'data' => [],
+            ]);
     }
 }

@@ -5,14 +5,8 @@
         <h1 class="title">{{ __('My albums') }}</h1>
         <h2 class="subtitle">{{ __('Discover my albums') }}</h2>
 
-        @if($albums->isEmpty())
-            @include('layouts.partials._empty')
-        @else
-            <div class="masonry">
-                @each('albums.partials._index_item', $albums, 'album')
-            </div>
-        @endif
-
-        {{ $albums->links() }}
+        <div id="app">
+            <albums-masonry :data="{{ $albums }}"></albums-masonry>
+        </div>
     </div>
 @endsection

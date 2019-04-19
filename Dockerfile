@@ -30,11 +30,7 @@ RUN composer global require hirak/prestissimo \
             --no-scripts \
             # Production only
             --no-dev \
-            --optimize-autoloader \
-            --classmap-authoritative \
-        && php artisan vendor:publish --tag=lfm_public \
-        && php artisan vendor:publish --tag=telescope-assets \
-        && php artisan vendor:publish --tag=horizon-assets
+            --classmap-authoritative
 
 #
 # Nginx server
@@ -60,7 +56,7 @@ RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
 
 # Importing webpack assets
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
-COPY --chown=1000:1000 --from=vendor /app/public/vendor/ /var/www/html/public/vendor/
+#COPY --chown=1000:1000 --from=vendor /app/public/vendor/ /var/www/html/public/vendor/
 
 CMD envsubst '\$NGINX_HOST' < /etc/nginx/nginx.inlined.conf > /etc/nginx/nginx.conf \
         && exec nginx -g 'daemon off;'
@@ -81,20 +77,28 @@ COPY --chown=1000:1000 . /var/www/html
 # Importing composer and assets dependencies
 COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/vendor/
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
-COPY --chown=1000:1000 --from=vendor /app/public/vendor/ /var/www/html/public/vendor/
+#COPY --chown=1000:1000 --from=vendor /app/public/vendor/ /var/www/html/public/vendor/
 
 # Link storage
 RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
         && chown -h 1000:1000 /var/www/html/public/storage
 
+# Check composer reqs
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+RUN composer check-platform-reqs
+RUN rm -f /usr/bin/composer
+
 # Clean laravel cache
 CMD php artisan config:clear \
 # Update database
         && php artisan db:wait-connection \
+        && php artisan cache:clear-wait-connection \
         && php artisan migrate --force \
+        && php artisan passport:keys \
+        && php artisan telescope:publish \
+        && php artisan vendor:publish --tag=horizon-assets \
 # Optimizing for production
 # https://laravel.com/docs/5.7/deployment#optimization
-        && php artisan cache:clear-wait-connection \
         && php artisan view:clear \
         && php artisan optimize \
         && php artisan route:cache \

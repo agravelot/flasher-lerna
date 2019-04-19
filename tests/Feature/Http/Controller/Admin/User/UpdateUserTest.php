@@ -9,7 +9,6 @@
 
 namespace Tests\Feature\Http\Controller\Admin\User;
 
-use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -83,9 +82,6 @@ class UpdateUserTest extends TestCase
 
     public function test_user_can_not_update_a_user()
     {
-        NoCaptcha::shouldReceive('verifyResponse')
-            ->once()
-            ->andReturn(true);
         $this->actingAsUser();
         $user = factory(User::class)->create();
         $updateUser = factory(User::class)->make(self::USER_DATA);
@@ -110,7 +106,7 @@ class UpdateUserTest extends TestCase
             ->assertRedirect('/login');
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->withoutMiddleware(VerifyCsrfToken::class);

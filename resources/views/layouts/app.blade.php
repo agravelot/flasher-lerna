@@ -12,7 +12,6 @@
 
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
-    <link href="{{ mix('css/modal.css') }}" rel="stylesheet">
     @yield('head')
 </head>
 <body>
@@ -27,7 +26,10 @@
 {{--@include('layouts.partials._footer')--}}
 
 <!-- Scripts -->
+<script src="{{ mix('/js/manifest.js') }}"></script>
+<script src="{{ mix('/js/vendor.js') }}"></script>
 <script src="{{ mix('/js/app.js') }}"></script>
 @yield('js')
+
 </body>
 </html>

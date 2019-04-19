@@ -7,22 +7,19 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-use UniSharp\LaravelFilemanager\Lfm;
-
 Auth::routes(['verify' => true]);
 Route::impersonate();
 
-Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth', 'verified']], function () {
-    Lfm::routes();
-});
-
 //FRONT
-Route::get('/', 'HomeController@index')->name('home');
-
 Route::namespace('Front')->group(function () {
-    Route::resource('posts', 'PostController')->only(['index', 'show']);
-    Route::resource('albums', 'AlbumController')->only(['index', 'show']);
-    Route::resource('download-albums', 'DownloadAlbumController')->only(['show'])->middleware('auth', 'verified');
+    Route::get('/', 'AlbumController@index')->name('albums.index');
+    Route::get('albums/{album_slug}', 'AlbumController@show')->name('albums.show');
+//    Route::resource('posts', 'PostController')->only(['index', 'show']);
+    Route::resource('download-albums', 'DownloadAlbumController')->only(['show'])
+        ->middleware('auth', 'verified')
+        ->parameters([
+            'download-albums' => 'album',
+        ]);
     Route::resource('goldenbook', 'GoldenBookController')->only(['index', 'create', 'store']);
     Route::resource('cosplayers', 'CosplayerController')->only(['index', 'show']);
     Route::resource('categories', 'CategoryController')->only(['index', 'show']);
@@ -30,13 +27,12 @@ Route::namespace('Front')->group(function () {
 });
 
 //BACK
-Route::group(['middleware' => ['web', 'auth', 'verified', 'admin']], function () {
-    Route::namespace('Admin')->group(function () {
-        Route::name('admin.')->group(function () { // Route Name Prefixe
-            Route::prefix('admin')->group(function () { // Route Prefixe /admin/
+Route::middleware(['web', 'auth', 'verified', 'admin'])->group(function () {
+    Route::name('admin.')->group(function () {
+        Route::prefix('admin')->group(function () {
+            Route::namespace('Admin')->group(function () {
                 Route::get('', 'AdminController@dashboard')->name('dashboard');
                 Route::resource('albums', 'AdminAlbumController');
-                Route::resource('album-pictures', 'AdminPictureAlbumController')->only('store');
                 Route::resource('categories', 'AdminCategoryController');
                 Route::resource('goldenbook', 'AdminGoldenBookController');
                 Route::resource('social-medias', 'AdminSocialMediaController')->except('show');
@@ -45,6 +41,7 @@ Route::group(['middleware' => ['web', 'auth', 'verified', 'admin']], function ()
                 Route::resource('users', 'AdminUserController');
                 Route::resource('contacts', 'AdminContactController')->except('edit', 'update');
             });
+            Route::get('/spa/{any}', 'SpaController@index')->where('any', '.*');
         });
     });
 });
