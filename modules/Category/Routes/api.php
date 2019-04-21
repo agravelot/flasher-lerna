@@ -17,4 +17,3 @@ Route::middleware(['auth:api', 'verified', 'admin'])->group(function () {
         });
     });
 });
-

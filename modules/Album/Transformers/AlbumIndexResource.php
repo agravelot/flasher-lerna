@@ -29,6 +29,7 @@ class AlbumIndexResource extends Resource
             'published_at' => $this->published_at,
             'private' => $this->private,
             'media' => new MediaResource($this->getFirstMedia('pictures')),
+            'media_count' => $this->media_count,
         ];
     }
 }
