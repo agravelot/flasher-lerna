@@ -48,5 +48,6 @@
         <env name="DB_USERNAME" value="root"/>
         <env name="DB_PASSWORD" value=""/>
         <env name="TELESCOPE_ENABLED" value="false"/>
+        <env name="ANALYTICS_PROVIDER" value="NoAnalytics"/>
     </php>
 </phpunit>
