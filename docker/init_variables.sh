@@ -14,6 +14,7 @@ if [[ $1 == "production" ]]; then
     export APP_URL=${APP_URL_PRODUCTION}
     export APP_NAME=${APP_NAME_PRODUCTION}
     export APP_KEY=${APP_KEY_PRODUCTION}
+    export ANALYTICS_TRACKING_ID=${ANALYTICS_TRACKING_ID_PROD}
 else
 # Staging
     export SSH_PRIVATE_KEY=${CI_STAGING_SSH_PRIVATE_KEY}
