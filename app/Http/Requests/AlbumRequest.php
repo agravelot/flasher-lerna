@@ -26,7 +26,7 @@ class AlbumRequest extends Request
             'title' => ['required', 'string', 'min:2', 'max:255', Rule::unique('albums')->ignore($id)],
             'body' => 'nullable|max:65000',
             'published_at' => 'nullable|date', //2015-06-10 01:10:25
-            'private' => 'required|boolean',
+            'private' => 'sometimes|boolean',
             'categories' => 'nullable|array',
             'categories.*.id' => 'integer|min:1|exists:categories,id',
             'cosplayers' => 'nullable|array',
