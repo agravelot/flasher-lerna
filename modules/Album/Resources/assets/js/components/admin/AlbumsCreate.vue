@@ -6,10 +6,7 @@
             <b-field label="Title"
                      :type="errors.title ? 'is-danger' : ''"
                      :message="errors.title ? errors.title[0] : null">
-                <b-input type="text"
-                         v-model="album.title"
-                         maxlength="30">
-                </b-input>
+                <b-input type="text" v-model="album.title" maxlength="30"></b-input>
             </b-field>
 
             <quill-editor v-model="album.body" ref="myQuillEditor" :options="editorOption"></quill-editor>
@@ -62,10 +59,9 @@
                      :type="errors.private ? 'is-danger' : ''"
                      :message="errors.private ? errors.private[0] : null">
                 <div class="field">
-                    <b-switch v-model.numeric="album.private"
-                              :true-value=0
+                    <b-switch v-model="album.private"
                               :false-value=1
-                              value="0">
+                              :true-value=0>
                         {{ album.private ? 'No' : 'Yes' }}
                     </b-switch>
                 </div>
@@ -88,7 +84,6 @@
         },
     })
     export default class AlbumsCreate extends AlbumDesc {
-        isSelectOnly: boolean = false;
 
         created() {
             this.fetchData();
