@@ -210,13 +210,13 @@
                     .delete(`/api/admin/albums/${album.slug}`)
                     .then(res => {
                         this.showSuccess('Albums deleted');
+                        this.fetchAlbums();
                     })
                     .catch(err => {
                         this.showError(`Unable to delete album <br> <small>${err.message}</small>`);
                         throw err;
                     });
             });
-            this.fetchAlbums();
         }
     }
 </script>
