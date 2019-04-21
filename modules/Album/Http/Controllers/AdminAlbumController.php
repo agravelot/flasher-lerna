@@ -35,7 +35,7 @@ class AdminAlbumController extends Controller
     {
         return AlbumIndexResource::collection(
             QueryBuilder::for(Album::class)->with('media')
-                ->withCount('media')->paginate(10)
+                ->withCount('media')->paginate(15)
         );
     }
 
