@@ -3,20 +3,8 @@
     <div v-if="this.album" class="container is-centered has-margin-top-md">
         <h1 class="title is-2 has-text-centered">{{ album.title }}</h1>
 
-        <!--TODO Add nothing to show-->
-        <masonry :gutter="{default: '0px'}"
-                 :cols="{default: 3, 1000: 2, 700: 1, 400: 1}">
-            <a v-for="(media, index) in album.medias" :key="index" @click="openPicture(media)">
-                <figure class="image">
-                    <img v-if="media.src_set" class="responsive-media" :srcset="media.src_set" :src="media.thumb"
-                         :alt="media.name" sizes="1px" loading="auto">
-                    <img v-else :src="media.thumb" :alt="media.name" loading="auto">
-                </figure>
-            </a>
-        </masonry>
-
         <div class="column is-10 is-offset-1">
-            <div class="card article">
+            <div class="card article has-margin-bottom-md">
                 <div class="card-content has-text-centered">
                     <div class="field has-addons">
                         <div v-if="album.links && album.links.download" class="control">
@@ -47,26 +35,40 @@
                         </a>
                     </span>
                     </div>
-                    <div v-if="album.cosplayers" class="columns is-multiline is-mobile">
-                        <!--@each('cosplayers.partials._cosplayer_badge', $album->cosplayers, 'cosplayer')-->
-                        <div v-for="cosplayer in album.cosplayers" class="column is-2-desktop is-4-tablet is-6-mobile">
-                            <!--@include('cosplayers.partials._cosplayer_avatar', compact('cosplayer'))-->
-                            <!--@if ($cosplayer->getFirstMediaUrl('avatar'))-->
-                            <!--<figure class="is-centered image is-96x96">-->
-                            <!--<img class="is-rounded" src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb') }}">-->
-                            <!--</figure>-->
-                            <!--@else-->
-                            <!--<div class="is-centered avatar-circle">-->
-                            <!--<span class="initials"> {{ $cosplayer->initial }}</span>-->
-                            <!--</div>-->
-                            <!--@endif-->
-                            <a  :href="cosplayer.links.related">
-                                <p class="has-text-centered">
-                                    {{ cosplayer.name }}
-                                </p>
-                            </a>
-                        </div>
-                    </div>
+                </div>
+            </div>
+
+            <!--TODO Add nothing to show-->
+            <masonry :gutter="{default: '0px'}"
+                     :cols="{default: 3, 1000: 2, 700: 1, 400: 1}"
+                     class="has-margin-bottom-md">
+                <a v-for="(media, index) in album.medias" :key="index" @click="openPicture(media)">
+                    <figure class="image">
+                        <img v-if="media.src_set" class="responsive-media" :srcset="media.src_set" :src="media.thumb"
+                             :alt="media.name" sizes="1px" loading="auto">
+                        <img v-else :src="media.thumb" :alt="media.name" loading="auto">
+                    </figure>
+                </a>
+            </masonry>
+
+            <div v-if="album.cosplayers" class="columns is-multiline is-mobile">
+                <!--@each('cosplayers.partials._cosplayer_badge', $album->cosplayers, 'cosplayer')-->
+                <div v-for="cosplayer in album.cosplayers" class="column is-2-desktop is-4-tablet is-6-mobile">
+                    <!--@include('cosplayers.partials._cosplayer_avatar', compact('cosplayer'))-->
+                    <!--@if ($cosplayer->getFirstMediaUrl('avatar'))-->
+                    <!--<figure class="is-centered image is-96x96">-->
+                    <!--<img class="is-rounded" src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb') }}">-->
+                    <!--</figure>-->
+                    <!--@else-->
+                    <!--<div class="is-centered avatar-circle">-->
+                    <!--<span class="initials"> {{ $cosplayer->initial }}</span>-->
+                    <!--</div>-->
+                    <!--@endif-->
+                    <a :href="cosplayer.links.related">
+                        <p class="has-text-centered">
+                            {{ cosplayer.name }}
+                        </p>
+                    </a>
                 </div>
             </div>
 
@@ -93,7 +95,7 @@
     })
     export default class AlbumsShowGallery extends VueBuefy {
 
-        @Prop() readonly data : any;
+        @Prop() readonly data: any;
 
         protected album: object = null;
         protected openedPicture: object = null;
