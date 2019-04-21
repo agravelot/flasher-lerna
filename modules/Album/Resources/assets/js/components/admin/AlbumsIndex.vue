@@ -35,25 +35,25 @@
                     checkable
                     :checked-rows.sync="checkedRows">
                 <template slot-scope="album">
-                    <b-table-column field="id" label="ID" width="40" numeric sortable>
-                        {{ album.row.id }}
-                    </b-table-column>
-
                     <b-table-column field="title" label="Title" sortable>
                         <router-link :to="{name: 'admin.albums.edit', params: { slug: album.row.slug }}">
                             {{ album.row.title }}
                         </router-link>
                     </b-table-column>
 
-                    <b-table-column field="status" label="Status" sortable centered>
-            <span v-if="album.row.private === 1"
-                    class="tag is-danger"
-                    v-bind:title="'This album is private'" >
-                {{ 'Private' }}
-            </span>
+                    <b-table-column field="media_count" label="Nb. photos" centered numeric>
+                        {{ album.row.media_count }}
+                    </b-table-column>
+
+                    <b-table-column field="status" label="Status" centered>
+                        <span v-if="album.row.private === 1"
+                              class="tag is-danger"
+                              v-bind:title="'This album is private'">
+                            {{ 'Private' }}
+                        </span>
                         <span v-else-if="typeof album.row.published_at === 'string'"
-                                class="tag is-success"
-                                v-bind:title="new Date(album.row.published_at).toLocaleDateString()">
+                              class="tag is-success"
+                              v-bind:title="new Date(album.row.published_at).toLocaleDateString()">
                             {{ 'Published' }}
                         </span>
                         <span v-else class="tag is-dark" v-bind:title="'This album is a draft'">{{ 'Draft' }}</span>
@@ -63,7 +63,9 @@
                 <template slot="empty">
                     <section class="section">
                         <div class="content has-text-grey has-text-centered">
-                            <p><b-icon pack="fas" icon="sad-tear" size="is-large"></b-icon></p>
+                            <p>
+                                <b-icon pack="fas" icon="sad-tear" size="is-large"></b-icon>
+                            </p>
                             <p>Nothing here.</p>
                         </div>
                     </section>
