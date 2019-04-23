@@ -18,4 +18,11 @@ use Illuminate\Queue\SerializesModels;
 class ProcessBackup implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    /**
+     * Execute the job.
+     */
+    public function handle()
+    {
+    }
 }
