@@ -15,7 +15,7 @@
     "devDependencies": {
         "@types/browser-sync": "^0.0.43",
         "browser-sync": "^2.26.3",
-        "browser-sync-webpack-plugin": "2.0.1",
+        "browser-sync-webpack-plugin": "^2.2.2",
         "onchange": "^5.0",
         "types-installer": "^1.6.1"
     },
@@ -48,7 +48,7 @@
         "eslint-config-airbnb-base": "^13.1.0",
         "eslint-plugin-import": "^2.16.0",
         "eslint-plugin-vue": "^5.2.2",
-        "laravel-mix": "4.0.14",
+        "laravel-mix": "^4.0.15",
         "laravel-mix-bundle-analyzer": "^1.0.2",
         "laravel-mix-merge-manifest": "^0.1.2",
         "laravel-mix-purgecss": "^4.0.0",
