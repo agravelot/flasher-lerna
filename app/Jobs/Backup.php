@@ -28,6 +28,13 @@ class Backup implements ShouldQueue
     public $timeout = 2 * 60 * 60;
 
     /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 3;
+
+    /**
      * Execute the job.
      */
     public function handle()
