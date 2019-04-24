@@ -14,7 +14,6 @@ use App\Jobs\Backup;
 use App\Jobs\BackupClean;
 use App\Jobs\BackupMonitor;
 use App\Jobs\GenerateSitemap;
-use App\Jobs\ProcessBackup;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -38,8 +37,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->job(new GenerateSitemap())->daily()->withoutOverlapping();
         $schedule->job(
-            ProcessBackup::withChain([
-                new Backup(),
+            Backup::withChain([
                 new BackupClean(),
                 new BackupMonitor(),
             ])->dispatch()->allOnQueue('backup')
