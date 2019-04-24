@@ -20,6 +20,13 @@ class ProcessBackup implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 2;
+
+    /**
      * Execute the job.
      */
     public function handle()
