@@ -97,8 +97,8 @@ return [
         'production' => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue' => ['default'],
-                'balance' => 'simple',
+                'queue' => ['default', 'backup' , 'images'],
+                'balance' => 'auto',
                 'processes' => 10,
                 'tries' => 3,
             ],
