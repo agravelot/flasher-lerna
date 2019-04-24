@@ -34,4 +34,14 @@ class BackupClean implements ShouldQueue
     {
         Artisan::call('backup:clean');
     }
+
+    /**
+     * Get the tags that should be assigned to the job.
+     *
+     * @return array
+     */
+    public function tags()
+    {
+        return ['backup'];
+    }
 }

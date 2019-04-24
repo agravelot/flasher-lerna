@@ -34,4 +34,14 @@ class BackupMonitor implements ShouldQueue
     {
         Artisan::call('backup:monitor');
     }
+
+    /**
+     * Get the tags that should be assigned to the job.
+     *
+     * @return array
+     */
+    public function tags()
+    {
+        return ['backup'];
+    }
 }
