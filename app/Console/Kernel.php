@@ -41,7 +41,7 @@ class Kernel extends ConsoleKernel
                 new BackupClean(),
                 new BackupMonitor(),
             ])->dispatch()->allOnQueue('backup')
-        )->daily()->at('02:00')->withoutOverlapping();
+        )->daily()->at('02:00')->withoutOverlapping()->onOneServer();
         $schedule->command('telescope:prune --hours=24')->daily()->withoutOverlapping();
         $schedule->command('medialibrary:regenerate --only-missing --force')->hourly()->withoutOverlapping();
         $schedule->command('horizon:snapshot')->everyFiveMinutes();
