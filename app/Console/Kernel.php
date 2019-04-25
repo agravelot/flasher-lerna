@@ -37,11 +37,11 @@ class Kernel extends ConsoleKernel
     {
         $schedule->job(new GenerateSitemap())->daily()->withoutOverlapping();
         $schedule->job(
-            Backup::withChain([
+            (new Backup())->chain([
                 new BackupClean(),
                 new BackupMonitor(),
-            ])->dispatch()->allOnQueue('backup')
-        )->daily()->at('02:00')->withoutOverlapping()->onOneServer();
+            ])->allOnQueue('backup')
+        )->daily()->withoutOverlapping()->onOneServer();
         $schedule->command('telescope:prune --hours=24')->daily()->withoutOverlapping();
         $schedule->command('medialibrary:regenerate --only-missing --force')->hourly()->withoutOverlapping();
         $schedule->command('horizon:snapshot')->everyFiveMinutes();
