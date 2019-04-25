@@ -28,12 +28,44 @@ class StorePictureAlbumTest extends TestCase
 
         $response = $this->storeAlbumPicture($album->slug, $picture);
 
-        $this->assertSame(1, $album->fresh()->getMedia('pictures')->count());
-        $this->assertSame($picture->getClientOriginalName(), $album->fresh()->getMedia('pictures')->first()->file_name);
+        $medias = $album->fresh()->getMedia('pictures');
+        $this->assertSame(1, $medias->count());
+        $this->assertNotSame($picture->getClientOriginalName(), $medias->first()->file_name);
+        $this->assertStringContainsString($album->slug, $medias->first()->file_name);
         $response->assertStatus(201)
             ->assertJson([
                 'path' => $album->fresh()->getFirstMediaUrl('pictures'),
-                'name' => 'fake.jpg',
+                'name' => $medias->first()->file_name,
+                'mime_type' => 'image/jpeg',
+            ]);
+    }
+
+    public function test_admin_can_store_picture_twice_to_an_album()
+    {
+        $this->actingAsAdmin();
+        /** @var Album $album */
+        $album = factory(Album::class)->state('published')->create();
+        $picture = UploadedFile::fake()->image('fake.jpg');
+
+        $response1 = $this->storeAlbumPicture($album->slug, $picture);
+        $response2 = $this->storeAlbumPicture($album->slug, $picture);
+
+        $medias = $album->fresh()->getMedia('pictures');
+        $this->assertSame(2, $medias->count());
+        $this->assertNotSame($picture->getClientOriginalName(), $medias->get(0)->file_name);
+        $this->assertNotSame($picture->getClientOriginalName(), $medias->get(1)->file_name);
+        $this->assertStringContainsString($album->slug, $medias->get(0)->file_name);
+        $this->assertStringContainsString($album->slug, $medias->get(1)->file_name);
+        $response1->assertStatus(201)
+            ->assertJson([
+                'path' => $album->fresh()->getMedia('pictures')->get(0)->getUrl(),
+                'name' => $medias->get(0)->file_name,
+                'mime_type' => 'image/jpeg',
+            ]);
+        $response2->assertStatus(201)
+            ->assertJson([
+                'path' => $album->fresh()->getMedia('pictures')->get(1)->getUrl(),
+                'name' => $medias->get(1)->file_name,
                 'mime_type' => 'image/jpeg',
             ]);
     }
