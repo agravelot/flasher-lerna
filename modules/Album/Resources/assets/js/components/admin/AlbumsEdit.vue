@@ -78,12 +78,14 @@
             </b-tab-item>
             <b-tab-item label="Pictures" icon-pack="fas" icon="images">
                 <vue-dropzone ref="myVueDropzone" :options="dropzoneOptions" v-on:vdropzone-sending="sendingEvent"
-                              v-on:vdropzone-complete="refreshMedias"></vue-dropzone>
-                <div v-for="picture in album.medias">
-                    <img v-bind:src="picture.thumb" v-bind:alt="picture.name">
-                    <a class="button has-text-danger" v-on:click="deleteAlbumPicture(album.slug, picture.id)">
-                        Delete
-                    </a>
+                              v-on:vdropzone-complete="refreshMedias" class="has-margin-bottom-md"></vue-dropzone>
+                <div class="columns">
+                    <div v-for="picture in album.medias" class="column">
+                        <img :src="picture.thumb" :alt="picture.name">
+                        <a class="button has-text-danger" @click="deleteAlbumPicture(album.slug, picture.id)">
+                            Delete
+                        </a>
+                    </div>
                 </div>
             </b-tab-item>
             <b-tab-item label="Prévualisation" icon-pack="fas" icon="eye">
@@ -168,7 +170,7 @@
             if (!this.album.slug) {
                 throw new DOMException('album slug is null');
             }
-            formData.append('album_slug', (<string> this.album.slug));
+            formData.append('album_slug', (<string>this.album.slug));
         }
 
         updateAlbum(): void {
@@ -226,7 +228,7 @@
                 })
         }
 
-        deleteAlbumPicture(albumSlug: string, mediaId: number) : void {
+        deleteAlbumPicture(albumSlug: string, mediaId: number): void {
             this.axios.delete(`/api/admin/album-pictures/${albumSlug}`, {
                 data: {
                     media_id: mediaId,
