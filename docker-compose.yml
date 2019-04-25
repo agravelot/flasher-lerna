@@ -47,6 +47,8 @@ services:
 
   cache:
     image: redis:5.0-alpine
+    volumes:
+      - cache_data:/data
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -64,6 +66,7 @@ volumes:
   db-data:
   storage:
   public_vendor:
+  cache_data:
 
 networks:
   default:
