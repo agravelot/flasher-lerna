@@ -27,14 +27,22 @@ class BackupClean implements ShouldQueue
      */
     public $timeout = 15 * 60;
 
-    public $queue = 'backup';
-
     /**
      * Execute the job.
      */
     public function handle()
     {
         Artisan::call('backup:clean');
+    }
+
+    /**
+     * Specify which queue this job should run
+     *
+     * @return string
+     */
+    public function queue()
+    {
+        return 'backup';
     }
 
     /**

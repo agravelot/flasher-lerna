@@ -36,14 +36,22 @@ class Backup implements ShouldQueue
 
     public $retry_after = null;
 
-    public $queue = 'backup';
-
     /**
      * Execute the job.
      */
     public function handle()
     {
         Artisan::call('backup:run');
+    }
+
+    /**
+     * Specify which queue this job should run
+     *
+     * @return string
+     */
+    public function queue()
+    {
+        return 'backup';
     }
 
     /**
