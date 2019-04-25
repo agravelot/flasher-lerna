@@ -45,7 +45,7 @@ class Backup implements ShouldQueue
     }
 
     /**
-     * Specify which queue this job should run
+     * Specify which queue this job should run.
      *
      * @return string
      */
