@@ -21,10 +21,46 @@ class Backup implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
+     * The number of seconds the job can run before timing out.
+     *
+     * @var int
+     */
+    public $timeout = 2 * 60 * 60;
+
+    /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 3;
+
+    public $retry_after = null;
+
+    /**
      * Execute the job.
      */
     public function handle()
     {
         Artisan::call('backup:run');
+    }
+
+    /**
+     * Specify which queue this job should run.
+     *
+     * @return string
+     */
+    public function queue()
+    {
+        return 'backup';
+    }
+
+    /**
+     * Get the tags that should be assigned to the job.
+     *
+     * @return array
+     */
+    public function tags()
+    {
+        return ['backup'];
     }
 }

@@ -97,13 +97,21 @@ return [
         'production' => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue' => ['default'],
-                'balance' => 'simple',
+                'queue' => ['images', 'default', 'backup'],
+                'balance' => 'auto',
                 'processes' => 10,
                 'tries' => 3,
             ],
         ],
-
+        'staging' => [
+            'supervisor-1' => [
+                'connection' => 'redis',
+                'queue' => ['images', 'default', 'backup'],
+                'balance' => 'auto',
+                'processes' => 10,
+                'tries' => 3,
+            ],
+        ],
         'local' => [
             'supervisor-1' => [
                 'connection' => 'redis',

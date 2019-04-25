@@ -29,6 +29,7 @@ echo " * PULLING NEW IMAGES"
 docker-compose -f ../docker-compose.yml pull
 #echo " * PUTTING LARAVEL IN MAINTENANCE MODE"
 #docker-compose exec php echo Hello world && docker-compose exec php php artisan down --message="We'll be back soon" --retry=60 || echo "Container is not running"
+docker-compose exec -T php php artisan horizon:terminate
 echo " * UPDATING RUNNING CONTAINERS"
 docker-compose -f ../docker-compose.yml up -d --remove-orphans
 #echo " * LEAVING MAINTENANCE MODE"
