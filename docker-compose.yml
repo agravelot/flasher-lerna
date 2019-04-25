@@ -4,7 +4,7 @@ services:
     image: mariadb
     restart: always
     volumes:
-    - db-data:/var/lib/mysql
+    - db-data:/var/lib/mysql:rw,delegated
     env_file:
     - docker/db/.env
 
@@ -18,8 +18,8 @@ services:
     env_file:
     - docker/php-fpm/.env
     volumes:
-    - storage:/var/www/html/storage
-    - public_vendor:/var/www/html/public/vendor
+    - storage:/var/www/html/storage:rw,delegated
+    - public_vendor:/var/www/html/public/vendor:rw,delegated
     links:
     - db
     - cache
@@ -38,8 +38,8 @@ services:
     - 8080:80
     env_file: ./docker/nginx/.env
     volumes:
-    - storage:/var/www/html/storage:ro
-    - public_vendor:/var/www/html/public/vendor:ro
+    - storage:/var/www/html/storage:ro,delegated
+    - public_vendor:/var/www/html/public/vendor:ro,delegated
     depends_on:
     - php
     links:
@@ -48,7 +48,7 @@ services:
   cache:
     image: redis:5.0-alpine
     volumes:
-      - cache_data:/data
+      - cache_data:/data:rw,delegated
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
