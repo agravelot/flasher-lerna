@@ -27,6 +27,8 @@ class BackupClean implements ShouldQueue
      */
     public $timeout = 15 * 60;
 
+    public $queue = 'backup';
+
     /**
      * Execute the job.
      */

@@ -34,6 +34,10 @@ class Backup implements ShouldQueue
      */
     public $tries = 3;
 
+    public $retry_after = null;
+
+    public $queue = 'backup';
+
     /**
      * Execute the job.
      */
