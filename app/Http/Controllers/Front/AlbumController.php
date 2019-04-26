@@ -30,7 +30,7 @@ class AlbumController extends Controller
             ->paginate(10);
 
         return view('albums.index', [
-            'albums' => AlbumIndexResource::collection($albums)->response()->getContent(),
+            'albums' => AlbumIndexResource::collection($albums),
         ]);
     }
 

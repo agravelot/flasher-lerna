@@ -8,7 +8,7 @@
         <h2 class="subtitle">{{ __('Discover my albums') }}</h2>
 
         <div id="app">
-            <albums-masonry :data="{{ $albums }}"></albums-masonry>
+            <albums-masonry :data="{{ $albums->response()->getContent() }}"></albums-masonry>
         </div>
     </div>
 @endsection
