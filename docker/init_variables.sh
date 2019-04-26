@@ -6,7 +6,7 @@ set -o nounset   ## set -u : exit the script if you try to use an uninitialised 
 set -o errexit   ## set -e : exit the script if any statement returns a non-true return value
 
 if [[ $1 == "production" ]]; then
-# Production
+    # Production
     export SSH_PRIVATE_KEY=${CI_PRODUCTION_SSH_PRIVATE_KEY}
     export SSH_USER=${CI_PRODUCTION_SSH_USER}
     export CI_DEPLOY_SSH_PORT=${CI_PRODUCTION_DEPLOY_SSH_PORT}
@@ -17,7 +17,7 @@ if [[ $1 == "production" ]]; then
     export ANALYTICS_TRACKING_ID=${ANALYTICS_TRACKING_ID_PROD}
     export SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL_PROD}
 else
-# Staging
+    # Staging
     export SSH_PRIVATE_KEY=${CI_STAGING_SSH_PRIVATE_KEY}
     export SSH_USER=${CI_STAGING_SSH_USER}
     export CI_DEPLOY_SSH_PORT=${CI_STAGING_DEPLOY_SSH_PORT}
