@@ -1,5 +1,7 @@
 @extends('admin.admin')
 
+@section('pageTitle', __('Contact me'))
+
 @section('admin-content')
     <div class="columns">
         <div class="column">

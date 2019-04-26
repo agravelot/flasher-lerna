@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('pageTitle', __('My albums'))
+
 @section('content')
     <div class="container">
         <h1 class="title">{{ __('My albums') }}</h1>

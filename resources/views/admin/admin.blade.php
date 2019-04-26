@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('pageTitle', __('Admin'))
+
 @section('content')
     <div id="app">
         <div class="columns">
