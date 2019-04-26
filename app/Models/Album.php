@@ -13,50 +13,60 @@ use App\Abilities\HasSlugRouteKey;
 use App\Abilities\HasTitleAsSlug;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
+use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * App\Models\Album.
  *
- * @property int                                                                          $id
- * @property string                                                                       $slug
- * @property string                                                                       $title
- * @property string|null                                                                  $body
- * @property string|null                                                                  $published_at
- * @property string|null                                                                  $password
- * @property int                                                                          $user_id
- * @property \Illuminate\Support\Carbon|null                                              $created_at
- * @property \Illuminate\Support\Carbon|null                                              $updated_at
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Category[]              $categories
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[]               $comments
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Cosplayer[]             $cosplayers
- * @property \Illuminate\Database\Eloquent\Collection|\Spatie\MediaLibrary\Models\Media[] $media
- * @property \App\Models\User                                                             $user
+ * @property int                    $id
+ * @property string                 $slug
+ * @property string                 $title
+ * @property string|null            $body
+ * @property string|null            $published_at
+ * @property string|null            $password
+ * @property int                    $user_id
+ * @property Carbon|null            $created_at
+ * @property Carbon|null            $updated_at
+ * @property Collection|Category[]  $categories
+ * @property Collection|Comment[]   $comments
+ * @property Collection|Cosplayer[] $cosplayers
+ * @property Collection|Media[]     $media
+ * @property User                   $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album findSimilarSlugs($attribute, $config, $slug)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereBody($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album wherePublishedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album whereUserId($value)
- * @mixin \Eloquent
+ * @method static Builder|Album findSimilarSlugs($attribute, $config, $slug)
+ * @method static Builder|Album newModelQuery()
+ * @method static Builder|Album newQuery()
+ * @method static Builder|Album query()
+ * @method static Builder|Album whereBody($value)
+ * @method static Builder|Album whereCreatedAt($value)
+ * @method static Builder|Album whereId($value)
+ * @method static Builder|Album wherePassword($value)
+ * @method static Builder|Album wherePublishedAt($value)
+ * @method static Builder|Album whereSlug($value)
+ * @method static Builder|Album whereTitle($value)
+ * @method static Builder|Album whereUpdatedAt($value)
+ * @method static Builder|Album whereUserId($value)
+ * @mixin Eloquent
  *
  * @property int $private
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album public ()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album wherePrivate($value)
+ * @method static Builder|Album wherePrivate($value)
+ * @method static Builder|Album public()
  */
 class Album extends Model implements HasMedia
 {
@@ -126,7 +136,7 @@ class Album extends Model implements HasMedia
     /**
      * Return the related user to this album.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function user()
     {
@@ -136,7 +146,7 @@ class Album extends Model implements HasMedia
     /**
      * Return all the comments of this albums.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany
      */
     public function comments()
     {
@@ -146,7 +156,7 @@ class Album extends Model implements HasMedia
     /**
      * Return all the categories of this album.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return MorphToMany
      */
     public function categories()
     {
@@ -156,7 +166,7 @@ class Album extends Model implements HasMedia
     /**
      * Return all the cosplayers of this album.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function cosplayers()
     {
@@ -166,13 +176,18 @@ class Album extends Model implements HasMedia
     /**
      * Add media to 'pictures' collection.
      *
-     * @param string|\Symfony\Component\HttpFoundation\File\UploadedFile $media
+     * @param string|UploadedFile $media
      *
      * @return Media
      */
     public function addPicture($media)
     {
+        $uuid = Str::uuid();
+
+        $name = "{$this->slug}_{$uuid}.{$media->getClientOriginalExtension()}";
+
         return $this->addMedia($media)
+            ->usingFileName($name)
             ->preservingOriginal()
             ->withResponsiveImages()
             ->toMediaCollection('pictures');
@@ -192,7 +207,7 @@ class Album extends Model implements HasMedia
     /**
      * @param Media|null $media
      *
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
+     * @throws InvalidManipulation
      */
     public function registerMediaConversions(Media $media = null)
     {
