@@ -79,8 +79,8 @@
             <b-tab-item label="Pictures" icon-pack="fas" icon="images">
                 <vue-dropzone ref="myVueDropzone" :options="dropzoneOptions" v-on:vdropzone-sending="sendingEvent"
                               v-on:vdropzone-complete="refreshMedias" class="has-margin-bottom-md"></vue-dropzone>
-                <div class="columns">
-                    <div v-for="picture in album.medias" class="column">
+                <div class="columns is-multiline">
+                    <div v-for="picture in album.medias" class="column is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd">
                         <img :src="picture.thumb" :alt="picture.name">
                         <a class="button has-text-danger" @click="deleteAlbumPicture(album.slug, picture.id)">
                             Delete
