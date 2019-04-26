@@ -58,5 +58,7 @@
   "Reset Password": "Reinitialisation du mot de passe",
   "Send Password Reset Link": "Envoyer le lien de réinitialisation",
   "Show all categories": "Voir toutes les catégories",
-  "Add your message": "Ajouter votre message"
+  "Add your message": "Ajouter votre message",
+  "by": "par",
+  "with": "avec"
 }

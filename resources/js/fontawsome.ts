@@ -1,17 +1,19 @@
 import { dom, library } from '@fortawesome/fontawesome-svg-core';
 // We are only using the wanted icons
 import {
+    faCode,
     faDownload,
     faEdit,
     faEnvelope,
+    faHeart,
     faHome,
     faKey,
-    faUser,
     faSadTear,
+    faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faInstagram } from '@fortawesome/free-brands-svg-icons';
 
-library.add(faUser, faEnvelope, faKey, faHome, faDownload, faEdit, faSadTear);
+library.add(faUser, faEnvelope, faKey, faHome, faDownload, faEdit, faSadTear, faHeart, faCode);
 
 library.add(faFacebookF, faInstagram);
 

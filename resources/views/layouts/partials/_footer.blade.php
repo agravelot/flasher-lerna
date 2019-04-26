@@ -1,7 +1,8 @@
 <footer class="footer">
-    <div class="content has-text-centered">
-        <p>
-            <strong>Picblog</strong> by <a href="https://gitlab.com/Nevax">Antoine GRAVELOT</a>
-        </p>
-    </div>
+    <p class="content has-text-centered">
+        <i class="fas fa-code" style="color: dodgerblue;"></i>
+        {{ __('with') }}
+        <i class="fas fa-heart" style="color:red;"></i>
+        {{ __('by') }} <a href="https://gitlab.com/Nevax">Antoine GRAVELOT</a>
+    </p>
 </footer>
