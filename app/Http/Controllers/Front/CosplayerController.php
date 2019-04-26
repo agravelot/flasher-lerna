@@ -21,7 +21,7 @@ class CosplayerController extends Controller
      */
     public function index()
     {
-        $cosplayers = Cosplayer::all();
+        $cosplayers = Cosplayer::with('media')->get();
 
         return view('cosplayers.index', compact('cosplayers'));
     }

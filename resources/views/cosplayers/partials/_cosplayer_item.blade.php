@@ -3,20 +3,14 @@
         <div class="card large">
             <div class="card-image">
                 <figure class="image">
-                    {{--@foreach($cosplayer->avatar as $picture)--}}
-                    {{--<img src="{{ asset('storage/'.$picture->filePath) }}"--}}
-                    {{--alt="Image" title="" style="">--}}
-                    {{--@endforeach--}}
+                    {{ $cosplayer->getFirstMedia('avatar') }}
                 </figure>
             </div>
             <div class="card-content">
                 <div class="media">
                     <div class="media-content">
-                        <p class="subtitle is-5">{{ $cosplayer->name }}</p>
+                        <h2 class="subtitle is-5">{{ $cosplayer->name }}</h2>
                     </div>
-                </div>
-                <div>
-                    {{ $cosplayer->description }}
                 </div>
             </div>
         </div>
