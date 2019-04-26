@@ -24,7 +24,7 @@
     @yield('content')
 </div>
 
-{{--@include('layouts.partials._footer')--}}
+@include('layouts.partials._footer')
 
 <!-- Scripts -->
 <script src="{{ mix('/js/manifest.js') }}"></script>
