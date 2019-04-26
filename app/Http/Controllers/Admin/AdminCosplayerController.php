@@ -61,16 +61,10 @@ class AdminCosplayerController extends Controller
     public function store(CosplayerRequest $request)
     {
         $this->authorize('create', Cosplayer::class);
-        $validated = $request->validated();
-        $cosplayer = Cosplayer::create($validated);
+        $cosplayer = Cosplayer::create($request->validated());
 
-        $key = 'avatar';
-        if (Arr::exists($validated, $key)) {
-            $cosplayer
-                ->addMedia($validated[$key])
-                ->preservingOriginal()
-                ->withResponsiveImages()
-                ->toMediaCollection('avatar');
+        if ($request->has('avatar')) {
+            $cosplayer->setAvatar($request->get('avatar'));
         }
 
         return redirect(route('admin.cosplayers.index'))

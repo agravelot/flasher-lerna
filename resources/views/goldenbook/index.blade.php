@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('pageTitle', __('Golden book'))
+
 @section('content')
     <div class="container">
         @include('layouts.partials._messages')

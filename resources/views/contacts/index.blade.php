@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('pageTitle', __('Contact me'))
+
 @section('content')
     <div class="container">
         <div class="card-content">

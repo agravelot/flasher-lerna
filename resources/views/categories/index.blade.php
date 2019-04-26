@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('pageTitle', __('Categories'))
+
 @section('content')
     <div class="container">
         <h1 class="title">{{ __('Categories') }}</h1>

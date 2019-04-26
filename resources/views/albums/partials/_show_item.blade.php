@@ -1,4 +1,4 @@
 <div id="app">
-    <albums-show-gallery :data="{{ $album }}"></albums-show-gallery>
+    <albums-show-gallery :data="{{ $album->response()->getContent() }}"></albums-show-gallery>
 </div>
 

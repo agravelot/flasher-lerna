@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('pageTitle', __('Add your message'))
+
 @section('content')
     <div class="container">
         <div class="card-content">

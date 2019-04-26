@@ -14,10 +14,12 @@ use App\Abilities\HasSlugRouteKey;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * App\Models\Cosplayer.
@@ -111,6 +113,25 @@ class Cosplayer extends Model implements HasMedia
     public function categories()
     {
         return $this->morphToMany(Category::class, 'categorizable');
+    }
+
+    /**
+     * Add media to 'pictures' collection.
+     *
+     * @param string|UploadedFile $media
+     *
+     * @return Media
+     */
+    public function setAvatar($media)
+    {
+        $uuid = Str::uuid();
+        $name = "{$this->slug}_{$uuid}.{$media->getClientOriginalExtension()}";
+
+        return $this->addMedia($media)
+            ->usingFileName($name)
+            ->preservingOriginal()
+            ->withResponsiveImages()
+            ->toMediaCollection('avatar');
     }
 
     /**
