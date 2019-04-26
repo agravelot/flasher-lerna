@@ -38,7 +38,6 @@
   "Publish": "Publié",
   "Draft": "Brouillon",
   "Private": "Privé",
-  "Cosplayers": "Cosplayers",
   "Nothing to show": "Rien à afficher",
   "Update": "Modifier",
   "Delete": "Supprimer",
@@ -58,5 +57,6 @@
   "Confirm Password": "Confirmation mot de passe",
   "Reset Password": "Reinitialisation du mot de passe",
   "Send Password Reset Link": "Envoyer le lien de réinitialisation",
-  "Show all categories": "Voir toutes les catégories"
+  "Show all categories": "Voir toutes les catégories",
+  "Add your message": "Ajouter votre message"
 }
