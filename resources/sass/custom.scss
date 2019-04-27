@@ -63,6 +63,10 @@ p {
 
 img {
   pointer-events: none !important;
+
+  &:-moz-loading {
+    visibility: hidden;
+  }
 }
 
 @media screen and (min-width: 769px) {
