@@ -62,7 +62,7 @@
                         <span class="initials"> {{ cosplayer.name.match(/\b\w/g).join('').substring(0, 2).toUpperCase() }}</span>
                     </figure>
                     <a :href="cosplayer.links.related">
-                        <p class="has-text-centered">
+                        <p class="has-text-centered has-margin-top-sm">
                             {{ cosplayer.name }}
                         </p>
                     </a>
