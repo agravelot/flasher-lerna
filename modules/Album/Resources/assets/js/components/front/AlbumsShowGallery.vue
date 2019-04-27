@@ -51,19 +51,16 @@
                 </a>
             </masonry>
 
+            <h2 v-if="album.cosplayers" class="title is-3">Cosplayers</h2>
+
             <div v-if="album.cosplayers" class="columns is-multiline is-mobile">
-                <!--@each('cosplayers.partials._cosplayer_badge', $album->cosplayers, 'cosplayer')-->
                 <div v-for="cosplayer in album.cosplayers" class="column is-2-desktop is-4-tablet is-6-mobile">
-                    <!--@include('cosplayers.partials._cosplayer_avatar', compact('cosplayer'))-->
-                    <!--@if ($cosplayer->getFirstMediaUrl('avatar'))-->
-                    <!--<figure class="is-centered image is-96x96">-->
-                    <!--<img class="is-rounded" src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb') }}">-->
-                    <!--</figure>-->
-                    <!--@else-->
-                    <!--<div class="is-centered avatar-circle">-->
-                    <!--<span class="initials"> {{ $cosplayer->initial }}</span>-->
-                    <!--</div>-->
-                    <!--@endif-->
+                    <figure v-if="cosplayer.thumb" class="is-centered image is-96x96">
+                        <img class="is-rounded" :src="cosplayer.thumb">
+                    </figure>
+                    <figure v-else class="is-centered avatar-circle">
+                        <span class="initials"> {{ cosplayer.name.match(/[A-Z]/g).join('').substring(0, 2) }}</span>
+                    </figure>
                     <a :href="cosplayer.links.related">
                         <p class="has-text-centered">
                             {{ cosplayer.name }}
