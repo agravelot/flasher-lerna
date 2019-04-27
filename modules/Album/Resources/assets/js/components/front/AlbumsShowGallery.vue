@@ -49,8 +49,10 @@
                         <figure v-if="cosplayer.thumb" class="is-centered image is-96x96">
                             <img class="is-rounded" :src="cosplayer.thumb">
                         </figure>
-                        <figure v-else class="is-centered avatar-circle">
-                            <span class="initials"> {{ cosplayer.name.match(/\b\w/g).join('').substring(0, 2).toUpperCase() }}</span>
+                        <figure v-else class="is-centered avatar-circle" :style="{ 'background-color': stringToColour(cosplayer.name) }">
+                            <span class="initials">
+                                {{ cosplayer.name.match(/\b\w/g).join('').substring(0, 2).toUpperCase() }}
+                            </span>
                         </figure>
                         <a :href="cosplayer.links.related">
                             <p class="has-text-centered has-margin-top-sm">
@@ -133,6 +135,20 @@
             Array.from(responsiveMedias).forEach((el: Element): void => {
                 (<HTMLImageElement>el).sizes = `${Math.ceil((el.getBoundingClientRect().width / window.innerWidth) * 100)}vw`;
             });
+        }
+
+        stringToColour(str : string) : string {
+            let i;
+            let hash = 0;
+            for (i = 0; i < str.length; i++) {
+                hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            let colour = '#';
+            for (i = 0; i < 3; i++) {
+                let value = (hash >> (i * 8)) & 0xFF;
+                colour += ('00' + value.toString(16)).substr(-2);
+            }
+            return colour;
         }
 
         fetchAlbum(): void {
