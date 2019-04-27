@@ -61,6 +61,10 @@ p {
   visibility: hidden;
 }
 
+img {
+  pointer-events: none !important;
+}
+
 @media screen and (min-width: 769px) {
   .admin-collapse-button {
     visibility: visible;
