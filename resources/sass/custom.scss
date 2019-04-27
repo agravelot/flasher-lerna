@@ -61,6 +61,14 @@ p {
   visibility: hidden;
 }
 
+img {
+  pointer-events: none !important;
+
+  &:-moz-loading {
+    visibility: hidden;
+  }
+}
+
 @media screen and (min-width: 769px) {
   .admin-collapse-button {
     visibility: visible;

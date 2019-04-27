@@ -9,6 +9,7 @@
 
 namespace Modules\Album\Transformers;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
 
 class CosplayerResource extends Resource
@@ -16,7 +17,7 @@ class CosplayerResource extends Resource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  Request
      *
      * @return array
      */
@@ -25,6 +26,7 @@ class CosplayerResource extends Resource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'thumb' => $this->getFirstMediaUrl('avatar', 'thumb'),
             'links' => [
                 'related' => route('cosplayers.show', ['cosplayer' => $this]),
             ],
