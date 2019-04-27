@@ -1,7 +1,7 @@
 <template>
 
     <div v-if="this.album" class="container is-centered has-margin-top-md">
-        <h1 class="title is-2 has-text-centered">{{ album.title }}</h1>
+        <h1 class="title is-1 has-text-centered">{{ album.title }}</h1>
 
         <div class="column is-10 is-offset-1">
             <div class="card article has-margin-bottom-md">
