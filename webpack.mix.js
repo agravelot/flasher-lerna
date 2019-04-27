@@ -16,14 +16,19 @@ mix.mergeManifest();
  |
  */
 
-// TODO Add purge css without braking spacer helpers and admin table
+mix.sass('resources/sass/app.scss', 'public/css')
+    .sass('resources/sass/error-illustrated.scss', 'public/css')
+    .version()
+    .purgeCss(
+        {
+            // Your custom globs are merged with the default globs. If you need to
+            // fully replace the globs, use the underlying `paths` option instead.
+            globs: [
+                path.join(__dirname, 'modules/**/*'),
+            ],
 
-mix.sass('resources/sass/error-illustrated.scss', 'public/css')
-    .version();
-
-mix.options({
-    extractVueStyles: 'public/css/app.css',
-}).version();
+        }
+    );
 
 mix.ts('resources/js/app.ts', 'public/js')
     .ts('resources/js/admin/admin.ts', 'public/js')
