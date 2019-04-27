@@ -44,8 +44,8 @@
             <h2 class="title is-2">Cosplayers</h2>
 
             <div class="columns is-multiline is-mobile">
-                <div v-for="cosplayer in album.cosplayers" class="column is-2-desktop is-3-tablet is-4-mobile">
-                    <figure v-if="cosplayer.thumb" class="is-centered image is-96x96">
+                <div v-for="cosplayer in album.cosplayers" class="column is-1-desktop is-2-tablet is-3-mobile">
+                    <figure v-if="cosplayer.thumb" class="is-centered image is-64x64">
                         <img class="is-rounded" :src="cosplayer.thumb">
                     </figure>
                     <figure v-else class="is-centered avatar-circle"

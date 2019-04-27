@@ -12,15 +12,19 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 
 class AdminCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -33,18 +37,16 @@ class AdminCategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param string $slug
+     * @param Category $category
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function show(string $slug)
+    public function show(Category $category)
     {
         $this->authorize('view', Category::class);
-        $category = Category::with(['albums.media', 'albums.categories'])
-            ->whereSlug($slug)
-            ->firstOrFail();
+        $category->load(['publishedAlbums.media', 'publishedAlbums.categories']);
         $this->authorize('view', $category);
 
         return view('admin.categories.show', compact('category'));
@@ -55,9 +57,9 @@ class AdminCategoryController extends Controller
      *
      * @param string $slug
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(string $slug)
     {
@@ -71,9 +73,9 @@ class AdminCategoryController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -87,9 +89,9 @@ class AdminCategoryController extends Controller
      *
      * @param CategoryRequest $request
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(CategoryRequest $request)
     {
@@ -106,9 +108,9 @@ class AdminCategoryController extends Controller
      * @param CategoryRequest $request
      * @param string          $slug
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(CategoryRequest $request, string $slug)
     {
@@ -126,10 +128,10 @@ class AdminCategoryController extends Controller
      *
      * @param string $slug
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Exception
+     * @throws AuthorizationException
+     * @throws Exception
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function destroy(string $slug)
     {
