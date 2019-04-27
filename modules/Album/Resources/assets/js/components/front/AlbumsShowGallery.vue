@@ -59,7 +59,7 @@
                         <img class="is-rounded" :src="cosplayer.thumb">
                     </figure>
                     <figure v-else class="is-centered avatar-circle">
-                        <span class="initials"> {{ cosplayer.name.match(/[A-Z]/g).join('').substring(0, 2) }}</span>
+                        <span class="initials"> {{ cosplayer.name.match(/\b\w/g).join('').substring(0, 2) }}</span>
                     </figure>
                     <a :href="cosplayer.links.related">
                         <p class="has-text-centered">
