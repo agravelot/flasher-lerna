@@ -11,7 +11,6 @@
     <title>@yield('pageTitle') - {{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     @yield('head')
     {!! Analytics::render() !!}
 </head>

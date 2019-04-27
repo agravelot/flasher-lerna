@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,600,700');
+@import "~typeface-nunito/index.css";
 
 // Import Bulma and Buefy styles
-@import "~bulma";
+@import "bulma";
 @import "~buefy/src/scss/buefy";
 
 @import "spacer-helper";
