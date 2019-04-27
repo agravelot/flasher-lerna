@@ -18,12 +18,5 @@
         </div>
     @endif
 
-
-    <div class="container is-centered">
-        <div class="masonry">
-            @each('albums.partials._index_item', $cosplayer->publicAlbums, 'album', 'layouts.partials._empty')
-        </div>
-{{--        TODO add pagination--}}
-{{--        {{ $cosplayer->albums->links() }}--}}
-    </div>
+    @include('albums.partials._index_item', compact('albums'))
 </div>

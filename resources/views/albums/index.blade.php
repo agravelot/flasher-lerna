@@ -7,8 +7,6 @@
         <h1 class="title">{{ __('My albums') }}</h1>
         <h2 class="subtitle">{{ __('Discover my albums') }}</h2>
 
-        <div id="app">
-            <albums-masonry :data="{{ $albums->response()->getContent() }}"></albums-masonry>
-        </div>
+        @include('albums.partials._index_item', compact('albums'))
     </div>
 @endsection

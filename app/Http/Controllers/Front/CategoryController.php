@@ -11,13 +11,15 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use Illuminate\Http\Response;
+use Modules\Album\Transformers\AlbumIndexResource;
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -29,16 +31,14 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param string $slug
+     * @param Category $category
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function show(string $slug)
+    public function show(Category $category)
     {
-        $category = Category::with(['publishedAlbums.media', 'publishedAlbums.categories'])
-            ->whereSlug($slug)
-            ->firstOrFail();
+        $albums = AlbumIndexResource::collection($category->load('publishedAlbums.media')->publishedAlbums);
 
-        return view('categories.show', compact('category'));
+        return view('categories.show', compact('category', 'albums'));
     }
 }
