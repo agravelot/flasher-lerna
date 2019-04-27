@@ -11,13 +11,15 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cosplayer;
+use Illuminate\Http\Response;
+use Modules\Album\Transformers\AlbumIndexResource;
 
 class CosplayerController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -29,15 +31,14 @@ class CosplayerController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param Cosplayer $cosplayer
      *
-     * @param string $slug
-     *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function show(string $slug)
+    public function show(Cosplayer $cosplayer)
     {
-        $cosplayer = Cosplayer::with(['publicAlbums.media', 'publicAlbums.categories'])->whereSlug($slug)->firstOrFail();
+        $albums = AlbumIndexResource::collection($cosplayer->load('publicAlbums.media')->publicAlbums);
 
-        return view('cosplayers.show', compact('cosplayer'));
+        return view('cosplayers.show', compact('cosplayer', 'albums'));
     }
 }

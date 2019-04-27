@@ -1,6 +1,6 @@
 <div class="container is-centered">
 
-    <h2 class="title is-2 has-text-centered">{{ $category->name }}</h2>
+    <h1 class="title is-2 has-text-centered">{{ $category->name }}</h1>
 
     @if ($category->description)
         <div class="column is-8 is-offset-2">
@@ -14,13 +14,5 @@
         </div>
     @endif
 
-    <div class="container is-centered">
-        @if ($category->publishedAlbums->isEmpty())
-            @include('layouts.partials._empty')
-        @else
-            <div class="masonry">
-                @each('albums.partials._index_item', $category->publishedAlbums, 'album')
-            </div>
-        @endif
-    </div>
+    @include('albums.partials._index_item', compact('albums'))
 </div>
