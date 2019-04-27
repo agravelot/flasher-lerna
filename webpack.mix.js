@@ -2,7 +2,7 @@ let mix = require('laravel-mix');
 require('laravel-mix-purgecss');
 require('laravel-mix-merge-manifest');
 
-/* Allow multiple Laravel Mix applications*/
+// Allow multiple Laravel Mix applications
 mix.mergeManifest();
 
 /*
@@ -15,6 +15,15 @@ mix.mergeManifest();
  | file for the application as well as bundling up all the JS files.
  |
  */
+
+// TODO Add purge css without braking spacer helpers and admin table
+
+mix.sass('resources/sass/error-illustrated.scss', 'public/css')
+    .version();
+
+mix.options({
+    extractVueStyles: 'public/css/app.css',
+}).version();
 
 mix.ts('resources/js/app.ts', 'public/js')
     .ts('resources/js/admin/admin.ts', 'public/js')
@@ -30,13 +39,10 @@ mix.ts('resources/js/app.ts', 'public/js')
         '@fortawesome/free-regular-svg-icons',
         '@fortawesome/free-solid-svg-icons',
         // 'bulma-modal-fx',
+        'dropzone',
         'vue2-dropzone',
     ])
 ;
-
-mix.sass('resources/sass/error-illustrated.scss', 'public/css')
-    .version()
-    .purgeCss();
 
 mix.options({
     autoprefixer: {

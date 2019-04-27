@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Buefy from 'buefy';
-import '../sass/buefy.scss';
+import '../sass/app.scss';
 Vue.use(Buefy);
 
 export default class VueBuefy extends Vue {
