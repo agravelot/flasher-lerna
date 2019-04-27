@@ -13,6 +13,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CosplayerRequest;
 use App\Models\Cosplayer;
 use App\Models\User;
+use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 
 class AdminCosplayerController extends Controller
@@ -20,9 +23,9 @@ class AdminCosplayerController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -37,9 +40,9 @@ class AdminCosplayerController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -54,9 +57,9 @@ class AdminCosplayerController extends Controller
      *
      * @param CosplayerRequest $request
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(CosplayerRequest $request)
     {
@@ -76,14 +79,15 @@ class AdminCosplayerController extends Controller
      *
      * @param string $slug
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(string $slug)
     {
         $this->authorize('view', Cosplayer::class);
         $cosplayer = Cosplayer::findBySlugOrFail($slug);
+        $cosplayer->load(['publicAlbums.media', 'publicAlbums.categories']);
         $this->authorize('view', $cosplayer);
 
         return view('admin.cosplayers.show', compact('cosplayer'));
@@ -94,9 +98,9 @@ class AdminCosplayerController extends Controller
      *
      * @param string $slug
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(string $slug)
     {
@@ -114,9 +118,9 @@ class AdminCosplayerController extends Controller
      * @param CosplayerRequest $request
      * @param string           $slug
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(CosplayerRequest $request, string $slug)
     {
@@ -145,10 +149,10 @@ class AdminCosplayerController extends Controller
      *
      * @param string $slug
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Exception
+     * @throws AuthorizationException
+     * @throws Exception
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(string $slug)
     {

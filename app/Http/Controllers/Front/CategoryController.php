@@ -12,7 +12,6 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Response;
-use Modules\Album\Transformers\AlbumIndexResource;
 
 class CategoryController extends Controller
 {
@@ -37,8 +36,6 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        $albums = AlbumIndexResource::collection($category->load('publishedAlbums.media')->publishedAlbums);
-
-        return view('categories.show', compact('category', 'albums'));
+        return view('categories.show', compact('category'));
     }
 }
