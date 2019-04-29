@@ -38,22 +38,18 @@ class GenerateSitemap extends Command
      */
     public function handle()
     {
-        $albums = PublicAlbum::all();
-        $cosplayers = Cosplayer::all();
-
-        // modify this to your own needs
         $sitemap = SitemapGenerator::create(config('app.url'))
             ->shouldCrawl(function (UriInterface $url) {
                 return mb_strpos($url->getPath(), '/admin') === false;
             })->getSitemap();
 
-        $albums->each(function (Album $album) use ($sitemap) {
+        PublicAlbum::all()->each(function (Album $album) use ($sitemap) {
             $sitemap->add(Url::create(route('albums.show', compact('album')))
                 ->setPriority(0.9)->setLastModificationDate($album->updated_at)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
         });
 
-        $cosplayers->each(function (Cosplayer $cosplayer) use ($sitemap) {
+        Cosplayer::all()->each(function (Cosplayer $cosplayer) use ($sitemap) {
             $sitemap->add(Url::create(route('cosplayers.show', compact('cosplayer')))
                 ->setPriority(0.6)->setLastModificationDate($cosplayer->updated_at)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
