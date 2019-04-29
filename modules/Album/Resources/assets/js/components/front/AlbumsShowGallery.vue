@@ -1,71 +1,61 @@
 <template>
 
     <div v-if="this.album" class="container is-centered has-margin-top-md">
-        <h1 class="title is-2 has-text-centered">{{ album.title }}</h1>
+        <h1 class="title is-1 has-text-centered">{{ album.title }}</h1>
 
-        <div class="column is-10 is-offset-1">
-            <div class="card article has-margin-bottom-md">
-                <div class="card-content has-text-centered">
-                    <div class="field has-addons">
-                        <div v-if="album.links && album.links.download" class="control">
-                            <a class="button" :href="album.links.download">
-                                <span class="icon is-small"><i class="fas fa-download"></i></span>
-                                <span>Download</span>
-                            </a>
-                        </div>
-                        <div v-if="album.links && album.links.edit" class="control">
-                            <a class="button" :href="album.links.edit">
-                                <span class="icon is-small"><i class="fas fa-edit"></i></span>
-                                <span>Edit</span>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="tags has-addons level-item">
-                        <span v-if="album.user" class="tag is-rounded is-info">@{{ album.user.name }}</span>
-                        <span class="tag is-rounded">{{ album.created_at }}</span>
-                    </div>
-                    <div v-if="album.body" class="content article-body">
-                        <p class="has-text-justified" v-html="album.body"></p>
-                    </div>
-                    <div v-if="album.categories" class="tags">
-                    <span v-for="category in album.categories" class="tag">
-                        <a :href="category.links.related">
-                            {{ category.name }}
-                        </a>
-                    </span>
-                    </div>
-                </div>
-            </div>
-
-            <!--TODO Add nothing to show-->
-            <masonry :gutter="{default: '0px'}"
-                     :cols="{default: 3, 1000: 2, 700: 1, 400: 1}"
-                     class="has-margin-bottom-md">
-                <a v-for="(media, index) in album.medias" :key="index" @click="openPicture(media)">
-                    <figure class="image">
-                        <img v-if="media.src_set" class="responsive-media" :srcset="media.src_set" :src="media.thumb"
-                             :alt="media.name" sizes="1px" loading="auto">
-                        <img v-else :src="media.thumb" :alt="media.name" loading="auto">
-                    </figure>
+        <div v-if="album.links && (album.links.download || album.links.edit)" class="field has-addons">
+            <div v-if="album.links.download" class="control">
+                <a class="button" :href="album.links.download">
+                    <span class="icon is-small"><i class="fas fa-download"></i></span>
+                    <span>Download</span>
                 </a>
-            </masonry>
+            </div>
+            <div v-if="album.links.edit" class="control">
+                <a class="button" :href="album.links.edit">
+                    <span class="icon is-small"><i class="fas fa-edit"></i></span>
+                    <span>Edit</span>
+                </a>
+            </div>
+        </div>
 
-            <div v-if="album.cosplayers" class="columns is-multiline is-mobile">
-                <!--@each('cosplayers.partials._cosplayer_badge', $album->cosplayers, 'cosplayer')-->
-                <div v-for="cosplayer in album.cosplayers" class="column is-2-desktop is-4-tablet is-6-mobile">
-                    <!--@include('cosplayers.partials._cosplayer_avatar', compact('cosplayer'))-->
-                    <!--@if ($cosplayer->getFirstMediaUrl('avatar'))-->
-                    <!--<figure class="is-centered image is-96x96">-->
-                    <!--<img class="is-rounded" src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb') }}">-->
-                    <!--</figure>-->
-                    <!--@else-->
-                    <!--<div class="is-centered avatar-circle">-->
-                    <!--<span class="initials"> {{ $cosplayer->initial }}</span>-->
-                    <!--</div>-->
-                    <!--@endif-->
+        <div v-if="album.body" class="content article-body">
+            <p class="has-text-justified" v-html="album.body"></p>
+        </div>
+        <div v-if="album.categories" class="tags">
+                <span v-for="category in album.categories" class="tag">
+                    <a :href="category.links.related">{{ category.name }}</a>
+                </span>
+        </div>
+
+        <!--TODO Add nothing to show-->
+        <masonry :gutter="{default: '0px'}"
+                 :cols="{default: 3, 1000: 2, 700: 1, 400: 1}"
+                 class="has-margin-bottom-md">
+            <a v-for="(media, index) in album.medias" :key="index" @click="openPicture(media)">
+                <figure class="image">
+                    <img v-if="media.src_set" class="responsive-media" :srcset="media.src_set" :src="media.thumb"
+                         :alt="media.name" sizes="1px" loading="auto">
+                    <img v-else :src="media.thumb" :alt="media.name" loading="auto">
+                </figure>
+            </a>
+        </masonry>
+
+        <div v-if="album.cosplayers">
+            <h2 class="title is-2">Cosplayers</h2>
+
+            <div class="columns is-multiline is-mobile">
+                <div v-for="cosplayer in album.cosplayers" class="column is-1-desktop is-2-tablet is-3-mobile">
+                    <figure v-if="cosplayer.thumb" class="is-centered image is-64x64">
+                        <img class="is-rounded" :src="cosplayer.thumb">
+                    </figure>
+                    <figure v-else class="is-centered avatar-circle"
+                            :style="{ 'background-color': stringToColour(cosplayer.name) }">
+                            <span class="initials">
+                                {{ cosplayer.name.match(/\b\w/g).join('').substring(0, 2).toUpperCase() }}
+                            </span>
+                    </figure>
                     <a :href="cosplayer.links.related">
-                        <p class="has-text-centered">
+                        <p class="has-text-centered has-margin-top-sm">
                             {{ cosplayer.name }}
                         </p>
                     </a>
@@ -144,6 +134,20 @@
             Array.from(responsiveMedias).forEach((el: Element): void => {
                 (<HTMLImageElement>el).sizes = `${Math.ceil((el.getBoundingClientRect().width / window.innerWidth) * 100)}vw`;
             });
+        }
+
+        stringToColour(str: string): string {
+            let i;
+            let hash = 0;
+            for (i = 0; i < str.length; i++) {
+                hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            let colour = '#';
+            for (i = 0; i < 3; i++) {
+                let value = (hash >> (i * 8)) & 0xFF;
+                colour += ('00' + value.toString(16)).substr(-2);
+            }
+            return colour;
         }
 
         fetchAlbum(): void {

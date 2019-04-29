@@ -13,8 +13,16 @@ use App\Abilities\HasNameAsSlug;
 use App\Abilities\HasSlugRouteKey;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
+use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -24,35 +32,35 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 /**
  * App\Models\Cosplayer.
  *
- * @property int                                                                          $id
- * @property string                                                                       $name
- * @property string                                                                       $slug
- * @property string|null                                                                  $description
- * @property string|null                                                                  $picture
- * @property int|null                                                                     $user_id
- * @property \Illuminate\Support\Carbon|null                                              $created_at
- * @property \Illuminate\Support\Carbon|null                                              $updated_at
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Album[]                 $albums
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Category[]              $categories
- * @property \Illuminate\Database\Eloquent\Collection|\Spatie\MediaLibrary\Models\Media[] $media
- * @property \App\Models\User|null                                                        $user
+ * @property int                   $id
+ * @property string                $name
+ * @property string                $slug
+ * @property string|null           $description
+ * @property string|null           $picture
+ * @property int|null              $user_id
+ * @property Carbon|null           $created_at
+ * @property Carbon|null           $updated_at
+ * @property Collection|Album[]    $albums
+ * @property Collection|Category[] $categories
+ * @property Collection|Media[]    $media
+ * @property User|null             $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer findSimilarSlugs($attribute, $config, $slug)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer wherePicture($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Cosplayer whereUserId($value)
- * @mixin \Eloquent
+ * @method static Builder|Cosplayer findSimilarSlugs($attribute, $config, $slug)
+ * @method static Builder|Cosplayer newModelQuery()
+ * @method static Builder|Cosplayer newQuery()
+ * @method static Builder|Cosplayer query()
+ * @method static Builder|Cosplayer whereCreatedAt($value)
+ * @method static Builder|Cosplayer whereDescription($value)
+ * @method static Builder|Cosplayer whereId($value)
+ * @method static Builder|Cosplayer whereName($value)
+ * @method static Builder|Cosplayer wherePicture($value)
+ * @method static Builder|Cosplayer whereSlug($value)
+ * @method static Builder|Cosplayer whereUpdatedAt($value)
+ * @method static Builder|Cosplayer whereUserId($value)
+ * @mixin Eloquent
  *
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\PublicAlbum[] $publicAlbums
- * @property mixed                                                              $initial
+ * @property Collection|PublicAlbum[] $publicAlbums
+ * @property mixed                    $initial
  */
 class Cosplayer extends Model implements HasMedia
 {
@@ -78,7 +86,7 @@ class Cosplayer extends Model implements HasMedia
     /**
      * Return the linked user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function user()
     {
@@ -88,7 +96,7 @@ class Cosplayer extends Model implements HasMedia
     /**
      * Return the albums posted by this user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function albums()
     {
@@ -98,7 +106,7 @@ class Cosplayer extends Model implements HasMedia
     /**
      * Return the public albums posted by this user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
     public function publicAlbums()
     {
@@ -108,7 +116,7 @@ class Cosplayer extends Model implements HasMedia
     /**
      * Return the categories related to this user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return MorphToMany
      */
     public function categories()
     {
@@ -151,7 +159,7 @@ class Cosplayer extends Model implements HasMedia
      *
      * @param Media|null $media
      *
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
+     * @throws InvalidManipulation
      */
     public function registerMediaConversions(Media $media = null)
     {

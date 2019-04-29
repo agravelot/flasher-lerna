@@ -15,7 +15,7 @@
                     </div>
                     <div class="card-content">
                         <div class="content">
-                            <p class="is-5">{{ album.title }}</p>
+                            <h3 class="title is-5">{{ album.title }}</h3>
                         </div>
                     </div>
                 </div>
