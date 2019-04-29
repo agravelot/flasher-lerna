@@ -91,7 +91,7 @@ class AlbumServiceProvider extends ServiceProvider
      */
     public function registerFactories()
     {
-        if (! app()->environment('production') && ! app()->environment('staging')) {
+        if (! app()->environment('production', 'staging')) {
             app(Factory::class)->load(__DIR__ . '/../Database/factories');
         }
     }
