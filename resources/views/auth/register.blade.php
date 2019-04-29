@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('pageTitle', __('Register'))
+
 @section('content')
 
     @include('layouts.partials._messages')
