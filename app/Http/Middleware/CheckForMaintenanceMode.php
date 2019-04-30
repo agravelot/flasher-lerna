@@ -21,6 +21,6 @@ class CheckForMaintenanceMode extends Middleware
     protected $except = [
         '/api/admin/*',
         '/admin/*',
-        '/login'
+        '/login',
     ];
 }
