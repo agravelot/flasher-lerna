@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('pageTitle', __('Login'))
+
 @section('content')
 
     <div class="container has-text-centered">
