@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('pageTitle', __('Verify'))
+
 @section('content')
     <div class="container">
         <div class="columns is-marginless is-centered">

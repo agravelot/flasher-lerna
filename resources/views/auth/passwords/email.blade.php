@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('pageTitle', __('Reset Password'))
+
 @section('content')
 
     <div class="columns is-marginless is-centered">
