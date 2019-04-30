@@ -49,6 +49,8 @@ return [
 
     'waits' => [
         'redis:default' => 60,
+        'redis:backup' => 60,
+        'redis:images' => 600,
     ],
 
     /*
