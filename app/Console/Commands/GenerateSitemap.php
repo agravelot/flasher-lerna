@@ -9,8 +9,13 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Album;
+use App\Models\Cosplayer;
+use App\Models\PublicAlbum;
 use Illuminate\Console\Command;
+use Psr\Http\Message\UriInterface;
 use Spatie\Sitemap\SitemapGenerator;
+use Spatie\Sitemap\Tags\Url;
 
 class GenerateSitemap extends Command
 {
@@ -33,8 +38,23 @@ class GenerateSitemap extends Command
      */
     public function handle()
     {
-        // modify this to your own needs
-        SitemapGenerator::create(config('app.url'))
-            ->writeToFile(storage_path('sitemap.xml'));
+        $sitemap = SitemapGenerator::create(config('app.url'))
+            ->shouldCrawl(function (UriInterface $url) {
+                return mb_strpos($url->getPath(), '/admin') === false;
+            })->getSitemap();
+
+        PublicAlbum::all()->each(function (Album $album) use ($sitemap) {
+            $sitemap->add(Url::create(route('albums.show', compact('album')))
+                ->setPriority(0.9)->setLastModificationDate($album->updated_at)
+                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
+        });
+
+        Cosplayer::all()->each(function (Cosplayer $cosplayer) use ($sitemap) {
+            $sitemap->add(Url::create(route('cosplayers.show', compact('cosplayer')))
+                ->setPriority(0.6)->setLastModificationDate($cosplayer->updated_at)
+                ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
+        });
+
+        $sitemap->writeToFile(storage_path('sitemap.xml'));
     }
 }
