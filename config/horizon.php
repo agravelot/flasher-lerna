@@ -49,6 +49,8 @@ return [
 
     'waits' => [
         'redis:default' => 60,
+        'redis:backup' => 60,
+        'redis:images' => 600,
     ],
 
     /*
@@ -64,7 +66,7 @@ return [
 
     'trim' => [
         'recent' => 60,
-        'failed' => 10080,
+        'failed' => 2 * 10080, // 2 weeks
     ],
 
     /*
@@ -101,6 +103,7 @@ return [
                 'balance' => 'auto',
                 'processes' => 10,
                 'tries' => 3,
+                'memory' => 1024,
             ],
         ],
         'staging' => [
@@ -110,6 +113,7 @@ return [
                 'balance' => 'auto',
                 'processes' => 10,
                 'tries' => 3,
+                'memory' => 1024,
             ],
         ],
         'local' => [
