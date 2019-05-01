@@ -103,6 +103,7 @@ return [
                 'balance' => 'auto',
                 'processes' => 10,
                 'tries' => 3,
+                'memory' => 1024,
             ],
         ],
         'staging' => [
@@ -112,6 +113,7 @@ return [
                 'balance' => 'auto',
                 'processes' => 10,
                 'tries' => 3,
+                'memory' => 1024,
             ],
         ],
         'local' => [
