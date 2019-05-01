@@ -66,7 +66,7 @@ return [
 
     'trim' => [
         'recent' => 60,
-        'failed' => 10080,
+        'failed' => 2 * 10080, // 2 weeks
     ],
 
     /*
