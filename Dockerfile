@@ -86,7 +86,6 @@ RUN composer check-platform-reqs
 RUN rm -f /usr/bin/composer
 
 COPY docker/php-fpm/start.sh /start.sh
-COPY docker/php-fpm/custom-supervisord.ini /etc/custom-supervisord.ini
 
 CMD /start.sh
 

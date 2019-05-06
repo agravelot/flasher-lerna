@@ -36,7 +36,7 @@ if [[ "$role" = "app" ]]; then
 elif [[ "$role" = "queue" ]]; then
 
     echo "Queue role"
-    exec supervisord --nodaemon -c /etc/custom-supervisord.ini
+    exec php artisan horizon
 
 elif [[ "$role" = "scheduler" ]]; then
 
