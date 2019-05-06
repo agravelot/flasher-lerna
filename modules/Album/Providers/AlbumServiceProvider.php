@@ -9,8 +9,8 @@
 
 namespace Modules\Album\Providers;
 
-use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Factory;
 
 class AlbumServiceProvider extends ServiceProvider
 {
@@ -83,7 +83,7 @@ class AlbumServiceProvider extends ServiceProvider
      */
     public function registerFactories()
     {
-        if (!app()->environment('production', 'staging')) {
+        if (! app()->environment('production', 'staging')) {
             app(Factory::class)->load(__DIR__.'/../Database/factories');
         }
     }
