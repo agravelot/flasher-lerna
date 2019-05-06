@@ -71,20 +71,12 @@ $rules = [
     'visibility_required' => true,
     'native_function_casing' => true,
     'no_alias_functions' => true,
-    'no_extra_blank_lines' => [
-        'tokens' => [
-            'extra',
-            'throw',
-            'use',
-            'use_trait',
-        ],
-    ],
     'no_blank_lines_after_class_opening' => true,
     'no_blank_lines_after_phpdoc' => true,
     'no_closing_tag' => true,
     'no_empty_phpdoc' => true,
     'no_empty_statement' => true,
-//        'no_extra_blank_lines' => true,
+    'no_extra_blank_lines' => true,
     'no_leading_import_slash' => true,
     'no_leading_namespace_whitespace' => true,
     'no_multiline_whitespace_around_double_arrow' => true,
@@ -137,9 +129,10 @@ $rules = [
     'unary_operator_spaces' => true,
     'line_ending' => true,
     'whitespace_after_comma_in_array' => true,
-    'lowercase_static_reference' => true, // added from Symfony
-    'magic_method_casing' => true, // added from Symfony
-    'fully_qualified_strict_types' => true, // added
+    'lowercase_static_reference' => true,
+    'magic_method_casing' => true,
+    'fully_qualified_strict_types' => true,
+    'single_trait_insert_per_statement' => false,
 ];
 
 $finder = PhpCsFixer\Finder::create()
