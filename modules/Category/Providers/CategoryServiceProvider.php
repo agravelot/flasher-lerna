@@ -68,7 +68,7 @@ class CategoryServiceProvider extends ServiceProvider
         ], 'views');
 
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
-            return $path.'/modules/category';
+            return __DIR__.'/../Resources/views';
         }, \Config::get('view.paths')), [$sourcePath]), 'category');
     }
 

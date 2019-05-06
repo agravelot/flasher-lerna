@@ -64,12 +64,10 @@ CMD envsubst '\$NGINX_HOST' < /etc/nginx/nginx.inlined.conf > /etc/nginx/nginx.c
 #
 # PHP Application
 #
-FROM nevax/docker-php-fpm-alpine-laravel as php
+FROM nevax/docker-php-fpm-alpine-laravel as php_base
 
 # Add configurations
 COPY docker/php-fpm/custom.ini /usr/local/etc/php/conf.d/
-COPY docker/php-fpm/custom-supervisord.ini /etc/
-COPY docker/php-fpm/crontab /etc/crontabs/root
 
 # Importing source code
 COPY --chown=1000:1000 . /var/www/html
@@ -77,7 +75,6 @@ COPY --chown=1000:1000 . /var/www/html
 # Importing composer and assets dependencies
 COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/vendor/
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
-#COPY --chown=1000:1000 --from=vendor /app/public/vendor/ /var/www/html/public/vendor/
 
 # Link storage
 RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
@@ -88,28 +85,13 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN composer check-platform-reqs
 RUN rm -f /usr/bin/composer
 
-# Clean laravel cache
-CMD php artisan config:clear \
-# Update database
-        && php artisan db:wait-connection \
-        && php artisan cache:clear-wait-connection \
-        && php artisan migrate --force \
-        && php artisan passport:keys \
-        && php artisan telescope:publish \
-        && php artisan horizon:assets \
-# Optimizing for production
-# https://laravel.com/docs/5.7/deployment#optimization
-        && php artisan view:clear \
-        && php artisan optimize \
-        && php artisan route:cache \
-        && php artisan config:cache \
-# Setup permissions
-#        && chown -R 1000:1000 storage/ \
-#        && chown -R 1000:1000 public/vendor \
-# Run queues workers as daemon
-        && supervisord -c /etc/custom-supervisord.ini \
-# Add cron for scheduler
-        && crond -c /etc/crontabs \
-# Run php-fpm
-# https://github.com/docker-library/php/blob/master/7.2/alpine3.8/fpm/Dockerfile
-        && php-fpm
+COPY docker/php-fpm/start.sh /start.sh
+COPY docker/php-fpm/custom-supervisord.ini /etc/custom-supervisord.ini
+
+CMD /start.sh
+
+FROM php_base AS php_app
+
+FROM php_base AS php_queue
+
+FROM php_base AS php_scheduler
