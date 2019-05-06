@@ -13,19 +13,21 @@ use App\Models\User;
 use App\Models\Album;
 use App\Models\Contact;
 use App\Models\Cosplayer;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Spatie\Activitylog\Models\Activity;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class AdminController extends Controller
 {
     /**
      * Display dashboard.
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function dashboard()
+    public function __invoke()
     {
         $this->authorize('dashboard');
 
