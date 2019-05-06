@@ -187,6 +187,7 @@ class Album extends Model implements HasMedia
         $name = "{$this->slug}_{$uuid}.{$media->getClientOriginalExtension()}";
 
         return $this->addMedia($media)
+            ->usingName($name)
             ->usingFileName($name)
             ->preservingOriginal()
             ->withResponsiveImages()
