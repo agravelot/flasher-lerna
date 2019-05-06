@@ -9,8 +9,8 @@
 
 namespace Modules\Album\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\ServiceProvider;
 
 class AlbumServiceProvider extends ServiceProvider
 {
@@ -34,11 +34,17 @@ class AlbumServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the service provider.
+     * Register translations.
      */
-    public function register()
+    public function registerTranslations()
     {
-        $this->app->register(RouteServiceProvider::class);
+        $langPath = resource_path('lang/modules/album');
+
+        if (is_dir($langPath)) {
+            $this->loadTranslationsFrom($langPath, 'album');
+        } else {
+            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'album');
+        }
     }
 
     /**
@@ -68,22 +74,8 @@ class AlbumServiceProvider extends ServiceProvider
         ], 'views');
 
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
-            return $path.'/modules/album';
+            return __DIR__.'/../Resources/views';
         }, \Config::get('view.paths')), [$sourcePath]), 'album');
-    }
-
-    /**
-     * Register translations.
-     */
-    public function registerTranslations()
-    {
-        $langPath = resource_path('lang/modules/album');
-
-        if (is_dir($langPath)) {
-            $this->loadTranslationsFrom($langPath, 'album');
-        } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'album');
-        }
     }
 
     /**
@@ -91,9 +83,17 @@ class AlbumServiceProvider extends ServiceProvider
      */
     public function registerFactories()
     {
-        if (! app()->environment('production', 'staging')) {
+        if (!app()->environment('production', 'staging')) {
             app(Factory::class)->load(__DIR__.'/../Database/factories');
         }
+    }
+
+    /**
+     * Register the service provider.
+     */
+    public function register()
+    {
+        $this->app->register(RouteServiceProvider::class);
     }
 
     /**
