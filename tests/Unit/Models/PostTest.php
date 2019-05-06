@@ -10,8 +10,8 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Post;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\ModelTestCase;
+use Illuminate\Foundation\Testing\WithFaker;
 
 class PostTest extends ModelTestCase
 {

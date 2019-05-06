@@ -9,9 +9,9 @@
 
 namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateCosplayerTest extends TestCase
 {

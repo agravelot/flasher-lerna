@@ -9,9 +9,9 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Http\Controllers\Controller;
 use App\Models\Cosplayer;
 use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
 use Modules\Album\Transformers\AlbumIndexResource;
 
 class CosplayerController extends Controller

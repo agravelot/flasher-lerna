@@ -9,8 +9,8 @@
 
 namespace App\Policies;
 
-use App\Models\GoldenBookPost;
 use App\Models\User;
+use App\Models\GoldenBookPost;
 
 class GoldenBookPolicy extends Policy
 {

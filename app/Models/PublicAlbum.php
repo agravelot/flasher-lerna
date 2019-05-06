@@ -9,9 +9,9 @@
 
 namespace App\Models;
 
+use App\Scope\PublicScope;
 use App\Abilities\HasParentMediaTrait;
 use App\Abilities\HasParentModelTrait;
-use App\Scope\PublicScope;
 
 /**
  * App\Models\PublicAlbum.

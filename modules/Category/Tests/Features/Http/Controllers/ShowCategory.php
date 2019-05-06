@@ -9,9 +9,9 @@
 
 namespace Modules\Category\Tests\Features\Http\Controllers;
 
+use Tests\TestCase;
 use App\Models\Category;
 use Illuminate\Foundation\Testing\TestResponse;
-use Tests\TestCase;
 
 class ShowCategory extends TestCase
 {

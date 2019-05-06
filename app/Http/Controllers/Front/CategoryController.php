@@ -9,9 +9,9 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
 {

@@ -9,10 +9,10 @@
 
 namespace Tests\Feature\Observers;
 
-use App\Models\Cosplayer;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Spatie\Activitylog\Models\Activity;
 use Tests\TestCase;
+use App\Models\Cosplayer;
+use Spatie\Activitylog\Models\Activity;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CosplayerObserverTest extends TestCase
 {

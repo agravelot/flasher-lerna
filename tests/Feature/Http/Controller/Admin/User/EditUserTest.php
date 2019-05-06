@@ -9,10 +9,10 @@
 
 namespace Tests\Feature\Http\Controller\Admin\User;
 
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\User;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class EditUserTest extends TestCase
 {
@@ -33,7 +33,7 @@ class EditUserTest extends TestCase
 
     private function showUserEdit(string $id): TestResponse
     {
-        return $this->get('/admin/users/' . $id . '/edit');
+        return $this->get('/admin/users/'.$id.'/edit');
     }
 
     public function test_user_can_not_view_edit_page_for_a_user()

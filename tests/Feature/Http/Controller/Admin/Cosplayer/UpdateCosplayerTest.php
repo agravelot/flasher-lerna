@@ -9,12 +9,12 @@
 
 namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 
-use App\Http\Middleware\VerifyCsrfToken;
-use App\Models\Cosplayer;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\User;
+use App\Models\Cosplayer;
+use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UpdateCosplayerTest extends TestCase
 {
@@ -43,9 +43,9 @@ class UpdateCosplayerTest extends TestCase
 
     private function updateCosplayer(array $data, Cosplayer $cosplayer): TestResponse
     {
-        session()->setPreviousUrl('/admin/cosplayers/' . $cosplayer->slug . '/edit');
+        session()->setPreviousUrl('/admin/cosplayers/'.$cosplayer->slug.'/edit');
 
-        return $this->patch('/admin/cosplayers/' . $cosplayer->slug, $data);
+        return $this->patch('/admin/cosplayers/'.$cosplayer->slug, $data);
     }
 
     public function test_admin_can_update_a_cosplayer_related_to_an_user()
@@ -82,7 +82,7 @@ class UpdateCosplayerTest extends TestCase
 
         $this->assertSame(1, Cosplayer::count());
         $response->assertStatus(302)
-            ->assertRedirect('/admin/cosplayers/' . $cosplayer->slug . '/edit');
+            ->assertRedirect('/admin/cosplayers/'.$cosplayer->slug.'/edit');
         $this->followRedirects($response)
             ->assertStatus(200)
             ->assertSee(self::COSPLAYER_DATA['name'])

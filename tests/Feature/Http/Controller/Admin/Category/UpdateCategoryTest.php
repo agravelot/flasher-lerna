@@ -9,11 +9,11 @@
 
 namespace Tests\Feature\Http\Controller\Admin\Category;
 
-use App\Http\Middleware\VerifyCsrfToken;
-use App\Models\Category;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\Category;
+use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UpdateCategoryTest extends TestCase
 {
@@ -41,9 +41,9 @@ class UpdateCategoryTest extends TestCase
             $slug = $category->slug;
         }
 
-        session()->setPreviousUrl('/admin/categories/' . $slug . '/edit');
+        session()->setPreviousUrl('/admin/categories/'.$slug.'/edit');
 
-        return $this->patch('/admin/categories/' . $slug, $category->toArray());
+        return $this->patch('/admin/categories/'.$slug, $category->toArray());
     }
 
     public function test_admin_can_not_update_a_category_with_another_category_name()
@@ -56,7 +56,7 @@ class UpdateCategoryTest extends TestCase
 
         $this->assertSame(2, Category::count());
         $response->assertStatus(302)
-            ->assertRedirect('/admin/categories/' . $categories->get(1)->slug . '/edit');
+            ->assertRedirect('/admin/categories/'.$categories->get(1)->slug.'/edit');
         $this->followRedirects($response)
             ->assertStatus(200)
             ->assertSee($categories->get(1)->name)

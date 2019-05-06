@@ -9,10 +9,10 @@
 
 namespace Modules\Album\Http\Requests;
 
-use App\Http\Requests\Request;
 use App\Models\Album;
-use Illuminate\Database\Query\Builder;
+use App\Http\Requests\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Database\Query\Builder;
 
 class DeletePictureAlbumRequest extends Request
 {

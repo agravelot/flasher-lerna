@@ -9,12 +9,12 @@
 
 namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 
+use Tests\TestCase;
+use App\Models\User;
 use App\Models\Album;
 use App\Models\Cosplayer;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ShowCosplayerTest extends TestCase
 {
@@ -33,7 +33,7 @@ class ShowCosplayerTest extends TestCase
 
     private function showCosplayer(Cosplayer $cosplayer): TestResponse
     {
-        return $this->get('/admin/cosplayers/' . $cosplayer->slug);
+        return $this->get('/admin/cosplayers/'.$cosplayer->slug);
     }
 
     public function test_admin_can_view_a_cosplayer_with_albums()

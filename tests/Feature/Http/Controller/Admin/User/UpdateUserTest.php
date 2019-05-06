@@ -9,11 +9,11 @@
 
 namespace Tests\Feature\Http\Controller\Admin\User;
 
-use App\Http\Middleware\VerifyCsrfToken;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\User;
+use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UpdateUserTest extends TestCase
 {
@@ -48,9 +48,9 @@ class UpdateUserTest extends TestCase
 
     private function updateUser(User $user, int $id): TestResponse
     {
-        session()->setPreviousUrl('/admin/users/' . $id . '/edit');
+        session()->setPreviousUrl('/admin/users/'.$id.'/edit');
 
-        return $this->patch('/admin/users/' . $id, $user->toArray());
+        return $this->patch('/admin/users/'.$id, $user->toArray());
     }
 
     public function test_admin_can_update_a_users_without_changing_values_and_empty_password()

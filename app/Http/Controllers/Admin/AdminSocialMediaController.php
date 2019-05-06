@@ -9,9 +9,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\SocialMedia;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SocialMediaRequest;
-use App\Models\SocialMedia;
 
 class AdminSocialMediaController extends Controller
 {

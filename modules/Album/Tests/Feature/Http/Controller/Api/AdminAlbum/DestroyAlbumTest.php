@@ -9,11 +9,11 @@
 
 namespace Modules\Album\Tests\Feature\Http\Controller\Api\AdminAlbum;
 
-use App\Http\Middleware\VerifyCsrfToken;
-use App\Models\Album;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\Album;
+use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DestroyAlbumTest extends TestCase
 {
@@ -34,7 +34,7 @@ class DestroyAlbumTest extends TestCase
 
     private function deleteAlbum(string $slug): TestResponse
     {
-        return $this->json('delete', '/api/admin/albums/' . $slug);
+        return $this->json('delete', '/api/admin/albums/'.$slug);
     }
 
     public function test_user_can_not_destroy_a_album()

@@ -9,8 +9,8 @@
 
 namespace Modules\Cosplayer\Providers;
 
-use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Factory;
 
 class CosplayerServiceProvider extends ServiceProvider
 {
@@ -30,7 +30,7 @@ class CosplayerServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->registerFactories();
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
     }
 
     /**
@@ -47,10 +47,10 @@ class CosplayerServiceProvider extends ServiceProvider
     protected function registerConfig()
     {
         $this->publishes([
-            __DIR__ . '/../Config/config.php' => config_path('cosplayer.php'),
+            __DIR__.'/../Config/config.php' => config_path('cosplayer.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            __DIR__ . '/../Config/config.php', 'cosplayer'
+            __DIR__.'/../Config/config.php', 'cosplayer'
         );
     }
 
@@ -61,14 +61,14 @@ class CosplayerServiceProvider extends ServiceProvider
     {
         $viewPath = resource_path('views/modules/cosplayer');
 
-        $sourcePath = __DIR__ . '/../Resources/views';
+        $sourcePath = __DIR__.'/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath,
         ], 'views');
 
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
-            return $path . '/modules/cosplayer';
+            return $path.'/modules/cosplayer';
         }, \Config::get('view.paths')), [$sourcePath]), 'cosplayer');
     }
 
@@ -82,7 +82,7 @@ class CosplayerServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'cosplayer');
         } else {
-            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'cosplayer');
+            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'cosplayer');
         }
     }
 
@@ -92,7 +92,7 @@ class CosplayerServiceProvider extends ServiceProvider
     public function registerFactories()
     {
         if (! app()->environment('production', 'staging')) {
-            app(Factory::class)->load(__DIR__ . '/../Database/factories');
+            app(Factory::class)->load(__DIR__.'/../Database/factories');
         }
     }
 

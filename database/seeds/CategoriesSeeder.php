@@ -7,10 +7,10 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
+use App\Models\Post;
 use App\Models\Album;
 use App\Models\Category;
 use App\Models\Cosplayer;
-use App\Models\Post;
 use Illuminate\Database\Seeder;
 
 class CategoriesSeeder extends Seeder

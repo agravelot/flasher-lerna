@@ -9,15 +9,15 @@
 
 namespace Modules\Album\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Album;
-use Modules\Album\Http\Requests\DeletePictureAlbumRequest;
-use Modules\Album\Http\Requests\StorePictureAlbumRequest;
+use App\Http\Controllers\Controller;
 use Modules\Album\Transformers\AlbumIndexResource;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
+use Modules\Album\Http\Requests\StorePictureAlbumRequest;
+use Modules\Album\Http\Requests\DeletePictureAlbumRequest;
 use Modules\Album\Transformers\CompleteUploadPictureResource;
 use Modules\Album\Transformers\ProcessingUploadPictureResource;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
-use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 
 class AdminPictureAlbumController extends Controller
 {

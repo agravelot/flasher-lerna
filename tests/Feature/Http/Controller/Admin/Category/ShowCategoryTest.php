@@ -9,12 +9,12 @@
 
 namespace Tests\Feature\Http\Controller\Admin\Category;
 
+use Tests\TestCase;
+use App\Models\User;
 use App\Models\Album;
 use App\Models\Category;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ShowCategoryTest extends TestCase
 {
@@ -33,7 +33,7 @@ class ShowCategoryTest extends TestCase
 
     private function showCategory(Category $category): TestResponse
     {
-        return $this->get('/admin/categories/' . $category->slug);
+        return $this->get('/admin/categories/'.$category->slug);
     }
 
     public function test_admin_can_view_a_category_with_albums()

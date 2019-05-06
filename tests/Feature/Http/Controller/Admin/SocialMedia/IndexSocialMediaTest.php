@@ -9,10 +9,10 @@
 
 namespace Tests\Feature\Http\Controller\Admin\SocialMedia;
 
-use App\Models\SocialMedia;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\SocialMedia;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class IndexSocialMediaTest extends TestCase
 {

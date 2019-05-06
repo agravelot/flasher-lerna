@@ -9,20 +9,20 @@
 
 namespace Tests;
 
-use App\Exceptions\Handler;
-use App\Http\Middleware\VerifyCsrfToken;
-use App\Models\User;
 use Closure;
 use Exception;
-use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Schema\SQLiteBuilder;
-use Illuminate\Database\SQLiteConnection;
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Fluent;
+use App\Models\User;
+use App\Exceptions\Handler;
 use InvalidArgumentException;
+use Illuminate\Support\Fluent;
 use Laravel\Passport\Passport;
+use Illuminate\Support\Facades\App;
+use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\SQLiteConnection;
+use Illuminate\Database\Schema\SQLiteBuilder;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -91,7 +91,7 @@ abstract class TestCase extends BaseTestCase
     {
         $method = mb_strtolower($method);
         if (! \in_array($method, ['get', 'post', 'put', 'update', 'delete'], true)) {
-            throw new InvalidArgumentException('Invalid method: ' . $method);
+            throw new InvalidArgumentException('Invalid method: '.$method);
         }
         // Html check
         $response = $this->$method($uri);

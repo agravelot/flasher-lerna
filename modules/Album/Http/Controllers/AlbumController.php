@@ -9,13 +9,13 @@
 
 namespace Modules\Album\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Album;
 use App\Models\PublicAlbum;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Modules\Album\Transformers\AlbumIndexResource;
-use Modules\Album\Transformers\AlbumShowResource;
+use App\Http\Controllers\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
+use Modules\Album\Transformers\AlbumShowResource;
+use Modules\Album\Transformers\AlbumIndexResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AlbumController extends Controller
 {

@@ -10,8 +10,8 @@
 namespace Modules\Album\Transformers;
 
 use App\Models\Album;
-use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Resources\Json\Resource;
 use Modules\Category\Transformers\CategoryResource;
 
 class AlbumShowResource extends Resource

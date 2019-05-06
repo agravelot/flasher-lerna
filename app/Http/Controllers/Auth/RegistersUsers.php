@@ -9,11 +9,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RedirectsUsers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 trait RegistersUsers
 {

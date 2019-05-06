@@ -9,12 +9,12 @@
 
 namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 
-use App\Http\Middleware\VerifyCsrfToken;
-use App\Models\Cosplayer;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\User;
+use App\Models\Cosplayer;
+use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class StoreCosplayerTest extends TestCase
 {

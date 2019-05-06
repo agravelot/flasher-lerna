@@ -9,23 +9,23 @@
 
 namespace App\Providers;
 
-use App\Models\Album;
-use App\Models\Category;
-use App\Models\Contact;
-use App\Models\Cosplayer;
-use App\Models\GoldenBookPost;
-use App\Models\SocialMedia;
 use App\Models\User;
+use App\Models\Album;
+use App\Models\Contact;
+use App\Models\Category;
+use App\Models\Cosplayer;
+use App\Models\SocialMedia;
+use App\Policies\UserPolicy;
 use App\Policies\AlbumPolicy;
-use App\Policies\CategoryPolicy;
+use App\Models\GoldenBookPost;
+use Laravel\Passport\Passport;
 use App\Policies\ContactPolicy;
+use App\Policies\CategoryPolicy;
 use App\Policies\CosplayerPolicy;
 use App\Policies\GoldenBookPolicy;
 use App\Policies\SocialMediaPolicy;
-use App\Policies\UserPolicy;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
-use Laravel\Passport\Passport;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {

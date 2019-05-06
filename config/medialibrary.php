@@ -37,7 +37,7 @@ return [
         /*
          * The domain that should be prepended when generating urls.
          */
-        'domain' => 'https://' . env('AWS_BUCKET') . '.s3.amazonaws.com',
+        'domain' => 'https://'.env('AWS_BUCKET').'.s3.amazonaws.com',
     ],
 
     'remote' => [
@@ -154,6 +154,6 @@ return [
      */
     'jobs' => [
         'perform_conversions' => Spatie\MediaLibrary\Jobs\PerformConversions::class,
-        'generate_responsive_images' => \App\Jobs\GenerateResponsiveImages::class
+        'generate_responsive_images' => \App\Jobs\GenerateResponsiveImages::class,
     ],
 ];

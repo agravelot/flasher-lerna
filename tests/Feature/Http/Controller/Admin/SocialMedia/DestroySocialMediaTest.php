@@ -9,11 +9,11 @@
 
 namespace Tests\Feature\Http\Controller\Admin\SocialMedia;
 
-use App\Http\Middleware\VerifyCsrfToken;
-use App\Models\SocialMedia;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\SocialMedia;
+use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DestroySocialMediaTest extends TestCase
 {
@@ -39,7 +39,7 @@ class DestroySocialMediaTest extends TestCase
 
     private function deleteSocialMedia(int $id): TestResponse
     {
-        return $this->delete('/admin/social-medias/' . $id);
+        return $this->delete('/admin/social-medias/'.$id);
     }
 
     public function test_user_can_not_destroy_a_socialMedia()

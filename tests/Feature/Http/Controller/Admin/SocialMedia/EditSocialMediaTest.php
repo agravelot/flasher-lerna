@@ -9,10 +9,10 @@
 
 namespace Tests\Feature\Http\Controller\Admin\SocialMedia;
 
-use App\Models\SocialMedia;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\SocialMedia;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class EditSocialMediaTest extends TestCase
 {
@@ -32,7 +32,7 @@ class EditSocialMediaTest extends TestCase
 
     private function showSocialMediaEdit(int $id): TestResponse
     {
-        return $this->get('/admin/social-medias/' . $id . '/edit');
+        return $this->get('/admin/social-medias/'.$id.'/edit');
     }
 
     public function test_user_can_not_view_edit_page_for_a_socialMedia()

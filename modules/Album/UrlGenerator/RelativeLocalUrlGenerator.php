@@ -20,6 +20,6 @@ class RelativeLocalUrlGenerator extends LocalUrlGenerator
      */
     public function getResponsiveImagesDirectoryUrl(): string
     {
-        return $this->getBaseMediaDirectoryUrl() . '/' . $this->pathGenerator->getPathForResponsiveImages($this->media);
+        return $this->getBaseMediaDirectoryUrl().'/'.$this->pathGenerator->getPathForResponsiveImages($this->media);
     }
 }

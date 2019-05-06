@@ -9,8 +9,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\GoldenBookPost;
+use App\Http\Controllers\Controller;
 
 class AdminGoldenBookController extends Controller
 {

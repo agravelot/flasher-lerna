@@ -9,12 +9,12 @@
 
 namespace Modules\Category\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
 use Modules\Category\Transformers\CategoryResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminCategoryController extends Controller
 {

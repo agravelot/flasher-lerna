@@ -9,9 +9,9 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Http\Controllers\Controller;
 use App\Models\Album;
 use App\Models\PublicAlbum;
+use App\Http\Controllers\Controller;
 use Spatie\MediaLibrary\MediaStream;
 
 class DownloadAlbumController extends Controller
@@ -34,7 +34,7 @@ class DownloadAlbumController extends Controller
         $this->authorize('download', $album);
         $pictures = $album->getMedia('pictures');
 
-        return MediaStream::create($album->slug . '.zip')
+        return MediaStream::create($album->slug.'.zip')
             ->addMedia($pictures);
     }
 }

@@ -9,10 +9,10 @@
 
 namespace Tests\Feature\Http\Controller\Admin\GoldenBookPost;
 
-use App\Models\GoldenBookPost;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\GoldenBookPost;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class IndexGoldenBookTest extends TestCase
 {

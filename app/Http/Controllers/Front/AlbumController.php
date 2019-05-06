@@ -9,12 +9,12 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Http\Controllers\Controller;
 use App\Models\PublicAlbum;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Response;
-use Modules\Album\Transformers\AlbumIndexResource;
+use App\Http\Controllers\Controller;
 use Modules\Album\Transformers\AlbumShowResource;
+use Illuminate\Auth\Access\AuthorizationException;
+use Modules\Album\Transformers\AlbumIndexResource;
 
 class AlbumController extends Controller
 {

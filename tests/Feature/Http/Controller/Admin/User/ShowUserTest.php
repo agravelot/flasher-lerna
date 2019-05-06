@@ -9,11 +9,11 @@
 
 namespace Tests\Feature\Http\Controller\Admin\User;
 
-use App\Models\Album;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\User;
+use App\Models\Album;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ShowUserTest extends TestCase
 {
@@ -32,7 +32,7 @@ class ShowUserTest extends TestCase
 
     private function showUser(User $user): TestResponse
     {
-        return $this->get('/admin/users/' . $user->id);
+        return $this->get('/admin/users/'.$user->id);
     }
 
     public function test_admin_can_view_a_user_with_albums()

@@ -9,11 +9,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Album;
 use App\Models\Contact;
 use App\Models\Cosplayer;
-use App\Models\User;
+use App\Http\Controllers\Controller;
 use Spatie\Activitylog\Models\Activity;
 
 class AdminController extends Controller

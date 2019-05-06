@@ -9,11 +9,11 @@
 
 namespace App\Console;
 
-use App\Console\Commands\CreateAdminUser;
 use App\Jobs\Backup;
 use App\Jobs\BackupClean;
 use App\Jobs\BackupMonitor;
 use App\Jobs\GenerateSitemap;
+use App\Console\Commands\CreateAdminUser;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -49,7 +49,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__ . '/Commands');
+        $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
     }

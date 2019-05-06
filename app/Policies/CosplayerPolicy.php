@@ -9,8 +9,8 @@
 
 namespace App\Policies;
 
-use App\Models\Cosplayer;
 use App\Models\User;
+use App\Models\Cosplayer;
 
 class CosplayerPolicy extends Policy
 {

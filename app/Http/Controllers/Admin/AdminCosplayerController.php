@@ -9,14 +9,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Exception;
+use App\Models\User;
+use App\Models\Cosplayer;
+use Illuminate\Support\Arr;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CosplayerRequest;
-use App\Models\Cosplayer;
-use App\Models\User;
-use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Http\Response;
-use Illuminate\Support\Arr;
 
 class AdminCosplayerController extends Controller
 {

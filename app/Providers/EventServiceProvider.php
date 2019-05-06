@@ -9,22 +9,22 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Models\Album;
-use App\Models\Category;
 use App\Models\Contact;
+use App\Models\Category;
 use App\Models\Cosplayer;
 use App\Models\GoldenBookPost;
-use App\Models\User;
-use App\Observers\AlbumObserver;
-use App\Observers\CategoryObserver;
-use App\Observers\ContactObserver;
-use App\Observers\CosplayerObserver;
-use App\Observers\GoldenBookPostObserver;
 use App\Observers\UserObserver;
+use App\Observers\AlbumObserver;
+use App\Observers\ContactObserver;
+use App\Observers\CategoryObserver;
+use App\Observers\CosplayerObserver;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
+use App\Observers\GoldenBookPostObserver;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {

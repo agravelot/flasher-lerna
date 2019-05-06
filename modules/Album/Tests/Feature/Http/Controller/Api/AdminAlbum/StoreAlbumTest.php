@@ -9,12 +9,12 @@
 
 namespace Modules\Album\Tests\Feature\Http\Controller\Api\AdminAlbum;
 
+use Tests\TestCase;
 use App\Models\Album;
 use App\Models\Category;
 use App\Models\Cosplayer;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class StoreAlbumTest extends TestCase
 {

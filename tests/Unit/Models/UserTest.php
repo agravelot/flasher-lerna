@@ -9,11 +9,11 @@
 
 namespace Tests\Unit;
 
-use App\Models\Album;
 use App\Models\Post;
 use App\Models\User;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\Album;
 use Tests\ModelTestCase;
+use Illuminate\Foundation\Testing\WithFaker;
 
 class UserTest extends ModelTestCase
 {

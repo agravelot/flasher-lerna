@@ -9,8 +9,8 @@
 
 namespace App\Policies;
 
-use App\Models\SocialMedia;
 use App\Models\User;
+use App\Models\SocialMedia;
 
 class SocialMediaPolicy extends Policy
 {

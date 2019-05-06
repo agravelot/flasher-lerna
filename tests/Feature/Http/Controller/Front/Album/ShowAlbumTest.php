@@ -9,12 +9,12 @@
 
 namespace Tests\Feature;
 
+use Tests\TestCase;
 use App\Models\Album;
 use App\Models\Category;
 use App\Models\PublicAlbum;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ShowAlbumTest extends TestCase
 {
@@ -36,7 +36,7 @@ class ShowAlbumTest extends TestCase
 
     private function showAlbum(Album $album): TestResponse
     {
-        return $this->json('get', '/api/albums/' . $album->slug);
+        return $this->json('get', '/api/albums/'.$album->slug);
     }
 
     public function test_guest_can_view_a_published_album_with_category()

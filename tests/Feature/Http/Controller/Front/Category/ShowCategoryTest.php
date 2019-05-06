@@ -9,11 +9,11 @@
 
 namespace Tests\Feature\Front\Category;
 
+use Tests\TestCase;
 use App\Models\Album;
 use App\Models\Category;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ShowCategoryTest extends TestCase
 {
@@ -33,12 +33,12 @@ class ShowCategoryTest extends TestCase
 
     private function showCategory(Category $category): TestResponse
     {
-        return $this->get('/categories/' . $category->slug);
+        return $this->get('/categories/'.$category->slug);
     }
 
     private function getDescriptionElement(string $description): string
     {
-        return '<p class="has-text-justified">' . $description . '</p>';
+        return '<p class="has-text-justified">'.$description.'</p>';
     }
 
     public function test_guest_can_view_a_category_with_albums()

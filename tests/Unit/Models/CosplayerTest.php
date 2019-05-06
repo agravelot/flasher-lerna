@@ -9,10 +9,10 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\Cosplayer;
 use App\Models\User;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\ModelTestCase;
+use App\Models\Cosplayer;
+use Illuminate\Foundation\Testing\WithFaker;
 
 class CosplayerTest extends ModelTestCase
 {

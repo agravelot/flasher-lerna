@@ -9,10 +9,10 @@
 
 namespace Tests\Feature\Http\Controller\Front\Cosplayer;
 
-use App\Models\Cosplayer;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\Cosplayer;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ShowCosplayerTest extends TestCase
 {
@@ -31,7 +31,7 @@ class ShowCosplayerTest extends TestCase
 
     private function showCosplayers(string $slug): TestResponse
     {
-        return $this->get('/cosplayers/' . $slug);
+        return $this->get('/cosplayers/'.$slug);
     }
 
     public function test_guest_can_not_view_an_unknown_cosplayer()

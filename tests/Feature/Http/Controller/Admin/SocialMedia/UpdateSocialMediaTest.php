@@ -9,11 +9,11 @@
 
 namespace Tests\Feature\Http\Controller\Admin\SocialMedia;
 
-use App\Http\Middleware\VerifyCsrfToken;
-use App\Models\SocialMedia;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\SocialMedia;
+use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UpdateSocialMediaTest extends TestCase
 {
@@ -36,9 +36,9 @@ class UpdateSocialMediaTest extends TestCase
 
     private function updateSocialMedia(SocialMedia $socialMedia, ?int $id = null): TestResponse
     {
-        session()->setPreviousUrl('/admin/social-medias/' . $id . '/edit');
+        session()->setPreviousUrl('/admin/social-medias/'.$id.'/edit');
 
-        return $this->patch('/admin/social-medias/' . $id, $socialMedia->toArray());
+        return $this->patch('/admin/social-medias/'.$id, $socialMedia->toArray());
     }
 
     public function test_admin_can_not_update_a_social_media_with_another_social_media_name()
@@ -51,7 +51,7 @@ class UpdateSocialMediaTest extends TestCase
 
         $this->assertSame(2, SocialMedia::count());
         $response->assertStatus(302)
-            ->assertRedirect('/admin/social-medias/' . $socialMedias->get(1)->id . '/edit');
+            ->assertRedirect('/admin/social-medias/'.$socialMedias->get(1)->id.'/edit');
         $this->followRedirects($response)
             ->assertStatus(200)
             ->assertSee($socialMedias->get(1)->name)

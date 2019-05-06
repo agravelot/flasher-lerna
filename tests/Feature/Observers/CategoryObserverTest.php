@@ -9,10 +9,10 @@
 
 namespace Tests\Feature\Observers;
 
-use App\Models\Category;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Spatie\Activitylog\Models\Activity;
 use Tests\TestCase;
+use App\Models\Category;
+use Spatie\Activitylog\Models\Activity;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CategoryObserverTest extends TestCase
 {
