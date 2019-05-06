@@ -11,11 +11,8 @@ if [[ "$env" != "local" ]]; then
     # Optimizing for production
     # https://laravel.com/docs/5.8/deployment#optimization
     echo "Caching configuration..."
-    php artisan config:clear
     php artisan view:clear
     php artisan optimize
-    php artisan config:cache
-    php artisan route:cache
     php artisan view:cache
 fi
 
