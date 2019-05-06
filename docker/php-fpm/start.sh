@@ -39,7 +39,6 @@ if [[ "$role" = "app" ]]; then
 elif [[ "$role" = "queue" ]]; then
 
     echo "Queue role"
-    ls -lah /etc
     exec supervisord --nodaemon -c /etc/custom-supervisord.ini
 
 elif [[ "$role" = "scheduler" ]]; then
