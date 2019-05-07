@@ -9,8 +9,8 @@
 
 use App\Models\Album;
 use Faker\Generator as Faker;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Carbon;
+use Illuminate\Http\UploadedFile;
 
 $withMedias = false;
 

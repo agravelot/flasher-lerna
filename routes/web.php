@@ -31,7 +31,7 @@ Route::middleware(['web', 'auth', 'verified', 'admin'])->group(function () {
     Route::name('admin.')->group(function () {
         Route::prefix('admin')->group(function () {
             Route::namespace('Admin')->group(function () {
-                Route::get('', 'AdminController@dashboard')->name('dashboard');
+                Route::get('', 'AdminController')->name('dashboard');
                 Route::resource('albums', 'AdminAlbumController');
                 Route::resource('categories', 'AdminCategoryController');
                 Route::resource('goldenbook', 'AdminGoldenBookController');

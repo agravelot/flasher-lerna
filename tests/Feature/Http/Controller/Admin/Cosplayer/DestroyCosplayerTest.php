@@ -9,11 +9,11 @@
 
 namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 
-use App\Http\Middleware\VerifyCsrfToken;
-use App\Models\Cosplayer;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\Cosplayer;
+use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DestroyCosplayerTest extends TestCase
 {
@@ -40,7 +40,7 @@ class DestroyCosplayerTest extends TestCase
 
     private function deleteCosplayer(string $slug): TestResponse
     {
-        return $this->delete('/admin/cosplayers/' . $slug);
+        return $this->delete('/admin/cosplayers/'.$slug);
     }
 
     public function test_user_can_not_destroy_a_cosplayer()

@@ -9,10 +9,10 @@
 
 namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 
-use App\Models\Cosplayer;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\Cosplayer;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class EditCosplayerTest extends TestCase
 {
@@ -33,7 +33,7 @@ class EditCosplayerTest extends TestCase
 
     private function showCosplayerEdit(string $slug): TestResponse
     {
-        return $this->get('/admin/cosplayers/' . $slug . '/edit');
+        return $this->get('/admin/cosplayers/'.$slug.'/edit');
     }
 
     public function test_user_can_not_view_edit_page_for_a_cosplayer()

@@ -9,10 +9,10 @@
 
 namespace Tests\Feature\Observers;
 
-use App\Models\GoldenBookPost;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Spatie\Activitylog\Models\Activity;
 use Tests\TestCase;
+use App\Models\GoldenBookPost;
+use Spatie\Activitylog\Models\Activity;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class GoldenBookPostObserverTest extends TestCase
 {

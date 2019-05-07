@@ -9,12 +9,12 @@
 
 namespace Tests\Feature\Http\Controller\Front\DownloadAlbum;
 
+use Tests\TestCase;
+use App\Models\User;
 use App\Models\Album;
 use App\Models\Cosplayer;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Tests\TestCase;
 
 class ShowDownloadAlbum extends TestCase
 {
@@ -25,7 +25,7 @@ class ShowDownloadAlbum extends TestCase
         $this->actingAsAdmin();
         $album = factory(Album::class)->states(['published', 'withMedias'])->create();
 
-        $response = $this->get('/download-albums/' . $album->slug);
+        $response = $this->get('/download-albums/'.$album->slug);
 
         $this->assertInstanceOf(StreamedResponse::class, $response->baseResponse);
     }
@@ -35,7 +35,7 @@ class ShowDownloadAlbum extends TestCase
         $this->actingAsAdmin();
         $album = factory(Album::class)->states(['published'])->create();
 
-        $response = $this->get('/download-albums/' . $album->slug);
+        $response = $this->get('/download-albums/'.$album->slug);
 
         $this->assertInstanceOf(StreamedResponse::class, $response->baseResponse);
     }
@@ -48,7 +48,7 @@ class ShowDownloadAlbum extends TestCase
         $album = factory(Album::class)->states(['published'])->create();
         $album->cosplayers()->attach($cosplayer);
 
-        $response = $this->get('/download-albums/' . $album->slug);
+        $response = $this->get('/download-albums/'.$album->slug);
 
         $response->assertStatus(200);
         $this->assertInstanceOf(StreamedResponse::class, $response->baseResponse);
@@ -62,7 +62,7 @@ class ShowDownloadAlbum extends TestCase
         $album = factory(Album::class)->states(['unpublished'])->create();
         $album->cosplayers()->attach($cosplayer);
 
-        $response = $this->get('/download-albums/' . $album->slug);
+        $response = $this->get('/download-albums/'.$album->slug);
 
         $response->assertStatus(403);
         $this->assertNotInstanceOf(StreamedResponse::class, $response->baseResponse);
@@ -73,7 +73,7 @@ class ShowDownloadAlbum extends TestCase
         $this->actingAsUser();
         $album = factory(Album::class)->states(['published'])->create();
 
-        $response = $this->get('/download-albums/' . $album->slug);
+        $response = $this->get('/download-albums/'.$album->slug);
 
         $response->assertStatus(403);
         $this->assertNotInstanceOf(StreamedResponse::class, $response->baseResponse);
@@ -83,7 +83,7 @@ class ShowDownloadAlbum extends TestCase
     {
         $album = factory(Album::class)->states(['published', 'withUser'])->create();
 
-        $response = $this->get('/download-albums/' . $album->slug);
+        $response = $this->get('/download-albums/'.$album->slug);
 
         $response->assertRedirect('/login');
         $this->followRedirects($response)

@@ -7,8 +7,8 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-use App\Models\Category;
 use Carbon\Carbon;
+use App\Models\Category;
 use Faker\Generator as Faker;
 
 $factory->define(Category::class, function (Faker $faker) {

@@ -9,11 +9,11 @@
 
 namespace Tests\Feature\Http\Controller\Admin\Category;
 
-use App\Http\Middleware\VerifyCsrfToken;
-use App\Models\Category;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\Category;
+use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class StoreCategoryTest extends TestCase
 {

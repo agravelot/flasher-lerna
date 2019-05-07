@@ -28,12 +28,16 @@ fi
 echo " * PULLING NEW IMAGES"
 docker-compose -f ../docker-compose.yml pull
 echo " * PUTTING LARAVEL IN MAINTENANCE MODE"
-docker-compose exec -T php echo '' && docker-compose exec -T php php artisan down --message="We'll be back soon" --retry=60 || echo "Container is not running"
-echo " * STOPPING PIPELINES"
-docker-compose exec -T php echo '' && docker-compose exec -T php php artisan horizon:terminate || echo "Container is not running"
+docker-compose exec -T php php artisan down --message="We'll be back soon" --retry=60 || echo "Container is not running"
+echo " * STOPPING QUEUE WORKERS"
+docker-compose exec -T queue php artisan horizon:pause || echo "Container is not running"
+docker-compose stop queue || echo "Container is not running"
+echo " * SAVING REDIS STATES"
+docker-compose exec -T cache redis-cli SAVE || echo "Container is not running"
 echo " * UPDATING RUNNING CONTAINERS"
-docker-compose -f ../docker-compose.yml up -d --remove-orphans
+docker-compose up -d --remove-orphans
 echo " * LEAVING MAINTENANCE MODE"
-docker-compose exec -T php echo '' && docker-compose exec -T php php artisan up || echo "Container is not running"
+docker-compose exec -T php php artisan up
+docker-compose exec -T queue php artisan horizon:continue
 #echo " * CLEANING OLD IMAGES"
 #ssh -t ${REMOTE} -p $CI_DEPLOY_SSH_PORT "docker-clean images"

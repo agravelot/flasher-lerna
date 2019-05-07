@@ -9,11 +9,11 @@
 
 namespace Tests\Feature\Http\Controller\Admin\ActivateGoldenBook;
 
-use App\Http\Middleware\VerifyCsrfToken;
-use App\Models\GoldenBookPost;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\GoldenBookPost;
+use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DestroyPublishedGoldenBookTest extends TestCase
 {
@@ -41,7 +41,7 @@ class DestroyPublishedGoldenBookTest extends TestCase
     {
         session()->setPreviousUrl('/admin/goldenbook');
 
-        return $this->delete('/admin/published-goldenbook/' . $id, $data);
+        return $this->delete('/admin/published-goldenbook/'.$id, $data);
     }
 
     public function test_admin_can_not_unpublish_an_non_existant_goldenbook_post()

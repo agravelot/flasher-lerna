@@ -2,7 +2,7 @@ version: '3.4'
 services:
   db:
     image: mariadb
-    restart: always
+    restart: unless-stopped
     volumes:
     - db-data:/var/lib/mysql:rw,delegated
     env_file:
@@ -13,8 +13,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: php
-    restart: always
+      target: php_app
+    restart: unless-stopped
     env_file:
     - docker/php-fpm/.env
     volumes:
@@ -27,13 +27,55 @@ services:
     - db
     - cache
 
+  queue:
+    image: registry.gitlab.com/nevax/picblog/picblog_php
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: php_queue
+    restart: unless-stopped
+    env_file:
+      - docker/php-fpm/.env
+    environment:
+      CONTAINER_ROLE: "queue"
+    volumes:
+      - storage:/var/www/html/storage:rw,delegated
+      - public_vendor:/var/www/html/public/vendor:rw,delegated
+    links:
+      - db
+      - cache
+    depends_on:
+      - db
+      - cache
+
+  scheduler:
+    image: registry.gitlab.com/nevax/picblog/picblog_php
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: php_scheduler
+    restart: unless-stopped
+    env_file:
+      - docker/php-fpm/.env
+    environment:
+      CONTAINER_ROLE: "scheduler"
+    volumes:
+      - storage:/var/www/html/storage:rw,delegated
+      - public_vendor:/var/www/html/public/vendor:rw,delegated
+    links:
+      - db
+      - cache
+    depends_on:
+      - db
+      - cache
+
   nginx:
     image: registry.gitlab.com/nevax/picblog/picblog_nginx
     build:
       context: .
       dockerfile: Dockerfile
       target: nginx
-    restart: always
+    restart: unless-stopped
     ports:
     - 8080:80
     env_file: ./docker/nginx/.env
@@ -47,6 +89,7 @@ services:
 
   cache:
     image: redis:5.0-alpine
+    restart: unless-stopped
     volumes:
       - cache_data:/data:rw,delegated
 

@@ -7,8 +7,8 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Seeder;
 
 class AdminUserSeeder extends Seeder
 {

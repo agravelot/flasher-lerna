@@ -9,8 +9,8 @@
 
 namespace Modules\Category\Providers;
 
-use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Factory;
 
 class CategoryServiceProvider extends ServiceProvider
 {
@@ -30,7 +30,7 @@ class CategoryServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->registerFactories();
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
     }
 
     /**
@@ -47,10 +47,10 @@ class CategoryServiceProvider extends ServiceProvider
     protected function registerConfig()
     {
         $this->publishes([
-            __DIR__ . '/../Config/config.php' => config_path('category.php'),
+            __DIR__.'/../Config/config.php' => config_path('category.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            __DIR__ . '/../Config/config.php', 'category'
+            __DIR__.'/../Config/config.php', 'category'
         );
     }
 
@@ -61,14 +61,14 @@ class CategoryServiceProvider extends ServiceProvider
     {
         $viewPath = resource_path('views/modules/category');
 
-        $sourcePath = __DIR__ . '/../Resources/views';
+        $sourcePath = __DIR__.'/../Resources/views';
 
         $this->publishes([
             $sourcePath => $viewPath,
         ], 'views');
 
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
-            return $path . '/modules/category';
+            return __DIR__.'/../Resources/views';
         }, \Config::get('view.paths')), [$sourcePath]), 'category');
     }
 
@@ -82,7 +82,7 @@ class CategoryServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'category');
         } else {
-            $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'category');
+            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'category');
         }
     }
 
@@ -92,7 +92,7 @@ class CategoryServiceProvider extends ServiceProvider
     public function registerFactories()
     {
         if (! app()->environment('production', 'staging')) {
-            app(Factory::class)->load(__DIR__ . '/../Database/factories');
+            app(Factory::class)->load(__DIR__.'/../Database/factories');
         }
     }
 

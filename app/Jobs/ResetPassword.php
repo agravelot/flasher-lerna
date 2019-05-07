@@ -9,9 +9,9 @@
 
 namespace App\Jobs;
 
-use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordBase;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordBase;
 
 class ResetPassword extends ResetPasswordBase implements ShouldQueue
 {

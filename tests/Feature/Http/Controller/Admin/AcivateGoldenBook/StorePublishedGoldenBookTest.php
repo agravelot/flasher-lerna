@@ -9,11 +9,11 @@
 
 namespace Tests\Feature\Http\Controller\Admin\ActivateGoldenBook;
 
-use App\Http\Middleware\VerifyCsrfToken;
-use App\Models\GoldenBookPost;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\GoldenBookPost;
+use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class StorePublishedGoldenBookTest extends TestCase
 {

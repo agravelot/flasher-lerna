@@ -9,9 +9,9 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Models\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContactStoreRequest;
-use App\Models\Contact;
 
 class ContactController extends Controller
 {

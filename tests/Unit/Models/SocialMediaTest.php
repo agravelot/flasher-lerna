@@ -9,10 +9,10 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\SocialMedia;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\ModelTestCase;
+use App\Models\SocialMedia;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SocialMediaTest extends ModelTestCase
 {

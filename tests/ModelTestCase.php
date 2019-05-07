@@ -9,11 +9,11 @@
 
 namespace Tests;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 abstract class ModelTestCase extends TestCase
 {
@@ -103,7 +103,7 @@ abstract class ModelTestCase extends TestCase
             $parent = $model->getKeyName();
         }
 
-        $this->assertSame($model->getTable() . '.' . $parent, $relation->getQualifiedParentKeyName());
+        $this->assertSame($model->getTable().'.'.$parent, $relation->getQualifiedParentKeyName());
     }
 
     /**
@@ -159,6 +159,6 @@ abstract class ModelTestCase extends TestCase
             $parent = $model->getKeyName();
         }
 
-        $this->assertSame($model->getTable() . '.' . $parent, $relation->getQualifiedParentKeyName());
+        $this->assertSame($model->getTable().'.'.$parent, $relation->getQualifiedParentKeyName());
     }
 }

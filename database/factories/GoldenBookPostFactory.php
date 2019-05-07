@@ -7,9 +7,9 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-use App\Models\GoldenBookPost;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
+use App\Models\GoldenBookPost;
 
 $factory->define(GoldenBookPost::class, function (Faker $faker) {
     return [

@@ -9,15 +9,15 @@
 
 namespace Modules\Album\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Album;
 use Exception;
+use App\Models\Album;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Modules\Album\Http\Requests\AlbumRequest;
-use Modules\Album\Transformers\AlbumIndexResource;
-use Modules\Album\Transformers\AlbumShowResource;
 use Spatie\QueryBuilder\QueryBuilder;
+use Modules\Album\Http\Requests\AlbumRequest;
+use Modules\Album\Transformers\AlbumShowResource;
+use Modules\Album\Transformers\AlbumIndexResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminAlbumController extends Controller
 {

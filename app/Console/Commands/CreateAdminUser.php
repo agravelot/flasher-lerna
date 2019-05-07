@@ -9,10 +9,10 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Requests\UserRequest;
 use App\Models\User;
-use Illuminate\Auth\Events\Verified;
 use Illuminate\Console\Command;
+use App\Http\Requests\UserRequest;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Validator;
 
 class CreateAdminUser extends Command
@@ -27,6 +27,7 @@ class CreateAdminUser extends Command
                             {name? : Username} 
                             {email? : Email-address} 
                             {password? : Password}';
+
     /**
      * The console command description.
      *

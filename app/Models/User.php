@@ -9,14 +9,14 @@
 
 namespace App\Models;
 
-use App\Abilities\CanResetPassword;
 use App\Abilities\MustVerifyEmail;
-use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailInterface;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Hash;
-use Lab404\Impersonate\Models\Impersonate;
 use Laravel\Passport\HasApiTokens;
+use App\Abilities\CanResetPassword;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Notifications\Notifiable;
+use Lab404\Impersonate\Models\Impersonate;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailInterface;
 
 /**
  * App\Models\User.

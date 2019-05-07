@@ -9,13 +9,13 @@
 
 namespace Tests\Feature\Http\Controller\Auth;
 
-use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
-use App\Jobs\VerifyEmail;
+use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Jobs\VerifyEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
-use Tests\TestCase;
+use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RegisterTest extends TestCase
 {

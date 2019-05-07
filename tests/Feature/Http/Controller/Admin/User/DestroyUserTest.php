@@ -9,11 +9,11 @@
 
 namespace Tests\Feature\Http\Controller\Admin\User;
 
-use App\Http\Middleware\VerifyCsrfToken;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\User;
+use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DestroyUserTest extends TestCase
 {
@@ -40,7 +40,7 @@ class DestroyUserTest extends TestCase
 
     private function deleteUser(string $id): TestResponse
     {
-        return $this->delete('/admin/users/' . $id);
+        return $this->delete('/admin/users/'.$id);
     }
 
     public function test_user_can_not_destroy_a_user()

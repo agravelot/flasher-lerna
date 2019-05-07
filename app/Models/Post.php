@@ -9,10 +9,10 @@
 
 namespace App\Models;
 
-use App\Abilities\HasSlugRouteKey;
 use App\Abilities\HasTitleAsSlug;
-use Cviebrock\EloquentSluggable\Sluggable;
+use App\Abilities\HasSlugRouteKey;
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 /**
  * App\Models\Post.

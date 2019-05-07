@@ -7,8 +7,8 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-use App\Models\Contact;
 use App\Models\User;
+use App\Models\Contact;
 use Illuminate\Database\Seeder;
 
 class ContactTableSeeder extends Seeder

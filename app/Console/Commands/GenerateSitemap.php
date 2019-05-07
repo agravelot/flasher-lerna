@@ -12,10 +12,10 @@ namespace App\Console\Commands;
 use App\Models\Album;
 use App\Models\Cosplayer;
 use App\Models\PublicAlbum;
+use Spatie\Sitemap\Tags\Url;
 use Illuminate\Console\Command;
 use Psr\Http\Message\UriInterface;
 use Spatie\Sitemap\SitemapGenerator;
-use Spatie\Sitemap\Tags\Url;
 
 class GenerateSitemap extends Command
 {

@@ -9,12 +9,12 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\Album;
-use App\Scope\PublicScope;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\Album;
 use Tests\ModelTestCase;
+use App\Scope\PublicScope;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AlbumTest extends ModelTestCase
 {

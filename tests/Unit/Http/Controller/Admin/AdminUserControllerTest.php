@@ -9,13 +9,13 @@
 
 namespace Tests\Unit\Http\Controllers\Admin;
 
-use App\Http\Controllers\Admin\AdminUserController;
-use App\Models\Cosplayer;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
+use App\Models\User;
+use App\Models\Cosplayer;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Http\Controllers\Admin\AdminUserController;
 
 class AdminUserControllerTest extends TestCase
 {

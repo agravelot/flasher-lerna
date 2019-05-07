@@ -9,8 +9,8 @@
 
 namespace App\Abilities;
 
-use Illuminate\Support\Str;
 use ReflectionClass;
+use Illuminate\Support\Str;
 
 trait HasParentModelTrait
 {
@@ -30,7 +30,7 @@ trait HasParentModelTrait
 
     public function getForeignKey()
     {
-        return Str::snake(class_basename($this->getParentClass())) . '_' . $this->primaryKey;
+        return Str::snake(class_basename($this->getParentClass())).'_'.$this->primaryKey;
     }
 
     public function joiningTable($related, $instance = null)

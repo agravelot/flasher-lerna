@@ -10,10 +10,10 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Category;
-use Illuminate\Database\QueryException;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\ModelTestCase;
+use Illuminate\Database\QueryException;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CategoryTest extends ModelTestCase
 {

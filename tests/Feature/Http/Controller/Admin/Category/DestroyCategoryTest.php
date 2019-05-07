@@ -9,11 +9,11 @@
 
 namespace Tests\Feature\Http\Controller\Admin\Category;
 
-use App\Http\Middleware\VerifyCsrfToken;
-use App\Models\Category;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\Category;
+use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DestroyCategoryTest extends TestCase
 {
@@ -40,7 +40,7 @@ class DestroyCategoryTest extends TestCase
 
     private function deleteCategory(string $slug): TestResponse
     {
-        return $this->delete('/admin/categories/' . $slug);
+        return $this->delete('/admin/categories/'.$slug);
     }
 
     public function test_user_can_not_destroy_a_category()

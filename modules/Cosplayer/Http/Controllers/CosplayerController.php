@@ -9,12 +9,12 @@
 
 namespace Modules\Cosplayer\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Cosplayer;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
 use Modules\Cosplayer\Transformers\CosplayerResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CosplayerController extends Controller
 {

@@ -9,14 +9,14 @@
 
 namespace Modules\Album\Tests\Feature\Http\Controller\Api\AdminAlbum;
 
+use DateTime;
+use Tests\TestCase;
 use App\Models\Album;
 use App\Models\Category;
 use App\Models\Cosplayer;
-use DateTime;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Collection;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UpdateAlbumTest extends TestCase
 {
@@ -36,7 +36,7 @@ class UpdateAlbumTest extends TestCase
 
     public function updateAlbum(Album $album, array $optional = []): TestResponse
     {
-        return $this->json('patch', '/api/admin/albums/' . $album->slug, array_merge($album->toArray(), $optional));
+        return $this->json('patch', '/api/admin/albums/'.$album->slug, array_merge($album->toArray(), $optional));
     }
 
     public function test_admin_can_update_an_album_with_a_new_category()

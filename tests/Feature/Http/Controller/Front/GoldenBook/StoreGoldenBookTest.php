@@ -9,12 +9,12 @@
 
 namespace Tests\Feature\Http\Controller\Front\GoldenBook;
 
-use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
+use Tests\TestCase;
 use App\Models\GoldenBookPost;
 use App\Models\PublishedGoldenBookPost;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
 use Illuminate\Foundation\Testing\TestResponse;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class StoreGoldenBookTest extends TestCase
 {

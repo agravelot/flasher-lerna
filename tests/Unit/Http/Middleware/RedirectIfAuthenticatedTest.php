@@ -9,14 +9,14 @@
 
 namespace Tests\Unit\Http\Middleware;
 
-use App\Http\Middleware\RedirectIfAuthenticated;
-use Illuminate\Auth\SessionGuard;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Mockery as m;
 use Tests\TestCase;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Auth\SessionGuard;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Middleware\RedirectIfAuthenticated;
 
 class RedirectIfAuthenticatedTest extends TestCase
 {
