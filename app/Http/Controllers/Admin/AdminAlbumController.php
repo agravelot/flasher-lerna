@@ -16,6 +16,7 @@ use App\Models\Category;
 use App\Models\Cosplayer;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 use App\Http\Requests\AlbumRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -78,16 +79,16 @@ class AdminAlbumController extends Controller
         $this->authorize('create', Album::class);
 
         $validated = $request->validated();
-        /** @var Album $album */
         $album = Album::create($validated);
 
-        $album->addAllMediaFromRequest()
-            ->each(function ($fileAdder) {
-                /* @var FileAdder $fileAdder */
-                $fileAdder->preservingOriginal()
-                    ->withResponsiveImages()
-                    ->toMediaCollection('pictures');
-            });
+        /** @var Collection $medias */
+        $medias = $album->addAllMediaFromRequest();
+        $medias->each(function ($fileAdder) {
+            /* @var FileAdder $fileAdder */
+            $fileAdder->preservingOriginal()
+                ->withResponsiveImages()
+                ->toMediaCollection('pictures');
+        });
 
         if (Arr::exists($validated, 'categories')) {
             $album->categories()->sync($validated['categories'], false);
@@ -146,14 +147,14 @@ class AdminAlbumController extends Controller
         // An update can contain no picture
         $key = 'pictures';
         if (Arr::exists($validated, $key)) {
-            /* @var Album $album */
-            $album->addAllMediaFromRequest()
-                ->each(function ($fileAdder) {
-                    /* @var FileAdder $fileAdder */
-                    $fileAdder->preservingOriginal()
-                        ->withResponsiveImages()
-                        ->toMediaCollection('pictures');
-                });
+            /** @var Collection $medias */
+            $medias = $album->addAllMediaFromRequest();
+            $medias->each(function ($fileAdder) {
+                /* @var FileAdder $fileAdder */
+                $fileAdder->preservingOriginal()
+                    ->withResponsiveImages()
+                    ->toMediaCollection('pictures');
+            });
         }
 
         if (Arr::exists($validated, 'categories')) {

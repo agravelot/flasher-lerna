@@ -132,7 +132,7 @@ class Cosplayer extends Model implements HasMedia
      */
     public function setAvatar($media)
     {
-        $uuid = Str::uuid();
+        $uuid = Str::uuid()->toString();
         $name = "{$this->slug}_{$uuid}.{$media->getClientOriginalExtension()}";
 
         return $this->addMedia($media)

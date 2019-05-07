@@ -76,8 +76,8 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can update the album.
      *
-     * @param User       $user
-     * @param Album|null $album
+     * @param User  $user
+     * @param Album $album
      *
      * @return bool
      */
@@ -90,8 +90,8 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can delete the album.
      *
-     * @param User       $user
-     * @param Album|null $album
+     * @param User  $user
+     * @param Album $album
      *
      * @return bool
      */
