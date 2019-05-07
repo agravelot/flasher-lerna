@@ -1,6 +1,6 @@
 # https://about.gitlab.com/2016/05/23/gitlab-container-registry/
 
-image: docker
+image: tmaier/docker-compose:latest
 
 services:
 - docker:dind
@@ -20,10 +20,7 @@ variables:
 
 before_script:
 - touch docker/db/.env docker/nginx/.env docker/php-fpm/.env
-- apk add curl
-- LATEST_COMPOSE_VERSION="$(curl -s "https://github.com/docker/compose/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#')"
-- curl -L --fail https://github.com/docker/compose/releases/download/${LATEST_COMPOSE_VERSION}/run.sh -o /usr/local/bin/docker-compose
-- chmod +x /usr/local/bin/docker-compose
+- apk add --no-cache bash
 - docker-compose version
 - docker-compose config
 - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
