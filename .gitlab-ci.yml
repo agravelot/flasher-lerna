@@ -20,8 +20,10 @@ variables:
 
 before_script:
 - touch docker/db/.env docker/nginx/.env docker/php-fpm/.env
-- apk add --no-cache bash gettext py-pip gcc python2-dev libc-dev libffi-dev openssl-dev make
-- pip install docker-compose
+- apk add curl
+- LATEST_COMPOSE_VERSION="$(curl -s "https://github.com/docker/compose/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#')"
+- curl -L --fail https://github.com/docker/compose/releases/download/${LATEST_COMPOSE_VERSION}/run.sh -o /usr/local/bin/docker-compose
+- chmod +x /usr/local/bin/docker-compose
 - docker-compose version
 - docker-compose config
 - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
