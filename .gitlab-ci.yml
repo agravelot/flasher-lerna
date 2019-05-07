@@ -31,7 +31,7 @@ build:
   stage: build
   script:
     - docker-compose build
-    - docker-compose push php
+    - docker-compose push php nginx
   artifacts:
     name: "build_logs"
     expire_in: 1 week
