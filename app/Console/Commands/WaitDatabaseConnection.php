@@ -33,6 +33,7 @@ class WaitDatabaseConnection extends Command
      */
     public function handle()
     {
+        $this->info('Waiting database');
         $this->waitConnection();
     }
 
@@ -42,6 +43,7 @@ class WaitDatabaseConnection extends Command
             DB::connection()->getPdo();
         } catch (\Exception $e) {
             sleep(1);
+            $this->warn('Unable to connect to the database, retrying...');
             $this->waitConnection();
         }
     }

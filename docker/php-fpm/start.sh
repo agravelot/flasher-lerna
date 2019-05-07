@@ -16,13 +16,14 @@ if [[ "$env" != "local" ]]; then
     php artisan view:cache
 fi
 
+php artisan db:wait-connection
+
 if [[ "$role" = "app" ]]; then
 
     echo "App role"
 
     if [[ "$env" != "local" ]]; then
 
-        php artisan db:wait-connection
         php artisan cache:clear-wait-connection
 
         php artisan migrate --force
