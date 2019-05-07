@@ -70,7 +70,7 @@ services:
       - cache
 
   nginx:
-    image: registry.gitlab.com/nevax/picblog/picblog_nginx
+    image: registry.gitlab.com/nevax/picblog/picblog_nginx:${CI_COMMIT_SHORT_SHA:-latest}
     build:
       context: .
       dockerfile: Dockerfile
