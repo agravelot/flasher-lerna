@@ -26,12 +26,13 @@ if [[ ! "$(docker images -q ${PICBLOG_IMAGE_PHP} 2> /dev/null)" == "" && ! "$(do
   docker tag ${PICBLOG_IMAGE_NGINX} picblog-nginx-backup
 fi
 echo " * PULLING NEW IMAGES"
-docker-compose -f ../docker-compose.yml pull
-echo " * PUTTING LARAVEL IN MAINTENANCE MODE"
-docker-compose exec -T php php artisan down --message="We'll be back soon" --retry=60 || echo "Container is not running"
+docker-compose pull
 echo " * STOPPING QUEUE WORKERS"
 docker-compose exec -T queue php artisan horizon:pause || echo "Container is not running"
-docker-compose stop queue || echo "Container is not running"
+docker-compose stop -t 60 queue || echo "Container is not running"
+docker-compose stop scheduler || echo "Container is not running"
+echo " * PUTTING LARAVEL IN MAINTENANCE MODE"
+docker-compose exec -T php php artisan down --message="We'll be back soon" --retry=60 || echo "Container is not running"
 echo " * SAVING REDIS STATES"
 docker-compose exec -T cache redis-cli SAVE || echo "Container is not running"
 echo " * UPDATING RUNNING CONTAINERS"

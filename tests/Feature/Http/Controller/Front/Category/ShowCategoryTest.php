@@ -25,20 +25,14 @@ class ShowCategoryTest extends TestCase
 
         $response = $this->showCategory($category);
 
-        $response->assertStatus(200);
-        $response->assertSee($category->title);
-        $response->assertSee($this->getDescriptionElement($category->description));
-        $response->assertSee('Nothing to show');
+        $response->assertStatus(200)
+            ->assertSee($category->title)
+            ->assertSee($category->description);
     }
 
     private function showCategory(Category $category): TestResponse
     {
         return $this->get('/categories/'.$category->slug);
-    }
-
-    private function getDescriptionElement(string $description): string
-    {
-        return '<p class="has-text-justified">'.$description.'</p>';
     }
 
     public function test_guest_can_view_a_category_with_albums()
@@ -52,7 +46,7 @@ class ShowCategoryTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee($category->name);
-        $response->assertSee($this->getDescriptionElement($category->description));
+        $response->assertSee($category->description);
         $response->assertDontSee('Nothing to show');
         $response->assertSee($albums->get(0)->title);
         $response->assertSee($albums->get(1)->title);
@@ -74,23 +68,9 @@ class ShowCategoryTest extends TestCase
 
         $response = $this->showCategory($category);
 
-        $response->assertStatus(200);
-        $response->assertSee($category->title);
-        $response->assertSee($this->getDescriptionElement($category->description));
-        $response->assertSee('Nothing to show');
-        $response->assertDontSee($album->title);
-    }
-
-    public function test_category_without_description_does_not_show_description_card()
-    {
-        /** @var Category $category */
-        $category = factory(Category::class)->create(['description' => '']);
-
-        $response = $this->showCategory($category);
-
-        $response->assertStatus(200);
-        $response->assertSee($category->title);
-        $response->assertDontSee($this->getDescriptionElement($category->description));
-        $response->assertSee('Nothing to show');
+        $response->assertStatus(200)
+            ->assertSee($category->title)
+            ->assertSee($category->description)
+            ->assertDontSee($album->title);
     }
 }

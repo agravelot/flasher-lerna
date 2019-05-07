@@ -25,7 +25,7 @@ class BackupMonitor implements ShouldQueue
      *
      * @var int
      */
-    public $timeout = 15 * 60;
+    public $timeout = 5 * 60;
 
     /**
      * Execute the job.

@@ -1,6 +1,6 @@
 # https://about.gitlab.com/2016/05/23/gitlab-container-registry/
 
-image: docker
+image: tmaier/docker-compose:latest
 
 services:
 - docker:dind
@@ -20,8 +20,7 @@ variables:
 
 before_script:
 - touch docker/db/.env docker/nginx/.env docker/php-fpm/.env
-- apk add --no-cache bash gettext py-pip gcc python2-dev libc-dev libffi-dev openssl-dev make
-- pip install docker-compose
+- apk add --no-cache bash gettext
 - docker-compose version
 - docker-compose config
 - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
@@ -30,10 +29,8 @@ before_script:
 build:
   stage: build
   script:
-  - docker-compose pull
-  - docker-compose build
-  - docker push registry.gitlab.com/nevax/picblog/picblog_php:latest
-  - docker push registry.gitlab.com/nevax/picblog/picblog_nginx:latest
+    - docker-compose build
+    - docker-compose push php nginx
   artifacts:
     name: "build_logs"
     expire_in: 1 week
@@ -60,6 +57,7 @@ tests:
   - chmod +x docker/*.sh
   - bash -c 'cd docker/ && ./generate_env.sh staging'
   - docker-compose up -d
+  - docker-compose stop queue scheduler nginx
   - docker-compose exec -T cache redis-cli config set maxmemory 41943040
   - docker cp vendor $(docker-compose ps -q php):/var/www/html/
   - docker-compose exec -e APP_ENV=testing -T php vendor/bin/phpunit --coverage-text --colors=never
@@ -128,7 +126,7 @@ deploy_production:
   - bash -c 'cd docker/ && ./deploy.sh production'
   environment:
     name: production
-    url: https://picblog.agravelot.com
+    url: https://jkanda.fr
 #  when: manual
   only:
   - master

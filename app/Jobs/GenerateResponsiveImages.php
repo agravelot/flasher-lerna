@@ -13,5 +13,5 @@ use Spatie\MediaLibrary\Jobs\GenerateResponsiveImages as GenerateResponsiveImage
 
 class GenerateResponsiveImages extends GenerateResponsiveImagesBase
 {
-    public $timeout = 30 * 60; // 30 minutes
+    public $timeout = 5 * 60; // 5 minutes
 }
