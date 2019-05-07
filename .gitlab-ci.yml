@@ -58,6 +58,7 @@ tests:
   - chmod +x docker/*.sh
   - bash -c 'cd docker/ && ./generate_env.sh staging'
   - docker-compose up -d
+  - docker-compose stop queue scheduler nginx
   - docker-compose exec -T cache redis-cli config set maxmemory 41943040
   - docker cp vendor $(docker-compose ps -q php):/var/www/html/
   - docker-compose exec -e APP_ENV=testing -T php vendor/bin/phpunit --coverage-text --colors=never
