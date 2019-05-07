@@ -32,8 +32,8 @@ build:
   script:
   - docker-compose pull
   - docker-compose build
-  - docker push registry.gitlab.com/nevax/picblog/picblog_php:latest
-  - docker push registry.gitlab.com/nevax/picblog/picblog_nginx:latest
+  - docker push registry.gitlab.com/nevax/picblog/picblog_php:${CI_COMMIT_SHORT_SHA:-latest}
+  - docker push registry.gitlab.com/nevax/picblog/picblog_nginx:${CI_COMMIT_SHORT_SHA:-latest}
   artifacts:
     name: "build_logs"
     expire_in: 1 week
