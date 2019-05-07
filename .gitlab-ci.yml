@@ -128,7 +128,7 @@ deploy_production:
   - bash -c 'cd docker/ && ./deploy.sh production'
   environment:
     name: production
-    url: https://picblog.agravelot.com
+    url: https://jkanda.fr
 #  when: manual
   only:
   - master
