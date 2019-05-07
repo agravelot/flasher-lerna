@@ -30,7 +30,6 @@ before_script:
 build:
   stage: build
   script:
-  - docker-compose pull
   - docker-compose build
   - docker push registry.gitlab.com/nevax/picblog/picblog_php:${CI_COMMIT_SHORT_SHA:-latest}
   - docker push registry.gitlab.com/nevax/picblog/picblog_nginx:${CI_COMMIT_SHORT_SHA:-latest}
