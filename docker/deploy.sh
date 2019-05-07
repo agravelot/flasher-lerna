@@ -29,7 +29,7 @@ echo " * PULLING NEW IMAGES"
 docker-compose pull
 echo " * STOPPING QUEUE WORKERS"
 docker-compose exec -T queue php artisan horizon:pause || echo "Container is not running"
-docker-compose stop queue -t 60 || echo "Container is not running"
+docker-compose stop -t 60 queue || echo "Container is not running"
 docker-compose stop scheduler || echo "Container is not running"
 echo " * PUTTING LARAVEL IN MAINTENANCE MODE"
 docker-compose exec -T php php artisan down --message="We'll be back soon" --retry=60 || echo "Container is not running"
