@@ -39,8 +39,8 @@ class IndexCosplayerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee($cosplayers->get(0)->name);
-        $response->assertSee($cosplayers->get(0)->description);
+        $response->assertDontSee($cosplayers->get(0)->description);
         $response->assertSee($cosplayers->get(1)->name);
-        $response->assertSee($cosplayers->get(1)->description);
+        $response->assertDontSee($cosplayers->get(1)->description);
     }
 }
