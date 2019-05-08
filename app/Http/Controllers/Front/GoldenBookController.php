@@ -48,8 +48,7 @@ class GoldenBookController extends Controller
      */
     public function store(GoldenBookRequest $request)
     {
-        $validated = $request->validated();
-        GoldenBookPost::create($validated);
+        GoldenBookPost::create($request->validated());
 
         return redirect()->route('goldenbook.index')
             ->withSuccess('Your message has been added to the golden book');
