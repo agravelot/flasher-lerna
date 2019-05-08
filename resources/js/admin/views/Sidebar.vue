@@ -42,11 +42,20 @@
                     </li>
 
                     <li>
-                        <a href="/admin/cosplayers">
+                        <router-link :to="{ name: 'admin.cosplayers.index' }">
                             <span class="icon">
                                 <i class="fas fa-user-tag"></i>
                             </span>
                             Cosplayers
+                        </router-link>
+                    </li>
+
+                    <li>
+                        <a href="/admin/cosplayers">
+                            <span class="icon">
+                                <i class="fas fa-user-tag"></i>
+                            </span>
+                            Cosplayers (old)
                         </a>
                     </li>
 
