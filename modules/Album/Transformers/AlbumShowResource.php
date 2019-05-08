@@ -46,7 +46,7 @@ class AlbumShowResource extends Resource
                 ),
                 'edit' => $this->when(
                     $this->checkCan('update', $album),
-                    route('admin.albums.edit', ['slug' => $this->slug])
+                    "/admin/albums/{$this->slug}/edit"
                 ),
             ],
         ];

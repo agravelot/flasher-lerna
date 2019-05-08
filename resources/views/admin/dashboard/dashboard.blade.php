@@ -23,7 +23,8 @@
                 </article>
             </a>
             <a class="tile is-parent"
-               @can('index', \App\Models\Album::class) href="{{ route('admin.albums.index') }}" @endcan>
+                {{-- TODO Use sps route--}}
+               @can('index', \App\Models\Album::class) href="/admin/spa/albums" @endcan>
                 <article class="tile is-child box">
                     <p class="title">{{ $albumCount }}</p>
                     <p class="subtitle">{{ __('Albums') }}</p>
