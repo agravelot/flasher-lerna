@@ -103,6 +103,15 @@
                             Social medias
                         </a>
                     </li>
+
+                    <li>
+                        <router-link :to="{ name: 'admin.settings' }">
+                            <span class="icon">
+                                <i class="fas fa-cog"></i>
+                            </span>
+                            Settings
+                        </router-link>
+                    </li>
                 </ul>
 
                 <ul class="menu-list">

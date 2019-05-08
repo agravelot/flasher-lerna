@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import Dashboard from './admin/views/Dashboard.vue';
+import Settings from './admin/views/Settings.vue';
 import UsersIndex from './admin/views/UsersIndex.vue';
 import AlbumsIndex from '../../modules/Album/Resources/assets/js/components/admin/AlbumsIndex.vue';
 import AlbumsShow from '../../modules/Album/Resources/assets/js/components/front/AlbumsShowGallery.vue';
@@ -24,31 +25,37 @@ const routes: Array<any> = [
         component: AlbumsIndex,
     },
     {
-        path: '/admin/spa/albums/create',
+        path: '/admin/albums/create',
         name: 'admin.albums.create',
         component: AlbumsCreate,
     },
     {
-        path: '/admin/spa/albums/:slug',
+        path: '/admin/albums/:slug',
         name: 'admin.albums.show',
         component: AlbumsShow,
     },
     {
-        path: '/admin/spa/albums/:slug/edit',
+        path: '/admin/albums/:slug/edit',
         name: 'admin.albums.edit',
         component: AlbumsEdit,
     },
     //Cosplayers
     {
-        path: '/admin/spa/cosplayers',
+        path: '/admin/cosplayers',
         name: 'admin.cosplayers.index',
         component: CosplayersIndex,
     },
     // Users
     {
-        path: '/admin/spa/users',
+        path: '/admin/users',
         name: 'admin.users.index',
         component: UsersIndex,
+    },
+    // Settings
+    {
+        path: '/admin/settings',
+        name: 'admin.settings',
+        component: Settings,
     },
 ];
 
