@@ -1,17 +1,16 @@
 <template>
-
     <div class="column is-one-fifth" id="admin-menu">
-        <div >
+        <div>
             <aside class="menu">
                 <ul class="menu-list has-margin-bottom-md">
                     <li class="menu-label">
                         Administration
                     </li>
 
-                    <router-link :to="{ name: 'home' }">
+                    <router-link :to="{ name: 'admin.dashboard' }">
                         <span class="icon">
-                                <i class="fas fa-home"></i>
-                            </span>
+                            <i class="fas fa-home"></i>
+                        </span>
                         Dashboard
                     </router-link>
 
@@ -103,9 +102,9 @@
                     </li>
                     <li>
                         <a href="#">
-                        <span class="icon">
-                            <i class="fas fa-tachometer-alt"></i>
-                        </span>
+                            <span class="icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </span>
                             Statistics
                         </a>
                     </li>
@@ -144,10 +143,9 @@
 </template>
 
 <script lang="ts">
-    import Component from 'vue-class-component';
-    import VueBuefy from '../../buefy';
+import Component from 'vue-class-component';
+import VueBuefy from '../../buefy';
 
-    @Component
-    export default class Sidebar extends VueBuefy {
-    }
+@Component
+export default class Sidebar extends VueBuefy {}
 </script>

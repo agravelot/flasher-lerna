@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import Home from './admin/views/Home.vue';
+import Dashboard from './admin/views/Dashboard.vue';
 import UsersIndex from './admin/views/UsersIndex.vue';
 import AlbumsIndex from '../../modules/Album/Resources/assets/js/components/admin/AlbumsIndex.vue';
 import AlbumsShow from '../../modules/Album/Resources/assets/js/components/front/AlbumsShowGallery.vue';
@@ -13,8 +13,8 @@ Vue.use(VueRouter);
 const routes: Array<any> = [
     {
         path: '/admin/spa/',
-        name: 'home',
-        component: Home,
+        name: 'admin.dashboard',
+        component: Dashboard,
     },
     {
         path: '/admin/spa/albums',
