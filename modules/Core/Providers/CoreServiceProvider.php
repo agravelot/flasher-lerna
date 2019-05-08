@@ -9,7 +9,6 @@
 
 namespace Modules\Core\Providers;
 
-use Arcanedev\LaravelSettings\SettingsManager;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 

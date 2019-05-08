@@ -9,10 +9,10 @@
 
 namespace Modules\Core\Http\Controllers;
 
-use Arcanedev\LaravelSettings\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Arcanedev\LaravelSettings\Models\Setting;
 
 class AdminSettingsController extends Controller
 {
@@ -31,7 +31,7 @@ class AdminSettingsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param Request $request
      *
      * @return Response
      */
@@ -43,7 +43,7 @@ class AdminSettingsController extends Controller
     /**
      * Show the specified resource.
      *
-     * @param  Setting  $setting
+     * @param Setting $setting
      *
      * @return Setting
      */
@@ -55,8 +55,8 @@ class AdminSettingsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
-     * @param  Setting  $setting
+     * @param Request $request
+     * @param Setting $setting
      *
      * @return Response
      */
@@ -68,10 +68,11 @@ class AdminSettingsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Setting  $setting
+     * @param Setting $setting
+     *
+     * @throws \Exception
      *
      * @return Response
-     * @throws \Exception
      */
     public function destroy(Setting $setting)
     {

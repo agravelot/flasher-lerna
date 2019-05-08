@@ -7,7 +7,7 @@ import AlbumsIndex from '../../modules/Album/Resources/assets/js/components/admi
 import AlbumsShow from '../../modules/Album/Resources/assets/js/components/front/AlbumsShowGallery.vue';
 import AlbumsCreate from '../../modules/Album/Resources/assets/js/components/admin/AlbumsCreate.vue';
 import AlbumsEdit from '../../modules/Album/Resources/assets/js/components/admin/AlbumsEdit.vue';
-import CosplayersIndex from "../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersIndex.vue";
+import CosplayersIndex from '../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersIndex.vue';
 
 Vue.use(VueRouter);
 
