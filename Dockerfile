@@ -87,7 +87,7 @@ COPY --chown=1000:1000 docker/php-fpm/start.sh /start.sh
 
 USER 1000:1000
 
-CMD chown 1000:1000 -R public/vendor && /start.sh
+CMD /start.sh
 
 FROM php_base AS php_app
 
