@@ -8,7 +8,9 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('pageTitle') - {{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('pageTitle') - {{ settings()->has('app_name') ? settings()->get('app_name'): config('app.name', 'Flasher') }}</title>
+
+    <meta name="description" content="@yield('seo_description', settings()->get('seo_description'))" />
 
     <!-- Styles -->
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
