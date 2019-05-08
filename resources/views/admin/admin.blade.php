@@ -7,16 +7,10 @@
         <div class="columns">
             <sidebar></sidebar>
             <div class="column">
+                @include('layouts.partials._messages')
                 <router-view></router-view>
+                @yield('admin-content')
             </div>
-        </div>
-    </div>
-
-    <div class="columns">
-        @include('admin.partials._menu')
-        <div class="column" id="main-admin">
-            @include('layouts.partials._messages')
-            @yield('admin-content')
         </div>
     </div>
 @endsection
