@@ -5,7 +5,7 @@
  */
 
 import Vue from 'vue';
-import App from './admin/views/App.vue';
+import Sidebar from './admin/views/Sidebar.vue';
 import AlbumsMasonry from '../../modules/Album/Resources/assets/js/components/front/AlbumsMasonry.vue';
 import AlbumsShowGallery from '../../modules/Album/Resources/assets/js/components/front/AlbumsShowGallery.vue';
 import router from './router';
@@ -27,6 +27,6 @@ import './vue-masonry';
 
 const app = new Vue({
     el: '#app',
-    components: { App, AlbumsMasonry, AlbumsShowGallery },
+    components: { Sidebar, AlbumsMasonry, AlbumsShowGallery },
     router,
 });
