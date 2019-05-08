@@ -13,28 +13,28 @@ Vue.use(VueRouter);
 
 const routes: Array<any> = [
     {
-        path: '/admin/spa/',
+        path: '/admin',
         name: 'admin.dashboard',
         component: Dashboard,
     },
     // Albums
     {
-        path: '/admin/spa/albums',
+        path: '/admin/albums',
         name: 'admin.albums.index',
         component: AlbumsIndex,
     },
     {
-        path: '/admin/spa/create',
+        path: '/admin/spa/albums/create',
         name: 'admin.albums.create',
         component: AlbumsCreate,
     },
     {
-        path: '/admin/spa/:slug',
+        path: '/admin/spa/albums/:slug',
         name: 'admin.albums.show',
         component: AlbumsShow,
     },
     {
-        path: '/admin/spa/:slug/edit',
+        path: '/admin/spa/albums/:slug/edit',
         name: 'admin.albums.edit',
         component: AlbumsEdit,
     },
