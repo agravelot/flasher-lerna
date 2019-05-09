@@ -25,7 +25,7 @@ class CosplayerController extends Controller
      */
     public function index()
     {
-        return CosplayerResource::collection(Cosplayer::all());
+        return CosplayerResource::collection(Cosplayer::paginate());
     }
 
     /**

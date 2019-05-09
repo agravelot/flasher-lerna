@@ -34,29 +34,11 @@
                     icon-pack="fas"
                     checkable
                     :checked-rows.sync="checkedRows">
-                <template slot-scope="album">
-                    <b-table-column field="title" label="Title" sortable>
-                        <router-link :to="{name: 'admin.cosplayers.edit', params: { slug: album.row.slug }}">
-                            {{ album.row.title }}
+                <template slot-scope="cosplayer">
+                    <b-table-column field="name" label="Name" sortable>
+                        <router-link :to="{name: 'admin.cosplayers.edit', params: { slug: cosplayer.row.slug }}">
+                            {{ cosplayer.row.name }}
                         </router-link>
-                    </b-table-column>
-
-                    <b-table-column field="media_count" label="Nb. photos" centered numeric>
-                        {{ album.row.media_count }}
-                    </b-table-column>
-
-                    <b-table-column field="status" label="Status" centered>
-                        <span v-if="album.row.private === 1"
-                              class="tag is-danger"
-                              v-bind:title="'This album is private'">
-                            {{ 'Private' }}
-                        </span>
-                        <span v-else-if="typeof album.row.published_at === 'string'"
-                              class="tag is-success"
-                              v-bind:title="new Date(album.row.published_at).toLocaleDateString()">
-                            {{ 'Published' }}
-                        </span>
-                        <span v-else class="tag is-dark" v-bind:title="'This album is a draft'">{{ 'Draft' }}</span>
                     </b-table-column>
                 </template>
 
@@ -202,18 +184,18 @@
         }
 
         /**
-         * Delete album from slug
+         * Delete cosplayer from slug
          */
         deleteSelectedCosplayers(): void {
-            this.checkedRows.forEach(album => {
+            this.checkedRows.forEach(cosplayer => {
                 Vue.axios
-                    .delete(`/api/admin/cosplayers/${album.slug}`)
+                    .delete(`/api/admin/cosplayers/${cosplayer.slug}`)
                     .then(res => {
                         this.showSuccess('Cosplayers deleted');
                         this.fetchCosplayers();
                     })
                     .catch(err => {
-                        this.showError(`Unable to delete album <br> <small>${err.message}</small>`);
+                        this.showError(`Unable to delete cosplayer <br> <small>${err.message}</small>`);
                         throw err;
                     });
             });
