@@ -10,34 +10,21 @@
 namespace Modules\Core\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Arcanedev\LaravelSettings\Models\Setting;
+use Modules\Core\Entities\Setting;
+use Modules\Core\Transformers\SettingResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminSettingsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return AnonymousResourceCollection
      */
     public function index()
     {
-        $settings = settings()->all();
-
-        return response()->json($settings);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        return settings()->set([$request->get('key') => $request->get('value')])->save();
+        return SettingResource::collection(Setting::all());
     }
 
     /**
@@ -45,11 +32,11 @@ class AdminSettingsController extends Controller
      *
      * @param Setting $setting
      *
-     * @return Setting
+     * @return SettingResource
      */
     public function show(Setting $setting)
     {
-        return $setting;
+        return new SettingResource($setting);
     }
 
     /**
@@ -58,26 +45,12 @@ class AdminSettingsController extends Controller
      * @param Request $request
      * @param Setting $setting
      *
-     * @return Response
+     * @return SettingResource
      */
-    public function update(Request $request, Setting $setting)
+    public function update(Setting $setting, Request $request)
     {
-        return settings()->set([$setting->key => $request->get('value')])->save();
-    }
+        $setting->update($request->only('value'));
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Setting $setting
-     *
-     * @throws \Exception
-     *
-     * @return Response
-     */
-    public function destroy(Setting $setting)
-    {
-        $setting->delete();
-
-        return response()->json(null, 204);
+        return new SettingResource($setting);
     }
 }
