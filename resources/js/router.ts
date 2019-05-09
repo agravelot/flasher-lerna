@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 
 import Dashboard from './admin/views/Dashboard.vue';
 import Settings from '../../modules/Core/Resources/assets/js/Settings.vue';
-import UsersIndex from './admin/views/UsersIndex.vue';
+import UsersIndex from '../../modules/User/Resources/assets/js/UsersIndex.vue';
 import AlbumsIndex from '../../modules/Album/Resources/assets/js/components/admin/AlbumsIndex.vue';
 import AlbumsShow from '../../modules/Album/Resources/assets/js/components/front/AlbumsShowGallery.vue';
 import AlbumsCreate from '../../modules/Album/Resources/assets/js/components/admin/AlbumsCreate.vue';
