@@ -44,4 +44,23 @@ class IndexCosplayerTest extends TestCase
             ]);
         });
     }
+
+    public function testUserCannotIndexCosplayers()
+    {
+        $this->actingAsUser();
+        $cosplayers = factory(Cosplayer::class, 8)->create();
+
+        $response = $this->getCosplayers();
+
+        $response->assertStatus(403);
+    }
+
+    public function testGuestCannotIndexCosplayers()
+    {
+        $cosplayers = factory(Cosplayer::class, 8)->create();
+
+        $response = $this->getCosplayers();
+
+        $response->assertStatus(401);
+    }
 }

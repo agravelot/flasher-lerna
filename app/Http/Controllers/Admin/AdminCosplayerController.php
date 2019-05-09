@@ -67,7 +67,7 @@ class AdminCosplayerController extends Controller
         $cosplayer = Cosplayer::create($request->validated());
 
         if ($request->has('avatar')) {
-            $cosplayer->setAvatar($request->get('avatar'));
+            $cosplayer->avatar = $request->file('avatar');
         }
 
         return redirect(route('admin.cosplayers.index'))
@@ -128,16 +128,10 @@ class AdminCosplayerController extends Controller
         $cosplayer = Cosplayer::findBySlugOrFail($slug);
         $this->authorize('update', $cosplayer);
 
-        $validated = $request->validated();
-        $cosplayer->update($validated);
+        $cosplayer->update($request->validated());
 
-        $key = 'avatar';
-        if (Arr::exists($validated, $key)) {
-            $cosplayer
-                ->addMedia($validated[$key])
-                ->preservingOriginal()
-                ->withResponsiveImages()
-                ->toMediaCollection('avatar');
+        if ($request->has('avatar')) {
+            $cosplayer->avatar = $request->file('avatar');
         }
 
         return redirect(route('admin.cosplayers.index'))

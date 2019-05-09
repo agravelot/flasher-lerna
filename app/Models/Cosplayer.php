@@ -9,41 +9,41 @@
 
 namespace App\Models;
 
-use Eloquent;
-use Illuminate\Support\Str;
-use Spatie\MediaLibrary\File;
-use Illuminate\Support\Carbon;
 use App\Abilities\HasNameAsSlug;
 use App\Abilities\HasSlugRouteKey;
-use Spatie\MediaLibrary\Models\Media;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Cviebrock\EloquentSluggable\Sluggable;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Illuminate\Database\Eloquent\Collection;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use Spatie\Image\Exceptions\InvalidManipulation;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
+use Spatie\Image\Exceptions\InvalidManipulation;
+use Spatie\MediaLibrary\File;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\Models\Media;
 
 /**
  * App\Models\Cosplayer.
  *
- * @property int                   $id
- * @property string                $name
- * @property string                $slug
- * @property string|null           $description
- * @property string|null           $picture
- * @property int|null              $user_id
- * @property Carbon|null           $created_at
- * @property Carbon|null           $updated_at
- * @property Collection|Album[]    $albums
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property string|null $description
+ * @property string|null $picture
+ * @property int|null $user_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Collection|Album[] $albums
  * @property Collection|Category[] $categories
- * @property Collection|Media[]    $media
- * @property User|null             $user
+ * @property Collection|Media[] $media
+ * @property User|null $user
  *
  * @method static Builder|Cosplayer findSimilarSlugs($attribute, $config, $slug)
  * @method static Builder|Cosplayer newModelQuery()
@@ -60,7 +60,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @mixin Eloquent
  *
  * @property Collection|PublicAlbum[] $publicAlbums
- * @property mixed                    $initial
+ * @property mixed $initial
  */
 class Cosplayer extends Model implements HasMedia
 {
@@ -81,6 +81,32 @@ class Cosplayer extends Model implements HasMedia
     public function getInitialAttribute()
     {
         return mb_strtoupper(mb_substr($this->name, 0, 1));
+    }
+
+    public function getAvatarAttribute()
+    {
+        return $this->getFirstMedia('avatar');
+    }
+
+    /**
+     * Add media to 'pictures' collection.
+     *
+     * @param  UploadedFile|null  $media
+     */
+    public function setAvatarAttribute($media)
+    {
+        if (!$media) {
+            return;
+        }
+
+        $uuid = Str::uuid()->toString();
+        $name = "{$this->slug}_{$uuid}.{$media->clientExtension()}";
+
+        $this->addMedia($media)
+            ->usingFileName($name)
+            ->preservingOriginal()
+            ->withResponsiveImages()
+            ->toMediaCollection('avatar');
     }
 
     /**
@@ -124,25 +150,6 @@ class Cosplayer extends Model implements HasMedia
     }
 
     /**
-     * Add media to 'pictures' collection.
-     *
-     * @param string|UploadedFile $media
-     *
-     * @return Media
-     */
-    public function setAvatar($media)
-    {
-        $uuid = Str::uuid()->toString();
-        $name = "{$this->slug}_{$uuid}.{$media->getClientOriginalExtension()}";
-
-        return $this->addMedia($media)
-            ->usingFileName($name)
-            ->preservingOriginal()
-            ->withResponsiveImages()
-            ->toMediaCollection('avatar');
-    }
-
-    /**
      * Defining the media collections.
      */
     public function registerMediaCollections()
@@ -157,7 +164,7 @@ class Cosplayer extends Model implements HasMedia
     /**
      * Register the media conversions.
      *
-     * @param Media|null $media
+     * @param  Media|null  $media
      *
      * @throws InvalidManipulation
      */

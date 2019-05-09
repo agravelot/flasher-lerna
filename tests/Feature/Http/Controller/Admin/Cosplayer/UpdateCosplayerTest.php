@@ -9,12 +9,12 @@
 
 namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Cosplayer;
 use App\Http\Middleware\VerifyCsrfToken;
-use Illuminate\Foundation\Testing\TestResponse;
+use App\Models\Cosplayer;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Tests\TestCase;
 
 class UpdateCosplayerTest extends TestCase
 {
@@ -91,25 +91,18 @@ class UpdateCosplayerTest extends TestCase
             ->assertDontSee('Cosplayer successfully updated');
     }
 
-    public function test_admin_can_update_a_categories_with_the_same_name()
+    public function test_admin_can_update_a_cosplayers_with_the_same_name()
     {
         $this->actingAsAdmin();
-        $category = factory(Cosplayer::class)->create();
+        $cosplayer = factory(Cosplayer::class)->create();
 
         $response = $this->updateCosplayer([
-            'name' => $category->name,
+            'name' => $cosplayer->name,
             'description' => 'updated description',
-        ], $category);
+        ], $cosplayer);
 
         $this->assertSame(1, Cosplayer::count());
-        $response->assertStatus(302)
-            ->assertRedirect('/admin/cosplayers');
-        $this->followRedirects($response)
-            ->assertStatus(200)
-            ->assertSee($category->name)
-            ->assertSee('Cosplayer successfully updated')
-            ->assertDontSee('updated description')
-            ->assertDontSee('The name has already been taken.');
+        $this->assertSame('updated description', $cosplayer->fresh()->description);
     }
 
     public function test_user_can_not_update_a_cosplayer()

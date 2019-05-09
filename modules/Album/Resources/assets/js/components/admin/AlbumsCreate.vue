@@ -112,7 +112,6 @@
             this.axios.post(`/api/admin/albums/`, this.album)
                 .then(res => res.data)
                 .then(res => {
-                    console.log(res);
                     this.$toast.open({
                         message: `Album successfully created`,
                         type: 'is-success',

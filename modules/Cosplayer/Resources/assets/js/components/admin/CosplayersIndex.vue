@@ -10,7 +10,7 @@
             </router-link>
 
             <button class="button field is-danger"
-                    @click="confirmDeleteSelectedCosplayers"
+                    @click="confirmDeleteSelectedCosplayers()"
                     :disabled="!checkedRows.length">
                 <b-icon pack="fas" icon="trash-alt"></b-icon>
                 <span>Delete checked</span>

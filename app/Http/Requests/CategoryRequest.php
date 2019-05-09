@@ -20,13 +20,8 @@ class CategoryRequest extends Request
      */
     public function rules()
     {
-        $id = '';
-        if ($this->method() === 'PATCH') {
-            $id = Category::findBySlugOrFail($this->category)->id;
-        }
-
         return [
-            'name' => 'string|required|min:2|max:255|unique:categories,name,'.$id,
+            'name' => 'string|required|min:2|max:255|unique:categories,name,'.$this->id,
             'description' => 'nullable|string|max:65555',
         ];
     }
