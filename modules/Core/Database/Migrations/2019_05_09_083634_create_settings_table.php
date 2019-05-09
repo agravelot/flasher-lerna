@@ -24,17 +24,23 @@ class CreateSettingsTable extends Migration
         Schema::create('settings', function (Blueprint $table) {
             $table->char('name', 100)->primary();
             $table->string('value');
+            $table->enum('type', ['string', 'numeric', 'bool']);
+            $table->string('description');
             $table->timestamps();
         });
 
         DB::table('settings')->insert([
            'name' => 'app_name',
            'value' => 'Flasher',
+           'type' => 'string',
+           'description' => 'Name of your website',
         ]);
 
         DB::table('settings')->insert([
             'name' => 'seo_description',
             'value' => '',
+            'type' => 'string',
+            'description' => '',
         ]);
     }
 
