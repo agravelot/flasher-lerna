@@ -7,12 +7,12 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\User\Database\Seeders;
+namespace Modules\Dashboard\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class UserDatabaseSeeder extends Seeder
+class DashboardDatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.

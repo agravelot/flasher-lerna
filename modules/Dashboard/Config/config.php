@@ -6,3 +6,7 @@
  * Proprietary and confidential
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
+
+return [
+    'name' => 'Dashboard',
+];

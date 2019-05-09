@@ -1,11 +1,18 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 namespace Modules\Cosplayer\Tests;
 
+use Tests\TestCase;
 use App\Models\Cosplayer;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\TestResponse;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class IndexCosplayerTest extends TestCase
@@ -23,9 +30,9 @@ class IndexCosplayerTest extends TestCase
         $this->assertJsonUserFragment($response, $cosplayers);
     }
 
-    private function getCosplayers() : TestResponse
+    private function getCosplayers(): TestResponse
     {
-        return $this->json('get' , '/api/admin/cosplayers');
+        return $this->json('get', '/api/admin/cosplayers');
     }
 
     private function assertJsonUserFragment(TestResponse $response, Collection $cosplayers): void

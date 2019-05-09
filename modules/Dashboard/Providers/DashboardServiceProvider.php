@@ -7,12 +7,12 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\User\Providers;
+namespace Modules\Dashboard\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 
-class UserServiceProvider extends ServiceProvider
+class DashboardServiceProvider extends ServiceProvider
 {
     /**
      * Boot the application events.
@@ -46,10 +46,10 @@ class UserServiceProvider extends ServiceProvider
     protected function registerConfig()
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('user.php'),
+            __DIR__.'/../Config/config.php' => config_path('dashboard.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php', 'user'
+            __DIR__.'/../Config/config.php', 'dashboard'
         );
     }
 
@@ -60,7 +60,7 @@ class UserServiceProvider extends ServiceProvider
      */
     public function registerViews()
     {
-        $viewPath = resource_path('views/modules/user');
+        $viewPath = resource_path('views/modules/dashboard');
 
         $sourcePath = __DIR__.'/../Resources/views';
 
@@ -70,7 +70,7 @@ class UserServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
             return __DIR__.'/../Resources/views';
-        }, \Config::get('view.paths')), [$sourcePath]), 'user');
+        }, \Config::get('view.paths')), [$sourcePath]), 'dashboard');
     }
 
     /**
@@ -80,12 +80,12 @@ class UserServiceProvider extends ServiceProvider
      */
     public function registerTranslations()
     {
-        $langPath = resource_path('lang/modules/user');
+        $langPath = resource_path('lang/modules/dashboard');
 
         if (is_dir($langPath)) {
-            $this->loadTranslationsFrom($langPath, 'user');
+            $this->loadTranslationsFrom($langPath, 'dashboard');
         } else {
-            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'user');
+            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'dashboard');
         }
     }
 

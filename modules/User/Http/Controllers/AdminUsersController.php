@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 namespace Modules\User\Http\Controllers;
 
 use App\Models\User;
@@ -22,17 +29,20 @@ class AdminUsersController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     *
      * @param Request $request
+     *
      * @return Response
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
      * Show the specified resource.
+     *
      * @param int $id
+     *
      * @return Response
      */
     public function show($id)
@@ -42,22 +52,24 @@ class AdminUsersController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
      * @param Request $request
-     * @param int $id
+     * @param int     $id
+     *
      * @return Response
      */
     public function update(Request $request, $id)
     {
-        //
     }
 
     /**
      * Remove the specified resource from storage.
+     *
      * @param int $id
+     *
      * @return Response
      */
     public function destroy($id)
     {
-        //
     }
 }

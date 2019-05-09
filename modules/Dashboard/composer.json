@@ -1,0 +1,25 @@
+{
+    "name": "nevax/dashboard",
+    "description": "",
+    "authors": [
+        {
+            "name": "Antoine GRAVELOT",
+            "email": "antoine.gravelot@hotmail.fr"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Dashboard\\Providers\\DashboardServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Dashboard\\": ""
+        }
+    }
+}

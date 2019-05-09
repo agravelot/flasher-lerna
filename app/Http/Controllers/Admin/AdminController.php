@@ -30,13 +30,6 @@ class AdminController extends Controller
     public function __invoke()
     {
         $this->authorize('dashboard');
-
-        return view('admin.dashboard.dashboard', [
-            'userCount' => User::count(),
-            'albumCount' => Album::count(),
-            'cosplayerCount' => Cosplayer::count(),
-            'contactCount' => Contact::count(),
-            'activities' => Activity::with(['causer', 'subject'])->latest()->limit(10)->get(),
-        ]);
+        return view('admin.admin');
     }
 }
