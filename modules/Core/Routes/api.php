@@ -10,7 +10,7 @@
 Route::middleware(['auth:api', 'verified', 'admin'])->group(function () {
     Route::name('api.admin.')->group(function () {
         Route::prefix('admin')->group(function () {
-            Route::apiResource('settings', 'AdminSettingsController');
+            Route::apiResource('settings', 'AdminSettingsController')->only(['index', 'show', 'update']);
         });
     });
 });
