@@ -105,7 +105,7 @@
                     </li>
 
                     <li>
-                        <router-link :to="{ name: 'admin.settings' }">
+                        <router-link :to="{ name: 'admin.settings.index' }">
                             <span class="icon">
                                 <i class="fas fa-cog"></i>
                             </span>
