@@ -62,5 +62,5 @@ const routes: Array<any> = [
 export default new VueRouter({
     mode: 'history',
     routes,
-    linkActiveClass: 'is-active'
+    linkActiveClass: 'is-active',
 });

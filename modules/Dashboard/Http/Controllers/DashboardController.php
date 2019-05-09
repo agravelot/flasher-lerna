@@ -9,13 +9,13 @@
 
 namespace Modules\Dashboard\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Contact;
 use App\Models\Cosplayer;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Modules\Album\Entities\Album;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use Modules\Album\Entities\Album;
 use Spatie\Activitylog\Models\Activity;
 
 class DashboardController extends Controller
