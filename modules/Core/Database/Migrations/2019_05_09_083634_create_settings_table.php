@@ -20,6 +20,7 @@ class CreateSettingsTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('settings');
         Schema::create('settings', function (Blueprint $table) {
             $table->char('name', 100)->primary();
             $table->string('value');
