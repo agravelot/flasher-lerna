@@ -10,6 +10,8 @@
 namespace Modules\Core\Tests\Features\AdminSettings;
 
 use Tests\TestCase;
+use Modules\Core\Entities\Setting;
+use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class IndexAdminSettings extends TestCase
@@ -19,29 +21,34 @@ class IndexAdminSettings extends TestCase
     public function testAdminCanSeeSettings()
     {
         $this->actingAsAdmin();
-        settings()->set(['app_name' => 'Flasher'])->save();
+        Setting::create(['name' => 'app_name', 'value' => 'Flasher']);
 
-        $response = $this->getJson('/api/admin/settings');
+        $response = $this->getSettings();
 
         $response->assertStatus(200)
-            ->assertJson(['app_name' => 'Flasher']);
+            ->assertJson(['data' => ['app_name' => 'Flasher']]);
+    }
+
+    private function getSettings(): TestResponse
+    {
+        return $this->getJson('/api/admin/settings');
     }
 
     public function testUserCannotSeeSettings()
     {
         $this->actingAsUser();
-        settings()->set(['app_name' => 'Flasher'])->save();
+        Setting::create(['name' => 'app_name', 'value' => 'Flasher']);
 
-        $response = $this->getJson('/api/admin/settings');
+        $response = $this->getSettings();
 
         $response->assertStatus(403);
     }
 
     public function testGuestCannotSeeSettings()
     {
-        settings()->set(['app_name' => 'Flasher'])->save();
+        Setting::create(['name' => 'app_name', 'value' => 'Flasher']);
 
-        $response = $this->getJson('/api/admin/settings');
+        $response = $this->getSettings();
 
         $response->assertStatus(401);
     }
