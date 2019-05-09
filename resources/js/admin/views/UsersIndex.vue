@@ -19,12 +19,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import Component from 'vue-class-component';
 import axios from 'axios';
+import VueBuefy from '../../buefy';
 
 @Component
-export default class UserIndex extends Vue {
+export default class UserIndex extends VueBuefy {
     loading: boolean = false;
     users: Array<object> = [];
     error: any = null;

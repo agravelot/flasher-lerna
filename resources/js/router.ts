@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import Dashboard from './admin/views/Dashboard.vue';
-import SettingsIndex from '../../modules/Core/Resources/assets/js/SettingsIndex.vue';
+import Settings from '../../modules/Core/Resources/assets/js/Settings.vue';
 import UsersIndex from './admin/views/UsersIndex.vue';
 import AlbumsIndex from '../../modules/Album/Resources/assets/js/components/admin/AlbumsIndex.vue';
 import AlbumsShow from '../../modules/Album/Resources/assets/js/components/front/AlbumsShowGallery.vue';
@@ -55,7 +55,7 @@ const routes: Array<any> = [
     {
         path: '/admin/settings',
         name: 'admin.settings.index',
-        component: SettingsIndex,
+        component: Settings,
     },
 ];
 

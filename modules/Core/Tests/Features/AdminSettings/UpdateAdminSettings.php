@@ -21,16 +21,19 @@ class UpdateAdminSettings extends TestCase
     public function testAdminCanUpdateSetting()
     {
         $this->actingAsAdmin();
-        $setting = Setting::create(['name' => 'test', 'value' => 'testValue']);
+        $setting = Setting::create(['name' => 'test', 'value' => 'Flasher', 'type' => 'string']);
 
         $setting->value = 'newValue';
-        dump($setting->name, $setting->value);
         $response = $this->updateSetting($setting);
 
         $response->assertStatus(200)
-            ->assertJson(['data' => ['test' => 'newValue']]);
-        $this->assertCount(1, Setting::all());
-        $this->assertSame('newValue', Setting::find(0)->value);
+            ->assertJson([
+                'data' => [
+                    'name' => 'test', 'value' => 'newValue', 'type' => 'string', 'description' => null,
+                ],
+            ]);
+
+        $this->assertSame('newValue', Setting::find('test')->value);
     }
 
     private function updateSetting(Setting $setting): TestResponse
@@ -41,7 +44,7 @@ class UpdateAdminSettings extends TestCase
     public function testUserCannotUpdateSettings()
     {
         $this->actingAsUser();
-        $setting = Setting::create(['name' => 'test', 'value' => 'testValue']);
+        $setting = Setting::create(['name' => 'test', 'value' => 'Flasher', 'type' => 'string']);
         $setting->value = 'newValue';
 
         $response = $this->updateSetting($setting);
@@ -53,7 +56,7 @@ class UpdateAdminSettings extends TestCase
 
     public function testGuestCannotUpdateSettings()
     {
-        $setting = Setting::create(['name' => 'test', 'value' => 'testValue']);
+        $setting = Setting::create(['name' => 'test', 'value' => 'Flasher', 'type' => 'string']);
         $setting->value = 'newValue';
 
         $response = $this->updateSetting($setting);

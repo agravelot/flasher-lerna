@@ -24,8 +24,9 @@ class CreateSettingsTable extends Migration
         Schema::create('settings', function (Blueprint $table) {
             $table->char('name', 100)->primary();
             $table->string('value');
-            $table->enum('type', ['string', 'numeric', 'bool']);
-            $table->string('description');
+            $table->enum('type', ['string', 'numeric', 'bool', 'json']);
+            $table->string('title');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
 
@@ -33,6 +34,7 @@ class CreateSettingsTable extends Migration
            'name' => 'app_name',
            'value' => 'Flasher',
            'type' => 'string',
+           'title' => 'Name of your website',
            'description' => 'Name of your website',
         ]);
 
@@ -40,6 +42,7 @@ class CreateSettingsTable extends Migration
             'name' => 'seo_description',
             'value' => '',
             'type' => 'string',
+            'title' => 'SEO description',
             'description' => '',
         ]);
     }

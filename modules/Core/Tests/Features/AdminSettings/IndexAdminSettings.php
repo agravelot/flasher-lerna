@@ -21,12 +21,12 @@ class IndexAdminSettings extends TestCase
     public function testAdminCanSeeSettings()
     {
         $this->actingAsAdmin();
-        Setting::create(['name' => 'app_name', 'value' => 'Flasher']);
+        Setting::create(['name' => 'test', 'value' => 'Flasher', 'type' => 'string']);
 
         $response = $this->getSettings();
 
         $response->assertStatus(200)
-            ->assertJson(['data' => ['app_name' => 'Flasher']]);
+            ->assertJsonFragment(['name' => 'test', 'value' => 'Flasher', 'type' => 'string', 'description' => null]);
     }
 
     private function getSettings(): TestResponse
@@ -37,7 +37,7 @@ class IndexAdminSettings extends TestCase
     public function testUserCannotSeeSettings()
     {
         $this->actingAsUser();
-        Setting::create(['name' => 'app_name', 'value' => 'Flasher']);
+        Setting::create(['name' => 'test', 'value' => 'Flasher', 'type' => 'string']);
 
         $response = $this->getSettings();
 
@@ -46,7 +46,7 @@ class IndexAdminSettings extends TestCase
 
     public function testGuestCannotSeeSettings()
     {
-        Setting::create(['name' => 'app_name', 'value' => 'Flasher']);
+        Setting::create(['name' => 'test', 'value' => 'Flasher', 'type' => 'string']);
 
         $response = $this->getSettings();
 
