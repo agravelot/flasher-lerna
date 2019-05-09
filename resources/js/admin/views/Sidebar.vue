@@ -15,15 +15,6 @@
                     </router-link>
 
                     <li>
-                        <a href="/admin">
-                            <span class="icon">
-                                <i class="fas fa-home"></i>
-                            </span>
-                            Dashboard (old)
-                        </a>
-                    </li>
-
-                    <li>
                         <router-link :to="{ name: 'admin.albums.index' }">
                             <span class="icon">
                                 <i class="fas fa-images"></i>
