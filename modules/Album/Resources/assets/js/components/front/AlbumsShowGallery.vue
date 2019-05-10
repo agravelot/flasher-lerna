@@ -18,9 +18,14 @@
             </div>
         </div>
 
-        <div v-if="album.body" class="content article-body">
-            <p class="has-text-justified" v-html="album.body"></p>
+        <div class="card">
+            <div class="card-content">
+                <div v-if="album.body" class="content article-body">
+                    <p class="has-text-justified" v-html="album.body"></p>
+                </div>
+            </div>
         </div>
+
         <div v-if="album.categories" class="tags">
                 <span v-for="category in album.categories" class="tag">
                     <a :href="category.links.related">{{ category.name }}</a>
@@ -40,27 +45,30 @@
             </a>
         </masonry>
 
-        <div v-if="album.cosplayers">
-            <h2 class="title is-2">Cosplayers</h2>
+        <div class="card">
+            <div v-if="album.cosplayers" class="card-content">
+                <h2 class="title is-2">Cosplayers</h2>
 
-            <div class="columns is-multiline is-mobile">
-                <div v-for="cosplayer in album.cosplayers" class="column is-1-desktop is-2-tablet is-3-mobile">
-                    <figure v-if="cosplayer.thumb" class="is-centered image is-64x64">
-                        <img class="is-rounded" :src="cosplayer.thumb">
-                    </figure>
-                    <figure v-else class="is-centered avatar-circle"
-                            :style="{ 'background-color': stringToColour(cosplayer.name) }">
+                <div class="columns is-multiline is-mobile">
+                    <div v-for="cosplayer in album.cosplayers" class="column is-1-desktop is-2-tablet is-3-mobile">
+                        <figure v-if="cosplayer.thumb" class="is-centered image is-64x64">
+                            <img class="is-rounded" :src="cosplayer.thumb">
+                        </figure>
+                        <figure v-else class="is-centered avatar-circle"
+                                :style="{ 'background-color': stringToColour(cosplayer.name) }">
                             <span class="initials">
                                 {{ cosplayer.name.match(/\b\w/g).join('').substring(0, 2).toUpperCase() }}
                             </span>
-                    </figure>
-                    <a :href="cosplayer.links.related">
-                        <p class="has-text-centered has-margin-top-sm">
-                            {{ cosplayer.name }}
-                        </p>
-                    </a>
+                        </figure>
+                        <a :href="cosplayer.links.related">
+                            <p class="has-text-centered has-margin-top-sm">
+                                {{ cosplayer.name }}
+                            </p>
+                        </a>
+                    </div>
                 </div>
             </div>
+
 
             <div v-if="openedPicture" class="modal is-active modal-fx-fadeInScale">
                 <div class="modal-background" @click="closePicture()"></div>

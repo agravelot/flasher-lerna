@@ -1,21 +1,29 @@
 <template>
-    <section>
-        <h1 class="title is-1">Settings</h1>
-        <div v-for="setting in settings">
-            <b-field :label="setting.title">
-                <b-numberinput v-if="setting.type === 'numeric'" v-model="setting.value"></b-numberinput>
-                <b-checkbox v-else-if="setting.type === 'bool'"
-                            true-value="1"
-                            false-value="0"
-                            v-model.numeric="setting.value">
-                    {{ setting.desciption }}
-                </b-checkbox>
-                <b-input v-else v-model="setting.value"></b-input>
-                <p class="control">
-                    <button class="button is-primary" @click="sendSetting(setting)">Send</button>
-                </p>
-            </b-field>
+    <section class="card">
+        <div class="card-header">
+            <div class="card-header-title">
+                <h1>Settings</h1>
+            </div>
         </div>
+       <div class="card-content">
+           <div v-for="setting in settings">
+               <b-field :label="setting.title">
+                   <b-numberinput v-if="setting.type === 'numeric'" v-model="setting.value"></b-numberinput>
+                   <b-checkbox v-else-if="setting.type === 'bool'"
+                               true-value="1"
+                               false-value="0"
+                               v-model.numeric="setting.value">
+                       {{ setting.desciption }}
+                   </b-checkbox>
+                   <quill-editor v-else-if="setting.type === 'textarea'" v-model="setting.value" ref="myQuillEditor" :options="editorOption"></quill-editor>
+                   <b-input v-else v-model="setting.value" expanded></b-input>
+
+               </b-field>
+               <div class="control">
+                   <button class="button is-primary" @click="sendSetting(setting)">Update</button>
+               </div>
+           </div>
+       </div>
     </section>
 </template>
 
@@ -23,13 +31,22 @@
     import Vue from 'vue';
     import Component from 'vue-class-component';
     import VueBuefy from "../../../../../resources/js/buefy";
+    import 'quill/dist/quill.core.css'
+    import 'quill/dist/quill.snow.css'
+    import 'quill/dist/quill.bubble.css'
+    import {quillEditor} from 'vue-quill-editor'
 
     class Setting {
         public name: string;
         public value: string;
     }
 
-    @Component
+    @Component({
+        name: "Settings",
+        components: {
+            quillEditor,
+        },
+    })
     export default class Settings extends VueBuefy {
 
         private loading: boolean = false;

@@ -24,7 +24,7 @@ class CreateSettingsTable extends Migration
         Schema::create('settings', function (Blueprint $table) {
             $table->char('name', 100)->primary();
             $table->string('value');
-            $table->enum('type', ['string', 'numeric', 'bool', 'json']);
+            $table->enum('type', ['string', 'numeric', 'bool', 'json', 'textarea']);
             $table->string('title');
             $table->string('description')->nullable();
             $table->timestamps();
@@ -44,6 +44,30 @@ class CreateSettingsTable extends Migration
             'type' => 'string',
             'title' => 'SEO description',
             'description' => '',
+        ]);
+
+        DB::table('settings')->insert([
+            'name' => 'homepage_title',
+            'value' => 'My albums',
+            'type' => 'string',
+            'title' => 'Homepage title',
+            'description' => 'The title of the home page that will be displayed on search engines',
+        ]);
+
+        DB::table('settings')->insert([
+            'name' => 'homepage_subtitle',
+            'value' => 'Discover my albums',
+            'type' => 'string',
+            'title' => 'Homepage subtitle',
+            'description' => 'Subtitle of the homepage',
+        ]);
+
+        DB::table('settings')->insert([
+            'name' => 'homepage_description',
+            'value' => '',
+            'type' => 'textarea',
+            'title' => 'Homepage description',
+            'description' => 'Home page presentation text',
         ]);
     }
 

@@ -3,7 +3,7 @@
         <div class="navbar-brand">
             <a href="{{ url('/') }}" class="navbar-item">{{ settings()->has('app_name') ? settings()->get('app_name'): config('app.name', 'Flasher') }}</a>
 
-            @include('layouts.partials._navbar_socials', ['desktop' => false])
+            @include('layouts.partials._navbar_socials')
 
             <a role="button" class="navbar-burger burger" aria-label="menu" data-target="navMenu" aria-expanded="false">
                 <span></span>
@@ -14,20 +14,15 @@
 
         <div class="navbar-menu" id="navMenu">
             <div class="navbar-start">
-                {{-- <a class="navbar-item {{ Request::is('posts*') ? 'is-active' : '' }}" href="{{ route('posts.index') }}">Posts</a>--}}
-                {{--<a class="navbar-item {{ Request::is('albums*') ? 'is-active' : '' }}"--}}
-                   {{--href="{{ route('albums.index') }}">{{ __('Albums') }}</a>--}}
-                {{--<a class="navbar-item {{ Request::is('categories*') ? 'is-active' : '' }}"--}}
-                   {{--href="{{ route('categories.index') }}">{{ __('Categories') }}</a>--}}
+            </div>
+
+            <div class="navbar-end">
+                <a class="navbar-item {{ Request::is('/') ? 'is-active' : '' }}"
+                   href="{{ url('/') }}">{{ __('Home') }}</a>
                 @include('layouts.partials._navbar_categories')
                 <a class="navbar-item {{ Request::is('goldenbook*') ? 'is-active' : '' }}"
                    href="{{ route('goldenbook.index') }}">{{ __('Golden book') }}</a>
-            </div>
-
-            @include('layouts.partials._navbar_socials', ['desktop' => true])
-
-            <div class="navbar-end">
-                <a class="navbar-item {{ Request::is('about') ? 'is-active' : '' }}" href="#">{{ __('About') }}</a>
+{{--                <a class="navbar-item {{ Request::is('about') ? 'is-active' : '' }}" href="#">{{ __('About') }}</a>--}}
                 <a class="navbar-item {{ Request::is('contact*') ? 'is-active' : '' }}"
                    href="{{ route('contact.index') }}">{{ __('Contact') }}</a>
                 @auth()
