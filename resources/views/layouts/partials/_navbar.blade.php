@@ -1,4 +1,4 @@
-<nav class="navbar has-shadow" role="navigation" aria-label="dropdown navigation">
+<nav class="navbar" role="navigation" aria-label="dropdown navigation">
     <div class="container">
         <div class="navbar-brand">
             <a href="{{ url('/') }}" class="navbar-item">{{ settings()->has('app_name') ? settings()->get('app_name'): config('app.name', 'Flasher') }}</a>
