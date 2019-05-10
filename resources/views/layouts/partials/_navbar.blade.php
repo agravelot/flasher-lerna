@@ -32,7 +32,7 @@
                    href="{{ route('contact.index') }}">{{ __('Contact') }}</a>
                 @auth()
                     <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link" href="#">
+                        <a class="navbar-link" href="{{ route('admin.dashboard') }}">
                             <span class="icon">
                                 <i class="fas fa-user"></i>
                             </span>
