@@ -13,14 +13,14 @@ use Modules\Core\Entities\Setting;
 
 class SettingsManager
 {
-    public function has(string  $name): bool
+    public function has(string $name): bool
     {
         return Setting::find($name) ? true : false;
     }
 
-    public function get(string  $name): string
+    public function get(string $name, $default = null)
     {
-        return Setting::findOrFail($name)->value;
+        return Setting::findOrFail($name)->value ?: $default;
     }
 
     public function set(array $setting): Setting

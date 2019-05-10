@@ -1,7 +1,7 @@
 <nav class="navbar" role="navigation" aria-label="dropdown navigation">
     <div class="container">
         <div class="navbar-brand">
-            <a href="{{ url('/') }}" class="navbar-item">{{ settings()->has('app_name') ? settings()->get('app_name'): config('app.name', 'Flasher') }}</a>
+            <a href="{{ url('/') }}" class="navbar-item">{{ settings()->get('app_name', config('app.name', 'Flasher')) }}</a>
 
             @include('layouts.partials._navbar_socials')
 
@@ -13,9 +13,6 @@
         </div>
 
         <div class="navbar-menu" id="navMenu">
-            <div class="navbar-start">
-            </div>
-
             <div class="navbar-end">
                 <a class="navbar-item {{ Request::is('/') ? 'is-active' : '' }}"
                    href="{{ url('/') }}">{{ __('Home') }}</a>
