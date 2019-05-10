@@ -14,24 +14,28 @@
         </section>
         <section class="info-tiles">
             <div class="tile is-ancestor has-text-centered">
-                <a class="tile is-parent">
+
+                <router-link :to="{ name: 'admin.albums.index' }" class="tile is-parent">
                     <article class="tile is-child box">
                         <p class="title">{{ usersCount }}</p>
                         <p class="subtitle">Users</p>
                     </article>
-                </a>
-                <a class="tile is-parent">
+                </router-link>
+
+                <router-link :to="{ name: 'admin.albums.index' }" class="tile is-parent">
                     <article class="tile is-child box">
                         <p class="title">{{ albumsCount }}</p>
                         <p class="subtitle">Albums</p>
                     </article>
-                </a>
-                <a class="tile is-parent">
+                </router-link>
+
+                <router-link :to="{ name: 'admin.cosplayers.index' }" class="tile is-parent">
                     <article class="tile is-child box">
                         <p class="title">{{ cosplayersCount }}</p>
                         <p class="subtitle">Cosplayers</p>
                     </article>
-                </a>
+                </router-link>
+
                 <a class="tile is-parent">
                     <article class="tile is-child box">
                         <p class="title">{{ contactsCount }}</p>
@@ -66,7 +70,7 @@
             this.loading = true;
 
             Vue.axios.get('/api/admin/dashboard')
-            .then(res => res.data)
+                .then(res => res.data)
                 .then(res => {
                     this.user = res.user;
                     this.cosplayersCount = res.cosplayersCount;
