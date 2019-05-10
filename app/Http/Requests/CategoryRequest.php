@@ -9,8 +9,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Category;
-
 class CategoryRequest extends Request
 {
     /**

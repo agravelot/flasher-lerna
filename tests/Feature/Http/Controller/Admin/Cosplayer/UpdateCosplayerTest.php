@@ -9,12 +9,12 @@
 
 namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 
-use App\Http\Middleware\VerifyCsrfToken;
-use App\Models\Cosplayer;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\User;
+use App\Models\Cosplayer;
+use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UpdateCosplayerTest extends TestCase
 {
@@ -89,20 +89,6 @@ class UpdateCosplayerTest extends TestCase
             ->assertSee(self::COSPLAYER_DATA['description'])
             ->assertSee('The selected user id is invalid.')
             ->assertDontSee('Cosplayer successfully updated');
-    }
-
-    public function test_admin_can_update_a_cosplayers_with_the_same_name()
-    {
-        $this->actingAsAdmin();
-        $cosplayer = factory(Cosplayer::class)->create();
-
-        $response = $this->updateCosplayer([
-            'name' => $cosplayer->name,
-            'description' => 'updated description',
-        ], $cosplayer);
-
-        $this->assertSame(1, Cosplayer::count());
-        $this->assertSame('updated description', $cosplayer->fresh()->description);
     }
 
     public function test_user_can_not_update_a_cosplayer()

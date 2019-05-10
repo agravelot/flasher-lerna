@@ -9,13 +9,13 @@
 
 namespace Modules\Cosplayer\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\CosplayerRequest;
 use App\Models\Cosplayer;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CosplayerRequest;
 use Modules\Cosplayer\Transformers\CosplayerResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminCosplayerController extends Controller
 {
@@ -32,7 +32,7 @@ class AdminCosplayerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  CosplayerRequest  $request
+     * @param CosplayerRequest $request
      *
      * @return CosplayerResource
      */
@@ -60,8 +60,8 @@ class AdminCosplayerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
-     * @param  Cosplayer  $cosplayer
+     * @param CosplayerRequest $request
+     * @param Cosplayer        $cosplayer
      *
      * @return CosplayerResource
      */
@@ -79,8 +79,9 @@ class AdminCosplayerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @return Response
      * @throws \Exception
+     *
+     * @return Response
      */
     public function destroy(Cosplayer $cosplayer)
     {

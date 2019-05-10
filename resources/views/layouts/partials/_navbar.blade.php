@@ -47,9 +47,6 @@
                                     {{ __('Admin') }}
                                 </a>
                             @endcan
-                            <a class="navbar-item {{ Request::is('') ? 'is-active' : '' }}" href="#">
-                                {{ __('Settings') }}
-                            </a>
                             <hr class="navbar-divider">
                             <a class="navbar-item has-text-danger"
                                onclick="event.preventDefault();document.getElementById('logout-form').submit();">

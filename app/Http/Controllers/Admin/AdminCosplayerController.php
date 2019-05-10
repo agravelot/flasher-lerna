@@ -12,7 +12,6 @@ namespace App\Http\Controllers\Admin;
 use Exception;
 use App\Models\User;
 use App\Models\Cosplayer;
-use Illuminate\Support\Arr;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CosplayerRequest;

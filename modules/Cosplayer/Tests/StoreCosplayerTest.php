@@ -9,12 +9,12 @@
 
 namespace Modules\Cosplayer\Tests;
 
+use Tests\TestCase;
 use App\Models\Cosplayer;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Http\UploadedFile;
 use Modules\Album\Transformers\MediaResource;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class StoreCosplayerTest extends TestCase
 {
@@ -30,8 +30,7 @@ class StoreCosplayerTest extends TestCase
         $cosplayer = Cosplayer::latest()->first();
         $response->assertStatus(201);
         $response->assertJson([
-            'data' =>
-                [
+            'data' => [
                     'id' => $cosplayer->id,
                     'name' => $cosplayer->name,
                     'slug' => $cosplayer->slug,
@@ -42,12 +41,12 @@ class StoreCosplayerTest extends TestCase
         ]);
     }
 
-    private function storeCosplayer(Cosplayer $cosplayer): TestResponse
+    private function storeCosplayer(Cosplayer $cosplayer, UploadedFile $avatar = null): TestResponse
     {
         return $this->json('post', '/api/admin/cosplayers', [
             'name' => $cosplayer->name,
             'description' => $cosplayer->description,
-            'avatar' => $cosplayer->avatar,
+            'avatar' => $avatar,
             'user_id' => $cosplayer->user_id,
         ]);
     }
@@ -57,25 +56,24 @@ class StoreCosplayerTest extends TestCase
         $this->actingAsAdmin();
         /** @var Cosplayer $cosplayer */
         $cosplayer = factory(Cosplayer::class)->make();
-        $cosplayer->avatar = UploadedFile::fake()->image('avatar.jpg');
+        $avatar = UploadedFile::fake()->image('avatar.jpg');
 
-        $response = $this->storeCosplayer($cosplayer);
+        $response = $this->storeCosplayer($cosplayer, $avatar);
 
         $cosplayer = Cosplayer::latest()->first();
-        $this->assertNotNull($cosplayer->getFirstMedia('avatar'));
-        $response->assertStatus(201);
-        $response->assertJson([
-            'data' =>
-                [
+        $response->assertStatus(201)
+            ->assertJson([
+                'data' => [
                     'id' => $cosplayer->id,
                     'name' => $cosplayer->name,
                     'slug' => $cosplayer->slug,
                     'description' => $cosplayer->description,
-                    'avatar' => (new MediaResource($cosplayer->getFirstMedia('avatar')))->toArray(request()),
+                    'avatar' => (new MediaResource($cosplayer->avatar))->toArray(request()),
                     'created_at' => $cosplayer->created_at->jsonSerialize(),
                     'updated_at' => $cosplayer->updated_at->jsonSerialize(),
                 ],
-        ]);
+            ]);
+        $this->assertNotNull($cosplayer->avatar);
     }
 
     public function testUserCannotStoreCosplayers()

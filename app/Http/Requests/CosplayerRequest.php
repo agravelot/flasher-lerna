@@ -9,8 +9,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Cosplayer;
-
 class CosplayerRequest extends Request
 {
     /**
@@ -21,7 +19,7 @@ class CosplayerRequest extends Request
     public function rules()
     {
         return [
-            'name' => 'required|string|min:2|max:255|unique:cosplayers,name,'.$this->id,
+            'name' => 'required|string|min:2|max:255|unique:cosplayers,name,'.optional($this->route('cosplayer'))->id,
             'description' => 'nullable|string|max:65000',
             'avatar' => 'sometimes|nullable|file|image|mimetypes:image/*|max:20000',
             'user_id' => 'nullable|integer|min:1|exists:users,id',
