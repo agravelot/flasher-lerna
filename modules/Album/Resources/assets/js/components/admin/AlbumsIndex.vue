@@ -1,20 +1,36 @@
 <template>
     <div>
         <section>
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <router-link :to="{ name: 'admin.albums.create' }">
+                            <button class="button field is-success">
+                                <b-icon pack="fas" icon="plus"></b-icon>
+                                <span>Add</span>
+                            </button>
+                        </router-link>
+                        <button class="button field is-danger"
+                                @click="confirmDeleteSelectedAlbums"
+                                :disabled="!checkedRows.length">
+                            <b-icon pack="fas" icon="trash-alt"></b-icon>
+                            <span>Delete checked</span>
+                        </button>
+                    </div>
+                </div>
 
-            <router-link :to="{ name: 'admin.albums.create' }">
-                <button class="button field is-success">
-                    <b-icon pack="fas" icon="plus"></b-icon>
-                    <span>New</span>
-                </button>
-            </router-link>
-
-            <button class="button field is-danger"
-                    @click="confirmDeleteSelectedAlbums"
-                    :disabled="!checkedRows.length">
-                <b-icon pack="fas" icon="trash-alt"></b-icon>
-                <span>Delete checked</span>
-            </button>
+                <div class="level-right">
+                    <b-field class="is-pulled-right">
+                        <b-input placeholder="Search..."
+                                 type="search"
+                                 icon="search "
+                                 :loading="loading"
+                                 v-model="search"
+                                 @input="fetchAlbums()">
+                        </b-input>
+                    </b-field>
+                </div>
+            </div>
 
             <b-table
                     :data="albums"
@@ -111,6 +127,7 @@
         private sortOrder: string = 'desc';
         showDetailIcon: boolean = true;
         defaultSortOrder: string = 'desc';
+        private search: string = '';
 
         created(): void {
             this.fetchAlbums();
@@ -123,7 +140,8 @@
             Vue.axios.get('/api/admin/albums', {
                 params: {
                     page: this.page,
-                    sort: sortOrder + this.sortField
+                    sort: sortOrder + this.sortField,
+                    'filter[title]': this.search
                 }
             })
                 .then(res => res.data)
