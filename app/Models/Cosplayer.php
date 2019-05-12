@@ -61,6 +61,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @property Collection|PublicAlbum[] $publicAlbums
  * @property mixed                    $initial
+ * @property mixed                    $avatar
  */
 class Cosplayer extends Model implements HasMedia
 {

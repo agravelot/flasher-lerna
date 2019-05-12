@@ -13,10 +13,10 @@ use App\Models\Cosplayer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Requests\CosplayerRequest;
 use Modules\Cosplayer\Transformers\CosplayerResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Spatie\QueryBuilder\QueryBuilder;
 
 class AdminCosplayerController extends Controller
 {
