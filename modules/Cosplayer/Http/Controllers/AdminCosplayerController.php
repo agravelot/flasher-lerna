@@ -16,6 +16,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CosplayerRequest;
 use Modules\Cosplayer\Transformers\CosplayerResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class AdminCosplayerController extends Controller
 {
@@ -26,7 +27,12 @@ class AdminCosplayerController extends Controller
      */
     public function index()
     {
-        return CosplayerResource::collection(Cosplayer::paginate(15));
+        return CosplayerResource::collection(
+            QueryBuilder::for(Cosplayer::class)->allowedFilters('name')
+                ->with('media')
+                ->withCount('media'
+                )->paginate(15)
+        );
     }
 
     /**
