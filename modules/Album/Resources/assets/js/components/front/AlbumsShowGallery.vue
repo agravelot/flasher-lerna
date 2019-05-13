@@ -1,88 +1,86 @@
 <template>
 
-    <section v-if="this.album" class="section">
-        <div class="container">
-            <!--        <h1 class="title is-1 has-text-centered">{{ album.title }}</h1>-->
+    <div v-if="this.album">
+        <!--        <h1 class="title is-1 has-text-centered">{{ album.title }}</h1>-->
 
-            <div v-if="album.links && (album.links.download || album.links.edit)" class="field has-addons">
-                <div v-if="album.links.download" class="control">
-                    <a class="button" :href="album.links.download">
-                        <span class="icon is-small"><i class="fas fa-download"></i></span>
-                        <span>Download</span>
-                    </a>
-                </div>
-                <div v-if="album.links.edit" class="control">
-                    <a class="button" :href="album.links.edit">
-                        <span class="icon is-small"><i class="fas fa-edit"></i></span>
-                        <span>Edit</span>
-                    </a>
-                </div>
+        <div v-if="album.links && (album.links.download || album.links.edit)" class="field has-addons">
+            <div v-if="album.links.download" class="control">
+                <a class="button" :href="album.links.download">
+                    <span class="icon is-small"><i class="fas fa-download"></i></span>
+                    <span>Download</span>
+                </a>
             </div>
+            <div v-if="album.links.edit" class="control">
+                <a class="button" :href="album.links.edit">
+                    <span class="icon is-small"><i class="fas fa-edit"></i></span>
+                    <span>Edit</span>
+                </a>
+            </div>
+        </div>
 
-            <div class="card has-margin-bottom-md">
-                <div class="card-content">
-                    <div v-if="album.body" class="content article-body">
-                        <p class="has-text-justified" v-html="album.body"></p>
-                    </div>
+        <div class="card has-margin-bottom-md">
+            <div class="card-content">
+                <div v-if="album.body" class="content article-body">
+                    <p class="has-text-justified" v-html="album.body"></p>
+                </div>
 
-                    <div v-if="album.categories" class="tags">
+                <div v-if="album.categories" class="tags">
                 <span v-for="category in album.categories" class="tag">
                     <a :href="category.links.related">{{ category.name }}</a>
                 </span>
-                    </div>
                 </div>
             </div>
+        </div>
 
-            <h2 class="title is-2 has-text-centered">Pictures</h2>
-            <!--TODO Add nothing to show-->
-            <masonry :gutter="{default: '0px'}"
-                     :cols="{default: 3, 1000: 2, 700: 1, 400: 1}">
-                <a v-for="(media, index) in album.medias" :key="index" @click="openPicture(media)">
-                    <figure class="image">
-                        <img v-if="media.src_set" class="responsive-media" :srcset="media.src_set" :src="media.thumb"
-                             :alt="media.name" sizes="1px" loading="auto">
-                        <img v-else :src="media.thumb" :alt="media.name" loading="auto">
-                    </figure>
-                </a>
-            </masonry>
+        <h2 class="title is-2 has-text-centered">Pictures</h2>
+        <!--TODO Add nothing to show-->
+        <masonry :gutter="{default: '0px'}"
+                 :cols="{default: 3, 1000: 2, 700: 1, 400: 1}">
+            <a v-for="(media, index) in album.medias" :key="index" @click="openPicture(media)">
+                <figure class="image">
+                    <img v-if="media.src_set" class="responsive-media" :srcset="media.src_set" :src="media.thumb"
+                         :alt="media.name" sizes="1px" loading="auto">
+                    <img v-else :src="media.thumb" :alt="media.name" loading="auto">
+                </figure>
+            </a>
+        </masonry>
 
-            <section v-if="album.cosplayers" class="section">
-                <h2 class="title is-2 has-text-centered">Cosplayers</h2>
+        <section v-if="album.cosplayers" class="section">
+            <h2 class="title is-2 has-text-centered">Cosplayers</h2>
 
-                <div class="card">
-                    <div class="card-content">
+            <div class="card">
+                <div class="card-content">
 
-                        <div class="columns is-multiline is-mobile">
-                            <div v-for="cosplayer in album.cosplayers" class="column">
-                                <figure v-if="cosplayer.thumb" class="is-centered image is-64x64">
-                                    <img class="is-rounded" :src="cosplayer.thumb">
-                                </figure>
-                                <figure v-else class="is-centered avatar-circle"
-                                        :style="{ 'background-color': stringToColour(cosplayer.name) }">
+                    <div class="columns is-multiline is-mobile">
+                        <div v-for="cosplayer in album.cosplayers" class="column">
+                            <figure v-if="cosplayer.thumb" class="is-centered image is-64x64">
+                                <img class="is-rounded" :src="cosplayer.thumb">
+                            </figure>
+                            <figure v-else class="is-centered avatar-circle"
+                                    :style="{ 'background-color': stringToColour(cosplayer.name) }">
                             <span class="initials">
                                 {{ cosplayer.name.match(/\b\w/g).join('').substring(0, 2).toUpperCase() }}
                             </span>
-                                </figure>
-                                <a :href="cosplayer.links.related">
-                                    <p class="has-text-centered has-margin-top-sm">
-                                        {{ cosplayer.name }}
-                                    </p>
-                                </a>
-                            </div>
+                            </figure>
+                            <a :href="cosplayer.links.related">
+                                <p class="has-text-centered has-margin-top-sm">
+                                    {{ cosplayer.name }}
+                                </p>
+                            </a>
                         </div>
                     </div>
                 </div>
-            </section>
-
-            <div v-if="openedPicture" class="modal is-active modal-fx-fadeInScale">
-                <div class="modal-background" @click="closePicture()"></div>
-                <div class="modal-content is-huge is-image">
-                    <img :srcset="openedPicture.src_set" :src="openedPicture.thumb" :alt="openedPicture.name">
-                </div>
-                <button class="modal-close is-large" aria-label="close" @click="closePicture()"></button>
             </div>
+        </section>
+
+        <div v-if="openedPicture" class="modal is-active modal-fx-fadeInScale">
+            <div class="modal-background" @click="closePicture()"></div>
+            <div class="modal-content is-huge is-image">
+                <img :srcset="openedPicture.src_set" :src="openedPicture.thumb" :alt="openedPicture.name">
+            </div>
+            <button class="modal-close is-large" aria-label="close" @click="closePicture()"></button>
         </div>
-    </section>
+    </div>
 </template>
 
 <script lang="ts">

@@ -1,17 +1,17 @@
-<section class="hero is-medium"
-         style="background: url(https://scontent-cdg2-1.xx.fbcdn.net/v/t1.0-9/48995967_679931189069097_5062173863815675904_o.jpg?_nc_cat=105&_nc_ht=scontent-cdg2-1.xx&oh=41dd0a533d0ff6c589c02626ef7ae977&oe=5D5C4F67);
-         background-size: contain;">
+<section class="hero is-small is-primary">
     <!-- Hero head: will stick at the top -->
     <div class="hero-head">
         <nav class="navbar" role="navigation" aria-label="dropdown navigation">
             <div class="container">
                 <div class="navbar-brand">
 
-                    <a href="{{ url('/') }}" class="navbar-item">{{ settings()->get('app_name', config('app.name', 'Flasher')) }}</a>
+                    <a href="{{ url('/') }}"
+                       class="navbar-item">{{ settings()->get('app_name', config('app.name', 'Flasher')) }}</a>
 
                     @include('layouts.partials._navbar_socials')
 
-                    <a role="button" class="navbar-burger burger" aria-label="menu" data-target="navMenu" aria-expanded="false">
+                    <a role="button" class="navbar-burger burger" aria-label="menu" data-target="navMenu"
+                       aria-expanded="false">
                         <span></span>
                         <span></span>
                         <span></span>
@@ -57,47 +57,49 @@
                                 </div>
                             </div>
                         @endguest
-{{--                        <span class="navbar-item">--}}
-{{--                          <a class="button is-primary is-inverted">--}}
-{{--                            <span class="icon">--}}
-{{--                              <i class="fab fa-github"></i>--}}
-{{--                            </span>--}}
-{{--                            <span>Download</span>--}}
-{{--                          </a>--}}
-{{--                        </span>--}}
+                        {{--                        <span class="navbar-item">--}}
+                        {{--                          <a class="button is-primary is-inverted">--}}
+                        {{--                            <span class="icon">--}}
+                        {{--                              <i class="fab fa-github"></i>--}}
+                        {{--                            </span>--}}
+                        {{--                            <span>Download</span>--}}
+                        {{--                          </a>--}}
+                        {{--                        </span>--}}
                     </div>
                 </div>
             </div>
         </nav>
     </div>
 
+@if(! request()->is('admin*'))
     <!-- Hero content: will be in the middle -->
-    <div class="hero-body">
-        <div class="container has-text-centered">
-            <h1 class="title">
-                @yield('pageTitle')
-            </h1>
-{{--            <h2 class="subtitle">--}}
-{{--                Subtitle--}}
-{{--            </h2>--}}
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title">
+                    @yield('pageTitle')
+                </h1>
+                {{--            <h2 class="subtitle">--}}
+                {{--                Subtitle--}}
+                {{--            </h2>--}}
+            </div>
         </div>
-    </div>
+@endif
 
-    <!-- Hero footer: will stick at the bottom -->
-{{--    <div class="hero-foot">--}}
-{{--        <nav class="tabs">--}}
-{{--            <div class="container">--}}
-{{--                <ul>--}}
-{{--                    <li class="is-active"><a>Overview</a></li>--}}
-{{--                    <li><a>Modifiers</a></li>--}}
-{{--                    <li><a>Grid</a></li>--}}
-{{--                    <li><a>Elements</a></li>--}}
-{{--                    <li><a>Components</a></li>--}}
-{{--                    <li><a>Layout</a></li>--}}
-{{--                </ul>--}}
-{{--            </div>--}}
-{{--        </nav>--}}
-{{--    </div>--}}
+<!-- Hero footer: will stick at the bottom -->
+    {{--    <div class="hero-foot">--}}
+    {{--        <nav class="tabs">--}}
+    {{--            <div class="container">--}}
+    {{--                <ul>--}}
+    {{--                    <li class="is-active"><a>Overview</a></li>--}}
+    {{--                    <li><a>Modifiers</a></li>--}}
+    {{--                    <li><a>Grid</a></li>--}}
+    {{--                    <li><a>Elements</a></li>--}}
+    {{--                    <li><a>Components</a></li>--}}
+    {{--                    <li><a>Layout</a></li>--}}
+    {{--                </ul>--}}
+    {{--            </div>--}}
+    {{--        </nav>--}}
+    {{--    </div>--}}
 </section>
 
 {{--<nav class="navbar" role="navigation" aria-label="dropdown navigation">--}}
