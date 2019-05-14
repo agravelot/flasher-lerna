@@ -69,6 +69,14 @@ class CreateSettingsTable extends Migration
             'title' => 'Homepage description',
             'description' => 'Home page presentation text',
         ]);
+
+        DB::table('settings')->insert([
+            'name' => 'footer_content',
+            'value' => '',
+            'type' => 'textarea',
+            'title' => 'Footer text content',
+            'description' => '',
+        ]);
     }
 
     /**
