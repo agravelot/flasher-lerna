@@ -6,3 +6,5 @@
  * Proprietary and confidential
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
+
+Route::get('/', 'HomeController')->name('home');

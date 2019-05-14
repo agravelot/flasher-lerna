@@ -3,7 +3,7 @@
 @section('pageTitle', __('Admin'))
 
 @section('content')
-    <div id="app">
+    <section class="section" id="app">
         <div class="columns">
             <sidebar></sidebar>
             <div class="column">
@@ -12,5 +12,5 @@
                 @yield('admin-content')
             </div>
         </div>
-    </div>
+    </section>
 @endsection

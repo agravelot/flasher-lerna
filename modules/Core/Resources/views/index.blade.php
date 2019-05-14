@@ -1,9 +1,25 @@
-@extends('core::layouts.master')
+@extends('layouts.app')
 
 @section('content')
-    <h1>Hello World</h1>
-
-    <p>
-        This view is loaded from module: {!! config('core.name') !!}
-    </p>
+    <section class="hero is-primary is-medium">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns is-vcentered">
+                    <div class="column">
+                        <figure class="image is-128x128">
+                            <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+                        </figure>
+                    </div>
+                    <div class="column">
+                        <h1 class="title">
+                            JKanda
+                        </h1>
+                        <h2 class="subtitle">
+                            Photographe passioné
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 @stop

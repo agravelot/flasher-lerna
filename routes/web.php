@@ -12,8 +12,7 @@ Route::impersonate();
 
 //FRONT
 Route::namespace('Front')->group(function () {
-    Route::get('/', 'AlbumController@index')->name('albums.index');
-    Route::resource('albums', 'AlbumController')->only(['show']);
+    Route::resource('albums', 'AlbumController')->only(['index', 'show']);
     Route::resource('download-albums', 'DownloadAlbumController')->only(['show'])
         ->middleware('auth', 'verified')
         ->parameters([

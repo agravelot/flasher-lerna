@@ -21,6 +21,7 @@
                     <div class="navbar-end">
                         <a class="navbar-item {{ Request::is('/') ? 'is-active' : '' }}"
                            href="{{ url('/') }}">{{ __('Home') }}</a>
+                        @include('layouts.partials._navbar_albums')
                         @include('layouts.partials._navbar_categories')
                         <a class="navbar-item {{ Request::is('goldenbook*') ? 'is-active' : '' }}"
                            href="{{ route('goldenbook.index') }}">{{ __('Golden book') }}</a>
