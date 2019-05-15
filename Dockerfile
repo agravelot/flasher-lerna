@@ -9,7 +9,7 @@ RUN apk add --no-cache bash \
 #
 # Frontend
 #
-FROM node:10-alpine as frontend
+FROM node:12-alpine as frontend
 WORKDIR /app
 COPY . .
 RUN yarn install && yarn production
