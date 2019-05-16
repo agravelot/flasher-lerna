@@ -9,15 +9,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\View\View;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class SpaController extends Controller
 {
     /**
-     * @return Factory|View
      * @throws AuthorizationException
+     *
+     * @return Factory|View
      */
     public function index()
     {

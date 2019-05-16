@@ -9,12 +9,12 @@
 
 namespace Modules\Category\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Category;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
 use Modules\Category\Http\Requests\CategoryRequest;
 use Modules\Category\Transformers\CategoryResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminCategoryController extends Controller
 {
@@ -31,7 +31,7 @@ class AdminCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  CategoryRequest  $request
+     * @param CategoryRequest $request
      *
      * @return CategoryResource
      */
@@ -45,7 +45,7 @@ class AdminCategoryController extends Controller
     /**
      * Show the specified resource.
      *
-     * @param  Category  $category
+     * @param Category $category
      *
      * @return CategoryResource
      */
@@ -57,8 +57,8 @@ class AdminCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  CategoryRequest  $request
-     * @param  Category  $category
+     * @param CategoryRequest $request
+     * @param Category        $category
      *
      * @return CategoryResource
      */

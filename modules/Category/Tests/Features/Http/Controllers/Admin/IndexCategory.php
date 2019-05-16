@@ -10,7 +10,6 @@
 namespace Modules\Category\Tests\Features\Http\Controllers\Admin;
 
 use Tests\TestCase;
-use App\Models\Category;
 use Illuminate\Foundation\Testing\TestResponse;
 
 class IndexCategory extends TestCase

@@ -9,10 +9,10 @@
 
 namespace Modules\Category\Tests\Features\Http\Controllers\Front;
 
-use App\Models\Category;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\Category;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class IndexCategory extends TestCase
 {
