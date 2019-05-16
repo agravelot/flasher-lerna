@@ -91,6 +91,7 @@ class AdminAlbumController extends Controller
      */
     public function update(Album $album, AlbumRequest $request)
     {
+        $album->slug = null;
         $album->update($request->validated());
 
         if ($request->has('categories')) {

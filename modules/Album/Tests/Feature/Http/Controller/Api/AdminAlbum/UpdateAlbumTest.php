@@ -9,7 +9,9 @@
 
 namespace Modules\Album\Tests\Feature\Http\Controller\Api\AdminAlbum;
 
+use Carbon\Carbon;
 use DateTime;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 use App\Models\Album;
 use App\Models\Category;
@@ -35,7 +37,7 @@ class UpdateAlbumTest extends TestCase
 
     public function updateAlbum(Album $album, array $optional = []): TestResponse
     {
-        return $this->json('patch', '/api/admin/albums/'.$album->slug, array_merge($album->toArray(), $optional));
+        return $this->json('patch', "/api/admin/albums/{$album->slug}", array_merge($album->toArray(), $optional));
     }
 
     public function test_admin_can_update_an_album_with_a_new_category()
@@ -235,5 +237,35 @@ class UpdateAlbumTest extends TestCase
         ]);
 
         $this->assertTrue($album->fresh()->isPublished());
+    }
+
+    public function test_admin_can_update_title_and_update_slug()
+    {
+        $this->actingAsAdmin();
+        $album = factory(Album::class)->create();
+        $album->title = $title = 'Title test';
+
+        $response = $this->updateAlbum($album);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    'id' => $album->id,
+                    'slug' => Str::slug($album->title),
+                    'title' => $album->title,
+                    'published_at' => optional($album->published_at)->jsonSerialize(),
+                    'created_at' => $album->created_at->jsonSerialize(),
+//                    'body' => $album->body,
+                    'private' => $album->private,
+//                    'medias' => $album->medias,
+//                    'categories' => $album->categories,
+//                    'cosplayers' => $album->cosplayers,
+//                    'user' => [
+//                        'name' => $album->user->name
+//                    ],
+                ],
+            ]);
+        $this->assertSame($title, $album->fresh()->title);
+        $this->assertSame(Str::slug($title), $album->fresh()->slug);
     }
 }
