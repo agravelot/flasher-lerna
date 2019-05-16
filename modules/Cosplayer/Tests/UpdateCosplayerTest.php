@@ -11,6 +11,7 @@ namespace Modules\Cosplayer\Tests;
 
 use Tests\TestCase;
 use App\Models\Cosplayer;
+use Illuminate\Support\Str;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -29,16 +30,7 @@ class UpdateCosplayerTest extends TestCase
 
         $cosplayer = Cosplayer::latest()->first();
         $response->assertStatus(200);
-        $response->assertJson([
-            'data' => [
-                    'id' => $cosplayer->id,
-                    'name' => $cosplayer->name,
-                    'slug' => $cosplayer->slug,
-                    'description' => '42',
-                    'created_at' => $cosplayer->created_at->jsonSerialize(),
-                    'updated_at' => $cosplayer->updated_at->jsonSerialize(),
-                ],
-        ]);
+        $response->assertJson($this->getCosplayerJson($cosplayer));
     }
 
     private function update(Cosplayer $cosplayer, UploadedFile $avatar = null): TestResponse
@@ -49,6 +41,33 @@ class UpdateCosplayerTest extends TestCase
             'avatar' => $avatar,
             'user_id' => $cosplayer->user_id,
         ]);
+    }
+
+    private function getCosplayerJson(Cosplayer $cosplayer): array
+    {
+        return [
+            'data' => [
+                'id' => $cosplayer->id,
+                'name' => $cosplayer->name,
+                'slug' => $cosplayer->slug,
+                'description' => $cosplayer->description,
+                'created_at' => $cosplayer->created_at->jsonSerialize(),
+                'updated_at' => $cosplayer->updated_at->jsonSerialize(),
+            ],
+        ];
+    }
+
+    public function test_admin_can_update_cosplayer_name_and_update_slug()
+    {
+        $this->actingAsAdmin();
+        $cosplayer = factory(Cosplayer::class)->create();
+
+        $cosplayer->name = $name = 'Name test';
+        $response = $this->update($cosplayer);
+
+        $this->assertSame(Str::slug($name), $cosplayer->fresh()->slug);
+        $response->assertStatus(200)
+            ->assertJson($this->getCosplayerJson($cosplayer->fresh()));
     }
 
     public function testUserCannotUpdateCosplayers()

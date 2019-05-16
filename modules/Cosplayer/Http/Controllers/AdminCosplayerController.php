@@ -10,7 +10,6 @@
 namespace Modules\Cosplayer\Http\Controllers;
 
 use App\Models\Cosplayer;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -73,7 +72,8 @@ class AdminCosplayerController extends Controller
      */
     public function update(CosplayerRequest $request, Cosplayer $cosplayer)
     {
-        $cosplayer->update($request->all());
+        $cosplayer->slug = null;
+        $cosplayer->update($request->validated());
 
         if ($request->has('avatar')) {
             $cosplayer->avatar = $request->file('avatar');
