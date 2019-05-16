@@ -30,8 +30,8 @@ class AdminCosplayerController extends Controller
         return CosplayerResource::collection(
             QueryBuilder::for(Cosplayer::class)->allowedFilters('name')
                 ->with('media')
-                ->withCount('media'
-                )->paginate(15)
+                ->withCount('media')
+                ->paginate(15)
         );
     }
 
