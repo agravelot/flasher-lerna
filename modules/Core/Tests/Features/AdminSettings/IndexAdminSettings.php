@@ -37,7 +37,6 @@ class IndexAdminSettings extends TestCase
     public function testUserCannotSeeSettings()
     {
         $this->actingAsUser();
-        Setting::create(['name' => 'test', 'value' => 'Flasher', 'type' => 'string']);
 
         $response = $this->getSettings();
 
@@ -46,8 +45,6 @@ class IndexAdminSettings extends TestCase
 
     public function testGuestCannotSeeSettings()
     {
-        Setting::create(['name' => 'test', 'value' => 'Flasher', 'type' => 'string']);
-
         $response = $this->getSettings();
 
         $response->assertStatus(401);
