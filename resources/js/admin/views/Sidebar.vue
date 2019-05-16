@@ -103,6 +103,15 @@
                             Settings
                         </router-link>
                     </li>
+
+                    <li>
+                        <router-link :to="{ name: 'admin.pages.index' }">
+                            <span class="icon">
+                                <i class="fas fa-page"></i>
+                            </span>
+                            Pages
+                        </router-link>
+                    </li>
                 </ul>
 
                 <ul class="menu-list">

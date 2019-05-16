@@ -44,7 +44,7 @@ class StoreAdminPages extends TestCase
 
     private function storePage(Page $page): TestResponse
     {
-        return $this->json('post', "/api/admin/pages", [
+        return $this->json('post', '/api/admin/pages', [
             'name' => $page->name,
             'title' => $page->title,
             'description' => $page->description,

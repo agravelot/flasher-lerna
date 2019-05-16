@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Modules\Core\Entities\Page;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Spatie\QueryBuilder\QueryBuilder;
 use Modules\Core\Transformers\PageResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -25,7 +26,9 @@ class AdminPagesController extends Controller
      */
     public function index()
     {
-        return PageResource::collection(Page::all());
+        return PageResource::collection(
+            QueryBuilder::for(Page::class)->allowedFilters('name')->paginate(15)
+        );
     }
 
     /**
@@ -41,7 +44,7 @@ class AdminPagesController extends Controller
     }
 
     /**
-     * @param  Request  $request
+     * @param Request $request
      *
      * @return PageResource
      */

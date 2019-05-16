@@ -9,10 +9,10 @@
 
 namespace Modules\Core\Tests\Features\AdminPages;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
-use Modules\Core\Entities\Page;
 use Tests\TestCase;
+use Modules\Core\Entities\Page;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ShowAdminPages extends TestCase
 {

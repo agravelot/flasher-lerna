@@ -2,7 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import Dashboard from '../../modules/Dashboard/Resources/assets/js/Dashboard.vue';
-import Settings from '../../modules/Core/Resources/assets/js/Settings.vue';
+import Settings from '../../modules/Core/Resources/assets/js/components/Settings.vue';
+import PagesIndex from '../../modules/Core/Resources/assets/js/components/pages/PagesIndex.vue';
 import UsersIndex from '../../modules/User/Resources/assets/js/UsersIndex.vue';
 import AlbumsIndex from '../../modules/Album/Resources/assets/js/components/admin/AlbumsIndex.vue';
 import AlbumsShow from '../../modules/Album/Resources/assets/js/components/front/AlbumsShowGallery.vue';
@@ -62,6 +63,11 @@ const routes: Array<any> = [
         path: '/admin/settings',
         name: 'admin.settings.index',
         component: Settings,
+    },
+    {
+        path: '/admin/pages',
+        name: 'admin.pages.index',
+        component: PagesIndex,
     },
 ];
 
