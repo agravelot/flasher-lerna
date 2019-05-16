@@ -10,6 +10,7 @@
 Route::middleware(['auth:api', 'verified', 'admin'])->group(function () {
     Route::name('api.admin.')->group(function () {
         Route::prefix('admin')->group(function () {
+            Route::apiResource('pages', 'AdminPagesController');
             Route::apiResource('settings', 'AdminSettingsController')->only(['index', 'show', 'update']);
         });
     });
