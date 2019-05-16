@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Category\Tests\Features\Http\Controllers;
+namespace Modules\Category\Tests\Features\Http\Controllers\Admin;
 
 use Tests\TestCase;
 use App\Models\Category;
@@ -15,25 +15,33 @@ use Illuminate\Foundation\Testing\TestResponse;
 
 class IndexCategory extends TestCase
 {
-    public function test_guest_can_index_categories()
+    public function test_admin_cant_index_categories()
     {
+        $this->actingAsAdmin();
+
         $response = $this->indexCategories();
 
         $response->assertStatus(200);
     }
 
-    private function indexCategories(): TestResponse
+    public function test_user_cant_index_categories()
     {
-        return $this->json('get', '/api/categories');
-    }
-
-    public function test_guest_can_index_categories_with_data()
-    {
-        $categories = factory(Category::class, 5)->create();
+        $this->actingAsUser();
 
         $response = $this->indexCategories();
 
-        $response->assertStatus(200)
-            ->assertSeeInOrder($categories->pluck('title')->toArray());
+        $response->assertStatus(403);
+    }
+
+    public function test_guest_cant_index_categories()
+    {
+        $response = $this->indexCategories();
+
+        $response->assertStatus(401);
+    }
+
+    private function indexCategories(): TestResponse
+    {
+        return $this->json('get', '/api/admin/categories');
     }
 }

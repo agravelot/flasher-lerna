@@ -7,9 +7,9 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace App\Http\Requests;
+namespace Modules\Category\Http\Requests;
 
-use App\Models\Category;
+use App\Http\Requests\Request;
 
 class CategoryRequest extends Request
 {
@@ -20,13 +20,8 @@ class CategoryRequest extends Request
      */
     public function rules()
     {
-        $id = '';
-        if (in_array($this->method(), ['PATCH', 'PUT'])) {
-            $id = Category::findBySlugOrFail($this->category)->id;
-        }
-
         return [
-            'name' => 'string|required|min:2|max:255|unique:categories,name,'.$id,
+            'name' => 'string|required|min:2|max:255|unique:categories,name,'.optional($this->category)->id,
             'description' => 'nullable|string|max:65555',
         ];
     }

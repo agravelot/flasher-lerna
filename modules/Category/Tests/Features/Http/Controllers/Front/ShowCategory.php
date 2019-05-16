@@ -7,18 +7,16 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Category\Tests\Features\Http\Controllers;
+namespace Modules\Category\Tests\Features\Http\Controllers\Front;
 
-use Tests\TestCase;
 use App\Models\Category;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
+use Tests\TestCase;
 
 class ShowCategory extends TestCase
 {
-    private function showCategory(Category $category): TestResponse
-    {
-        return $this->json('get', "/api/categories/{$category->slug}");
-    }
+    use RefreshDatabase;
 
     public function test_guest_can_index_categories_with_data()
     {
@@ -28,5 +26,10 @@ class ShowCategory extends TestCase
 
         $response->assertStatus(200)
             ->assertSee($category->title);
+    }
+
+    private function showCategory(Category $category): TestResponse
+    {
+        return $this->json('get', "/api/categories/{$category->slug}");
     }
 }
