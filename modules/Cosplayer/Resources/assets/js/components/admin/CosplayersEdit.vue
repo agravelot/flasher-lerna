@@ -86,9 +86,7 @@
 
         private cosplayer: Cosplayer = new Cosplayer();
         private loading: boolean = false;
-        private searchUsersInput: string = '';
         private searchUsers: Array<User> = [];
-        private selectedUser: User;
 
         protected editorOption: object = {
             placeholder: 'Enter your description...',
