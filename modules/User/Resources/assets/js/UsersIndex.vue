@@ -76,25 +76,14 @@
     import Vue from 'vue';
     import Component from 'vue-class-component';
     import VueBuefy from "../../../../../resources/js/buefy";
-
-    class User {
-    }
+    import User from "./user";
 
     @Component({
         name: "AlbumsIndex",
-        filters: {
-            /**
-             * Filter to truncate string, accepts a length parameter
-             */
-            truncate(value: string, length: number): string {
-                return value.length > length ? value.substr(0, length) + '...' : value;
-            }
-        }
     })
     export default class AlbumsIndex extends VueBuefy {
 
         private users: Array<User> = [];
-        //TODO Clearer types
         defaultOpenedDetails: Array<any> = [];
         private checkedRows: Array<any> = [];
         private total: number = 0;
