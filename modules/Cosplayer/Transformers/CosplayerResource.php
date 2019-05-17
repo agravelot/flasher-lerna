@@ -29,6 +29,7 @@ class CosplayerResource extends Resource
             'slug' => $this->slug,
             'description' => $this->description,
             'avatar' => new MediaResource($this->avatar),
+            'user_id' => optional($this->user)->id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

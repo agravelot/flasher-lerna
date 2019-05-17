@@ -6,41 +6,59 @@
             </b-field>
 
             <b-field label="Description">
-                <quill-editor v-model="cosplayer.description" ref="myQuillEditor" :options="editorOption"></quill-editor>
+                <quill-editor v-model="cosplayer.description" ref="myQuillEditor"
+                              :options="editorOption"></quill-editor>
             </b-field>
 
             <b-field v-if="cosplayer.avatar" label="Current avatar">
                 <img :src="cosplayer.avatar" alt="">
                 <b-button type="is-danger" icon-right="delete" @click="cosplayer.avatar = null"></b-button>
             </b-field>
-            <b-field label="Upload avatar">
-                <b-upload v-model="cosplayer.avatar" drag-drop>
-                    <section class="section">
-                        <div class="content has-text-centered">
-                            <p>
-                                <b-icon icon="upload" size="is-large"></b-icon>
-                            </p>
-                            <p>Drop your files here or click to upload</p>
-                            <span class="file-name" v-if="cosplayer.avatar">
+
+
+            <div class="columns">
+                <div class="column">
+                    <b-field label="Upload avatar">
+                        <b-upload v-model="cosplayer.avatar" drag-drop>
+                            <section class="section">
+                                <div class="content has-text-centered">
+                                    <p>
+                                        <b-icon icon="upload" size="is-large"></b-icon>
+                                    </p>
+                                    <p>Drop your files here or click to upload</p>
+                                    <span class="file-name" v-if="cosplayer.avatar">
                             {{ cosplayer.avatar.name }}
                         </span>
-                        </div>
-                    </section>
-                </b-upload>
-            </b-field>
-
-            <!--        TODO Load user list-->
-
-            <b-field label="Linked user">
-                <b-select placeholder="Select linked user">
-                    <option
-                            v-for="option in data"
-                            :value="option.id"
-                            :key="option.id">
-                        {{ option.user.first_name }}
-                    </option>
-                </b-select>
-            </b-field>
+                                </div>
+                            </section>
+                        </b-upload>
+                    </b-field>
+                </div>
+                <div class="column">
+                    <b-field label="Linked user">
+                        <b-autocomplete
+                                :data="searchUsers"
+                                v-model="cosplayer.user_id"
+                                placeholder="e.g. Anne"
+                                keep-first
+                                open-on-focus
+                                @typing="searchUser"
+                                field="id"
+                                @select="option => selected = option">
+                            <template slot-scope="props">
+                                <div>
+                                    {{ props.option.name }}
+                                    <br>
+                                    <small>
+                                        Email: {{ props.option.email }},
+                                        role <b>{{ props.option.role }}</b>
+                                    </small>
+                                </div>
+                            </template>
+                        </b-autocomplete>
+                    </b-field>
+                </div>
+            </div>
 
             <b-button type="is-primary" :loading="this.loading" @click="updateCosplayer()">Update</b-button>
         </div>
@@ -56,6 +74,7 @@
     import 'quill/dist/quill.snow.css'
     import 'quill/dist/quill.bubble.css'
     import {quillEditor} from 'vue-quill-editor'
+    import User from "../../../../../../User/Resources/assets/js/user";
 
     @Component({
         name: "CosplayersEdit",
@@ -67,6 +86,14 @@
 
         private cosplayer: Cosplayer = new Cosplayer();
         private loading: boolean = false;
+        private searchUsersInput: string = '';
+        private searchUsers: Array<User> = [];
+        private selectedUser: User;
+
+        protected editorOption: object = {
+            placeholder: 'Enter your description...',
+            theme: 'snow',
+        };
 
         created(): void {
             this.fetchCosplayer();
@@ -122,6 +149,22 @@
                     });
                     throw err;
                 });
+        }
+
+        searchUser(): void {
+            Vue.axios.get('/api/admin/users', {params: {'filter[name]': this.cosplayer.user_id}})
+                .then(res => res.data)
+                .then(res => {
+                    this.searchUsers = res.data;
+                })
+                .catch(err => {
+                    this.$snackbar.open({
+                        message: 'Unable to load users, maybe you are offline?',
+                        type: 'is-danger',
+                        position: 'is-top',
+                    });
+                    throw err;
+                })
         }
 
         showSuccess(message: string): void {

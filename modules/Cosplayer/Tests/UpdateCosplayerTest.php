@@ -10,6 +10,7 @@
 namespace Modules\Cosplayer\Tests;
 
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Cosplayer;
 use Illuminate\Support\Str;
 use Illuminate\Http\UploadedFile;
@@ -19,6 +20,34 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class UpdateCosplayerTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_admin_can_update_cosplayer_with_new_related_user()
+    {
+        $this->actingAsAdmin();
+        $cosplayer = factory(Cosplayer::class)->create();
+        $this->assertNull($cosplayer->user);
+
+        $cosplayer->user = factory(User::class)->create();
+        $response = $this->update($cosplayer);
+
+        $response->assertStatus(200);
+        $this->assertNotNull($cosplayer->fresh()->user);
+        $response->assertJson($this->getCosplayerJson($cosplayer->fresh()));
+    }
+
+    public function test_admin_can_update_cosplayer_with_updated_related_user()
+    {
+        $this->actingAsAdmin();
+        $cosplayer = factory(Cosplayer::class)->create(['user_id' => factory(User::class)->create()->id]);
+        $this->assertNotNull($cosplayer->user);
+
+        $cosplayer->user = factory(User::class)->create();
+        $response = $this->update($cosplayer);
+
+        $response->assertStatus(200);
+        $this->assertNotNull($cosplayer->fresh()->user);
+        $response->assertJson($this->getCosplayerJson($cosplayer->fresh()));
+    }
 
     public function testAdminCanUpdateCosplayerWithSameName()
     {

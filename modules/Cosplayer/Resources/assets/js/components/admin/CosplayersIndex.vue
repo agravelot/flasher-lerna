@@ -1,39 +1,37 @@
 <template>
     <div>
         <section>
-
             <div class="level">
-            <div class="level-left">
-                <div class="level-item">
-                    <router-link :to="{ name: 'admin.cosplayers.create' }">
-                        <button class="button field is-success">
-                            <b-icon pack="fas" icon="plus"></b-icon>
-                            <span>New</span>
-                        </button>
-                    </router-link>
+                <div class="level-left">
+                    <div class="level-item">
+                        <router-link :to="{ name: 'admin.cosplayers.create' }">
+                            <button class="button field is-success">
+                                <b-icon pack="fas" icon="plus"></b-icon>
+                                <span>New</span>
+                            </button>
+                        </router-link>
 
-                    <button class="button field is-danger"
-                            @click="confirmDeleteSelectedCosplayers()"
-                            :disabled="!checkedRows.length">
-                        <b-icon pack="fas" icon="trash-alt"></b-icon>
-                        <span>Delete checked</span>
-                    </button>
+                        <button class="button field is-danger"
+                                @click="confirmDeleteSelectedCosplayers()"
+                                :disabled="!checkedRows.length">
+                            <b-icon pack="fas" icon="trash-alt"></b-icon>
+                            <span>Delete checked</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="level-right">
+                    <b-field class="is-pulled-right">
+                        <b-input placeholder="Search..."
+                                 type="search"
+                                 icon="search "
+                                 :loading="loading"
+                                 v-model="search"
+                                 @input="fetchCosplayers()">
+                        </b-input>
+                    </b-field>
                 </div>
             </div>
-
-            <div class="level-right">
-                <b-field class="is-pulled-right">
-                    <b-input placeholder="Search..."
-                             type="search"
-                             icon="search "
-                             :loading="loading"
-                             v-model="search"
-                             @input="fetchCosplayers()">
-                    </b-input>
-                </b-field>
-            </div>
-    </div>
-
 
 
             <b-table

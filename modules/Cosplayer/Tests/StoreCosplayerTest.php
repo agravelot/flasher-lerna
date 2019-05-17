@@ -31,13 +31,14 @@ class StoreCosplayerTest extends TestCase
         $response->assertStatus(201);
         $response->assertJson([
             'data' => [
-                    'id' => $cosplayer->id,
-                    'name' => $cosplayer->name,
-                    'slug' => $cosplayer->slug,
-                    'description' => $cosplayer->description,
-                    'created_at' => $cosplayer->created_at->jsonSerialize(),
-                    'updated_at' => $cosplayer->updated_at->jsonSerialize(),
-                ],
+                'id' => $cosplayer->id,
+                'name' => $cosplayer->name,
+                'slug' => $cosplayer->slug,
+                'description' => $cosplayer->description,
+                //'avatar' => (new MediaResource($cosplayer->avatar))->toArray(request()),
+                'created_at' => $cosplayer->created_at->jsonSerialize(),
+                'updated_at' => $cosplayer->updated_at->jsonSerialize(),
+            ],
         ]);
     }
 
