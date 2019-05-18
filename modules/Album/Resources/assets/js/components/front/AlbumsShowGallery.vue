@@ -25,9 +25,9 @@
                 </div>
 
                 <div v-if="album.categories" class="tags">
-                <span v-for="category in album.categories" class="tag">
-                    <a :href="category.links.related">{{ category.name }}</a>
-                </span>
+                    <span v-for="category in album.categories" class="tag">
+                        <a v-if="category.links" :href="category.links.related">{{ category.name }}</a>
+                    </span>
                 </div>
             </div>
         </div>
@@ -50,7 +50,6 @@
 
             <div class="card">
                 <div class="card-content">
-
                     <div class="columns is-multiline is-mobile">
                         <div v-for="cosplayer in album.cosplayers" class="column">
                             <figure v-if="cosplayer.thumb" class="is-centered image is-64x64">
