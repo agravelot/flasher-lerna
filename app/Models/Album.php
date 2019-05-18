@@ -92,6 +92,11 @@ class Album extends Model implements HasMedia
         'private',
     ];
 
+    public function getCoverAttribute()
+    {
+        return $this->getFirstMedia('pictures');
+    }
+
     /**
      * Scope for public albums.
      *
