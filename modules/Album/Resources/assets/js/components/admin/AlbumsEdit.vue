@@ -42,7 +42,6 @@
                                 :allow-new="false"
                                 field="name"
                                 placeholder="Add a cosplayer"
-                                icon-pack="fas"
                                 icon="user-tag"
                                 @typing="getFilteredCosplayers">
                         </b-taginput>
