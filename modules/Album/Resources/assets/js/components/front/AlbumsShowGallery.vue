@@ -34,15 +34,15 @@
 
         <h2 class="title is-2 has-text-centered">Pictures</h2>
         <!--TODO Add nothing to show-->
-        <masonry :gutter="{default: '0px'}"
+        <masonry :gutter="{default: '0.5rem'}"
                  :cols="{default: 3, 1000: 2, 700: 1, 400: 1}">
-            <a v-for="(media, index) in album.medias" :key="index" @click="openPicture(media)">
+            <div v-for="(media, index) in album.medias" :key="index" @click="openPicture(media)" class="has-margin-top-sm">
                 <figure class="image">
                     <img v-if="media.src_set" class="responsive-media" :srcset="media.src_set" :src="media.thumb"
                          :alt="media.name" sizes="1px" loading="auto">
                     <img v-else :src="media.thumb" :alt="media.name" loading="auto">
                 </figure>
-            </a>
+            </div>
         </masonry>
 
         <section v-if="album.cosplayers" class="section">
