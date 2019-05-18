@@ -9,13 +9,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
-use App\Models\Album;
-use App\Models\Contact;
-use App\Models\Cosplayer;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
-use Spatie\Activitylog\Models\Activity;
 use Illuminate\Auth\Access\AuthorizationException;
 
 class AdminController extends Controller
@@ -31,12 +26,6 @@ class AdminController extends Controller
     {
         $this->authorize('dashboard');
 
-        return view('admin.dashboard.dashboard', [
-            'userCount' => User::count(),
-            'albumCount' => Album::count(),
-            'cosplayerCount' => Cosplayer::count(),
-            'contactCount' => Contact::count(),
-            'activities' => Activity::with(['causer', 'subject'])->latest()->limit(10)->get(),
-        ]);
+        return view('admin.admin');
     }
 }

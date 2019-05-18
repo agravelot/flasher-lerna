@@ -3,14 +3,14 @@
 @section('pageTitle', __('Admin'))
 
 @section('content')
-    <div id="app">
+    <section class="section" id="app">
         <div class="columns">
-            @include('admin.partials._menu')
-            <div class="column" id="main-admin">
+            <sidebar></sidebar>
+            <div class="column">
                 @include('layouts.partials._messages')
-                <app></app>
+                <router-view></router-view>
                 @yield('admin-content')
             </div>
         </div>
-    </div>
+    </section>
 @endsection

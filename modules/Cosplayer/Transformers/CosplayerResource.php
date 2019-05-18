@@ -10,6 +10,7 @@
 namespace Modules\Cosplayer\Transformers;
 
 use Illuminate\Http\Resources\Json\Resource;
+use Modules\Album\Transformers\MediaResource;
 
 class CosplayerResource extends Resource
 {
@@ -22,6 +23,15 @@ class CosplayerResource extends Resource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'slug' => $this->slug,
+            'description' => $this->description,
+            'avatar' => new MediaResource($this->avatar),
+            'user_id' => optional($this->user)->id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
     }
 }

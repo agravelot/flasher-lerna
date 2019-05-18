@@ -18,6 +18,8 @@ if (document.getElementsByClassName('dropzone').length > 0) {
         // parallelChunkUploads: true,
         acceptedFiles: 'image/*',
         retryChunks: true,
+        retryChunksLimit: 5,
+        maxThumbnailFilesize: 25,
         // paramName: 'picture'
         headers: {
             'X-CSRF-Token': token && token.content,

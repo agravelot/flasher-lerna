@@ -10,6 +10,7 @@
 namespace Modules\Album\Http\Controllers;
 
 use App\Models\Album;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Modules\Album\Transformers\AlbumIndexResource;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
@@ -34,7 +35,7 @@ class AdminPictureAlbumController extends Controller
      *
      * @throws UploadMissingFileException
      *
-     * @return string
+     * @return JsonResponse|ProcessingUploadPictureResource
      */
     public function store(StorePictureAlbumRequest $request, FileReceiver $receiver)
     {
@@ -64,7 +65,7 @@ class AdminPictureAlbumController extends Controller
      * @param Album                     $album
      * @param DeletePictureAlbumRequest $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function destroy(Album $album, DeletePictureAlbumRequest $request)
     {

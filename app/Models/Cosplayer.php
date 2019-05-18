@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Spatie\MediaLibrary\File;
 use Illuminate\Support\Carbon;
 use App\Abilities\HasNameAsSlug;
+use Illuminate\Http\UploadedFile;
 use App\Abilities\HasSlugRouteKey;
 use Spatie\MediaLibrary\Models\Media;
 use Illuminate\Database\Eloquent\Model;
@@ -26,7 +27,6 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
@@ -61,6 +61,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @property Collection|PublicAlbum[] $publicAlbums
  * @property mixed                    $initial
+ * @property mixed                    $avatar
  */
 class Cosplayer extends Model implements HasMedia
 {
@@ -81,6 +82,36 @@ class Cosplayer extends Model implements HasMedia
     public function getInitialAttribute()
     {
         return mb_strtoupper(mb_substr($this->name, 0, 1));
+    }
+
+    public function getAvatarAttribute()
+    {
+        return $this->getFirstMedia('avatar');
+    }
+
+    /**
+     * Add media to 'pictures' collection.
+     *
+     * @param UploadedFile|null $media
+     */
+    public function setAvatarAttribute($media)
+    {
+        if (! $media && $this->avatar) {
+            $this->avatar->delete();
+        }
+
+        if (! $media) {
+            return;
+        }
+
+        $uuid = Str::uuid()->toString();
+        $name = "{$this->slug}_{$uuid}.{$media->clientExtension()}";
+
+        $this->addMedia($media)
+            ->usingFileName($name)
+            ->preservingOriginal()
+            ->withResponsiveImages()
+            ->toMediaCollection('avatar');
     }
 
     /**
@@ -121,25 +152,6 @@ class Cosplayer extends Model implements HasMedia
     public function categories()
     {
         return $this->morphToMany(Category::class, 'categorizable');
-    }
-
-    /**
-     * Add media to 'pictures' collection.
-     *
-     * @param string|UploadedFile $media
-     *
-     * @return Media
-     */
-    public function setAvatar($media)
-    {
-        $uuid = Str::uuid();
-        $name = "{$this->slug}_{$uuid}.{$media->getClientOriginalExtension()}";
-
-        return $this->addMedia($media)
-            ->usingFileName($name)
-            ->preservingOriginal()
-            ->withResponsiveImages()
-            ->toMediaCollection('avatar');
     }
 
     /**

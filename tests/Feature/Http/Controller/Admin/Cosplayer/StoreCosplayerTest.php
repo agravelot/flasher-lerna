@@ -84,7 +84,7 @@ class StoreCosplayerTest extends TestCase
     public function test_admin_can_not_create_two_cosplayers_with_the_same_name_and_redirect_with_error()
     {
         $this->actingAsAdmin();
-        $cosplayer = factory(Cosplayer::class)->create();
+        $cosplayer = factory(Cosplayer::class)->create()->replicate();
 
         $response = $this->storeCosplayer($cosplayer);
 

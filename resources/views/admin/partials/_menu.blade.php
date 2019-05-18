@@ -12,16 +12,16 @@
                     {{ __('Dashboard') }}
                 </a>
             </li>
-            @can('index', \App\Models\Album::class)
-                <li>
-                    <a href="{{ route('admin.albums.index') }}" {{ Request::is('admin/albums*') ? 'class=is-active' : '' }}>
-                    <span class="icon">
-                        <i class="fas fa-images"></i>
-                    </span>
-                        {{ __('Albums') }}
-                    </a>
-                </li>
-            @endcan
+{{--            @can('index', \App\Models\Album::class)--}}
+{{--                <li>--}}
+{{--                    <a href="{{ route('admin.albums.index') }}" {{ Request::is('admin/albums*') ? 'class=is-active' : '' }}>--}}
+{{--                    <span class="icon">--}}
+{{--                        <i class="fas fa-images"></i>--}}
+{{--                    </span>--}}
+{{--                        {{ __('Albums') }}--}}
+{{--                    </a>--}}
+{{--                </li>--}}
+{{--            @endcan--}}
             @can('index', \App\Models\Category::class)
                 <li>
                     <a href="{{ route('admin.categories.index') }}" {{ Request::is('admin/categories*') ? 'class=is-active' : '' }}>

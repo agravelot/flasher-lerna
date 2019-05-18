@@ -9,7 +9,7 @@ RUN apk add --no-cache bash \
 #
 # Frontend
 #
-FROM node:10-alpine as frontend
+FROM node:12-alpine as frontend
 WORKDIR /app
 COPY . .
 RUN yarn install && yarn production
@@ -75,17 +75,17 @@ COPY --chown=1000:1000 . /var/www/html
 # Importing composer and assets dependencies
 COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/vendor/
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
+COPY --from=composer --chown=1000:1000 /usr/bin/composer ./composer
 
 # Link storage
 RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
-        && chown -h 1000:1000 /var/www/html/public/storage
+        && chown -h 1000:1000 /var/www/html/public/storage \
+        # Check composer reqs
+        && ./composer check-platform-reqs && rm -f ./composer
 
-# Check composer reqs
-COPY --from=composer /usr/bin/composer /usr/bin/composer
-RUN composer check-platform-reqs
-RUN rm -f /usr/bin/composer
+COPY --chown=1000:1000 docker/php-fpm/start.sh /start.sh
 
-COPY docker/php-fpm/start.sh /start.sh
+USER 1000:1000
 
 CMD /start.sh
 

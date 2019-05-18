@@ -3,5 +3,9 @@
 @section('pageTitle', $album->resource->title)
 
 @section("content")
-    @include('albums.partials._show_item', compact('album'))
+    <section class="section">
+        <div class="container">
+            @include('albums.partials._show_item', compact('album'))
+        </div>
+    </section>
 @endsection

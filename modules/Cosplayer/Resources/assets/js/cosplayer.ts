@@ -1,0 +1,6 @@
+export default class Cosplayer {
+    public name: string = '';
+    public description: string|null;
+    public avatar: object;
+    public user_id: number|null;
+}

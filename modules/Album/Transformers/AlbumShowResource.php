@@ -13,6 +13,7 @@ use App\Models\Album;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Resources\Json\Resource;
 use Modules\Category\Transformers\CategoryResource;
+use Modules\Cosplayer\Transformers\CosplayerResource;
 
 class AlbumShowResource extends Resource
 {
@@ -46,7 +47,7 @@ class AlbumShowResource extends Resource
                 ),
                 'edit' => $this->when(
                     $this->checkCan('update', $album),
-                    route('admin.albums.edit', ['slug' => $this->slug])
+                    "/admin/albums/{$this->slug}/edit"
                 ),
             ],
         ];

@@ -34,8 +34,10 @@ class AdminAlbumController extends Controller
     public function index()
     {
         return AlbumIndexResource::collection(
-            QueryBuilder::for(Album::class)->with('media')
-                ->withCount('media')->paginate(15)
+            QueryBuilder::for(Album::class)->allowedFilters('title')
+                ->with('media')
+                ->withCount('media')
+                ->paginate(15)
         );
     }
 
@@ -89,6 +91,7 @@ class AdminAlbumController extends Controller
      */
     public function update(Album $album, AlbumRequest $request)
     {
+        $album->slug = null;
         $album->update($request->validated());
 
         if ($request->has('categories')) {

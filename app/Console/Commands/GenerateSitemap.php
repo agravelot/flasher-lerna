@@ -10,6 +10,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Album;
+use App\Models\Category;
 use App\Models\Cosplayer;
 use App\Models\PublicAlbum;
 use Spatie\Sitemap\Tags\Url;
@@ -52,6 +53,12 @@ class GenerateSitemap extends Command
         Cosplayer::all()->each(function (Cosplayer $cosplayer) use ($sitemap) {
             $sitemap->add(Url::create(route('cosplayers.show', compact('cosplayer')))
                 ->setPriority(0.6)->setLastModificationDate($cosplayer->updated_at)
+                ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
+        });
+
+        Category::all()->each(function (Category $category) use ($sitemap) {
+            $sitemap->add(Url::create(route('categories.show', compact('category')))
+                ->setPriority(0.6)->setLastModificationDate($category->updated_at)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
         });
 

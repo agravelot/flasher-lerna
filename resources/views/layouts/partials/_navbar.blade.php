@@ -1,38 +1,33 @@
-<nav class="navbar has-shadow" role="navigation" aria-label="dropdown navigation">
+<nav class="navbar" role="navigation" aria-label="dropdown navigation">
     <div class="container">
         <div class="navbar-brand">
-            <a href="{{ url('/') }}" class="navbar-item">{{ config('app.name', 'PicBlog') }}</a>
 
-            @include('layouts.partials._navbar_socials', ['desktop' => false])
+            <a href="{{ url('/') }}"
+               class="navbar-item">{{ settings()->get('app_name', config('app.name', 'Flasher')) }}</a>
 
-            <a role="button" class="navbar-burger burger" aria-label="menu" data-target="navMenu" aria-expanded="false">
+            @include('layouts.partials._navbar_socials')
+
+            <a role="button" class="navbar-burger burger" aria-label="menu" data-target="navMenu"
+               aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
             </a>
         </div>
-
-        <div class="navbar-menu" id="navMenu">
-            <div class="navbar-start">
-                {{-- <a class="navbar-item {{ Request::is('posts*') ? 'is-active' : '' }}" href="{{ route('posts.index') }}">Posts</a>--}}
-                {{--<a class="navbar-item {{ Request::is('albums*') ? 'is-active' : '' }}"--}}
-                   {{--href="{{ route('albums.index') }}">{{ __('Albums') }}</a>--}}
-                {{--<a class="navbar-item {{ Request::is('categories*') ? 'is-active' : '' }}"--}}
-                   {{--href="{{ route('categories.index') }}">{{ __('Categories') }}</a>--}}
+        <div id="navMenu" class="navbar-menu">
+            <div class="navbar-end">
+                <a class="navbar-item {{ Request::is('/') ? 'is-active' : '' }}"
+                   href="{{ url('/') }}">{{ __('Home') }}</a>
+                @include('layouts.partials._navbar_albums')
                 @include('layouts.partials._navbar_categories')
                 <a class="navbar-item {{ Request::is('goldenbook*') ? 'is-active' : '' }}"
                    href="{{ route('goldenbook.index') }}">{{ __('Golden book') }}</a>
-            </div>
-
-            @include('layouts.partials._navbar_socials', ['desktop' => true])
-
-            <div class="navbar-end">
-                <a class="navbar-item {{ Request::is('about') ? 'is-active' : '' }}" href="#">{{ __('About') }}</a>
+                {{--                <a class="navbar-item {{ Request::is('about') ? 'is-active' : '' }}" href="#">{{ __('About') }}</a>--}}
                 <a class="navbar-item {{ Request::is('contact*') ? 'is-active' : '' }}"
                    href="{{ route('contact.index') }}">{{ __('Contact') }}</a>
                 @auth()
                     <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link" href="#">
+                        <a class="navbar-link" href="{{ route('admin.dashboard') }}">
                             <span class="icon">
                                 <i class="fas fa-user"></i>
                             </span>
@@ -47,9 +42,6 @@
                                     {{ __('Admin') }}
                                 </a>
                             @endcan
-                            <a class="navbar-item {{ Request::is('') ? 'is-active' : '' }}" href="#">
-                                {{ __('Settings') }}
-                            </a>
                             <hr class="navbar-divider">
                             <a class="navbar-item has-text-danger"
                                onclick="event.preventDefault();document.getElementById('logout-form').submit();">
@@ -67,3 +59,15 @@
         </div>
     </div>
 </nav>
+
+@if(! request()->is('admin*') and ! request()->is('/'))
+    <div class="hero is-primary">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title">
+                    @yield('pageTitle')
+                </h1>
+            </div>
+        </div>
+    </div>
+@endif

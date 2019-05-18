@@ -29,6 +29,8 @@ echo " * PULLING NEW IMAGES"
 docker-compose pull
 echo " * STOPPING QUEUE WORKERS"
 docker-compose exec -T queue php artisan horizon:pause || echo "Container is not running"
+# TODO Remove after deployment
+docker-compose exec -T -u root queue chown 1000:1000 -R /var/www/html || echo "Container is not running"
 docker-compose stop -t 60 queue || echo "Container is not running"
 docker-compose stop scheduler || echo "Container is not running"
 echo " * PUTTING LARAVEL IN MAINTENANCE MODE"

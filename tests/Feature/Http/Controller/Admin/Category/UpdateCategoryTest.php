@@ -43,7 +43,7 @@ class UpdateCategoryTest extends TestCase
 
         session()->setPreviousUrl('/admin/categories/'.$slug.'/edit');
 
-        return $this->patch('/admin/categories/'.$slug, $category->toArray());
+        return $this->patch("/admin/categories/$slug", $category->toArray());
     }
 
     public function test_admin_can_not_update_a_category_with_another_category_name()

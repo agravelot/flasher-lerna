@@ -91,27 +91,6 @@ class UpdateCosplayerTest extends TestCase
             ->assertDontSee('Cosplayer successfully updated');
     }
 
-    public function test_admin_can_update_a_categories_with_the_same_name()
-    {
-        $this->actingAsAdmin();
-        $category = factory(Cosplayer::class)->create();
-
-        $response = $this->updateCosplayer([
-            'name' => $category->name,
-            'description' => 'updated description',
-        ], $category);
-
-        $this->assertSame(1, Cosplayer::count());
-        $response->assertStatus(302)
-            ->assertRedirect('/admin/cosplayers');
-        $this->followRedirects($response)
-            ->assertStatus(200)
-            ->assertSee($category->name)
-            ->assertSee('Cosplayer successfully updated')
-            ->assertDontSee('updated description')
-            ->assertDontSee('The name has already been taken.');
-    }
-
     public function test_user_can_not_update_a_cosplayer()
     {
         $this->actingAsUser();

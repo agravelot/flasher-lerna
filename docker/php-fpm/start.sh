@@ -28,7 +28,7 @@ if [[ "$role" = "app" ]]; then
 
         php artisan migrate --force
         php artisan passport:keys
-        php artisan telescope:publish
+#        php artisan telescope:publish
         php artisan horizon:assets
     fi
 

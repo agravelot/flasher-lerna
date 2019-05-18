@@ -21,7 +21,7 @@ class CategoryRequest extends Request
     public function rules()
     {
         $id = '';
-        if ($this->method() === 'PATCH') {
+        if (\in_array($this->method(), ['PATCH', 'PUT'], true)) {
             $id = Category::findBySlugOrFail($this->category)->id;
         }
 

@@ -10,9 +10,9 @@
 namespace Modules\Category\Http\Controllers;
 
 use App\Models\Category;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use Modules\Category\Http\Requests\CategoryRequest;
 use Modules\Category\Transformers\CategoryResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -31,12 +31,15 @@ class AdminCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param CategoryRequest $request
      *
-     * @return Response
+     * @return CategoryResource
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
+        $category = Category::create($request->validated());
+
+        return new CategoryResource($category);
     }
 
     /**
@@ -54,12 +57,17 @@ class AdminCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param CategoryRequest $request
+     * @param Category        $category
      *
-     * @return Response
+     * @return CategoryResource
      */
-    public function update(Request $request)
+    public function update(CategoryRequest $request, Category $category)
     {
+        $category->slug = null;
+        $category->update($request->validated());
+
+        return new CategoryResource($category);
     }
 
     /**

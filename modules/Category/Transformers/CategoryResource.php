@@ -9,6 +9,7 @@
 
 namespace Modules\Category\Transformers;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
 
 class CategoryResource extends Resource
@@ -16,7 +17,7 @@ class CategoryResource extends Resource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  Request
      *
      * @return array
      */
@@ -24,7 +25,8 @@ class CategoryResource extends Resource
     {
         return [
             'id' => $this->id,
-           'name' => $this->name,
+            'name' => $this->name,
+            'description' => $this->description,
             'links' => [
                 'related' => route('categories.show', ['category' => $this]),
             ],

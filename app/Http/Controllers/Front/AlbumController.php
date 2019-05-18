@@ -25,9 +25,7 @@ class AlbumController extends Controller
      */
     public function index()
     {
-        $albums = PublicAlbum::with(['media'])
-            ->latest()
-            ->paginate(10);
+        $albums = PublicAlbum::latest()->paginate(10);
 
         return view('albums.index', [
             'albums' => AlbumIndexResource::collection($albums),
@@ -37,17 +35,15 @@ class AlbumController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param string $slug
+     * @param PublicAlbum $album
      *
      * @throws AuthorizationException
      *
      * @return Response
      */
-    public function show(string $slug)
+    public function show(PublicAlbum $album)
     {
-        $album = PublicAlbum::with(['cosplayers.media'])
-            ->whereSlug($slug)
-            ->firstOrFail();
+        $album->load(['cosplayers.media']);
         $this->authorize('view', $album);
 
         return view('albums.show', [

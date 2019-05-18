@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Models\GoldenBookPost;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use App\Models\PublishedGoldenBookPost;
 use App\Http\Requests\GoldenBookRequest;
 
@@ -43,12 +44,11 @@ class GoldenBookController extends Controller
      *
      * @param GoldenBookRequest $request
      *
-     * @return
+     * @return RedirectResponse
      */
     public function store(GoldenBookRequest $request)
     {
-        $validated = $request->validated();
-        GoldenBookPost::create($validated);
+        GoldenBookPost::create($request->validated());
 
         return redirect()->route('goldenbook.index')
             ->withSuccess('Your message has been added to the golden book');
