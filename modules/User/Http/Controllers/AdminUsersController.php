@@ -13,18 +13,22 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Spatie\QueryBuilder\QueryBuilder;
 use Modules\User\Transformers\UserResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminUsersController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AnonymousResourceCollection
      */
     public function index()
     {
-        return UserResource::collection(User::paginate(10));
+        return UserResource::collection(
+            QueryBuilder::for(User::class)->allowedFilters('name')->paginate(15)
+        );
     }
 
     /**
