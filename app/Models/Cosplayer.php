@@ -96,6 +96,10 @@ class Cosplayer extends Model implements HasMedia
      */
     public function setAvatarAttribute($media)
     {
+        if (! $media && $this->avatar) {
+            $this->avatar->delete();
+        }
+
         if (! $media) {
             return;
         }

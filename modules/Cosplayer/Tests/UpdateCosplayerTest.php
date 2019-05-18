@@ -49,6 +49,34 @@ class UpdateCosplayerTest extends TestCase
         $response->assertJson($this->getCosplayerJson($cosplayer->fresh()));
     }
 
+    public function test_admin_can_update_cosplayer_with_new_avatar()
+    {
+        $this->actingAsAdmin();
+        $cosplayer = factory(Cosplayer::class)->create();
+        $this->assertNull($cosplayer->avatar);
+
+        $avatar = UploadedFile::fake()->image('fake.jpg');
+        $response = $this->update($cosplayer, $avatar);
+
+        $response->assertStatus(200);
+        $this->assertNotNull($cosplayer->fresh()->avatar);
+        $response->assertJson($this->getCosplayerJson($cosplayer->fresh()));
+    }
+
+    public function test_admin_can_update_cosplayer_and_remove_avatar()
+    {
+        $this->actingAsAdmin();
+        $cosplayer = factory(Cosplayer::class)->create(['avatar' => UploadedFile::fake()->image('fake.jpg')]);
+        $this->assertNotNull($cosplayer->avatar);
+
+        $cosplayer->avatar = null;
+        $response = $this->update($cosplayer);
+
+        $response->assertStatus(200);
+        $response->assertJson($this->getCosplayerJson($cosplayer->fresh()));
+        $this->assertNull($cosplayer->fresh()->avatar);
+    }
+
     public function testAdminCanUpdateCosplayerWithSameName()
     {
         $this->actingAsAdmin();
@@ -68,7 +96,7 @@ class UpdateCosplayerTest extends TestCase
             'name' => $cosplayer->name,
             'description' => $cosplayer->description,
             'avatar' => $avatar,
-            'user_id' => $cosplayer->user_id,
+            'user_id' => optional($cosplayer->user)->id,
         ]);
     }
 
