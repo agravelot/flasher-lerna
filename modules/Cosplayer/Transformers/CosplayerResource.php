@@ -32,6 +32,9 @@ class CosplayerResource extends Resource
             'user_id' => optional($this->user)->id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'links' => [
+                'related' => route('cosplayers.show', ['cosplayers' => $this]),
+            ],
         ];
     }
 }
