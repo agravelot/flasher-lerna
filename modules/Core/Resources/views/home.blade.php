@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('pageTitle', 'Photographe')
+
 @section('content')
     <section class="hero is-primary is-medium">
         <div class="hero-body">
@@ -15,7 +17,7 @@
                             JKanda
                         </h1>
                         <h2 class="subtitle">
-                            Photographe passioné
+                            Photographe passionnée
                         </h2>
                     </div>
                 </div>
