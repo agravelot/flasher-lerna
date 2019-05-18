@@ -1,6 +1,6 @@
 <footer class="footer">
     <div class="content has-text-centered">
-        <div class="columns is-mobile is-centered">
+        <div class="columns is-centered">
             <div class="column is-narrow">
                 <div class="has-text-centered">
                     <a href="{{ url('/') }}">{{ __('Home') }}</a>
