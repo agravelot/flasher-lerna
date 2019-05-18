@@ -13,7 +13,7 @@ if (document.getElementsByClassName('dropzone').length > 0) {
         chunking: true,
         method: 'POST',
         maxFilesize: 400000000,
-        chunkSize: 1000000,
+        chunkSize: 2000000,
         // If true, the individual chunks of a file are being uploaded simultaneously.
         // parallelChunkUploads: true,
         acceptedFiles: 'image/*',
