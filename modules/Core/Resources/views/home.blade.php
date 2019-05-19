@@ -43,7 +43,7 @@
                 @foreach($albums as $album)
                     <div class="column">
                         <a class="box" href="{{ route('albums.show', compact('album')) }}">
-                            <figure class="image is-square">
+                            <figure class="image is-square is-fitted">
                                 {{ $album->cover }}
                             </figure>
                         </a>
@@ -88,6 +88,10 @@
 
         .box {
             padding: unset;
+        }
+
+        .is-fitted img {
+            object-fit: cover;
         }
     </style>
 @endsection
