@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <div class="card has-margin-bottom-md">
+        <div v-if="album.body || album.categories" class="card has-margin-bottom-md">
             <div class="card-content">
                 <div v-if="album.body" class="content article-body">
                     <p class="has-text-justified" v-html="album.body"></p>
@@ -32,20 +32,22 @@
             </div>
         </div>
 
-        <h2 class="title is-2 has-text-centered">Pictures</h2>
-        <!--TODO Add nothing to show-->
-        <masonry :gutter="{default: '0.5rem'}"
-                 :cols="{default: 3, 1000: 2, 700: 1, 400: 1}">
-            <div v-for="(media, index) in album.medias" :key="index" @click="openPicture(media)" class="has-margin-top-sm">
-                <figure class="image">
-                    <img v-if="media.src_set" class="responsive-media" :srcset="media.src_set" :src="media.thumb"
-                         :alt="media.name" sizes="1px" loading="auto">
-                    <img v-else :src="media.thumb" :alt="media.name" loading="auto">
-                </figure>
-            </div>
-        </masonry>
+        <div v-if="album.medias && album.medias.length">
+            <h2 class="title is-2 has-text-centered">Pictures</h2>
+            <!--TODO Add nothing to show-->
+            <masonry :gutter="{default: '0.5rem'}"
+                     :cols="{default: 3, 1000: 2, 700: 1, 400: 1}">
+                <div v-for="(media, index) in album.medias" :key="index" @click="openPicture(media)" class="has-margin-top-sm">
+                    <figure class="image">
+                        <img v-if="media.src_set" class="responsive-media" :srcset="media.src_set" :src="media.thumb"
+                             :alt="media.name" sizes="1px" loading="auto">
+                        <img v-else :src="media.thumb" :alt="media.name" loading="auto">
+                    </figure>
+                </div>
+            </masonry>
+        </div>
 
-        <section v-if="album.cosplayers" class="section">
+        <section v-if="album.cosplayers && album.cosplayers.length" class="section">
             <h2 class="title is-2 has-text-centered">Cosplayers</h2>
 
             <div class="card">
