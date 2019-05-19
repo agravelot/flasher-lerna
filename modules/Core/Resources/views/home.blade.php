@@ -43,7 +43,7 @@
                 @foreach($albums as $album)
                     <div class="column">
                         <a class="box" href="{{ route('albums.show', compact('album')) }}">
-                            <figure class="image is-square">
+                            <figure class="image is-square is-fitted">
                                 {{ $album->cover }}
                             </figure>
                         </a>
@@ -62,19 +62,19 @@
                     {!! settings()->get('homepage_description') !!}
                 </p>
             </div>
-            <section class="has-margin-top-lg">
-                <h3 class="title is-5 has-text-centered">Soyez informé dès que je publie quelque chose de nouveau.</h3>
-                <div class="field has-addons has-addons-centered has-margin-top-sm">
-                    <div class="control">
-                        <input class="input" type="text" placeholder="{{ __('Votre addresse email') }}">
-                    </div>
-                    <div class="control">
-                        <a class="button is-info">
-                            {{ __('Valider') }}
-                        </a>
-                    </div>
-                </div>
-            </section>
+{{--            <section class="has-margin-top-lg">--}}
+{{--                <h3 class="title is-5 has-text-centered">Soyez informé dès que je publie quelque chose de nouveau.</h3>--}}
+{{--                <div class="field has-addons has-addons-centered has-margin-top-sm">--}}
+{{--                    <div class="control">--}}
+{{--                        <input class="input" type="text" placeholder="{{ __('Votre addresse email') }}">--}}
+{{--                    </div>--}}
+{{--                    <div class="control">--}}
+{{--                        <a class="button is-info">--}}
+{{--                            {{ __('Valider') }}--}}
+{{--                        </a>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </section>--}}
         </div>
     </section>
 @stop
@@ -88,6 +88,10 @@
 
         .box {
             padding: unset;
+        }
+
+        .is-fitted img {
+            object-fit: cover;
         }
     </style>
 @endsection

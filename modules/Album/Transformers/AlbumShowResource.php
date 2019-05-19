@@ -10,6 +10,7 @@
 namespace Modules\Album\Transformers;
 
 use App\Models\Album;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Resources\Json\Resource;
 use Modules\Category\Transformers\CategoryResource;
@@ -18,14 +19,20 @@ use Modules\Cosplayer\Transformers\CosplayerResource;
 class AlbumShowResource extends Resource
 {
     /**
+     * @var Request
+     */
+    private $request;
+
+    /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  Request
      *
      * @return array
      */
     public function toArray($request)
     {
+        $this->request = $request;
         $album = Album::newModelInstance($this);
 
         return [
@@ -43,7 +50,7 @@ class AlbumShowResource extends Resource
             'links' => [
                 'download' => $this->when(
                     $this->checkCan('download', $album),
-                    route('download-albums.show', ['slug' => $this->slug])
+                    route('download-albums.show', ['album' => $this])
                 ),
                 'edit' => $this->when(
                     $this->checkCan('update', $album),
@@ -63,7 +70,12 @@ class AlbumShowResource extends Resource
      */
     private function checkCan(string $permission, Album $album)
     {
-        return Auth::guard('api')->check()
-            && Auth::guard('api')->user()->can($permission, $album);
+        // Because we are using this resource directly in your views.
+        // We need need to check the request is an ajax request.
+        // In order to the the auth with the proper guard
+        $name = $this->request->ajax() ? 'api' : 'web';
+        $guard = Auth::guard($name);
+
+        return $guard->check() && $guard->user()->can($permission, $album);
     }
 }
