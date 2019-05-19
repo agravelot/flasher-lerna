@@ -36,7 +36,6 @@
             <div class="has-text-centered">
                 <a href="{{ route('albums.index') }}">
                     <h2 class="title">Découvrez mes albums</h2>
-
                 </a>
             </div>
 
@@ -52,8 +51,6 @@
                 @endforeach
             </div>
 
-
-
         </div>
     </section>
 
@@ -62,16 +59,11 @@
             <div class="container has-text-centered">
                 <h2 class="title">Qui suis-je ?</h2>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec placerat non urna nec feugiat. Mauris
-                    porta, dolor sed elementum placerat, purus enim tristique orci, eget gravida sapien arcu quis elit.
-                    Interdum et malesuada fames ac ante ipsum primis in faucibus. Vestibulum interdum orci quis
-                    pellentesque
-                    pretium. Fusce orci risus, dignissim ac ex in, porta iaculis enim. Curabitur vestibulum nisl
-                    pellentesque nunc posuere iaculis. Sed auctor pulvinar rhoncus.
+                    {!! settings()->get('homepage_description') !!}
                 </p>
             </div>
             <section class="has-margin-top-lg">
-                <h3 class="title is-5 has-text-centered">Souillez informé dès que je publie quelque chose de nouveau.</h3>
+                <h3 class="title is-5 has-text-centered">Soyez informé dès que je publie quelque chose de nouveau.</h3>
                 <div class="field has-addons has-addons-centered has-margin-top-sm">
                     <div class="control">
                         <input class="input" type="text" placeholder="{{ __('Votre addresse email') }}">
