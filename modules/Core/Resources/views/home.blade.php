@@ -6,24 +6,19 @@
     <section class="hero is-primary is-medium has-hero-background">
         <div class="hero-body">
             <div class="container">
-                <div class="columns is-centered">
-                    <div class="column is-half">
-                        <div class="columns is-centered is-vcentered">
-                            <div class="column">
-                                <figure class="image is-128x128 is-pulled-right">
-                                    <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png"
-                                         alt="">
-                                </figure>
-                            </div>
-                            <div class="column">
-                                <h1 class="title">
-                                    JKanda
-                                </h1>
-                                <p class="subtitle">
-                                    Photographe passionnée
-                                </p>
-                            </div>
-                        </div>
+                <div class="columns is-centered is-vcentered">
+                    <div class="column">
+                        <figure class="image is-128x128 is-pulled-right">
+                            <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" alt="">
+                        </figure>
+                    </div>
+                    <div class="column">
+                        <h1 class="title">
+                            JKanda
+                        </h1>
+                        <p class="subtitle">
+                            Photographe passionnée
+                        </p>
                     </div>
                 </div>
 
@@ -98,7 +93,7 @@
 
 @section('js')
     <script>
-        window.onresize = function(event) {
+        window.onresize = function (event) {
             const responsiveMedias = document.getElementsByClassName('responsive-media');
             Array.from(responsiveMedias).forEach((el) => {
                 (el).sizes = `${Math.ceil((el.getBoundingClientRect().width / window.innerWidth) * 100)}vw`;
