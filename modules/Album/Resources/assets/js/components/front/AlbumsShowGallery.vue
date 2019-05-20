@@ -1,5 +1,4 @@
 <template>
-
     <div v-if="this.album">
         <!--        <h1 class="title is-1 has-text-centered">{{ album.title }}</h1>-->
 

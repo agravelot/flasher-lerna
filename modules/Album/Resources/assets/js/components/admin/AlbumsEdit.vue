@@ -195,6 +195,7 @@
                         duration: 5000,
                     });
                     this.errors = err.response.data.errors;
+                    throw err;
                 });
         }
 
