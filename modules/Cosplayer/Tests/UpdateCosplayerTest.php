@@ -35,6 +35,35 @@ class UpdateCosplayerTest extends TestCase
         $response->assertJson($this->getCosplayerJson($cosplayer->fresh()));
     }
 
+    private function update(Cosplayer $cosplayer, UploadedFile $avatar = null, bool $withAvatar = true): TestResponse
+    {
+        $params = [
+            'name' => $cosplayer->name,
+            'description' => $cosplayer->description,
+            'user_id' => optional($cosplayer->user)->id,
+        ];
+
+        if ($withAvatar) {
+            $params['avatar'] = $avatar;
+        }
+
+        return $this->json('patch', "/api/admin/cosplayers/{$cosplayer->slug}", $params);
+    }
+
+    private function getCosplayerJson(Cosplayer $cosplayer): array
+    {
+        return [
+            'data' => [
+                'id' => $cosplayer->id,
+                'name' => $cosplayer->name,
+                'slug' => $cosplayer->slug,
+                'description' => $cosplayer->description,
+                'created_at' => $cosplayer->created_at->jsonSerialize(),
+                'updated_at' => $cosplayer->updated_at->jsonSerialize(),
+            ],
+        ];
+    }
+
     public function test_admin_can_update_cosplayer_with_updated_related_user()
     {
         $this->actingAsAdmin();
@@ -66,11 +95,10 @@ class UpdateCosplayerTest extends TestCase
     public function test_admin_can_update_cosplayer_and_remove_avatar()
     {
         $this->actingAsAdmin();
-        $cosplayer = factory(Cosplayer::class)->create(['avatar' => UploadedFile::fake()->image('fake.jpg')]);
+        $cosplayer = factory(Cosplayer::class)->state('avatar')->create();
         $this->assertNotNull($cosplayer->avatar);
 
-        $cosplayer->avatar = null;
-        $response = $this->update($cosplayer);
+        $response = $this->update($cosplayer, null);
 
         $response->assertStatus(200);
         $response->assertJson($this->getCosplayerJson($cosplayer->fresh()));
@@ -88,30 +116,6 @@ class UpdateCosplayerTest extends TestCase
         $cosplayer = Cosplayer::latest()->first();
         $response->assertStatus(200);
         $response->assertJson($this->getCosplayerJson($cosplayer));
-    }
-
-    private function update(Cosplayer $cosplayer, UploadedFile $avatar = null): TestResponse
-    {
-        return $this->json('patch', "/api/admin/cosplayers/{$cosplayer->slug}", [
-            'name' => $cosplayer->name,
-            'description' => $cosplayer->description,
-            'avatar' => $avatar,
-            'user_id' => optional($cosplayer->user)->id,
-        ]);
-    }
-
-    private function getCosplayerJson(Cosplayer $cosplayer): array
-    {
-        return [
-            'data' => [
-                'id' => $cosplayer->id,
-                'name' => $cosplayer->name,
-                'slug' => $cosplayer->slug,
-                'description' => $cosplayer->description,
-                'created_at' => $cosplayer->created_at->jsonSerialize(),
-                'updated_at' => $cosplayer->updated_at->jsonSerialize(),
-            ],
-        ];
     }
 
     public function test_admin_can_update_cosplayer_name_and_update_slug()

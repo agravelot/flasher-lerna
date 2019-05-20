@@ -7,7 +7,9 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace App\Http\Requests;
+namespace Modules\Cosplayer\Http\Requests;
+
+use App\Http\Requests\Request;
 
 class CosplayerRequest extends Request
 {

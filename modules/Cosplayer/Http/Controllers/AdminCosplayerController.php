@@ -45,7 +45,7 @@ class AdminCosplayerController extends Controller
     {
         $cosplayer = Cosplayer::create($request->validated());
 
-        if ($request->hasFile('avatar')) {
+        if ($request->has('avatar')) {
             $cosplayer->avatar = $request->file('avatar');
         }
 
@@ -75,7 +75,7 @@ class AdminCosplayerController extends Controller
         $cosplayer->slug = null;
         $cosplayer->update($request->validated());
 
-        if ($request->hasFile('avatar')) {
+        if ($request->has('avatar')) {
             $cosplayer->avatar = $request->file('avatar');
         }
 
