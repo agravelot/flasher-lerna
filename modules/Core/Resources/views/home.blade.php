@@ -34,17 +34,19 @@
                 </a>
             </div>
 
-            <div class="columns is-vcentered is-centered">
-                @foreach($albums as $album)
-                    <div class="column">
-                        <a class="box" href="{{ route('albums.show', compact('album')) }}">
-                            <figure class="image is-square is-fitted">
-                                {{ $album->cover }}
-                            </figure>
-                        </a>
-                    </div>
-                @endforeach
-            </div>
+            <section class="section">
+                <div class="columns is-vcentered is-centered">
+                    @foreach($albums as $album)
+                        <div class="column">
+                            <a class="box" href="{{ route('albums.show', compact('album')) }}">
+                                <figure class="image is-square is-fitted">
+                                    {{ $album->cover }}
+                                </figure>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+            </section>
 
         </div>
     </section>
