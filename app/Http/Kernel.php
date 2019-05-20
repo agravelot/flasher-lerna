@@ -47,7 +47,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            //TODO reverse
+            //TODO restore api throttling
             //'throttle:60,1',
             'bindings',
         ],
