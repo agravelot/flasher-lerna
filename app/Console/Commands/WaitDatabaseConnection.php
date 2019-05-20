@@ -9,6 +9,7 @@
 
 namespace App\Console\Commands;
 
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -41,7 +42,7 @@ class WaitDatabaseConnection extends Command
     {
         try {
             DB::connection()->getPdo();
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             sleep(1);
             $this->warn('Unable to connect to the database, retrying...');
             $this->waitConnection();

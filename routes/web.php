@@ -38,7 +38,7 @@ Route::middleware(['web', 'auth', 'verified', 'admin'])->group(function () {
                 Route::resource('users', 'AdminUserController');
                 Route::resource('contacts', 'AdminContactController')->except('edit', 'update');
             });
-            Route::get('/spa/{any}', 'SpaController@index')->where('any', '.*');
+            Route::get('/{any}', 'SpaController@index')->where('any', '.*');
         });
     });
 });

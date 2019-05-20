@@ -95,3 +95,15 @@
         }
     </style>
 @endsection
+
+@section('js')
+    <script>
+        window.onresize = function(event) {
+            const responsiveMedias = document.getElementsByClassName('responsive-media');
+            Array.from(responsiveMedias).forEach((el) => {
+                (el).sizes = `${Math.ceil((el.getBoundingClientRect().width / window.innerWidth) * 100)}vw`;
+            });
+        };
+    </script>
+
+@endsection
