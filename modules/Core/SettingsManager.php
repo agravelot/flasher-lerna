@@ -20,7 +20,11 @@ class SettingsManager
 
     public function get(string $name, $default = null)
     {
-        return Setting::findOrFail($name)->value ?: $default;
+        if ($default) {
+            return Setting::find($name)->value ?: $default;
+        }
+
+        return Setting::findOrFail($name)->value;
     }
 
     public function set(array $setting): Setting
