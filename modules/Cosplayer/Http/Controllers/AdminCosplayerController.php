@@ -13,7 +13,7 @@ use App\Models\Cosplayer;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
-use App\Http\Requests\CosplayerRequest;
+use Modules\Cosplayer\Http\Requests\CosplayerRequest;
 use Modules\Cosplayer\Transformers\CosplayerResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -45,7 +45,7 @@ class AdminCosplayerController extends Controller
     {
         $cosplayer = Cosplayer::create($request->validated());
 
-        if ($request->has('avatar')) {
+        if ($request->hasFile('avatar')) {
             $cosplayer->avatar = $request->file('avatar');
         }
 
@@ -75,7 +75,7 @@ class AdminCosplayerController extends Controller
         $cosplayer->slug = null;
         $cosplayer->update($request->validated());
 
-        if ($request->has('avatar')) {
+        if ($request->hasFile('avatar')) {
             $cosplayer->avatar = $request->file('avatar');
         }
 
