@@ -43,7 +43,7 @@ class AdminPictureAlbumController extends Controller
         Resource::withoutWrapping();
 
         /** @var Album $album */
-        $album =  Album::whereSlug($request->get('album_slug'))->firstOrFail();
+        $album = Album::whereSlug($request->get('album_slug'))->firstOrFail();
 
         if ($receiver->isUploaded() === false) {
             throw new UploadMissingFileException();
