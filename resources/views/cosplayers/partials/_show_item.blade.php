@@ -8,7 +8,7 @@
             <div class="card has-margin-top-md">
                 <div class="card-content">
                     @if ($cosplayer->description)
-                        <p class="has-text-justified">{!! $cosplayer->description  !!}</p>
+                        <p class="has-text-justified has-margin-bottom-sm">{!! $cosplayer->description  !!}</p>
                     @endif
                     @if ($cosplayer->categories)
                         <div class="tags">
