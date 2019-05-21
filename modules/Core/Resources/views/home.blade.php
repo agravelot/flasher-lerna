@@ -3,7 +3,7 @@
 @section('pageTitle', 'Photographe')
 
 @section('content')
-    <section class="hero is-primary is-medium has-hero-background">
+    <section class="hero is-black is-medium has-hero-background">
         <div class="hero-body">
             <div class="container">
                 <div class="columns is-vcentered">
