@@ -37,7 +37,7 @@ class SettingsManager
         $setting = $this->settings->firstWhere('name', '===', $name);
 
         if (! $setting) {
-            throw new \InvalidArgumentException("Unable to find '$name' setting'");
+            throw new \InvalidArgumentException("Unable to find '$name' setting");
         }
 
         return $setting->value ?: $default;
