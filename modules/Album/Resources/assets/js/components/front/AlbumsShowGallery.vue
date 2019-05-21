@@ -32,7 +32,7 @@
         </div>
 
         <div v-if="album.medias && album.medias.length">
-            <h2 class="title is-2 has-text-centered">Pictures</h2>
+<!--            <h2 class="title is-2 has-text-centered">Pictures</h2>-->
             <!--TODO Add nothing to show-->
             <masonry :gutter="{default: '0.5rem'}"
                      :cols="{default: 3, 1000: 2, 700: 1, 400: 1}">
