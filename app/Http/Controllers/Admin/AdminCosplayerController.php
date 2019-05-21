@@ -14,8 +14,8 @@ use App\Models\User;
 use App\Models\Cosplayer;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CosplayerRequest;
 use Illuminate\Auth\Access\AuthorizationException;
+use Modules\Cosplayer\Http\Requests\CosplayerRequest;
 
 class AdminCosplayerController extends Controller
 {
