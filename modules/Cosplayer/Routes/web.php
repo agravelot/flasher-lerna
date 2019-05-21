@@ -8,5 +8,5 @@
  */
 
 Route::prefix('cosplayer')->group(function () {
-    Route::get('/', 'CosplayerController@index');
+    Route::get('/', 'AdminCosplayerController@index');
 });
