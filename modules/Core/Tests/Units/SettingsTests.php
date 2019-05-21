@@ -9,13 +9,18 @@
 
 namespace Modules\Core\Tests\Features\AdminPages;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Core\Entities\Setting;
 use Tests\TestCase;
+use Modules\Core\Entities\Setting;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SettingsTests extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_has_non_existent_return_false()
+    {
+        $this->assertFalse(settings()->has('random'));
+    }
 
     public function test_get_non_existent_setting_throw_an_exception()
     {

@@ -36,11 +36,11 @@ class SettingsManager
     {
         $setting = $this->settings->firstWhere('name', '===', $name);
 
-        if (! $setting) {
+        if (! $setting && $default === null) {
             throw new \InvalidArgumentException("Unable to find '$name' setting");
         }
 
-        return $setting->value ?: $default;
+        return optional($setting)->value ?: $default;
     }
 
     public function set(array $setting): Setting
