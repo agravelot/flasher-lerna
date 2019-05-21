@@ -9,6 +9,7 @@
 
 namespace App\Console\Commands;
 
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 
@@ -40,7 +41,7 @@ class WaitCacheConnectionAndClear extends Command
     {
         try {
             Cache::clear();
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             sleep(1);
             $this->waitConnectionForClear();
         }

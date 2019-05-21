@@ -1,24 +1,31 @@
 <template>
     <div class="card">
         <div class="card-content">
-            <b-field label="Name">
+            <b-field label="Name"
+                     :type="errors.name ? 'is-danger' : ''"
+                     :message="errors.name ? errors.name[0] : null">
                 <b-input v-model="cosplayer.name"></b-input>
             </b-field>
 
-            <b-field label="Description">
+            <b-field label="Description"
+                     :type="errors.description ? 'is-danger' : ''"
+                     :message="errors.description ? errors.description[0] : null">
                 <quill-editor v-model="cosplayer.description" ref="myQuillEditor"
                               :options="editorOption"></quill-editor>
-            </b-field>
-
-            <b-field v-if="cosplayer.avatar" label="Current avatar">
-                <img :src="cosplayer.avatar" alt="">
-                <b-button type="is-danger" icon-right="delete" @click="cosplayer.avatar = null"></b-button>
             </b-field>
 
 
             <div class="columns">
                 <div class="column">
-                    <b-field label="Upload avatar">
+                    <div v-if="cosplayer.avatar">
+                        <label class="label">Current avatar</label>
+                        <img :src="cosplayer.avatar.thumb" alt="">
+                        <b-button type="is-danger" icon-right="trash-alt" @click="cosplayer.avatar = null"></b-button>
+                    </div>
+
+                    <b-field v-else label="Upload avatar"
+                             :type="errors.avatar ? 'is-danger' : ''"
+                             :message="errors.avatar ? errors.avatar[0] : null">
                         <b-upload v-model="cosplayer.avatar" drag-drop>
                             <section class="section">
                                 <div class="content has-text-centered">
@@ -35,7 +42,9 @@
                     </b-field>
                 </div>
                 <div class="column">
-                    <b-field label="Linked user">
+                    <b-field label="Linked user"
+                             :type="errors.user_id ? 'is-danger' : ''"
+                             :message="errors.user_id ? errors.user_id[0] : null">
                         <b-autocomplete
                                 :data="searchUsers"
                                 v-model="cosplayer.user_id"
@@ -87,6 +96,7 @@
         private cosplayer: Cosplayer = new Cosplayer();
         private loading: boolean = false;
         private searchUsers: Array<User> = [];
+        protected errors: object = {};
 
         protected editorOption: object = {
             placeholder: 'Enter your description...',
@@ -100,7 +110,10 @@
         updateCosplayer(): void {
             this.loading = true;
 
-            Vue.axios.patch(`/api/admin/cosplayers/${this.$route.params.slug}`, this.cosplayer)
+            let formData: FormData = this.cosplayerToFormData(this.cosplayer);
+            Vue.axios.post(`/api/admin/cosplayers/${this.$route.params.slug}`, formData,
+                {headers: {'Content-Type': 'multipart/form-data'}}
+            )
                 .then(res => res.data)
                 .then(res => {
                     this.cosplayer = res.data;
@@ -119,6 +132,7 @@
                             this.updateCosplayer();
                         }
                     });
+                    this.errors = err.response.data.errors;
                     throw err;
                 });
         }
@@ -179,5 +193,18 @@
                 duration: 5000,
             });
         }
+
+        cosplayerToFormData(cosplayer: Cosplayer): FormData {
+            let formData = new FormData();
+            formData.append('_method', 'PATCH');
+            formData.append('name', cosplayer.name);
+            formData.append('description', cosplayer.description);
+            // formData.append('user_id', String(cosplayer.user_id));
+            formData.append('avatar', cosplayer.avatar);
+
+            console.log(formData);
+
+            return formData;
+        };
     }
 </script>

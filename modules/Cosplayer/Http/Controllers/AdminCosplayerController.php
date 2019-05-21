@@ -13,7 +13,7 @@ use App\Models\Cosplayer;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
-use App\Http\Requests\CosplayerRequest;
+use Modules\Cosplayer\Http\Requests\CosplayerRequest;
 use Modules\Cosplayer\Transformers\CosplayerResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 

@@ -3,28 +3,30 @@ import { faBell, faEdit, faStickyNote } from '@fortawesome/free-regular-svg-icon
 // We are only using the wanted icons
 import {
     faAngleDown,
+    faAngleLeft,
+    faAngleRight,
+    faArrowUp,
     faBook,
     faCheck,
     faChevronCircleLeft,
+    faCog,
+    faExclamationCircle,
+    faExternalLinkAlt,
     faImages,
+    faInfo,
     faLock,
     faPenFancy,
     faPlus,
     faSearch,
+    faSignInAlt,
     faTachometerAlt,
+    faTag,
     faTags,
     faTasks,
-    faUserTag,
+    faTrash,
     faTrashAlt,
-    faExternalLinkAlt,
     faUpload,
-    faSignInAlt,
-    faAngleRight,
-    faAngleLeft,
-    faArrowUp,
-    faTag,
-    faInfo,
-    faCog,
+    faUserTag,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -50,10 +52,12 @@ library.add(
     faArrowUp,
     faTag,
     faInfo,
-    faCog
+    faCog,
+    faExclamationCircle,
+    faBell,
+    faStickyNote,
+    faEdit
 );
-
-library.add(faBell, faStickyNote, faEdit, faTrashAlt);
 
 // Replace any existing <i> tags with <svg> and set up a MutationObserver to
 // continue doing this as the DOM changes.

@@ -12,6 +12,7 @@ namespace Modules\Album\Http\Controllers;
 use App\Models\Album;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Resources\Json\Resource;
 use Modules\Album\Transformers\AlbumIndexResource;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Modules\Album\Http\Requests\StorePictureAlbumRequest;
@@ -39,8 +40,10 @@ class AdminPictureAlbumController extends Controller
      */
     public function store(StorePictureAlbumRequest $request, FileReceiver $receiver)
     {
+        Resource::withoutWrapping();
+
         /** @var Album $album */
-        $album = Album::whereSlug($request->validated()['album_slug'])->firstOrFail();
+        $album = Album::whereSlug($request->get('album_slug'))->firstOrFail();
 
         if ($receiver->isUploaded() === false) {
             throw new UploadMissingFileException();
@@ -69,6 +72,8 @@ class AdminPictureAlbumController extends Controller
      */
     public function destroy(Album $album, DeletePictureAlbumRequest $request)
     {
+        Resource::withoutWrapping();
+
         $album->media->firstWhere('id', $request->get('media_id'))->delete();
 
         return (new AlbumIndexResource($album))->response()->setStatusCode(204);

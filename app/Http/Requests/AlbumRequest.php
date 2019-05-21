@@ -22,7 +22,7 @@ class AlbumRequest extends Request
     {
         $id = $this->route('album');
 
-        $rules = [
+        return [
             'title' => ['required', 'string', 'min:2', 'max:255', Rule::unique('albums')->ignore($id)],
             'body' => 'nullable|max:65000',
             'published_at' => 'nullable|date', //2015-06-10 01:10:25
@@ -32,12 +32,11 @@ class AlbumRequest extends Request
             'cosplayers' => 'nullable|array',
             'cosplayers.*.id' => 'integer|min:1|exists:cosplayers,id',
         ];
-
-        return $rules;
     }
 
     protected function prepareForValidation()
     {
+        //TODO Still require ? Since we are binding to date
         if ($this->has('published_at') && $this->published_at !== null) {
             $this->merge(['published_at' => new \DateTime($this->published_at)]);
         }

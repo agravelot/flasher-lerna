@@ -15,6 +15,6 @@ if (! function_exists('settings')) {
      */
     function settings()
     {
-        return new Modules\Core\SettingsManager();
+        return app('Core\SettingManager');
     }
 }

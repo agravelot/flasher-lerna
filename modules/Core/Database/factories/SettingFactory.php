@@ -7,6 +7,13 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-Route::prefix('cosplayer')->group(function () {
-    Route::get('/', 'AdminCosplayerController@index');
+use Faker\Generator as Faker;
+use Modules\Core\Entities\Setting;
+
+$factory->define(Setting::class, function (Faker $faker) {
+    return [
+        'title' => $faker->word,
+        'name' => $faker->word,
+        'value' => $faker->boolean,
+    ];
 });

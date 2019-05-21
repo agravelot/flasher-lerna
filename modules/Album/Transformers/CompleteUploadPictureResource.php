@@ -22,8 +22,6 @@ class CompleteUploadPictureResource extends JsonResource
      */
     public function toArray($request)
     {
-        self::withoutWrapping();
-
         return [
             'path' => $this->getUrl(),
             'name' => $this->file_name,

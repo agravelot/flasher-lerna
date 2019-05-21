@@ -9,6 +9,7 @@
 
 namespace Modules\Core\Providers;
 
+use Modules\Core\SettingsManager;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 
@@ -26,6 +27,10 @@ class CoreServiceProvider extends ServiceProvider
         $this->registerViews();
         $this->registerFactories();
         $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
+
+        $this->app->singleton('Core\SettingManager', function ($app) {
+            return new SettingsManager();
+        });
     }
 
     /**

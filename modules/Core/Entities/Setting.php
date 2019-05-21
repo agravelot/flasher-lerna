@@ -7,8 +7,6 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Arcanedev\LaravelSettings\Models;
-
 namespace Modules\Core\Entities;
 
 use Illuminate\Database\Eloquent\Model;
