@@ -20,7 +20,6 @@ class DeleteAdminPages extends TestCase
 
     public function testAdminCanDeletePages()
     {
-        $this->disableExceptionHandling();
         $this->actingAsAdmin();
         $page = factory(Page::class)->create();
         $this->assertCount(1, Page::all());

@@ -20,7 +20,6 @@ class StoreAdminPages extends TestCase
 
     public function testAdminCanStorePage()
     {
-        $this->disableExceptionHandling();
         $this->actingAsAdmin();
         $page = factory(Page::class)->make();
 
