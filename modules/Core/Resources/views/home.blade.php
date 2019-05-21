@@ -6,7 +6,7 @@
     <section class="hero is-primary is-medium has-hero-background">
         <div class="hero-body">
             <div class="container">
-                <div class="columns is-centered is-vcentered">
+                <div class="columns is-vcentered">
                     <div class="column">
                         <figure class="image is-128x128 is-pulled-right">
                             <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" alt="">
@@ -28,16 +28,16 @@
 
     <section class="section">
         <div class="container">
-            <div class="has-text-centered">
+            <div class="has-text-centered has-margin-bottom-lg">
                 <a href="{{ route('albums.index') }}">
                     <h2 class="title">Découvrez mes albums</h2>
                 </a>
             </div>
 
-            <section class="section">
-                <div class="columns is-vcentered is-centered">
+            <section>
+                <div class="columns is-vcentered is-multiline is-mobile">
                     @foreach($albums as $album)
-                        <div class="column">
+                        <div class="column is-half-touch">
                             <a class="box" href="{{ route('albums.show', compact('album')) }}">
                                 <figure class="image is-square is-fitted">
                                     {{ $album->cover }}
