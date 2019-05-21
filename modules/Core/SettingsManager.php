@@ -9,26 +9,44 @@
 
 namespace Modules\Core;
 
+use Illuminate\Support\Collection;
 use Modules\Core\Entities\Setting;
 
 class SettingsManager
 {
-    public function has(string $name): bool
+    /** @var Collection $settings */
+    private $settings;
+
+    public function __construct()
     {
-        return Setting::find($name) ? true : false;
+        $this->loadSettings();
     }
 
-    public function get(string $name, $default = null)
+    private function loadSettings()
     {
-        if ($default) {
-            return Setting::find($name)->value ?: $default;
+        $this->settings = Setting::all();
+    }
+
+    public function has(string $name): bool
+    {
+        return $this->get($name, false) ? true : false;
+    }
+
+    public function get(string $name, $default = null): ?string
+    {
+        $setting = $this->settings->firstWhere('name', '===', $name);
+
+        if (! $setting) {
+            throw new \InvalidArgumentException("Unable to find '$name' setting'");
         }
 
-        return Setting::findOrFail($name)->value;
+        return $setting->value ?: $default;
     }
 
     public function set(array $setting): Setting
     {
-        return Setting::create($setting);
+        return tap(Setting::create($setting), function () {
+            $this->loadSettings();
+        });
     }
 }
