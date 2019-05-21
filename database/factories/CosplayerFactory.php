@@ -7,8 +7,8 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-use App\Models\Cosplayer;
 use Carbon\Carbon;
+use App\Models\Cosplayer;
 use Faker\Generator as Faker;
 use Illuminate\Http\UploadedFile;
 
