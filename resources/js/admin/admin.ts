@@ -1,35 +1,20 @@
-import './menu';
+import Sidebar from '../admin/views/Sidebar.vue';
+import AlbumsMasonry from '../../../modules/Album/Resources/assets/js/components/front/AlbumsMasonry.vue';
+import AlbumsShowGallery from '../../../modules/Album/Resources/assets/js/components/front/AlbumsShowGallery.vue';
 import Vue from 'vue';
+import router from "./router";
+import '../app.ts'
+import './menu.ts';
+import './fontawsome.ts';
 
 /**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
+ * Next, we will create a fresh Vue application instance and attach it to
+ * the page. Then, you may begin adding components to this application
+ * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-// function deleteAlbumPicture(el: HTMLOrSVGElement & Node): void {
-//     Vue.axios
-//         .delete(`/api/admin/album-pictures/${el.dataset.albumSlug}`, {
-//             data: {
-//                 media_id: el.dataset.pictureId,
-//             },
-//         })
-//         .then(() => {
-//             el.parentNode && el.parentNode.removeChild(el);
-//         })
-//         .catch(err => {
-//             alert('Something want wrong.');
-//             throw err;
-//         });
-// }
-//
-// const deleteAlbumPictureBtn = document.getElementsByClassName('delete-album-picture');
-// Array.from(deleteAlbumPictureBtn).forEach((el: Element) => {
-//     let parentNode = el.parentNode;
-//     if (!parentNode) {
-//         throw new DOMException('element does not have parent node');
-//     }
-//     el.addEventListener('click', () => {
-//         deleteAlbumPicture(<HTMLOrSVGElement & Node & ParentNode>parentNode);
-//     });
-// });
+const app = new Vue({
+    el: '#app',
+    components: { Sidebar, AlbumsMasonry, AlbumsShowGallery },
+    router,
+});
