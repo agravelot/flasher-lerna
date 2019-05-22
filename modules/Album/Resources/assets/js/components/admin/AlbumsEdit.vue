@@ -128,11 +128,13 @@
             chunking: true,
             method: 'POST',
             maxFilesize: 400000000,
-            chunkSize: 1000000,
+            chunkSize: 2000000,
+            retryChunks: true,
+            retryChunksLimit: 5,
+            maxThumbnailFilesize: 25,
             // If true, the individual chunks of a file are being uploaded simultaneously.
             // parallelChunkUploads: true,
             acceptedFiles: 'image/*',
-            retryChunks: true,
             dictDefaultMessage: "<i class='fas fa-images'></i> Upload",
             headers: {
                 'X-CSRF-Token': (<HTMLMetaElement>document.head.querySelector('meta[name="csrf-token"]')).content

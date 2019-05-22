@@ -1,5 +1,5 @@
 // Core
-require('tinymce/tinymce');
+require('tinymce');
 
 // Themes
 require('tinymce/themes/modern/theme');

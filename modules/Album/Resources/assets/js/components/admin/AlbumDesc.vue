@@ -80,7 +80,7 @@
     import Category from '../../category'
     import Cosplayer from '../../cosplayer'
     import { quillEditor } from 'vue-quill-editor'
-    import VueBuefy from "../../../../../../../resources/js/buefy";
+    import VueBuefy from "../../../../../../../resources/js/admin/buefy";
 
     @Component({
         name: "AlbumDesc",

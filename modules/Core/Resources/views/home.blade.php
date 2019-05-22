@@ -94,6 +94,7 @@
 @endsection
 
 @section('js')
+    @parent
     <script>
         window.onresize = function (event) {
             const responsiveMedias = document.getElementsByClassName('responsive-media');
