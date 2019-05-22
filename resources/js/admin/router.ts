@@ -1,16 +1,16 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import Dashboard from '../../modules/Dashboard/Resources/assets/js/Dashboard.vue';
-import Settings from '../../modules/Core/Resources/assets/js/components/Settings.vue';
-import PagesIndex from '../../modules/Core/Resources/assets/js/components/pages/PagesIndex.vue';
-import UsersIndex from '../../modules/User/Resources/assets/js/UsersIndex.vue';
-import AlbumsIndex from '../../modules/Album/Resources/assets/js/components/admin/AlbumsIndex.vue';
-import AlbumsShow from '../../modules/Album/Resources/assets/js/components/front/AlbumsShowGallery.vue';
-import AlbumsCreate from '../../modules/Album/Resources/assets/js/components/admin/AlbumsCreate.vue';
-import AlbumsEdit from '../../modules/Album/Resources/assets/js/components/admin/AlbumsEdit.vue';
-import CosplayersIndex from '../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersIndex.vue';
-import CosplayersEdit from '../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersEdit.vue';
+import Dashboard from '../../../modules/Dashboard/Resources/assets/js/Dashboard.vue';
+import Settings from '../../../modules/Core/Resources/assets/js/components/Settings.vue';
+import PagesIndex from '../../../modules/Core/Resources/assets/js/components/pages/PagesIndex.vue';
+import UsersIndex from '../../../modules/User/Resources/assets/js/UsersIndex.vue';
+import AlbumsIndex from '../../../modules/Album/Resources/assets/js/components/admin/AlbumsIndex.vue';
+import AlbumsShow from '../../../modules/Album/Resources/assets/js/components/front/AlbumsShowGallery.vue';
+import AlbumsCreate from '../../../modules/Album/Resources/assets/js/components/admin/AlbumsCreate.vue';
+import AlbumsEdit from '../../../modules/Album/Resources/assets/js/components/admin/AlbumsEdit.vue';
+import CosplayersIndex from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersIndex.vue';
+import CosplayersEdit from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersEdit.vue';
 
 Vue.use(VueRouter);
 

@@ -8,5 +8,4 @@
             @include('albums.partials._index_item', compact('albums'))
         </div>
     </section>
-
 @endsection

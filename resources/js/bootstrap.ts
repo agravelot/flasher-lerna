@@ -1,6 +1,6 @@
 import Vue from 'vue';
-import VueAxios from 'vue-axios';
 import axios from 'axios';
+import VueAxios from 'vue-axios';
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

@@ -33,21 +33,21 @@ mix.sass('resources/sass/app.scss', 'public/css')
 
 mix.ts('resources/js/app.ts', 'public/js')
     .ts('resources/js/admin/admin.ts', 'public/js')
-    .js('resources/js/tinymce.js', 'public/js')
+    .js('resources/js/admin/tinymce.js', 'public/js')
     .version()
-    .extract([
-        'vue',
-        'buefy',
-        'axios',
-        'vue-axios',
-        '@fortawesome/fontawesome-svg-core',
-        '@fortawesome/free-brands-svg-icons',
-        '@fortawesome/free-regular-svg-icons',
-        '@fortawesome/free-solid-svg-icons',
-        // 'bulma-modal-fx',
-        'dropzone',
-        'vue2-dropzone',
-    ])
+    // .extract([
+    //     'vue',
+    //     'buefy',
+    //     'axios',
+    //     'vue-axios',
+    //     '@fortawesome/fontawesome-svg-core',
+    //     '@fortawesome/free-brands-svg-icons',
+    //     '@fortawesome/free-regular-svg-icons',
+    //     '@fortawesome/free-solid-svg-icons',
+    //     // 'bulma-modal-fx',
+    //     'dropzone',
+    //     'vue2-dropzone',
+    // ])
 ;
 
 mix.options({

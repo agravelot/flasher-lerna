@@ -14,3 +14,7 @@
         </div>
     </section>
 @endsection
+
+@section('js')
+    <script src="{{ mix('/js/admin.js') }}"></script>
+@endsection
