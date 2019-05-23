@@ -7,7 +7,7 @@
                         Administration
                     </li>
 
-                    <router-link :to="{ name: 'admin.dashboard' }">
+                    <router-link :to="{ name: 'admin.dashboard' }" exact>
                         <span class="icon">
                             <i class="fas fa-home"></i>
                         </span>
