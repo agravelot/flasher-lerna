@@ -3,8 +3,7 @@ COPY docker/nginx/conf /etc/nginx
 RUN apk add --no-cache bash \
          && cd /etc/nginx/ \
          && cp nginx.conf nginx.tmp.conf \
-         && bash bin/inline.sh nginx.tmp.conf > /etc/nginx/nginx.inlined.conf \
-         && echo "}" >> /etc/nginx/nginx.inlined.conf
+         && bash bin/inline.sh nginx.tmp.conf > /etc/nginx/nginx.inlined.conf
 
 #
 # Frontend
