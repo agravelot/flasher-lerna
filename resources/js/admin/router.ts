@@ -16,7 +16,7 @@ Vue.use(VueRouter);
 
 const routes: Array<any> = [
     {
-        path: '/admin/dashboard',
+        path: '/admin',
         name: 'admin.dashboard',
         component: Dashboard,
     },
