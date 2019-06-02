@@ -48,7 +48,7 @@
     "lanin/laravel-api-debugger": "^3.4",
     "laravel/telescope": "^2.0",
     "mockery/mockery": "^1.0",
-    "nunomaduro/collision": "^2.0",
+    "nunomaduro/collision": "^3.0",
     "nunomaduro/larastan": "^0.3.16",
     "nunomaduro/phpinsights": "^1.2",
     "pheromone/phpcs-security-audit": "^2.0",
