@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e16131733ef846d0688c88905f304cce",
+    "content-hash": "c03d45e2db693818986bdfea0910b69a",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -8798,6 +8798,65 @@
                 "service"
             ],
             "time": "2018-09-28T13:24:15+00:00"
+        },
+        {
+            "name": "matt-allan/laravel-code-style",
+            "version": "0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/matt-allan/laravel-code-style.git",
+                "reference": "b7e2c33bed6aeec79b2725b709c127eba674dff8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/matt-allan/laravel-code-style/zipball/b7e2c33bed6aeec79b2725b709c127eba674dff8",
+                "reference": "b7e2c33bed6aeec79b2725b709c127eba674dff8",
+                "shasum": ""
+            },
+            "require": {
+                "friendsofphp/php-cs-fixer": "^2.14",
+                "illuminate/support": "5.7.x|5.8.x",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "laravel/framework": "^5.8.14",
+                "phpunit/phpunit": "^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "MattAllan\\LaravelCodeStyle\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MattAllan\\LaravelCodeStyle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Allan",
+                    "email": "matt@mattallan.me"
+                }
+            ],
+            "description": "Code formatting for Laravel projects",
+            "homepage": "https://github.com/matt-allan/laravel-code-style",
+            "keywords": [
+                "PSR-2",
+                "code-style",
+                "laravel",
+                "php-cs-fixer"
+            ],
+            "time": "2019-05-10T19:42:06+00:00"
         },
         {
             "name": "maximebf/debugbar",
