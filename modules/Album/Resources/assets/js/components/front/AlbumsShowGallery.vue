@@ -86,7 +86,7 @@
 <script lang="ts">
     import Component from 'vue-class-component';
     import {Prop} from "vue-property-decorator";
-    import VueBuefy from "../../../../../../../resources/js/admin/buefy";
+    import VueBuefy from "../../../../../../../resources/js/admin/Buefy.vue";
 
     @Component({
         name: "AlbumsShowGallery",

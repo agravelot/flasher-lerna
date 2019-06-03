@@ -1,9 +1,6 @@
 import Sidebar from '../admin/views/Sidebar.vue';
-import AlbumsMasonry from '../../../modules/Album/Resources/assets/js/components/front/AlbumsMasonry.vue';
-import AlbumsShowGallery from '../../../modules/Album/Resources/assets/js/components/front/AlbumsShowGallery.vue';
 import Vue from 'vue';
 import router from './router';
-// import '../app.ts'
 import './menu.ts';
 import './fontawsome.ts';
 import '../bootstrap';
@@ -20,6 +17,6 @@ import 'bulma-modal-fx/src/_js/modal-fx';
 
 const app = new Vue({
     el: '#app',
-    components: { Sidebar, AlbumsMasonry, AlbumsShowGallery },
+    components: { Sidebar },
     router,
 });

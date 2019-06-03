@@ -40,7 +40,7 @@
 
 <script lang="ts">
     import Component from 'vue-class-component';
-    import VueBuefy from "../../../../../../../resources/js/admin/buefy";
+    import VueBuefy from "../../../../../../../resources/js/admin/Buefy.vue";
     import {Prop} from "vue-property-decorator";
 
     @Component({

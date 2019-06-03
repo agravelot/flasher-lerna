@@ -83,7 +83,7 @@
 <script lang="ts">
     import Vue from 'vue';
     import Component from 'vue-class-component';
-    import VueBuefy from "../../../../../../../resources/js/admin/buefy";
+    import VueBuefy from "../../../../../../../resources/js/admin/Buefy.vue";
     import Cosplayer from '../../cosplayer';
 
     @Component({
