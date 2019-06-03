@@ -25,11 +25,10 @@ mix.sass('resources/sass/app.scss', 'public/css')
     .version()
     .purgeCss(
         {
-            // Your custom globs are merged with the default globs. If you need to
-            // fully replace the globs, use the underlying `paths` option instead.
+            // Your custom globs are merged with the default globs.
             globs: [
                 path.join(__dirname, 'modules/**/*'),
-                path.join(__dirname, 'node_modules/buefy/**/*'),
+                // path.join(__dirname, 'node_modules/buefy/**/*'),
             ],
         }
     )
