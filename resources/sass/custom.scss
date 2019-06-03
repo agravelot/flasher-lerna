@@ -70,3 +70,11 @@ img {
     visibility: visible;
   }
 }
+
+.box {
+    padding: unset;
+}
+
+.is-fitted img {
+    object-fit: cover;
+}
