@@ -53,3 +53,9 @@ mix.webpackConfig({
 });
 
 mix.browserSync('localhost:8000');
+
+require('laravel-mix-bundle-analyzer');
+
+if (mix.isWatching()) {
+    mix.bundleAnalyzer();
+}
