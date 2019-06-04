@@ -42,6 +42,9 @@
     import Component from 'vue-class-component';
     import VueBuefy from "../../../../../../../resources/js/admin/Buefy.vue";
     import {Prop} from "vue-property-decorator";
+    import VueMasonry from 'vue-masonry-css';
+
+    VueBuefy.use(VueMasonry);
 
     @Component({
         name: "AlbumsMasonry",

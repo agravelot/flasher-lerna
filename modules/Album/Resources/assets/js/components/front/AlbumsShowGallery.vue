@@ -87,6 +87,10 @@
     import Component from 'vue-class-component';
     import {Prop} from "vue-property-decorator";
     import VueBuefy from "../../../../../../../resources/js/admin/Buefy.vue";
+    import 'bulma-modal-fx/src/_js/modal-fx';
+    import VueMasonry from 'vue-masonry-css';
+
+    VueBuefy.use(VueMasonry);
 
     @Component({
         name: "AlbumsShowGallery",
