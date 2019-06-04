@@ -46,16 +46,6 @@ mix.sass('resources/sass/app.scss', 'public/css')
 // ])
 ;
 
-mix.options({
-    autoprefixer: {
-        options: {
-            browsers: [
-                'last 2 versions',
-            ]
-        }
-    }
-});
-
 mix.webpackConfig({
     output: {
         chunkFilename: 'js/chunks/[name].js',
