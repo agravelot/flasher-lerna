@@ -1,31 +1,44 @@
 <template>
     <div class="card">
         <div class="card-content">
-            <b-field label="Name"
-                     :type="errors.name ? 'is-danger' : ''"
-                     :message="errors.name ? errors.name[0] : null">
+            <b-field
+                label="Name"
+                :type="errors.name ? 'is-danger' : ''"
+                :message="errors.name ? errors.name[0] : null"
+            >
                 <b-input v-model="cosplayer.name"></b-input>
             </b-field>
 
-            <b-field label="Description"
-                     :type="errors.description ? 'is-danger' : ''"
-                     :message="errors.description ? errors.description[0] : null">
-                <quill-editor v-model="cosplayer.description" ref="myQuillEditor"
-                              :options="editorOption"></quill-editor>
+            <b-field
+                label="Description"
+                :type="errors.description ? 'is-danger' : ''"
+                :message="errors.description ? errors.description[0] : null"
+            >
+                <quill-editor
+                    v-model="cosplayer.description"
+                    ref="myQuillEditor"
+                    :options="editorOption"
+                ></quill-editor>
             </b-field>
-
 
             <div class="columns">
                 <div class="column">
                     <div v-if="cosplayer.avatar">
                         <label class="label">Current avatar</label>
-                        <img :src="cosplayer.avatar.thumb" alt="">
-                        <b-button type="is-danger" icon-right="trash-alt" @click="cosplayer.avatar = null"></b-button>
+                        <img :src="cosplayer.avatar.thumb" alt="" />
+                        <b-button
+                            type="is-danger"
+                            icon-right="trash-alt"
+                            @click="cosplayer.avatar = null"
+                        ></b-button>
                     </div>
 
-                    <b-field v-else label="Upload avatar"
-                             :type="errors.avatar ? 'is-danger' : ''"
-                             :message="errors.avatar ? errors.avatar[0] : null">
+                    <b-field
+                        v-else
+                        label="Upload avatar"
+                        :type="errors.avatar ? 'is-danger' : ''"
+                        :message="errors.avatar ? errors.avatar[0] : null"
+                    >
                         <b-upload v-model="cosplayer.avatar" drag-drop>
                             <section class="section">
                                 <div class="content has-text-centered">
@@ -34,33 +47,36 @@
                                     </p>
                                     <p>Drop your files here or click to upload</p>
                                     <span class="file-name" v-if="cosplayer.avatar">
-                            {{ cosplayer.avatar.name }}
-                        </span>
+                                        {{ cosplayer.avatar.name }}
+                                    </span>
                                 </div>
                             </section>
                         </b-upload>
                     </b-field>
                 </div>
                 <div class="column">
-                    <b-field label="Linked user"
-                             :type="errors.user_id ? 'is-danger' : ''"
-                             :message="errors.user_id ? errors.user_id[0] : null">
+                    <b-field
+                        label="Linked user"
+                        :type="errors.user_id ? 'is-danger' : ''"
+                        :message="errors.user_id ? errors.user_id[0] : null"
+                    >
                         <b-autocomplete
-                                :data="searchUsers"
-                                v-model="cosplayer.user_id"
-                                placeholder="e.g. Anne"
-                                keep-first
-                                open-on-focus
-                                @typing="searchUser"
-                                field="id"
-                                @select="option => selected = option">
+                            :data="searchUsers"
+                            v-model="cosplayer.user_id"
+                            placeholder="e.g. Anne"
+                            keep-first
+                            open-on-focus
+                            @typing="searchUser"
+                            field="id"
+                            @select="option => (selected = option)"
+                        >
                             <template slot-scope="props">
                                 <div>
                                     {{ props.option.name }}
-                                    <br>
+                                    <br />
                                     <small>
-                                        Email: {{ props.option.email }},
-                                        role <b>{{ props.option.role }}</b>
+                                        Email: {{ props.option.email }}, role
+                                        <b>{{ props.option.role }}</b>
                                     </small>
                                 </div>
                             </template>
@@ -69,142 +85,146 @@
                 </div>
             </div>
 
-            <b-button type="is-primary" :loading="this.loading" @click="updateCosplayer()">Update</b-button>
+            <b-button type="is-primary" :loading="this.loading" @click="updateCosplayer()"
+                >Update</b-button
+            >
         </div>
     </div>
 </template>
 
 <script lang="ts">
-    import Vue from 'vue';
-    import Component from 'vue-class-component';
-    import VueBuefy from "../../../../../../../resources/js/admin/Buefy.vue";
-    import Cosplayer from '../../cosplayer';
-    import 'quill/dist/quill.core.css'
-    import 'quill/dist/quill.snow.css'
-    import 'quill/dist/quill.bubble.css'
-    import {quillEditor} from 'vue-quill-editor'
-    import User from "../../../../../../User/Resources/assets/js/user";
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import VueBuefy from '../../../../../../../resources/js/admin/Buefy.vue';
+import Cosplayer from '../../cosplayer';
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
+import { quillEditor } from 'vue-quill-editor';
+import User from '../../../../../../User/Resources/assets/js/user';
 
-    @Component({
-        name: "CosplayersEdit",
-        components: {
-            quillEditor,
-        },
-    })
-    export default class CosplayersEdit extends VueBuefy {
+@Component({
+    name: 'CosplayersEdit',
+    components: {
+        quillEditor,
+    },
+})
+export default class CosplayersEdit extends VueBuefy {
+    private cosplayer: Cosplayer = new Cosplayer();
+    private loading: boolean = false;
+    private searchUsers: Array<User> = [];
+    protected errors: object = {};
 
-        private cosplayer: Cosplayer = new Cosplayer();
-        private loading: boolean = false;
-        private searchUsers: Array<User> = [];
-        protected errors: object = {};
+    protected editorOption: object = {
+        placeholder: 'Enter your description...',
+        theme: 'snow',
+    };
 
-        protected editorOption: object = {
-            placeholder: 'Enter your description...',
-            theme: 'snow',
-        };
-
-        created(): void {
-            this.fetchCosplayer();
-        }
-
-        updateCosplayer(): void {
-            this.loading = true;
-
-            let formData: FormData = this.cosplayerToFormData(this.cosplayer);
-            Vue.axios.post(`/api/admin/cosplayers/${this.$route.params.slug}`, formData,
-                {headers: {'Content-Type': 'multipart/form-data'}}
-            )
-                .then(res => res.data)
-                .then(res => {
-                    this.cosplayer = res.data;
-                    this.loading = false;
-                    this.showSuccess('Cosplayer updated');
-                })
-                .catch(err => {
-                    this.loading = false;
-                    this.$snackbar.open({
-                        message: 'Unable to load cosplayer, maybe you are offline?',
-                        type: 'is-danger',
-                        position: 'is-top',
-                        actionText: 'Retry',
-                        indefinite: true,
-                        onAction: () => {
-                            this.updateCosplayer();
-                        }
-                    });
-                    this.errors = err.response.data.errors;
-                    throw err;
-                });
-        }
-
-        fetchCosplayer(): void {
-            this.loading = true;
-
-            Vue.axios.get(`/api/admin/cosplayers/${this.$route.params.slug}`)
-                .then(res => res.data)
-                .then(res => {
-                    this.cosplayer = res.data;
-                    this.loading = false;
-                })
-                .catch(err => {
-                    this.cosplayer = new Cosplayer();
-                    this.loading = false;
-                    this.$snackbar.open({
-                        message: 'Unable to load cosplayer, maybe you are offline?',
-                        type: 'is-danger',
-                        position: 'is-top',
-                        actionText: 'Retry',
-                        indefinite: true,
-                        onAction: () => {
-                            this.fetchCosplayer();
-                        }
-                    });
-                    throw err;
-                });
-        }
-
-        searchUser(): void {
-            Vue.axios.get('/api/admin/users', {params: {'filter[name]': this.cosplayer.user_id}})
-                .then(res => res.data)
-                .then(res => {
-                    this.searchUsers = res.data;
-                })
-                .catch(err => {
-                    this.$snackbar.open({
-                        message: 'Unable to load users, maybe you are offline?',
-                        type: 'is-danger',
-                        position: 'is-top',
-                    });
-                    throw err;
-                })
-        }
-
-        showSuccess(message: string): void {
-            this.$toast.open({
-                message: message,
-                type: 'is-success',
-            });
-        }
-
-        showError(message: string): void {
-            this.$toast.open({
-                message: message,
-                type: 'is-danger',
-                duration: 5000,
-            });
-        }
-
-        cosplayerToFormData(cosplayer: Cosplayer): FormData {
-            let formData = new FormData();
-            formData.append('_method', 'PATCH');
-            formData.append('name', cosplayer.name);
-            formData.append('description', cosplayer.description);
-            // formData.append('user_id', String(cosplayer.user_id));
-            formData.append('avatar', cosplayer.avatar);
-
-            console.log(formData);
-
-            return formData;
-        };
+    created(): void {
+        this.fetchCosplayer();
     }
+
+    updateCosplayer(): void {
+        this.loading = true;
+
+        let formData: FormData = this.cosplayerToFormData(this.cosplayer);
+        Vue.axios
+            .post(`/api/admin/cosplayers/${this.$route.params.slug}`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            })
+            .then(res => res.data)
+            .then(res => {
+                this.cosplayer = res.data;
+                this.loading = false;
+                this.showSuccess('Cosplayer updated');
+            })
+            .catch(err => {
+                this.loading = false;
+                this.$snackbar.open({
+                    message: 'Unable to load cosplayer, maybe you are offline?',
+                    type: 'is-danger',
+                    position: 'is-top',
+                    actionText: 'Retry',
+                    indefinite: true,
+                    onAction: () => {
+                        this.updateCosplayer();
+                    },
+                });
+                this.errors = err.response.data.errors;
+                throw err;
+            });
+    }
+
+    fetchCosplayer(): void {
+        this.loading = true;
+
+        Vue.axios
+            .get(`/api/admin/cosplayers/${this.$route.params.slug}`)
+            .then(res => res.data)
+            .then(res => {
+                this.cosplayer = res.data;
+                this.loading = false;
+            })
+            .catch(err => {
+                this.cosplayer = new Cosplayer();
+                this.loading = false;
+                this.$snackbar.open({
+                    message: 'Unable to load cosplayer, maybe you are offline?',
+                    type: 'is-danger',
+                    position: 'is-top',
+                    actionText: 'Retry',
+                    indefinite: true,
+                    onAction: () => {
+                        this.fetchCosplayer();
+                    },
+                });
+                throw err;
+            });
+    }
+
+    searchUser(): void {
+        Vue.axios
+            .get('/api/admin/users', { params: { 'filter[name]': this.cosplayer.user_id } })
+            .then(res => res.data)
+            .then(res => {
+                this.searchUsers = res.data;
+            })
+            .catch(err => {
+                this.$snackbar.open({
+                    message: 'Unable to load users, maybe you are offline?',
+                    type: 'is-danger',
+                    position: 'is-top',
+                });
+                throw err;
+            });
+    }
+
+    showSuccess(message: string): void {
+        this.$toast.open({
+            message: message,
+            type: 'is-success',
+        });
+    }
+
+    showError(message: string): void {
+        this.$toast.open({
+            message: message,
+            type: 'is-danger',
+            duration: 5000,
+        });
+    }
+
+    cosplayerToFormData(cosplayer: Cosplayer): FormData {
+        let formData = new FormData();
+        formData.append('_method', 'PATCH');
+        formData.append('name', cosplayer.name);
+        formData.append('description', cosplayer.description);
+        // formData.append('user_id', String(cosplayer.user_id));
+        formData.append('avatar', cosplayer.avatar);
+
+        console.log(formData);
+
+        return formData;
+    }
+}
 </script>

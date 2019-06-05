@@ -3,5 +3,5 @@ export default class User {
     public name: string;
     public email: string;
     public role: string;
-    public user: number|null;
+    public user: number | null;
 }

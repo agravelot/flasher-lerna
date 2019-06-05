@@ -1,7 +1,6 @@
 <template>
     <div>
         <section>
-
             <router-link :to="{ name: 'admin.users.create' }">
                 <button class="button field is-success">
                     <b-icon pack="fas" icon="plus"></b-icon>
@@ -9,46 +8,55 @@
                 </button>
             </router-link>
 
-            <button class="button field is-danger"
-                    @click="confirmDeleteSelectedAlbums"
-                    :disabled="!checkedRows.length">
+            <button
+                class="button field is-danger"
+                @click="confirmDeleteSelectedAlbums"
+                :disabled="!checkedRows.length"
+            >
                 <b-icon pack="fas" icon="trash-alt"></b-icon>
                 <span>Delete checked</span>
             </button>
 
             <b-table
-                    :data="users"
-                    :loading="loading"
-                    striped
-                    hoverable
-                    mobile-cards
-                    paginated
-                    backend-pagination
-                    :total="total"
-                    :per-page="perPage"
-                    @page-change="onPageChange"
-                    backend-sorting
-                    :default-sort-direction="defaultSortOrder"
-                    :default-sort="[sortField, sortOrder]"
-                    @sort="onSort"
-                    icon-pack="fas"
-                    checkable
-                    :checked-rows.sync="checkedRows">
+                :data="users"
+                :loading="loading"
+                striped
+                hoverable
+                mobile-cards
+                paginated
+                backend-pagination
+                :total="total"
+                :per-page="perPage"
+                @page-change="onPageChange"
+                backend-sorting
+                :default-sort-direction="defaultSortOrder"
+                :default-sort="[sortField, sortOrder]"
+                @sort="onSort"
+                icon-pack="fas"
+                checkable
+                :checked-rows.sync="checkedRows"
+            >
                 <template slot-scope="user">
                     <b-table-column field="name" label="Name" sortable>
-                        <router-link :to="{name: 'admin.users.edit', params: { slug: user.row.id }}">
+                        <router-link
+                            :to="{ name: 'admin.users.edit', params: { slug: user.row.id } }"
+                        >
                             {{ user.row.name }}
                         </router-link>
                     </b-table-column>
 
                     <b-table-column field="email" label="E-mail" sortable>
-                        <router-link :to="{name: 'admin.users.edit', params: { slug: user.row.id }}">
+                        <router-link
+                            :to="{ name: 'admin.users.edit', params: { slug: user.row.id } }"
+                        >
                             {{ user.row.email }}
                         </router-link>
                     </b-table-column>
 
                     <b-table-column field="status" label="Role" centered>
-                        <span class="tag is-dark" v-bind:title="'User role'">{{ user.row.role }}</span>
+                        <span class="tag is-dark" v-bind:title="'User role'">{{
+                            user.row.role
+                        }}</span>
                     </b-table-column>
                 </template>
 
@@ -73,133 +81,133 @@
 </template>
 
 <script lang="ts">
-    import Vue from 'vue';
-    import Component from 'vue-class-component';
-    import VueBuefy from "../../../../../resources/js/admin/Buefy.vue";
-    import User from "./user";
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import VueBuefy from '../../../../../resources/js/admin/Buefy.vue';
+import User from './user';
 
-    @Component({
-        name: "AlbumsIndex",
-    })
-    export default class AlbumsIndex extends VueBuefy {
+@Component({
+    name: 'AlbumsIndex',
+})
+export default class AlbumsIndex extends VueBuefy {
+    private users: Array<User> = [];
+    defaultOpenedDetails: Array<any> = [];
+    private checkedRows: Array<any> = [];
+    private total: number = 0;
+    private page: number = 1;
+    perPage: number = 10;
+    private loading: boolean = false;
+    private sortField: string = 'id';
+    private sortOrder: string = 'desc';
+    showDetailIcon: boolean = true;
+    defaultSortOrder: string = 'desc';
 
-        private users: Array<User> = [];
-        defaultOpenedDetails: Array<any> = [];
-        private checkedRows: Array<any> = [];
-        private total: number = 0;
-        private page: number = 1;
-        perPage: number = 10;
-        private loading: boolean = false;
-        private sortField: string = 'id';
-        private sortOrder: string = 'desc';
-        showDetailIcon: boolean = true;
-        defaultSortOrder: string = 'desc';
+    created(): void {
+        this.fetchUsers();
+    }
 
-        created(): void {
-            this.fetchUsers();
-        }
+    fetchUsers(): void {
+        this.loading = true;
+        const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
-        fetchUsers(): void {
-            this.loading = true;
-            const sortOrder = ((this.sortOrder === 'asc') ? '' : '-');
-
-            Vue.axios.get('/api/admin/users', {
+        Vue.axios
+            .get('/api/admin/users', {
                 params: {
                     page: this.page,
-                    sort: sortOrder + this.sortField
-                }
+                    sort: sortOrder + this.sortField,
+                },
             })
-                .then(res => res.data)
+            .then(res => res.data)
+            .then(res => {
+                this.perPage = res.meta.per_page;
+                this.total = res.meta.total;
+                this.users = res.data;
+                this.loading = false;
+            })
+            .catch(err => {
+                this.users = [];
+                this.total = 0;
+                this.loading = false;
+                this.$snackbar.open({
+                    message: 'Unable to load users, maybe you are offline?',
+                    type: 'is-danger',
+                    position: 'is-top',
+                    actionText: 'Retry',
+                    indefinite: true,
+                    onAction: () => {
+                        this.fetchUsers();
+                    },
+                });
+                throw err;
+            });
+    }
+
+    showSuccess(message: string): void {
+        this.$toast.open({
+            message: message,
+            type: 'is-success',
+        });
+    }
+
+    showError(message: string): void {
+        this.$toast.open({
+            message: message,
+            type: 'is-danger',
+            duration: 5000,
+        });
+    }
+
+    toggle(row: object): void {
+        this.$refs.table.toggleDetails(row);
+    }
+
+    /*
+     * Handle page-change event
+     */
+    onPageChange(page: number): void {
+        this.page = page;
+        this.fetchUsers();
+    }
+
+    /*
+     * Handle sort event
+     */
+    onSort(field: string, order: string): void {
+        this.sortField = field;
+        this.sortOrder = order;
+        this.fetchUsers();
+    }
+
+    confirmDeleteSelectedAlbums(): void {
+        this.$dialog.confirm({
+            title: 'Deleting Albums',
+            message:
+                'Are you sure you want to <b>delete</b> these users? This action cannot be undone.',
+            confirmText: 'Delete Albums',
+            type: 'is-danger',
+            hasIcon: true,
+            onConfirm: () => {
+                this.deleteSelectedAlbums();
+            },
+        });
+    }
+
+    /**
+     * Delete user from slug
+     */
+    deleteSelectedAlbums(): void {
+        this.checkedRows.forEach(user => {
+            Vue.axios
+                .delete(`/api/admin/users/${user.slug}`)
                 .then(res => {
-                    this.perPage = res.meta.per_page;
-                    this.total = res.meta.total;
-                    this.users = res.data;
-                    this.loading = false;
+                    this.showSuccess('Albums deleted');
+                    this.fetchUsers();
                 })
                 .catch(err => {
-                    this.users = [];
-                    this.total = 0;
-                    this.loading = false;
-                    this.$snackbar.open({
-                        message: 'Unable to load users, maybe you are offline?',
-                        type: 'is-danger',
-                        position: 'is-top',
-                        actionText: 'Retry',
-                        indefinite: true,
-                        onAction: () => {
-                            this.fetchUsers();
-                        }
-                    });
+                    this.showError(`Unable to delete user <br> <small>${err.message}</small>`);
                     throw err;
                 });
-        }
-
-        showSuccess(message: string): void {
-            this.$toast.open({
-                message: message,
-                type: 'is-success',
-            });
-        }
-
-        showError(message: string): void {
-            this.$toast.open({
-                message: message,
-                type: 'is-danger',
-                duration: 5000,
-            });
-        }
-
-        toggle(row: object): void {
-            this.$refs.table.toggleDetails(row);
-        }
-
-        /*
-         * Handle page-change event
-         */
-        onPageChange(page: number): void {
-            this.page = page;
-            this.fetchUsers();
-        }
-
-        /*
-         * Handle sort event
-         */
-        onSort(field: string, order: string): void {
-            this.sortField = field;
-            this.sortOrder = order;
-            this.fetchUsers();
-        }
-
-        confirmDeleteSelectedAlbums(): void {
-            this.$dialog.confirm({
-                title: 'Deleting Albums',
-                message:
-                    'Are you sure you want to <b>delete</b> these users? This action cannot be undone.',
-                confirmText: 'Delete Albums',
-                type: 'is-danger',
-                hasIcon: true,
-                onConfirm: () => {
-                    this.deleteSelectedAlbums();
-                },
-            });
-        }
-
-        /**
-         * Delete user from slug
-         */
-        deleteSelectedAlbums(): void {
-            this.checkedRows.forEach(user => {
-                Vue.axios
-                    .delete(`/api/admin/users/${user.slug}`)
-                    .then(res => {
-                        this.showSuccess('Albums deleted');
-                        this.fetchUsers();
-                    })
-                    .catch(err => {
-                        this.showError(`Unable to delete user <br> <small>${err.message}</small>`);
-                        throw err;
-                    });
-            });
-        }
+        });
     }
+}
 </script>
