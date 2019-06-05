@@ -52,10 +52,6 @@ mix.webpackConfig({
     },
 });
 
-mix.options({
-    extractVueStyles: true,
-});
-
 mix.browserSync('localhost:8000');
 
 require('laravel-mix-bundle-analyzer');
