@@ -36,6 +36,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->job(new GenerateSitemap())->daily()->withoutOverlapping();
+        $schedule->command('medialibrary:clean --force')->weekly()->at('00:01');
         $schedule->job(new BackupClean())->daily()->at('01:00');
         $schedule->job(new Backup())->withoutOverlapping()->daily()->at('02:00');
         $schedule->job(new BackupMonitor())->daily()->at('04:00');
