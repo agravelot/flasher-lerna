@@ -95,6 +95,11 @@ class Album extends Model implements HasMedia
         return $this->getFirstMedia('pictures');
     }
 
+    public function getCoverResponsiveAttribute()
+    {
+        return $this->getFirstMedia('pictures')('responsive');
+    }
+
     /**
      * Scope for public albums.
      *

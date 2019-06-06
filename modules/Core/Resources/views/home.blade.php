@@ -40,7 +40,7 @@
                         <div class="column is-half-touch">
                             <a class="box is-paddingless" href="{{ route('albums.show', compact('album')) }}">
                                 <figure class="image is-square is-fitted">
-                                    {{ $album->cover }}
+                                    {{ $album->coverResponsive }}
                                 </figure>
                             </a>
                         </div>
