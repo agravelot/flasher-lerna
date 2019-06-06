@@ -1,6 +1,6 @@
 @section('head')
     <!-- TinyMCE -->
-    <script src="{{ mix('js/tinymce.js') }}"></script>
+    <script src="{{ mix('js/main/tinymce.js') }}"></script>
 @stop
 
 <form method="POST" enctype="multipart/form-data" action="{{ $route }}">
