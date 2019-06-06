@@ -20,13 +20,13 @@
             </div>
         </div>
 
-        <div v-if="album.body || album.categories" class="card has-margin-bottom-md">
+        <div v-if="album.body || (album.categories && album.categories.length)" class="card has-margin-bottom-md">
             <div class="card-content">
                 <div v-if="album.body" class="content article-body">
                     <p class="has-text-justified" v-html="album.body"></p>
                 </div>
 
-                <div v-if="album.categories" class="tags">
+                <div v-if="album.categories && album.categories.length" class="tags">
                     <span v-for="category in album.categories" class="tag">
                         <a v-if="category.links" :href="category.links.related">{{
                             category.name
