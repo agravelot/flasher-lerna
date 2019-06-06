@@ -47,7 +47,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property Collection|Cosplayer[] $cosplayers
  * @property Collection|Media[]     $media
  * @property User                   $user
- *
  * @method static Builder|Album findSimilarSlugs($attribute, $config, $slug)
  * @method static Builder|Album newModelQuery()
  * @method static Builder|Album newQuery()
@@ -62,11 +61,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Album whereUpdatedAt($value)
  * @method static Builder|Album whereUserId($value)
  * @mixin Eloquent
- *
  * @property int $private
- *
  * @method static Builder|Album wherePrivate($value)
  * @method static Builder|Album public()
+ * @property mixed $cover
  */
 class Album extends Model implements HasMedia
 {
