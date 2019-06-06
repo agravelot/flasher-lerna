@@ -215,10 +215,15 @@ class Album extends Model implements HasMedia
      */
     public function registerMediaConversions(Media $media = null)
     {
-        $this->addMediaConversion('thumb')
-            ->width(368)
-            ->height(232)
+        $this->addMediaConversion('responsive')
             ->sharpen(10)
+            ->optimize()
+            ->withResponsiveImages()
+            ->performOnCollections('pictures');
+
+        $this->addMediaConversion('thumb')
+            ->width(400)
+            ->sharpen(8)
             ->optimize()
             ->performOnCollections('pictures');
     }
