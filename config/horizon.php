@@ -99,9 +99,16 @@ return [
         'production' => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue' => ['images', 'default', 'backup'],
+                'queue' => ['default', 'backup'],
                 'balance' => 'auto',
-                'processes' => 5,
+                'processes' => 2,
+                'tries' => 3,
+            ],
+            'supervisor-2' => [
+                'connection' => 'redis',
+                'queue' => ['images'],
+                'balance' => 'auto',
+                'processes' => 3,
                 'tries' => 3,
                 'memory' => 1024,
             ],
@@ -109,9 +116,16 @@ return [
         'staging' => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue' => ['images', 'default', 'backup'],
+                'queue' => ['default', 'backup'],
                 'balance' => 'auto',
-                'processes' => 5,
+                'processes' => 2,
+                'tries' => 3,
+            ],
+            'supervisor-2' => [
+                'connection' => 'redis',
+                'queue' => ['images'],
+                'balance' => 'auto',
+                'processes' => 3,
                 'tries' => 3,
                 'memory' => 1024,
             ],
