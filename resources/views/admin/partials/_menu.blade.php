@@ -130,5 +130,5 @@
 </div>
 
 @section('js')
-    <script src="{{ mix('js/admin.js') }}"></script>
+    <script src="{{ mix('js/main/admin.js') }}"></script>
 @stop

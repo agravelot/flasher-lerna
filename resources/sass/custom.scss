@@ -70,3 +70,7 @@ img {
     visibility: visible;
   }
 }
+
+.is-fitted img {
+    object-fit: cover;
+}

@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use App\Models\Album;
 use Tests\ModelTestCase;
 use App\Scope\PublicScope;
+use Illuminate\Support\Facades\File;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -252,5 +253,27 @@ class AlbumTest extends ModelTestCase
         $this->assertTrue($albums->contains($publishedAlbums->get(1)));
         $this->assertTrue($albums->contains($publishedAlbums->get(2)));
         $this->assertTrue($albums->contains($publishedAlbums->get(3)));
+    }
+
+    public function test_can_regenerate_missing_responsive_image()
+    {
+        /** @var Album $publishedAlbum */
+        $publishedAlbum = factory(Album::class)->states(['withUser', 'withMedias'])->create();
+
+        $responsiveUrls = collect($publishedAlbum->getFirstMedia('pictures')->getResponsiveImageUrls('responsive'));
+
+        $responsiveUrls->each(function (string $url) {
+            $path = public_path($url);
+            $this->assertTrue(File::exists($path));
+            File::delete($path);
+            $this->assertFalse(File::exists($path));
+        });
+
+        $this->artisan('medialibrary:regenerate --force --only-missing')->run();
+
+        $responsiveUrls->each(function (string $url) {
+            $path = public_path($url);
+            $this->assertTrue(File::exists($path));
+        });
     }
 }

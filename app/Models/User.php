@@ -36,7 +36,6 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailInterface;
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\GoldenBookPost[]                                     $goldenBookPosts
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Post[]                                               $posts
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
@@ -50,7 +49,6 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailInterface;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRole($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
  * @mixin \Eloquent
- *
  * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
  * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[]  $tokens
  */

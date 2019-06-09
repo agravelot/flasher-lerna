@@ -27,7 +27,7 @@ class MediaResource extends Resource
             'name' => $this->name,
             'file_name' => $this->file_name,
             'thumb' => $this->getUrl('thumb'),
-            'src_set' => $this->getSrcset(),
+            'src_set' => $this->getSrcset('responsive'),
         ];
     }
 }

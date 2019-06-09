@@ -28,12 +28,13 @@ class ShowCosplayerTest extends TestCase
         $response = $this->showCosplayer($cosplayer);
 
         $response->assertStatus(200)
-            ->assertSee($cosplayer->name);
+            // ->assertSee($cosplayer->name)
+            ->assertSee($cosplayer->description);
     }
 
     private function showCosplayer(Cosplayer $cosplayer): TestResponse
     {
-        return $this->get('/admin/cosplayers/'.$cosplayer->slug);
+        return $this->get("/admin/cosplayers/{$cosplayer->slug}");
     }
 
     public function test_admin_can_view_a_cosplayer_with_albums()
@@ -48,7 +49,8 @@ class ShowCosplayerTest extends TestCase
         $response = $this->showCosplayer($cosplayer);
 
         $response->assertStatus(200)
-            ->assertSee($cosplayer->name);
+            // ->assertSee($cosplayer->name)
+            ->assertSee($cosplayer->description);
         $albums->each(function (Album $album) use ($response) {
             $response->assertSee($album->title);
         });

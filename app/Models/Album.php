@@ -47,7 +47,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property Collection|Cosplayer[] $cosplayers
  * @property Collection|Media[]     $media
  * @property User                   $user
- *
  * @method static Builder|Album findSimilarSlugs($attribute, $config, $slug)
  * @method static Builder|Album newModelQuery()
  * @method static Builder|Album newQuery()
@@ -62,11 +61,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Album whereUpdatedAt($value)
  * @method static Builder|Album whereUserId($value)
  * @mixin Eloquent
- *
  * @property int $private
- *
  * @method static Builder|Album wherePrivate($value)
  * @method static Builder|Album public()
+ * @property mixed $cover
  */
 class Album extends Model implements HasMedia
 {
@@ -95,6 +93,11 @@ class Album extends Model implements HasMedia
     public function getCoverAttribute()
     {
         return $this->getFirstMedia('pictures');
+    }
+
+    public function getCoverResponsiveAttribute()
+    {
+        return $this->getFirstMedia('pictures')('responsive');
     }
 
     /**
@@ -217,10 +220,15 @@ class Album extends Model implements HasMedia
      */
     public function registerMediaConversions(Media $media = null)
     {
-        $this->addMediaConversion('thumb')
-            ->width(368)
-            ->height(232)
+        $this->addMediaConversion('responsive')
             ->sharpen(10)
+            ->optimize()
+            ->withResponsiveImages()
+            ->performOnCollections('pictures');
+
+        $this->addMediaConversion('thumb')
+            ->width(400)
+            ->sharpen(8)
             ->optimize()
             ->performOnCollections('pictures');
     }

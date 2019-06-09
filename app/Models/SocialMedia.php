@@ -22,7 +22,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int                             $active
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SocialMedia active()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SocialMedia newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SocialMedia newQuery()

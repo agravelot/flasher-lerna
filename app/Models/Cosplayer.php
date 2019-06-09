@@ -44,7 +44,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property Collection|Category[] $categories
  * @property Collection|Media[]    $media
  * @property User|null             $user
- *
  * @method static Builder|Cosplayer findSimilarSlugs($attribute, $config, $slug)
  * @method static Builder|Cosplayer newModelQuery()
  * @method static Builder|Cosplayer newQuery()
@@ -58,7 +57,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Cosplayer whereUpdatedAt($value)
  * @method static Builder|Cosplayer whereUserId($value)
  * @mixin Eloquent
- *
  * @property Collection|PublicAlbum[] $publicAlbums
  * @property mixed                    $initial
  * @property mixed                    $avatar

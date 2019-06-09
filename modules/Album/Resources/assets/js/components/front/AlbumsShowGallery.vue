@@ -2,7 +2,10 @@
     <div v-if="this.album">
         <!--        <h1 class="title is-1 has-text-centered">{{ album.title }}</h1>-->
 
-        <div v-if="album.links && (album.links.download || album.links.edit)" class="field has-addons">
+        <div
+            v-if="album.links && (album.links.download || album.links.edit)"
+            class="field has-addons"
+        >
             <div v-if="album.links.download" class="control">
                 <a class="button" :href="album.links.download">
                     <span class="icon is-small"><i class="fas fa-download"></i></span>
@@ -17,30 +20,46 @@
             </div>
         </div>
 
-        <div v-if="album.body || album.categories" class="card has-margin-bottom-md">
+        <div v-if="album.body || (album.categories && album.categories.length)" class="card has-margin-bottom-md">
             <div class="card-content">
                 <div v-if="album.body" class="content article-body">
                     <p class="has-text-justified" v-html="album.body"></p>
                 </div>
 
-                <div v-if="album.categories" class="tags">
+                <div v-if="album.categories && album.categories.length" class="tags">
                     <span v-for="category in album.categories" class="tag">
-                        <a v-if="category.links" :href="category.links.related">{{ category.name }}</a>
+                        <a v-if="category.links" :href="category.links.related">{{
+                            category.name
+                        }}</a>
                     </span>
                 </div>
             </div>
         </div>
 
         <div v-if="album.medias && album.medias.length">
-<!--            <h2 class="title is-2 has-text-centered">Pictures</h2>-->
+            <!--            <h2 class="title is-2 has-text-centered">Pictures</h2>-->
             <!--TODO Add nothing to show-->
-            <masonry :gutter="{default: '0.5rem'}"
-                     :cols="{default: 3, 1000: 2, 700: 1, 400: 1}">
-                <div v-for="(media, index) in album.medias" :key="index" @click="openPicture(media)" class="has-margin-top-sm">
+            <masonry
+                :gutter="{ default: '0.5rem' }"
+                :cols="{ default: 3, 1000: 2, 700: 1, 400: 1 }"
+            >
+                <div
+                    v-for="(media, index) in album.medias"
+                    :key="index"
+                    @click="openPicture(media)"
+                    class="has-margin-top-sm"
+                >
                     <figure class="image">
-                        <img v-if="media.src_set" class="responsive-media" :srcset="media.src_set" :src="media.thumb"
-                             :alt="media.name" sizes="1px" loading="auto">
-                        <img v-else :src="media.thumb" :alt="media.name" loading="auto">
+                        <img
+                            v-if="media.src_set"
+                            class="responsive-media"
+                            :srcset="media.src_set"
+                            :src="media.thumb"
+                            :alt="media.name"
+                            sizes="1px"
+                            loading="auto"
+                        />
+                        <img v-else :src="media.thumb" :alt="media.name" loading="auto" />
                     </figure>
                 </div>
             </masonry>
@@ -54,13 +73,22 @@
                     <div class="columns is-multiline is-mobile">
                         <div v-for="cosplayer in album.cosplayers" class="column">
                             <figure v-if="cosplayer.thumb" class="is-centered image is-64x64">
-                                <img class="is-rounded" :src="cosplayer.thumb">
+                                <img class="is-rounded" :src="cosplayer.thumb" />
                             </figure>
-                            <figure v-else class="is-centered avatar-circle"
-                                    :style="{ 'background-color': stringToColour(cosplayer.name) }">
-                            <span class="initials">
-                                {{ cosplayer.name.match(/\b\w/g).join('').substring(0, 2).toUpperCase() }}
-                            </span>
+                            <figure
+                                v-else
+                                class="is-centered avatar-circle"
+                                :style="{ 'background-color': stringToColour(cosplayer.name) }"
+                            >
+                                <span class="initials">
+                                    {{
+                                        cosplayer.name
+                                            .match(/\b\w/g)
+                                            .join('')
+                                            .substring(0, 2)
+                                            .toUpperCase()
+                                    }}
+                                </span>
                             </figure>
                             <a :href="cosplayer.links.related">
                                 <p class="has-text-centered has-margin-top-sm">
@@ -76,116 +104,135 @@
         <div v-if="openedPicture" class="modal is-active modal-fx-fadeInScale">
             <div class="modal-background" @click="closePicture()"></div>
             <div class="modal-content is-huge is-image">
-                <img :srcset="openedPicture.src_set" :src="openedPicture.thumb" :alt="openedPicture.name">
+                <img
+                    :srcset="openedPicture.src_set"
+                    :src="openedPicture.thumb"
+                    :alt="openedPicture.name"
+                />
             </div>
-            <button class="modal-close is-large" aria-label="close" @click="closePicture()"></button>
+            <button
+                class="modal-close is-large"
+                aria-label="close"
+                @click="closePicture()"
+            ></button>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-    import Component from 'vue-class-component';
-    import {Prop} from "vue-property-decorator";
-    import VueBuefy from "../../../../../../../resources/js/admin/buefy";
+import Component from 'vue-class-component';
+import { Prop } from 'vue-property-decorator';
+import VueBuefy from '../../../../../../../resources/js/admin/Buefy.vue';
+import 'bulma-modal-fx/src/_js/modal-fx';
+import VueMasonry from 'vue-masonry-css';
 
-    @Component({
-        name: "AlbumsShowGallery",
-    })
-    export default class AlbumsShowGallery extends VueBuefy {
+VueBuefy.use(VueMasonry);
 
-        @Prop() readonly data: any;
+@Component({
+    name: 'AlbumsShowGallery',
+})
+export default class AlbumsShowGallery extends VueBuefy {
+    @Prop() readonly data: any;
 
-        protected album: object = null;
-        protected openedPicture: object = null;
-        loading: boolean = false;
+    protected album: object = null;
+    protected openedPicture: object = null;
+    loading: boolean = false;
 
-        updated(): void {
-            this.$nextTick(() => {
-                this.onResize();
-            });
-        }
-
-        created(): void {
-            window.addEventListener('resize', this.onResize)
-        }
-
-        beforeDestroy(): void {
-            window.removeEventListener('resize', this.onResize)
-        }
-
-        mounted(): void {
-            this.album = this.data.data;
-
-            if (!this.album) {
-                console.warn('Album is not eager loaded, requesting...');
-                this.fetchAlbum();
-            }
-            this.$nextTick(() => {
-                this.onResize();
-            });
-        }
-
-        openPicture(media: object): void {
-            this.openedPicture = media;
-        }
-
-        closePicture(): void {
-            this.openedPicture = null;
-        }
-
-        onResize(): void {
-            this.refreshSizes();
-        }
-
-        refreshSizes(): void {
-            const responsiveMedias: HTMLCollectionOf<Element> = document.getElementsByClassName('responsive-media');
-            Array.from(responsiveMedias).forEach((el: Element): void => {
-                (<HTMLImageElement>el).sizes = `${Math.ceil((el.getBoundingClientRect().width / window.innerWidth) * 100)}vw`;
-            });
-        }
-
-        stringToColour(str: string): string {
-            let i;
-            let hash = 0;
-            for (i = 0; i < str.length; i++) {
-                hash = str.charCodeAt(i) + ((hash << 5) - hash);
-            }
-            let colour = '#';
-            for (i = 0; i < 3; i++) {
-                let value = (hash >> (i * 8)) & 0xFF;
-                colour += ('00' + value.toString(16)).substr(-2);
-            }
-            return colour;
-        }
-
-        fetchAlbum(): void {
-            let slug = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
-            // Workaround until moved to vue router
-            if (slug === 'edit') {
-                slug = this.$route.params.slug;
-            }
-            this.axios.get(`/api/albums/${slug}`)
-                .then(res => res.data)
-                .then(res => {
-                    this.loading = false;
-                    this.album = res.data;
-                })
-                .catch(err => {
-                        this.album = {};
-                        this.loading = false;
-                        this.$snackbar.open({
-                            message: 'Unable to load album, maybe you are offline?',
-                            type: 'is-danger',
-                            position: 'is-top',
-                            actionText: 'Retry',
-                            indefinite: true,
-                            onAction: () => {
-                                this.fetchAlbum();
-                            }
-                        });
-                        throw err;
-                    }
-                );
-        }
+    updated(): void {
+        this.$nextTick(() => {
+            this.onResize();
+        });
     }
+
+    created(): void {
+        window.addEventListener('resize', this.onResize);
+    }
+
+    beforeDestroy(): void {
+        window.removeEventListener('resize', this.onResize);
+    }
+
+    mounted(): void {
+        this.album = this.data.data;
+
+        if (!this.album) {
+            console.warn('Album is not eager loaded, requesting...');
+            this.fetchAlbum();
+        }
+        this.$nextTick(() => {
+            this.onResize();
+        });
+    }
+
+    openPicture(media: object): void {
+        this.openedPicture = media;
+    }
+
+    closePicture(): void {
+        this.openedPicture = null;
+    }
+
+    onResize(): void {
+        this.refreshSizes();
+    }
+
+    refreshSizes(): void {
+        const responsiveMedias: HTMLCollectionOf<Element> = document.getElementsByClassName(
+            'responsive-media'
+        );
+        Array.from(responsiveMedias).forEach(
+            (el: Element): void => {
+                (<HTMLImageElement>el).sizes = `${Math.ceil(
+                    (el.getBoundingClientRect().width / window.innerWidth) * 100
+                )}vw`;
+            }
+        );
+    }
+
+    stringToColour(str: string): string {
+        let i;
+        let hash = 0;
+        for (i = 0; i < str.length; i++) {
+            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        let colour = '#';
+        for (i = 0; i < 3; i++) {
+            let value = (hash >> (i * 8)) & 0xff;
+            colour += ('00' + value.toString(16)).substr(-2);
+        }
+        return colour;
+    }
+
+    fetchAlbum(): void {
+        let slug = window.location.pathname.split('/')[
+            window.location.pathname.split('/').length - 1
+        ];
+        // Workaround until moved to vue router
+        if (slug === 'edit') {
+            slug = this.$route.params.slug;
+        }
+        this.axios
+            .get(`/api/albums/${slug}`)
+            .then(res => res.data)
+            .then(res => {
+                this.loading = false;
+                this.album = res.data;
+            })
+            .catch(err => {
+                this.album = {};
+                this.loading = false;
+                this.$snackbar.open({
+                    message: 'Unable to load album, maybe you are offline?',
+                    type: 'is-danger',
+                    position: 'is-top',
+                    actionText: 'Retry',
+                    indefinite: true,
+                    onAction: () => {
+                        this.fetchAlbum();
+                    },
+                });
+                throw err;
+            });
+    }
+}
 </script>

@@ -15,9 +15,9 @@ mix.mergeManifest();
  | file for the application as well as bundling up all the JS files.
  |
  */
-mix.ts('resources/js/app.ts', 'public/js')
-    .ts('resources/js/admin/admin.ts', 'public/js')
-    .js('resources/js/admin/tinymce.js', 'public/js')
+mix.ts('resources/js/app.ts', 'public/js/main')
+    .ts('resources/js/admin/admin.ts', 'public/js/main')
+    .js('resources/js/admin/tinymce.js', 'public/js/main')
 ;
 
 mix.sass('resources/sass/app.scss', 'public/css')
@@ -25,11 +25,9 @@ mix.sass('resources/sass/app.scss', 'public/css')
     .version()
     .purgeCss(
         {
-            // Your custom globs are merged with the default globs. If you need to
-            // fully replace the globs, use the underlying `paths` option instead.
+            // Your custom globs are merged with the default globs.
             globs: [
                 path.join(__dirname, 'modules/**/*'),
-                path.join(__dirname, 'node_modules/buefy/**/*'),
             ],
         }
     )
@@ -48,14 +46,16 @@ mix.sass('resources/sass/app.scss', 'public/css')
 // ])
 ;
 
-mix.options({
-    autoprefixer: {
-        options: {
-            browsers: [
-                'last 2 versions',
-            ]
-        }
-    }
+mix.webpackConfig({
+    output: {
+        chunkFilename: 'js/chunks/[name].js',
+    },
 });
 
 mix.browserSync('localhost:8000');
+
+require('laravel-mix-bundle-analyzer');
+
+if (mix.isWatching()) {
+    mix.bundleAnalyzer();
+}

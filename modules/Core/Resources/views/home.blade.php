@@ -38,9 +38,9 @@
                 <div class="columns is-vcentered is-multiline is-mobile">
                     @foreach($albums as $album)
                         <div class="column is-half-touch">
-                            <a class="box" href="{{ route('albums.show', compact('album')) }}">
+                            <a class="box is-paddingless" href="{{ route('albums.show', compact('album')) }}">
                                 <figure class="image is-square is-fitted">
-                                    {{ $album->cover }}
+                                    {{ $album->coverResponsive }}
                                 </figure>
                             </a>
                         </div>
@@ -81,14 +81,6 @@
         .has-hero-background {
             background: url("https://images.unsplash.com/photo-1557952736-0084356ba2da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80") center center;
             background-size: cover;
-        }
-
-        .box {
-            padding: unset;
-        }
-
-        .is-fitted img {
-            object-fit: cover;
         }
     </style>
 @endsection
