@@ -12,7 +12,7 @@
         </section>
         <section class="info-tiles">
             <div class="tile is-ancestor has-text-centered">
-                <router-link :to="{ name: 'admin.albums.index' }" class="tile is-parent">
+                <router-link :to="{ name: 'admin.users.index' }" class="tile is-parent">
                     <article class="tile is-child box">
                         <p class="title">{{ usersCount }}</p>
                         <p class="subtitle">Users</p>
@@ -23,6 +23,13 @@
                     <article class="tile is-child box">
                         <p class="title">{{ albumsCount }}</p>
                         <p class="subtitle">Albums</p>
+                    </article>
+                </router-link>
+
+                <router-link :to="{ name: 'admin.albums.index' }" class="tile is-parent">
+                    <article class="tile is-child box">
+                        <p class="title">{{ albumMediasCount }}</p>
+                        <p class="subtitle">Medias</p>
                     </article>
                 </router-link>
 
@@ -56,6 +63,7 @@ export default class Dashboard extends VueBuefy {
     private usersCount: number = 0;
     private albumsCount: number = 0;
     private contactsCount: number = 0;
+    private albumMediasCount: number = 0;
     private user: string;
 
     created(): void {
@@ -74,6 +82,7 @@ export default class Dashboard extends VueBuefy {
                 this.usersCount = res.usersCount;
                 this.albumsCount = res.albumsCount;
                 this.contactsCount = res.contactsCount;
+                this.albumMediasCount = res.albumMediasCount;
                 this.loading = false;
             })
             .catch(err => {

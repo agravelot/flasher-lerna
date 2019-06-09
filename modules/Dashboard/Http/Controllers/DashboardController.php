@@ -17,6 +17,7 @@ use Modules\Album\Entities\Album;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Activitylog\Models\Activity;
+use Spatie\MediaLibrary\Models\Media;
 
 class DashboardController extends Controller
 {
@@ -33,6 +34,7 @@ class DashboardController extends Controller
             'usersCount' => User::count(),
             'albumsCount' => Album::count(),
             'contactsCount' => Contact::count(),
+            'albumMediasCount' => Media::count(),
             'activities' => Activity::with(['causer', 'subject'])->latest()->limit(10)->get(),
         ]);
     }
