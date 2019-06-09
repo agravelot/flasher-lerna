@@ -20,11 +20,11 @@ export TRUSTED_PROXIES=$(docker network inspect nginx-proxy --format='{{ (index 
 echo " * LOGIN WITH GITLAB-CI TOKEN"
 docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
 # backup current image if already present locally
-if [[ ! "$(docker images -q ${PICBLOG_IMAGE_PHP} 2> /dev/null)" == "" && ! "$(docker images -q ${PICBLOG_IMAGE_NGINX} 2> /dev/null)" == ""  ]]; then
-  echo " * BACKING UP CURRENT IMAGES VERSIONS"
-  docker tag ${PICBLOG_IMAGE_PHP} picblog-php-backup
-  docker tag ${PICBLOG_IMAGE_NGINX} picblog-nginx-backup
-fi
+#if [[ ! "$(docker images -q ${PICBLOG_IMAGE_PHP} 2> /dev/null)" == "" && ! "$(docker images -q ${PICBLOG_IMAGE_NGINX} 2> /dev/null)" == ""  ]]; then
+#  echo " * BACKING UP CURRENT IMAGES VERSIONS"
+#  docker tag ${PICBLOG_IMAGE_PHP} picblog-php-backup
+#  docker tag ${PICBLOG_IMAGE_NGINX} picblog-nginx-backup
+#fi
 echo " * PULLING NEW IMAGES"
 docker-compose pull
 echo " * STOPPING QUEUE WORKERS"
