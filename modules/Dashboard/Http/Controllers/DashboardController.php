@@ -16,8 +16,8 @@ use Illuminate\Http\JsonResponse;
 use Modules\Album\Entities\Album;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use Spatie\Activitylog\Models\Activity;
 use Spatie\MediaLibrary\Models\Media;
+use Spatie\Activitylog\Models\Activity;
 
 class DashboardController extends Controller
 {
