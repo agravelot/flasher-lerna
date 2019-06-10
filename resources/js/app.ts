@@ -8,8 +8,7 @@ import AlbumsMasonry from '../../modules/Album/Resources/assets/js/components/fr
 import AlbumsShowGallery from '../../modules/Album/Resources/assets/js/components/front/AlbumsShowGallery.vue';
 import './fontawsome';
 import './bulma';
-// No need to load axios since qe are not making any requests
-// import './bootstrap';
+import './bootstrap';
 
 const app = new Vue({
     el: '#app',
