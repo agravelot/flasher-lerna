@@ -86,7 +86,7 @@
             </div>
 
             <b-button type="is-primary" :loading="this.loading" @click="createCosplayer()"
-                >Update</b-button
+                >Create</b-button
             >
         </div>
     </div>
@@ -109,7 +109,7 @@ import User from '../../../../../../User/Resources/assets/js/user';
         quillEditor,
     },
 })
-export default class CosplayersEdit extends VueBuefy {
+export default class CosplayersCreate extends VueBuefy {
     private cosplayer: Cosplayer = new Cosplayer();
     private loading: boolean = false;
     private searchUsers: Array<User> = [];
@@ -121,22 +121,22 @@ export default class CosplayersEdit extends VueBuefy {
     };
 
     created(): void {
-        this.fetchCosplayer();
     }
 
-    updateCosplayer(): void {
+    createCosplayer(): void {
         this.loading = true;
 
         let formData: FormData = this.cosplayerToFormData(this.cosplayer);
         this.axios
-            .post(`/api/admin/cosplayers/${this.$route.params.slug}`, formData, {
+            .post(`/api/admin/cosplayers`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             })
             .then(res => res.data)
             .then(res => {
                 this.cosplayer = res.data;
                 this.loading = false;
-                this.showSuccess('Cosplayer updated');
+                this.showSuccess('Cosplayer created');
+                this.cosplayer = new Cosplayer();
             })
             .catch(err => {
                 this.loading = false;
@@ -147,37 +147,10 @@ export default class CosplayersEdit extends VueBuefy {
                     actionText: 'Retry',
                     indefinite: true,
                     onAction: () => {
-                        this.updateCosplayer();
+                        this.createCosplayer();
                     },
                 });
                 this.errors = err.response.data.errors;
-                throw err;
-            });
-    }
-
-    fetchCosplayer(): void {
-        this.loading = true;
-
-        this.axios
-            .get(`/api/admin/cosplayers/${this.$route.params.slug}`)
-            .then(res => res.data)
-            .then(res => {
-                this.cosplayer = res.data;
-                this.loading = false;
-            })
-            .catch(err => {
-                this.cosplayer = new Cosplayer();
-                this.loading = false;
-                this.$snackbar.open({
-                    message: 'Unable to load cosplayer, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchCosplayer();
-                    },
-                });
                 throw err;
             });
     }
@@ -216,7 +189,6 @@ export default class CosplayersEdit extends VueBuefy {
 
     cosplayerToFormData(cosplayer: Cosplayer): FormData {
         let formData = new FormData();
-        formData.append('_method', 'PATCH');
         //TODO Rewrite
         if (cosplayer.name) {
             formData.append('name', cosplayer.name);
@@ -227,7 +199,7 @@ export default class CosplayersEdit extends VueBuefy {
         if (cosplayer.user_id) {
             formData.append('user_id', String(cosplayer.user_id));
         }
-        if (cosplayer.avatar) {
+        if (cosplayer.avatar != null) {
             formData.append('avatar', cosplayer.avatar);
         }
 

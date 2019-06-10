@@ -148,6 +148,7 @@ export default class AlbumsEdit extends AlbumDesc {
         url: '/api/admin/album-pictures',
         thumbnailWidth: 200,
         addRemoveLinks: true,
+        parallelUploads: 5,
         // Setup chunking
         chunking: true,
         method: 'POST',

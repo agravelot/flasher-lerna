@@ -55,6 +55,14 @@ const routes: Array<any> = [
             ),
     },
     {
+        path: '/admin/cosplayers/create',
+        name: 'admin.cosplayers.create',
+        component: () =>
+            import(
+                /* webpackChunkName: "cosplayersCreate" */ '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersCreate.vue'
+                ),
+    },
+    {
         path: '/admin/cosplayers/:slug/edit',
         name: 'admin.cosplayers.edit',
         component: () =>
