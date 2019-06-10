@@ -67,7 +67,7 @@ export default class Settings extends VueBuefy {
     sendSetting(setting: Setting): void {
         this.loading = true;
 
-        Vue.axios
+        this.axios
             .patch(`/api/admin/settings/${setting.name}`, {
                 value: setting.value,
             })
@@ -103,7 +103,7 @@ export default class Settings extends VueBuefy {
     fetchSettings(): void {
         this.loading = true;
 
-        Vue.axios
+        this.axios
             .get('/api/admin/settings')
             .then(res => res.data)
             .then(res => {

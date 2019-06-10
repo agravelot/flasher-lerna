@@ -129,7 +129,7 @@ export default class CosplayersIndex extends VueBuefy {
         this.loading = true;
         const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
-        Vue.axios
+        this.axios
             .get('/api/admin/cosplayers', {
                 params: {
                     page: this.page,
@@ -217,7 +217,7 @@ export default class CosplayersIndex extends VueBuefy {
      */
     deleteSelectedCosplayers(): void {
         this.checkedRows.forEach(cosplayer => {
-            Vue.axios
+            this.axios
                 .delete(`/api/admin/cosplayers/${cosplayer.slug}`)
                 .then(res => {
                     this.showSuccess('Cosplayers deleted');

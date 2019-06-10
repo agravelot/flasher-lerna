@@ -126,7 +126,7 @@ export default class PagesIndex extends VueBuefy {
         this.loading = true;
         const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
-        Vue.axios
+        this.axios
             .get('/api/admin/pages', {
                 params: {
                     page: this.page,
@@ -210,7 +210,7 @@ export default class PagesIndex extends VueBuefy {
      */
     deleteSelectedPages(): void {
         this.checkedRows.forEach(page => {
-            Vue.axios
+            this.axios
                 .delete(`/api/admin/pages/${page.id}`)
                 .then(res => {
                     this.showSuccess('Pages deleted');
