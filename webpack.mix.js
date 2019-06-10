@@ -48,7 +48,7 @@ mix.sass('resources/sass/app.scss', 'public/css')
 
 mix.webpackConfig({
     output: {
-        chunkFilename: 'js/chunks/[name].js',
+        chunkFilename: `js/chunks/[name].js${mix.inProduction() ? '?id=[chunkhash]' : ''}`,
     },
 });
 
