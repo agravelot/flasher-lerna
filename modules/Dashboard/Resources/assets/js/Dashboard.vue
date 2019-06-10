@@ -73,7 +73,7 @@ export default class Dashboard extends VueBuefy {
     fetchDashboard(): void {
         this.loading = true;
 
-        Vue.axios
+        this.axios
             .get('/api/admin/dashboard')
             .then(res => res.data)
             .then(res => {

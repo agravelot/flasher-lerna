@@ -128,7 +128,7 @@ export default class CosplayersEdit extends VueBuefy {
         this.loading = true;
 
         let formData: FormData = this.cosplayerToFormData(this.cosplayer);
-        Vue.axios
+        this.axios
             .post(`/api/admin/cosplayers/${this.$route.params.slug}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             })
@@ -158,7 +158,7 @@ export default class CosplayersEdit extends VueBuefy {
     fetchCosplayer(): void {
         this.loading = true;
 
-        Vue.axios
+        this.axios
             .get(`/api/admin/cosplayers/${this.$route.params.slug}`)
             .then(res => res.data)
             .then(res => {
@@ -183,7 +183,7 @@ export default class CosplayersEdit extends VueBuefy {
     }
 
     searchUser(): void {
-        Vue.axios
+        this.axios
             .get('/api/admin/users', { params: { 'filter[name]': this.cosplayer.user_id } })
             .then(res => res.data)
             .then(res => {

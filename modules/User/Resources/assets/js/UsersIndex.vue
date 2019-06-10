@@ -110,7 +110,7 @@ export default class AlbumsIndex extends VueBuefy {
         this.loading = true;
         const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
-        Vue.axios
+        this.axios
             .get('/api/admin/users', {
                 params: {
                     page: this.page,
@@ -197,7 +197,7 @@ export default class AlbumsIndex extends VueBuefy {
      */
     deleteSelectedAlbums(): void {
         this.checkedRows.forEach(user => {
-            Vue.axios
+            this.axios
                 .delete(`/api/admin/users/${user.slug}`)
                 .then(res => {
                     this.showSuccess('Albums deleted');
