@@ -12,8 +12,10 @@ namespace Modules\Category\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use Spatie\QueryBuilder\QueryBuilder;
 use Modules\Category\Http\Requests\CategoryRequest;
 use Modules\Category\Transformers\CategoryResource;
+use Modules\Cosplayer\Transformers\CosplayerResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminCategoryController extends Controller
@@ -25,7 +27,10 @@ class AdminCategoryController extends Controller
      */
     public function index()
     {
-        return CategoryResource::collection(Category::all());
+        return CosplayerResource::collection(
+            QueryBuilder::for(Category::class)->allowedFilters('name')
+                ->paginate(15)
+        );
     }
 
     /**
