@@ -115,25 +115,57 @@ export default class AlbumDesc extends VueBuefy {
     };
 
     getFilteredCategories(text: string): void {
-        this.filteredCategories = this.allCategories.filter((option: Category) => {
-            return (
-                option.name
-                    .toString()
-                    .toLowerCase()
-                    .indexOf(text.toLowerCase()) >= 0
-            );
-        });
+        this.axios
+            .get('/api/admin/categories', {
+                params: {
+                    'filter[name]': text,
+                },
+            })
+            .then(res => res.data)
+            .then(res => {
+                this.filteredCategories = res.data;
+            })
+            .catch(err => {
+                // this.filteredCosplayers = [];
+                this.$snackbar.open({
+                    message: 'Unable to load categories, maybe you are offline?',
+                    type: 'is-danger',
+                    position: 'is-top',
+                    actionText: 'Retry',
+                    indefinite: true,
+                    onAction: () => {
+                        this.getFilteredCategories(text);
+                    },
+                });
+                throw err;
+            });
     }
 
     getFilteredCosplayers(text: string): void {
-        this.filteredCosplayers = this.allCosplayers.filter((option: Cosplayer) => {
-            return (
-                option.name
-                    .toString()
-                    .toLowerCase()
-                    .indexOf(text.toLowerCase()) >= 0
-            );
-        });
+        this.axios
+            .get('/api/admin/cosplayers', {
+                params: {
+                    'filter[name]': text,
+                },
+            })
+            .then(res => res.data)
+            .then(res => {
+                this.filteredCosplayers = res.data;
+            })
+            .catch(err => {
+                // this.filteredCosplayers = [];
+                this.$snackbar.open({
+                    message: 'Unable to load cosplayers, maybe you are offline?',
+                    type: 'is-danger',
+                    position: 'is-top',
+                    actionText: 'Retry',
+                    indefinite: true,
+                    onAction: () => {
+                        this.getFilteredCosplayers(text);
+                    },
+                });
+                throw err;
+            });
     }
 }
 </script>
