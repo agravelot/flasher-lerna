@@ -104,31 +104,6 @@ import AlbumDesc from './AlbumDesc';
     },
 })
 export default class AlbumsCreate extends AlbumDesc {
-    created() {
-        this.fetchData();
-    }
-
-    fetchData() {
-        this.axios
-            .get('/api/admin/categories')
-            .then(res => res.data)
-            .then(res => {
-                this.allCategories = res.data;
-            })
-            .catch(err => {
-                throw err;
-            });
-        this.axios
-            .get('/api/admin/cosplayers')
-            .then(res => res.data)
-            .then(res => {
-                this.allCosplayers = res.data;
-            })
-            .catch(err => {
-                throw err;
-            });
-    }
-
     createAlbum() {
         this.axios
             .post(`/api/admin/albums/`, this.album)

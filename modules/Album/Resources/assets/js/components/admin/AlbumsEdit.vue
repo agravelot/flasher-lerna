@@ -143,7 +143,6 @@ import AlbumsShowGallery from './AlbumsShowGallery';
     extends: AlbumDesc,
 })
 export default class AlbumsEdit extends AlbumDesc {
-    isSelectOnly: boolean = false;
     allowNew: boolean = false;
     dropzoneOptions: object = {
         url: '/api/admin/album-pictures',
@@ -169,33 +168,15 @@ export default class AlbumsEdit extends AlbumDesc {
     };
 
     created(): void {
-        this.fetchData();
+        this.fetchAlbum();
     }
 
-    fetchData(): void {
+    fetchAlbum(): void {
         this.axios
             .get(`/api/admin/albums/${this.$route.params.slug}`)
             .then(res => res.data)
             .then(res => {
                 this.album = res.data;
-            })
-            .catch(err => {
-                throw err;
-            });
-        this.axios
-            .get('/api/admin/categories')
-            .then(res => res.data)
-            .then(res => {
-                this.allCategories = res.data;
-            })
-            .catch(err => {
-                throw err;
-            });
-        this.axios
-            .get('/api/admin/cosplayers')
-            .then(res => res.data)
-            .then(res => {
-                this.allCosplayers = res.data;
             })
             .catch(err => {
                 throw err;
@@ -230,69 +211,6 @@ export default class AlbumsEdit extends AlbumDesc {
                     duration: 5000,
                 });
                 this.errors = err.response.data.errors;
-                throw err;
-            });
-    }
-
-    getFilteredCategories(text: string): void {
-        this.axios
-            .get('/api/admin/categories', {
-                params: {
-                    'filter[name]': text,
-                },
-            })
-            .then(res => res.data)
-            .then(res => {
-                this.filteredCategories = res.data;
-            })
-            .catch(err => {
-                // this.filteredCosplayers = [];
-                this.$snackbar.open({
-                    message: 'Unable to load categories, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.getFilteredCategories(text);
-                    },
-                });
-                throw err;
-            });
-
-        // this.filteredCategories = this.allCategories.filter(option => {
-        //     return (
-        //         option.name
-        //             .toString()
-        //             .toLowerCase()
-        //             .indexOf(text.toLowerCase()) >= 0
-        //     );
-        // });
-    }
-
-    getFilteredCosplayers(text: string): void {
-        this.axios
-            .get('/api/admin/cosplayers', {
-                params: {
-                    'filter[name]': text,
-                },
-            })
-            .then(res => res.data)
-            .then(res => {
-                this.filteredCosplayers = res.data;
-            })
-            .catch(err => {
-                // this.filteredCosplayers = [];
-                this.$snackbar.open({
-                    message: 'Unable to load cosplayers, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.getFilteredCosplayers(text);
-                    },
-                });
                 throw err;
             });
     }
