@@ -46,6 +46,7 @@ use App\Abilities\HasParentModelTrait;
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Cosplayer[] $cosplayers
  * @property \App\Models\User                                                 $user
  * @property mixed                                                            $cover
+ * @property-read mixed $cover_responsive
  */
 class PublicAlbum extends Album
 {

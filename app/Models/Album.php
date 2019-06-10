@@ -65,6 +65,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Album wherePrivate($value)
  * @method static Builder|Album public()
  * @property mixed $cover
+ * @property-read mixed $cover_responsive
  */
 class Album extends Model implements HasMedia
 {
@@ -198,7 +199,6 @@ class Album extends Model implements HasMedia
             ->usingName($name)
             ->usingFileName($name)
             ->preservingOriginal()
-            ->withResponsiveImages()
             ->toMediaCollection('pictures');
     }
 
