@@ -9,9 +9,9 @@
 
 namespace App\Jobs;
 
-use Spatie\MediaLibrary\Jobs\GenerateResponsiveImages as GenerateResponsiveImagesBase;
+use Spatie\MediaLibrary\Jobs\PerformConversions as PerformConversionsBase;
 
-class GenerateResponsiveImages extends GenerateResponsiveImagesBase
+class PerformConversions extends PerformConversionsBase
 {
     public $timeout = 30 * 60; // 30 minutes
 }
