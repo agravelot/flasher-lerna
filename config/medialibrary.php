@@ -37,7 +37,7 @@ return [
         /*
          * The domain that should be prepended when generating urls.
          */
-        'domain' => 'https://'.env('AWS_BUCKET').'.s3.amazonaws.com',
+        'domain' => 'https://'.env('DO_BUCKET').'.'.env('DO_DEFAULT_REGION').'.digitaloceanspaces.com',
     ],
 
     'remote' => [
@@ -81,8 +81,9 @@ return [
      * When urls to files get generated, this class will be called. Leave empty
      * if your files are stored locally above the site root or on s3.
      */
-    'url_generator' => RelativeLocalUrlGenerator::class,
-//    'url_generator' => null,
+    // TODO Remove old generator
+    // 'url_generator' => RelativeLocalUrlGenerator::class,
+    'url_generator' => null,
 
     /*
      * The class that contains the strategy for determining a media file's path.

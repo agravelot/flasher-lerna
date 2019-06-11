@@ -158,10 +158,11 @@ class Cosplayer extends Model implements HasMedia
     public function registerMediaCollections()
     {
         $this->addMediaCollection('avatar')
-            ->singleFile()
             ->acceptsFile(function (File $file) {
                 return mb_strpos($file->mimeType, 'image/') === 0;
-            });
+            })
+            ->singleFile()
+            ->useDisk('s3');
     }
 
     /**

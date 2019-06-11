@@ -210,7 +210,8 @@ class Album extends Model implements HasMedia
         $this->addMediaCollection('pictures')
             ->acceptsFile(function (File $file) {
                 return mb_strpos($file->mimeType, 'image/') === 0;
-            });
+            })
+            ->useDisk('s3');
     }
 
     /**
