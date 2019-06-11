@@ -34,14 +34,17 @@ class Backup implements ShouldQueue
      */
     public $tries = 3;
 
-    public $retry_after = null;
-
     /**
      * Execute the job.
      */
     public function handle()
     {
         Artisan::call('backup:run');
+    }
+
+    public function retryAfter()
+    {
+        return $this->timeout + 10;
     }
 
     /**
