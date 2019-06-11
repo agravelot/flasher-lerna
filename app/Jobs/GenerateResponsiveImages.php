@@ -14,4 +14,9 @@ use Spatie\MediaLibrary\Jobs\GenerateResponsiveImages as GenerateResponsiveImage
 class GenerateResponsiveImages extends GenerateResponsiveImagesBase
 {
     public $timeout = 30 * 60; // 30 minutes
+
+    public function retryAfter()
+    {
+        return $this->timeout + 10;
+    }
 }
