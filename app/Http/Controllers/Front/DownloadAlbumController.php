@@ -10,31 +10,22 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Album;
-use App\Models\PublicAlbum;
 use App\Http\Controllers\Controller;
 use Spatie\MediaLibrary\MediaStream;
 
 class DownloadAlbumController extends Controller
 {
     /**
-     * @param string $slug
-     *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
+     * @param Album $album
      * @return MediaStream
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function show(string $slug)
+    public function show(Album $album)
     {
-        $this->authorize('download', Album::class);
-        if (auth()->user()->isAdmin()) {
-            $album = Album::findBySlugOrFail($slug);
-        } else {
-            $album = PublicAlbum::findBySlug($slug);
-        }
+        set_time_limit(0); // Disable timeout for long download
         $this->authorize('download', $album);
         $pictures = $album->getMedia('pictures');
 
-        return MediaStream::create($album->slug.'.zip')
-            ->addMedia($pictures);
+        return MediaStream::create($album->title.'.zip')->addMedia($pictures);
     }
 }

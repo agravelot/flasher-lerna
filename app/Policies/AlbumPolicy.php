@@ -17,13 +17,21 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can download the album.
      *
-     * @param User  $user
+     * @param User $user
      * @param Album $album
      *
      * @return bool
      */
     public function download(User $user, Album $album)
     {
+        if ($user && $user->isAdmin()) {
+            return true;
+        }
+
+        if (! $album->isPublic()) {
+            return false;
+        }
+
         return $album->cosplayers->contains($user->cosplayer);
     }
 
@@ -43,7 +51,7 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can view the album.
      *
-     * @param User  $user
+     * @param User $user
      * @param Album $album
      *
      * @return bool
@@ -76,7 +84,7 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can update the album.
      *
-     * @param User  $user
+     * @param User $user
      * @param Album $album
      *
      * @return bool
@@ -90,7 +98,7 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can delete the album.
      *
-     * @param User  $user
+     * @param User $user
      * @param Album $album
      *
      * @return bool
@@ -104,7 +112,7 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can restore the album.
      *
-     * @param User  $user
+     * @param User $user
      * @param Album $album
      *
      * @return bool
@@ -117,7 +125,7 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can permanently delete the album.
      *
-     * @param User  $user
+     * @param User $user
      * @param Album $album
      *
      * @return bool
