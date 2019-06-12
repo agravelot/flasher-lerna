@@ -193,13 +193,14 @@ class Album extends Model implements HasMedia
     {
         $uuid = Str::uuid();
 
+        // TODO Fix extension
         $name = "{$this->slug}_{$uuid}.{$media->getClientOriginalExtension()}";
 
         return $this->addMedia($media)
             ->usingName($name)
             ->usingFileName($name)
             ->preservingOriginal()
-            ->toMediaCollection('pictures');
+            ->toMediaCollectionOnCloudDisk('pictures');
     }
 
     /**
@@ -210,8 +211,7 @@ class Album extends Model implements HasMedia
         $this->addMediaCollection('pictures')
             ->acceptsFile(function (File $file) {
                 return mb_strpos($file->mimeType, 'image/') === 0;
-            })
-            ->useDisk('s3');
+            });
     }
 
     /**

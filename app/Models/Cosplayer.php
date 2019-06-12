@@ -109,7 +109,7 @@ class Cosplayer extends Model implements HasMedia
             ->usingFileName($name)
             ->preservingOriginal()
             ->withResponsiveImages()
-            ->toMediaCollection('avatar');
+            ->toMediaCollectionOnCloudDisk('avatar');
     }
 
     /**
@@ -161,8 +161,7 @@ class Cosplayer extends Model implements HasMedia
             ->acceptsFile(function (File $file) {
                 return mb_strpos($file->mimeType, 'image/') === 0;
             })
-            ->singleFile()
-            ->useDisk('s3');
+            ->singleFile();
     }
 
     /**

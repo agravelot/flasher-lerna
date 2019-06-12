@@ -7,14 +7,12 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-use Modules\Album\UrlGenerator\RelativeLocalUrlGenerator;
-
 return [
     /*
      * The disk on which to store added files and derived images by default. Choose
      * one or more of the disks you've configured in config/filesystems.php.
      */
-    'disk_name' => 'public',
+    'disk_name' => env('FILESYSTEM_CLOUD', 's3'),
 
     /*
      * The maximum file size of an item in bytes.
