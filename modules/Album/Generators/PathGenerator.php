@@ -43,6 +43,6 @@ class PathGenerator implements PathGeneratorBase
      */
     protected function getBasePath(Media $media): string
     {
-        return config('app.name', 'default').$media->getKey();
+        return config('app.name', 'default').'/'.$media->getKey();
     }
 }
