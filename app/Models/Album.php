@@ -98,7 +98,9 @@ class Album extends Model implements HasMedia
 
     public function getCoverResponsiveAttribute()
     {
-        return optional($this->getFirstMedia('pictures'))->getUrl('responsive');
+        return optional($this->getFirstMedia('pictures'), function (Media $media) {
+            return $media('responsive');
+        });
     }
 
     /**
