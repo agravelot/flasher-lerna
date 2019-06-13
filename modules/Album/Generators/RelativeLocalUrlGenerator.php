@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Album\UrlGenerator;
+namespace Modules\Album\Generators;
 
 use Spatie\MediaLibrary\UrlGenerator\LocalUrlGenerator;
 

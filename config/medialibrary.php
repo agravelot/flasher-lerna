@@ -81,13 +81,13 @@ return [
      * if your files are stored locally above the site root or on s3.
      */
     // TODO Remove old generator
-    // 'url_generator' => RelativeLocalUrlGenerator::class,
+    // 'url_generator' => \Modules\Album\Generators\RelativeLocalUrlGenerator::class,
     'url_generator' => null,
 
     /*
      * The class that contains the strategy for determining a media file's path.
      */
-    'path_generator' => null,
+    'path_generator' => \Modules\Album\Generators\PathGenerator::class,
 
     /*
      * Medialibrary will try to optimize all converted images by removing
