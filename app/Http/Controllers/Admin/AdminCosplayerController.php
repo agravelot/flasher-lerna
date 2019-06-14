@@ -28,7 +28,7 @@ class AdminCosplayerController extends Controller
      */
     public function index()
     {
-        $this->authorize('index', Cosplayer::class);
+        $this->authorize('viewAny', Cosplayer::class);
         $cosplayers = Cosplayer::orderBy('updated_at')->paginate(10);
 
         return view('admin.cosplayers.index', [
