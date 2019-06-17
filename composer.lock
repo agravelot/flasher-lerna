@@ -117,16 +117,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.100.3",
+            "version": "3.100.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "daa94a5ac8931e151ccf0dcdce632d9b6a83a1fe"
+                "reference": "803f3cdc37f42112c4df1af0a77e25130b9448d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/daa94a5ac8931e151ccf0dcdce632d9b6a83a1fe",
-                "reference": "daa94a5ac8931e151ccf0dcdce632d9b6a83a1fe",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/803f3cdc37f42112c4df1af0a77e25130b9448d3",
+                "reference": "803f3cdc37f42112c4df1af0a77e25130b9448d3",
                 "shasum": ""
             },
             "require": {
@@ -196,7 +196,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-06-13T19:22:34+00:00"
+            "time": "2019-06-14T18:12:13+00:00"
         },
         {
             "name": "beyondcode/laravel-self-diagnosis",
@@ -262,16 +262,16 @@
         },
         {
             "name": "cakephp/chronos",
-            "version": "1.2.7",
+            "version": "1.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/chronos.git",
-                "reference": "c981a911149151d5eceefccf1980f4554fc42619"
+                "reference": "0292f06e8cc23fc82f0574889da2d8bf27b613c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/chronos/zipball/c981a911149151d5eceefccf1980f4554fc42619",
-                "reference": "c981a911149151d5eceefccf1980f4554fc42619",
+                "url": "https://api.github.com/repos/cakephp/chronos/zipball/0292f06e8cc23fc82f0574889da2d8bf27b613c1",
+                "reference": "0292f06e8cc23fc82f0574889da2d8bf27b613c1",
                 "shasum": ""
             },
             "require": {
@@ -315,7 +315,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2019-06-06T07:08:18+00:00"
+            "time": "2019-06-17T15:19:18+00:00"
         },
         {
             "name": "clue/stream-filter",
@@ -7292,16 +7292,16 @@
         },
         {
             "name": "vlucas/phpdotenv",
-            "version": "v3.3.3",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vlucas/phpdotenv.git",
-                "reference": "dbcc609971dd9b55f48b8008b553d79fd372ddde"
+                "reference": "5084b23845c24dbff8ac6c204290c341e4776c92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/dbcc609971dd9b55f48b8008b553d79fd372ddde",
-                "reference": "dbcc609971dd9b55f48b8008b553d79fd372ddde",
+                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/5084b23845c24dbff8ac6c204290c341e4776c92",
+                "reference": "5084b23845c24dbff8ac6c204290c341e4776c92",
                 "shasum": ""
             },
             "require": {
@@ -7315,7 +7315,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.3-dev"
+                    "dev-master": "3.4-dev"
                 }
             },
             "autoload": {
@@ -7340,7 +7340,7 @@
                 "env",
                 "environment"
             ],
-            "time": "2019-03-06T09:39:45+00:00"
+            "time": "2019-06-15T22:40:20+00:00"
         },
         {
             "name": "zendframework/zend-diactoros",
