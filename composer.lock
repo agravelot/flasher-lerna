@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "92d669f9d441fdc21473206510307414",
+    "content-hash": "4ab56ecfdc444447b5a74688a2543915",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -117,16 +117,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.100.4",
+            "version": "3.100.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "803f3cdc37f42112c4df1af0a77e25130b9448d3"
+                "reference": "daa94a5ac8931e151ccf0dcdce632d9b6a83a1fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/803f3cdc37f42112c4df1af0a77e25130b9448d3",
-                "reference": "803f3cdc37f42112c4df1af0a77e25130b9448d3",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/daa94a5ac8931e151ccf0dcdce632d9b6a83a1fe",
+                "reference": "daa94a5ac8931e151ccf0dcdce632d9b6a83a1fe",
                 "shasum": ""
             },
             "require": {
@@ -196,7 +196,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-06-14T18:12:13+00:00"
+            "time": "2019-06-13T19:22:34+00:00"
         },
         {
             "name": "beyondcode/laravel-self-diagnosis",

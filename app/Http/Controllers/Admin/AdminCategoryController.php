@@ -28,7 +28,7 @@ class AdminCategoryController extends Controller
      */
     public function index()
     {
-        $this->authorize('index', Category::class);
+        $this->authorize('viewAny', Category::class);
         $categories = Category::paginate(10);
 
         return view('admin.categories.index', compact('categories'));

@@ -23,7 +23,7 @@ class AdminGoldenBookController extends Controller
      */
     public function index()
     {
-        $this->authorize('index', GoldenBookPost::class);
+        $this->authorize('viewAny', GoldenBookPost::class);
         $goldenBookPosts = GoldenBookPost::paginate(10);
 
         return view('admin.goldenbook.index', [

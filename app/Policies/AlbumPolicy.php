@@ -42,10 +42,10 @@ class AlbumPolicy extends Policy
      *
      * @return bool
      */
-    public function index(?User $user)
+    public function viewAny(?User $user)
     {
 //        return $user->id == $album->user_id;
-        return false;
+        return true;
     }
 
     /**

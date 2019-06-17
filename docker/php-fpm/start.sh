@@ -6,8 +6,6 @@ role=${CONTAINER_ROLE:-app}
 env=${APP_ENV:-production}
 cd /var/www/html
 
-
-
 php artisan db:wait-connection
 
 if [[ "$role" = "app" ]]; then
@@ -29,10 +27,9 @@ elif [[ "$role" = "scheduler" ]]; then
       sleep 60
     done
 
-elif [[ "$env" != "publisher" ]]; then
+elif [[ "$role" != "publisher" ]]; then
 
   if [[ "$env" != "local" ]]; then
-
       # Optimizing for production
       # https://laravel.com/docs/5.8/deployment#optimization
       echo "Caching configuration..."

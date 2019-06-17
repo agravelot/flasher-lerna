@@ -25,7 +25,7 @@ class AdminUserController extends Controller
      */
     public function index()
     {
-        $this->authorize('index', User::class);
+        $this->authorize('viewAny', User::class);
         $users = User::with('cosplayer')->paginate(10);
 
         return view('admin.users.index', [
