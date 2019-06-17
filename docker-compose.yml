@@ -8,7 +8,7 @@ services:
     env_file:
     - docker/db/.env
 
-  php:
+  php: &php_base
     image: registry.gitlab.com/nevax/picblog/picblog_php:${CI_COMMIT_SHORT_SHA:-latest}
     build:
       context: .
@@ -28,67 +28,32 @@ services:
     - cache
 
   queue:
-    image: registry.gitlab.com/nevax/picblog/picblog_php:${CI_COMMIT_SHORT_SHA:-latest}
+    <<: *php_base
     build:
       context: .
       dockerfile: Dockerfile
       target: php_queue
-    restart: unless-stopped
-    env_file:
-      - docker/php-fpm/.env
     environment:
       CONTAINER_ROLE: "queue"
-    volumes:
-      - storage:/var/www/html/storage:rw,delegated
-      - public_vendor:/var/www/html/public/vendor:rw,delegated
-    links:
-      - db
-      - cache
-    depends_on:
-      - db
-      - cache
 
   scheduler:
-    image: registry.gitlab.com/nevax/picblog/picblog_php:${CI_COMMIT_SHORT_SHA:-latest}
+    <<: *php_base
     build:
       context: .
       dockerfile: Dockerfile
       target: php_scheduler
-    restart: unless-stopped
-    env_file:
-      - docker/php-fpm/.env
     environment:
       CONTAINER_ROLE: "scheduler"
-    volumes:
-      - storage:/var/www/html/storage:rw,delegated
-      - public_vendor:/var/www/html/public/vendor:rw,delegated
-    links:
-      - db
-      - cache
-    depends_on:
-      - db
-      - cache
 
   publisher:
-    image: registry.gitlab.com/nevax/picblog/picblog_php:${CI_COMMIT_SHORT_SHA:-latest}
+    <<: *php_base
     build:
       context: .
       dockerfile: Dockerfile
       target: php_publisher
     restart: on-failure
-    env_file:
-      - docker/php-fpm/.env
     environment:
       CONTAINER_ROLE: "publisher"
-    volumes:
-      - storage:/var/www/html/storage:rw,delegated
-      - public_vendor:/var/www/html/public/vendor:rw,delegated
-    links:
-      - db
-      - cache
-    depends_on:
-      - db
-      - cache
 
   nginx:
     image: registry.gitlab.com/nevax/picblog/picblog_nginx:${CI_COMMIT_SHORT_SHA:-latest}
