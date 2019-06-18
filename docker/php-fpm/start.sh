@@ -21,7 +21,7 @@ elif [[ "$role" = "scheduler" ]]; then
     echo "Scheduler role"
     exec crond -f -c /etc/crontabs
 
-elif [[ "$role" != "publisher" ]]; then
+elif [[ "$role" = "publisher" ]]; then
 
   if [[ "$env" != "local" ]]; then
       # Optimizing for production
