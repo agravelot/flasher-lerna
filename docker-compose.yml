@@ -95,8 +95,8 @@ services:
     image: morbz/docker-web-redirect
     restart: unless-stopped
     environment:
-      - VIRTUAL_HOST=www.${VIRTUAL_HOST}
-      - REDIRECT_TARGET=${VIRTUAL_HOST}
+      - VIRTUAL_HOST=www.${APP_URL}
+      - REDIRECT_TARGET=${APP_URL}
 
 volumes:
   db-data:
