@@ -17,6 +17,8 @@
 
     <meta name="description" content="@yield('seo_description', settings()->get('seo_description'))"/>
 
+    <link rel="dns-prefetch" href="{{ config('medialibrary.s3.domain') }}">
+
     <!-- Styles -->
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
     @yield('head')
