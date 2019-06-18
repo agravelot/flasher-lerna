@@ -9,7 +9,6 @@
 
 namespace App\Console;
 
-use App\Jobs\Backup;
 use App\Jobs\BackupClean;
 use App\Jobs\BackupMonitor;
 use App\Jobs\GenerateSitemap;
