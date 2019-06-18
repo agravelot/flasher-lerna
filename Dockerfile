@@ -93,5 +93,6 @@ FROM php_base AS php_app
 FROM php_base AS php_queue
 
 FROM php_base AS php_scheduler
+COPY docker/php-fpm/crontab /etc/crontabs/root
 
 FROM php_base AS php_publisher

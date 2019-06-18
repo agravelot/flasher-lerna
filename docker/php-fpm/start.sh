@@ -6,8 +6,6 @@ role=${CONTAINER_ROLE:-app}
 env=${APP_ENV:-production}
 cd /var/www/html
 
-php artisan db:wait-connection
-
 if [[ "$role" = "app" ]]; then
 
     echo "App role"
@@ -21,11 +19,7 @@ elif [[ "$role" = "queue" ]]; then
 elif [[ "$role" = "scheduler" ]]; then
 
     echo "Scheduler role"
-    while [[ true ]]
-    do
-      php /var/www/html/artisan schedule:run --verbose --no-interaction &
-      sleep 60
-    done
+    crond -f -c /etc/crontabs
 
 elif [[ "$role" != "publisher" ]]; then
 
@@ -38,6 +32,7 @@ elif [[ "$role" != "publisher" ]]; then
       php artisan view:cache
   fi
 
+  php artisan db:wait-connection
   php artisan cache:clear-wait-connection
   php artisan migrate --force
   php artisan passport:keys
