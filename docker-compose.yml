@@ -91,6 +91,13 @@ services:
     environment:
     - PHP_UPLOAD_MAX_FILESIZE=100MB
 
+  redirect:
+    image: morbz/docker-web-redirect
+    restart: unless-stopped
+    environment:
+      - VIRTUAL_HOST=www.${VIRTUAL_HOST}
+      - REDIRECT_TARGET=${VIRTUAL_HOST}
+
 volumes:
   db-data:
   storage:
