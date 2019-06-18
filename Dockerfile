@@ -83,6 +83,7 @@ RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
         && ./composer check-platform-reqs && rm -f ./composer
 
 COPY --chown=1000:1000 docker/php-fpm/start.sh /start.sh
+COPY docker/php-fpm/crontab /etc/crontabs/root
 
 USER 1000:1000
 
@@ -93,6 +94,5 @@ FROM php_base AS php_app
 FROM php_base AS php_queue
 
 FROM php_base AS php_scheduler
-COPY docker/php-fpm/crontab /etc/crontabs/root
 
 FROM php_base AS php_publisher
