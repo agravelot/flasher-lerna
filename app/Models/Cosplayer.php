@@ -88,7 +88,7 @@ class Cosplayer extends Model implements HasMedia
     }
 
     /**
-     * Add media to 'pictures' collection.
+     * Add media to Album::PICTURES_COLLECTION collection.
      *
      * @param UploadedFile|null $media
      */

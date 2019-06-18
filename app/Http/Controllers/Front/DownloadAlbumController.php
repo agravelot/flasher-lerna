@@ -24,7 +24,7 @@ class DownloadAlbumController extends Controller
     {
         set_time_limit(0); // Disable timeout for long download
         $this->authorize('download', $album);
-        $pictures = $album->getMedia('pictures');
+        $pictures = $album->getMedia(Album::PICTURES_COLLECTION);
 
         return MediaStream::create($album->title.'.zip')->addMedia($pictures);
     }

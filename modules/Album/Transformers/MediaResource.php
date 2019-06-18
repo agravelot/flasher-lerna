@@ -10,6 +10,7 @@
 namespace Modules\Album\Transformers;
 
 use Illuminate\Http\Resources\Json\Resource;
+use Modules\Album\Entities\Album;
 
 class MediaResource extends Resource
 {
@@ -27,7 +28,7 @@ class MediaResource extends Resource
             'name' => $this->name,
             'file_name' => $this->file_name,
             'thumb' => $this->getUrl('thumb'),
-            'src_set' => $this->getSrcset('responsive'),
+            'src_set' => $this->getSrcset(Album::RESPONSIVE_PICTURES_CONVERSION),
         ];
     }
 }

@@ -71,6 +71,9 @@ class Album extends Model implements HasMedia
 {
     use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey, HasTitleAsSlug;
 
+    public const PICTURES_COLLECTION = 'pictures';
+    public const RESPONSIVE_PICTURES_CONVERSION = 'responsive';
+
     protected $with = ['media'];
 
     protected $dates = [
@@ -93,13 +96,13 @@ class Album extends Model implements HasMedia
 
     public function getCoverAttribute()
     {
-        return $this->getFirstMedia('pictures');
+        return $this->getFirstMedia(Album::PICTURES_COLLECTION);
     }
 
     public function getCoverResponsiveAttribute()
     {
-        return optional($this->getFirstMedia('pictures'), function (Media $media) {
-            return $media('responsive');
+        return optional($this->getFirstMedia(Album::PICTURES_COLLECTION), function (Media $media) {
+            return $media(Album::RESPONSIVE_PICTURES_CONVERSION);
         });
     }
 
@@ -185,7 +188,7 @@ class Album extends Model implements HasMedia
     }
 
     /**
-     * Add media to 'pictures' collection.
+     * Add media to Album::PICTURES_COLLECTION collection.
      *
      * @param string|UploadedFile $media
      *
@@ -202,7 +205,7 @@ class Album extends Model implements HasMedia
             ->usingName($name)
             ->usingFileName($name)
             ->preservingOriginal()
-            ->toMediaCollectionOnCloudDisk('pictures');
+            ->toMediaCollectionOnCloudDisk(Album::PICTURES_COLLECTION);
     }
 
     /**
@@ -210,7 +213,7 @@ class Album extends Model implements HasMedia
      */
     public function registerMediaCollections()
     {
-        $this->addMediaCollection('pictures')
+        $this->addMediaCollection(Album::PICTURES_COLLECTION)
             ->acceptsFile(function (File $file) {
                 return mb_strpos($file->mimeType, 'image/') === 0;
             });
@@ -223,16 +226,16 @@ class Album extends Model implements HasMedia
      */
     public function registerMediaConversions(Media $media = null)
     {
-        $this->addMediaConversion('responsive')
+        $this->addMediaConversion(Album::RESPONSIVE_PICTURES_CONVERSION)
             ->sharpen(10)
             ->optimize()
             ->withResponsiveImages()
-            ->performOnCollections('pictures');
+            ->performOnCollections(Album::PICTURES_COLLECTION);
 
         $this->addMediaConversion('thumb')
             ->width(400)
             ->sharpen(8)
             ->optimize()
-            ->performOnCollections('pictures');
+            ->performOnCollections(Album::PICTURES_COLLECTION);
     }
 }
