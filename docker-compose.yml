@@ -42,6 +42,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: php_scheduler
+    user: root
     environment:
       CONTAINER_ROLE: "scheduler"
 
