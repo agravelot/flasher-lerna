@@ -1,1 +1,1 @@
-*  *  *  *  *  www-data /usr/local/bin/php /var/www/html/artisan schedule:run
+*  *  *  *  *   /usr/local/bin/php /var/www/html/artisan schedule:run
