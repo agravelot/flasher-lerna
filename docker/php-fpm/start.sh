@@ -19,7 +19,7 @@ elif [[ "$role" = "queue" ]]; then
 elif [[ "$role" = "scheduler" ]]; then
 
     echo "Scheduler role"
-    exec crond -f -c /etc/crontabs
+    exec crond -f -c /etc/crontabs -d 8
 
 elif [[ "$role" = "publisher" ]]; then
 
