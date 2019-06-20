@@ -37,7 +37,6 @@
     "pion/laravel-chunk-upload": "^1.2",
     "sentry/sentry-laravel": "^1.0",
     "spatie/laravel-activitylog": "^3.1",
-    "spatie/laravel-backup": "^6.1",
     "spatie/laravel-query-builder": "^1.13",
     "spatie/laravel-sitemap": "^5.3"
   },
