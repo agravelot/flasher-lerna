@@ -46,11 +46,11 @@ mix.sass('resources/sass/app.scss', 'public/css')
 // ])
 ;
 
-mix.webpackConfig({
-    output: {
-        chunkFilename: `js/chunks/[name].js${mix.inProduction() ? '?id=[chunkhash]' : ''}`,
-    },
-});
+// mix.webpackConfig({
+//     output: {
+//         chunkFilename: `js/chunks/[name].js${mix.inProduction() ? '?id=[chunkhash]' : ''}`,
+//     },
+// });
 
 mix.browserSync('localhost:8000');
 
