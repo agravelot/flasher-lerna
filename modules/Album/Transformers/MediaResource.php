@@ -9,8 +9,8 @@
 
 namespace Modules\Album\Transformers;
 
-use Illuminate\Http\Resources\Json\Resource;
 use Modules\Album\Entities\Album;
+use Illuminate\Http\Resources\Json\Resource;
 
 class MediaResource extends Resource
 {

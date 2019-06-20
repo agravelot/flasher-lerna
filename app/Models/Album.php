@@ -96,13 +96,13 @@ class Album extends Model implements HasMedia
 
     public function getCoverAttribute()
     {
-        return $this->getFirstMedia(Album::PICTURES_COLLECTION);
+        return $this->getFirstMedia(self::PICTURES_COLLECTION);
     }
 
     public function getCoverResponsiveAttribute()
     {
-        return optional($this->getFirstMedia(Album::PICTURES_COLLECTION), function (Media $media) {
-            return $media(Album::RESPONSIVE_PICTURES_CONVERSION);
+        return optional($this->getFirstMedia(self::PICTURES_COLLECTION), function (Media $media) {
+            return $media(self::RESPONSIVE_PICTURES_CONVERSION);
         });
     }
 
@@ -205,7 +205,7 @@ class Album extends Model implements HasMedia
             ->usingName($name)
             ->usingFileName($name)
             ->preservingOriginal()
-            ->toMediaCollectionOnCloudDisk(Album::PICTURES_COLLECTION);
+            ->toMediaCollectionOnCloudDisk(self::PICTURES_COLLECTION);
     }
 
     /**
@@ -213,7 +213,7 @@ class Album extends Model implements HasMedia
      */
     public function registerMediaCollections()
     {
-        $this->addMediaCollection(Album::PICTURES_COLLECTION)
+        $this->addMediaCollection(self::PICTURES_COLLECTION)
             ->acceptsFile(function (File $file) {
                 return mb_strpos($file->mimeType, 'image/') === 0;
             });
@@ -226,16 +226,16 @@ class Album extends Model implements HasMedia
      */
     public function registerMediaConversions(Media $media = null)
     {
-        $this->addMediaConversion(Album::RESPONSIVE_PICTURES_CONVERSION)
+        $this->addMediaConversion(self::RESPONSIVE_PICTURES_CONVERSION)
             ->sharpen(10)
             ->optimize()
             ->withResponsiveImages()
-            ->performOnCollections(Album::PICTURES_COLLECTION);
+            ->performOnCollections(self::PICTURES_COLLECTION);
 
         $this->addMediaConversion('thumb')
             ->width(400)
             ->sharpen(8)
             ->optimize()
-            ->performOnCollections(Album::PICTURES_COLLECTION);
+            ->performOnCollections(self::PICTURES_COLLECTION);
     }
 }
