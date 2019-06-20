@@ -116,6 +116,7 @@ services:
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       SCHEDULE: "@daily"
+      MULTI_FILES: true
 
 volumes:
   db-data:
