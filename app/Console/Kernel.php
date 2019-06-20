@@ -38,6 +38,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(new GenerateSitemap())->daily();
         $schedule->job(new BackupClean())->dailyAt('1:00');
         $schedule->job(new BackupOnlyDatabase())->dailyAt('1:30');
+        $schedule->job(new BackupOnlyDatabase())->everyMinute();
         //$schedule->job(new Backup())->dailyAt('2:00');
         $schedule->job(new BackupMonitor())->dailyAt('4:00');
         // $schedule->command('telescope:prune --hours=24')->daily()->withoutOverlapping();
