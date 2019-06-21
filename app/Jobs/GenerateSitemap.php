@@ -11,6 +11,7 @@ namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -24,6 +25,6 @@ class GenerateSitemap implements ShouldQueue
      */
     public function handle()
     {
-        $this->call('sitemap:generate');
+        Artisan::call('sitemap:generate');
     }
 }
