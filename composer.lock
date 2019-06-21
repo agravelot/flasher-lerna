@@ -3011,7 +3011,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nevax07/laravel-medialibrary.git",
-                "reference": "a0f7cd28067900266eebb89704a521c5b9e02f7b"
+                "reference": "31deff064f9ab3bc79f23f7b2fd56076ec43a6e6"
             },
             "require": {
                 "illuminate/bus": "~5.5.0|~5.6.0|~5.7.0|~5.8.0",
@@ -3084,7 +3084,7 @@
                 "media",
                 "spatie"
             ],
-            "time": "2019-06-21T21:07:51+00:00"
+            "time": "2019-06-21T21:38:57+00:00"
         },
         {
             "name": "nicmart/tree",
