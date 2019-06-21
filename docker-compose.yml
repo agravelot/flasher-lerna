@@ -112,8 +112,8 @@ services:
       S3_BUCKET: ${DO_BUCKET}
       S3_PREFIX: ${APP_ENV}/backups
       S3_ENDPOINT: ${DO_ENDPOINT}
-      MYSQL_HOST: ${DB_HOST}
-      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_HOST: db
+      MYSQL_USER: picblog
       MYSQL_PASSWORD: ${DB_PASSWORD}
       SCHEDULE: "@daily"
       MULTI_FILES: "true"
