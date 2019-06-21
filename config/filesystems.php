@@ -67,13 +67,23 @@ return [
             'visibility' => 'public',
         ],
 
+//        's3' => [
+//            'driver' => 's3',
+//            'key' => env('AWS_ACCESS_KEY_ID'),
+//            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+//            'region' => env('AWS_DEFAULT_REGION'),
+//            'bucket' => env('AWS_BUCKET'),
+//            'url' => env('AWS_URL'),
+//        ],
+
         's3' => [
             'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_BUCKET'),
-            'url' => env('AWS_URL'),
+            'key' => env('DO_ACCESS_KEY_ID'),
+            'secret' => env('DO_SECRET_ACCESS_KEY'),
+            'region' => env('DO_DEFAULT_REGION'),
+            'bucket' => env('DO_BUCKET'),
+            'endpoint' => env('DO_ENDPOINT'),
+            'root' => config('app.env'),
         ],
     ],
 ];

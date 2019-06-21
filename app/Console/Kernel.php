@@ -9,9 +9,6 @@
 
 namespace App\Console;
 
-use App\Jobs\Backup;
-use App\Jobs\BackupClean;
-use App\Jobs\BackupMonitor;
 use App\Jobs\GenerateSitemap;
 use App\Console\Commands\CreateAdminUser;
 use Illuminate\Console\Scheduling\Schedule;
@@ -31,19 +28,15 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param Schedule $schedule
+     * @param  Schedule  $schedule
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->job(new GenerateSitemap())->daily()->withoutOverlapping();
-        $schedule->command('medialibrary:clean --force')->weekly()->at('00:01');
-        $schedule->job(new BackupClean())->daily()->at('01:00');
-        $schedule->job(new Backup())->withoutOverlapping()->daily()->at('02:00');
-        $schedule->job(new BackupMonitor())->daily()->at('04:00');
-        //$schedule->command('telescope:prune --hours=24')->daily()->withoutOverlapping();
-        $schedule->command('medialibrary:regenerate --only-missing --force')->withoutOverlapping()
-            ->daily()->at('05:00');
-        $schedule->command('horizon:snapshot')->everyFiveMinutes();
+        $schedule->job(new GenerateSitemap())->daily();
+        // $schedule->command('telescope:prune --hours=24')->daily()->withoutOverlapping();
+        $schedule->command('medialibrary:clean --force')->dailyAt('4:30')->runInBackground();
+        $schedule->command('medialibrary:regenerate --only-missing --force')->dailyAt('5:00')->runInBackground();
+        $schedule->command('horizon:snapshot')->everyFiveMinutes()->runInBackground();
     }
 
     /**

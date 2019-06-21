@@ -1,6 +1,6 @@
 @section('js')
-    {{--<script src="{{ mix('/js/manifest.js') }}"></script>--}}
-    {{--<script src="{{ mix('/js/vendor.js') }}"></script>--}}
+    {{--<script src="{{ mix('/js/main/manifest.js') }}"></script>--}}
+    {{--<script src="{{ mix('/js/main/vendor.js') }}"></script>--}}
     <script src="{{ mix('/js/main/app.js') }}"></script>
 @endsection
 
@@ -16,6 +16,8 @@
         - {{ settings()->get('app_name', config('app.name', 'Flasher')) }}</title>
 
     <meta name="description" content="@yield('seo_description', settings()->get('seo_description'))"/>
+
+    <link rel="dns-prefetch" href="{{ config('medialibrary.s3.domain') }}">
 
     <!-- Styles -->
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">

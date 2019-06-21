@@ -31,7 +31,7 @@ $factory->afterMaking(PublicAlbum::class, function (Album $album, Faker $faker) 
     if ($withMedias) {
         foreach (range(1, 5) as $i) {
             $album->addMediaFromUrl($faker->imageUrl(640 * $faker->numberBetween(1, 3), 480 * $faker->numberBetween(1, 3)))
-                ->toMediaCollection('pictures');
+                ->toMediaCollection(Album::PICTURES_COLLECTION);
         }
     }
 });

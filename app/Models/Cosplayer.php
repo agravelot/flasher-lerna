@@ -88,7 +88,7 @@ class Cosplayer extends Model implements HasMedia
     }
 
     /**
-     * Add media to 'pictures' collection.
+     * Add media to Album::PICTURES_COLLECTION collection.
      *
      * @param UploadedFile|null $media
      */
@@ -109,7 +109,7 @@ class Cosplayer extends Model implements HasMedia
             ->usingFileName($name)
             ->preservingOriginal()
             ->withResponsiveImages()
-            ->toMediaCollection('avatar');
+            ->toMediaCollectionOnCloudDisk('avatar');
     }
 
     /**
@@ -158,10 +158,10 @@ class Cosplayer extends Model implements HasMedia
     public function registerMediaCollections()
     {
         $this->addMediaCollection('avatar')
-            ->singleFile()
             ->acceptsFile(function (File $file) {
                 return mb_strpos($file->mimeType, 'image/') === 0;
-            });
+            })
+            ->singleFile();
     }
 
     /**

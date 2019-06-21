@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.7'
 services:
   db:
     image: mariadb
@@ -8,7 +8,7 @@ services:
     env_file:
     - docker/db/.env
 
-  php:
+  php: &php_base
     image: registry.gitlab.com/nevax/picblog/picblog_php:${CI_COMMIT_SHORT_SHA:-latest}
     build:
       context: .
@@ -28,67 +28,33 @@ services:
     - cache
 
   queue:
-    image: registry.gitlab.com/nevax/picblog/picblog_php:${CI_COMMIT_SHORT_SHA:-latest}
+    <<: *php_base
     build:
       context: .
       dockerfile: Dockerfile
       target: php_queue
-    restart: unless-stopped
-    env_file:
-      - docker/php-fpm/.env
     environment:
       CONTAINER_ROLE: "queue"
-    volumes:
-      - storage:/var/www/html/storage:rw,delegated
-      - public_vendor:/var/www/html/public/vendor:rw,delegated
-    links:
-      - db
-      - cache
-    depends_on:
-      - db
-      - cache
 
   scheduler:
-    image: registry.gitlab.com/nevax/picblog/picblog_php:${CI_COMMIT_SHORT_SHA:-latest}
+    <<: *php_base
     build:
       context: .
       dockerfile: Dockerfile
       target: php_scheduler
-    restart: unless-stopped
-    env_file:
-      - docker/php-fpm/.env
+    user: root
     environment:
       CONTAINER_ROLE: "scheduler"
-    volumes:
-      - storage:/var/www/html/storage:rw,delegated
-      - public_vendor:/var/www/html/public/vendor:rw,delegated
-    links:
-      - db
-      - cache
-    depends_on:
-      - db
-      - cache
 
   publisher:
-    image: registry.gitlab.com/nevax/picblog/picblog_php:${CI_COMMIT_SHORT_SHA:-latest}
+    <<: *php_base
     build:
       context: .
       dockerfile: Dockerfile
       target: php_publisher
     restart: on-failure
-    env_file:
-      - docker/php-fpm/.env
     environment:
       CONTAINER_ROLE: "publisher"
-    volumes:
-      - storage:/var/www/html/storage:rw,delegated
-      - public_vendor:/var/www/html/public/vendor:rw,delegated
-    links:
-      - db
-      - cache
-    depends_on:
-      - db
-      - cache
 
   nginx:
     image: registry.gitlab.com/nevax/picblog/picblog_nginx:${CI_COMMIT_SHORT_SHA:-latest}
@@ -125,6 +91,32 @@ services:
     - 8082:80
     environment:
     - PHP_UPLOAD_MAX_FILESIZE=100MB
+
+  redirect:
+    image: morbz/docker-web-redirect
+    restart: unless-stopped
+    environment:
+      VIRTUAL_HOST: www.${APP_URL}
+      REDIRECT_TARGET: ${APP_URL}
+
+  backup:
+    image: schickling/mysql-backup-s3
+    restart: unless-stopped
+    links:
+      - db
+    depends_on:
+      - db
+    environment:
+      S3_ACCESS_KEY_ID: ${DO_ACCESS_KEY_ID}
+      S3_SECRET_ACCESS_KEY: ${DO_SECRET_ACCESS_KEY}
+      S3_BUCKET: ${DO_BUCKET}
+      S3_PREFIX: ${APP_ENV}/backups
+      S3_ENDPOINT: ${DO_ENDPOINT}
+      MYSQL_HOST: db
+      MYSQL_USER: picblog
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      SCHEDULE: "@daily"
+      MULTI_FILES: "true"
 
 volumes:
   db-data:

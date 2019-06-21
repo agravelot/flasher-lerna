@@ -62,7 +62,7 @@ class ShowDownloadAlbum extends TestCase
         $album = factory(Album::class)->states(['unpublished'])->create();
         $album->cosplayers()->attach($cosplayer);
 
-        $response = $this->get('/download-albums/'.$album->slug);
+        $response = $this->get("/download-albums/{$album->slug}");
 
         $response->assertStatus(403);
         $this->assertNotInstanceOf(StreamedResponse::class, $response->baseResponse);

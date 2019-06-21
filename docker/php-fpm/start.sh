@@ -6,10 +6,6 @@ role=${CONTAINER_ROLE:-app}
 env=${APP_ENV:-production}
 cd /var/www/html
 
-
-
-php artisan db:wait-connection
-
 if [[ "$role" = "app" ]]; then
 
     echo "App role"
@@ -23,16 +19,11 @@ elif [[ "$role" = "queue" ]]; then
 elif [[ "$role" = "scheduler" ]]; then
 
     echo "Scheduler role"
-    while [[ true ]]
-    do
-      php /var/www/html/artisan schedule:run --verbose --no-interaction &
-      sleep 60
-    done
+    exec crond -f -c /etc/crontabs -d 8
 
-elif [[ "$env" != "publisher" ]]; then
+elif [[ "$role" = "publisher" ]]; then
 
   if [[ "$env" != "local" ]]; then
-
       # Optimizing for production
       # https://laravel.com/docs/5.8/deployment#optimization
       echo "Caching configuration..."
@@ -41,6 +32,7 @@ elif [[ "$env" != "publisher" ]]; then
       php artisan view:cache
   fi
 
+  php artisan db:wait-connection
   php artisan cache:clear-wait-connection
   php artisan migrate --force
   php artisan passport:keys

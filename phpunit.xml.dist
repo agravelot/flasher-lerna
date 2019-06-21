@@ -52,5 +52,6 @@
         <env name="DB_PASSWORD" value=""/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="ANALYTICS_PROVIDER" value="NoAnalytics"/>
+        <env name="FILESYSTEM_CLOUD" value="public"/>
     </php>
 </phpunit>
