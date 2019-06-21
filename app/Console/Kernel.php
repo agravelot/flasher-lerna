@@ -32,8 +32,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->job(new GenerateSitemap())->daily();
         // $schedule->command('telescope:prune --hours=24')->daily()->withoutOverlapping();
-        $schedule->command('sitemap:generate')->daily()->runInBackground();
         $schedule->command('medialibrary:clean --force')->dailyAt('4:30')->runInBackground();
         $schedule->command('medialibrary:regenerate --only-missing --force')->dailyAt('5:00')->runInBackground();
         $schedule->command('horizon:snapshot')->everyFiveMinutes()->runInBackground();
