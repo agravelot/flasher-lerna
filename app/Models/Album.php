@@ -13,6 +13,7 @@ use Eloquent;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\File;
 use Illuminate\Support\Carbon;
+use Spatie\Image\Manipulations;
 use App\Abilities\HasTitleAsSlug;
 use App\Abilities\HasSlugRouteKey;
 use Spatie\MediaLibrary\Models\Media;
@@ -71,6 +72,9 @@ class Album extends Model implements HasMedia
 {
     use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey, HasTitleAsSlug;
 
+    public const PICTURES_COLLECTION = 'pictures';
+    public const RESPONSIVE_PICTURES_CONVERSION = 'responsive';
+
     protected $with = ['media'];
 
     protected $dates = [
@@ -93,12 +97,14 @@ class Album extends Model implements HasMedia
 
     public function getCoverAttribute()
     {
-        return $this->getFirstMedia('pictures');
+        return $this->getFirstMedia(self::PICTURES_COLLECTION);
     }
 
     public function getCoverResponsiveAttribute()
     {
-        return $this->getFirstMedia('pictures')('responsive');
+        return optional($this->getFirstMedia(self::PICTURES_COLLECTION), function (Media $media) {
+            return $media(self::RESPONSIVE_PICTURES_CONVERSION);
+        });
     }
 
     /**
@@ -183,7 +189,7 @@ class Album extends Model implements HasMedia
     }
 
     /**
-     * Add media to 'pictures' collection.
+     * Add media to Album::PICTURES_COLLECTION collection.
      *
      * @param string|UploadedFile $media
      *
@@ -193,13 +199,14 @@ class Album extends Model implements HasMedia
     {
         $uuid = Str::uuid();
 
+        // TODO Fix extension
         $name = "{$this->slug}_{$uuid}.{$media->getClientOriginalExtension()}";
 
         return $this->addMedia($media)
             ->usingName($name)
             ->usingFileName($name)
             ->preservingOriginal()
-            ->toMediaCollection('pictures');
+            ->toMediaCollectionOnCloudDisk(self::PICTURES_COLLECTION);
     }
 
     /**
@@ -207,7 +214,7 @@ class Album extends Model implements HasMedia
      */
     public function registerMediaCollections()
     {
-        $this->addMediaCollection('pictures')
+        $this->addMediaCollection(self::PICTURES_COLLECTION)
             ->acceptsFile(function (File $file) {
                 return mb_strpos($file->mimeType, 'image/') === 0;
             });
@@ -220,16 +227,17 @@ class Album extends Model implements HasMedia
      */
     public function registerMediaConversions(Media $media = null)
     {
-        $this->addMediaConversion('responsive')
+        $this->addMediaConversion(self::RESPONSIVE_PICTURES_CONVERSION)
             ->sharpen(10)
             ->optimize()
             ->withResponsiveImages()
-            ->performOnCollections('pictures');
+            ->format(Manipulations::FORMAT_WEBP)
+            ->performOnCollections(self::PICTURES_COLLECTION);
 
         $this->addMediaConversion('thumb')
             ->width(400)
             ->sharpen(8)
             ->optimize()
-            ->performOnCollections('pictures');
+            ->performOnCollections(self::PICTURES_COLLECTION);
     }
 }

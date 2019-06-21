@@ -120,8 +120,7 @@ export default class CosplayersCreate extends VueBuefy {
         theme: 'snow',
     };
 
-    created(): void {
-    }
+    created(): void {}
 
     createCosplayer(): void {
         this.loading = true;

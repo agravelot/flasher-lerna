@@ -7,14 +7,12 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-use Modules\Album\UrlGenerator\RelativeLocalUrlGenerator;
-
 return [
     /*
      * The disk on which to store added files and derived images by default. Choose
      * one or more of the disks you've configured in config/filesystems.php.
      */
-    'disk_name' => 'public',
+    'disk_name' => env('FILESYSTEM_CLOUD', 's3'),
 
     /*
      * The maximum file size of an item in bytes.
@@ -37,7 +35,7 @@ return [
         /*
          * The domain that should be prepended when generating urls.
          */
-        'domain' => 'https://'.env('AWS_BUCKET').'.s3.amazonaws.com',
+        'domain' => env('DO_BUCKET_CDN', 'https://'.env('DO_BUCKET').'.'.env('DO_DEFAULT_REGION').'.digitaloceanspaces.com'),
     ],
 
     'remote' => [
@@ -51,6 +49,7 @@ return [
          */
         'extra_headers' => [
             'CacheControl' => 'max-age=604800',
+            'ACL' => 'public-read',
         ],
     ],
 
@@ -81,13 +80,14 @@ return [
      * When urls to files get generated, this class will be called. Leave empty
      * if your files are stored locally above the site root or on s3.
      */
-    'url_generator' => RelativeLocalUrlGenerator::class,
-//    'url_generator' => null,
+    // TODO Remove old generator
+    // 'url_generator' => \Modules\Album\Generators\RelativeLocalUrlGenerator::class,
+    'url_generator' => null,
 
     /*
      * The class that contains the strategy for determining a media file's path.
      */
-    'path_generator' => null,
+    'path_generator' => \Modules\Album\Generators\PathGenerator::class,
 
     /*
      * Medialibrary will try to optimize all converted images by removing

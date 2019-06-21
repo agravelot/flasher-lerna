@@ -1,3 +1,9 @@
+@section('js')
+    {{--<script src="{{ mix('/js/main/manifest.js') }}"></script>--}}
+    {{--<script src="{{ mix('/js/main/vendor.js') }}"></script>--}}
+    <script src="{{ mix('/js/main/app.js') }}"></script>
+@endsection
+
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
     <head>
@@ -39,5 +45,6 @@
                 @yield('image')
             </div>
         </div>
+    @yield('js')
     </body>
 </html>

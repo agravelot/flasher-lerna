@@ -15,15 +15,15 @@ use App\Models\Category;
 class CategoryPolicy extends Policy
 {
     /**
-     * Determine whether the user can view the categorys.
+     * Determine whether the user can view the categories.
      *
      * @param User $user
      *
      * @return bool
      */
-    public function index(User $user)
+    public function viewAny(?User $user)
     {
-        return false;
+        return true;
     }
 
     /**

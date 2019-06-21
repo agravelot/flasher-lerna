@@ -23,11 +23,11 @@ class DeletePictureAlbumTest extends TestCase
         $this->actingAsAdmin();
         /** @var Album $album */
         $album = factory(Album::class)->states(['published', 'withMedias'])->create();
-        $this->assertSame(15, $album->getMedia('pictures')->count());
+        $this->assertSame(15, $album->getMedia(Album::PICTURES_COLLECTION)->count());
 
-        $response = $this->deleteAlbumPicture($album->slug, $album->getFirstMedia('pictures')->id);
+        $response = $this->deleteAlbumPicture($album->slug, $album->getFirstMedia(Album::PICTURES_COLLECTION)->id);
 
-        $this->assertSame(14, $album->fresh()->getMedia('pictures')->count());
+        $this->assertSame(14, $album->fresh()->getMedia(Album::PICTURES_COLLECTION)->count());
         $response->assertStatus(204);
     }
 
@@ -36,11 +36,11 @@ class DeletePictureAlbumTest extends TestCase
         $this->actingAsAdmin();
         /** @var Album $album */
         $album = factory(Album::class)->states(['published', 'withMedias'])->create();
-        $this->assertSame(15, $album->getMedia('pictures')->count());
+        $this->assertSame(15, $album->getMedia(Album::PICTURES_COLLECTION)->count());
 
         $response = $this->deleteAlbumPicture($album->slug, 10000);
 
-        $this->assertSame(15, $album->fresh()->getMedia('pictures')->count());
+        $this->assertSame(15, $album->fresh()->getMedia(Album::PICTURES_COLLECTION)->count());
 
         $response->assertStatus(422);
     }
@@ -50,11 +50,11 @@ class DeletePictureAlbumTest extends TestCase
         $this->actingAsAdmin();
         /** @var Album $album */
         $album = factory(Album::class)->states(['published', 'withMedias'])->create();
-        $this->assertSame(15, $album->getMedia('pictures')->count());
+        $this->assertSame(15, $album->getMedia(Album::PICTURES_COLLECTION)->count());
 
         $response = $this->deleteAlbumPicture($album->slug);
 
-        $this->assertSame(15, $album->fresh()->getMedia('pictures')->count());
+        $this->assertSame(15, $album->fresh()->getMedia(Album::PICTURES_COLLECTION)->count());
         $response->assertStatus(422);
     }
 
@@ -63,22 +63,22 @@ class DeletePictureAlbumTest extends TestCase
         $this->actingAsUser();
         /** @var Album $album */
         $album = factory(Album::class)->states(['published', 'withMedias'])->create();
-        $this->assertSame(15, $album->getMedia('pictures')->count());
+        $this->assertSame(15, $album->getMedia(Album::PICTURES_COLLECTION)->count());
 
         $response = $this->deleteAlbumPicture($album->slug);
 
-        $this->assertSame(15, $album->fresh()->getMedia('pictures')->count());
+        $this->assertSame(15, $album->fresh()->getMedia(Album::PICTURES_COLLECTION)->count());
         $response->assertStatus(403);
     }
 
 //    public function test_guest_can_not_delete_a_picture_to_an_album()
 //    {
 //        $album = factory(Album::class)->states(['published', 'withMedias'])->create();
-//        $this->assertSame(15, $album->getMedia('pictures')->count());
+//        $this->assertSame(15, $album->getMedia(Album::PICTURES_COLLECTION)->count());
 //
 //        $response = $this->deleteAlbumPicture($album->slug);
 //
-//        $this->assertSame(15, $album->fresh()->getMedia('pictures')->count());
+//        $this->assertSame(15, $album->fresh()->getMedia(Album::PICTURES_COLLECTION)->count());
 //        $response->assertRedirect('/login');
 //    }
 

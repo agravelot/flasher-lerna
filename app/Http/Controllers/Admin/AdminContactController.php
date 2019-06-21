@@ -23,7 +23,7 @@ class AdminContactController extends Controller
      */
     public function index()
     {
-        $this->authorize('index', Contact::class);
+        $this->authorize('viewAny', Contact::class);
         $contacts = Contact::paginate(10);
 
         return view('admin.contacts.index', [

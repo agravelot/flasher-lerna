@@ -34,7 +34,7 @@ $factory->afterMaking(Album::class, function (Album $album, Faker $faker) use (&
 //                $faker->imageUrl(
 //                    640 * $faker->numberBetween(1, 3),
 //                    480 * $faker->numberBetween(1, 3))
-//            )->toMediaCollection('pictures');
+//            )->toMediaCollection(Album::PICTURES_COLLECTION);
         }
     }
 });
