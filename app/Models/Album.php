@@ -13,6 +13,7 @@ use Eloquent;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\File;
 use Illuminate\Support\Carbon;
+use Spatie\Image\Manipulations;
 use App\Abilities\HasTitleAsSlug;
 use App\Abilities\HasSlugRouteKey;
 use Spatie\MediaLibrary\Models\Media;
@@ -230,6 +231,7 @@ class Album extends Model implements HasMedia
             ->sharpen(10)
             ->optimize()
             ->withResponsiveImages()
+            ->format(Manipulations::FORMAT_WEBP)
             ->performOnCollections(self::PICTURES_COLLECTION);
 
         $this->addMediaConversion('thumb')
