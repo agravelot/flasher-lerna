@@ -7,14 +7,14 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Category\Tests\Features\Http\Controllers\Front;
+namespace Modules\Category\Tests\Feature\Http\Controllers\Front;
 
 use Tests\TestCase;
 use App\Models\Category;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class IndexCategory extends TestCase
+class IndexCategoryTest extends TestCase
 {
     use RefreshDatabase;
 

@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class UpdateCategory extends TestCase
+class UpdateCategoryTest extends TestCase
 {
     use RefreshDatabase;
 

@@ -14,7 +14,7 @@ use Modules\Core\Entities\Page;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class IndexAdminPages extends TestCase
+class IndexAdminPagesTest extends TestCase
 {
     use RefreshDatabase;
 

@@ -14,26 +14,28 @@ use Modules\Core\Entities\Page;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class StoreAdminPages extends TestCase
+class UpdateAdminPagesTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testAdminCanStorePage()
+    public function testAdminCanUpdatePage()
     {
         $this->actingAsAdmin();
-        $page = factory(Page::class)->make();
+        $page = factory(Page::class)->create();
 
-        $response = $this->storePage($page);
+        $page->title = $title = 'newValue';
+        $response = $this->updatePage($page);
 
-        $response->assertStatus(201)
+        $response->assertStatus(200)
             ->assertJson($this->getJsonArray($page));
+        $this->assertSame($title, $page->fresh()->title);
     }
 
     private function getJsonArray(Page $page): array
     {
         return [
             'data' => [
-//                'id' => $page->id,
+                'id' => $page->id,
                 'name' => $page->name,
                 'title' => $page->title,
                 'description' => $page->description,
@@ -41,33 +43,37 @@ class StoreAdminPages extends TestCase
         ];
     }
 
-    private function storePage(Page $page): TestResponse
+    private function updatePage(Page $page): TestResponse
     {
-        return $this->json('post', '/api/admin/pages', [
+        return $this->json('patch', "/api/admin/pages/{$page->id}", [
             'name' => $page->name,
             'title' => $page->title,
             'description' => $page->description,
         ]);
     }
 
-    public function testUserCannotStorePages()
+    public function testUserCannotUpdatePages()
     {
         $this->actingAsUser();
-        $page = factory(Page::class)->make();
+        $page = factory(Page::class)->create();
+        $page->title = 'newValue';
 
-        $response = $this->storePage($page);
+        $response = $this->updatePage($page);
 
         $response->assertStatus(403);
-        $this->assertCount(0, Page::all());
+        $this->assertCount(1, Page::all());
+        $this->assertSame('testValue', Page::find('test')->title);
     }
 
-    public function testGuestCannotStorePages()
+    public function testGuestCannotUpdatePages()
     {
-        $page = factory(Page::class)->make();
+        $page = factory(Page::class)->create();
+        $page->title = 'newValue';
 
-        $response = $this->storePage($page);
+        $response = $this->updatePage($page);
 
         $response->assertStatus(401);
-        $this->assertCount(0, Page::all());
+        $this->assertCount(1, Page::all());
+        $this->assertSame('testValue', Page::find('test')->title);
     }
 }

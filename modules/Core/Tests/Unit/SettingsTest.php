@@ -15,7 +15,7 @@ use Modules\Core\Entities\Setting;
 use Modules\Core\Enums\SettingType;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class SettingsTests extends TestCase
+class SettingsTest extends TestCase
 {
     use RefreshDatabase;
 

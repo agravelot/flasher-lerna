@@ -14,7 +14,7 @@ use App\Models\Category;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class StoreCategory extends TestCase
+class StoreCategoryTest extends TestCase
 {
     use RefreshDatabase;
 

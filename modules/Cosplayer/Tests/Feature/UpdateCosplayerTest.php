@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Cosplayer\Tests;
+namespace Modules\Cosplayer\Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;

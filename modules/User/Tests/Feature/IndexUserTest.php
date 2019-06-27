@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\User\Tests;
+namespace Modules\User\Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;

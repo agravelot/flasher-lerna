@@ -12,7 +12,7 @@ namespace Modules\Category\Tests\Features\Http\Controllers\Admin;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\TestResponse;
 
-class IndexCategory extends TestCase
+class IndexCategoryTest extends TestCase
 {
     public function test_admin_cant_index_categories()
     {

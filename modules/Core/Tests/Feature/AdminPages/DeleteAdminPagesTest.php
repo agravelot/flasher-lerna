@@ -14,7 +14,7 @@ use Modules\Core\Entities\Page;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class DeleteAdminPages extends TestCase
+class DeleteAdminPagesTest extends TestCase
 {
     use RefreshDatabase;
 
