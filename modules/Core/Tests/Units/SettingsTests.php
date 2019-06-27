@@ -9,8 +9,10 @@
 
 namespace Modules\Core\Tests\Features\AdminPages;
 
+use Exception;
 use Tests\TestCase;
 use Modules\Core\Entities\Setting;
+use Modules\Core\Enums\SettingType;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SettingsTests extends TestCase
@@ -27,7 +29,7 @@ class SettingsTests extends TestCase
         try {
             settings()->get('random');
             $this->assertTrue(true, 'Missing exception');
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->assertSame("Unable to find 'random' setting", $exception->getMessage());
         }
     }
@@ -36,5 +38,12 @@ class SettingsTests extends TestCase
     {
         $setting = factory(Setting::class)->create(['name' => 'john', 'value' => 'doe']);
         $this->assertSame('doe', settings()->get('john'));
+    }
+
+    public function test_create_text_area_setting()
+    {
+        $setting = factory(Setting::class)->create(['type' => SettingType::TextArea]);
+
+        $this->assertSame(SettingType::TextArea, $setting->type->value);
     }
 }

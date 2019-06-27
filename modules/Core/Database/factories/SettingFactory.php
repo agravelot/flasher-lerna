@@ -9,11 +9,13 @@
 
 use Faker\Generator as Faker;
 use Modules\Core\Entities\Setting;
+use Modules\Core\Enums\SettingType;
 
 $factory->define(Setting::class, function (Faker $faker) {
     return [
         'title' => $faker->word,
         'name' => $faker->word,
         'value' => $faker->boolean,
+        'type' => SettingType::getRandomKey(),
     ];
 });
