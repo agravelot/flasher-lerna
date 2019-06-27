@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Core\Entities\Setting;
 use Modules\Core\Transformers\SettingResource;
+use Modules\Core\Http\Requests\UpdateSettingRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminSettingsController extends Controller
@@ -42,12 +43,12 @@ class AdminSettingsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Setting $setting
+     * @param  Setting  $setting
+     * @param  UpdateSettingRequest  $request
      *
      * @return SettingResource
      */
-    public function update(Setting $setting, Request $request)
+    public function update(Setting $setting, UpdateSettingRequest $request)
     {
         $setting->update($request->only('value'));
 
