@@ -26,7 +26,7 @@ class MigrateToStringEnum extends Migration
     public function up()
     {
         Schema::table('settings', function (Blueprint $table) {
-            $table->string('type_new')->nullable();
+            $table->string('type_new')->after('name')->nullable();
         });
 
         DB::table('settings')->where('type', 'string')->update(['type_new' => 'string']);
