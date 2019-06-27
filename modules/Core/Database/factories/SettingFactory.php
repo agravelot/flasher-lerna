@@ -16,6 +16,6 @@ $factory->define(Setting::class, function (Faker $faker) {
         'title' => $faker->word,
         'name' => $faker->word,
         'value' => $faker->boolean,
-        'type' => SettingType::getRandomKey(),
+        'type' => SettingType::getRandomValue(),
     ];
 });
