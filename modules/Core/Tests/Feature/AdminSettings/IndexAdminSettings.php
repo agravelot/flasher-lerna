@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Core\Tests\Features\AdminSettings;
+namespace Modules\Core\Tests\Feature\AdminSettings;
 
 use Tests\TestCase;
 use Modules\Core\Entities\Setting;

@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Core\Tests\Features\AdminPages;
+namespace Modules\Core\Tests\Feature\AdminPages;
 
 use Tests\TestCase;
 use Modules\Core\Entities\Page;
