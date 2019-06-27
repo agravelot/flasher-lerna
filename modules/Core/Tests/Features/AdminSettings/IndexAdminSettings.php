@@ -21,7 +21,7 @@ class IndexAdminSettings extends TestCase
     public function testAdminCanSeeSettings()
     {
         $this->actingAsAdmin();
-        Setting::create(['name' => 'test', 'value' => 'Flasher', 'type' => 'string']);
+        $setting = factory(Setting::class)->create(['name' => 'test', 'value' => 'Flasher', 'type' => 'string']);
 
         $response = $this->getSettings();
 

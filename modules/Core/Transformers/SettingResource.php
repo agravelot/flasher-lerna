@@ -25,7 +25,7 @@ class SettingResource extends Resource
         return [
             'name' => $this->name,
             'value' => $this->value,
-            'type' => $this->type,
+            'type' => $this->type->value,
             'title' => $this->title,
             'description' => $this->description,
         ];
