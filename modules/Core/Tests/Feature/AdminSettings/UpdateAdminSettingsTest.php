@@ -9,6 +9,7 @@
 
 namespace Modules\Core\Tests\Feature\AdminSettings;
 
+use Modules\Core\Enums\SettingType;
 use Tests\TestCase;
 use Modules\Core\Entities\Setting;
 use Illuminate\Foundation\Testing\TestResponse;
@@ -68,32 +69,31 @@ class UpdateAdminSettingsTest extends TestCase
         $this->assertSame('testValue', Setting::find('test')->value);
     }
 
+    public function test_default_boolean_setting_is_false()
+    {
+        $setting = factory(Setting::class)->create(['name' => 'bool_setting', 'type' => 'bool', 'value' => null]);
+
+        $this->assertFalse($setting->value);
+    }
+
     public function test_a_boolean_setting_can_not_store_string()
     {
         $this->actingAsAdmin();
-        $setting = factory(Setting::class)->create(['name' => 'bool_setting', 'type' => 'bool']);
+        $setting = factory(Setting::class)->create(['name' => 'bool_setting', 'type' => SettingType::Boolean, 'value' => false]);
+        $this->assertFalse($setting->value);
 
         $setting->value = 'randomString';
         $response = $this->updateSetting($setting);
 
-        // Stop here and mark this test as incomplete.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-
-        $response->assertStatus(403)->assertJsonValidationErrors([]);
-        $this->assertNotSame('randomString', $setting->fresh()->value);
+        $response->assertStatus(422)->assertJsonValidationErrors([]);
+        $this->assertFalse($setting->fresh()->value);
     }
 
-    public function test_default_boolean_setting_is_false()
+    public function test_setting_type_to_media_can_store_media()
     {
         // Stop here and mark this test as incomplete.
         $this->markTestIncomplete(
             'This test has not been implemented yet.'
         );
-
-        $setting = factory(Setting::class)->create(['name' => 'bool_setting', 'type' => 'bool', 'value' => null]);
-
-        $this->assertFalse($setting->value);
     }
 }

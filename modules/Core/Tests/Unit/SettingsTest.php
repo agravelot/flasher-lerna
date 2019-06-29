@@ -10,10 +10,11 @@
 namespace Modules\Core\Tests\Unit\AdminPages;
 
 use Exception;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Core\Entities\Setting;
 use Modules\Core\Enums\SettingType;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\MediaLibrary\Models\Media;
+use Tests\TestCase;
 
 class SettingsTest extends TestCase
 {
@@ -45,5 +46,23 @@ class SettingsTest extends TestCase
         $setting = factory(Setting::class)->create(['type' => SettingType::TextArea]);
 
         $this->assertSame(SettingType::TextArea, $setting->type->value);
+    }
+
+    public function test_x_setting_type_return_a_x()
+    {
+        $types = collect([
+            SettingType::String => 'string',
+            SettingType::Numeric => 'integer',
+            SettingType::Boolean => 'boolean',
+            SettingType::TextArea => 'string',
+            // SettingType::Json => '??',
+            // SettingType::Media => Media::class,
+        ]);
+
+        $types->each(function (string $targetType, string $settingTypeEnum) {
+            $setting = factory(Setting::class)->state($settingTypeEnum)->create();
+
+            $this->assertSame($targetType, gettype($setting->value));
+        });
     }
 }

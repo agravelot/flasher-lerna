@@ -16,7 +16,7 @@ final class SettingType extends Enum
     const String = 'string';
     const Numeric = 'numeric';
     const Boolean = 'bool';
-    const Json = 'json';
+//    const Json = 'json';
     const TextArea = 'textarea';
-    const Media = 'media';
+//    const Media = 'media';
 }
