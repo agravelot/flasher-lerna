@@ -9,7 +9,7 @@ services:
     - docker/db/.env
 
   php: &php_base
-    image: registry.gitlab.com/nevax/picblog/picblog_php:${CI_COMMIT_SHORT_SHA:-latest}
+    image: registry.gitlab.com/flasher/flasher/picblog_php:${CI_COMMIT_SHORT_SHA:-latest}
     build:
       context: .
       dockerfile: Dockerfile
@@ -57,7 +57,7 @@ services:
       CONTAINER_ROLE: "publisher"
 
   nginx:
-    image: registry.gitlab.com/nevax/picblog/picblog_nginx:${CI_COMMIT_SHORT_SHA:-latest}
+    image: registry.gitlab.com/flasher/flasher/picblog_nginx:${CI_COMMIT_SHORT_SHA:-latest}
     build:
       context: .
       dockerfile: Dockerfile
