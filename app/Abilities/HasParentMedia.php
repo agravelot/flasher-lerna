@@ -10,7 +10,7 @@
 namespace App\Abilities;
 
 // https://github.com/spatie/laravel-medialibrary/issues/1021
-trait HasParentMediaTrait
+trait HasParentMedia
 {
     public function getMorphClass()
     {

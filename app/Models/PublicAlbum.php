@@ -10,8 +10,8 @@
 namespace App\Models;
 
 use App\Scope\PublicScope;
-use App\Abilities\HasParentMediaTrait;
-use App\Abilities\HasParentModelTrait;
+use App\Abilities\HasParentMedia;
+use App\Abilities\HasParentModel;
 
 /**
  * App\Models\PublicAlbum.
@@ -50,7 +50,7 @@ use App\Abilities\HasParentModelTrait;
  */
 class PublicAlbum extends Album
 {
-    use HasParentModelTrait, HasParentMediaTrait;
+    use HasParentModel, HasParentMedia;
 
     protected static function boot()
     {

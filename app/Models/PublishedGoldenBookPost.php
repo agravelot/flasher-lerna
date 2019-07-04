@@ -9,7 +9,7 @@
 
 namespace App\Models;
 
-use App\Abilities\HasParentModelTrait;
+use App\Abilities\HasParentModel;
 
 /**
  * App\Models\PublishedGoldenBookPost.
@@ -39,7 +39,7 @@ use App\Abilities\HasParentModelTrait;
  */
 class PublishedGoldenBookPost extends GoldenBookPost
 {
-    use HasParentModelTrait;
+    use HasParentModel;
 
     public static function boot()
     {

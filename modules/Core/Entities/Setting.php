@@ -59,7 +59,7 @@ class Setting extends Model implements HasMedia
      */
     protected function getCastValueType(): string
     {
-        if (empty($this->type)) {
+        if ($this->type === null) {
             throw new \LogicException('Setting type cannot be empty');
         }
 
@@ -84,6 +84,7 @@ class Setting extends Model implements HasMedia
                 ->preservingOriginal()
                 ->toMediaCollectionOnCloudDisk(self::SETTING_COLLECTION);
             $this->attributes['value'] = null;
+
             return;
         }
 

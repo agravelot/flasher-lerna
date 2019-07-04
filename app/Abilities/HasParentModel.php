@@ -12,7 +12,7 @@ namespace App\Abilities;
 use ReflectionClass;
 use Illuminate\Support\Str;
 
-trait HasParentModelTrait
+trait HasParentModel
 {
     public function getTable()
     {
