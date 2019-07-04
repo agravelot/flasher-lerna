@@ -84,6 +84,7 @@ class Setting extends Model implements HasMedia
                 ->preservingOriginal()
                 ->toMediaCollectionOnCloudDisk(self::SETTING_COLLECTION);
             $this->attributes['value'] = null;
+            return;
         }
 
         $this->attributes['value'] = $value;
