@@ -8,6 +8,7 @@
  */
 
 use Faker\Generator as Faker;
+use Illuminate\Http\UploadedFile;
 use Modules\Core\Entities\Setting;
 use Modules\Core\Enums\SettingType;
 
@@ -61,5 +62,12 @@ $factory->state(Setting::class, SettingType::Boolean, function (Faker $faker) {
     return [
         'type' => SettingType::Boolean,
         'value' => $faker->boolean,
+    ];
+});
+
+$factory->state(Setting::class, SettingType::Media, function (Faker $faker) {
+    return [
+        'type' => SettingType::Media,
+        'value' => UploadedFile::fake()->image('fake.png'),
     ];
 });

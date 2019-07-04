@@ -10,6 +10,7 @@
 namespace Modules\Core\Enums;
 
 use BenSampo\Enum\Enum;
+use Spatie\MediaLibrary\Models\Media;
 
 final class SettingType extends Enum
 {
@@ -18,7 +19,7 @@ final class SettingType extends Enum
     const Boolean = 'bool';
     const TextArea = 'textarea';
 //    const Json = 'json';
-//    const Media = 'media';
+    const Media = 'media';
 
     const ALIASES_TYPES = [
         self::String => 'string',
@@ -26,7 +27,7 @@ final class SettingType extends Enum
         self::Boolean => 'boolean',
         self::TextArea => 'string',
         // SettingType::Json => '??',
-        // SettingType::Media => Media::class,
+        self::Media => Media::class,
     ];
 
     /**

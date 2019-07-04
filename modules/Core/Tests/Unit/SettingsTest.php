@@ -42,7 +42,7 @@ class SettingsTest extends TestCase
 
     public function test_create_text_area_setting()
     {
-        $setting = factory(Setting::class)->create(['type' => SettingType::TextArea]);
+        $setting = factory(Setting::class)->state(SettingType::TextArea)->create();
 
         $this->assertSame(SettingType::TextArea, $setting->type->value);
     }
@@ -54,6 +54,12 @@ class SettingsTest extends TestCase
         $types->each(function (string $targetType, string $settingTypeEnum) {
             $setting = factory(Setting::class)->state($settingTypeEnum)->create();
 
+            // If it's an object, we will check the class
+            if (gettype($setting->value) === 'object') {
+                $this->assertSame($targetType, get_class($setting->value));
+
+                return true; // continue
+            }
             $this->assertSame($targetType, gettype($setting->value));
         });
     }
