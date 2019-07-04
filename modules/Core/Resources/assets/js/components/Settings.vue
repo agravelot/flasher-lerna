@@ -9,23 +9,51 @@
             <div v-for="setting in settings">
                 <b-field :label="setting.title">
                     <b-numberinput
-                        v-if="setting.type === 'numeric'"
-                        v-model="setting.value"
+                            v-if="setting.type === 'numeric'"
+                            v-model="setting.value"
                     ></b-numberinput>
                     <b-checkbox
-                        v-else-if="setting.type === 'bool'"
-                        true-value="1"
-                        false-value="0"
-                        v-model.numeric="setting.value"
+                            v-else-if="setting.type === 'bool'"
+                            true-value="1"
+                            false-value="0"
+                            v-model.numeric="setting.value"
                     >
                         {{ setting.desciption }}
                     </b-checkbox>
                     <quill-editor
-                        v-else-if="setting.type === 'textarea'"
-                        v-model="setting.value"
-                        ref="myQuillEditor"
-                        :options="editorOption"
+                            v-else-if="setting.type === 'textarea'"
+                            v-model="setting.value"
+                            ref="myQuillEditor"
+                            :options="editorOption"
                     ></quill-editor>
+                    <section v-else-if="setting.type === 'media'">
+                        <b-field>
+                            <b-upload v-model="setting.value"
+                                      drag-drop>
+                                <section class="section">
+                                    <div class="content has-text-centered">
+                                        <p>
+                                            <b-icon
+                                                    icon="upload"
+                                                    size="is-large">
+                                            </b-icon>
+                                        </p>
+                                        <p>Drop your files here or click to upload</p>
+                                    </div>
+                                </section>
+                            </b-upload>
+                        </b-field>
+
+                        <div v-if="setting.value" class="tags">
+                            <span class="tag is-primary">
+                                {{setting.value && setting.value.name}}
+                                <button class="delete is-small"
+                                        type="button"
+                                        @click="setting.value = null">
+                                </button>
+                            </span>
+                        </div>
+                    </section>
                     <b-input v-else v-model="setting.value" expanded></b-input>
                 </b-field>
                 <div class="control">
@@ -37,95 +65,94 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import VueBuefy from '../../../../../../resources/js/admin/Buefy.vue';
-import 'quill/dist/quill.core.css';
-import 'quill/dist/quill.snow.css';
-import 'quill/dist/quill.bubble.css';
-import { quillEditor } from 'vue-quill-editor';
+    import Component from 'vue-class-component';
+    import VueBuefy from '../../../../../../resources/js/admin/Buefy.vue';
+    import 'quill/dist/quill.core.css';
+    import 'quill/dist/quill.snow.css';
+    import 'quill/dist/quill.bubble.css';
+    import {quillEditor} from 'vue-quill-editor';
 
-class Setting {
-    public id: number;
-    public name: string;
-    public value: string;
-}
-
-@Component({
-    name: 'Core.Resources.assets.js.components.Settings',
-    components: {
-        quillEditor,
-    },
-})
-export default class Settings extends VueBuefy {
-    private loading: boolean = false;
-    private settings: Array<Setting> = [];
-
-    created(): void {
-        this.fetchSettings();
+    class Setting {
+        public id: number;
+        public name: string;
+        public value: string;
     }
 
-    sendSetting(setting: Setting): void {
-        this.loading = true;
+    @Component({
+        name: 'Core.Resources.assets.js.components.Settings',
+        components: {
+            quillEditor,
+        },
+    })
+    export default class Settings extends VueBuefy {
+        private loading: boolean = false;
+        private settings: Array<Setting> = [];
 
-        this.axios
-            .patch(`/api/admin/settings/${setting.id}`, {
-                value: setting.value,
-            })
-            .then(res => res.data)
-            .then(res => {
-                this.loading = false;
-                this.showSuccess('Setting updated');
-            })
-            .catch(err => {
-                this.settings = [];
-                this.loading = false;
-                this.$snackbar.open({
-                    message: 'Unable to save setting, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: false,
-                    onAction: () => {
-                        this.sendSetting(setting);
-                    },
+        created(): void {
+            this.fetchSettings();
+        }
+
+        sendSetting(setting: Setting): void {
+            this.loading = true;
+
+            this.axios
+                .patch(`/api/admin/settings/${setting.id}`, {
+                    value: setting.value,
+                })
+                .then(res => res.data)
+                .then(res => {
+                    this.loading = false;
+                    this.showSuccess('Setting updated');
+                })
+                .catch(err => {
+                    this.settings = [];
+                    this.loading = false;
+                    this.$snackbar.open({
+                        message: 'Unable to save setting, maybe you are offline?',
+                        type: 'is-danger',
+                        position: 'is-top',
+                        actionText: 'Retry',
+                        indefinite: false,
+                        onAction: () => {
+                            this.sendSetting(setting);
+                        },
+                    });
+                    throw err;
                 });
-                throw err;
+        }
+
+        showSuccess(message: string): void {
+            this.$toast.open({
+                message: message,
+                type: 'is-success',
             });
-    }
+        }
 
-    showSuccess(message: string): void {
-        this.$toast.open({
-            message: message,
-            type: 'is-success',
-        });
-    }
+        fetchSettings(): void {
+            this.loading = true;
 
-    fetchSettings(): void {
-        this.loading = true;
-
-        this.axios
-            .get('/api/admin/settings')
-            .then(res => res.data)
-            .then(res => {
-                this.settings = res.data;
-                this.loading = false;
-            })
-            .catch(err => {
-                this.settings = [];
-                this.loading = false;
-                this.$snackbar.open({
-                    message: 'Unable to load settings, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchSettings();
-                    },
+            this.axios
+                .get('/api/admin/settings')
+                .then(res => res.data)
+                .then(res => {
+                    this.settings = res.data;
+                    this.loading = false;
+                })
+                .catch(err => {
+                    this.settings = [];
+                    this.loading = false;
+                    this.$snackbar.open({
+                        message: 'Unable to load settings, maybe you are offline?',
+                        type: 'is-danger',
+                        position: 'is-top',
+                        actionText: 'Retry',
+                        indefinite: true,
+                        onAction: () => {
+                            this.fetchSettings();
+                        },
+                    });
+                    throw err;
                 });
-                throw err;
-            });
+        }
     }
-}
 </script>
