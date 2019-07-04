@@ -12,7 +12,6 @@ use Modules\Core\Entities\Setting;
 use Modules\Core\Enums\SettingType;
 
 $factory->define(Setting::class, function (Faker $faker) {
-
     $randomType = SettingType::getRandomValue();
 
     return [
@@ -20,7 +19,6 @@ $factory->define(Setting::class, function (Faker $faker) {
         'name' => $faker->word,
         'type' => $randomType, // Need be before 'value'
         'value' => function () use ($faker, $randomType) {
-
             if (in_array($randomType, [SettingType::String, SettingType::TextArea])) {
                 return $faker->sentence;
             }

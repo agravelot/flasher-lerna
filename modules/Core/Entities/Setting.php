@@ -9,9 +9,9 @@
 
 namespace Modules\Core\Entities;
 
+use Modules\Core\Enums\SettingType;
 use BenSampo\Enum\Traits\CastsEnums;
 use Illuminate\Database\Eloquent\Model;
-use Modules\Core\Enums\SettingType;
 
 /**
  * Class Setting.
@@ -37,7 +37,6 @@ class Setting extends Model
     protected function getCastType($key)
     {
         if ($key == 'value') {
-
             if (empty($this->type)) {
                 throw new \LogicException('Setting cannot be empty');
             }

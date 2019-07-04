@@ -9,9 +9,9 @@
 
 namespace Modules\Core\Tests\Feature\AdminSettings;
 
-use Modules\Core\Enums\SettingType;
 use Tests\TestCase;
 use Modules\Core\Entities\Setting;
+use Modules\Core\Enums\SettingType;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

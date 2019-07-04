@@ -10,11 +10,11 @@
 namespace Modules\Core\Tests\Unit\AdminPages;
 
 use Exception;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 use Modules\Core\Entities\Setting;
 use Modules\Core\Enums\SettingType;
 use Spatie\MediaLibrary\Models\Media;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SettingsTest extends TestCase
 {
