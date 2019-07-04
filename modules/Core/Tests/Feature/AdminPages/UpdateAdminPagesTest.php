@@ -55,25 +55,25 @@ class UpdateAdminPagesTest extends TestCase
     public function testUserCannotUpdatePages()
     {
         $this->actingAsUser();
-        $page = factory(Page::class)->create();
+        $page = factory(Page::class)->create(['title' => 'testValue']);
         $page->title = 'newValue';
 
         $response = $this->updatePage($page);
 
         $response->assertStatus(403);
         $this->assertCount(1, Page::all());
-        $this->assertSame('testValue', Page::find('test')->title);
+        $this->assertSame('testValue', $page->fresh()->title);
     }
 
     public function testGuestCannotUpdatePages()
     {
-        $page = factory(Page::class)->create();
+        $page = factory(Page::class)->create(['title' => 'testValue']);
         $page->title = 'newValue';
 
         $response = $this->updatePage($page);
 
         $response->assertStatus(401);
         $this->assertCount(1, Page::all());
-        $this->assertSame('testValue', Page::find('test')->title);
+        $this->assertSame('testValue', $page->fresh()->title);
     }
 }

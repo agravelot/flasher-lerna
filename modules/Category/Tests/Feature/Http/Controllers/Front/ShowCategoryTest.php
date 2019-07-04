@@ -18,8 +18,10 @@ class ShowCategoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_can_index_categories_with_data()
+    public function test_guest_can_show_category_with_data()
     {
+        $this->disableExceptionHandling();
+
         $category = factory(Category::class)->create();
 
         $response = $this->showCategory($category);
