@@ -22,7 +22,9 @@ class UpdateAdminSettingsTest extends TestCase
     public function testAdminCanUpdateSetting()
     {
         $this->actingAsAdmin();
-        $setting = factory(Setting::class)->create(['name' => 'test', 'value' => 'Flasher', 'type' => 'string', 'description' => null]);
+        $setting = factory(Setting::class)->create([
+            'name' => 'test', 'value' => 'Flasher', 'type' => 'string', 'description' => null,
+        ]);
 
         $setting->value = 'newValue';
         $response = $this->updateSetting($setting);
@@ -59,34 +61,36 @@ class UpdateAdminSettingsTest extends TestCase
     public function testGuestCannotUpdateSettings()
     {
         $countBefore = Setting::all()->count();
-        $setting = factory(Setting::class)->create(['name' => 'test', 'value' => 'testValue']);
+        $setting = factory(Setting::class)->create(['name' => 'test', 'type' => 'string', 'value' => 'testValue']);
 
         $setting->value = 'newValue';
         $response = $this->updateSetting($setting);
 
         $response->assertStatus(401);
         $this->assertCount(++$countBefore, Setting::all());
-        $this->assertSame('testValue', Setting::find('test')->value);
+        $this->assertSame('testValue', $setting->fresh()->value);
     }
 
-    public function test_default_boolean_setting_is_false()
-    {
-        $setting = factory(Setting::class)->create(['name' => 'bool_setting', 'type' => 'bool', 'value' => null]);
+//    public function test_default_boolean_setting_is_false()
+//    {
+//        $setting = factory(Setting::class)->create(['name' => 'bool_setting', 'type' => 'bool', 'value' => null]);
+//
+//        $this->assertFalse($setting->value);
+//    }
 
-        $this->assertFalse($setting->value);
-    }
-
-    public function test_a_boolean_setting_can_not_store_string()
+    public function test_a_numeric_setting_can_store_string_with_value_to_zero()
     {
         $this->actingAsAdmin();
-        $setting = factory(Setting::class)->create(['name' => 'bool_setting', 'type' => SettingType::Boolean, 'value' => false]);
-        $this->assertFalse($setting->value);
+        $setting = factory(Setting::class)->create([
+            'name' => 'bool_setting', 'type' => SettingType::Numeric, 'value' => 42,
+        ]);
+        $this->assertSame(42, $setting->value);
 
         $setting->value = 'randomString';
         $response = $this->updateSetting($setting);
 
-        $response->assertStatus(422)->assertJsonValidationErrors([]);
-        $this->assertFalse($setting->fresh()->value);
+        $response->assertStatus(200);
+        $this->assertSame(0, $setting->fresh()->value);
     }
 
     public function test_setting_type_to_media_can_store_media()

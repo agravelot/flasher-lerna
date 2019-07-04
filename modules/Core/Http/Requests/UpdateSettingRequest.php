@@ -10,6 +10,7 @@
 namespace Modules\Core\Http\Requests;
 
 use App\Http\Requests\Request;
+use Illuminate\Validation\Rule;
 
 class UpdateSettingRequest extends Request
 {
@@ -20,8 +21,11 @@ class UpdateSettingRequest extends Request
      */
     public function rules()
     {
+        // TODO Use getOriginal('nullable')
+        $nullable = true;
+
         return [
-            //
+            'value' => ['present', Rule::requiredIf(! $nullable)],
         ];
     }
 }

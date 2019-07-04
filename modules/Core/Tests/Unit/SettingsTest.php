@@ -13,7 +13,6 @@ use Exception;
 use Tests\TestCase;
 use Modules\Core\Entities\Setting;
 use Modules\Core\Enums\SettingType;
-use Spatie\MediaLibrary\Models\Media;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SettingsTest extends TestCase
@@ -37,7 +36,7 @@ class SettingsTest extends TestCase
 
     public function test_get_existent_setting()
     {
-        $setting = factory(Setting::class)->create(['name' => 'john', 'value' => 'doe']);
+        $setting = factory(Setting::class)->create(['name' => 'john', 'type' => 'string', 'value' => 'doe']);
         $this->assertSame('doe', settings()->get('john'));
     }
 
@@ -50,14 +49,7 @@ class SettingsTest extends TestCase
 
     public function test_x_setting_type_return_a_x()
     {
-        $types = collect([
-            SettingType::String => 'string',
-            SettingType::Numeric => 'integer',
-            SettingType::Boolean => 'boolean',
-            SettingType::TextArea => 'string',
-            // SettingType::Json => '??',
-            // SettingType::Media => Media::class,
-        ]);
+        $types = collect(SettingType::ALIASES_TYPES);
 
         $types->each(function (string $targetType, string $settingTypeEnum) {
             $setting = factory(Setting::class)->state($settingTypeEnum)->create();

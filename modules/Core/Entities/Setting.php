@@ -34,22 +34,29 @@ class Setting extends Model
         'type' => SettingType::class,
     ];
 
+    /**
+     * Dynamic type casting for value from type.
+     *
+     * @param  string  $key
+     *
+     * @return mixed|string
+     */
     protected function getCastType($key)
     {
         if ($key == 'value') {
             if (empty($this->type)) {
-                throw new \LogicException('Setting cannot be empty');
+                throw new \LogicException('Setting type cannot be empty');
             }
 
-            if ($this->type === 'numeric') {
+            if ($this->type->value === 'numeric') {
                 return 'integer';
             }
 
-            if ($this->type === 'textarea') {
+            if ($this->type->value === 'textarea') {
                 return 'string';
             }
 
-            return $this->type;
+            return $this->type->value;
         }
 
         return parent::getCastType($key);
