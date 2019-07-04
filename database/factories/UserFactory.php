@@ -8,6 +8,7 @@
  */
 
 use Carbon\Carbon;
+use App\Models\User;
 use Faker\Generator as Faker;
 
 /*
@@ -21,7 +22,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Models\User::class, function (Faker $faker) {
+$factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->unique()->userName,
         'email' => $faker->unique()->email,
@@ -29,18 +30,18 @@ $factory->define(App\Models\User::class, function (Faker $faker) {
         'role' => 'user',
         'email_verified_at' => Carbon::now(),
         'remember_token' => str_random(10),
-        'created_at' => $faker->dateTime(),
+        'created_at' => $faker->dateTimeThisDecade,
         'updated_at' => Carbon::now(),
     ];
 });
 
-$factory->state(\App\Models\User::class, 'admin', function () {
+$factory->state(User::class, 'admin', function () {
     return [
         'role' => 'admin',
     ];
 });
 
-$factory->state(\App\Models\User::class, 'user', function () {
+$factory->state(User::class, 'user', function () {
     return [
         'role' => 'user',
     ];
