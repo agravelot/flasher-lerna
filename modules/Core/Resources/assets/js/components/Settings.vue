@@ -46,6 +46,7 @@ import 'quill/dist/quill.bubble.css';
 import { quillEditor } from 'vue-quill-editor';
 
 class Setting {
+    public id: number;
     public name: string;
     public value: string;
 }
@@ -68,7 +69,7 @@ export default class Settings extends VueBuefy {
         this.loading = true;
 
         this.axios
-            .patch(`/api/admin/settings/${setting.name}`, {
+            .patch(`/api/admin/settings/${setting.id}`, {
                 value: setting.value,
             })
             .then(res => res.data)

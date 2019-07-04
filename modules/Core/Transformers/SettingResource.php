@@ -23,6 +23,7 @@ class SettingResource extends Resource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'value' => $this->value,
             'type' => $this->type->value,
