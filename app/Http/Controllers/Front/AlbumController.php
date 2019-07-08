@@ -47,7 +47,8 @@ class AlbumController extends Controller
         $this->authorize('view', $album);
 
         return view('albums.show', [
-            'album' => new AlbumShowResource($album),
+            'albumResource' => new AlbumShowResource($album),
+            'album' => $album,
         ]);
     }
 }

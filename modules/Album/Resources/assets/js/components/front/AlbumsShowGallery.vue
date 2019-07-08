@@ -1,44 +1,5 @@
 <template>
     <div v-if="this.album">
-        <!--        <h1 class="title is-1 has-text-centered">{{ album.title }}</h1>-->
-
-        <div
-            v-if="album.links && (album.links.download || album.links.edit)"
-            class="field has-addons"
-        >
-            <div v-if="album.links.download" class="control">
-                <a class="button" :href="album.links.download">
-                    <span class="icon is-small"><i class="fas fa-download"></i></span>
-                    <span>Download</span>
-                </a>
-            </div>
-            <div v-if="album.links.edit" class="control">
-                <a class="button" :href="album.links.edit">
-                    <span class="icon is-small"><i class="fas fa-edit"></i></span>
-                    <span>Edit</span>
-                </a>
-            </div>
-        </div>
-
-        <div
-            v-if="album.body || (album.categories && album.categories.length)"
-            class="card has-margin-bottom-md"
-        >
-            <div class="card-content">
-                <div v-if="album.body" class="content article-body">
-                    <p class="has-text-justified" v-html="album.body"></p>
-                </div>
-
-                <div v-if="album.categories && album.categories.length" class="tags">
-                    <span v-for="category in album.categories" class="tag">
-                        <a v-if="category.links" :href="category.links.related">{{
-                            category.name
-                        }}</a>
-                    </span>
-                </div>
-            </div>
-        </div>
-
         <div v-if="album.medias && album.medias.length">
             <!--            <h2 class="title is-2 has-text-centered">Pictures</h2>-->
             <!--TODO Add nothing to show-->
@@ -67,42 +28,6 @@
                 </div>
             </masonry>
         </div>
-
-        <section v-if="album.cosplayers && album.cosplayers.length" class="section">
-            <h2 class="title is-2 has-text-centered">Cosplayers</h2>
-
-            <div class="card">
-                <div class="card-content">
-                    <div class="columns is-multiline is-mobile">
-                        <div v-for="cosplayer in album.cosplayers" class="column">
-                            <figure v-if="cosplayer.thumb" class="is-centered image is-64x64">
-                                <img class="is-rounded" :src="cosplayer.thumb" />
-                            </figure>
-                            <figure
-                                v-else
-                                class="is-centered avatar-circle"
-                                :style="{ 'background-color': stringToColour(cosplayer.name) }"
-                            >
-                                <span class="initials">
-                                    {{
-                                        cosplayer.name
-                                            .match(/\b\w/g)
-                                            .join('')
-                                            .substring(0, 2)
-                                            .toUpperCase()
-                                    }}
-                                </span>
-                            </figure>
-                            <a :href="cosplayer.links.related">
-                                <p class="has-text-centered has-margin-top-sm">
-                                    {{ cosplayer.name }}
-                                </p>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <div v-if="openedPicture" class="modal is-active modal-fx-fadeInScale">
             <div class="modal-background" @click="closePicture()"></div>
@@ -190,20 +115,6 @@ export default class AlbumsShowGallery extends Vue {
                 )}vw`;
             }
         );
-    }
-
-    stringToColour(str: string): string {
-        let i;
-        let hash = 0;
-        for (i = 0; i < str.length; i++) {
-            hash = str.charCodeAt(i) + ((hash << 5) - hash);
-        }
-        let colour = '#';
-        for (i = 0; i < 3; i++) {
-            let value = (hash >> (i * 8)) & 0xff;
-            colour += ('00' + value.toString(16)).substr(-2);
-        }
-        return colour;
     }
 
     fetchAlbum(): void {
