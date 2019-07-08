@@ -9,6 +9,7 @@
 
 namespace Modules\Core\Transformers;
 
+use Modules\Core\Enums\SettingType;
 use Illuminate\Http\Resources\Json\Resource;
 
 class SettingResource extends Resource
@@ -18,14 +19,21 @@ class SettingResource extends Resource
      *
      * @param  \Illuminate\Http\Request
      *
-     * @return array
+     * @return array|MediaSettingResource
      */
     public function toArray($request)
     {
+        $isMediaSetting = $this->type->value === SettingType::Media;
+
+        if ($isMediaSetting) {
+            return new MediaSettingResource($this);
+        }
+
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'value' => $this->value,
-            'type' => $this->type,
+            'type' => $this->type->value,
             'title' => $this->title,
             'description' => $this->description,
         ];

@@ -9,7 +9,10 @@
                 <div class="columns is-vcentered">
                     <div class="column">
                         <figure class="image is-128x128 is-pulled-right">
-                            <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" alt="">
+                            <img class="is-rounded"
+                                 src="{{ optional(settings()->get('profile_picture_homepage'))->getUrl() }}"
+                                 srcset="{{ optional(settings()->get('profile_picture_homepage'))->getSrcset() }}"
+                                 alt="{{ optional(settings()->get('profile_picture_homepage'))->name }}">
                         </figure>
                     </div>
                     <div class="column">
@@ -59,19 +62,19 @@
                     {!! settings()->get('homepage_description') !!}
                 </p>
             </div>
-{{--            <section class="has-margin-top-lg">--}}
-{{--                <h3 class="title is-5 has-text-centered">Soyez informé dès que je publie quelque chose de nouveau.</h3>--}}
-{{--                <div class="field has-addons has-addons-centered has-margin-top-sm">--}}
-{{--                    <div class="control">--}}
-{{--                        <input class="input" type="text" placeholder="{{ __('Votre addresse email') }}">--}}
-{{--                    </div>--}}
-{{--                    <div class="control">--}}
-{{--                        <a class="button is-info">--}}
-{{--                            {{ __('Valider') }}--}}
-{{--                        </a>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </section>--}}
+            {{--            <section class="has-margin-top-lg">--}}
+            {{--                <h3 class="title is-5 has-text-centered">Soyez informé dès que je publie quelque chose de nouveau.</h3>--}}
+            {{--                <div class="field has-addons has-addons-centered has-margin-top-sm">--}}
+            {{--                    <div class="control">--}}
+            {{--                        <input class="input" type="text" placeholder="{{ __('Votre addresse email') }}">--}}
+            {{--                    </div>--}}
+            {{--                    <div class="control">--}}
+            {{--                        <a class="button is-info">--}}
+            {{--                            {{ __('Valider') }}--}}
+            {{--                        </a>--}}
+            {{--                    </div>--}}
+            {{--                </div>--}}
+            {{--            </section>--}}
         </div>
     </section>
 @stop
@@ -79,7 +82,7 @@
 @section('head')
     <style>
         .has-hero-background {
-            background: url("https://images.unsplash.com/photo-1557952736-0084356ba2da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80") center center;
+            background: url("{{ optional(settings()->get('background_picture_homepage'))->getUrl() }}") center center;
             background-size: cover;
         }
     </style>

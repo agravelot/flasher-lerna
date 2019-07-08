@@ -196,12 +196,13 @@ export default class AlbumsEdit extends AlbumDesc {
             .patch(`/api/admin/albums/${this.$route.params.slug}`, this.album)
             .then(res => res.data)
             .then(res => {
+                this.album = res.data;
                 this.$toast.open({
                     message: `Album updated`,
                     type: 'is-success',
                     duration: 5000,
                 });
-                // this.$router.push({name: 'admin.albums.index'});
+                this.$router.push({ name: 'admin.albums.edit', params: { slug: this.album.slug } });
             })
             .catch(err => {
                 this.$toast.open({
