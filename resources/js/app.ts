@@ -3,17 +3,9 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-import Vue from 'vue';
-import AlbumsMasonry from '../../modules/Album/Resources/assets/js/components/front/AlbumsMasonry.vue';
 import './fontawsome';
 import './bulma.ts';
-import './bootstrap.ts';
 import 'bulma-modal-fx/dist/js/modal-fx.js';
-
-const app = new Vue({
-    el: '#app',
-    components: { AlbumsMasonry },
-});
 
 window.addEventListener(
     'keydown',

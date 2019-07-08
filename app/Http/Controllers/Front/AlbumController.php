@@ -13,9 +13,7 @@ use App\Models\PublicAlbum;
 use Illuminate\Http\Response;
 use Modules\Album\Entities\Album;
 use App\Http\Controllers\Controller;
-use Modules\Album\Transformers\AlbumShowResource;
 use Illuminate\Auth\Access\AuthorizationException;
-use Modules\Album\Transformers\AlbumIndexResource;
 
 class AlbumController extends Controller
 {
@@ -28,9 +26,7 @@ class AlbumController extends Controller
     {
         $albums = PublicAlbum::latest()->paginate(10);
 
-        return view('albums.index', [
-            'albums' => AlbumIndexResource::collection($albums),
-        ]);
+        return view('albums.index', compact('albums'));
     }
 
     /**
@@ -46,9 +42,6 @@ class AlbumController extends Controller
         $album->load(['cosplayers.media']);
         $this->authorize('view', $album);
 
-        return view('albums.show', [
-            'albumResource' => new AlbumShowResource($album),
-            'album' => $album,
-        ]);
+        return view('albums.show', compact('album'));
     }
 }
