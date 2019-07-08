@@ -45,7 +45,9 @@
 @endif
 
 <div id="app">
-    <albums-show-gallery :data="{{ $albumResource->response()->getContent() }}"></albums-show-gallery>
+    <albums-show-gallery :data="{{ $albumResource->response()->getContent() }}">
+        {{ __('Loading') }}...
+    </albums-show-gallery>
 </div>
 
 @if ($album->cosplayers)
