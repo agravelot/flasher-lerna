@@ -18,7 +18,7 @@
     @endcan
 </div>
 
-@if ($album->body or $album->categories)
+@if ($album->body or $album->categories->count())
     <div class="card has-margin-bottom-md">
         <div class="card-content">
             @if ($album->body)
@@ -44,13 +44,94 @@
     </div>
 @endif
 
-<div id="app">
-    <albums-show-gallery :data="{{ $albumResource->response()->getContent() }}">
-        {{ __('Loading') }}...
-    </albums-show-gallery>
-</div>
+@php
+    /** @var \App\Models\Album $album */
+    $medias = $album->getMedia(\App\Models\Album::PICTURES_COLLECTION);
 
-@if ($album->cosplayers)
+    $columnsDesktop = $medias->groupBy(function (\Spatie\MediaLibrary\Models\Media $item, int $key) {
+            return $key % 3;
+        });
+
+    $columnsTablet = $medias->groupBy(function (\Spatie\MediaLibrary\Models\Media $item, int $key) {
+            return $key % 2;
+        });
+
+@endphp
+
+<section class="is-hidden-touch">
+    <div class="columns is-variable is-1">
+        @foreach($columnsDesktop as $columnKey => $column)
+            <div class="column is-one-third">
+                @foreach($column as $mediaKey => $media)
+                    @php($key = $columnKey + $mediaKey)
+                    <a class="modal-button is-inline-block" data-target="{{ "media-{$key}" }}">
+                        {{
+                           $media(
+                               \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,
+                               [
+                                   'class'=>'modal-button responsive-media'
+                               ]
+                           )
+                       }}
+                    </a>
+                @endforeach
+            </div>
+        @endforeach
+    </div>
+</section>
+
+<section class="is-hidden-desktop is-hidden-mobile">
+    <div class="columns is-variable is-1">
+        @foreach($columnsTablet as $columnKey => $column)
+            <div class="column is-half">
+                @foreach($column as $mediaKey => $media)
+                    @php($key = $columnKey + $mediaKey)
+                    <a class="modal-button is-inline-block" data-target="{{ "media-{$key}" }}">
+                        {{
+                           $media(
+                               \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,
+                               [
+                                   'class'=>'modal-button responsive-media'
+                               ]
+                           )
+                       }}
+                    </a>
+                @endforeach
+            </div>
+        @endforeach
+    </div>
+</section>
+
+<section class="is-hidden-tablet">
+    <div class="columns is-variable is-1">
+        @foreach($medias as $key => $media)
+            <div class="column">
+                <a class="modal-button is-inline-block" data-target="{{ "media-{$key}" }}">
+                    {{
+                       $media(
+                           \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,
+                           [
+                               'class'=>'modal-button responsive-media'
+                           ]
+                       )
+                   }}
+                </a>
+            </div>
+        @endforeach
+    </div>
+</section>
+
+@foreach ($medias as $key => $media)
+    <div id="{{ "media-{$key}" }}" class="modal modal-fx-fadeInScale is-modal-navigable">
+        <div class="modal-background"></div>
+        <div class="modal-content is-image is-huge">
+            {{ $media }}
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+@endforeach
+
+@if ($album->cosplayers->count())
     <section class="section">
         <h2 class="title is-2 has-text-centered">Cosplayers</h2>
 
@@ -65,8 +146,7 @@
                                 </figure>
                             @else
                                 <figure class="is-centered avatar-circle"
-                                        style="background-color: {{ string_to_color($cosplayer->name) }}"
-                                >
+                                        style="background-color: {{ string_to_color($cosplayer->name) }}">
                                     <span class="initials">
                                         {{ $cosplayer->initial }}
                                     </span>
@@ -79,7 +159,6 @@
                             </a>
                         </div>
                     @endforeach
-
                 </div>
             </div>
         </div>
