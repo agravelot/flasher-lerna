@@ -85,7 +85,9 @@
                 </div>
             </div>
 
-            <b-button type="is-primary" :loading="this.loading" @click="updateCosplayer()">Update</b-button>
+            <b-button type="is-primary" :loading="this.loading" @click="updateCosplayer()"
+                >Update</b-button
+            >
         </div>
     </div>
 </template>
@@ -134,7 +136,10 @@ export default class CosplayersEdit extends VueBuefy {
                 this.cosplayer = res.data;
                 this.loading = false;
                 this.showSuccess('Cosplayer updated');
-                this.$router.push({ name: 'admin.cosplayers.edit', params: { slug: this.cosplayer.slug } });
+                this.$router.push({
+                    name: 'admin.cosplayers.edit',
+                    params: { slug: this.cosplayer.slug },
+                });
             })
             .catch(err => {
                 this.loading = false;

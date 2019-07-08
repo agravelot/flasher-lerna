@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Models\PublicAlbum;
 use Illuminate\Http\Response;
+use Modules\Album\Entities\Album;
 use App\Http\Controllers\Controller;
 use Modules\Album\Transformers\AlbumShowResource;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -35,11 +36,10 @@ class AlbumController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param PublicAlbum $album
-     *
-     * @throws AuthorizationException
+     * @param  PublicAlbum  $album
      *
      * @return Response
+     * @throws AuthorizationException
      */
     public function show(PublicAlbum $album)
     {
