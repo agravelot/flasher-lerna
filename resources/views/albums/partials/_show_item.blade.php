@@ -126,6 +126,7 @@
         <div class="modal-background"></div>
         <div class="modal-content is-image is-huge">
             {{ $media }}
+            {{ $key + 1 . '/' . $medias->count() }}
         </div>
         <button class="modal-close is-large" aria-label="close"></button>
     </div>
