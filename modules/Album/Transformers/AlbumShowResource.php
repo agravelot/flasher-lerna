@@ -72,7 +72,7 @@ class AlbumShowResource extends Resource
     {
         // Because we are using this resource directly in your views.
         // We need need to check the request is an ajax request.
-        // In order to the the auth with the proper guard
+        // In order to use the auth with the proper guard.
         $name = $this->request->ajax() ? 'api' : 'web';
         $guard = Auth::guard($name);
 

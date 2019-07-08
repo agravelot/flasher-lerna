@@ -40,15 +40,13 @@ class AdminPictureAlbumController extends Controller
      */
     public function store(StorePictureAlbumRequest $request, FileReceiver $receiver)
     {
-        Resource::withoutWrapping();
-
-        /** @var Album $album */
-        $album = Album::whereSlug($request->get('album_slug'))->firstOrFail();
-
         if ($receiver->isUploaded() === false) {
             throw new UploadMissingFileException();
         }
 
+        Resource::withoutWrapping();
+        /** @var Album $album */
+        $album = Album::whereSlug($request->get('album_slug'))->firstOrFail();
         $save = $receiver->receive();
 
         // check if the upload has not finished (in chunk mode it will send smaller files)

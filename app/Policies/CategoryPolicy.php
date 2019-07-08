@@ -34,7 +34,7 @@ class CategoryPolicy extends Policy
      *
      * @return bool
      */
-    public function view(User $user, ?Category $category = null)
+    public function view(User $user, Category $category)
     {
         return false;
     }
@@ -59,7 +59,7 @@ class CategoryPolicy extends Policy
      *
      * @return bool
      */
-    public function update(User $user, ?Category $category = null)
+    public function update(User $user, Category $category)
     {
         return false;
     }
@@ -72,7 +72,7 @@ class CategoryPolicy extends Policy
      *
      * @return bool
      */
-    public function delete(User $user, ?Category $category = null)
+    public function delete(User $user, Category $category)
     {
         return false;
     }
