@@ -11,6 +11,7 @@ namespace Modules\Core;
 
 use Illuminate\Support\Collection;
 use Modules\Core\Entities\Setting;
+use Spatie\MediaLibrary\Models\Media;
 
 class SettingsManager
 {
@@ -32,7 +33,15 @@ class SettingsManager
         return $this->get($name, false) ? true : false;
     }
 
-    public function get(string $name, $default = null): ?string
+    /**
+     * Return the setting with the casted type.
+     *
+     * @param  string  $name
+     * @param  null  $default
+     *
+     * @return string|bool|int|Media
+     */
+    public function get(string $name, $default = null)
     {
         $setting = $this->settings->firstWhere('name', '===', $name);
 

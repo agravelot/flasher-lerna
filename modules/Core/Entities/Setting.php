@@ -27,9 +27,6 @@ class Setting extends Model implements HasMedia
     const SETTING_COLLECTION = 'setting_media';
 
     protected $fillable = ['name', 'value'];
-    protected $casts = [
-        'value' => 'string', // Dummy cast to force to call getCastType
-    ];
     protected $enumCasts = [
         'type' => SettingType::class,
     ];
@@ -44,10 +41,10 @@ class Setting extends Model implements HasMedia
     public function getValueAttribute($value)
     {
         if (SettingType::getAliasType($this->type) === Media::class) {
-            return $this->getMedia(self::SETTING_COLLECTION)->get(0);
+            return $this->getFirstMedia(self::SETTING_COLLECTION);
         }
 
-        settype($value, $this->getCastValueType());
+        settype($value, $this->getCastType('value'));
 
         return $value;
     }
@@ -57,21 +54,17 @@ class Setting extends Model implements HasMedia
      *
      * @return mixed|string
      */
-    protected function getCastValueType(): string
+    protected function getCastType($key): string
     {
-        if ($this->type === null) {
-            throw new \LogicException('Setting type cannot be empty');
+        if ($key === 'value') {
+            if ($this->type === null) {
+                throw new \LogicException('Setting type cannot be empty');
+            }
+
+            return SettingType::getAliasType($this->type->value);
         }
 
-        if ($this->type->value === 'numeric') {
-            return 'integer';
-        }
-
-        if ($this->type->value === 'textarea') {
-            return 'string';
-        }
-
-        return $this->type->value;
+        return parent::getCastType($key);
     }
 
     /**
@@ -82,6 +75,7 @@ class Setting extends Model implements HasMedia
         if ($value instanceof \Symfony\Component\HttpFoundation\File\File) {
             $this->addMedia($value)
                 ->preservingOriginal()
+                ->withResponsiveImages()
                 ->toMediaCollectionOnCloudDisk(self::SETTING_COLLECTION);
             $this->attributes['value'] = null;
 

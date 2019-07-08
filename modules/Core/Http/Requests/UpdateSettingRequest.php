@@ -22,10 +22,12 @@ class UpdateSettingRequest extends Request
     public function rules()
     {
         // TODO Use getOriginal('nullable')
+        // TODO check file and types
         $nullable = true;
 
         return [
-            'value' => ['present', Rule::requiredIf(! $nullable)],
+            'value' => [Rule::requiredIf(! $nullable)],
+            'file' => 'sometimes|file|max:20000',
         ];
     }
 }

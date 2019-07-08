@@ -10,11 +10,18 @@
 namespace Modules\Core\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Modules\Core\Entities\Setting;
+use Modules\Core\Enums\SettingType;
+use Illuminate\Http\Resources\Json\Resource;
 use Modules\Core\Transformers\SettingResource;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Modules\Core\Http\Requests\UpdateSettingRequest;
+use Modules\Album\Transformers\CompleteUploadPictureResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Modules\Album\Transformers\ProcessingUploadPictureResource;
+use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 
 class AdminSettingsController extends Controller
 {
@@ -31,7 +38,7 @@ class AdminSettingsController extends Controller
     /**
      * Show the specified resource.
      *
-     * @param Setting $setting
+     * @param  Setting  $setting
      *
      * @return SettingResource
      */
@@ -45,11 +52,33 @@ class AdminSettingsController extends Controller
      *
      * @param  Setting  $setting
      * @param  UpdateSettingRequest  $request
+     * @param  FileReceiver  $receiver
      *
-     * @return SettingResource
+     * @return JsonResponse|ProcessingUploadPictureResource|SettingResource
+     * @throws UploadMissingFileException
      */
-    public function update(Setting $setting, UpdateSettingRequest $request)
+    public function update(Setting $setting, UpdateSettingRequest $request, FileReceiver $receiver)
     {
+        if ($setting->type->value === SettingType::Media) {
+            // We are handling file upload
+            if ($receiver->isUploaded() === false) {
+                throw new UploadMissingFileException();
+            }
+
+            Resource::withoutWrapping();
+            $save = $receiver->receive();
+
+            // check if the upload has not finished (in chunk mode it will send smaller files)
+            if (! $save->isFinished()) {
+                // we are in chunk mode, lets send the current progress
+                return new ProcessingUploadPictureResource($save);
+            }
+
+            $setting->value = $save->getFile();
+
+            return (new CompleteUploadPictureResource($setting->value))->response()->setStatusCode(201);
+        }
+
         $setting->update($request->only('value'));
 
         return new SettingResource($setting);

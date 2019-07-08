@@ -9,44 +9,38 @@
             <div v-for="setting in settings">
                 <b-field :label="setting.title">
                     <b-numberinput
-                            v-if="setting.type === 'numeric'"
-                            v-model="setting.value"
+                        v-if="setting.type === 'numeric'"
+                        v-model="setting.value"
                     ></b-numberinput>
                     <b-checkbox
-                            v-else-if="setting.type === 'bool'"
-                            true-value="1"
-                            false-value="0"
-                            v-model.numeric="setting.value"
+                        v-else-if="setting.type === 'bool'"
+                        true-value="1"
+                        false-value="0"
+                        v-model.numeric="setting.value"
                     >
                         {{ setting.desciption }}
                     </b-checkbox>
                     <quill-editor
-                            v-else-if="setting.type === 'textarea'"
-                            v-model="setting.value"
-                            ref="myQuillEditor"
-                            :options="editorOption"
+                        v-else-if="setting.type === 'textarea'"
+                        v-model="setting.value"
+                        ref="myQuillEditor"
+                        :options="editorOption"
                     ></quill-editor>
                     <section v-else-if="setting.type === 'media'">
-                        <b-field>
-                            <b-upload v-model="setting.value"
-                                      drag-drop>
-                                <section class="section">
-                                    <div class="content has-text-centered">
-                                        <p>
-                                            <b-icon
-                                                    icon="upload"
-                                                    size="is-large">
-                                            </b-icon>
-                                        </p>
-                                        <p>Drop your files here or click to upload</p>
-                                    </div>
-                                </section>
-                            </b-upload>
-                        </b-field>
+                        <vue-dropzone
+                            v-if="setting.value === null"
+                            ref="myVueDropzone"
+                            :options="getDropzoneOptions(setting)"
+                            v-on:vdropzone-sending="sendingEvent"
+                            v-on:vdropzone-complete="fetchSettings"
+                            class="has-margin-bottom-md"
+                        ></vue-dropzone>
+
+                        <img v-if="setting.value" :src="setting.value.url" :alt="setting.value.name">
 
                         <div v-if="setting.value" class="tags">
                             <span class="tag is-primary">
-                                {{setting.value && setting.value.name}}
+                                {{setting.value.name}}
                                 <button class="delete is-small"
                                         type="button"
                                         @click="setting.value = null">
@@ -57,7 +51,9 @@
                     <b-input v-else v-model="setting.value" expanded></b-input>
                 </b-field>
                 <div class="control">
-                    <button class="button is-primary" @click="sendSetting(setting)">Update</button>
+                    <button v-if="setting.type !== 'media'" class="button is-primary" @click="sendSetting(setting)">
+                        Update
+                    </button>
                 </div>
             </div>
         </div>
@@ -71,6 +67,7 @@
     import 'quill/dist/quill.snow.css';
     import 'quill/dist/quill.bubble.css';
     import {quillEditor} from 'vue-quill-editor';
+    import vue2Dropzone from 'vue2-dropzone';
 
     class Setting {
         public id: number;
@@ -79,14 +76,46 @@
     }
 
     @Component({
-        name: 'Core.Resources.assets.js.components.Settings',
+        name: 'Settings',
         components: {
             quillEditor,
+            vueDropzone: vue2Dropzone,
         },
     })
+
     export default class Settings extends VueBuefy {
         private loading: boolean = false;
         private settings: Array<Setting> = [];
+
+        getDropzoneOptions(setting: Setting): object {
+            return {
+                url: `/api/admin/settings/${setting.id}`,
+                thumbnailWidth: 200,
+                addRemoveLinks: true,
+                parallelUploads: 5,
+                // Setup chunking
+                chunking: true,
+                method: 'POST',
+                maxFilesize: 400000000,
+                chunkSize: 1000000,
+                retryChunks: true,
+                retryChunksLimit: 5,
+                maxThumbnailFilesize: 25,
+                // If true, the individual chunks of a file are being uploaded simultaneously.
+                // parallelChunkUploads: true,
+                acceptedFiles: 'image/*',
+                dictDefaultMessage: "<i class='fas fa-images'></i> Upload",
+                headers: {
+                    'X-CSRF-Token': (<HTMLMetaElement>(
+                        document.head.querySelector('meta[name="csrf-token"]')
+                    )).content,
+                },
+            };
+        }
+
+        sendingEvent(file: File, xhr: XMLHttpRequest, formData: FormData): void {
+            formData.append('_method', 'patch');
+        }
 
         created(): void {
             this.fetchSettings();
@@ -98,6 +127,7 @@
             this.axios
                 .patch(`/api/admin/settings/${setting.id}`, {
                     value: setting.value,
+                    test: 'test'
                 })
                 .then(res => res.data)
                 .then(res => {
@@ -105,7 +135,6 @@
                     this.showSuccess('Setting updated');
                 })
                 .catch(err => {
-                    this.settings = [];
                     this.loading = false;
                     this.$snackbar.open({
                         message: 'Unable to save setting, maybe you are offline?',
