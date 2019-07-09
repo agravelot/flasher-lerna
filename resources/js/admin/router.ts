@@ -1,16 +1,16 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Dashboard from '../../../modules/Dashboard/Resources/assets/js/Dashboard.vue';
-import AlbumsIndex from '../../../modules/Album/Resources/assets/js/components/admin/AlbumsIndex.vue'
-import AlbumsCreate from '../../../modules/Album/Resources/assets/js/components/admin/AlbumsCreate.vue'
-import AlbumsShowGallery from '../../../modules/Album/Resources/assets/js/components/admin/AlbumsShowGallery.vue'
-import AlbumsEdit from '../../../modules/Album/Resources/assets/js/components/admin/AlbumsEdit.vue'
-import CosplayersIndex from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersIndex.vue'
-import CosplayersCreate from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersCreate.vue'
-import CosplayersEdit from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersEdit.vue'
-import UsersIndex from '../../../modules/User/Resources/assets/js/UsersIndex.vue'
-import Settings from '../../../modules/Core/Resources/assets/js/components/Settings.vue'
-import PagesIndex from '../../../modules/Core/Resources/assets/js/components/pages/PagesIndex.vue'
+import AlbumsIndex from '../../../modules/Album/Resources/assets/js/components/admin/AlbumsIndex.vue';
+import AlbumsCreate from '../../../modules/Album/Resources/assets/js/components/admin/AlbumsCreate.vue';
+import AlbumsShowGallery from '../../../modules/Album/Resources/assets/js/components/admin/AlbumsShowGallery.vue';
+import AlbumsEdit from '../../../modules/Album/Resources/assets/js/components/admin/AlbumsEdit.vue';
+import CosplayersIndex from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersIndex.vue';
+import CosplayersCreate from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersCreate.vue';
+import CosplayersEdit from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersEdit.vue';
+import UsersIndex from '../../../modules/User/Resources/assets/js/UsersIndex.vue';
+import Settings from '../../../modules/Core/Resources/assets/js/components/Settings.vue';
+import PagesIndex from '../../../modules/Core/Resources/assets/js/components/pages/PagesIndex.vue';
 
 Vue.use(VueRouter);
 
@@ -18,7 +18,7 @@ const routes: Array<any> = [
     {
         path: '/admin',
         name: 'admin.dashboard',
-        component: Dashboard
+        component: Dashboard,
         // component: () =>
         //     import(
         //         /* webpackChunkName: "dashboard" */ '../../../modules/Dashboard/Resources/assets/js/Dashboard.vue'
@@ -28,7 +28,7 @@ const routes: Array<any> = [
     {
         path: '/admin/albums',
         name: 'admin.albums.index',
-        component: AlbumsIndex
+        component: AlbumsIndex,
         // component: () =>
         //     import(
         //         /* webpackChunkName: "albumsIndex" */ '../../../modules/Album/Resources/assets/js/components/admin/AlbumsIndex.vue'
@@ -37,7 +37,7 @@ const routes: Array<any> = [
     {
         path: '/admin/albums/create',
         name: 'admin.albums.create',
-        component: AlbumsCreate
+        component: AlbumsCreate,
         // component: () =>
         //     import(
         //         /* webpackChunkName: "albumsCreate" */ '../../../modules/Album/Resources/assets/js/components/admin/AlbumsCreate.vue'
@@ -46,7 +46,7 @@ const routes: Array<any> = [
     {
         path: '/admin/albums/:slug',
         name: 'admin.albums.show',
-        component: AlbumsShowGallery
+        component: AlbumsShowGallery,
         // component: () =>
         //     import(
         //         /* webpackChunkName: "albumsShow" */ '../../../modules/Album/Resources/assets/js/components/admin/AlbumsShowGallery.vue'
@@ -55,7 +55,7 @@ const routes: Array<any> = [
     {
         path: '/admin/albums/:slug/edit',
         name: 'admin.albums.edit',
-        component: AlbumsEdit
+        component: AlbumsEdit,
         // component: () =>
         //     import(
         //         /* webpackChunkName: "albumsEdit" */ '../../../modules/Album/Resources/assets/js/components/admin/AlbumsEdit.vue'
@@ -65,7 +65,7 @@ const routes: Array<any> = [
     {
         path: '/admin/cosplayers',
         name: 'admin.cosplayers.index',
-        component:CosplayersIndex
+        component: CosplayersIndex,
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersIndex.vue'
@@ -74,7 +74,7 @@ const routes: Array<any> = [
     {
         path: '/admin/cosplayers/create',
         name: 'admin.cosplayers.create',
-        component: CosplayersCreate
+        component: CosplayersCreate,
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersCreate" */ '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersCreate.vue'
@@ -83,7 +83,7 @@ const routes: Array<any> = [
     {
         path: '/admin/cosplayers/:slug/edit',
         name: 'admin.cosplayers.edit',
-        component: CosplayersEdit
+        component: CosplayersEdit,
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersEdit.vue'
@@ -93,7 +93,7 @@ const routes: Array<any> = [
     {
         path: '/admin/users',
         name: 'admin.users.index',
-        component: UsersIndex
+        component: UsersIndex,
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
@@ -103,7 +103,7 @@ const routes: Array<any> = [
     {
         path: '/admin/settings',
         name: 'admin.settings.index',
-        component: Settings
+        component: Settings,
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Core/Resources/assets/js/components/Settings.vue'
@@ -112,7 +112,7 @@ const routes: Array<any> = [
     {
         path: '/admin/pages',
         name: 'admin.pages.index',
-        component: PagesIndex
+        component: PagesIndex,
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Core/Resources/assets/js/components/pages/PagesIndex.vue'

@@ -1,6 +1,6 @@
 @extends("layouts.app")
 
-@section('pageTitle', $album->resource->title)
+@section('pageTitle', $album->title)
 
 @section("content")
     <section class="section">
