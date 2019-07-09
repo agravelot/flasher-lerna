@@ -26,8 +26,8 @@
             onClickEach(elements.background, closeModal);
 
             // Close all modals if ESC key is pressed
-            document.addEventListener('keyup', function(key) {
-                if (key.keyCode == 27) {
+            document.addEventListener('keyup', function(event) {
+                if (event.key === "Escape") {
                     closeAll();
                 }
             });
