@@ -5,15 +5,16 @@
         let elements = {
             target: 'data-target',
             active: 'is-active',
-            button: '.modal-button',
-            close: '.modal-close',
-            buttonClose: '.modal-button-close',
-            background: '.modal-background'
+            button: 'modal-button',
+            close: 'modal-close',
+            buttonClose: 'modal-button-close',
+            background: 'modal-background',
+            navigable: 'is-modal-navigable'
         };
 
         let onClickEach = function (selector, callback) {
-            let arr = document.querySelectorAll(selector);
-            arr.forEach(function (el) {
+            let arr = document.getElementsByClassName(selector);
+            Array.from(arr).forEach(function (el) {
                 el.addEventListener('click', callback);
             })
         };
@@ -34,8 +35,8 @@
         };
 
         let closeAll = function() {
-            let openModal = document.querySelectorAll('.' + elements.active);
-            openModal.forEach(function (modal) {
+            let openModal = document.getElementsByClassName(elements.active);
+            Array.from(openModal).forEach(function (modal) {
                 modal.classList.remove(elements.active);
             });
             unFreeze();
@@ -102,7 +103,7 @@
                     let currentActiveModal: Element = getCurrentModal();
                     let previousModal: Element = currentActiveModal.previousElementSibling;
 
-                    if (!previousModal || !previousModal.classList.contains('is-modal-navigable')) {
+                    if (!previousModal || !previousModal.classList.contains(elements.navigable)) {
                         return;
                     }
 
@@ -114,7 +115,7 @@
                     let currentActiveModal: Element = getCurrentModal();
                     let nextModal: Element = currentActiveModal.nextElementSibling;
 
-                    if (!nextModal || !nextModal.classList.contains('is-modal-navigable')) {
+                    if (!nextModal || !nextModal.classList.contains(elements.navigable)) {
                         return;
                     }
 
@@ -123,18 +124,16 @@
                 }
 
                 function getCurrentModal(): Element {
-                    return document.getElementsByClassName('is-modal-navigable is-active')[0];
+                    return document.getElementsByClassName(elements.navigable + ' ' + elements.active)[0];
                 }
 
                 function closeModal(modal: Element): void {
-                    modal.classList.remove('is-active');
+                    modal.classList.remove(elements.active);
                 }
 
                 function openModal(modal: Element): void {
-                    modal.classList.add('is-active');
+                    modal.classList.add(elements.active);
                 }
-
-
             }
         }
     })();
