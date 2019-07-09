@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Album\Http\Controllers;
+namespace Modules\Album\Http\Controllers\Api;
 
 use App\Models\Album;
 use Illuminate\Http\JsonResponse;
