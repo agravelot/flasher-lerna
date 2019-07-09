@@ -4,8 +4,8 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 import './fontawsome';
-import './bulma.ts';
-import 'bulma-modal-fx/dist/js/modal-fx.js';
+import './bulma';
+import './modal';
 
 window.addEventListener(
     'keydown',
