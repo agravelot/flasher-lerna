@@ -7,9 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
         );
 
         Array.from(responsiveMedias).forEach((el: Element) => {
-            (<HTMLImageElement>el).sizes = `${Math.ceil(
-                (el.getBoundingClientRect().width / window.innerWidth) * 100
-            )}vw`;
+            let computedSize : number = Math.ceil((el.getBoundingClientRect().width / window.innerWidth) * 100);
+            // Avoid to set 0vw and load full sized image
+            if(computedSize !== 0) {
+                (<HTMLImageElement>el).sizes = `${computedSize}vw`;
+            }
         });
     }
 
