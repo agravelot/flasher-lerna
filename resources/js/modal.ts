@@ -1,7 +1,6 @@
 // Trigger modals
-(function () {
-    let modalFX = (function () {
-
+(function() {
+    let modalFX = (function() {
         let elements = {
             target: 'data-target',
             active: 'is-active',
@@ -9,17 +8,17 @@
             close: 'modal-close',
             buttonClose: 'modal-button-close',
             background: 'modal-background',
-            navigable: 'is-modal-navigable'
+            navigable: 'is-modal-navigable',
         };
 
-        let onClickEach = function (selector, callback) {
+        let onClickEach = function(selector, callback) {
             let arr = document.getElementsByClassName(selector);
-            Array.from(arr).forEach(function (el) {
+            Array.from(arr).forEach(function(el) {
                 el.addEventListener('click', callback);
-            })
+            });
         };
 
-        let events = function () {
+        let events = function() {
             onClickEach(elements.button, openModal);
 
             onClickEach(elements.close, closeModal);
@@ -27,8 +26,8 @@
             onClickEach(elements.background, closeModal);
 
             // Close all modals if ESC key is pressed
-            document.addEventListener('keyup', function(key){
-                if(key.keyCode == 27) {
+            document.addEventListener('keyup', function(key) {
+                if (key.keyCode == 27) {
                     closeAll();
                 }
             });
@@ -36,37 +35,51 @@
 
         let closeAll = function() {
             let openModal = document.getElementsByClassName(elements.active);
-            Array.from(openModal).forEach(function (modal) {
+            Array.from(openModal).forEach(function(modal) {
                 modal.classList.remove(elements.active);
             });
             unFreeze();
         };
 
-        let openModal = function () {
-            let modal = this.getAttribute(elements.target);
+        let openModal = function() {
+            let targetModal = this.getAttribute(elements.target);
             freeze();
-            document.getElementById(modal).classList.add(elements.active);
+            let modal: Element = document.getElementById(targetModal);
+            modal.classList.add(elements.active);
+
+            let image = modal.getElementsByTagName('img')[0];
+            image.classList.add('responsive-media');
+
+            setTimeout(() => {
+                image.sizes = `${Math.ceil(
+                    (image.getBoundingClientRect().width / window.innerWidth) * 100
+                )}vw`;
+            }, 300);
         };
 
-        let closeModal = function () {
+        let closeModal = function() {
             let modal = this.parentElement.id;
             document.getElementById(modal).classList.remove(elements.active);
             unFreeze();
+
+            // Remove 'responsive-media' class
+            let image = modal.getElementsByTagName('img')[0];
+            image.classList.remove('responsive-media');
         };
 
         // Freeze scrollbars
-        let freeze = function () {
-            document.getElementsByTagName('html')[0].style.overflow = "hidden";
-            document.getElementsByTagName('body')[0].style.overflowY = "scroll";
+        let freeze = function() {
+            document.getElementsByTagName('html')[0].style.overflow = 'hidden';
+            document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
         };
 
-        let unFreeze = function () {
-            document.getElementsByTagName('html')[0].style.overflow = "";
-            document.getElementsByTagName('body')[0].style.overflowY = "";
+        let unFreeze = function() {
+            document.getElementsByTagName('html')[0].style.overflow = '';
+            document.getElementsByTagName('body')[0].style.overflowY = '';
         };
 
         return {
-            init: function () {
+            init: function() {
                 events();
 
                 window.addEventListener(
@@ -124,20 +137,31 @@
                 }
 
                 function getCurrentModal(): Element {
-                    return document.getElementsByClassName(elements.navigable + ' ' + elements.active)[0];
+                    return document.getElementsByClassName(
+                        elements.navigable + ' ' + elements.active
+                    )[0];
                 }
 
                 function closeModal(modal: Element): void {
                     modal.classList.remove(elements.active);
+                    let image = modal.getElementsByTagName('img')[0];
+                    image.classList.remove('responsive-media');
                 }
 
                 function openModal(modal: Element): void {
                     modal.classList.add(elements.active);
+                    let image = modal.getElementsByTagName('img')[0];
+                    image.classList.add('responsive-media');
+
+                    setTimeout(() => {
+                        image.sizes = `${Math.ceil(
+                            (image.getBoundingClientRect().width / window.innerWidth) * 100
+                        )}vw`;
+                    }, 300);
                 }
-            }
-        }
+            },
+        };
     })();
 
     modalFX.init();
-
 })();

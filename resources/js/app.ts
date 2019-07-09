@@ -6,4 +6,3 @@
 import './fontawsome';
 import './bulma';
 import './modal';
-
