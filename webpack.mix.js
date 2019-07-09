@@ -22,8 +22,7 @@ mix.ts('resources/js/app.ts', 'public/js/main')
 
 mix.sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/error-illustrated.scss', 'public/css')
-    .version()
-    .purgeCss(
+        .purgeCss(
         {
             // Your custom globs are merged with the default globs.
             globs: [
@@ -51,6 +50,10 @@ mix.sass('resources/sass/app.scss', 'public/css')
 //         chunkFilename: `js/chunks/[name].js${mix.inProduction() ? '?id=[chunkhash]' : ''}`,
 //     },
 // });
+
+if (mix.inProduction()) {
+    mix.version();
+}
 
 mix.browserSync('localhost:8000');
 
