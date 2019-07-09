@@ -63,7 +63,7 @@
         @foreach($columnsDesktop as $columnKey => $column)
             <div class="column is-one-third">
                 @foreach($column as $mediaKey => $media)
-                    @php($key = $columnKey + $mediaKey)
+                    @php($key = $mediaKey * 3 + $columnKey)
                     <a class="modal-button is-inline-block" data-target="{{ "media-{$key}" }}">
                         {{
                            $media(
@@ -85,7 +85,7 @@
         @foreach($columnsTablet as $columnKey => $column)
             <div class="column is-half">
                 @foreach($column as $mediaKey => $media)
-                    @php($key = $columnKey + $mediaKey)
+                    @php($key = $mediaKey * 2 + $columnKey)
                     <a class="modal-button is-inline-block" data-target="{{ "media-{$key}" }}">
                         {{
                            $media(
