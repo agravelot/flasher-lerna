@@ -69,7 +69,7 @@
                            $media(
                                \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,
                                [
-                                   'class'=>'modal-button responsive-media'
+                                   'class' => 'modal-button responsive-media'
                                ]
                            )
                        }}
@@ -91,7 +91,7 @@
                            $media(
                                \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,
                                [
-                                   'class'=>'modal-button responsive-media'
+                                   'class' => 'modal-button responsive-media'
                                ]
                            )
                        }}
@@ -111,7 +111,7 @@
                        $media(
                            \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,
                            [
-                               'class'=>'modal-button responsive-media'
+                               'class' => 'modal-button responsive-media'
                            ]
                        )
                    }}
@@ -125,7 +125,7 @@
     <div id="{{ "media-{$key}" }}" class="modal modal-fx-fadeInScale is-modal-navigable">
         <div class="modal-background"></div>
         <div class="modal-content is-image is-huge">
-            {{ $media }}
+            {{ $media(\Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION, ['class' => null]) }}
             {{ $key + 1 . '/' . $medias->count() }}
         </div>
         <button class="modal-close is-large" aria-label="close"></button>

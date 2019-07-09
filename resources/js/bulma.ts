@@ -1,6 +1,5 @@
 // Bulma NavBar Burger Script
 document.addEventListener('DOMContentLoaded', () => {
-
     function resizeResponsiveMedias() {
         // onload="this.onload=null;this.sizes=Math.ceil(this.getBoundingClientRect().width/window.innerWidth*100)+'vw';console.log(this.sizes);"
         const responsiveMedias: HTMLCollectionOf<Element> = document.getElementsByClassName(
@@ -8,15 +7,17 @@ document.addEventListener('DOMContentLoaded', () => {
         );
 
         Array.from(responsiveMedias).forEach((el: Element) => {
-            (<HTMLSourceElement>el).sizes = `${Math.ceil(
-                (el.getBoundingClientRect().width / window.innerWidth) * 100
-            )}vw`;
+            let computedSize : number = Math.ceil((el.getBoundingClientRect().width / window.innerWidth) * 100);
+            // Avoid to set 0vw and load full sized image
+            if(computedSize !== 0) {
+                (<HTMLImageElement>el).sizes = `${computedSize}vw`;
+            }
         });
     }
 
     resizeResponsiveMedias();
 
-    window.onresize = function (event) {
+    window.onresize = function(event) {
         resizeResponsiveMedias();
     };
 
