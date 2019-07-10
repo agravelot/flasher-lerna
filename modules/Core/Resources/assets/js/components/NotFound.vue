@@ -1,15 +1,13 @@
 <template>
-   <div>
-       404 Not found :(
-   </div>
+    <div>
+        404 Not found :(
+    </div>
 </template>
 
 <script>
-    export default {
-        name: "NotFound"
-    }
+export default {
+    name: 'NotFound',
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
