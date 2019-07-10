@@ -3,7 +3,7 @@
         <div class="control">
             <a class="button" href="{{ route('download-albums.show', compact('album')) }}">
                 <span class="icon is-small">@fas('download')</span>
-                <span>Download</span>
+                <span>{{ __('Download') }}</span>
             </a>
         </div>
     @endcan
@@ -12,7 +12,7 @@
         <div class="control">
             <a class="button" href="{{ "/admin/albums/{$album->slug}/edit" }}">
                 <span class="icon is-small">@fas('edit')</span>
-                <span>Edit</span>
+                <span>{{ __('Edit') }}</span>
             </a>
         </div>
     @endcan
