@@ -69,7 +69,7 @@
                            $media(
                                \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,
                                [
-                                   'class' => 'modal-button responsive-media'
+                                   'class' => 'modal-button responsive-media-lazy'
                                ]
                            )
                        }}
@@ -91,7 +91,7 @@
                            $media(
                                \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,
                                [
-                                   'class' => 'modal-button responsive-media'
+                                   'class' => 'modal-button responsive-media-lazy'
                                ]
                            )
                        }}
@@ -111,7 +111,7 @@
                        $media(
                            \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,
                            [
-                               'class' => 'modal-button responsive-media'
+                               'class' => 'modal-button responsive-media-lazy'
                            ]
                        )
                    }}
