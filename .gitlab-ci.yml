@@ -7,8 +7,7 @@ services:
 
 stages:
 - build
-- test
-- review
+- test_review
 - deploy
 
 variables:
@@ -51,7 +50,7 @@ build_vendor_dev:
       - vendor/
 
 tests:
-  stage: test
+  stage: test_review
   script:
   - docker-compose pull
   - chmod +x docker/*.sh
@@ -66,7 +65,7 @@ tests:
     - build_vendor_dev
 
 lint:
-  stage: review
+  stage: test_review
   script:
   - echo "LINT CODE"
   - docker-compose pull
@@ -82,7 +81,7 @@ lint:
     - build_vendor_dev
 
 insights:
-  stage: review
+  stage: test_review
   script:
     - echo "LINT CODE"
     - docker-compose pull
@@ -98,7 +97,7 @@ insights:
     - build_vendor_dev
 
 #security_audit:
-#  stage: review
+#  stage: test_review
 #  script:
 #  - echo "SECURITY AUDIT"
 #  - docker-compose pull
