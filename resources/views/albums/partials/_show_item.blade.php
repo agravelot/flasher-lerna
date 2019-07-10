@@ -122,7 +122,7 @@
 </section>
 
 @foreach ($medias as $key => $media)
-    <div id="{{ "media-{$key}" }}" class="modal modal-fx-fadeInScale is-modal-navigable">
+    <div id="{{ "media-{$key}" }}" class="modal modal-fx-slideBottom is-modal-navigable">
         <div class="modal-background"></div>
         <div class="modal-content is-image is-huge is-clipped">
             {{ $media(\Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION, ['class' => null]) }}
