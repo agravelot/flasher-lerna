@@ -50,11 +50,9 @@
             let image = modal.getElementsByTagName('img')[0];
             image.classList.add('responsive-media');
 
-            setTimeout(() => {
-                image.sizes = `${Math.ceil(
-                    (image.getBoundingClientRect().width / window.innerWidth) * 100
-                )}vw`;
-            }, 300);
+            image.sizes = `${Math.ceil(
+                (image.getBoundingClientRect().width / window.innerWidth) * 100
+            )}vw`;
         };
 
         let closeModal = function() {
@@ -154,11 +152,9 @@
                     let image = modal.getElementsByTagName('img')[0];
                     image.classList.add('responsive-media');
 
-                    setTimeout(() => {
-                        image.sizes = `${Math.ceil(
-                            (image.getBoundingClientRect().width / window.innerWidth) * 100
-                        )}vw`;
-                    }, 300);
+                    image.sizes = `${Math.ceil(
+                        (image.getBoundingClientRect().width / window.innerWidth) * 100
+                    )}vw`;
                 }
             },
         };
