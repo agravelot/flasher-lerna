@@ -119,8 +119,9 @@ const routes: Array<any> = [
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Core/Resources/assets/js/components/pages/PagesIndex.vue'
         //     ),
     },
-    { path: '/admin/404', name: '404', component: NotFound },
-    { path: '*', redirect: '/admin/404' },
+    { path: '*', name: '404', component: NotFound },
+    // { path: '/admin/404', name: '404', component: NotFound },
+    // { path: '*', redirect: '/admin/404' },
 ];
 
 export default new VueRouter({
