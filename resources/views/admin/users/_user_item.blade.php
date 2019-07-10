@@ -9,7 +9,7 @@
         @if (isset($user->cosplayer))
             <a href="{{ route('admin.cosplayers.show', ['cosplayer' => $user->cosplayer]) }}">
                 <span class="icon has-text-info">
-                    <i class="fas fa-link"></i>
+                    @fas('link')
                 </span>
             </a>
         @endif
@@ -19,7 +19,7 @@
         @canBeImpersonated($user)
         <a href="{{ route('impersonate', ['user' => $user->id]) }}">
             <span class="icon has-text-info">
-                <i class="fas fa-sign-in-alt"></i>
+                @fas('sign-in-alt')
             </span>
         </a>
         @endCanBeImpersonated

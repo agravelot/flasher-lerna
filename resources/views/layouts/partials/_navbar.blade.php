@@ -29,7 +29,7 @@
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link" href="{{ route('admin.dashboard') }}">
                             <span class="icon">
-                                <i class="fas fa-user"></i>
+                                @fas('user')
                             </span>
                             <span>{{ Auth::user()->name }}</span>
                         </a>

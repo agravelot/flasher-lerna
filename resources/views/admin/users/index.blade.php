@@ -7,14 +7,14 @@
                 {{ __('Users') }}
                 <a href="{{ route('admin.users.create') }}">
                     <span class="icon">
-                        <i class="fas fa-plus"></i>
+                        @fas('plus')
                     </span>
                     <span>{{ __('Add') }}</span>
                 </a>
             </p>
             <a href="#" class="card-header-icon" aria-label="more options">
                 <span class="icon">
-                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    @fas('angle-down')
                 </span>
             </a>
         </header>

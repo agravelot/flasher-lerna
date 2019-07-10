@@ -14,7 +14,7 @@ $factory->define(SocialMedia::class, function (Faker $faker) {
     return [
         'name' => $faker->unique()->sentence(4),
         'url' => $faker->url,
-        'icon' => 'fab fa-instagram',
+        'icon' => 'instagram',
         'color' => $faker->hexColor,
         'active' => $faker->boolean,
     ];

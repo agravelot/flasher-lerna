@@ -20,7 +20,7 @@
                             <input class="input" id="name" type="name" name="name" value="{{ old('name') }}"
                                    placeholder="{{ __('Name') }}" required autofocus>
                             <span class="icon is-small is-left">
-                                <i class="fas fa-user"></i>
+                                @fas('user')
                             </span>
                         </p>
                         @include('layouts.partials._form_errors', ['data' => 'name'])
@@ -32,7 +32,7 @@
                             <input class="input" id="email" type="email" name="email"
                                    value="{{ old('email') }}" placeholder="{{ __('Email') }}" required autofocus>
                             <span class="icon is-small is-left">
-                                <i class="fas fa-envelope"></i>
+                                @fas('envelope')
                             </span>
                         </p>
                         @include('layouts.partials._form_errors', ['data' => 'email'])
@@ -44,7 +44,7 @@
                             <input class="input" id="password" type="password" name="password" placeholder="{{ __('Password') }}"
                                    required>
                             <span class="icon is-small is-left">
-                                <i class="fas fa-key"></i>
+                                @fas('key')
                             </span>
                         </p>
 
@@ -56,7 +56,7 @@
                             <input class="input" id="password-confirm" type="password"
                                    name="password_confirmation" placeholder="{{ __('Confirm Password') }}" required>
                             <span class="icon is-small is-left">
-                                <i class="fas fa-key"></i>
+                                @fas('key')
                             </span>
                         </p>
                         @include('layouts.partials._form_errors', ['data' => 'password_confirmation'])
