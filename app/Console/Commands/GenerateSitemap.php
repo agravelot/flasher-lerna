@@ -40,13 +40,23 @@ class GenerateSitemap extends Command
     public function handle()
     {
         $sitemap = SitemapGenerator::create(config('app.url'))
-            ->shouldCrawl(function (UriInterface $url) {
-                return mb_strpos($url->getPath(), '/admin') === false;
+            ->shouldCrawl(function (UriInterface $uri) {
+                return mb_strpos($uri->getPath(), '/admin') === false;
+            })
+            ->shouldCrawl(function (UriInterface $uri) {
+                $excludes = ['/albums/', '/cosplayers/', '/categories/'];
+                foreach ($excludes as $exclude) {
+                    if (mb_strpos($uri->getPath(), $exclude)) {
+                        return false;
+                    }
+                }
+
+                return true;
             })->getSitemap();
 
         PublicAlbum::all()->each(function (Album $album) use ($sitemap) {
             $sitemap->add(Url::create(route('albums.show', compact('album')))
-                ->setPriority(0.9)->setLastModificationDate($album->updated_at)
+                ->setPriority(1.0)->setLastModificationDate($album->updated_at)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
         });
 
