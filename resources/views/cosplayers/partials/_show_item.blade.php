@@ -19,10 +19,8 @@
             </div>
         @endif
 
-        @php
-            /** @var \App\Models\Cosplayer $cosplayer */
-            $albums = \Modules\Album\Transformers\AlbumIndexResource::collection($cosplayer->load('publicAlbums')->publicAlbums);
-        @endphp
-        @include('albums.partials._index_item', compact('albums'))
+        <section>
+            @include('albums.partials._index_item', ['albums' => $cosplayer->load('publicAlbums.media')->publicAlbums()->paginate()])
+        </section>
     </div>
 </section>
