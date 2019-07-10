@@ -19,15 +19,15 @@ const handleIntersection: IntersectionObserverCallback =
     (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
         entries.forEach((entry: IntersectionObserverEntry) => {
             if (entry.intersectionRatio > ratio) {
-                let el: Element = entry.target;
                 let computedSize: number = Math.ceil(
-                    (el.getBoundingClientRect().width / window.innerWidth) * 100
+                    (entry.target.getBoundingClientRect().width / window.innerWidth) * 100
                 );
                 // Avoid to set 0vw and load full sized image
                 if (computedSize !== 0) {
-                    (<HTMLImageElement>el).sizes = `${computedSize}vw`;
-                    el.classList.add('responsive-media');
+                    (<HTMLImageElement>entry.target).sizes = `${computedSize}vw`;
+                    entry.target.classList.add('responsive-media');
                 }
+                observer.unobserve(entry.target);
             }
         })
     };
