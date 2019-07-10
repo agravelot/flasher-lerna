@@ -29,6 +29,7 @@ mix.sass('resources/sass/app.scss', 'public/css')
                 path.join(__dirname, 'modules/**/*'),
                 path.join(__dirname, 'vendor/jerodev/laravel-font-awesome/src/**/*'),
             ],
+            whitelistPatterns: [/^svg-inline.*/, /^fa.*/],
         }
     )
 // .extract([
