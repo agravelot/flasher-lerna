@@ -27,6 +27,7 @@ mix.sass('resources/sass/app.scss', 'public/css')
             // Your custom globs are merged with the default globs.
             globs: [
                 path.join(__dirname, 'modules/**/*'),
+                path.join(__dirname, 'vendor/jerodev/laravel-font-awesome/src/**/*'),
             ],
         }
     )
