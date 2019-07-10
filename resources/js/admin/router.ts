@@ -9,6 +9,7 @@ import CosplayersIndex from '../../../modules/Cosplayer/Resources/assets/js/comp
 import CosplayersCreate from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersCreate.vue';
 import CosplayersEdit from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersEdit.vue';
 import UsersIndex from '../../../modules/User/Resources/assets/js/UsersIndex.vue';
+import NotFound from '../../../modules/Core/Resources/assets/js/components/NotFound.vue';
 import Settings from '../../../modules/Core/Resources/assets/js/components/Settings.vue';
 import PagesIndex from '../../../modules/Core/Resources/assets/js/components/pages/PagesIndex.vue';
 
@@ -118,6 +119,8 @@ const routes: Array<any> = [
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Core/Resources/assets/js/components/pages/PagesIndex.vue'
         //     ),
     },
+    { path: '/admin/404', name: '404', component: NotFound },
+    { path: '*', redirect: '/admin/404' },
 ];
 
 export default new VueRouter({
