@@ -145,7 +145,7 @@
                         <div class="column">
                             @if ($cosplayer->avatar)
                                 <figure class="is-centered image is-64x64">
-                                    {{ $cosplayer->getFirstMedia('avatar')('', ['class' => 'responsive-media is-rounded']) }}
+                                    {{ $cosplayer->getFirstMedia('avatar')('thumb', ['class' => 'is-rounded']) }}
                                 </figure>
                             @else
                                 <figure class="is-centered avatar-circle"
