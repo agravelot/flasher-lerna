@@ -9,7 +9,7 @@
                         {{ __('Categories') }}
                         <a href="{{ route('admin.categories.create') }}">
                             <span class="icon">
-                                <i class="fas fa-plus"></i>
+                                @fas('plus')
                             </span>
                             <span>{{ __('Add') }}</span>
                         </a>
@@ -17,7 +17,7 @@
 
                     <a href="#" class="card-header-icon" aria-label="more options">
                         <span class="icon">
-                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                            @fas('angle-down')
                         </span>
                     </a>
                 </header>

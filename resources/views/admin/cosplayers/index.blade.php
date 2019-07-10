@@ -7,7 +7,7 @@
                 Cosplayers
                 <a href="{{ route('admin.cosplayers.create') }}">
                     <span class="icon">
-                        <i class="fas fa-plus"></i>
+                        @fas('plus')
                     </span>
                     <span>{{ __('Add') }}</span>
                 </a>

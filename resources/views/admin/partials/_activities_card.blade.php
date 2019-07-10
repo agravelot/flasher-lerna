@@ -5,7 +5,7 @@
         </p>
         <a href="#" class="card-header-icon" aria-label="more options">
             <span class="icon">
-                <i class="fas fa-angle-down" aria-hidden="true"></i>
+                @fas('angle-down')
             </span>
         </a>
     </header>
@@ -15,7 +15,7 @@
                 <tbody>
                 @foreach($activities as $activity)
                     <tr>
-                        <td><i class="far fa-bell"></i></td>
+                        <td>@far('bell')</td>
                         <td>{{ class_basename($activity->subject) }}
                             has been {{ $activity->getExtraProperty('action') }}
                             by {{ optional($activity->causer)->name }}</td>

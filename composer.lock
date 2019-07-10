@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24890b5d49207a2c045fcbbec050c2cd",
+    "content-hash": "8324980e3a90ee14680061f477b71a81",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -1335,6 +1335,69 @@
             "time": "2017-06-27T22:17:23+00:00"
         },
         {
+            "name": "fortawesome/font-awesome",
+            "version": "5.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FortAwesome/Font-Awesome.git",
+                "reference": "ba907eaec40fab01d410c3023a5572b2cb46cea6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/ba907eaec40fab01d410c3023a5572b2cb46cea6",
+                "reference": "ba907eaec40fab01d410c3023a5572b2cb46cea6",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "CC-BY-4.0",
+                "OFL-1.1",
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Travis Chase",
+                    "homepage": "http://twitter.com/supercodepoet"
+                },
+                {
+                    "name": "Dave Gandy",
+                    "homepage": "http://twitter.com/davegandy"
+                },
+                {
+                    "name": "Rob Madole",
+                    "homepage": "http://twitter.com/robmadole"
+                },
+                {
+                    "name": "Jory Raphael",
+                    "homepage": "http://twitter.com/sensibleworld"
+                },
+                {
+                    "name": "Geremia Taglialatela",
+                    "homepage": "http://twitter.com/gtagliala"
+                },
+                {
+                    "name": "Brian Talbot",
+                    "homepage": "http://twitter.com/talbs"
+                },
+                {
+                    "name": "Mike Wilkerson",
+                    "homepage": "http://twitter.com/mw77"
+                }
+            ],
+            "description": "The iconic font, CSS, and SVG framework",
+            "homepage": "https://fontawesome.com",
+            "keywords": [
+                "FontAwesome",
+                "awesome",
+                "bootstrap",
+                "font",
+                "icon",
+                "svg"
+            ],
+            "time": "2019-06-04T21:18:16+00:00"
+        },
+        {
             "name": "geerlingguy/ping",
             "version": "1.1.2",
             "source": {
@@ -2035,6 +2098,63 @@
                 "tokenizer"
             ],
             "time": "2018-03-21T22:21:57+00:00"
+        },
+        {
+            "name": "jerodev/laravel-font-awesome",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jerodev/laravel-font-awesome.git",
+                "reference": "92edcf136f2f9a98e7abbc9673423033465c890d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jerodev/laravel-font-awesome/zipball/92edcf136f2f9a98e7abbc9673423033465c890d",
+                "reference": "92edcf136f2f9a98e7abbc9673423033465c890d",
+                "shasum": ""
+            },
+            "require": {
+                "fortawesome/font-awesome": "^5.9",
+                "illuminate/support": "5.6.x|5.7.x|5.8.x"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^3.5",
+                "phpstan/phpstan": "^0.11.8",
+                "phpunit/phpunit": "^7|^8"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Jerodev\\LaraFontAwesome\\FontAwesomeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Jerodev\\LaraFontAwesome\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeroen Deviaene",
+                    "email": "jeroen@deviaene.eu",
+                    "homepage": "https://www.deviaene.eu/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A Laravel package that renders Font Awesome icons server-side",
+            "homepage": "https://github.com/jerodev/laravel-font-awesome",
+            "keywords": [
+                "FontAwesome",
+                "laravel",
+                "svg"
+            ],
+            "time": "2019-06-27T11:26:58+00:00"
         },
         {
             "name": "lab404/laravel-impersonate",

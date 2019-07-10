@@ -1,3 +1,7 @@
+@if ($albums->isEmpty())
+    @include('layouts.partials._empty')
+@endif
+
 
 @php
     /** @var \Illuminate\Support\Collection $albums */

@@ -3,6 +3,5 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-import './fontawsome';
 import './bulma';
 import './modal';

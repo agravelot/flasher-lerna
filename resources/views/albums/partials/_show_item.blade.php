@@ -2,7 +2,7 @@
     @can('download', $album)
         <div class="control">
             <a class="button" href="{{ route('download-albums.show', compact('album')) }}">
-                <span class="icon is-small"><i class="fas fa-download"></i></span>
+                <span class="icon is-small">@fas('download')</span>
                 <span>Download</span>
             </a>
         </div>
@@ -11,7 +11,7 @@
     @can('update', $album)
         <div class="control">
             <a class="button" href="{{ "/admin/albums/{$album->slug}/edit" }}">
-                <span class="icon is-small"><i class="fas fa-edit"></i></span>
+                <span class="icon is-small">@fas('edit')</span>
                 <span>Edit</span>
             </a>
         </div>
