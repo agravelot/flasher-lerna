@@ -3,6 +3,36 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-import './fontawsome';
 import './bulma';
 import './modal';
+
+
+const ratio: number = .01;
+
+const options: object = {
+    root: null,
+    rootMargin: '0px',
+    threshold: ratio
+};
+
+const handleIntersection: IntersectionObserverCallback =
+    (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+        entries.forEach((entry: IntersectionObserverEntry) => {
+            if (entry.intersectionRatio > ratio) {
+                let el: Element = entry.target;
+                let computedSize: number = Math.ceil(
+                    (el.getBoundingClientRect().width / window.innerWidth) * 100
+                );
+                // Avoid to set 0vw and load full sized image
+                if (computedSize !== 0) {
+                    (<HTMLImageElement>el).sizes = `${computedSize}vw`;
+                    el.classList.add('responsive-media');
+                }
+            }
+        })
+    };
+
+const observer: IntersectionObserver = new IntersectionObserver(handleIntersection, options);
+Array.from(document.getElementsByClassName('responsive-media-lazy')).forEach((el: Element) => {
+    observer.observe(el);
+});

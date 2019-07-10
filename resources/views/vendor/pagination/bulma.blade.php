@@ -3,16 +3,16 @@
         <nav class="pagination is-centered" role="navigation" aria-label="pagination">
             {{-- Previous Page Link --}}
             @if ($paginator->onFirstPage())
-                <a class="pagination-previous" disabled>@lang('pagination.previous')</a>
+                <a class="pagination-previous" disabled>@fas('chevron-left') &nbsp; @lang('pagination.previous')</a>
             @else
-                <a class="pagination-previous" href="{{ $paginator->previousPageUrl() }}">@lang('pagination.previous')</a>
+                <a class="pagination-previous" href="{{ $paginator->previousPageUrl() }}">@fas('chevron-left') &nbsp; @lang('pagination.previous')</a>
             @endif
 
             {{-- Next Page Link --}}
             @if ($paginator->hasMorePages())
-                <a class="pagination-next" href="{{ $paginator->nextPageUrl() }}">@lang('pagination.next')</a>
+                <a class="pagination-next" href="{{ $paginator->nextPageUrl() }}">@lang('pagination.next') &nbsp; @fas('chevron-right')</a>
             @else
-                <a class="pagination-next" disabled>Next Page</a>
+                <a class="pagination-next" disabled>@lang('pagination.next') &nbsp; @fas('chevron-right')</a>
             @endif
 
             {{-- Pagination Elements --}}
@@ -30,11 +30,11 @@
                         @foreach ($element as $page => $url)
                             @if ($page == $paginator->currentPage())
                                 <li><a class="pagination-link is-current"
-                                       aria-label="Goto page {{ $page }}">{{ $page }}</a>
+                                       aria-label="@lang('pagination.goto_page') {{ $page }}">{{ $page }}</a>
                                 </li>
                             @else
                                 <li><a href="{{ $url }}" class="pagination-link"
-                                       aria-label="Goto page {{ $page }}">{{ $page }}</a></li>
+                                       aria-label="@lang('pagination.goto_page') {{ $page }}">{{ $page }}</a></li>
                             @endif
                         @endforeach
                     @endif

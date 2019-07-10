@@ -7,7 +7,7 @@
             <li>
                 <a href="{{ route('admin.dashboard') }}" {{ Request::is('admin') ? 'class=is-active' : '' }}>
                 <span class="icon">
-                    <i class="fas fa-home"></i>
+                    @fas('home')
                 </span>
                     {{ __('Dashboard') }}
                 </a>
@@ -16,7 +16,7 @@
 {{--                <li>--}}
 {{--                    <a href="{{ route('admin.albums.index') }}" {{ Request::is('admin/albums*') ? 'class=is-active' : '' }}>--}}
 {{--                    <span class="icon">--}}
-{{--                        <i class="fas fa-images"></i>--}}
+{{--                        @fas('images')--}}
 {{--                    </span>--}}
 {{--                        {{ __('Albums') }}--}}
 {{--                    </a>--}}
@@ -26,7 +26,7 @@
                 <li>
                     <a href="{{ route('admin.categories.index') }}" {{ Request::is('admin/categories*') ? 'class=is-active' : '' }}>
                     <span class="icon">
-                        <i class="fas fa-tags"></i>
+                        @fas('tags')
                     </span>
                         {{ __('Categories') }}
                     </a>
@@ -36,7 +36,7 @@
                 <li>
                     <a href="{{ route('admin.cosplayers.index') }}" {{ Request::is('admin/cosplayers*') ? 'class=is-active' : '' }}>
                     <span class="icon">
-                        <i class="fas fa-user-tag"></i>
+                        @fas('user-tag')
                     </span>
                         {{ __('Cosplayers') }}
                     </a>
@@ -46,7 +46,7 @@
                 <li>
                     <a href="{{ route('admin.users.index') }}" {{ Request::is('admin/users*') ? 'class=is-active' : '' }}>
                     <span class="icon">
-                        <i class="fas fa-user"></i>
+                        @fas('user')
                     </span>
                         {{ __('Users') }}
                     </a>
@@ -56,7 +56,7 @@
                 <li>
                     <a href="{{ route('admin.contacts.index') }}" {{ Request::is('admin/contacts*') ? 'class=is-active' : '' }}>
                     <span class="icon">
-                        <i class="fas fa-pen-fancy"></i>
+                        @fas('pen-fancy')
                     </span>
                         {{ __('Contacts') }}
                     </a>
@@ -66,7 +66,7 @@
                 <li>
                     <a href="{{ route('admin.goldenbook.index') }}" {{ Request::is('admin/goldenbook*') ? 'class=is-active' : '' }}>
                     <span class="icon">
-                        <i class="fas fa-book"></i>
+                        @fas('book')
                     </span>
                         {{ __('Golden book') }}
                     </a>
@@ -77,7 +77,7 @@
                 <li>
                     <a href="{{ route('admin.social-medias.index') }}" {{ Request::is('admin/social-medias*') ? 'class=is-active' : '' }}>
                     <span class="icon">
-                        <i class="fas fa-external-link-alt"></i>
+                        @fas('external-link-alt')
                     </span>
                         {{ __('Social medias') }}
                     </a>
@@ -92,7 +92,7 @@
             <li>
                 <a>
                 <span class="icon">
-                    <i class="fas fa-tachometer-alt"></i>
+                    @fas('tachometer-alt')
                 </span>
                     {{ __('Statistics') }}
                 </a>
@@ -100,7 +100,7 @@
             <li>
                 <a href="{{ route('horizon.index') }}" {{ Request::is('horizon') ? 'class=is-active' : '' }}>
                 <span class="icon">
-                    <i class="fas fa-tasks"></i>
+                    @fas('tasks')
                 </span>
                     {{ __('Background tasks') }}
                 </a>
@@ -111,7 +111,7 @@
             <li>
                 <a class="has-text-info has-margin-top-lg" href="{{ url('/')}}">
                 <span class="icon">
-                    <i class="fas fa-chevron-circle-left"></i>
+                    @fas('chevron-circle-left')
                 </span>
                     {{ __('Back to the website') }}
                 </a>
@@ -123,7 +123,7 @@
 <div class="admin-collapse-button">
     <a class="has-text-info has-margin-top-lg" id="collapse-admin-menu">
         <span class="icon">
-            <i class="fas fa-chevron-circle-left"></i>
+            @fas('chevron-circle-left')
         </span>
         {{ __('Collapse') }}
     </a>

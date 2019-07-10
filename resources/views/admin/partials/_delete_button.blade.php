@@ -1,6 +1,6 @@
 <a class="button modal-button" data-target="modal-delete-{{ $key }}">
     <span class="icon has-text-danger">
-        <i class="fas fa-trash-alt"></i>
+        @fas('trash-alt')
     </span>
     <span>{{ __('Delete') }}</span>
 </a>

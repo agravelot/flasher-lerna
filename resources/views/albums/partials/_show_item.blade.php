@@ -2,7 +2,7 @@
     @can('download', $album)
         <div class="control">
             <a class="button" href="{{ route('download-albums.show', compact('album')) }}">
-                <span class="icon is-small"><i class="fas fa-download"></i></span>
+                <span class="icon is-small">@fas('download')</span>
                 <span>Download</span>
             </a>
         </div>
@@ -11,7 +11,7 @@
     @can('update', $album)
         <div class="control">
             <a class="button" href="{{ "/admin/albums/{$album->slug}/edit" }}">
-                <span class="icon is-small"><i class="fas fa-edit"></i></span>
+                <span class="icon is-small">@fas('edit')</span>
                 <span>Edit</span>
             </a>
         </div>
@@ -69,7 +69,7 @@
                            $media(
                                \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,
                                [
-                                   'class' => 'modal-button responsive-media'
+                                   'class' => 'modal-button responsive-media-lazy'
                                ]
                            )
                        }}
@@ -91,7 +91,7 @@
                            $media(
                                \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,
                                [
-                                   'class' => 'modal-button responsive-media'
+                                   'class' => 'modal-button responsive-media-lazy'
                                ]
                            )
                        }}
@@ -111,7 +111,7 @@
                        $media(
                            \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,
                            [
-                               'class' => 'modal-button responsive-media'
+                               'class' => 'modal-button responsive-media-lazy'
                            ]
                        )
                    }}
@@ -145,7 +145,7 @@
                         <div class="column">
                             @if ($cosplayer->avatar)
                                 <figure class="is-centered image is-64x64">
-                                    {{ $cosplayer->getFirstMedia('avatar')('', ['class' => 'responsive-media is-rounded']) }}
+                                    {{ $cosplayer->getFirstMedia('avatar')('thumb', ['class' => 'is-rounded']) }}
                                 </figure>
                             @else
                                 <figure class="is-centered avatar-circle"

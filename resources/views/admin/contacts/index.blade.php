@@ -8,7 +8,7 @@
                     <p class="card-header-title">Contacts</p>
                     <a href="#" class="card-header-icon" aria-label="more options">
                         <span class="icon">
-                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                            @fas('angle-down')
                         </span>
                     </a>
                 </header>
