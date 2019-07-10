@@ -128,6 +128,8 @@
             {{ $media(\Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION, ['class' => null]) }}
             {{ $key + 1 . '/' . $medias->count() }}
         </div>
+        <a class="prev" onclick="this.dispatchEvent(new KeyboardEvent('keydown', {'key':'ArrowLeft'}));">&#10094;</a>
+        <a class="next" onclick="this.dispatchEvent(new KeyboardEvent('keydown', {'key':'ArrowRight'}));">&#10095;</a>
         <button class="modal-close is-large" aria-label="{{ __('Close') }}"></button>
     </div>
 @endforeach

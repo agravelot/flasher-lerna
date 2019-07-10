@@ -1,25 +1,27 @@
+import { debounce } from 'lodash';
+
 // Bulma NavBar Burger Script
 document.addEventListener('DOMContentLoaded', () => {
-    function resizeResponsiveMedias() {
+    let resizeResponsiveMedias = () => {
         // onload="this.onload=null;this.sizes=Math.ceil(this.getBoundingClientRect().width/window.innerWidth*100)+'vw';console.log(this.sizes);"
         const responsiveMedias: HTMLCollectionOf<Element> = document.getElementsByClassName(
             'responsive-media'
         );
 
         Array.from(responsiveMedias).forEach((el: Element) => {
-            let computedSize : number = Math.ceil((el.getBoundingClientRect().width / window.innerWidth) * 100);
+            let computedSize: number = Math.ceil(
+                (el.getBoundingClientRect().width / window.innerWidth) * 100
+            );
             // Avoid to set 0vw and load full sized image
-            if(computedSize !== 0) {
+            if (computedSize !== 0) {
                 (<HTMLImageElement>el).sizes = `${computedSize}vw`;
             }
         });
-    }
+    };
 
     resizeResponsiveMedias();
 
-    window.onresize = function(event) {
-        resizeResponsiveMedias();
-    };
+    window.onresize = debounce(resizeResponsiveMedias, 100);
 
     const navbarBurgers = document.getElementsByClassName('navbar-burger');
 

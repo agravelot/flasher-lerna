@@ -1,6 +1,6 @@
 // Trigger modals
-(function () {
-    let modalFX = (function () {
+(function() {
+    let modalFX = (function() {
         let elements = {
             target: 'data-target',
             active: 'is-active',
@@ -11,14 +11,14 @@
             navigable: 'is-modal-navigable',
         };
 
-        let onClickEach = function (selector, callback) {
+        let onClickEach = function(selector, callback) {
             let arr = document.getElementsByClassName(selector);
-            Array.from(arr).forEach(function (el) {
+            Array.from(arr).forEach(function(el) {
                 el.addEventListener('click', callback);
             });
         };
 
-        let events = function () {
+        let events = function() {
             onClickEach(elements.button, openModal);
 
             onClickEach(elements.close, closeModal);
@@ -26,22 +26,22 @@
             onClickEach(elements.background, closeModal);
 
             // Close all modals if ESC key is pressed
-            document.addEventListener('keyup', function (key) {
-                if (key.keyCode == 27) {
+            document.addEventListener('keyup', function(event) {
+                if (event.key === "Escape") {
                     closeAll();
                 }
             });
         };
 
-        let closeAll = function () {
+        let closeAll = function() {
             let openModal = document.getElementsByClassName(elements.active);
-            Array.from(openModal).forEach(function (modal) {
+            Array.from(openModal).forEach(function(modal) {
                 modal.classList.remove(elements.active);
             });
             unFreeze();
         };
 
-        let openModal = function () {
+        let openModal = function() {
             let targetModal = this.getAttribute(elements.target);
             freeze();
             let modal: Element = document.getElementById(targetModal);
@@ -57,7 +57,7 @@
             }, 300);
         };
 
-        let closeModal = function () {
+        let closeModal = function() {
             let targetModal = this.parentElement.id;
             let modal: Element = document.getElementById(targetModal);
             modal.classList.remove(elements.active);
@@ -69,23 +69,23 @@
         };
 
         // Freeze scrollbars
-        let freeze = function () {
+        let freeze = function() {
             document.getElementsByTagName('html')[0].style.overflow = 'hidden';
             document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
         };
 
-        let unFreeze = function () {
+        let unFreeze = function() {
             document.getElementsByTagName('html')[0].style.overflow = '';
             document.getElementsByTagName('body')[0].style.overflowY = '';
         };
 
         return {
-            init: function () {
+            init: function() {
                 events();
 
                 window.addEventListener(
                     'keydown',
-                    function (event) {
+                    function(event) {
                         if (event.defaultPrevented) {
                             return; // Do nothing if the event was already processed
                         }
