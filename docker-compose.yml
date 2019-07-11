@@ -97,6 +97,7 @@ services:
     restart: unless-stopped
     environment:
       VIRTUAL_HOST: www.${APP_URL}
+      LETSENCRYPT_HOST: www.${APP_URL}
       REDIRECT_TARGET: ${APP_URL}
 
   backup:
