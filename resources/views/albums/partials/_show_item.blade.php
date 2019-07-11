@@ -24,7 +24,7 @@
             @if ($album->body)
                 <div class="content article-body">
                     <p class="has-text-justified">
-                        {{ $album->body }}
+                        {{!! $album->body !!}}
                     </p>
                 </div>
             @endif
