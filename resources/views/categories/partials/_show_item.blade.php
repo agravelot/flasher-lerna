@@ -7,7 +7,7 @@
 
         @php
             /** @var \App\Models\Category $category */
-            $albums = \Modules\Album\Transformers\AlbumIndexResource::collection($category->load('publishedAlbums.media')->publishedAlbums);
+            $albums = $category->load('publishedAlbums.media')->publishedAlbums()->paginate();
         @endphp
         @include('albums.partials._index_item', compact('albums'))
     </div>
