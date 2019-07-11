@@ -5,11 +5,11 @@
 
 @php
     /** @var \Illuminate\Support\Collection $albums */
-    $columnsDesktop = $albums->groupBy(function (\App\Models\PublicAlbum $item, int $key) {
+    $columnsDesktop = $albums->groupBy(function ($item, int $key) {
             return $key % 3;
         });
 
-    $columnsTablet = $albums->groupBy(function (\App\Models\PublicAlbum $item, int $key) {
+    $columnsTablet = $albums->groupBy(function ($item, int $key) {
             return $key % 2;
         });
 

@@ -8,7 +8,7 @@
 
     @php
         /** @var \App\Models\User $user */
-        $albums = \Modules\Album\Transformers\AlbumIndexResource::collection($user->load('albums.media')->albums);
+        $albums = $user->load('albums.media')->albums()->paginate();
     @endphp
     @include('albums.partials._index_item', compact('albums'))
 

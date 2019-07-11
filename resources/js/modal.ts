@@ -48,11 +48,10 @@
             modal.classList.add(elements.active);
 
             let image = modal.getElementsByTagName('img')[0];
-            image.classList.add('responsive-media');
-
             image.sizes = `${Math.ceil(
                 (image.getBoundingClientRect().width / window.innerWidth) * 100
             )}vw`;
+            image.classList.add('responsive-media');
         };
 
         let closeModal = function() {
@@ -150,11 +149,10 @@
                 function openModal(modal: Element): void {
                     modal.classList.add(elements.active);
                     let image = modal.getElementsByTagName('img')[0];
-                    image.classList.add('responsive-media');
-
                     image.sizes = `${Math.ceil(
                         (image.getBoundingClientRect().width / window.innerWidth) * 100
                     )}vw`;
+                    image.classList.add('responsive-media');
                 }
             },
         };
