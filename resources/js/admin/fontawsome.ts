@@ -27,6 +27,7 @@ import {
     faTrashAlt,
     faUpload,
     faUserTag,
+    faLink,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -56,7 +57,8 @@ library.add(
     faExclamationCircle,
     faBell,
     faStickyNote,
-    faEdit
+    faEdit,
+    faLink
 );
 
 // Replace any existing <i> tags with <svg> and set up a MutationObserver to
