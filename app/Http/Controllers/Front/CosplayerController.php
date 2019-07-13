@@ -37,7 +37,7 @@ class CosplayerController extends Controller
      */
     public function show(Cosplayer $cosplayer)
     {
-        $albums = AlbumIndexResource::collection($cosplayer->load('publicAlbums.media')->publicAlbums);
+        $albums = $cosplayer->load('publicAlbums.media')->publicAlbums()->paginate();
 
         return view('cosplayers.show', compact('cosplayer', 'albums'));
     }

@@ -19,8 +19,8 @@
             </div>
         @endif
 
-        <section>
-            @include('albums.partials._index_item', ['albums' => $cosplayer->load('publicAlbums.media')->publicAlbums()->paginate()])
+        <section class="has-margin-top-md">
+            @include('albums.partials._index_item', compact('albums'))
         </section>
     </div>
 </section>
