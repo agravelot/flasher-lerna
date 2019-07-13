@@ -41,11 +41,12 @@ class IndexUserTest extends TestCase
             $response->assertJsonFragment([
                 'name' => $user->name,
                 'email' => $user->email,
+                'role' => $user->role,
             ]);
         });
     }
 
-    public function testUserCanIndexUsers()
+    public function testUserCanNotIndexUsers()
     {
         $this->actingAsUser();
 
@@ -54,7 +55,7 @@ class IndexUserTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function testGuestCanIndexUsers()
+    public function testGuestCanNotIndexUsers()
     {
         $response = $this->getUsers();
 

@@ -28,9 +28,7 @@ class AdminUserController extends Controller
         $this->authorize('viewAny', User::class);
         $users = User::with('cosplayer')->paginate(10);
 
-        return view('admin.users.index', [
-            'users' => $users,
-        ]);
+        return view('admin.users.index', compact('users'));
     }
 
     /**

@@ -74,6 +74,10 @@ class User extends Authenticatable implements MustVerifyEmailInterface
         'password', 'remember_token',
     ];
 
+    protected $dates = [
+        'email_verified_at', 'updated_at', 'created_at',
+    ];
+
     /**
      * Hash the password.
      *

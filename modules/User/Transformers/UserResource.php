@@ -9,6 +9,7 @@
 
 namespace Modules\User\Transformers;
 
+use App\Models\User;
 use Illuminate\Http\Resources\Json\Resource;
 
 class UserResource extends Resource
@@ -22,6 +23,18 @@ class UserResource extends Resource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        /** @var User $user */
+        $user = auth()->user();
+
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'role' => $this->role,
+            'email_verified_at' => $this->email_verified_at,
+            'actions' => [
+                'impersonate' => $this->when($user->canImpersonate(), route('impersonate', $this->id)),
+            ],
+        ];
     }
 }

@@ -13,14 +13,15 @@ class UserRequest extends Request
 {
     public function rules()
     {
-        $id = $this->route('user');
+        $id = optional($this->route('user'))->id ?? $this->route('user');
 
         return [
             'name' => 'required|string|min:2|max:255|unique:users,name,'.$id,
             'email' => 'required|string|email|min:2|max:255|unique:users,email,'.$id,
-            'password' => 'nullable|string|min:6|confirmed',
+            'password' => 'nullable|sometimes|string|min:6|confirmed',
+            'role' => 'sometimes|required|string',
             'cosplayer' => 'nullable|sometimes|integer|exists:cosplayers,id',
-            'g-recaptcha-response' => auth()->check() && auth()->user()->isAdmin() ? 'nullable' : 'required|captcha',
+            'g-recaptcha-response' => optional(auth()->user())->isAdmin() ? 'nullable' : 'required|captcha',
         ];
     }
 }
