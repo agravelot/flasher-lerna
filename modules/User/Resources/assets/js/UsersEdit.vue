@@ -1,31 +1,33 @@
 <template>
-    <section v-if="user">
-        <b-field label="Name"
-                 :type="errors.name ? 'is-danger' : ''"
-                 :message="errors.name ? errors.name[0] : null">
-            <b-input v-model="user.name"></b-input>
-        </b-field>
+    <div class="card">
+        <div class="card-content">
+            <b-field label="Name"
+                     :type="errors.name ? 'is-danger' : ''"
+                     :message="errors.name ? errors.name[0] : null">
+                <b-input v-model="user.name"></b-input>
+            </b-field>
 
-        <b-field label="Email"
-                 :type="errors.email ? 'is-danger' : ''"
-                 :message="errors.email ? errors.email[0] : null">
-            <b-input type="email" maxlength="30" v-model="user.email"></b-input>
-        </b-field>
+            <b-field label="Email"
+                     :type="errors.email ? 'is-danger' : ''"
+                     :message="errors.email ? errors.email[0] : null">
+                <b-input type="email" maxlength="30" v-model="user.email"></b-input>
+            </b-field>
 
-        <b-field label="Password"
-                 :type="errors.password ? 'is-danger' : ''"
-                 :message="errors.password ? errors.password[0] : null">
-            <b-input v-model="user.password" type="password" password-reveal></b-input>
-        </b-field>
+            <b-field label="Password"
+                     :type="errors.password ? 'is-danger' : ''"
+                     :message="errors.password ? errors.password[0] : null">
+                <b-input v-model="user.password" type="password" password-reveal></b-input>
+            </b-field>
 
-        <b-field label="Password confirmation"
-                 :type="errors.password_confirmation ? 'is-danger' : ''"
-                 :message="errors.password_confirmation ? errors.password_confirmation[0] : null">
-            <b-input v-model="user.password_confirmation" type="password" password-reveal></b-input>
-        </b-field>
+            <b-field label="Password confirmation"
+                     :type="errors.password_confirmation ? 'is-danger' : ''"
+                     :message="errors.password_confirmation ? errors.password_confirmation[0] : null">
+                <b-input v-model="user.password_confirmation" type="password" password-reveal></b-input>
+            </b-field>
 
-        <b-button type="is-primary" :loading="this.loading" @click="updateUser()">Update</b-button>
-    </section>
+            <b-button type="is-primary" :loading="this.loading" @click="updateUser()">Update</b-button>
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
