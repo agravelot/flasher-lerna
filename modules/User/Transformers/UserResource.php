@@ -33,8 +33,8 @@ class UserResource extends Resource
             'role' => $this->role,
             'email_verified_at' => $this->email_verified_at,
             'actions' => [
-                'impersonate' => $this->when($user->canImpersonate(), route('impersonate', $this->id))
-            ]
+                'impersonate' => $this->when($user->canImpersonate(), route('impersonate', $this->id)),
+            ],
         ];
     }
 }

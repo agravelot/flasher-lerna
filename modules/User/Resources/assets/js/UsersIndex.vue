@@ -39,7 +39,7 @@
                 <template slot-scope="user">
                     <b-table-column field="name" label="Name" sortable>
                         <router-link
-                            :to="{ name: 'admin.users.edit', params: { slug: user.row.id } }"
+                            :to="{ name: 'admin.users.edit', params: { id: user.row.id } }"
                         >
                             {{ user.row.name }}
                         </router-link>
@@ -47,7 +47,7 @@
 
                     <b-table-column field="email" label="E-mail" sortable>
                         <router-link
-                            :to="{ name: 'admin.users.edit', params: { slug: user.row.id } }"
+                            :to="{ name: 'admin.users.edit', params: { id: user.row.id } }"
                         >
                             {{ user.row.email }}
                         </router-link>
@@ -61,7 +61,7 @@
 
                     <b-table-column field="actions.impersonate" label="Impersonate" centered>
                         <a :href="user.row.actions.impersonate">
-                             <span class="icon has-text-info">
+                            <span class="icon has-text-info">
                                 <i class="fas fa-sign-in-alt"></i>
                             </span>
                         </a>

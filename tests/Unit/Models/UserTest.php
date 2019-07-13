@@ -39,6 +39,8 @@ class UserTest extends ModelTestCase
             'name', 'email', 'password', 'role',
         ], [
             'password', 'remember_token',
+        ], ['*'], [], ['id' => 'int'], [
+            'email_verified_at', 'updated_at', 'created_at',
         ]);
     }
 

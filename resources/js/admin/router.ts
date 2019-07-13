@@ -9,6 +9,7 @@ import CosplayersIndex from '../../../modules/Cosplayer/Resources/assets/js/comp
 import CosplayersCreate from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersCreate.vue';
 import CosplayersEdit from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersEdit.vue';
 import UsersIndex from '../../../modules/User/Resources/assets/js/UsersIndex.vue';
+import UsersEdit from '../../../modules/User/Resources/assets/js/UsersEdit.vue';
 import NotFound from '../../../modules/Core/Resources/assets/js/components/NotFound.vue';
 import Settings from '../../../modules/Core/Resources/assets/js/components/Settings.vue';
 import PagesIndex from '../../../modules/Core/Resources/assets/js/components/pages/PagesIndex.vue';
@@ -98,6 +99,15 @@ const routes: Array<any> = [
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
+        //     ),
+    },
+    {
+        path: '/admin/users/:id/edit',
+        name: 'admin.users.edit',
+        component: UsersEdit,
+        // component: () =>
+        //     import(
+        //         /* webpackChunkName: "cosplayersEdit" */ '../../../modules/User/Resources/assets/js/UserEdit.vue'
         //     ),
     },
     // Settings

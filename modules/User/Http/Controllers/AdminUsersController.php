@@ -12,6 +12,7 @@ namespace Modules\User\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Http\Requests\UserRequest;
 use Illuminate\Routing\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
 use Modules\User\Transformers\UserResource;
@@ -34,7 +35,7 @@ class AdminUsersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return Response
      */
@@ -45,31 +46,34 @@ class AdminUsersController extends Controller
     /**
      * Show the specified resource.
      *
-     * @param int $id
+     * @param  User  $user
      *
-     * @return Response
+     * @return UserResource
      */
-    public function show($id)
+    public function show(User $user)
     {
-        return view('user::show');
+        return new UserResource($user);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param int     $id
+     * @param  Request  $request
+     * @param  User  $user
      *
-     * @return Response
+     * @return UserResource
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, User $user)
     {
+        $user->update($request->validated());
+
+        return new UserResource($user);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      *
      * @return Response
      */
