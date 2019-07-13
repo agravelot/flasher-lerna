@@ -58,7 +58,7 @@ class AdminUsersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
+     * @param  UserRequest  $request
      * @param  User  $user
      *
      * @return UserResource

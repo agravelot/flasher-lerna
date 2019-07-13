@@ -11,6 +11,7 @@ namespace Modules\User\Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -18,10 +19,9 @@ class UpdateUserTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testAdminCanUpdateUser()
+    public function test_admin_can_update_user()
     {
         $excepted = 'randomName';
-        $this->disableExceptionHandling();
         $this->actingAsAdmin();
         /** @var User $user */
         $user = factory(User::class)->create();
@@ -34,13 +34,15 @@ class UpdateUserTest extends TestCase
         $this->assertJsonUserFragment($response, $user);
     }
 
-    private function updateUser(User $user): TestResponse
+    private function updateUser(User $user, ?string $newPassword = null): TestResponse
     {
         return $this->json('patch', "/api/admin/users/{$user->id}", [
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'role' => $user->role,
+            'password' => $newPassword,
+            'password_confirmation' => $newPassword,
         ]);
     }
 
@@ -56,6 +58,48 @@ class UpdateUserTest extends TestCase
                 'actions' => ['impersonate' => route('impersonate', $user)],
             ],
         ]);
+    }
+
+    public function test_admin_can_update_user_password()
+    {
+        $excepted = 'password';
+        $this->actingAsAdmin();
+        /** @var User $user */
+        $user = factory(User::class)->create();
+
+        $response = $this->updateUser($user, $excepted);
+
+        $response->assertStatus(200);
+        $this->assertTrue(Hash::check($excepted, $user->fresh()->password));
+        $this->assertJsonUserFragment($response, $user);
+    }
+
+    public function test_admin_can_update_other_user_role()
+    {
+        $this->actingAsAdmin();
+        /** @var User $user */
+        $user = factory(User::class)->state('user')->create();
+
+        $user->role = 'admin';
+        $response = $this->updateUser($user);
+
+        $response->assertStatus(200);
+        $this->assertSame('admin', $user->fresh()->role);
+        $this->assertJsonUserFragment($response, $user);
+    }
+
+    public function test_admin_can_not_update_other_role_as_null()
+    {
+        $this->actingAsAdmin();
+        /** @var User $user */
+        $user = factory(User::class)->state('user')->create();
+
+        $user->role = null;
+        $response = $this->updateUser($user);
+
+        $response->assertStatus(422);
+        $this->assertSame('user', $user->fresh()->role);
+        $response->assertJsonValidationErrors(['role']);
     }
 
     public function testUserCanUpdateUser()
@@ -76,6 +120,4 @@ class UpdateUserTest extends TestCase
 
         $response->assertStatus(401);
     }
-
-    // TODO Test update role
 }
