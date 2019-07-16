@@ -10,4 +10,4 @@
     </section>
 @endsection
 
-@include('layouts.partials._og_tags', compact('album'))
+@include('layouts.partials._og_tags', ['model' => $album])
