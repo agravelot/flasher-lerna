@@ -16,4 +16,18 @@ use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailBase;
 class VerifyEmail extends VerifyEmailBase implements ShouldQueue
 {
     use Queueable;
+
+    /**
+     * Build the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        $mail = parent::toMail($notifiable);
+        $from = settings()->get('email_from');
+
+        return $mail->from($from);
+    }
 }
