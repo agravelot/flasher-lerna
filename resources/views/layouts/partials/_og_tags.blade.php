@@ -7,7 +7,7 @@
     @endphp
 
     <meta property="og:title" content="{{ $album->title }}"/>
-    <meta property="og:type" content="website"/>
+    <meta property="og:type" content="article"/>
     <meta property="og:url" content="{{ request()->url() }}"/>
 
     <meta property="og:locale" content="{{ app()->getLocale() }}"/>
