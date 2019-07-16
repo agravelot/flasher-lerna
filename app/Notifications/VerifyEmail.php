@@ -7,13 +7,13 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace App\Jobs;
+namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordBase;
+use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailBase;
 
-class ResetPassword extends ResetPasswordBase implements ShouldQueue
+class VerifyEmail extends VerifyEmailBase implements ShouldQueue
 {
     use Queueable;
 

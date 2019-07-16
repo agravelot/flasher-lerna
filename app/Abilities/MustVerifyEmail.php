@@ -9,7 +9,7 @@
 
 namespace App\Abilities;
 
-use App\Jobs\VerifyEmail;
+use App\Notifications\VerifyEmail;
 use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailBase;
 
 trait MustVerifyEmail

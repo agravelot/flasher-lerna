@@ -12,9 +12,9 @@ namespace Tests\Feature\Http\Controller\Auth;
 use Tests\TestCase;
 use App\Models\User;
 use Modules\Core\Entities\Setting;
+use App\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Jobs\ResetPassword as ResetPasswordNotification;
 
 class SendResetPasswordTest extends TestCase
 {
@@ -32,8 +32,8 @@ class SendResetPasswordTest extends TestCase
 
         $response = $this->post('password/email', ['email' => $user->email]);
 
-        Notification::assertSentTo($user, ResetPasswordNotification::class,
-            function (ResetPasswordNotification $notification, array $channels) use ($user, $setting) {
+        Notification::assertSentTo($user, ResetPassword::class,
+            function (ResetPassword $notification, array $channels) use ($user, $setting) {
                 $this->assertContains($setting->value, $notification->toMail($user)->from);
 
                 return true;

@@ -11,7 +11,7 @@ namespace Tests\Feature\Http\Controller\Auth;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Jobs\VerifyEmail;
+use App\Notifications\VerifyEmail;
 use Modules\Core\Entities\Setting;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
