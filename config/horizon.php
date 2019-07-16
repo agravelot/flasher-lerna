@@ -49,7 +49,7 @@ return [
 
     'waits' => [
         'redis:default' => 60,
-        'redis:backup' => 60,
+        'redis:emails' => 60,
         'redis:images' => 600,
     ],
 
@@ -99,7 +99,7 @@ return [
         'production' => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue' => ['default', 'backup'],
+                'queue' => ['default', 'emails'],
                 'balance' => 'auto',
                 'processes' => 2,
                 'tries' => 3,
@@ -116,7 +116,7 @@ return [
         'staging' => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue' => ['default', 'backup'],
+                'queue' => ['default', 'emails'],
                 'balance' => 'auto',
                 'processes' => 2,
                 'tries' => 3,

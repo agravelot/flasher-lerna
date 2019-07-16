@@ -9,3 +9,5 @@
         </div>
     </section>
 @endsection
+
+@include('layouts.partials._og_tags', ['model' => $album])

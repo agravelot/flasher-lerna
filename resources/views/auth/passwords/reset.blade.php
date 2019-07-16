@@ -81,9 +81,12 @@
 
                             <div class="field-body">
                                 <div class="field">
-                                    <p class="control">
+                                    <p class="control has-icons-left">
                                         <input class="input" id="password-confirm" type="password"
                                                name="password_confirmation" required>
+                                        <span class="icon is-small is-left">
+                                            @fas('key')
+                                        </span>
                                     </p>
                                     @include('layouts.partials._form_errors', ['data' => 'password_confirmation'])
                                 </div>

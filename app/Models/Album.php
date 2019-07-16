@@ -13,15 +13,18 @@ use Eloquent;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\File;
 use Illuminate\Support\Carbon;
-use Spatie\Image\Manipulations;
 use App\Abilities\HasTitleAsSlug;
 use App\Abilities\HasSlugRouteKey;
+use Illuminate\Support\HtmlString;
 use Spatie\MediaLibrary\Models\Media;
+use App\Models\Contracts\OpenGraphable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Illuminate\Database\Eloquent\Collection;
+use App\Models\Contracts\ImagesOpenGraphable;
+use App\Models\Contracts\ArticleOpenGraphable;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -68,7 +71,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property mixed $cover
  * @property-read mixed $cover_responsive
  */
-class Album extends Model implements HasMedia
+class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphable, ImagesOpenGraphable
 {
     use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey, HasTitleAsSlug;
 
@@ -95,12 +98,12 @@ class Album extends Model implements HasMedia
         'private',
     ];
 
-    public function getCoverAttribute()
+    public function getCoverAttribute(): ?Media
     {
         return $this->getFirstMedia(self::PICTURES_COLLECTION);
     }
 
-    public function getCoverResponsiveAttribute()
+    public function getCoverResponsiveAttribute(): ?HtmlString
     {
         return optional($this->getFirstMedia(self::PICTURES_COLLECTION), function (Media $media) {
             return $media(self::RESPONSIVE_PICTURES_CONVERSION);
@@ -231,7 +234,6 @@ class Album extends Model implements HasMedia
             ->sharpen(10)
             ->optimize()
             ->withResponsiveImages()
-            ->format(Manipulations::FORMAT_WEBP)
             ->performOnCollections(self::PICTURES_COLLECTION);
 
         $this->addMediaConversion('thumb')
@@ -239,5 +241,40 @@ class Album extends Model implements HasMedia
             ->sharpen(8)
             ->optimize()
             ->performOnCollections(self::PICTURES_COLLECTION);
+    }
+
+    public function author(): string
+    {
+        return $this->user->name;
+    }
+
+    public function tags(): \Illuminate\Support\Collection
+    {
+        return $this->categories()->pluck('name');
+    }
+
+    public function publishedAt(): string
+    {
+        return $this->published_at->toIso8601String();
+    }
+
+    public function updatedAt(): string
+    {
+        return $this->updated_at->toIso8601String();
+    }
+
+    public function images(): \Illuminate\Support\Collection
+    {
+        return $this->getMedia(self::PICTURES_COLLECTION);
+    }
+
+    public function title(): string
+    {
+        return $this->title;
+    }
+
+    public function description(): string
+    {
+        return '';
     }
 }

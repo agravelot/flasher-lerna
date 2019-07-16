@@ -74,7 +74,7 @@ COPY --chown=1000:1000 . /var/www/html
 # Importing composer and assets dependencies
 COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/vendor/
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
-COPY --from=composer --chown=1000:1000 /usr/bin/composer ./composer
+COPY --chown=1000:1000 --from=composer /usr/bin/composer ./composer
 
 # Link storage
 RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
