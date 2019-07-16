@@ -53,6 +53,12 @@
                             </span>
                         </div>
                     </section>
+                    <b-input
+                        v-else-if="setting.type === 'email'"
+                        type="email"
+                        maxlength="30"
+                        v-model="setting.value"
+                    ></b-input>
                     <b-input v-else v-model="setting.value" expanded></b-input>
                 </b-field>
                 <div class="control">

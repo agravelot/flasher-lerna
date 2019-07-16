@@ -20,6 +20,7 @@ final class SettingType extends Enum
     const TextArea = 'textarea';
 //    const Json = 'json';
     const Media = 'media';
+    const Email = 'email';
 
     const ALIASES_TYPES = [
         self::String => 'string',
@@ -28,6 +29,7 @@ final class SettingType extends Enum
         self::TextArea => 'string',
         // SettingType::Json => '??',
         self::Media => Media::class,
+        self::Email => 'string',
     ];
 
     /**

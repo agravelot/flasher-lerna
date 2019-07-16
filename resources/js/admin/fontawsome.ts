@@ -27,7 +27,8 @@ import {
     faTrashAlt,
     faUpload,
     faUserTag,
-    faLink, faEye,
+    faLink,
+    faEye,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
