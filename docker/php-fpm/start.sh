@@ -27,7 +27,7 @@ elif [[ "$role" = "publisher" ]]; then
   php artisan migrate --force
   php artisan passport:keys
 
-  rm -rvf public/vendor
+  rm -rvf public/vendor/*
   # php artisan telescope:publish
   php artisan horizon:assets
 
