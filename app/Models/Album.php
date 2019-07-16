@@ -13,7 +13,6 @@ use Eloquent;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\File;
 use Illuminate\Support\Carbon;
-use Spatie\Image\Manipulations;
 use App\Abilities\HasTitleAsSlug;
 use App\Abilities\HasSlugRouteKey;
 use Illuminate\Support\HtmlString;
