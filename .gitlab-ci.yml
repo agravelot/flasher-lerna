@@ -56,7 +56,7 @@ tests:
   - chmod +x docker/*.sh
   - bash -c 'cd docker/ && ./generate_env.sh staging'
   - docker-compose up -d
-  - docker-compose stop queue scheduler nginx phpmyadmin
+  - docker-compose stop queue scheduler nginx
   - docker-compose exec -T cache redis-cli config set maxmemory 41943040
   - docker cp vendor $(docker-compose ps -q php):/var/www/html/
   - docker-compose exec -e APP_ENV=testing -T php php artisan db:wait-connection
@@ -73,7 +73,7 @@ lint:
   - chmod +x docker/*.sh
   - bash -c 'cd docker/ && ./generate_env.sh staging'
   - docker-compose up -d
-  - docker-compose stop queue scheduler nginx phpmyadmin
+  - docker-compose stop queue scheduler nginx
   - docker-compose exec -T cache redis-cli config set maxmemory 41943040
   - docker cp vendor $(docker-compose ps -q php):/var/www/html/
   - docker-compose exec -e APP_ENV=testing -T php php vendor/bin/php-cs-fixer fix --dry-run --diff
@@ -89,7 +89,7 @@ insights:
     - chmod +x docker/*.sh
     - bash -c 'cd docker/ && ./generate_env.sh staging'
     - docker-compose up -d
-    - docker-compose stop queue scheduler nginx phpmyadmin
+    - docker-compose stop queue scheduler nginx
     - docker-compose exec -T cache redis-cli config set maxmemory 41943040
     - docker cp vendor $(docker-compose ps -q php):/var/www/html/
     - docker-compose exec -e APP_ENV=testing -T php php artisan insights --no-interaction --min-quality=80 --min-complexity=90 --min-architecture=75 --min-style=95
