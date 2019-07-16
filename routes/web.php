@@ -14,7 +14,7 @@ Route::impersonate();
 Route::namespace('Front')->group(function () {
     Route::resource('albums', 'AlbumController')->only(['index', 'show']);
     Route::resource('download-albums', 'DownloadAlbumController')->only(['show'])
-        ->middleware('auth', 'verified')
+        ->middleware(['auth', 'verified'])
         ->parameters([
             'download-albums' => 'album',
         ]);
