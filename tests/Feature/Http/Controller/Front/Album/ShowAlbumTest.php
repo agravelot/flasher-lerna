@@ -13,6 +13,8 @@ use Tests\TestCase;
 use App\Models\Album;
 use App\Models\Category;
 use App\Models\PublicAlbum;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\App;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -99,5 +101,48 @@ class ShowAlbumTest extends TestCase
         $response = $this->get('/albums/some-random-slug');
 
         $response->assertStatus(404);
+    }
+
+    public function test_album_has_og_tags_without_image()
+    {
+        $album = factory(PublicAlbum::class)->state('withUser')->create();
+
+        $response = $this->get("/albums/{$album->slug}");
+        $locale = App::getLocale();
+
+        $response->assertSee("<meta property=\"og:title\" content=\"{$album->title}\"/>")
+            ->assertSee("<meta property=\"article:author\" content=\"{$album->user->name}\"/>")
+            ->assertSee('<meta property="article:section" content="Photography"/>')
+            ->assertSee("<meta property=\"article:modified_time\" content=\"{$album->updated_at}\"/>")
+            ->assertSee("<meta property=\"article:published_time\" content=\"{$album->published_at}\"/>")
+            ->assertSee("<meta property=\"og:locale\" content=\"{$locale}\"/>");
+
+        foreach ($album->categories()->pluck('name') as $categoryName) {
+            $response->assertSee("<meta property=\"article:tag\" content=\"{{ $categoryName }}\"/>");
+        }
+
+        $response->assertDontSee('<meta property="og:image" content=');
+    }
+
+    public function test_album_has_og_tags_with_image()
+    {
+        /** @var \Modules\Album\Entities\Album $album */
+        $album = factory(PublicAlbum::class)->state('withUser')->create();
+        $album->addPicture(UploadedFile::fake()->image('test.png'));
+        $response = $this->get("/albums/{$album->slug}");
+        $locale = App::getLocale();
+
+        $response->assertSee("<meta property=\"og:title\" content=\"{$album->title}\"/>")
+            ->assertSee("<meta property=\"article:author\" content=\"{$album->user->name}\"/>")
+            ->assertSee('<meta property="article:section" content="Photography"/>')
+            ->assertSee("<meta property=\"article:modified_time\" content=\"{$album->updated_at}\"/>")
+            ->assertSee("<meta property=\"article:published_time\" content=\"{$album->published_at}\"/>")
+            ->assertSee("<meta property=\"og:locale\" content=\"{$locale}\"/>")
+            ->assertSee("<meta property=\"og:image\" content=\"{$album->cover->getUrl('thumb')}\"/>")
+            ->assertSee("<meta property=\"og:image:secure_url\" content=\"{$album->cover->getUrl('thumb')}\"/>");
+
+        foreach ($album->categories()->pluck('name') as $categoryName) {
+            $response->assertSee("<meta property=\"article:tag\" content=\"{{ $categoryName }}\"/>");
+        }
     }
 }
