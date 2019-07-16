@@ -29,7 +29,7 @@ class AdminCosplayerController extends Controller
     public function index()
     {
         $this->authorize('viewAny', Cosplayer::class);
-        $cosplayers = Cosplayer::orderBy('updated_at')->paginate(10);
+        $cosplayers = Cosplayer::paginate(10);
 
         return view('admin.cosplayers.index', [
             'cosplayers' => $cosplayers,
@@ -86,10 +86,11 @@ class AdminCosplayerController extends Controller
     {
         $this->authorize('view', Cosplayer::class);
         $cosplayer = Cosplayer::findBySlugOrFail($slug);
-        $cosplayer->load(['publicAlbums.media', 'publicAlbums.categories']);
+        $cosplayer->load('publicAlbums.categories');
+        $albums = $cosplayer->load('publicAlbums.media')->publicAlbums()->paginate();
         $this->authorize('view', $cosplayer);
 
-        return view('admin.cosplayers.show', compact('cosplayer'));
+        return view('admin.cosplayers.show', compact('cosplayer', 'albums'));
     }
 
     /**
