@@ -16,6 +16,7 @@ use Illuminate\Support\Carbon;
 use Spatie\Image\Manipulations;
 use App\Abilities\HasTitleAsSlug;
 use App\Abilities\HasSlugRouteKey;
+use Illuminate\Support\HtmlString;
 use Spatie\MediaLibrary\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -95,12 +96,12 @@ class Album extends Model implements HasMedia
         'private',
     ];
 
-    public function getCoverAttribute()
+    public function getCoverAttribute(): ?Media
     {
         return $this->getFirstMedia(self::PICTURES_COLLECTION);
     }
 
-    public function getCoverResponsiveAttribute()
+    public function getCoverResponsiveAttribute(): ?HtmlString
     {
         return optional($this->getFirstMedia(self::PICTURES_COLLECTION), function (Media $media) {
             return $media(self::RESPONSIVE_PICTURES_CONVERSION);
