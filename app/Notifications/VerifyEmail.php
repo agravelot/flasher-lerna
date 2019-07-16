@@ -27,7 +27,8 @@ class VerifyEmail extends VerifyEmailBase implements ShouldQueue
     {
         $mail = parent::toMail($notifiable);
         $from = settings()->get('email_from');
+        $name = settings()->get('app_name');
 
-        return $mail->from($from);
+        return $mail->from($from, $name);
     }
 }

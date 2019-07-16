@@ -31,12 +31,16 @@ class VerifyEmailTest extends TestCase
         $setting = Setting::where('name', 'email_from')->first();
         $setting->value = 'test@email.com';
         $setting->save();
+        $setting = Setting::where('name', 'app_name')->first();
+        $setting->value = 'Flasher';
+        $setting->save();
 
         $user->sendEmailVerificationNotification();
 
         Notification::assertSentTo($user, VerifyEmail::class,
             function (VerifyEmail $notification, array $channels) use ($user, $setting) {
-                $this->assertContains($setting->value, $notification->toMail($user)->from);
+                $this->assertSame('test@email.com', $notification->toMail($user)->from[0]);
+                $this->assertSame('Flasher', $notification->toMail($user)->from[1]);
 
                 return true;
             });
