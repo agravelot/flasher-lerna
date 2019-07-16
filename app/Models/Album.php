@@ -235,7 +235,6 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
             ->sharpen(10)
             ->optimize()
             ->withResponsiveImages()
-            ->format(Manipulations::FORMAT_WEBP)
             ->performOnCollections(self::PICTURES_COLLECTION);
 
         $this->addMediaConversion('thumb')
