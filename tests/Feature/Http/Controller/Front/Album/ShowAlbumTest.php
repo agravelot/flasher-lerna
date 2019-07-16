@@ -113,8 +113,8 @@ class ShowAlbumTest extends TestCase
         $response->assertSee("<meta property=\"og:title\" content=\"{$album->title}\"/>")
             ->assertSee("<meta property=\"article:author\" content=\"{$album->user->name}\"/>")
             ->assertSee('<meta property="article:section" content="Photography"/>')
-            ->assertSee("<meta property=\"article:modified_time\" content=\"{$album->updated_at}\"/>")
-            ->assertSee("<meta property=\"article:published_time\" content=\"{$album->published_at}\"/>")
+            ->assertSee("<meta property=\"article:modified_time\" content=\"{$album->updated_at->toIso8601String()}\"/>")
+            ->assertSee("<meta property=\"article:published_time\" content=\"{$album->published_at->toIso8601String()}\"/>")
             ->assertSee("<meta property=\"og:locale\" content=\"{$locale}\"/>");
 
         foreach ($album->categories()->pluck('name') as $categoryName) {
@@ -135,8 +135,8 @@ class ShowAlbumTest extends TestCase
         $response->assertSee("<meta property=\"og:title\" content=\"{$album->title}\"/>")
             ->assertSee("<meta property=\"article:author\" content=\"{$album->user->name}\"/>")
             ->assertSee('<meta property="article:section" content="Photography"/>')
-            ->assertSee("<meta property=\"article:modified_time\" content=\"{$album->updated_at}\"/>")
-            ->assertSee("<meta property=\"article:published_time\" content=\"{$album->published_at}\"/>")
+            ->assertSee("<meta property=\"article:modified_time\" content=\"{$album->updated_at->toIso8601String()}\"/>")
+            ->assertSee("<meta property=\"article:published_time\" content=\"{$album->published_at->toIso8601String()}\"/>")
             ->assertSee("<meta property=\"og:locale\" content=\"{$locale}\"/>")
             ->assertSee("<meta property=\"og:image\" content=\"{$album->cover->getUrl('thumb')}\"/>")
             ->assertSee("<meta property=\"og:image:secure_url\" content=\"{$album->cover->getUrl('thumb')}\"/>");

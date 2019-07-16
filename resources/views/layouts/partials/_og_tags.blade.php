@@ -14,8 +14,8 @@
 {{--    <meta property="og:locale:alternate" content="{{ app()->getFallbackLocale() }}" />--}}
 
 
-    <meta property="article:published_time" content="{{ $album->published_at }}"/>
-    <meta property="article:modified_time" content="{{ $album->updated_at }}"/>
+    <meta property="article:published_time" content="{{ $album->published_at->toIso8601String() }}"/>
+    <meta property="article:modified_time" content="{{ $album->updated_at->toIso8601String() }}"/>
     {{--<meta property="article:expiration_time" content="" />--}}
     <meta property="article:author" content="{{ $album->user->name }}"/>
     <meta property="article:section" content="Photography"/>
