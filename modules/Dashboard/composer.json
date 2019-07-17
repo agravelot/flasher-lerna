@@ -12,9 +12,7 @@
             "providers": [
                 "Modules\\Dashboard\\Providers\\DashboardServiceProvider"
             ],
-            "aliases": {
-                
-            }
+            "aliases": {}
         }
     },
     "autoload": {
