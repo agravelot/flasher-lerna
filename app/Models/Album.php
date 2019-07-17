@@ -231,14 +231,12 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
     public function registerMediaConversions(Media $media = null)
     {
         $this->addMediaConversion(self::RESPONSIVE_PICTURES_CONVERSION)
-            ->sharpen(10)
             ->optimize()
             ->withResponsiveImages()
             ->performOnCollections(self::PICTURES_COLLECTION);
 
         $this->addMediaConversion('thumb')
             ->width(400)
-            ->sharpen(8)
             ->optimize()
             ->performOnCollections(self::PICTURES_COLLECTION);
     }
