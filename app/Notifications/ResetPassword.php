@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace App\Jobs;
+namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -16,4 +16,19 @@ use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordBase;
 class ResetPassword extends ResetPasswordBase implements ShouldQueue
 {
     use Queueable;
+
+    /**
+     * Build the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        $mail = parent::toMail($notifiable);
+        $from = settings()->get('email_from');
+        $name = settings()->get('app_name');
+
+        return $mail->from($from, $name);
+    }
 }

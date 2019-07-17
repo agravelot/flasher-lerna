@@ -36,6 +36,6 @@ class ContactController extends Controller
     {
         Contact::create($request->validated());
 
-        return redirect(route('contact.create'))->withSuccess('Your message has been sent');
+        return redirect(route('contact.index'))->withSuccess('Your message has been sent');
     }
 }

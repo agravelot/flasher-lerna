@@ -114,12 +114,25 @@ class UpdateAdminSettingsTest extends TestCase
         $setting = factory(Setting::class)->create([
             'type' => SettingType::Media, 'value' => null,
         ]);
+
         $setting->value = UploadedFile::fake()->image('test.png');
-        $this->assertInstanceOf(Media::class, $setting->fresh()->value);
-
-        $setting->value = UploadedFile::fake()->image('new.png');
+        $this->updateSetting($setting);
 
         $this->assertInstanceOf(Media::class, $setting->fresh()->value);
-        $this->assertSame('new.png', ($setting->fresh()->value)->file_name);
+        $this->assertSame('test.png', ($setting->fresh()->value)->file_name);
+    }
+
+    public function test_email_setting_type_cannot_store_bad_email()
+    {
+        $this->actingAsAdmin();
+        $setting = factory(Setting::class)->create([
+            'type' => SettingType::Email, 'value' => null,
+        ]);
+
+        $setting->value = 'badEmail';
+        $response = $this->updateSetting($setting);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors('value');
     }
 }

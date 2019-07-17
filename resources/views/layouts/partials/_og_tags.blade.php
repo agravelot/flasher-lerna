@@ -1,3 +1,7 @@
+@section('head_tag')
+    prefix="og: http://ogp.me/ns#"
+@stop
+
 @section('head')
     <meta property="og:title" content="{{ $model->title }}"/>
     <meta property="og:description" content="{{ $model->description() }}"/>

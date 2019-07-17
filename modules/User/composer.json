@@ -12,9 +12,7 @@
             "providers": [
                 "Modules\\User\\Providers\\UserServiceProvider"
             ],
-            "aliases": {
-                
-            }
+            "aliases": {}
         }
     },
     "autoload": {

@@ -71,3 +71,10 @@ $factory->state(Setting::class, SettingType::Media, function (Faker $faker) {
         'value' => UploadedFile::fake()->image('fake.png'),
     ];
 });
+
+$factory->state(Setting::class, SettingType::Email, function (Faker $faker) {
+    return [
+        'type' => SettingType::Email,
+        'value' => $faker->email,
+    ];
+});

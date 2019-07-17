@@ -9,7 +9,7 @@
 
 namespace App\Abilities;
 
-use App\Jobs\ResetPassword as ResetPasswordNotification;
+use App\Notifications\ResetPassword;
 use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordBase;
 
 trait CanResetPassword
@@ -23,6 +23,6 @@ trait CanResetPassword
      */
     public function sendPasswordResetNotification($token)
     {
-        $this->notify((new ResetPasswordNotification($token))->onQueue('emails'));
+        $this->notify((new ResetPassword($token))->onQueue('emails'));
     }
 }

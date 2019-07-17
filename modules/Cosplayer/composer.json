@@ -12,9 +12,7 @@
             "providers": [
                 "Modules\\Cosplayer\\Providers\\CosplayerServiceProvider"
             ],
-            "aliases": {
-                
-            }
+            "aliases": {}
         }
     },
     "autoload": {
