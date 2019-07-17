@@ -133,10 +133,18 @@ return [
         'local' => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue' => ['default'],
-                'balance' => 'simple',
-                'processes' => 4,
+                'queue' => ['default', 'emails'],
+                'balance' => 'auto',
+                'processes' => 2,
                 'tries' => 3,
+            ],
+            'supervisor-2' => [
+                'connection' => 'redis',
+                'queue' => ['images'],
+                'balance' => 'auto',
+                'processes' => 3,
+                'tries' => 3,
+                'memory' => 1024,
             ],
         ],
     ],
