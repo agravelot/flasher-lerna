@@ -38,26 +38,8 @@
             </b-field>
 
             <div class="buttons">
-                <b-button type="is-primary" :loading="this.loading" @click="updateUser()">
-                    Update
-                </b-button>
-                <b-button
-                    v-if="user && user.actions && user.actions.impersonate"
-                    type="is-info"
-                    icon-right="sign-in-alt"
-                    tag="a"
-                    :href="user.actions.impersonate"
-                    :loading="this.loading"
-                >
-                    Impersonate
-                </b-button>
-                <b-button
-                    type="is-danger"
-                    icon-right="trash-alt"
-                    :loading="this.loading"
-                    @click="confirmDeleteUser()"
-                >
-                    Delete
+                <b-button type="is-primary" :loading="this.loading" @click="createUser()">
+                    Create
                 </b-button>
             </div>
         </div>
@@ -70,28 +52,24 @@ import VueBuefy from '../../../../../resources/js/admin/Buefy.vue';
 import User from './user';
 
 @Component({
-    name: 'UsersEdit',
+    name: 'UsersCreate',
 })
-export default class UsersEdit extends VueBuefy {
-    private user: User = null;
+export default class UsersCreate extends VueBuefy {
+    private user: User = new User();
     private loading: boolean = false;
     protected errors: object = {};
 
-    created(): void {
-        this.fetchUser();
-    }
-
-    updateUser(): void {
+    createUser(): void {
         this.loading = true;
 
         this.axios
-            .patch(`/api/admin/users/${this.$route.params.id}`, this.user)
+            .post('/api/admin/users', this.user)
             .then(res => res.data)
             .then(res => {
                 this.errors = {};
                 this.loading = false;
                 this.$router.push({ name: 'admin.users.index' });
-                this.showSuccess('User updated');
+                this.showSuccess('User created');
             })
             .catch(err => {
                 this.loading = false;
@@ -106,32 +84,6 @@ export default class UsersEdit extends VueBuefy {
                 //     },
                 // });
                 this.errors = err.response.data.errors;
-                throw err;
-            });
-    }
-
-    fetchUser(): void {
-        this.loading = true;
-
-        this.axios
-            .get(`/api/admin/users/${this.$route.params.id}`)
-            .then(res => res.data)
-            .then(res => {
-                this.user = res.data;
-                this.loading = false;
-            })
-            .catch(err => {
-                this.loading = false;
-                this.$snackbar.open({
-                    message: 'Unable to load user, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchUser();
-                    },
-                });
                 throw err;
             });
     }

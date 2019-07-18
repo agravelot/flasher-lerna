@@ -11,6 +11,7 @@ import CosplayersIndex from '../../../modules/Cosplayer/Resources/assets/js/comp
 import CosplayersCreate from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersCreate.vue';
 import CosplayersEdit from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersEdit.vue';
 import UsersIndex from '../../../modules/User/Resources/assets/js/UsersIndex.vue';
+import UsersCreate from '../../../modules/User/Resources/assets/js/UsersCreate.vue';
 import UsersEdit from '../../../modules/User/Resources/assets/js/UsersEdit.vue';
 import NotFound from '../../../modules/Core/Resources/assets/js/components/NotFound.vue';
 import Settings from '../../../modules/Core/Resources/assets/js/components/Settings.vue';
@@ -126,6 +127,15 @@ const routes: Array<any> = [
         path: '/admin/users',
         name: 'admin.users.index',
         component: UsersIndex,
+        // component: () =>
+        //     import(
+        //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
+        //     ),
+    },
+    {
+        path: '/admin/users/create',
+        name: 'admin.users.create',
+        component: UsersCreate,
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'

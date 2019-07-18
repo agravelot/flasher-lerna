@@ -37,7 +37,6 @@ class UpdateUserTest extends TestCase
     private function updateUser(User $user, ?string $newPassword = null): TestResponse
     {
         return $this->json('patch', "/api/admin/users/{$user->id}", [
-            'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'role' => $user->role,

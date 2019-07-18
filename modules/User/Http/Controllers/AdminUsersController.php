@@ -37,12 +37,15 @@ class AdminUsersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param  UserRequest  $request
      *
-     * @return Response
+     * @return UserResource
      */
-    public function store(Request $request)
+    public function store(UserRequest $request): UserResource
     {
+        $user = User::create($request->validated());
+
+        return new UserResource($user);
     }
 
     /**
