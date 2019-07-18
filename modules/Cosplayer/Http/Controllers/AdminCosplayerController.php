@@ -11,6 +11,7 @@ namespace Modules\Cosplayer\Http\Controllers;
 
 use Exception;
 use App\Models\Cosplayer;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -90,10 +91,10 @@ class AdminCosplayerController extends Controller
      *
      * @param  Cosplayer  $cosplayer
      *
-     * @return Response
+     * @return JsonResponse
      * @throws Exception
      */
-    public function destroy(Cosplayer $cosplayer): Response
+    public function destroy(Cosplayer $cosplayer): JsonResponse
     {
         $cosplayer->delete();
 
