@@ -37,9 +37,14 @@
                 ></b-input>
             </b-field>
 
-            <b-button type="is-primary" :loading="this.loading" @click="updateUser()"
-                >Update
-            </b-button>
+            <div class="buttons">
+                <b-button type="is-primary" :loading="this.loading" @click="updateUser()"
+                    >Update
+                </b-button>
+                <a class="button is-bottom-right is-danger" @click="confirmDeleteUser()">
+                    Delete
+                </a>
+            </div>
         </div>
     </div>
 </template>
@@ -131,7 +136,7 @@ export default class UsersEdit extends VueBuefy {
         });
     }
 
-    confirmDeleteSelectedUser(): void {
+    confirmDeleteUser(): void {
         this.$dialog.confirm({
             title: 'Deleting Albums',
             message:
@@ -140,7 +145,7 @@ export default class UsersEdit extends VueBuefy {
             type: 'is-danger',
             hasIcon: true,
             onConfirm: () => {
-                this.deleteSelectedUser();
+                this.deleteUser();
             },
         });
     }
@@ -148,12 +153,12 @@ export default class UsersEdit extends VueBuefy {
     /**
      * Delete user from slug
      */
-    deleteSelectedUser(): void {
+    deleteUser(): void {
         this.axios
             .delete(`/api/admin/users/${this.user.id}`)
             .then(res => {
+                this.$router.push({ name: 'admin.users.index' });
                 this.showSuccess('User deleted');
-                // TODO Redirect index
             })
             .catch(err => {
                 this.showError(`Unable to delete user <br> <small>${err.message}</small>`);

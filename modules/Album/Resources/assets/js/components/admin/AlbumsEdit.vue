@@ -239,7 +239,7 @@ export default class AlbumsEdit extends AlbumDesc {
             });
     }
 
-    confirmDeleteAlbum(album: Album): void {
+    confirmDeleteAlbum(): void {
         this.$dialog.confirm({
             title: 'Deleting Album',
             message:
@@ -247,13 +247,13 @@ export default class AlbumsEdit extends AlbumDesc {
             confirmText: 'Delete Album',
             type: 'is-danger',
             hasIcon: true,
-            onConfirm: () => this.deleteAlbum(album),
+            onConfirm: () => this.deleteAlbum(),
         });
     }
 
-    deleteAlbum(album: Album): void {
+    deleteAlbum(): void {
         this.axios
-            .delete(`/api/admin/albums/${album.slug}`)
+            .delete(`/api/admin/albums/${this.album.slug}`)
             .then(res => {
                 this.$router.push({ name: 'admin.albums.index' });
                 this.$toast.open({
