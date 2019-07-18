@@ -10,7 +10,6 @@
 namespace App\Models;
 
 use Eloquent;
-use Illuminate\Support\Str;
 use Spatie\MediaLibrary\File;
 use Illuminate\Support\Carbon;
 use App\Abilities\HasTitleAsSlug;

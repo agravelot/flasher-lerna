@@ -32,7 +32,7 @@ class MediaStream extends MediaStreamBase
             }
         }
 
-        $extension = pathinfo($currentMedia->file_name, PATHINFO_EXTENSION);
+        $extension = $currentMedia->getExtensionAttribute();
 
         if ($nameCount === 0) {
             return "{$currentMedia->name}.{$extension}";
