@@ -59,13 +59,13 @@
                         }}</span>
                     </b-table-column>
 
-                    <b-table-column field="actions.impersonate" label="Impersonate" centered>
-                        <a :href="user.row.actions.impersonate">
-                            <span class="icon has-text-info">
-                                <i class="fas fa-sign-in-alt"></i>
-                            </span>
-                        </a>
-                    </b-table-column>
+                    <!--                    <b-table-column field="actions.impersonate" label="Impersonate" centered>-->
+                    <!--                        <a :href="user.row.actions.impersonate">-->
+                    <!--                            <span class="icon has-text-info">-->
+                    <!--                                <i class="fas fa-sign-in-alt"></i>-->
+                    <!--                            </span>-->
+                    <!--                        </a>-->
+                    <!--                    </b-table-column>-->
                 </template>
 
                 <template slot="empty">

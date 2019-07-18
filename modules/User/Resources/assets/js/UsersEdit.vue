@@ -38,12 +38,27 @@
             </b-field>
 
             <div class="buttons">
-                <b-button type="is-primary" :loading="this.loading" @click="updateUser()"
-                    >Update
+                <b-button type="is-primary" :loading="this.loading" @click="updateUser()">
+                    Update
                 </b-button>
-                <a class="button is-bottom-right is-danger" @click="confirmDeleteUser()">
+                <b-button
+                    v-if="user && user.actions && user.actions.impersonate"
+                    type="is-info"
+                    icon-right="sign-in-alt"
+                    tag="a"
+                    :href="user.actions.impersonate"
+                    :loading="this.loading"
+                >
+                    Impersonate
+                </b-button>
+                <b-button
+                    type="is-danger"
+                    icon-right="delete"
+                    :loading="this.loading"
+                    @click="confirmDeleteUser()"
+                >
                     Delete
-                </a>
+                </b-button>
             </div>
         </div>
     </div>
