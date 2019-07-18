@@ -53,7 +53,7 @@ class PublicAlbumTest extends ModelTestCase
     {
         $this->runConfigurationAssertions(new PublicAlbum(), [
             'title', 'slug', 'body', 'published_at', 'user_id', 'private',
-        ], [], ['*'], [], ['id' => 'int'], [
+        ], [], ['*'], [], ['id' => 'int', 'private' => 'bool'], [
             'published_at',
             'updated_at',
             'created_at',
@@ -150,7 +150,9 @@ class PublicAlbumTest extends ModelTestCase
 
     public function test_count_four_published_albums_should_be_four()
     {
-        $publishedPublicAlbums = factory(PublicAlbum::class, 4)->states(['published', 'passwordLess', 'withUser'])->create();
+        $publishedPublicAlbums = factory(PublicAlbum::class, 4)->states([
+            'published', 'passwordLess', 'withUser',
+        ])->create();
 
         $albums = PublicAlbum::all();
 
@@ -200,7 +202,9 @@ class PublicAlbumTest extends ModelTestCase
 
     public function test_count_four_published_albums_should_be_four_without_public_criteria()
     {
-        $publishedPublicAlbums = factory(PublicAlbum::class, 4)->states(['published', 'passwordLess', 'withUser'])->create();
+        $publishedPublicAlbums = factory(PublicAlbum::class, 4)->states([
+            'published', 'passwordLess', 'withUser',
+        ])->create();
 
         $albums = PublicAlbum::all();
 

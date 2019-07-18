@@ -3,12 +3,15 @@ import VueRouter from 'vue-router';
 import Dashboard from '../../../modules/Dashboard/Resources/assets/js/Dashboard.vue';
 import AlbumsIndex from '../../../modules/Album/Resources/assets/js/components/admin/AlbumsIndex.vue';
 import AlbumsCreate from '../../../modules/Album/Resources/assets/js/components/admin/AlbumsCreate.vue';
-import AlbumsShowGallery from '../../../modules/Album/Resources/assets/js/components/admin/AlbumsShowGallery.vue';
 import AlbumsEdit from '../../../modules/Album/Resources/assets/js/components/admin/AlbumsEdit.vue';
+import CategoriesIndex from '../../../modules/Category/Resources/assets/js/components/admin/CategoriesIndex.vue';
+import CategoriesCreate from '../../../modules/Category/Resources/assets/js/components/admin/CategoriesCreate.vue';
+import CategoriesEdit from '../../../modules/Category/Resources/assets/js/components/admin/CategoriesEdit.vue';
 import CosplayersIndex from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersIndex.vue';
 import CosplayersCreate from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersCreate.vue';
 import CosplayersEdit from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersEdit.vue';
 import UsersIndex from '../../../modules/User/Resources/assets/js/UsersIndex.vue';
+import UsersCreate from '../../../modules/User/Resources/assets/js/UsersCreate.vue';
 import UsersEdit from '../../../modules/User/Resources/assets/js/UsersEdit.vue';
 import NotFound from '../../../modules/Core/Resources/assets/js/components/NotFound.vue';
 import Settings from '../../../modules/Core/Resources/assets/js/components/Settings.vue';
@@ -45,15 +48,15 @@ const routes: Array<any> = [
         //         /* webpackChunkName: "albumsCreate" */ '../../../modules/Album/Resources/assets/js/components/admin/AlbumsCreate.vue'
         //     ),
     },
-    {
-        path: '/admin/albums/:slug',
-        name: 'admin.albums.show',
-        component: AlbumsShowGallery,
-        // component: () =>
-        //     import(
-        //         /* webpackChunkName: "albumsShow" */ '../../../modules/Album/Resources/assets/js/components/admin/AlbumsShowGallery.vue'
-        //     ),
-    },
+    // {
+    //     path: '/admin/albums/:slug',
+    //     name: 'admin.albums.show',
+    //     component: AlbumsShowGallery,
+    //     // component: () =>
+    //     //     import(
+    //     //         /* webpackChunkName: "albumsShow" */ '../../../modules/Album/Resources/assets/js/components/admin/AlbumsShowGallery.vue'
+    //     //     ),
+    // },
     {
         path: '/admin/albums/:slug/edit',
         name: 'admin.albums.edit',
@@ -61,6 +64,34 @@ const routes: Array<any> = [
         // component: () =>
         //     import(
         //         /* webpackChunkName: "albumsEdit" */ '../../../modules/Album/Resources/assets/js/components/admin/AlbumsEdit.vue'
+        //     ),
+    },
+    // Categories
+    {
+        path: '/admin/categories',
+        name: 'admin.categories.index',
+        component: CategoriesIndex,
+        // component: () =>
+        //     import(
+        //         /* webpackChunkName: "categoriesIndex" */ '../../../modules/Category/Resources/assets/js/components/admin/CategoriesIndex.vue'
+        //     ),
+    },
+    {
+        path: '/admin/categories/create',
+        name: 'admin.categories.create',
+        component: CategoriesCreate,
+        // component: () =>
+        //     import(
+        //         /* webpackChunkName: "categoriesCreate" */ '../../../modules/Category/Resources/assets/js/components/admin/CategoriesCreate.vue'
+        //     ),
+    },
+    {
+        path: '/admin/categories/:slug/edit',
+        name: 'admin.categories.edit',
+        component: CategoriesEdit,
+        // component: () =>
+        //     import(
+        //         /* webpackChunkName: "categoriesEdit" */ '../../../modules/Category/Resources/assets/js/components/admin/CategoriesEdit.vue'
         //     ),
     },
     //Cosplayers
@@ -96,6 +127,15 @@ const routes: Array<any> = [
         path: '/admin/users',
         name: 'admin.users.index',
         component: UsersIndex,
+        // component: () =>
+        //     import(
+        //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
+        //     ),
+    },
+    {
+        path: '/admin/users/create',
+        name: 'admin.users.create',
+        component: UsersCreate,
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'

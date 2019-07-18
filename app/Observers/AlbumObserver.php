@@ -16,11 +16,11 @@ class AlbumObserver extends ActivityObserverBase
     /**
      * Handle the album "creating" event.
      *
-     * @param Album $album
+     * @param  Album  $album
      *
      * @return void
      */
-    public function creating(Album $album)
+    public function creating(Album $album): void
     {
         if ($album->user_id === null) {
             $album->user_id = auth()->id();

@@ -9,6 +9,7 @@
 
 namespace Modules\User\Providers;
 
+use Config;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 
@@ -70,7 +71,7 @@ class UserServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
             return __DIR__.'/../Resources/views';
-        }, \Config::get('view.paths')), [$sourcePath]), 'user');
+        }, Config::get('view.paths')), [$sourcePath]), 'user');
     }
 
     /**

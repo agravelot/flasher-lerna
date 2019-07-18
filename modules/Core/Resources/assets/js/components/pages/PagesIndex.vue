@@ -4,21 +4,23 @@
             <div class="level">
                 <div class="level-left">
                     <div class="level-item">
-                        <router-link :to="{ name: 'admin.pages.create' }">
-                            <button class="button field is-success">
-                                <b-icon pack="fas" icon="plus"></b-icon>
-                                <span>New</span>
-                            </button>
-                        </router-link>
-
-                        <button
-                            class="button field is-danger"
-                            @click="confirmDeleteSelectedPages()"
-                            :disabled="!checkedRows.length"
-                        >
-                            <b-icon pack="fas" icon="trash-alt"></b-icon>
-                            <span>Delete checked</span>
-                        </button>
+                        <div class="buttons">
+                            <b-button
+                                tag="router-link"
+                                :to="{ name: 'admin.pages.create' }"
+                                type="is-success"
+                                icon-left="plus"
+                                >Add
+                            </b-button>
+                            <b-button
+                                type="is-danger"
+                                icon-left="trash-alt"
+                                :disabled="!checkedRows.length"
+                                @click="confirmDeleteSelectedPages()"
+                            >
+                                Delete checked
+                            </b-button>
+                        </div>
                     </div>
                 </div>
 
@@ -87,7 +89,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import Component from 'vue-class-component';
 import VueBuefy from '../../../../../../../resources/js/admin/Buefy.vue';
 import Page from '../../page';

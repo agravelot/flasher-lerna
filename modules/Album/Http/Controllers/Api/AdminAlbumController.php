@@ -11,8 +11,9 @@ namespace Modules\Album\Http\Controllers\Api;
 
 use Exception;
 use App\Models\Album;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use Spatie\QueryBuilder\QueryBuilder;
 use Modules\Album\Http\Requests\AlbumRequest;
 use Modules\Album\Transformers\AlbumShowResource;
@@ -31,7 +32,7 @@ class AdminAlbumController extends Controller
      *
      * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return AlbumIndexResource::collection(
             QueryBuilder::for(Album::class)->allowedFilters('title')
@@ -44,11 +45,11 @@ class AdminAlbumController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param AlbumRequest $request
+     * @param  AlbumRequest  $request
      *
      * @return AlbumShowResource
      */
-    public function store(AlbumRequest $request)
+    public function store(AlbumRequest $request): AlbumShowResource
     {
         $album = Album::create($request->validated());
 
@@ -70,11 +71,11 @@ class AdminAlbumController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Album $album
+     * @param  Album  $album
      *
      * @return AlbumShowResource
      */
-    public function show(Album $album)
+    public function show(Album $album): AlbumShowResource
     {
         $album->load('categories', 'cosplayers.media');
 
@@ -84,12 +85,12 @@ class AdminAlbumController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param AlbumRequest $request
-     * @param Album        $album
+     * @param  AlbumRequest  $request
+     * @param  Album  $album
      *
      * @return AlbumShowResource
      */
-    public function update(Album $album, AlbumRequest $request)
+    public function update(Album $album, AlbumRequest $request): AlbumShowResource
     {
         $album->slug = null;
         $album->update($request->validated());
@@ -112,13 +113,12 @@ class AdminAlbumController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Album $album
+     * @param  Album  $album
      *
+     * @return JsonResponse
      * @throws Exception
-     *
-     * @return RedirectResponse
      */
-    public function destroy(Album $album)
+    public function destroy(Album $album): JsonResponse
     {
         $album->delete();
 

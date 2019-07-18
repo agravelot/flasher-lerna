@@ -9,8 +9,10 @@
 
 namespace Modules\Cosplayer\Http\Controllers;
 
+use Exception;
 use App\Models\Cosplayer;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
 use Modules\Cosplayer\Http\Requests\CosplayerRequest;
@@ -24,7 +26,7 @@ class AdminCosplayerController extends Controller
      *
      * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return CosplayerResource::collection(
             QueryBuilder::for(Cosplayer::class)->allowedFilters('name')
@@ -37,11 +39,11 @@ class AdminCosplayerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param CosplayerRequest $request
+     * @param  CosplayerRequest  $request
      *
      * @return CosplayerResource
      */
-    public function store(CosplayerRequest $request)
+    public function store(CosplayerRequest $request): CosplayerResource
     {
         $cosplayer = Cosplayer::create($request->validated());
 
@@ -55,9 +57,11 @@ class AdminCosplayerController extends Controller
     /**
      * Show the specified resource.
      *
+     * @param  Cosplayer  $cosplayer
+     *
      * @return CosplayerResource
      */
-    public function show(Cosplayer $cosplayer)
+    public function show(Cosplayer $cosplayer): CosplayerResource
     {
         return new CosplayerResource($cosplayer);
     }
@@ -65,12 +69,12 @@ class AdminCosplayerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param CosplayerRequest $request
-     * @param Cosplayer        $cosplayer
+     * @param  CosplayerRequest  $request
+     * @param  Cosplayer  $cosplayer
      *
      * @return CosplayerResource
      */
-    public function update(CosplayerRequest $request, Cosplayer $cosplayer)
+    public function update(CosplayerRequest $request, Cosplayer $cosplayer): CosplayerResource
     {
         $cosplayer->slug = null;
         $cosplayer->update($request->validated());
@@ -85,11 +89,12 @@ class AdminCosplayerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @throws \Exception
+     * @param  Cosplayer  $cosplayer
      *
-     * @return Response
+     * @return JsonResponse
+     * @throws Exception
      */
-    public function destroy(Cosplayer $cosplayer)
+    public function destroy(Cosplayer $cosplayer): JsonResponse
     {
         $cosplayer->delete();
 

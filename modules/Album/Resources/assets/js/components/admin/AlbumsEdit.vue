@@ -90,8 +90,15 @@
                                     </b-switch>
                                 </div>
                             </b-field>
-
-                            <button class="button is-primary">Update</button>
+                            <div class="buttons">
+                                <button class="button is-primary">Update</button>
+                                <a
+                                    class="button is-bottom-right is-danger"
+                                    @click="confirmDeleteAlbum()"
+                                >
+                                    Delete
+                                </a>
+                            </div>
                         </form>
                     </b-tab-item>
                     <b-tab-item label="Pictures" icon-pack="fas" icon="images">
@@ -105,7 +112,7 @@
                         <div class="columns is-multiline">
                             <div
                                 v-for="picture in album.medias"
-                                class="column is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd"
+                                class="column is-two-thirds-tablet is-half-desktop is-one-third-widescreen"
                             >
                                 <img :src="picture.thumb" :alt="picture.name" />
                                 <a
@@ -116,9 +123,6 @@
                                 </a>
                             </div>
                         </div>
-                    </b-tab-item>
-                    <b-tab-item label="Prévualisation" icon-pack="fas" icon="eye">
-                        <album-show-gallery></album-show-gallery>
                     </b-tab-item>
                 </b-tabs>
             </div>
@@ -131,14 +135,13 @@ import Component from 'vue-class-component';
 import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 import AlbumDesc from './AlbumDesc';
-import AlbumsShowGallery from './AlbumsShowGallery';
+import Album from '../../album';
 
 @Component({
     name: 'AlbumsEdit',
     components: {
         vueDropzone: vue2Dropzone,
         'album-desc': AlbumDesc,
-        'album-show-gallery': AlbumsShowGallery,
     },
     extends: AlbumDesc,
 })
@@ -229,6 +232,38 @@ export default class AlbumsEdit extends AlbumDesc {
                     message: `Unable to refresh the album <br><small>${
                         err.response.data.message
                     }</small>`,
+                    type: 'is-danger',
+                    duration: 5000,
+                });
+                throw err;
+            });
+    }
+
+    confirmDeleteAlbum(): void {
+        this.$dialog.confirm({
+            title: 'Deleting Album',
+            message:
+                'Are you sure you want to <b>delete</b> this album? This action cannot be undone.',
+            confirmText: 'Delete Album',
+            type: 'is-danger',
+            hasIcon: true,
+            onConfirm: () => this.deleteAlbum(),
+        });
+    }
+
+    deleteAlbum(): void {
+        this.axios
+            .delete(`/api/admin/albums/${this.album.slug}`)
+            .then(res => {
+                this.$router.push({ name: 'admin.albums.index' });
+                this.$toast.open({
+                    message: 'Album successfully deleted!',
+                    type: 'is-success',
+                });
+            })
+            .catch(err => {
+                this.$toast.open({
+                    message: `Unable to delete the picture`,
                     type: 'is-danger',
                     duration: 5000,
                 });

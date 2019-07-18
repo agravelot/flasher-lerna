@@ -5,7 +5,7 @@
             :type="errors.title ? 'is-danger' : ''"
             :message="errors.title ? errors.title[0] : null"
         >
-            <b-input type="text" v-model="album.title" maxlength="30"> </b-input>
+            <b-input type="text" v-model="album.title" maxlength="30"></b-input>
         </b-field>
 
         <quill-editor

@@ -36,20 +36,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * App\Models\Album.
  *
- * @property int                    $id
- * @property string                 $slug
- * @property string                 $title
- * @property string|null            $body
- * @property string|null            $published_at
- * @property string|null            $password
- * @property int                    $user_id
- * @property Carbon|null            $created_at
- * @property Carbon|null            $updated_at
- * @property Collection|Category[]  $categories
- * @property Collection|Comment[]   $comments
+ * @property int $id
+ * @property string $slug
+ * @property string $title
+ * @property string|null $body
+ * @property string|null $published_at
+ * @property string|null $password
+ * @property int $user_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Collection|Category[] $categories
+ * @property Collection|Comment[] $comments
  * @property Collection|Cosplayer[] $cosplayers
- * @property Collection|Media[]     $media
- * @property User                   $user
+ * @property Collection|Media[] $media
+ * @property User $user
  * @method static Builder|Album findSimilarSlugs($attribute, $config, $slug)
  * @method static Builder|Album newModelQuery()
  * @method static Builder|Album newQuery()
@@ -66,7 +66,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @mixin Eloquent
  * @property int $private
  * @method static Builder|Album wherePrivate($value)
- * @method static Builder|Album public()
+ * @method static Builder|Album public ()
  * @property mixed $cover
  * @property-read mixed $cover_responsive
  */
@@ -82,6 +82,8 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
     protected $dates = [
         'published_at', 'updated_at', 'created_at',
     ];
+
+    protected $casts = ['private' => 'bool'];
 
     /**
      * The attributes that are mass assignable.
@@ -112,7 +114,7 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
     /**
      * Scope for public albums.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      */
     public function scopePublic(Builder $query)
     {
@@ -125,7 +127,7 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
      *
      * @return bool
      */
-    public function isPublic()
+    public function isPublic(): bool
     {
         return $this->isPublished() && $this->isPasswordLess();
     }
@@ -135,7 +137,7 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
      *
      * @return bool
      */
-    public function isPublished()
+    public function isPublished(): bool
     {
         return $this->published_at !== null;
     }
@@ -145,9 +147,9 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
      *
      * @return bool
      */
-    public function isPasswordLess()
+    public function isPasswordLess(): bool
     {
-        return $this->private == false;
+        return $this->private === false;
     }
 
     /**
@@ -155,7 +157,7 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
      *
      * @return BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -165,19 +167,9 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
      *
      * @return MorphMany
      */
-    public function comments()
+    public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable');
-    }
-
-    /**
-     * Return all the categories of this album.
-     *
-     * @return MorphToMany
-     */
-    public function categories()
-    {
-        return $this->morphToMany(Category::class, 'categorizable');
     }
 
     /**
@@ -185,7 +177,7 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
      *
      * @return BelongsToMany
      */
-    public function cosplayers()
+    public function cosplayers(): BelongsToMany
     {
         return $this->belongsToMany(Cosplayer::class);
     }
@@ -193,7 +185,7 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
     /**
      * Add media to Album::PICTURES_COLLECTION collection.
      *
-     * @param string|UploadedFile $media
+     * @param  string|UploadedFile  $media
      *
      * @return Media
      */
@@ -211,13 +203,13 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
     public function registerMediaCollections()
     {
         $this->addMediaCollection(self::PICTURES_COLLECTION)
-            ->acceptsFile(function (File $file) {
+            ->acceptsFile(static function (File $file) {
                 return mb_strpos($file->mimeType, 'image/') === 0;
             });
     }
 
     /**
-     * @param Media|null $media
+     * @param  Media|null  $media
      *
      * @throws InvalidManipulation
      */
@@ -242,6 +234,16 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
     public function tags(): \Illuminate\Support\Collection
     {
         return $this->categories()->pluck('name');
+    }
+
+    /**
+     * Return all the categories of this album.
+     *
+     * @return MorphToMany
+     */
+    public function categories(): MorphToMany
+    {
+        return $this->morphToMany(Category::class, 'categorizable');
     }
 
     public function publishedAt(): string

@@ -18,7 +18,7 @@ class CosplayerRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => 'required|string|min:2|max:255|unique:cosplayers,name,'.optional($this->route('cosplayer'))->id,

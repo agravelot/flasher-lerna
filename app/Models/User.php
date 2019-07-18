@@ -9,48 +9,58 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Laravel\Passport\Token;
+use Laravel\Passport\Client;
+use Illuminate\Support\Carbon;
 use App\Abilities\MustVerifyEmail;
 use Laravel\Passport\HasApiTokens;
 use App\Abilities\CanResetPassword;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
 use Lab404\Impersonate\Models\Impersonate;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailInterface;
 
 /**
  * App\Models\User.
  *
- * @property int                                                                                                       $id
- * @property string                                                                                                    $name
- * @property string                                                                                                    $email
- * @property string                                                                                                    $password
- * @property string                                                                                                    $role
- * @property string|null                                                                                               $email_verified_at
- * @property string|null                                                                                               $remember_token
- * @property \Illuminate\Support\Carbon|null                                                                           $created_at
- * @property \Illuminate\Support\Carbon|null                                                                           $updated_at
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Album[]                                              $albums
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Contact[]                                            $contact
- * @property \App\Models\Cosplayer                                                                                     $cosplayer
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\GoldenBookPost[]                                     $goldenBookPosts
- * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Post[]                                               $posts
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmailVerifiedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRole($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
- * @mixin \Eloquent
- * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
- * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[]  $tokens
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property string $role
+ * @property string|null $email_verified_at
+ * @property string|null $remember_token
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Collection|Album[] $albums
+ * @property Collection|Contact[] $contact
+ * @property Cosplayer $cosplayer
+ * @property Collection|GoldenBookPost[] $goldenBookPosts
+ * @property DatabaseNotificationCollection|DatabaseNotification[] $notifications
+ * @property Collection|Post[] $posts
+ * @method static Builder|User newModelQuery()
+ * @method static Builder|User newQuery()
+ * @method static Builder|User query()
+ * @method static Builder|User whereCreatedAt($value)
+ * @method static Builder|User whereEmail($value)
+ * @method static Builder|User whereEmailVerifiedAt($value)
+ * @method static Builder|User whereId($value)
+ * @method static Builder|User whereName($value)
+ * @method static Builder|User wherePassword($value)
+ * @method static Builder|User whereRememberToken($value)
+ * @method static Builder|User whereRole($value)
+ * @method static Builder|User whereUpdatedAt($value)
+ * @mixin Eloquent
+ * @property Collection|Client[] $clients
+ * @property Collection|Token[] $tokens
  */
 class User extends Authenticatable implements MustVerifyEmailInterface
 {
@@ -81,7 +91,7 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * Hash the password.
      *
-     * @param $value
+     * @param $value Non hashed password
      */
     public function setPasswordAttribute($value)
     {
@@ -93,9 +103,9 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * Return the albums posted by this user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function albums()
+    public function albums(): HasMany
     {
         return $this->hasMany(Album::class);
     }
@@ -103,9 +113,9 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * Return the posts posted by this user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function posts()
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
@@ -113,9 +123,9 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * Return the linked cosplayer to this user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      */
-    public function cosplayer()
+    public function cosplayer(): HasOne
     {
         return $this->hasOne(Cosplayer::class);
     }
@@ -123,9 +133,9 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * Return the contact from this user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function contact()
+    public function contact(): HasMany
     {
         return $this->hasMany(Contact::class);
     }
@@ -133,9 +143,9 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * Return the golden book posts by this user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function goldenBookPosts()
+    public function goldenBookPosts(): HasMany
     {
         return $this->hasMany(GoldenBookPost::class);
     }
@@ -145,7 +155,7 @@ class User extends Authenticatable implements MustVerifyEmailInterface
      *
      * @return bool
      */
-    public function canImpersonate()
+    public function canImpersonate(): bool
     {
         return $this->isAdmin();
     }
@@ -155,7 +165,7 @@ class User extends Authenticatable implements MustVerifyEmailInterface
      *
      * @return bool
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return $this->role === 'admin';
     }

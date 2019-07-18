@@ -9,20 +9,23 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Exception;
+use Illuminate\View\View;
 use App\Models\SocialMedia;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\SocialMediaRequest;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class AdminSocialMediaController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
+     * @throws AuthorizationException
      */
-    public function index()
+    public function index(): View
     {
         $this->authorize('view', SocialMedia::class);
         $socialMedias = SocialMedia::paginate();
@@ -33,11 +36,10 @@ class AdminSocialMediaController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
+     * @throws AuthorizationException
      */
-    public function create()
+    public function create(): View
     {
         $this->authorize('create', SocialMedia::class);
 
@@ -47,13 +49,12 @@ class AdminSocialMediaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param SocialMediaRequest $request
+     * @param  SocialMediaRequest  $request
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function store(SocialMediaRequest $request)
+    public function store(SocialMediaRequest $request): RedirectResponse
     {
         $this->authorize('view', SocialMedia::class);
         $socialMedia = SocialMedia::create($request->validated());
@@ -66,13 +67,12 @@ class AdminSocialMediaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
+     * @throws AuthorizationException
      */
-    public function show(int $id)
+    public function show(int $id): View
     {
         $this->authorize('view', SocialMedia::class);
         $socialMedia = SocialMedia::findOrFail($id);
@@ -84,13 +84,12 @@ class AdminSocialMediaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
+     * @throws AuthorizationException
      */
-    public function edit(int $id)
+    public function edit(int $id): View
     {
         $this->authorize('update', SocialMedia::class);
         $socialMedia = SocialMedia::findOrFail($id);
@@ -102,14 +101,13 @@ class AdminSocialMediaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param SocialMediaRequest $request
-     * @param int                $id
+     * @param  SocialMediaRequest  $request
+     * @param  int  $id
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function update(SocialMediaRequest $request, int $id)
+    public function update(SocialMediaRequest $request, int $id): RedirectResponse
     {
         $this->authorize('update', SocialMedia::class);
         $socialMedia = SocialMedia::findOrFail($id);
@@ -123,14 +121,14 @@ class AdminSocialMediaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Exception
+     * @return RedirectResponse
+     * @throws Exception
      *
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function destroy(int $id)
+    public function destroy(int $id): RedirectResponse
     {
         $this->authorize('delete', SocialMedia::class);
         $socialMedia = SocialMedia::findOrFail($id);

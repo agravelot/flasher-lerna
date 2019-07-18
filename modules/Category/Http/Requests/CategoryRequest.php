@@ -18,7 +18,7 @@ class CategoryRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => 'string|required|min:2|max:255|unique:categories,name,'.optional($this->category)->id,

@@ -9,35 +9,40 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Support\Carbon;
 use App\Abilities\HasNameAsSlug;
 use App\Abilities\HasSlugRouteKey;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Collection;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
  * App\Models\Category.
  *
- * @property int                                                          $id
- * @property string                                                       $name
- * @property string                                                       $slug
- * @property string|null                                                  $description
- * @property \Illuminate\Support\Carbon|null                              $created_at
- * @property \Illuminate\Support\Carbon|null                              $updated_at
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Album[] $albums
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Post[]  $posts
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category findSimilarSlugs($attribute, $config, $slug)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereUpdatedAt($value)
- * @mixin \Eloquent
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\PublicAlbum[] $publishedAlbums
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property string|null $description
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Collection|Album[] $albums
+ * @property Collection|Post[] $posts
+ * @method static Builder|Category findSimilarSlugs($attribute, $config, $slug)
+ * @method static Builder|Category newModelQuery()
+ * @method static Builder|Category newQuery()
+ * @method static Builder|Category query()
+ * @method static Builder|Category whereCreatedAt($value)
+ * @method static Builder|Category whereDescription($value)
+ * @method static Builder|Category whereId($value)
+ * @method static Builder|Category whereName($value)
+ * @method static Builder|Category whereSlug($value)
+ * @method static Builder|Category whereUpdatedAt($value)
+ * @mixin Eloquent
+ * @property Collection|PublicAlbum[] $publishedAlbums
  */
 class Category extends Model
 {
@@ -53,9 +58,9 @@ class Category extends Model
     /**
      * Posts relationships.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return MorphToMany
      */
-    public function posts()
+    public function posts(): MorphToMany
     {
         return $this->morphedByMany(Post::class, 'categorizable');
     }
@@ -63,9 +68,9 @@ class Category extends Model
     /**
      * Albums relationships.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return MorphToMany
      */
-    public function albums()
+    public function albums(): MorphToMany
     {
         return $this->morphedByMany(Album::class, 'categorizable');
     }
@@ -73,9 +78,9 @@ class Category extends Model
     /**
      * Album relationship, only published.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return MorphToMany
      */
-    public function publishedAlbums()
+    public function publishedAlbums(): MorphToMany
     {
         return $this->morphedByMany(PublicAlbum::class, 'categorizable');
     }

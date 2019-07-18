@@ -9,8 +9,10 @@
 
 namespace Modules\Category\Http\Controllers;
 
+use Exception;
 use App\Models\Category;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
 use Modules\Category\Http\Requests\CategoryRequest;
@@ -25,7 +27,7 @@ class AdminCategoryController extends Controller
      *
      * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return CosplayerResource::collection(
             QueryBuilder::for(Category::class)->allowedFilters('name')
@@ -36,11 +38,11 @@ class AdminCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param CategoryRequest $request
+     * @param  CategoryRequest  $request
      *
      * @return CategoryResource
      */
-    public function store(CategoryRequest $request)
+    public function store(CategoryRequest $request): CategoryResource
     {
         $category = Category::create($request->validated());
 
@@ -50,11 +52,11 @@ class AdminCategoryController extends Controller
     /**
      * Show the specified resource.
      *
-     * @param Category $category
+     * @param  Category  $category
      *
      * @return CategoryResource
      */
-    public function show(Category $category)
+    public function show(Category $category): CategoryResource
     {
         return new CategoryResource($category);
     }
@@ -62,12 +64,12 @@ class AdminCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param CategoryRequest $request
-     * @param Category        $category
+     * @param  CategoryRequest  $request
+     * @param  Category  $category
      *
      * @return CategoryResource
      */
-    public function update(CategoryRequest $request, Category $category)
+    public function update(CategoryRequest $request, Category $category): CategoryResource
     {
         $category->slug = null;
         $category->update($request->validated());
@@ -78,9 +80,15 @@ class AdminCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @return Response
+     * @param  Category  $category
+     *
+     * @return JsonResponse
+     * @throws Exception
      */
-    public function destroy()
+    public function destroy(Category $category): JsonResponse
     {
+        $category->delete();
+
+        return response()->json(null, 204);
     }
 }

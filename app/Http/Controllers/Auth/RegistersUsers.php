@@ -10,9 +10,12 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 
 trait RegistersUsers
@@ -22,9 +25,9 @@ trait RegistersUsers
     /**
      * Show the application registration form.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function showRegistrationForm()
+    public function showRegistrationForm(): Response
     {
         return view('auth.register');
     }
@@ -32,11 +35,11 @@ trait RegistersUsers
     /**
      * Handle a registration request for the application.
      *
-     * @param UserRequest $request
+     * @param  UserRequest  $request
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function register(UserRequest $request)
+    public function register(UserRequest $request): RedirectResponse
     {
         // $this->validator($request->all())->validate();
 
@@ -51,9 +54,9 @@ trait RegistersUsers
     /**
      * Get the guard to be used during registration.
      *
-     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     * @return StatefulGuard
      */
-    protected function guard()
+    protected function guard(): StatefulGuard
     {
         return Auth::guard();
     }
@@ -61,10 +64,10 @@ trait RegistersUsers
     /**
      * The user has been registered.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @param         $user
      */
-    protected function registered(Request $request, $user)
+    protected function registered(Request $request, $user): void
     {
     }
 }

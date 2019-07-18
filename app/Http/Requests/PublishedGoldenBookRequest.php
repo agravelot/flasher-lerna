@@ -16,7 +16,7 @@ class PublishedGoldenBookRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'goldenbook_id' => 'required|exists:golden_book_posts,id',

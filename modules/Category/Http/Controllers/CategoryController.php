@@ -21,7 +21,7 @@ class CategoryController extends Controller
      *
      * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return CategoryResource::collection(Category::all());
     }
@@ -29,11 +29,11 @@ class CategoryController extends Controller
     /**
      * Show the specified resource.
      *
-     * @param Category $category
+     * @param  Category  $category
      *
      * @return CategoryResource
      */
-    public function show(Category $category)
+    public function show(Category $category): CategoryResource
     {
         return new CategoryResource($category);
     }

@@ -10,7 +10,6 @@
 namespace App\Models;
 
 use Eloquent;
-use Illuminate\Support\Str;
 use Spatie\MediaLibrary\File;
 use Illuminate\Support\Carbon;
 use App\Abilities\HasNameAsSlug;
@@ -32,18 +31,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * App\Models\Cosplayer.
  *
- * @property int                   $id
- * @property string                $name
- * @property string                $slug
- * @property string|null           $description
- * @property string|null           $picture
- * @property int|null              $user_id
- * @property Carbon|null           $created_at
- * @property Carbon|null           $updated_at
- * @property Collection|Album[]    $albums
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property string|null $description
+ * @property string|null $picture
+ * @property int|null $user_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Collection|Album[] $albums
  * @property Collection|Category[] $categories
- * @property Collection|Media[]    $media
- * @property User|null             $user
+ * @property Collection|Media[] $media
+ * @property User|null $user
  * @method static Builder|Cosplayer findSimilarSlugs($attribute, $config, $slug)
  * @method static Builder|Cosplayer newModelQuery()
  * @method static Builder|Cosplayer newQuery()
@@ -58,8 +57,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Cosplayer whereUserId($value)
  * @mixin Eloquent
  * @property Collection|PublicAlbum[] $publicAlbums
- * @property mixed                    $initial
- * @property mixed                    $avatar
+ * @property mixed $initial
+ * @property mixed $avatar
  */
 class Cosplayer extends Model implements HasMedia
 {
@@ -90,7 +89,7 @@ class Cosplayer extends Model implements HasMedia
     /**
      * Add media to Album::PICTURES_COLLECTION collection.
      *
-     * @param UploadedFile|null $media
+     * @param  UploadedFile|null  $media
      */
     public function setAvatarAttribute($media)
     {
@@ -102,8 +101,7 @@ class Cosplayer extends Model implements HasMedia
             return;
         }
 
-        $uuid = Str::uuid()->toString();
-        $name = "{$this->slug}_{$uuid}.{$media->clientExtension()}";
+        $name = "{$this->slug}.{$media->clientExtension()}";
 
         $this->addMedia($media)
             ->usingFileName($name)
@@ -117,7 +115,7 @@ class Cosplayer extends Model implements HasMedia
      *
      * @return BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -127,7 +125,7 @@ class Cosplayer extends Model implements HasMedia
      *
      * @return BelongsToMany
      */
-    public function albums()
+    public function albums(): BelongsToMany
     {
         return $this->belongsToMany(Album::class);
     }
@@ -137,7 +135,7 @@ class Cosplayer extends Model implements HasMedia
      *
      * @return BelongsToMany
      */
-    public function publicAlbums()
+    public function publicAlbums(): BelongsToMany
     {
         return $this->belongsToMany(PublicAlbum::class, 'album_cosplayer');
     }
@@ -147,7 +145,7 @@ class Cosplayer extends Model implements HasMedia
      *
      * @return MorphToMany
      */
-    public function categories()
+    public function categories(): MorphToMany
     {
         return $this->morphToMany(Category::class, 'categorizable');
     }
@@ -155,10 +153,10 @@ class Cosplayer extends Model implements HasMedia
     /**
      * Defining the media collections.
      */
-    public function registerMediaCollections()
+    public function registerMediaCollections(): void
     {
         $this->addMediaCollection('avatar')
-            ->acceptsFile(function (File $file) {
+            ->acceptsFile(static function (File $file) {
                 return mb_strpos($file->mimeType, 'image/') === 0;
             })
             ->singleFile();
@@ -167,11 +165,11 @@ class Cosplayer extends Model implements HasMedia
     /**
      * Register the media conversions.
      *
-     * @param Media|null $media
+     * @param  Media|null  $media
      *
      * @throws InvalidManipulation
      */
-    public function registerMediaConversions(Media $media = null)
+    public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')
             ->crop('crop-center', 96, 96)

@@ -17,11 +17,11 @@ class CategoryPolicy extends Policy
     /**
      * Determine whether the user can view the categories.
      *
-     * @param User $user
+     * @param  User  $user
      *
      * @return bool
      */
-    public function viewAny(?User $user)
+    public function viewAny(?User $user): bool
     {
         return true;
     }
@@ -29,12 +29,12 @@ class CategoryPolicy extends Policy
     /**
      * Determine whether the user can view the category.
      *
-     * @param User          $user
-     * @param Category|null $category
+     * @param  User  $user
+     * @param  Category|null  $category
      *
      * @return bool
      */
-    public function view(User $user, Category $category)
+    public function view(User $user, Category $category): bool
     {
         return false;
     }
@@ -42,11 +42,11 @@ class CategoryPolicy extends Policy
     /**
      * Determine whether the user can create categorys.
      *
-     * @param User $user
+     * @param  User  $user
      *
      * @return bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return false;
     }
@@ -54,12 +54,12 @@ class CategoryPolicy extends Policy
     /**
      * Determine whether the user can update the category.
      *
-     * @param User          $user
-     * @param Category|null $category
+     * @param  User  $user
+     * @param  Category|null  $category
      *
      * @return bool
      */
-    public function update(User $user, Category $category)
+    public function update(User $user, Category $category): bool
     {
         return false;
     }
@@ -67,12 +67,12 @@ class CategoryPolicy extends Policy
     /**
      * Determine whether the user can delete the category.
      *
-     * @param User          $user
-     * @param Category|null $category
+     * @param  User  $user
+     * @param  Category|null  $category
      *
      * @return bool
      */
-    public function delete(User $user, Category $category)
+    public function delete(User $user, Category $category): bool
     {
         return false;
     }
@@ -80,12 +80,12 @@ class CategoryPolicy extends Policy
     /**
      * Determine whether the user can restore the category.
      *
-     * @param User     $user
-     * @param Category $category
+     * @param  User  $user
+     * @param  Category  $category
      *
      * @return bool
      */
-    public function restore(User $user, Category $category)
+    public function restore(User $user, Category $category): bool
     {
         return false;
     }
@@ -93,12 +93,12 @@ class CategoryPolicy extends Policy
     /**
      * Determine whether the user can permanently delete the category.
      *
-     * @param User     $user
-     * @param Category $category
+     * @param  User  $user
+     * @param  Category  $category
      *
      * @return bool
      */
-    public function forceDelete(User $user, Category $category)
+    public function forceDelete(User $user, Category $category): bool
     {
         return false;
     }

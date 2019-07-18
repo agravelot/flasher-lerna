@@ -16,7 +16,7 @@ class ContactStoreRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => 'string|required|min:3|max:255',

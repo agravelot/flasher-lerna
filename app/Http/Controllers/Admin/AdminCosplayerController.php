@@ -12,8 +12,9 @@ namespace App\Http\Controllers\Admin;
 use Exception;
 use App\Models\User;
 use App\Models\Cosplayer;
-use Illuminate\Http\Response;
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\Access\AuthorizationException;
 use Modules\Cosplayer\Http\Requests\CosplayerRequest;
 
@@ -22,11 +23,10 @@ class AdminCosplayerController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @return View
      * @throws AuthorizationException
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $this->authorize('viewAny', Cosplayer::class);
         $cosplayers = Cosplayer::paginate(10);
@@ -39,11 +39,10 @@ class AdminCosplayerController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @return View
      * @throws AuthorizationException
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $this->authorize('create', Cosplayer::class);
         $users = User::with('cosplayer')->get(['id', 'name']);
@@ -54,13 +53,12 @@ class AdminCosplayerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param CosplayerRequest $request
+     * @param  CosplayerRequest  $request
      *
+     * @return RedirectResponse
      * @throws AuthorizationException
-     *
-     * @return Response
      */
-    public function store(CosplayerRequest $request)
+    public function store(CosplayerRequest $request): RedirectResponse
     {
         $this->authorize('create', Cosplayer::class);
         $cosplayer = Cosplayer::create($request->validated());
@@ -76,13 +74,12 @@ class AdminCosplayerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param string $slug
+     * @param  string  $slug
      *
+     * @return View
      * @throws AuthorizationException
-     *
-     * @return Response
      */
-    public function show(string $slug)
+    public function show(string $slug): View
     {
         $this->authorize('view', Cosplayer::class);
         $cosplayer = Cosplayer::findBySlugOrFail($slug);
@@ -96,13 +93,12 @@ class AdminCosplayerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param string $slug
+     * @param  string  $slug
      *
+     * @return View
      * @throws AuthorizationException
-     *
-     * @return Response
      */
-    public function edit(string $slug)
+    public function edit(string $slug): View
     {
         $this->authorize('update', Cosplayer::class);
         $cosplayer = Cosplayer::findBySlugOrFail($slug);
@@ -115,14 +111,13 @@ class AdminCosplayerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param CosplayerRequest $request
-     * @param string           $slug
+     * @param  CosplayerRequest  $request
+     * @param  string  $slug
      *
+     * @return RedirectResponse
      * @throws AuthorizationException
-     *
-     * @return Response
      */
-    public function update(CosplayerRequest $request, string $slug)
+    public function update(CosplayerRequest $request, string $slug): RedirectResponse
     {
         $this->authorize('update', Cosplayer::class);
         $cosplayer = Cosplayer::findBySlugOrFail($slug);
@@ -141,14 +136,14 @@ class AdminCosplayerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param string $slug
+     * @param  string  $slug
      *
-     * @throws AuthorizationException
+     * @return RedirectResponse
      * @throws Exception
      *
-     * @return Response
+     * @throws AuthorizationException
      */
-    public function destroy(string $slug)
+    public function destroy(string $slug): RedirectResponse
     {
         $this->authorize('delete', Cosplayer::class);
         $cosplayer = Cosplayer::findBySlugOrFail($slug);

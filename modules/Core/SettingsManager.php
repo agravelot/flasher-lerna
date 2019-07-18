@@ -9,6 +9,7 @@
 
 namespace Modules\Core;
 
+use InvalidArgumentException;
 use Illuminate\Support\Collection;
 use Modules\Core\Entities\Setting;
 use Spatie\MediaLibrary\Models\Media;
@@ -46,7 +47,7 @@ class SettingsManager
         $setting = $this->settings->firstWhere('name', '===', $name);
 
         if (! $setting && $default === null) {
-            throw new \InvalidArgumentException("Unable to find '$name' setting");
+            throw new InvalidArgumentException("Unable to find '$name' setting");
         }
 
         return optional($setting)->value ?: $default;

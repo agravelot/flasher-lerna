@@ -18,7 +18,7 @@ class StorePictureAlbumRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'album_slug' => 'required|exists:albums,slug',

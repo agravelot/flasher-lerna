@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Cosplayer;
-use Illuminate\Http\Response;
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 
 class CosplayerController extends Controller
@@ -18,9 +18,9 @@ class CosplayerController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         $cosplayers = Cosplayer::with('media')->get();
 
@@ -30,11 +30,11 @@ class CosplayerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Cosplayer $cosplayer
+     * @param  Cosplayer  $cosplayer
      *
-     * @return Response
+     * @return View
      */
-    public function show(Cosplayer $cosplayer)
+    public function show(Cosplayer $cosplayer): View
     {
         $albums = $cosplayer->load('publicAlbums.media')->publicAlbums()->paginate();
 

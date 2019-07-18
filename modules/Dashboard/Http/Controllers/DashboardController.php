@@ -26,7 +26,7 @@ class DashboardController extends Controller
      *
      * @return JsonResponse
      */
-    public function __invoke()
+    public function __invoke(): JsonResponse
     {
         return response()->json([
             'user' => Auth::user()->name,

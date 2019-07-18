@@ -9,6 +9,7 @@
 
 namespace Modules\Core\Providers;
 
+use Config;
 use Modules\Core\SettingsManager;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
@@ -20,7 +21,7 @@ class CoreServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerTranslations();
         $this->registerConfig();
@@ -38,7 +39,7 @@ class CoreServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
     }
@@ -48,7 +49,7 @@ class CoreServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerConfig()
+    protected function registerConfig(): void
     {
         $this->publishes([
             __DIR__.'/../Config/config.php' => config_path('core.php'),
@@ -63,7 +64,7 @@ class CoreServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function registerViews()
+    public function registerViews(): void
     {
         $viewPath = resource_path('views/modules/core');
 
@@ -75,7 +76,7 @@ class CoreServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
             return __DIR__.'/../Resources/views';
-        }, \Config::get('view.paths')), [$sourcePath]), 'core');
+        }, Config::get('view.paths')), [$sourcePath]), 'core');
     }
 
     /**
@@ -83,7 +84,7 @@ class CoreServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function registerTranslations()
+    public function registerTranslations(): void
     {
         $langPath = resource_path('lang/modules/core');
 
@@ -99,7 +100,7 @@ class CoreServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function registerFactories()
+    public function registerFactories(): void
     {
         if (! app()->environment('production', 'staging')) {
             app(Factory::class)->load(__DIR__.'/../Database/factories');
@@ -111,7 +112,7 @@ class CoreServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return [];
     }

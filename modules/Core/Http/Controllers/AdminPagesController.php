@@ -9,7 +9,9 @@
 
 namespace Modules\Core\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Modules\Core\Entities\Page;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
@@ -24,7 +26,7 @@ class AdminPagesController extends Controller
      *
      * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return PageResource::collection(
             QueryBuilder::for(Page::class)->allowedFilters('name')->paginate(15)
@@ -34,21 +36,21 @@ class AdminPagesController extends Controller
     /**
      * Show the specified resource.
      *
-     * @param Page $page
+     * @param  Page  $page
      *
      * @return PageResource
      */
-    public function show(Page $page)
+    public function show(Page $page): PageResource
     {
         return new PageResource($page);
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return PageResource
      */
-    public function store(Request $request)
+    public function store(Request $request): PageResource
     {
         $page = Page::create($request->all());
 
@@ -58,12 +60,12 @@ class AdminPagesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Page    $page
-     * @param Request $request
+     * @param  Page  $page
+     * @param  Request  $request
      *
      * @return PageResource
      */
-    public function update(Page $page, Request $request)
+    public function update(Page $page, Request $request): PageResource
     {
         $page->update($request->only('name', 'title', 'description'));
 
@@ -71,13 +73,12 @@ class AdminPagesController extends Controller
     }
 
     /**
-     * @param Page $page
-     *
-     * @throws \Exception
+     * @param  Page  $page
      *
      * @return JsonResponse
+     * @throws Exception
      */
-    public function destroy(Page $page)
+    public function destroy(Page $page): JsonResponse
     {
         $page->delete();
 

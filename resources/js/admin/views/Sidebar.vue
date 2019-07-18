@@ -24,12 +24,12 @@
                     </li>
 
                     <li>
-                        <a href="/admin/categories">
+                        <router-link :to="{ name: 'admin.categories.index' }">
                             <span class="icon">
                                 <i class="fas fa-tags"></i>
                             </span>
                             Categories
-                        </a>
+                        </router-link>
                     </li>
 
                     <li>
@@ -42,30 +42,12 @@
                     </li>
 
                     <li>
-                        <a href="/admin/cosplayers">
-                            <span class="icon">
-                                <i class="fas fa-user-tag"></i>
-                            </span>
-                            Cosplayers (old)
-                        </a>
-                    </li>
-
-                    <li>
                         <router-link :to="{ name: 'admin.users.index' }">
                             <span class="icon">
                                 <i class="fas fa-user"></i>
                             </span>
                             Users
                         </router-link>
-                    </li>
-
-                    <li>
-                        <a href="/admin/users">
-                            <span class="icon">
-                                <i class="fas fa-user"></i>
-                            </span>
-                            Users (old)
-                        </a>
                     </li>
 
                     <li>

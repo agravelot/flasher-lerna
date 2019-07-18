@@ -19,7 +19,7 @@ class UpdateCategoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_update_category_with_same_title()
+    public function test_admin_can_update_category_with_same_title(): void
     {
         $this->actingAsAdmin();
         $category = factory(Category::class)->create();
@@ -40,7 +40,7 @@ class UpdateCategoryTest extends TestCase
         ]);
     }
 
-    public function test_admin_can_update_title_and_update_slug()
+    public function test_admin_can_update_title_and_update_slug(): void
     {
         $this->actingAsAdmin();
         $category = factory(Category::class)->create();

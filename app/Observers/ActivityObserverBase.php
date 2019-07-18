@@ -16,7 +16,7 @@ abstract class ActivityObserverBase
      *
      * @param $album
      */
-    public function created($album)
+    public function created($album): void
     {
         activity()
             ->performedOn($album)
@@ -30,7 +30,7 @@ abstract class ActivityObserverBase
      *
      * @param  $album
      */
-    public function updated($album)
+    public function updated($album): void
     {
         activity()
             ->performedOn($album)
@@ -42,7 +42,7 @@ abstract class ActivityObserverBase
     /**
      * Handle the album "deleted" event.
      */
-    public function deleted()
+    public function deleted(): void
     {
         activity()
             ->causedBy(auth()->user())

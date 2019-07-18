@@ -10,6 +10,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Post;
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 
 class PostController extends Controller
@@ -17,9 +18,9 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         $posts = Post::all();
 
@@ -29,12 +30,11 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param  Post  $post
      *
-     * @param Post $post
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function show(Post $post)
+    public function show(Post $post): View
     {
         return view('posts.show', compact('post'));
     }

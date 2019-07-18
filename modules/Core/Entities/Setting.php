@@ -9,6 +9,7 @@
 
 namespace Modules\Core\Entities;
 
+use LogicException;
 use Spatie\MediaLibrary\File;
 use Modules\Core\Enums\SettingType;
 use BenSampo\Enum\Traits\CastsEnums;
@@ -58,7 +59,7 @@ class Setting extends Model implements HasMedia
     {
         if ($key === 'value') {
             if ($this->type === null) {
-                throw new \LogicException('Setting type cannot be empty');
+                throw new LogicException('Setting type cannot be empty');
             }
 
             return SettingType::getAliasType($this->type->value);
@@ -68,7 +69,7 @@ class Setting extends Model implements HasMedia
     }
 
     /**
-     * @param $value mixed
+     * @param $value void
      */
     public function setValueAttribute($value): void
     {
@@ -88,11 +89,11 @@ class Setting extends Model implements HasMedia
     /**
      * Register the collections of this album.
      */
-    public function registerMediaCollections()
+    public function registerMediaCollections(): void
     {
         $this->addMediaCollection(self::SETTING_COLLECTION)
             ->singleFile()
-            ->acceptsFile(function (File $file) {
+            ->acceptsFile(static function (File $file) {
                 return mb_strpos($file->mimeType, 'image/') === 0;
             });
     }

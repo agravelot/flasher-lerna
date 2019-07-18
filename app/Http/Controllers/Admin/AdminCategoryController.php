@@ -11,7 +11,7 @@ namespace App\Http\Controllers\Admin;
 
 use Exception;
 use App\Models\Category;
-use Illuminate\Http\Response;
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\CategoryRequest;
@@ -22,11 +22,10 @@ class AdminCategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @return View
      * @throws AuthorizationException
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $this->authorize('viewAny', Category::class);
         $categories = Category::paginate(10);
@@ -37,13 +36,12 @@ class AdminCategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Category $category
+     * @param  Category  $category
      *
+     * @return View
      * @throws AuthorizationException
-     *
-     * @return Response
      */
-    public function show(Category $category)
+    public function show(Category $category): View
     {
         $this->authorize('view', Category::class);
         $category->load(['publishedAlbums.media', 'publishedAlbums.categories']);
@@ -55,13 +53,12 @@ class AdminCategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param string $slug
+     * @param  string  $slug
      *
+     * @return View
      * @throws AuthorizationException
-     *
-     * @return Response
      */
-    public function edit(string $slug)
+    public function edit(string $slug): View
     {
         $this->authorize('update', Category::class);
         $category = Category::findBySlugOrFail($slug);
@@ -73,11 +70,10 @@ class AdminCategoryController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @return View
      * @throws AuthorizationException
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $this->authorize('create', Category::class);
 
@@ -87,13 +83,12 @@ class AdminCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param CategoryRequest $request
+     * @param  CategoryRequest  $request
      *
+     * @return RedirectResponse
      * @throws AuthorizationException
-     *
-     * @return Response
      */
-    public function store(CategoryRequest $request)
+    public function store(CategoryRequest $request): RedirectResponse
     {
         $this->authorize('create', Category::class);
         Category::create($request->validated());
@@ -105,14 +100,13 @@ class AdminCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param CategoryRequest $request
-     * @param string          $slug
+     * @param  CategoryRequest  $request
+     * @param  string  $slug
      *
+     * @return RedirectResponse
      * @throws AuthorizationException
-     *
-     * @return Response
      */
-    public function update(CategoryRequest $request, string $slug)
+    public function update(CategoryRequest $request, string $slug): RedirectResponse
     {
         $this->authorize('update', Category::class);
         $category = Category::findBySlugOrFail($slug);
@@ -126,14 +120,14 @@ class AdminCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param string $slug
-     *
-     * @throws AuthorizationException
-     * @throws Exception
+     * @param  string  $slug
      *
      * @return RedirectResponse
+     * @throws Exception
+     *
+     * @throws AuthorizationException
      */
-    public function destroy(string $slug)
+    public function destroy(string $slug): RedirectResponse
     {
         $this->authorize('delete', Category::class);
         $category = Category::findBySlugOrFail($slug);

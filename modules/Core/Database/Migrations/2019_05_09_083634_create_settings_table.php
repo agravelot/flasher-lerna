@@ -31,11 +31,11 @@ class CreateSettingsTable extends Migration
         });
 
         DB::table('settings')->insert([
-           'name' => 'app_name',
-           'value' => 'Flasher',
-           'type' => 'string',
-           'title' => 'Name of your website',
-           'description' => 'Name of your website',
+            'name' => 'app_name',
+            'value' => 'Flasher',
+            'type' => 'string',
+            'title' => 'Name of your website',
+            'description' => 'Name of your website',
         ]);
 
         DB::table('settings')->insert([

@@ -31,14 +31,13 @@ class AdminPictureAlbumController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StorePictureAlbumRequest $request
-     * @param FileReceiver             $receiver
-     *
-     * @throws UploadMissingFileException
+     * @param  StorePictureAlbumRequest  $request
+     * @param  FileReceiver  $receiver
      *
      * @return JsonResponse|ProcessingUploadPictureResource
+     * @throws UploadMissingFileException
      */
-    public function store(StorePictureAlbumRequest $request, FileReceiver $receiver)
+    public function store(StorePictureAlbumRequest $request, FileReceiver $receiver): JsonResponse
     {
         if ($receiver->isUploaded() === false) {
             throw new UploadMissingFileException();
@@ -63,12 +62,12 @@ class AdminPictureAlbumController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Album                     $album
-     * @param DeletePictureAlbumRequest $request
+     * @param  Album  $album
+     * @param  DeletePictureAlbumRequest  $request
      *
      * @return JsonResponse
      */
-    public function destroy(Album $album, DeletePictureAlbumRequest $request)
+    public function destroy(Album $album, DeletePictureAlbumRequest $request): JsonResponse
     {
         Resource::withoutWrapping();
 

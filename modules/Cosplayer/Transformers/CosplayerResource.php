@@ -9,6 +9,7 @@
 
 namespace Modules\Cosplayer\Transformers;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
 use Modules\Album\Transformers\MediaResource;
 
@@ -17,11 +18,11 @@ class CosplayerResource extends Resource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  Request
      *
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'id' => $this->id,

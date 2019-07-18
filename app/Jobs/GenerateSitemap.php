@@ -23,7 +23,7 @@ class GenerateSitemap implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle()
+    public function handle(): void
     {
         Artisan::call('sitemap:generate');
     }

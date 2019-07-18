@@ -9,9 +9,11 @@
 
 namespace Modules\User\Http\Controllers;
 
+use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use App\Http\Requests\UserRequest;
 use Illuminate\Routing\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -25,7 +27,7 @@ class AdminUsersController extends Controller
      *
      * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return UserResource::collection(
             QueryBuilder::for(User::class)->allowedFilters('name')->paginate(15)
@@ -35,12 +37,15 @@ class AdminUsersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param  UserRequest  $request
      *
-     * @return Response
+     * @return UserResource
      */
-    public function store(Request $request)
+    public function store(UserRequest $request): UserResource
     {
+        $user = User::create($request->validated());
+
+        return new UserResource($user);
     }
 
     /**
@@ -50,7 +55,7 @@ class AdminUsersController extends Controller
      *
      * @return UserResource
      */
-    public function show(User $user)
+    public function show(User $user): UserResource
     {
         return new UserResource($user);
     }
@@ -63,7 +68,7 @@ class AdminUsersController extends Controller
      *
      * @return UserResource
      */
-    public function update(UserRequest $request, User $user)
+    public function update(UserRequest $request, User $user): UserResource
     {
         $user->update($request->validated());
 
@@ -73,11 +78,15 @@ class AdminUsersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  User  $user
      *
-     * @return Response
+     * @return JsonResponse
+     * @throws Exception
      */
-    public function destroy($id)
+    public function destroy(User $user): JsonResponse
     {
+        $user->delete();
+
+        return response()->json(null, 204);
     }
 }

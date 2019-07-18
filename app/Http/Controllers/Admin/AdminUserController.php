@@ -9,21 +9,24 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Exception;
 use App\Models\User;
 use App\Models\Cosplayer;
+use Illuminate\View\View;
 use App\Http\Requests\UserRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class AdminUserController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
+     * @throws AuthorizationException
      */
-    public function index()
+    public function index(): View
     {
         $this->authorize('viewAny', User::class);
         $users = User::with('cosplayer')->paginate(10);
@@ -34,11 +37,10 @@ class AdminUserController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
+     * @throws AuthorizationException
      */
-    public function create()
+    public function create(): View
     {
         $this->authorize('create', User::class);
 
@@ -48,13 +50,12 @@ class AdminUserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param UserRequest $request
+     * @param  UserRequest  $request
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function store(UserRequest $request)
+    public function store(UserRequest $request): RedirectResponse
     {
         $this->authorize('create', User::class);
         User::create($request->validated());
@@ -66,13 +67,12 @@ class AdminUserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
+     * @throws AuthorizationException
      */
-    public function show(int $id)
+    public function show(int $id): View
     {
         $user = User::with('albums.media')->findOrFail($id);
         $this->authorize('view', $user);
@@ -83,13 +83,12 @@ class AdminUserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
+     * @throws AuthorizationException
      */
-    public function edit(int $id)
+    public function edit(int $id): View
     {
         $this->authorize('update', User::class);
         $user = User::findOrFail($id);
@@ -106,14 +105,13 @@ class AdminUserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UserRequest $request
-     * @param int         $id
+     * @param  UserRequest  $request
+     * @param  int  $id
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function update(UserRequest $request, $id)
+    public function update(UserRequest $request, $id): RedirectResponse
     {
         $this->authorize('update', User::class);
         $user = User::findOrFail($id);
@@ -127,14 +125,14 @@ class AdminUserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Exception
+     * @return RedirectResponse
+     * @throws Exception
      *
-     * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function destroy(int $id)
+    public function destroy(int $id): RedirectResponse
     {
         $this->authorize('delete', User::class);
         $user = User::findOrFail($id);

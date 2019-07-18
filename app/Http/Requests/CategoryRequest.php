@@ -9,6 +9,7 @@
 
 namespace App\Http\Requests;
 
+use function in_array;
 use App\Models\Category;
 
 class CategoryRequest extends Request
@@ -18,10 +19,10 @@ class CategoryRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $id = '';
-        if (\in_array($this->method(), ['PATCH', 'PUT'], true)) {
+        if (in_array($this->method(), ['PATCH', 'PUT'], true)) {
             $id = Category::findBySlugOrFail($this->category)->id;
         }
 

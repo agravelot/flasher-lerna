@@ -10,6 +10,7 @@
 namespace Modules\User\Transformers;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
 
 class UserResource extends Resource
@@ -17,7 +18,7 @@ class UserResource extends Resource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  Request
      *
      * @return array
      */

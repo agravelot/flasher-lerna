@@ -9,6 +9,7 @@
 
 namespace Modules\Core\Transformers;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
 
 class MediaSettingResource extends Resource
@@ -16,11 +17,11 @@ class MediaSettingResource extends Resource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  Request
      *
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'id' => $this->id,
@@ -29,7 +30,7 @@ class MediaSettingResource extends Resource
                 'name' => optional($this->value)->name,
                 'url' => optional($this->value)->getUrl(),
             ] : null,
-            'type' => $this->type->value,
+            'type' => optional($this->type)->value,
             'title' => $this->title,
             'description' => $this->description,
         ];

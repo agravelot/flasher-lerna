@@ -37,9 +37,29 @@
                 ></b-input>
             </b-field>
 
-            <b-button type="is-primary" :loading="this.loading" @click="updateUser()"
-                >Update</b-button
-            >
+            <div class="buttons">
+                <b-button type="is-primary" :loading="this.loading" @click="updateUser()">
+                    Update
+                </b-button>
+                <b-button
+                    v-if="user && user.actions && user.actions.impersonate"
+                    type="is-info"
+                    icon-right="sign-in-alt"
+                    tag="a"
+                    :href="user.actions.impersonate"
+                    :loading="this.loading"
+                >
+                    Impersonate
+                </b-button>
+                <b-button
+                    type="is-danger"
+                    icon-right="trash-alt"
+                    :loading="this.loading"
+                    @click="confirmDeleteUser()"
+                >
+                    Delete
+                </b-button>
+            </div>
         </div>
     </div>
 </template>
@@ -69,8 +89,8 @@ export default class UsersEdit extends VueBuefy {
             .then(res => res.data)
             .then(res => {
                 this.errors = {};
-                this.user = res.data;
                 this.loading = false;
+                this.$router.push({ name: 'admin.users.index' });
                 this.showSuccess('User updated');
             })
             .catch(err => {
@@ -131,7 +151,7 @@ export default class UsersEdit extends VueBuefy {
         });
     }
 
-    confirmDeleteSelectedUser(): void {
+    confirmDeleteUser(): void {
         this.$dialog.confirm({
             title: 'Deleting Albums',
             message:
@@ -140,7 +160,7 @@ export default class UsersEdit extends VueBuefy {
             type: 'is-danger',
             hasIcon: true,
             onConfirm: () => {
-                this.deleteSelectedUser();
+                this.deleteUser();
             },
         });
     }
@@ -148,12 +168,12 @@ export default class UsersEdit extends VueBuefy {
     /**
      * Delete user from slug
      */
-    deleteSelectedUser(): void {
+    deleteUser(): void {
         this.axios
             .delete(`/api/admin/users/${this.user.id}`)
             .then(res => {
+                this.$router.push({ name: 'admin.users.index' });
                 this.showSuccess('User deleted');
-                // TODO Redirect index
             })
             .catch(err => {
                 this.showError(`Unable to delete user <br> <small>${err.message}</small>`);

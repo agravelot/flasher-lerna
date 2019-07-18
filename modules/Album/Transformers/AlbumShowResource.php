@@ -30,7 +30,7 @@ class AlbumShowResource extends Resource
      *
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         $this->request = $request;
         $album = Album::newModelInstance($this);
@@ -63,8 +63,8 @@ class AlbumShowResource extends Resource
     /**
      * Check if the user has the ability to according to the policy.
      *
-     * @param string $permission
-     * @param Album  $album
+     * @param  string  $permission
+     * @param  Album  $album
      *
      * @return bool
      */
