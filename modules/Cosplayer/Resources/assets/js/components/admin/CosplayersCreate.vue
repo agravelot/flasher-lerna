@@ -103,7 +103,7 @@ import { quillEditor } from 'vue-quill-editor';
 import User from '../../../../../../User/Resources/assets/js/user';
 
 @Component({
-    name: 'CosplayersEdit',
+    name: 'CosplayersCreate',
     components: {
         quillEditor,
     },

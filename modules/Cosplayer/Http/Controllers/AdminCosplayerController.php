@@ -11,8 +11,8 @@ namespace Modules\Cosplayer\Http\Controllers;
 
 use Exception;
 use App\Models\Cosplayer;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
 use Modules\Cosplayer\Http\Requests\CosplayerRequest;

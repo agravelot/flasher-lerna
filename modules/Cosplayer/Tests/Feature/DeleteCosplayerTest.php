@@ -9,10 +9,10 @@
 
 namespace Modules\Cosplayer\Tests\Feature;
 
-use App\Models\Cosplayer;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use App\Models\Cosplayer;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DeleteCosplayerTest extends TestCase
 {

@@ -24,12 +24,12 @@
                     </li>
 
                     <li>
-                        <a href="/admin/categories">
+                        <router-link :to="{ name: 'admin.categories.index' }">
                             <span class="icon">
                                 <i class="fas fa-tags"></i>
                             </span>
                             Categories
-                        </a>
+                        </router-link>
                     </li>
 
                     <li>

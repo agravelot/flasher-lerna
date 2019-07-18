@@ -9,8 +9,10 @@
 
 namespace Modules\Category\Http\Controllers;
 
+use Exception;
 use App\Models\Category;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
 use Modules\Category\Http\Requests\CategoryRequest;
@@ -78,10 +80,15 @@ class AdminCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @return Response
+     * @param  Category  $category
+     *
+     * @return JsonResponse
+     * @throws Exception
      */
-    public function destroy(): Response
+    public function destroy(Category $category): JsonResponse
     {
-        //TODO Implement
+        $category->delete();
+
+        return response()->json(null, 204);
     }
 }
