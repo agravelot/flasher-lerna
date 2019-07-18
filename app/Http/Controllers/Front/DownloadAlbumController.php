@@ -9,9 +9,9 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\MediaStream;
 use App\Models\Album;
 use App\Http\Controllers\Controller;
-use Spatie\MediaLibrary\MediaStream;
 
 class DownloadAlbumController extends Controller
 {
