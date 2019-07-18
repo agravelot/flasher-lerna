@@ -18,15 +18,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 abstract class ModelTestCase extends TestCase
 {
     /**
-     * @param array  $fillable
-     * @param array  $hidden
-     * @param array  $guarded
-     * @param array  $visible
-     * @param array  $casts
-     * @param array  $dates
-     * @param string $collectionClass
-     * @param string $primaryKey
-     * @param null   $connection
+     * @param  array  $fillable
+     * @param  array  $hidden
+     * @param  array  $guarded
+     * @param  array  $visible
+     * @param  array  $casts
+     * @param  array  $dates
+     * @param  string  $collectionClass
+     * @param  string  $primaryKey
+     * @param  null  $connection
      *
      * - `$fillable` -> `getFillable()`
      * - `$guarded` -> `getGuarded()`
@@ -75,17 +75,23 @@ abstract class ModelTestCase extends TestCase
     }
 
     /**
-     * @param HasMany  $relation
-     * @param string   $key
-     * @param string   $parent
-     * @param \Closure $queryCheck
+     * @param  HasMany  $relation
+     * @param  string  $key
+     * @param  string  $parent
+     * @param  \Closure  $queryCheck
      *
      * - `getQuery()`: assert query has not been modified or modified properly.
      * - `getForeignKey()`: any `HasOneOrMany` or `BelongsTo` relation, but key type differs (see documentaiton).
      * - `getQualifiedParentKeyName()`: in case of `HasOneOrMany` relation, there is no `getLocalKey()` method, so this one should be asserted.
      */
-    protected function assertHasManyRelation($relation, Model $model, Model $related, $key = null, $parent = null, \Closure $queryCheck = null)
-    {
+    protected function assertHasManyRelation(
+        $relation,
+        Model $model,
+        Model $related,
+        $key = null,
+        $parent = null,
+        \Closure $queryCheck = null
+    ) {
         $this->assertInstanceOf(HasMany::class, $relation);
 
         if (null !== $queryCheck) {
@@ -107,17 +113,23 @@ abstract class ModelTestCase extends TestCase
     }
 
     /**
-     * @param BelongsTo $relation
-     * @param string    $key
-     * @param string    $owner
-     * @param \Closure  $queryCheck
+     * @param  BelongsTo  $relation
+     * @param  string  $key
+     * @param  string  $owner
+     * @param  \Closure  $queryCheck
      *
      * - `getQuery()`: assert query has not been modified or modified properly.
      * - `getForeignKey()`: any `HasOneOrMany` or `BelongsTo` relation, but key type differs (see documentaiton).
      * - `getOwnerKey()`: `BelongsTo` relation and its extendings.
      */
-    protected function assertBelongsToRelation($relation, Model $model, Model $related, $key, $owner = null, \Closure $queryCheck = null)
-    {
+    protected function assertBelongsToRelation(
+        $relation,
+        Model $model,
+        Model $related,
+        $key,
+        $owner = null,
+        \Closure $queryCheck = null
+    ) {
         $this->assertInstanceOf(BelongsTo::class, $relation);
 
         if (null !== $queryCheck) {
@@ -135,17 +147,23 @@ abstract class ModelTestCase extends TestCase
     }
 
     /**
-     * @param BelongsToMany $relation
-     * @param string        $key
-     * @param string        $parent
-     * @param \Closure      $queryCheck
+     * @param  BelongsToMany  $relation
+     * @param  string  $key
+     * @param  string  $parent
+     * @param  \Closure  $queryCheck
      *
      * - `getQuery()`: assert query has not been modified or modified properly.
      * - `getForeignKey()`: any `HasOneOrMany` or `BelongsTo` relation, but key type differs (see documentaiton).
      * - `getQualifiedParentKeyName()`: in case of `HasOneOrMany` relation, there is no `getLocalKey()` method, so this one should be asserted.
      */
-    protected function assertBelongsToManyRelation($relation, Model $model, Model $related, $key, $parent = null, \Closure $queryCheck = null)
-    {
+    protected function assertBelongsToManyRelation(
+        $relation,
+        Model $model,
+        Model $related,
+        $key,
+        $parent = null,
+        \Closure $queryCheck = null
+    ) {
         $this->assertInstanceOf(BelongsToMany::class, $relation);
 
         if (null !== $queryCheck) {

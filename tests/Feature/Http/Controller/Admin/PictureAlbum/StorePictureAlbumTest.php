@@ -70,8 +70,11 @@ class StorePictureAlbumTest extends TestCase
             ]);
     }
 
-    public function storeAlbumPicture(string $albumSlug, UploadedFile $picture = null, array $optional = []): TestResponse
-    {
+    public function storeAlbumPicture(
+        string $albumSlug,
+        UploadedFile $picture = null,
+        array $optional = []
+    ): TestResponse {
         session()->setPreviousUrl('/admin/albums/create');
 
         return $this->json('post', '/api/admin/album-pictures',

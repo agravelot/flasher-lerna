@@ -43,7 +43,7 @@ class GoldenBookController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param GoldenBookRequest $request
+     * @param  GoldenBookRequest  $request
      *
      * @return RedirectResponse
      */

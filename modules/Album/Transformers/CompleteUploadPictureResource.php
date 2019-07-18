@@ -9,6 +9,7 @@
 
 namespace Modules\Album\Transformers;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CompleteUploadPictureResource extends JsonResource
@@ -16,11 +17,11 @@ class CompleteUploadPictureResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  Request  $request
      *
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'path' => $this->getUrl(),

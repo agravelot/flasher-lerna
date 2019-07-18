@@ -22,9 +22,17 @@ class CosplayerServiceProvider extends ServiceProvider
     protected $defer = false;
 
     /**
+     * Register the service provider.
+     */
+    public function register(): void
+    {
+        $this->app->register(RouteServiceProvider::class);
+    }
+
+    /**
      * Boot the application events.
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerTranslations();
         $this->registerConfig();
@@ -34,17 +42,9 @@ class CosplayerServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the service provider.
-     */
-    public function register()
-    {
-        $this->app->register(RouteServiceProvider::class);
-    }
-
-    /**
      * Register config.
      */
-    protected function registerConfig()
+    protected function registerConfig(): void
     {
         $this->publishes([
             __DIR__.'/../Config/config.php' => config_path('cosplayer.php'),
@@ -57,7 +57,7 @@ class CosplayerServiceProvider extends ServiceProvider
     /**
      * Register views.
      */
-    public function registerViews()
+    public function registerViews(): void
     {
         $viewPath = resource_path('views/modules/cosplayer');
 
@@ -75,7 +75,7 @@ class CosplayerServiceProvider extends ServiceProvider
     /**
      * Register translations.
      */
-    public function registerTranslations()
+    public function registerTranslations(): void
     {
         $langPath = resource_path('lang/modules/cosplayer');
 
@@ -89,7 +89,7 @@ class CosplayerServiceProvider extends ServiceProvider
     /**
      * Register an additional directory of factories.
      */
-    public function registerFactories()
+    public function registerFactories(): void
     {
         if (! app()->environment('production', 'staging')) {
             app(Factory::class)->load(__DIR__.'/../Database/factories');
@@ -101,7 +101,7 @@ class CosplayerServiceProvider extends ServiceProvider
      *
      * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return [];
     }

@@ -30,7 +30,7 @@ class CosplayerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Cosplayer $cosplayer
+     * @param  Cosplayer  $cosplayer
      *
      * @return View
      */

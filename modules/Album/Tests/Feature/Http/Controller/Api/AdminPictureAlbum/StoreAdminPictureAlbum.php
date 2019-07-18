@@ -81,6 +81,7 @@ class StoreAdminPictureAlbum extends TestCase
     {
         session()->setPreviousUrl('/admin/albums/create');
 
-        return $this->json('post', '/api/admin/album-pictures', array_merge(['album_slug' => $album->slug, 'file' => $media], $optional));
+        return $this->json('post', '/api/admin/album-pictures',
+            array_merge(['album_slug' => $album->slug, 'file' => $media], $optional));
     }
 }

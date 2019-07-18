@@ -16,7 +16,7 @@ class AlbumObserver extends ActivityObserverBase
     /**
      * Handle the album "creating" event.
      *
-     * @param Album $album
+     * @param  Album  $album
      *
      * @return void
      */

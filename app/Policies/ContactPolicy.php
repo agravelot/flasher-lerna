@@ -17,7 +17,7 @@ class ContactPolicy extends Policy
     /**
      * Determine whether the user can view the contacts.
      *
-     * @param User $user
+     * @param  User  $user
      *
      * @return bool
      */
@@ -29,8 +29,8 @@ class ContactPolicy extends Policy
     /**
      * Determine whether the user can view the contact.
      *
-     * @param User    $user
-     * @param Contact $contact
+     * @param  User  $user
+     * @param  Contact  $contact
      *
      * @return bool
      */
@@ -42,7 +42,7 @@ class ContactPolicy extends Policy
     /**
      * Determine whether the user can create contacts.
      *
-     * @param User $user
+     * @param  User  $user
      *
      * @return bool
      */
@@ -54,8 +54,8 @@ class ContactPolicy extends Policy
     /**
      * Determine whether the user can update the contact.
      *
-     * @param User    $user
-     * @param Contact $contact
+     * @param  User  $user
+     * @param  Contact  $contact
      *
      * @return bool
      */
@@ -67,8 +67,8 @@ class ContactPolicy extends Policy
     /**
      * Determine whether the user can delete the contact.
      *
-     * @param User    $user
-     * @param Contact $contact
+     * @param  User  $user
+     * @param  Contact  $contact
      *
      * @return bool
      */
@@ -80,8 +80,8 @@ class ContactPolicy extends Policy
     /**
      * Determine whether the user can restore the contact.
      *
-     * @param User    $user
-     * @param Contact $contact
+     * @param  User  $user
+     * @param  Contact  $contact
      *
      * @return bool
      */
@@ -93,8 +93,8 @@ class ContactPolicy extends Policy
     /**
      * Determine whether the user can permanently delete the contact.
      *
-     * @param User    $user
-     * @param Contact $contact
+     * @param  User  $user
+     * @param  Contact  $contact
      *
      * @return bool
      */

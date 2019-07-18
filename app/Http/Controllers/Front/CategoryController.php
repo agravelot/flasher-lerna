@@ -30,7 +30,7 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Category $category
+     * @param  Category  $category
      *
      * @return View
      */

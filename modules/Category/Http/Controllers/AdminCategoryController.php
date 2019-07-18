@@ -25,7 +25,7 @@ class AdminCategoryController extends Controller
      *
      * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return CosplayerResource::collection(
             QueryBuilder::for(Category::class)->allowedFilters('name')
@@ -36,11 +36,11 @@ class AdminCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param CategoryRequest $request
+     * @param  CategoryRequest  $request
      *
      * @return CategoryResource
      */
-    public function store(CategoryRequest $request)
+    public function store(CategoryRequest $request): CategoryResource
     {
         $category = Category::create($request->validated());
 
@@ -50,11 +50,11 @@ class AdminCategoryController extends Controller
     /**
      * Show the specified resource.
      *
-     * @param Category $category
+     * @param  Category  $category
      *
      * @return CategoryResource
      */
-    public function show(Category $category)
+    public function show(Category $category): CategoryResource
     {
         return new CategoryResource($category);
     }
@@ -62,12 +62,12 @@ class AdminCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param CategoryRequest $request
-     * @param Category        $category
+     * @param  CategoryRequest  $request
+     * @param  Category  $category
      *
      * @return CategoryResource
      */
-    public function update(CategoryRequest $request, Category $category)
+    public function update(CategoryRequest $request, Category $category): CategoryResource
     {
         $category->slug = null;
         $category->update($request->validated());
@@ -80,7 +80,8 @@ class AdminCategoryController extends Controller
      *
      * @return Response
      */
-    public function destroy()
+    public function destroy(): Response
     {
+        //TODO Implement
     }
 }

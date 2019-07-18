@@ -23,9 +23,8 @@ class AdminCosplayerController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @throws AuthorizationException
-     *
      * @return View
+     * @throws AuthorizationException
      */
     public function index(): View
     {
@@ -40,9 +39,8 @@ class AdminCosplayerController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @throws AuthorizationException
-     *
      * @return View
+     * @throws AuthorizationException
      */
     public function create(): View
     {
@@ -55,11 +53,10 @@ class AdminCosplayerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param CosplayerRequest $request
-     *
-     * @throws AuthorizationException
+     * @param  CosplayerRequest  $request
      *
      * @return RedirectResponse
+     * @throws AuthorizationException
      */
     public function store(CosplayerRequest $request): RedirectResponse
     {
@@ -77,11 +74,10 @@ class AdminCosplayerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param string $slug
-     *
-     * @throws AuthorizationException
+     * @param  string  $slug
      *
      * @return View
+     * @throws AuthorizationException
      */
     public function show(string $slug): View
     {
@@ -97,11 +93,10 @@ class AdminCosplayerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param string $slug
-     *
-     * @throws AuthorizationException
+     * @param  string  $slug
      *
      * @return View
+     * @throws AuthorizationException
      */
     public function edit(string $slug): View
     {
@@ -116,12 +111,11 @@ class AdminCosplayerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param CosplayerRequest $request
-     * @param string           $slug
-     *
-     * @throws AuthorizationException
+     * @param  CosplayerRequest  $request
+     * @param  string  $slug
      *
      * @return RedirectResponse
+     * @throws AuthorizationException
      */
     public function update(CosplayerRequest $request, string $slug): RedirectResponse
     {
@@ -142,12 +136,12 @@ class AdminCosplayerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param string $slug
-     *
-     * @throws AuthorizationException
-     * @throws Exception
+     * @param  string  $slug
      *
      * @return RedirectResponse
+     * @throws Exception
+     *
+     * @throws AuthorizationException
      */
     public function destroy(string $slug): RedirectResponse
     {

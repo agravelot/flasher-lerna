@@ -31,18 +31,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * App\Models\Cosplayer.
  *
- * @property int                   $id
- * @property string                $name
- * @property string                $slug
- * @property string|null           $description
- * @property string|null           $picture
- * @property int|null              $user_id
- * @property Carbon|null           $created_at
- * @property Carbon|null           $updated_at
- * @property Collection|Album[]    $albums
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property string|null $description
+ * @property string|null $picture
+ * @property int|null $user_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Collection|Album[] $albums
  * @property Collection|Category[] $categories
- * @property Collection|Media[]    $media
- * @property User|null             $user
+ * @property Collection|Media[] $media
+ * @property User|null $user
  * @method static Builder|Cosplayer findSimilarSlugs($attribute, $config, $slug)
  * @method static Builder|Cosplayer newModelQuery()
  * @method static Builder|Cosplayer newQuery()
@@ -57,8 +57,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Cosplayer whereUserId($value)
  * @mixin Eloquent
  * @property Collection|PublicAlbum[] $publicAlbums
- * @property mixed                    $initial
- * @property mixed                    $avatar
+ * @property mixed $initial
+ * @property mixed $avatar
  */
 class Cosplayer extends Model implements HasMedia
 {
@@ -89,7 +89,7 @@ class Cosplayer extends Model implements HasMedia
     /**
      * Add media to Album::PICTURES_COLLECTION collection.
      *
-     * @param UploadedFile|null $media
+     * @param  UploadedFile|null  $media
      */
     public function setAvatarAttribute($media)
     {
@@ -165,7 +165,7 @@ class Cosplayer extends Model implements HasMedia
     /**
      * Register the media conversions.
      *
-     * @param Media|null $media
+     * @param  Media|null  $media
      *
      * @throws InvalidManipulation
      */

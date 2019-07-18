@@ -22,9 +22,8 @@ class AdminCategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @throws AuthorizationException
-     *
      * @return View
+     * @throws AuthorizationException
      */
     public function index(): View
     {
@@ -37,11 +36,10 @@ class AdminCategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Category $category
-     *
-     * @throws AuthorizationException
+     * @param  Category  $category
      *
      * @return View
+     * @throws AuthorizationException
      */
     public function show(Category $category): View
     {
@@ -55,11 +53,10 @@ class AdminCategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param string $slug
-     *
-     * @throws AuthorizationException
+     * @param  string  $slug
      *
      * @return View
+     * @throws AuthorizationException
      */
     public function edit(string $slug): View
     {
@@ -73,9 +70,8 @@ class AdminCategoryController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @throws AuthorizationException
-     *
      * @return View
+     * @throws AuthorizationException
      */
     public function create(): View
     {
@@ -87,11 +83,10 @@ class AdminCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param CategoryRequest $request
-     *
-     * @throws AuthorizationException
+     * @param  CategoryRequest  $request
      *
      * @return RedirectResponse
+     * @throws AuthorizationException
      */
     public function store(CategoryRequest $request): RedirectResponse
     {
@@ -105,12 +100,11 @@ class AdminCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param CategoryRequest $request
-     * @param string          $slug
-     *
-     * @throws AuthorizationException
+     * @param  CategoryRequest  $request
+     * @param  string  $slug
      *
      * @return RedirectResponse
+     * @throws AuthorizationException
      */
     public function update(CategoryRequest $request, string $slug): RedirectResponse
     {
@@ -126,12 +120,12 @@ class AdminCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param string $slug
-     *
-     * @throws AuthorizationException
-     * @throws Exception
+     * @param  string  $slug
      *
      * @return RedirectResponse
+     * @throws Exception
+     *
+     * @throws AuthorizationException
      */
     public function destroy(string $slug): RedirectResponse
     {

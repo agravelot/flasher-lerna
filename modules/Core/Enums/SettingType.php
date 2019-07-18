@@ -14,15 +14,15 @@ use Spatie\MediaLibrary\Models\Media;
 
 final class SettingType extends Enum
 {
-    const String = 'string';
-    const Numeric = 'numeric';
-    const Boolean = 'bool';
+    public const String = 'string';
+    public const Numeric = 'numeric';
+    public const Boolean = 'bool';
     const TextArea = 'textarea';
-//    const Json = 'json';
-    const Media = 'media';
-    const Email = 'email';
+//    public const Json = 'json';
+    public const Media = 'media';
+    public const Email = 'email';
 
-    const ALIASES_TYPES = [
+    public const ALIASES_TYPES = [
         self::String => 'string',
         self::Numeric => 'integer',
         self::Boolean => 'boolean',

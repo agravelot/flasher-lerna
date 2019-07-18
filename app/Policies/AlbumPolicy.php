@@ -17,8 +17,8 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can download the album.
      *
-     * @param User $user
-     * @param Album $album
+     * @param  User  $user
+     * @param  Album  $album
      *
      * @return bool
      */
@@ -38,7 +38,7 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can view the albums.
      *
-     * @param User $user
+     * @param  User  $user
      *
      * @return bool
      */
@@ -51,8 +51,8 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can view the album.
      *
-     * @param User $user
-     * @param Album $album
+     * @param  User  $user
+     * @param  Album  $album
      *
      * @return bool
      */
@@ -71,7 +71,7 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can create albums.
      *
-     * @param User $user
+     * @param  User  $user
      *
      * @return bool
      */
@@ -84,8 +84,8 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can update the album.
      *
-     * @param User $user
-     * @param Album $album
+     * @param  User  $user
+     * @param  Album  $album
      *
      * @return bool
      */
@@ -98,8 +98,8 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can delete the album.
      *
-     * @param User $user
-     * @param Album $album
+     * @param  User  $user
+     * @param  Album  $album
      *
      * @return bool
      */
@@ -112,8 +112,8 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can restore the album.
      *
-     * @param User $user
-     * @param Album $album
+     * @param  User  $user
+     * @param  Album  $album
      *
      * @return bool
      */
@@ -125,8 +125,8 @@ class AlbumPolicy extends Policy
     /**
      * Determine whether the user can permanently delete the album.
      *
-     * @param User $user
-     * @param Album $album
+     * @param  User  $user
+     * @param  Album  $album
      *
      * @return bool
      */

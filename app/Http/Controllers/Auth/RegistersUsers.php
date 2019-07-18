@@ -35,7 +35,7 @@ trait RegistersUsers
     /**
      * Handle a registration request for the application.
      *
-     * @param UserRequest $request
+     * @param  UserRequest  $request
      *
      * @return RedirectResponse
      */
@@ -64,7 +64,7 @@ trait RegistersUsers
     /**
      * The user has been registered.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @param         $user
      */
     protected function registered(Request $request, $user): void

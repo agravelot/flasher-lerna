@@ -18,11 +18,10 @@ class AdminController extends Controller
     /**
      * Display dashboard.
      *
-     * @throws AuthorizationException
-     *
      * @return View
+     * @throws AuthorizationException
      */
-    public function __invoke() : View
+    public function __invoke(): View
     {
         $this->authorize('dashboard');
 

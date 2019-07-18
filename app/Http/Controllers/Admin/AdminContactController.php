@@ -21,9 +21,8 @@ class AdminContactController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @throws AuthorizationException
-     *
      * @return View
+     * @throws AuthorizationException
      */
     public function index(): View
     {
@@ -38,11 +37,10 @@ class AdminContactController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     *
-     * @throws AuthorizationException
+     * @param  int  $id
      *
      * @return View
+     * @throws AuthorizationException
      */
     public function show(int $id): View
     {
@@ -56,12 +54,12 @@ class AdminContactController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
-     *
-     * @throws AuthorizationException
-     * @throws Exception
+     * @param  int  $id
      *
      * @return RedirectResponse
+     * @throws Exception
+     *
+     * @throws AuthorizationException
      */
     public function destroy(int $id): RedirectResponse
     {

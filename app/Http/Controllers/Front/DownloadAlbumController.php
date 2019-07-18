@@ -17,7 +17,8 @@ use Illuminate\Auth\Access\AuthorizationException;
 class DownloadAlbumController extends Controller
 {
     /**
-     * @param Album $album
+     * @param  Album  $album
+     *
      * @return MediaStream
      * @throws AuthorizationException
      */

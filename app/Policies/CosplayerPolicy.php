@@ -17,7 +17,7 @@ class CosplayerPolicy extends Policy
     /**
      * Determine whether the user can view the cosplayers.
      *
-     * @param User $user
+     * @param  User  $user
      *
      * @return bool
      */
@@ -29,8 +29,8 @@ class CosplayerPolicy extends Policy
     /**
      * Determine whether the user can view the cosplayer.
      *
-     * @param User           $user
-     * @param Cosplayer|null $cosplayer
+     * @param  User  $user
+     * @param  Cosplayer|null  $cosplayer
      *
      * @return bool
      */
@@ -42,7 +42,7 @@ class CosplayerPolicy extends Policy
     /**
      * Determine whether the user can create cosplayers.
      *
-     * @param User $user
+     * @param  User  $user
      *
      * @return bool
      */
@@ -54,8 +54,8 @@ class CosplayerPolicy extends Policy
     /**
      * Determine whether the user can update the cosplayer.
      *
-     * @param User           $user
-     * @param Cosplayer|null $cosplayer
+     * @param  User  $user
+     * @param  Cosplayer|null  $cosplayer
      *
      * @return bool
      */
@@ -67,8 +67,8 @@ class CosplayerPolicy extends Policy
     /**
      * Determine whether the user can delete the cosplayer.
      *
-     * @param User           $user
-     * @param Cosplayer|null $cosplayer
+     * @param  User  $user
+     * @param  Cosplayer|null  $cosplayer
      *
      * @return bool
      */
@@ -80,8 +80,8 @@ class CosplayerPolicy extends Policy
     /**
      * Determine whether the user can restore the cosplayer.
      *
-     * @param User      $user
-     * @param Cosplayer $cosplayer
+     * @param  User  $user
+     * @param  Cosplayer  $cosplayer
      *
      * @return bool
      */
@@ -93,8 +93,8 @@ class CosplayerPolicy extends Policy
     /**
      * Determine whether the user can permanently delete the cosplayer.
      *
-     * @param User      $user
-     * @param Cosplayer $cosplayer
+     * @param  User  $user
+     * @param  Cosplayer  $cosplayer
      *
      * @return bool
      */

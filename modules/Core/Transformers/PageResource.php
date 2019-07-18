@@ -9,6 +9,7 @@
 
 namespace Modules\Core\Transformers;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
 
 class PageResource extends Resource
@@ -16,11 +17,11 @@ class PageResource extends Resource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  Request
      *
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
             'id' => $this->id,

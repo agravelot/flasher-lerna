@@ -86,14 +86,13 @@
             </div>
 
             <b-button type="is-primary" :loading="this.loading" @click="createCosplayer()"
-                >Create</b-button
-            >
+                >Create
+            </b-button>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import Component from 'vue-class-component';
 import VueBuefy from '../../../../../../../resources/js/admin/Buefy.vue';
 import Cosplayer from '../../cosplayer';

@@ -89,7 +89,8 @@ class StoreUserTest extends TestCase
 
         $response = $this->storeUser(self::USER_DATA);
 
-        $this->assertNull(User::where('name', self::USER_DATA['name'])->where('email', self::USER_DATA['email'])->first());
+        $this->assertNull(User::where('name', self::USER_DATA['name'])->where('email',
+            self::USER_DATA['email'])->first());
         $response->assertStatus(403);
     }
 

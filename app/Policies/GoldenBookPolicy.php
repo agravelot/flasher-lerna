@@ -17,7 +17,7 @@ class GoldenBookPolicy extends Policy
     /**
      * Determine whether the user can view the categorys.
      *
-     * @param User $user
+     * @param  User  $user
      *
      * @return bool
      */
@@ -29,8 +29,8 @@ class GoldenBookPolicy extends Policy
     /**
      * Determine whether the user can view the category.
      *
-     * @param User                $user
-     * @param GoldenBookPost|null $goldenBookPost
+     * @param  User  $user
+     * @param  GoldenBookPost|null  $goldenBookPost
      *
      * @return bool
      */
@@ -42,7 +42,7 @@ class GoldenBookPolicy extends Policy
     /**
      * Determine whether the user can create golden book post.
      *
-     * @param User $user
+     * @param  User  $user
      *
      * @return bool
      */
@@ -54,8 +54,8 @@ class GoldenBookPolicy extends Policy
     /**
      * Determine whether the user can update the category.
      *
-     * @param User           $user
-     * @param GoldenBookPost $goldenBookPost
+     * @param  User  $user
+     * @param  GoldenBookPost  $goldenBookPost
      *
      * @return bool
      */
@@ -67,8 +67,8 @@ class GoldenBookPolicy extends Policy
     /**
      * Determine whether the user can delete the category.
      *
-     * @param User                $user
-     * @param GoldenBookPost|null $goldenBookPost
+     * @param  User  $user
+     * @param  GoldenBookPost|null  $goldenBookPost
      *
      * @return bool
      */
@@ -80,8 +80,8 @@ class GoldenBookPolicy extends Policy
     /**
      * Determine whether the user can restore the category.
      *
-     * @param User           $user
-     * @param GoldenBookPost $goldenBookPost
+     * @param  User  $user
+     * @param  GoldenBookPost  $goldenBookPost
      *
      * @return bool
      */
@@ -93,8 +93,8 @@ class GoldenBookPolicy extends Policy
     /**
      * Determine whether the user can permanently delete the category.
      *
-     * @param User           $user
-     * @param GoldenBookPost $goldenBookPost
+     * @param  User  $user
+     * @param  GoldenBookPost  $goldenBookPost
      *
      * @return bool
      */

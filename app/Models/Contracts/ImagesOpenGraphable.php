@@ -13,5 +13,5 @@ use Illuminate\Support\Collection;
 
 interface ImagesOpenGraphable
 {
-    public function images() : Collection;
+    public function images(): Collection;
 }

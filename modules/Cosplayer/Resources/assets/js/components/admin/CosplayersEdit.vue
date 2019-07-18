@@ -86,8 +86,8 @@
             </div>
 
             <b-button type="is-primary" :loading="this.loading" @click="updateCosplayer()"
-                >Update</b-button
-            >
+                >Update
+            </b-button>
         </div>
     </div>
 </template>

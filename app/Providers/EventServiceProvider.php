@@ -45,7 +45,7 @@ class EventServiceProvider extends ServiceProvider
     /**
      * Register any events for your application.
      */
-    public function boot():void
+    public function boot(): void
     {
         parent::boot();
         Album::observe(AlbumObserver::class);

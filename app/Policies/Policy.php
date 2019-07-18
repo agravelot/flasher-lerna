@@ -19,7 +19,7 @@ class Policy
     /**
      * Grant all abilities to administrator.
      *
-     * @param User $user
+     * @param  User  $user
      *
      * @return bool|void
      */

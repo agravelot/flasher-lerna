@@ -22,6 +22,7 @@ class VerifyEmail extends VerifyEmailBase implements ShouldQueue
      * Build the mail representation of the notification.
      *
      * @param  mixed  $notifiable
+     *
      * @return MailMessage
      */
     public function toMail($notifiable): MailMessage

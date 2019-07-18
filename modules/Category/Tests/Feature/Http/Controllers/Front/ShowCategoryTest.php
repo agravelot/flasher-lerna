@@ -20,8 +20,6 @@ class ShowCategoryTest extends TestCase
 
     public function test_guest_can_show_category_with_data()
     {
-        $this->disableExceptionHandling();
-
         $category = factory(Category::class)->create();
 
         $response = $this->showCategory($category);

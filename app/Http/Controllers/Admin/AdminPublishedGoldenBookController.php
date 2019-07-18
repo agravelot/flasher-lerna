@@ -20,11 +20,10 @@ class AdminPublishedGoldenBookController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param PublishedGoldenBookRequest $request
-     *
-     * @throws AuthorizationException
+     * @param  PublishedGoldenBookRequest  $request
      *
      * @return RedirectResponse
+     * @throws AuthorizationException
      */
     public function store(PublishedGoldenBookRequest $request): RedirectResponse
     {

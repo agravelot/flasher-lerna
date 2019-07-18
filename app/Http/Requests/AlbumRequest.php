@@ -9,6 +9,7 @@
 
 namespace App\Http\Requests;
 
+use DateTime;
 use Illuminate\Validation\Rule;
 
 class AlbumRequest extends Request
@@ -38,7 +39,7 @@ class AlbumRequest extends Request
     {
         //TODO Still require ? Since we are binding to date
         if ($this->has('published_at') && $this->published_at !== null) {
-            $this->merge(['published_at' => new \DateTime($this->published_at)]);
+            $this->merge(['published_at' => new DateTime($this->published_at)]);
         }
     }
 }

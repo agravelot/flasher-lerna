@@ -11,7 +11,6 @@ namespace App\Http\Controllers\Front;
 
 use Illuminate\View\View;
 use App\Models\PublicAlbum;
-use Modules\Album\Entities\Album;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Access\AuthorizationException;
 

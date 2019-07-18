@@ -29,7 +29,7 @@ class AlbumController extends Controller
      *
      * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return AlbumIndexResource::collection(
             QueryBuilder::for(PublicAlbum::class)
@@ -42,11 +42,11 @@ class AlbumController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param PublicAlbum $album
+     * @param  PublicAlbum  $album
      *
      * @return AlbumShowResource
      */
-    public function show(PublicAlbum $album)
+    public function show(PublicAlbum $album): AlbumShowResource
     {
         $album->load('categories', 'cosplayers.media');
 

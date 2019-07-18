@@ -16,9 +16,8 @@ use Illuminate\Auth\Access\AuthorizationException;
 class SpaController extends Controller
 {
     /**
-     * @throws AuthorizationException
-     *
      * @return Factory|View
+     * @throws AuthorizationException
      */
     public function index()
     {

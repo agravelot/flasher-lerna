@@ -18,7 +18,7 @@ class ComposerServiceProvider extends ServiceProvider
     /**
      * Register services.
      */
-    public function register():void
+    public function register(): void
     {
         $this->app->singleton(SocialMediaComposer::class);
     }
@@ -26,7 +26,7 @@ class ComposerServiceProvider extends ServiceProvider
     /**
      * Bootstrap services.
      */
-    public function boot():void
+    public function boot(): void
     {
         View::composer('layouts.partials._navbar_socials', SocialMediaComposer::class);
     }

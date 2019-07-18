@@ -9,7 +9,6 @@
 
 namespace Modules\Core\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Modules\Core\Entities\Setting;
@@ -30,7 +29,7 @@ class AdminSettingsController extends Controller
      *
      * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return SettingResource::collection(Setting::all());
     }
@@ -42,7 +41,7 @@ class AdminSettingsController extends Controller
      *
      * @return SettingResource
      */
-    public function show(Setting $setting)
+    public function show(Setting $setting): SettingResource
     {
         return new SettingResource($setting);
     }

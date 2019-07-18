@@ -17,7 +17,7 @@ class SocialMediaPolicy extends Policy
     /**
      * Determine whether the user can view the socialMedias.
      *
-     * @param User $user
+     * @param  User  $user
      *
      * @return bool
      */
@@ -29,8 +29,8 @@ class SocialMediaPolicy extends Policy
     /**
      * Determine whether the user can view the socialMedia.
      *
-     * @param User             $user
-     * @param SocialMedia|null $socialMedia
+     * @param  User  $user
+     * @param  SocialMedia|null  $socialMedia
      *
      * @return bool
      */
@@ -42,7 +42,7 @@ class SocialMediaPolicy extends Policy
     /**
      * Determine whether the user can create socialMedias.
      *
-     * @param User $user
+     * @param  User  $user
      *
      * @return bool
      */
@@ -54,8 +54,8 @@ class SocialMediaPolicy extends Policy
     /**
      * Determine whether the user can update the socialMedia.
      *
-     * @param User             $user
-     * @param SocialMedia|null $socialMedia
+     * @param  User  $user
+     * @param  SocialMedia|null  $socialMedia
      *
      * @return bool
      */
@@ -67,8 +67,8 @@ class SocialMediaPolicy extends Policy
     /**
      * Determine whether the user can delete the socialMedia.
      *
-     * @param User             $user
-     * @param SocialMedia|null $socialMedia
+     * @param  User  $user
+     * @param  SocialMedia|null  $socialMedia
      *
      * @return bool
      */
@@ -80,8 +80,8 @@ class SocialMediaPolicy extends Policy
     /**
      * Determine whether the user can restore the socialMedia.
      *
-     * @param User        $user
-     * @param SocialMedia $socialMedia
+     * @param  User  $user
+     * @param  SocialMedia  $socialMedia
      *
      * @return bool
      */
@@ -93,8 +93,8 @@ class SocialMediaPolicy extends Policy
     /**
      * Determine whether the user can permanently delete the socialMedia.
      *
-     * @param User        $user
-     * @param SocialMedia $socialMedia
+     * @param  User  $user
+     * @param  SocialMedia  $socialMedia
      *
      * @return bool
      */

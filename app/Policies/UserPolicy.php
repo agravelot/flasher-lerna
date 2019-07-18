@@ -16,7 +16,7 @@ class UserPolicy extends Policy
     /**
      * Determine whether the user can view the model.
      *
-     * @param User $user
+     * @param  User  $user
      *
      * @return bool
      */
@@ -28,8 +28,8 @@ class UserPolicy extends Policy
     /**
      * Determine whether the user can view the model.
      *
-     * @param User $user
-     * @param User $model
+     * @param  User  $user
+     * @param  User  $model
      *
      * @return bool
      */
@@ -41,7 +41,7 @@ class UserPolicy extends Policy
     /**
      * Determine whether the user can create models.
      *
-     * @param User $user
+     * @param  User  $user
      *
      * @return bool
      */
@@ -53,8 +53,8 @@ class UserPolicy extends Policy
     /**
      * Determine whether the user can update the model.
      *
-     * @param User      $user
-     * @param User|null $model
+     * @param  User  $user
+     * @param  User|null  $model
      *
      * @return bool
      */
@@ -66,8 +66,8 @@ class UserPolicy extends Policy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param User      $user
-     * @param User|null $model
+     * @param  User  $user
+     * @param  User|null  $model
      *
      * @return bool
      */
@@ -79,8 +79,8 @@ class UserPolicy extends Policy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param User $user
-     * @param User $model
+     * @param  User  $user
+     * @param  User  $model
      *
      * @return bool
      */
@@ -92,8 +92,8 @@ class UserPolicy extends Policy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param User $user
-     * @param User $model
+     * @param  User  $user
+     * @param  User  $model
      *
      * @return bool
      */

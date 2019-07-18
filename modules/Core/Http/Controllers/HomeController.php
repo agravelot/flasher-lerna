@@ -9,8 +9,8 @@
 
 namespace Modules\Core\Http\Controllers;
 
+use Illuminate\View\View;
 use App\Models\PublicAlbum;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 
 class HomeController extends Controller
@@ -18,9 +18,9 @@ class HomeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return View
      */
-    public function __invoke()
+    public function __invoke(): View
     {
         $albums = PublicAlbum::latest()->take(4)->get();
 

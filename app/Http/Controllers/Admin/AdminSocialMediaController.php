@@ -22,9 +22,8 @@ class AdminSocialMediaController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @throws AuthorizationException
-     *
      * @return View
+     * @throws AuthorizationException
      */
     public function index(): View
     {
@@ -37,9 +36,8 @@ class AdminSocialMediaController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @throws AuthorizationException
-     *
      * @return View
+     * @throws AuthorizationException
      */
     public function create(): View
     {
@@ -51,11 +49,10 @@ class AdminSocialMediaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param SocialMediaRequest $request
-     *
-     * @throws AuthorizationException
+     * @param  SocialMediaRequest  $request
      *
      * @return RedirectResponse
+     * @throws AuthorizationException
      */
     public function store(SocialMediaRequest $request): RedirectResponse
     {
@@ -70,11 +67,10 @@ class AdminSocialMediaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
-     *
-     * @throws AuthorizationException
+     * @param  int  $id
      *
      * @return View
+     * @throws AuthorizationException
      */
     public function show(int $id): View
     {
@@ -88,11 +84,10 @@ class AdminSocialMediaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
-     *
-     * @throws AuthorizationException
+     * @param  int  $id
      *
      * @return View
+     * @throws AuthorizationException
      */
     public function edit(int $id): View
     {
@@ -106,12 +101,11 @@ class AdminSocialMediaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param SocialMediaRequest $request
-     * @param int                $id
-     *
-     * @throws AuthorizationException
+     * @param  SocialMediaRequest  $request
+     * @param  int  $id
      *
      * @return RedirectResponse
+     * @throws AuthorizationException
      */
     public function update(SocialMediaRequest $request, int $id): RedirectResponse
     {
@@ -127,12 +121,12 @@ class AdminSocialMediaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
-     *
-     * @throws AuthorizationException
-     * @throws Exception
+     * @param  int  $id
      *
      * @return RedirectResponse
+     * @throws Exception
+     *
+     * @throws AuthorizationException
      */
     public function destroy(int $id): RedirectResponse
     {

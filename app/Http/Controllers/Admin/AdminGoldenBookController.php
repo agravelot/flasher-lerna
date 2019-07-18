@@ -56,12 +56,12 @@ class AdminGoldenBookController extends Controller
      * Remove the specified resource from storage.
      *
      *
-     * @param int $id
-     *
-     * @throws AuthorizationException
-     * @throws Exception
+     * @param  int  $id
      *
      * @return RedirectResponse
+     * @throws Exception
+     *
+     * @throws AuthorizationException
      */
     public function destroy(int $id): RedirectResponse
     {

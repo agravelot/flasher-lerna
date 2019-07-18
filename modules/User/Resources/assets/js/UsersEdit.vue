@@ -38,8 +38,8 @@
             </b-field>
 
             <b-button type="is-primary" :loading="this.loading" @click="updateUser()"
-                >Update</b-button
-            >
+                >Update
+            </b-button>
         </div>
     </div>
 </template>
