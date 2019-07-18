@@ -4,21 +4,23 @@
             <div class="level">
                 <div class="level-left">
                     <div class="level-item">
-                        <router-link :to="{ name: 'admin.cosplayers.create' }">
-                            <button class="button field is-success">
-                                <b-icon pack="fas" icon="plus"></b-icon>
-                                <span>New</span>
-                            </button>
-                        </router-link>
-
-                        <button
-                            class="button field is-danger"
-                            @click="confirmDeleteSelectedCosplayers()"
-                            :disabled="!checkedRows.length"
-                        >
-                            <b-icon pack="fas" icon="trash-alt"></b-icon>
-                            <span>Delete checked</span>
-                        </button>
+                        <div class="buttons">
+                            <b-button
+                                tag="router-link"
+                                :to="{ name: 'admin.cosplayers.create' }"
+                                type="is-success"
+                                icon-left="plus"
+                                >Add
+                            </b-button>
+                            <b-button
+                                type="is-danger"
+                                icon-left="trash-alt"
+                                :disabled="!checkedRows.length"
+                                @click="confirmDeleteSelectedCosplayers"
+                            >
+                                Delete checked
+                            </b-button>
+                        </div>
                     </div>
                 </div>
 
@@ -107,9 +109,7 @@ import Cosplayer from '../../cosplayer';
 })
 export default class CosplayersIndex extends VueBuefy {
     private cosplayers: Array<Cosplayer> = [];
-    //TODO Clearer types
-    defaultOpenedDetails: Array<any> = [];
-    private checkedRows: Array<any> = [];
+    private checkedRows: Array<Cosplayer> = [];
     private total: number = 0;
     private page: number = 1;
     perPage: number = 10;

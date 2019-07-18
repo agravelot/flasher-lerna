@@ -94,7 +94,7 @@
                                 <button class="button is-primary">Update</button>
                                 <a
                                     class="button is-bottom-right is-danger"
-                                    @click="confirmDeleteAlbum(album)"
+                                    @click="confirmDeleteAlbum()"
                                 >
                                     Delete
                                 </a>

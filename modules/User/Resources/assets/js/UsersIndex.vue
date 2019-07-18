@@ -1,21 +1,23 @@
 <template>
     <div>
         <section>
-            <router-link :to="{ name: 'admin.users.create' }">
-                <button class="button field is-success">
-                    <b-icon pack="fas" icon="plus"></b-icon>
-                    <span>New</span>
-                </button>
-            </router-link>
-
-            <button
-                class="button field is-danger"
-                @click="confirmDeleteSelectedAlbums"
-                :disabled="!checkedRows.length"
-            >
-                <b-icon pack="fas" icon="trash-alt"></b-icon>
-                <span>Delete checked</span>
-            </button>
+            <div class="buttons">
+                <b-button
+                    tag="router-link"
+                    :to="{ name: 'admin.users.create' }"
+                    type="is-success"
+                    icon-left="plus"
+                    >Add
+                </b-button>
+                <b-button
+                    type="is-danger"
+                    icon-left="trash-alt"
+                    :disabled="!checkedRows.length"
+                    @click="confirmDeleteSelectedUsers()"
+                >
+                    Delete checked
+                </b-button>
+            </div>
 
             <b-table
                 :data="users"
@@ -94,12 +96,11 @@ import VueBuefy from '../../../../../resources/js/admin/Buefy.vue';
 import User from './user';
 
 @Component({
-    name: 'AlbumsIndex',
+    name: 'UsersIndex',
 })
-export default class AlbumsIndex extends VueBuefy {
+export default class UsersIndex extends VueBuefy {
     private users: Array<User> = [];
-    defaultOpenedDetails: Array<any> = [];
-    private checkedRows: Array<any> = [];
+    private checkedRows: Array<User> = [];
     private total: number = 0;
     private page: number = 1;
     perPage: number = 10;
@@ -185,16 +186,16 @@ export default class AlbumsIndex extends VueBuefy {
         this.fetchUsers();
     }
 
-    confirmDeleteSelectedAlbums(): void {
+    confirmDeleteSelectedUsers(): void {
         this.$dialog.confirm({
-            title: 'Deleting Albums',
+            title: 'Deleting Users',
             message:
                 'Are you sure you want to <b>delete</b> these users? This action cannot be undone.',
-            confirmText: 'Delete Albums',
+            confirmText: 'Delete Users',
             type: 'is-danger',
             hasIcon: true,
             onConfirm: () => {
-                this.deleteSelectedAlbums();
+                this.deleteSelectedUsers();
             },
         });
     }
@@ -202,12 +203,12 @@ export default class AlbumsIndex extends VueBuefy {
     /**
      * Delete user from slug
      */
-    deleteSelectedAlbums(): void {
+    deleteSelectedUsers(): void {
         this.checkedRows.forEach(user => {
             this.axios
-                .delete(`/api/admin/users/${user.slug}`)
+                .delete(`/api/admin/users/${user.id}`)
                 .then(res => {
-                    this.showSuccess('Albums deleted');
+                    this.showSuccess('Users deleted');
                     this.fetchUsers();
                 })
                 .catch(err => {
