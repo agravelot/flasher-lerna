@@ -53,7 +53,7 @@
                 </b-button>
                 <b-button
                     type="is-danger"
-                    icon-right="delete"
+                    icon-right="trash-alt"
                     :loading="this.loading"
                     @click="confirmDeleteUser()"
                 >
