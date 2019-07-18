@@ -198,16 +198,10 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
      *
      * @return Media
      */
-    public function addPicture($media)
+    public function addPicture($media): Media
     {
-        $uuid = Str::uuid();
-
-        // TODO Fix extension
-        $name = "{$this->slug}_{$uuid}.{$media->getClientOriginalExtension()}";
-
         return $this->addMedia($media)
-            ->usingName($name)
-            ->usingFileName($name)
+            ->usingFileName($this->slug)
             ->preservingOriginal()
             ->toMediaCollectionOnCloudDisk(self::PICTURES_COLLECTION);
     }
