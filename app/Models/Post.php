@@ -13,6 +13,9 @@ use App\Abilities\HasTitleAsSlug;
 use App\Abilities\HasSlugRouteKey;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
  * App\Models\Post.
@@ -60,19 +63,19 @@ class Post extends Model
     /**
      * One to Many relation.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function comments()
+    public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    public function categories()
+    public function categories(): MorphToMany
     {
         return $this->morphToMany(Category::class, 'categorizable');
     }

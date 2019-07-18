@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Category;
-use Illuminate\Http\Response;
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
@@ -18,9 +18,9 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         $categories = Category::paginate(10);
 
@@ -32,9 +32,9 @@ class CategoryController extends Controller
      *
      * @param Category $category
      *
-     * @return Response
+     * @return View
      */
-    public function show(Category $category)
+    public function show(Category $category): View
     {
         return view('categories.show', compact('category'));
     }

@@ -21,7 +21,7 @@ class CosplayerPolicy extends Policy
      *
      * @return bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return true;
     }
@@ -34,7 +34,7 @@ class CosplayerPolicy extends Policy
      *
      * @return bool
      */
-    public function view(User $user, ?Cosplayer $cosplayer = null)
+    public function view(User $user, ?Cosplayer $cosplayer = null): bool
     {
         return false;
     }
@@ -46,7 +46,7 @@ class CosplayerPolicy extends Policy
      *
      * @return bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return false;
     }
@@ -59,7 +59,7 @@ class CosplayerPolicy extends Policy
      *
      * @return bool
      */
-    public function update(User $user, ?Cosplayer $cosplayer = null)
+    public function update(User $user, ?Cosplayer $cosplayer = null): bool
     {
         return false;
     }
@@ -72,7 +72,7 @@ class CosplayerPolicy extends Policy
      *
      * @return bool
      */
-    public function delete(User $user, ?Cosplayer $cosplayer = null)
+    public function delete(User $user, ?Cosplayer $cosplayer = null): bool
     {
         return false;
     }
@@ -85,7 +85,7 @@ class CosplayerPolicy extends Policy
      *
      * @return bool
      */
-    public function restore(User $user, Cosplayer $cosplayer)
+    public function restore(User $user, Cosplayer $cosplayer): bool
     {
         return false;
     }
@@ -98,7 +98,7 @@ class CosplayerPolicy extends Policy
      *
      * @return bool
      */
-    public function forceDelete(User $user, Cosplayer $cosplayer)
+    public function forceDelete(User $user, Cosplayer $cosplayer): bool
     {
         return false;
     }

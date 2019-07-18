@@ -41,11 +41,11 @@ class PublishedGoldenBookPost extends GoldenBookPost
 {
     use HasParentModel;
 
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 
-        static::addGlobalScope(function ($query) {
+        static::addGlobalScope(static function ($query) {
             $query->published();
         });
     }

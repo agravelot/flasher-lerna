@@ -21,7 +21,7 @@ class PublicScope implements Scope
      * @param Builder $builder
      * @param Model   $model
      */
-    public function apply(Builder $builder, Model $model)
+    public function apply(Builder $builder, Model $model): void
     {
         $builder->public();
     }

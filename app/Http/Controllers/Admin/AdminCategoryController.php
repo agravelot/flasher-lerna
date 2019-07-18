@@ -11,7 +11,7 @@ namespace App\Http\Controllers\Admin;
 
 use Exception;
 use App\Models\Category;
-use Illuminate\Http\Response;
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\CategoryRequest;
@@ -24,9 +24,9 @@ class AdminCategoryController extends Controller
      *
      * @throws AuthorizationException
      *
-     * @return Response
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         $this->authorize('viewAny', Category::class);
         $categories = Category::paginate(10);
@@ -41,9 +41,9 @@ class AdminCategoryController extends Controller
      *
      * @throws AuthorizationException
      *
-     * @return Response
+     * @return View
      */
-    public function show(Category $category)
+    public function show(Category $category): View
     {
         $this->authorize('view', Category::class);
         $category->load(['publishedAlbums.media', 'publishedAlbums.categories']);
@@ -59,9 +59,9 @@ class AdminCategoryController extends Controller
      *
      * @throws AuthorizationException
      *
-     * @return Response
+     * @return View
      */
-    public function edit(string $slug)
+    public function edit(string $slug): View
     {
         $this->authorize('update', Category::class);
         $category = Category::findBySlugOrFail($slug);
@@ -75,9 +75,9 @@ class AdminCategoryController extends Controller
      *
      * @throws AuthorizationException
      *
-     * @return Response
+     * @return View
      */
-    public function create()
+    public function create(): View
     {
         $this->authorize('create', Category::class);
 
@@ -91,9 +91,9 @@ class AdminCategoryController extends Controller
      *
      * @throws AuthorizationException
      *
-     * @return Response
+     * @return RedirectResponse
      */
-    public function store(CategoryRequest $request)
+    public function store(CategoryRequest $request): RedirectResponse
     {
         $this->authorize('create', Category::class);
         Category::create($request->validated());
@@ -110,9 +110,9 @@ class AdminCategoryController extends Controller
      *
      * @throws AuthorizationException
      *
-     * @return Response
+     * @return RedirectResponse
      */
-    public function update(CategoryRequest $request, string $slug)
+    public function update(CategoryRequest $request, string $slug): RedirectResponse
     {
         $this->authorize('update', Category::class);
         $category = Category::findBySlugOrFail($slug);
@@ -133,7 +133,7 @@ class AdminCategoryController extends Controller
      *
      * @return RedirectResponse
      */
-    public function destroy(string $slug)
+    public function destroy(string $slug): RedirectResponse
     {
         $this->authorize('delete', Category::class);
         $category = Category::findBySlugOrFail($slug);

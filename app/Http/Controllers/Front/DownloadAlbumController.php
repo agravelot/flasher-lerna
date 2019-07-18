@@ -12,15 +12,16 @@ namespace App\Http\Controllers\Front;
 use App\MediaStream;
 use App\Models\Album;
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class DownloadAlbumController extends Controller
 {
     /**
      * @param Album $album
      * @return MediaStream
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      */
-    public function show(Album $album)
+    public function show(Album $album): MediaStream
     {
         set_time_limit(0); // Disable timeout for long download
         $this->authorize('download', $album);

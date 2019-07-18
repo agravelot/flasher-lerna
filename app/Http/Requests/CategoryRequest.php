@@ -18,7 +18,7 @@ class CategoryRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $id = '';
         if (\in_array($this->method(), ['PATCH', 'PUT'], true)) {

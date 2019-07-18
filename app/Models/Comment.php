@@ -10,6 +10,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * App\Models\Comment.
@@ -47,9 +49,9 @@ class Comment extends Model
     /**
      * One to Many relation.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -64,7 +66,7 @@ class Comment extends Model
 //        return $this->belongsTo(Post::class);
 //    }
 
-    public function commentable()
+    public function commentable(): MorphTo
     {
         return $this->morphTo();
     }

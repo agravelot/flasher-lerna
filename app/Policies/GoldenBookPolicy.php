@@ -21,7 +21,7 @@ class GoldenBookPolicy extends Policy
      *
      * @return bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return true;
     }
@@ -34,7 +34,7 @@ class GoldenBookPolicy extends Policy
      *
      * @return bool
      */
-    public function view(User $user, ?GoldenBookPost $goldenBookPost = null)
+    public function view(User $user, ?GoldenBookPost $goldenBookPost = null): bool
     {
         return false;
     }
@@ -46,7 +46,7 @@ class GoldenBookPolicy extends Policy
      *
      * @return bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return false;
     }
@@ -59,7 +59,7 @@ class GoldenBookPolicy extends Policy
      *
      * @return bool
      */
-    public function update(User $user, GoldenBookPost $goldenBookPost)
+    public function update(User $user, GoldenBookPost $goldenBookPost): bool
     {
         return false;
     }
@@ -72,7 +72,7 @@ class GoldenBookPolicy extends Policy
      *
      * @return bool
      */
-    public function delete(User $user, ?GoldenBookPost $goldenBookPost = null)
+    public function delete(User $user, ?GoldenBookPost $goldenBookPost = null): bool
     {
         return false;
     }
@@ -85,7 +85,7 @@ class GoldenBookPolicy extends Policy
      *
      * @return bool
      */
-    public function restore(User $user, GoldenBookPost $goldenBookPost)
+    public function restore(User $user, GoldenBookPost $goldenBookPost): bool
     {
         return false;
     }
@@ -98,7 +98,7 @@ class GoldenBookPolicy extends Policy
      *
      * @return bool
      */
-    public function forceDelete(User $user, GoldenBookPost $goldenBookPost)
+    public function forceDelete(User $user, GoldenBookPost $goldenBookPost): bool
     {
         return false;
     }

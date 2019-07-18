@@ -11,7 +11,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\GoldenBookPost;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\PublishedGoldenBookRequest;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class AdminPublishedGoldenBookController extends Controller
 {
@@ -20,11 +22,11 @@ class AdminPublishedGoldenBookController extends Controller
      *
      * @param PublishedGoldenBookRequest $request
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function store(PublishedGoldenBookRequest $request)
+    public function store(PublishedGoldenBookRequest $request): RedirectResponse
     {
         $this->authorize('create', GoldenBookPost::class);
         $goldenbookPost = GoldenBookPost::find($request->get('goldenbook_id'));
@@ -38,13 +40,12 @@ class AdminPublishedGoldenBookController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function destroy(int $id)
+    public function destroy(int $id): RedirectResponse
     {
         $this->authorize('delete', GoldenBookPost::class);
         $goldenbookPost = GoldenBookPost::findOrFail($id);

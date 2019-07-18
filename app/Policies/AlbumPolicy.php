@@ -22,7 +22,7 @@ class AlbumPolicy extends Policy
      *
      * @return bool
      */
-    public function download(User $user, Album $album)
+    public function download(User $user, Album $album): bool
     {
         if ($user && $user->isAdmin()) {
             return true;
@@ -42,7 +42,7 @@ class AlbumPolicy extends Policy
      *
      * @return bool
      */
-    public function viewAny(?User $user)
+    public function viewAny(?User $user): bool
     {
 //        return $user->id == $album->user_id;
         return true;
@@ -56,7 +56,7 @@ class AlbumPolicy extends Policy
      *
      * @return bool
      */
-    public function view(?User $user, Album $album)
+    public function view(?User $user, Album $album): bool
     {
         if ($album->isPublic()) {
             return true;
@@ -75,7 +75,7 @@ class AlbumPolicy extends Policy
      *
      * @return bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
 //        return $user->id == $album->user_id;
         return false;
@@ -89,7 +89,7 @@ class AlbumPolicy extends Policy
      *
      * @return bool
      */
-    public function update(User $user, Album $album)
+    public function update(User $user, Album $album): bool
     {
 //        return $user->id == $album->user_id;
         return false;
@@ -103,7 +103,7 @@ class AlbumPolicy extends Policy
      *
      * @return bool
      */
-    public function delete(User $user, Album $album)
+    public function delete(User $user, Album $album): bool
     {
 //        return $user->id == $album->user_id;
         return false;
@@ -117,7 +117,7 @@ class AlbumPolicy extends Policy
      *
      * @return bool
      */
-    public function restore(User $user, Album $album)
+    public function restore(User $user, Album $album): bool
     {
         return false;
     }
@@ -130,7 +130,7 @@ class AlbumPolicy extends Policy
      *
      * @return bool
      */
-    public function forceDelete(User $user, Album $album)
+    public function forceDelete(User $user, Album $album): bool
     {
         return false;
     }

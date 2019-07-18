@@ -9,19 +9,22 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Exception;
+use Illuminate\View\View;
 use App\Models\GoldenBookPost;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class AdminGoldenBookController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
+     * @throws AuthorizationException
      */
-    public function index()
+    public function index(): View
     {
         $this->authorize('viewAny', GoldenBookPost::class);
         $goldenBookPosts = GoldenBookPost::paginate(10);
@@ -35,13 +38,12 @@ class AdminGoldenBookController extends Controller
      * Display the specified resource.
      *
      *
-     * @param int $id
+     * @param  int  $id
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
+     * @throws AuthorizationException
      */
-    public function show(int $id)
+    public function show(int $id): View
     {
         $this->authorize('view', GoldenBookPost::class);
         $goldenBookPost = GoldenBookPost::findOrFail($id);
@@ -56,12 +58,12 @@ class AdminGoldenBookController extends Controller
      *
      * @param int $id
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Exception
+     * @throws AuthorizationException
+     * @throws Exception
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function destroy(int $id)
+    public function destroy(int $id): RedirectResponse
     {
         $this->authorize('delete', GoldenBookPost::class);
         $goldenBookPost = GoldenBookPost::findOrFail($id);

@@ -12,8 +12,9 @@ namespace App\Http\Controllers\Admin;
 use Exception;
 use App\Models\User;
 use App\Models\Cosplayer;
-use Illuminate\Http\Response;
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\Access\AuthorizationException;
 use Modules\Cosplayer\Http\Requests\CosplayerRequest;
 
@@ -24,9 +25,9 @@ class AdminCosplayerController extends Controller
      *
      * @throws AuthorizationException
      *
-     * @return Response
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         $this->authorize('viewAny', Cosplayer::class);
         $cosplayers = Cosplayer::paginate(10);
@@ -41,9 +42,9 @@ class AdminCosplayerController extends Controller
      *
      * @throws AuthorizationException
      *
-     * @return Response
+     * @return View
      */
-    public function create()
+    public function create(): View
     {
         $this->authorize('create', Cosplayer::class);
         $users = User::with('cosplayer')->get(['id', 'name']);
@@ -58,9 +59,9 @@ class AdminCosplayerController extends Controller
      *
      * @throws AuthorizationException
      *
-     * @return Response
+     * @return RedirectResponse
      */
-    public function store(CosplayerRequest $request)
+    public function store(CosplayerRequest $request): RedirectResponse
     {
         $this->authorize('create', Cosplayer::class);
         $cosplayer = Cosplayer::create($request->validated());
@@ -80,9 +81,9 @@ class AdminCosplayerController extends Controller
      *
      * @throws AuthorizationException
      *
-     * @return Response
+     * @return View
      */
-    public function show(string $slug)
+    public function show(string $slug): View
     {
         $this->authorize('view', Cosplayer::class);
         $cosplayer = Cosplayer::findBySlugOrFail($slug);
@@ -100,9 +101,9 @@ class AdminCosplayerController extends Controller
      *
      * @throws AuthorizationException
      *
-     * @return Response
+     * @return View
      */
-    public function edit(string $slug)
+    public function edit(string $slug): View
     {
         $this->authorize('update', Cosplayer::class);
         $cosplayer = Cosplayer::findBySlugOrFail($slug);
@@ -120,9 +121,9 @@ class AdminCosplayerController extends Controller
      *
      * @throws AuthorizationException
      *
-     * @return Response
+     * @return RedirectResponse
      */
-    public function update(CosplayerRequest $request, string $slug)
+    public function update(CosplayerRequest $request, string $slug): RedirectResponse
     {
         $this->authorize('update', Cosplayer::class);
         $cosplayer = Cosplayer::findBySlugOrFail($slug);
@@ -146,9 +147,9 @@ class AdminCosplayerController extends Controller
      * @throws AuthorizationException
      * @throws Exception
      *
-     * @return Response
+     * @return RedirectResponse
      */
-    public function destroy(string $slug)
+    public function destroy(string $slug): RedirectResponse
     {
         $this->authorize('delete', Cosplayer::class);
         $cosplayer = Cosplayer::findBySlugOrFail($slug);

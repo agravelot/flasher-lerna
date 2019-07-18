@@ -11,6 +11,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * App\Models\GoldenBookPost.
@@ -56,9 +57,9 @@ class GoldenBookPost extends Model
      *
      * @return bool
      */
-    public function isPublished()
+    public function isPublished(): bool
     {
-        return $this->published_at != null;
+        return $this->published_at !== null;
     }
 
     /**
@@ -66,7 +67,7 @@ class GoldenBookPost extends Model
      *
      * @param Builder $query
      */
-    public function scopePublished(Builder $query)
+    public function scopePublished(Builder $query): void
     {
         $query->whereNotNull('published_at');
     }
@@ -76,7 +77,7 @@ class GoldenBookPost extends Model
      *
      * @return $this
      */
-    public function publish()
+    public function publish(): self
     {
         $this->published_at = $this->freshTimestamp();
 
@@ -88,7 +89,7 @@ class GoldenBookPost extends Model
      *
      * @return $this
      */
-    public function unpublish()
+    public function unpublish(): self
     {
         $this->published_at = null;
 
@@ -98,9 +99,9 @@ class GoldenBookPost extends Model
     /**
      * Return the related user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

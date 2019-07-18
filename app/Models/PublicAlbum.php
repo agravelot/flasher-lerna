@@ -52,7 +52,7 @@ class PublicAlbum extends Album
 {
     use HasParentModel, HasParentMedia;
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 

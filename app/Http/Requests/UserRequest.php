@@ -11,7 +11,7 @@ namespace App\Http\Requests;
 
 class UserRequest extends Request
 {
-    public function rules()
+    public function rules(): array
     {
         $id = optional($this->route('user'))->id ?? $this->route('user');
 

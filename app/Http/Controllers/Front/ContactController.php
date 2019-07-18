@@ -10,7 +10,9 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Contact;
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\ContactStoreRequest;
 
 class ContactController extends Controller
@@ -18,9 +20,9 @@ class ContactController extends Controller
     /**
      * Show the form for creating a new contact.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         return view('contacts.index');
     }
@@ -30,9 +32,9 @@ class ContactController extends Controller
      *
      * @param ContactStoreRequest $request
      *
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function store(ContactStoreRequest $request)
+    public function store(ContactStoreRequest $request): RedirectResponse
     {
         Contact::create($request->validated());
 

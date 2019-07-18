@@ -14,6 +14,7 @@ use App\Abilities\HasSlugRouteKey;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
  * App\Models\Category.
@@ -53,9 +54,9 @@ class Category extends Model
     /**
      * Posts relationships.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return MorphToMany
      */
-    public function posts()
+    public function posts(): MorphToMany
     {
         return $this->morphedByMany(Post::class, 'categorizable');
     }
@@ -63,9 +64,9 @@ class Category extends Model
     /**
      * Albums relationships.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return MorphToMany
      */
-    public function albums()
+    public function albums(): MorphToMany
     {
         return $this->morphedByMany(Album::class, 'categorizable');
     }
@@ -73,9 +74,9 @@ class Category extends Model
     /**
      * Album relationship, only published.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return MorphToMany
      */
-    public function publishedAlbums()
+    public function publishedAlbums(): MorphToMany
     {
         return $this->morphedByMany(PublicAlbum::class, 'categorizable');
     }

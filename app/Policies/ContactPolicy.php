@@ -21,7 +21,7 @@ class ContactPolicy extends Policy
      *
      * @return bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return true;
     }
@@ -34,7 +34,7 @@ class ContactPolicy extends Policy
      *
      * @return bool
      */
-    public function view(User $user, Contact $contact)
+    public function view(User $user, Contact $contact): bool
     {
         return false;
     }
@@ -46,7 +46,7 @@ class ContactPolicy extends Policy
      *
      * @return bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return true;
     }
@@ -59,7 +59,7 @@ class ContactPolicy extends Policy
      *
      * @return bool
      */
-    public function update(User $user, Contact $contact)
+    public function update(User $user, Contact $contact): bool
     {
         return false;
     }
@@ -72,7 +72,7 @@ class ContactPolicy extends Policy
      *
      * @return bool
      */
-    public function delete(User $user, Contact $contact)
+    public function delete(User $user, Contact $contact): bool
     {
         return false;
     }
@@ -85,7 +85,7 @@ class ContactPolicy extends Policy
      *
      * @return bool
      */
-    public function restore(User $user, Contact $contact)
+    public function restore(User $user, Contact $contact): bool
     {
         return false;
     }
@@ -98,7 +98,7 @@ class ContactPolicy extends Policy
      *
      * @return bool
      */
-    public function forceDelete(User $user, Contact $contact)
+    public function forceDelete(User $user, Contact $contact): bool
     {
         return false;
     }

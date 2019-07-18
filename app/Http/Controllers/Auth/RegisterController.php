@@ -49,9 +49,9 @@ class RegisterController extends Controller
      *
      * @param UserRequest $request
      *
-     * @return User|\Illuminate\Database\Eloquent\Model
+     * @return User
      */
-    protected function create(UserRequest $request)
+    protected function create(UserRequest $request): User
     {
         return User::create($request->validated());
     }

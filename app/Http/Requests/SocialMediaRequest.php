@@ -16,7 +16,7 @@ class SocialMediaRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $id = $this->route('social_media');
 

@@ -9,19 +9,23 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Exception;
 use App\Models\Contact;
+use Illuminate\View\View;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class AdminContactController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         $this->authorize('viewAny', Contact::class);
         $contacts = Contact::paginate(10);
@@ -36,11 +40,11 @@ class AdminContactController extends Controller
      *
      * @param int $id
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function show(int $id)
+    public function show(int $id): View
     {
         $this->authorize('view', Contact::class);
         $contact = Contact::findOrFail($id);
@@ -54,12 +58,12 @@ class AdminContactController extends Controller
      *
      * @param int $id
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Exception
+     * @throws AuthorizationException
+     * @throws Exception
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function destroy(int $id)
+    public function destroy(int $id): RedirectResponse
     {
         $this->authorize('delete', Contact::class);
         $contact = Contact::findOrFail($id);

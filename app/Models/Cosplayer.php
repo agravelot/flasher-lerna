@@ -10,7 +10,6 @@
 namespace App\Models;
 
 use Eloquent;
-use Illuminate\Support\Str;
 use Spatie\MediaLibrary\File;
 use Illuminate\Support\Carbon;
 use App\Abilities\HasNameAsSlug;
@@ -102,8 +101,7 @@ class Cosplayer extends Model implements HasMedia
             return;
         }
 
-        $uuid = Str::uuid()->toString();
-        $name = "{$this->slug}_{$uuid}.{$media->clientExtension()}";
+        $name = "{$this->slug}.{$media->clientExtension()}";
 
         $this->addMedia($media)
             ->usingFileName($name)
@@ -117,7 +115,7 @@ class Cosplayer extends Model implements HasMedia
      *
      * @return BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -127,7 +125,7 @@ class Cosplayer extends Model implements HasMedia
      *
      * @return BelongsToMany
      */
-    public function albums()
+    public function albums(): BelongsToMany
     {
         return $this->belongsToMany(Album::class);
     }
@@ -137,7 +135,7 @@ class Cosplayer extends Model implements HasMedia
      *
      * @return BelongsToMany
      */
-    public function publicAlbums()
+    public function publicAlbums(): BelongsToMany
     {
         return $this->belongsToMany(PublicAlbum::class, 'album_cosplayer');
     }
@@ -147,7 +145,7 @@ class Cosplayer extends Model implements HasMedia
      *
      * @return MorphToMany
      */
-    public function categories()
+    public function categories(): MorphToMany
     {
         return $this->morphToMany(Category::class, 'categorizable');
     }
@@ -155,10 +153,10 @@ class Cosplayer extends Model implements HasMedia
     /**
      * Defining the media collections.
      */
-    public function registerMediaCollections()
+    public function registerMediaCollections(): void
     {
         $this->addMediaCollection('avatar')
-            ->acceptsFile(function (File $file) {
+            ->acceptsFile(static function (File $file) {
                 return mb_strpos($file->mimeType, 'image/') === 0;
             })
             ->singleFile();
@@ -171,7 +169,7 @@ class Cosplayer extends Model implements HasMedia
      *
      * @throws InvalidManipulation
      */
-    public function registerMediaConversions(Media $media = null)
+    public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')
             ->crop('crop-center', 96, 96)

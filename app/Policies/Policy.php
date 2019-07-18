@@ -21,7 +21,7 @@ class Policy
      *
      * @param User $user
      *
-     * @return bool
+     * @return bool|void
      */
     public function before(User $user)
     {

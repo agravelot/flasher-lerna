@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\PasswordReset;
@@ -47,11 +48,12 @@ class ResetPasswordController extends Controller
     /**
      * Reset the given user's password.
      *
-     * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
+     * @param  User  $user
      * @param  string  $password
+     *
      * @return void
      */
-    protected function resetPassword($user, $password)
+    protected function resetPassword(User $user, string $password): void
     {
         $user->password = $password;
 

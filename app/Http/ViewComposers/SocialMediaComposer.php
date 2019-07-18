@@ -25,7 +25,7 @@ class SocialMediaComposer
      *
      * @param View $view
      */
-    public function compose(View $view)
+    public function compose(View $view): void
     {
         if (! $this->socialMedias) {
             $this->socialMedias = SocialMedia::active()->get();

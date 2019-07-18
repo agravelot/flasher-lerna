@@ -15,6 +15,8 @@ use App\Abilities\CanResetPassword;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Lab404\Impersonate\Models\Impersonate;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailInterface;
 
@@ -81,7 +83,7 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * Hash the password.
      *
-     * @param $value
+     * @param $value Non hashed password
      */
     public function setPasswordAttribute($value)
     {
@@ -93,9 +95,9 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * Return the albums posted by this user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function albums()
+    public function albums(): HasMany
     {
         return $this->hasMany(Album::class);
     }
@@ -103,9 +105,9 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * Return the posts posted by this user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function posts()
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
@@ -113,9 +115,9 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * Return the linked cosplayer to this user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      */
-    public function cosplayer()
+    public function cosplayer(): HasOne
     {
         return $this->hasOne(Cosplayer::class);
     }
@@ -123,9 +125,9 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * Return the contact from this user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function contact()
+    public function contact(): HasMany
     {
         return $this->hasMany(Contact::class);
     }
@@ -133,9 +135,9 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * Return the golden book posts by this user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function goldenBookPosts()
+    public function goldenBookPosts(): HasMany
     {
         return $this->hasMany(GoldenBookPost::class);
     }
@@ -145,7 +147,7 @@ class User extends Authenticatable implements MustVerifyEmailInterface
      *
      * @return bool
      */
-    public function canImpersonate()
+    public function canImpersonate(): bool
     {
         return $this->isAdmin();
     }
@@ -155,7 +157,7 @@ class User extends Authenticatable implements MustVerifyEmailInterface
      *
      * @return bool
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return $this->role === 'admin';
     }

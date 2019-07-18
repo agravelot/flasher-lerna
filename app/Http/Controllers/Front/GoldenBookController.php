@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use Illuminate\View\View;
 use App\Models\GoldenBookPost;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -20,9 +21,9 @@ class GoldenBookController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         $goldenBooksPosts = PublishedGoldenBookPost::latest()->paginate(10);
 
@@ -32,9 +33,9 @@ class GoldenBookController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function create()
+    public function create(): View
     {
         return view('goldenbook.create');
     }
@@ -46,7 +47,7 @@ class GoldenBookController extends Controller
      *
      * @return RedirectResponse
      */
-    public function store(GoldenBookRequest $request)
+    public function store(GoldenBookRequest $request): RedirectResponse
     {
         GoldenBookPost::create($request->validated());
 

@@ -21,7 +21,7 @@ class CategoryPolicy extends Policy
      *
      * @return bool
      */
-    public function viewAny(?User $user)
+    public function viewAny(?User $user): bool
     {
         return true;
     }
@@ -34,7 +34,7 @@ class CategoryPolicy extends Policy
      *
      * @return bool
      */
-    public function view(User $user, Category $category)
+    public function view(User $user, Category $category): bool
     {
         return false;
     }
@@ -46,7 +46,7 @@ class CategoryPolicy extends Policy
      *
      * @return bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return false;
     }
@@ -59,7 +59,7 @@ class CategoryPolicy extends Policy
      *
      * @return bool
      */
-    public function update(User $user, Category $category)
+    public function update(User $user, Category $category): bool
     {
         return false;
     }
@@ -72,7 +72,7 @@ class CategoryPolicy extends Policy
      *
      * @return bool
      */
-    public function delete(User $user, Category $category)
+    public function delete(User $user, Category $category): bool
     {
         return false;
     }
@@ -85,7 +85,7 @@ class CategoryPolicy extends Policy
      *
      * @return bool
      */
-    public function restore(User $user, Category $category)
+    public function restore(User $user, Category $category): bool
     {
         return false;
     }
@@ -98,7 +98,7 @@ class CategoryPolicy extends Policy
      *
      * @return bool
      */
-    public function forceDelete(User $user, Category $category)
+    public function forceDelete(User $user, Category $category): bool
     {
         return false;
     }

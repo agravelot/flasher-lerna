@@ -10,6 +10,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * App\Models\SocialMedia.
@@ -22,18 +23,18 @@ use Illuminate\Database\Eloquent\Model;
  * @property int                             $active
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SocialMedia active()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SocialMedia newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SocialMedia newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SocialMedia query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SocialMedia whereActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SocialMedia whereColor($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SocialMedia whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SocialMedia whereIcon($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SocialMedia whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SocialMedia whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SocialMedia whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SocialMedia whereUrl($value)
+ * @method static Builder|\App\Models\SocialMedia active()
+ * @method static Builder|\App\Models\SocialMedia newModelQuery()
+ * @method static Builder|\App\Models\SocialMedia newQuery()
+ * @method static Builder|\App\Models\SocialMedia query()
+ * @method static Builder|\App\Models\SocialMedia whereActive($value)
+ * @method static Builder|\App\Models\SocialMedia whereColor($value)
+ * @method static Builder|\App\Models\SocialMedia whereCreatedAt($value)
+ * @method static Builder|\App\Models\SocialMedia whereIcon($value)
+ * @method static Builder|\App\Models\SocialMedia whereId($value)
+ * @method static Builder|\App\Models\SocialMedia whereName($value)
+ * @method static Builder|\App\Models\SocialMedia whereUpdatedAt($value)
+ * @method static Builder|\App\Models\SocialMedia whereUrl($value)
  * @mixin \Eloquent
  */
 class SocialMedia extends Model
@@ -47,11 +48,9 @@ class SocialMedia extends Model
 
     /**
      * Scope for active social medias.
-     *
-     * @return SocialMedia
      */
-    public function scopeActive()
+    public function scopeActive(): Builder
     {
-        return $this->where('active', true);
+        return self::where('active', true);
     }
 }
