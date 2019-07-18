@@ -201,7 +201,7 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
     public function addPicture($media): Media
     {
         return $this->addMedia($media)
-            ->usingFileName($this->slug)
+            ->usingFileName("{$this->slug}.{$media->getClientOriginalExtension()}")
             ->preservingOriginal()
             ->toMediaCollectionOnCloudDisk(self::PICTURES_COLLECTION);
     }
