@@ -3,7 +3,7 @@
 @section('pageTitle', 'Photographe')
 
 @section('content')
-    <section class="hero is-black is-medium has-hero-background">
+    <section class="hero is-black is-medium has-hero-background is-radiusless">
         <div class="hero-body">
             <div class="container">
                 <div class="columns is-vcentered">
@@ -41,7 +41,7 @@
                 <div class="columns is-vcentered is-multiline is-mobile">
                     @foreach($albums as $album)
                         <div class="column is-half-touch">
-                            <a class="box is-paddingless" href="{{ route('albums.show', compact('album')) }}">
+                            <a class="box is-paddingless album" href="{{ route('albums.show', compact('album')) }}">
                                 <figure class="image is-square is-fitted">
                                     {{ $album->coverResponsive }}
                                 </figure>
