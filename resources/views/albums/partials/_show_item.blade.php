@@ -19,7 +19,7 @@
 </div>
 
 @if ($album->body or $album->categories->count())
-    <div class="card has-margin-bottom-md">
+    <article class="card has-margin-bottom-md">
         <div class="card-content">
             @if ($album->body)
                 <div class="content has-text-justified is-family-secondary">
@@ -39,7 +39,7 @@
                 </div>
             @endif
         </div>
-    </div>
+    </article>
 @endif
 
 @php
