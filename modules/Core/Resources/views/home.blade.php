@@ -7,14 +7,16 @@
         <div class="hero-body">
             <div class="container">
                 <div class="columns is-vcentered">
-                    <div class="column">
-                        <figure class="image is-128x128 is-pulled-right">
-                            <img class="is-rounded"
-                                 src="{{ optional(settings()->get('profile_picture_homepage'))->getUrl() }}"
-                                 srcset="{{ optional(settings()->get('profile_picture_homepage'))->getSrcset() }}"
-                                 alt="{{ optional(settings()->get('profile_picture_homepage'))->name }}">
-                        </figure>
-                    </div>
+                    @php
+                        $profilePicture = settings()->get('profile_picture_homepage');
+                    @endphp
+                    @if ($profilePicture)
+                        <div class="column">
+                            <figure class="image is-128x128 is-pulled-right">
+                                {{ $profilePicture('', ['class' => 'is-rounded responsive-media']) }}
+                            </figure>
+                        </div>
+                    @endif
                     <div class="column">
                         <h1 class="title">
                             JKanda
