@@ -22,10 +22,8 @@
     <div class="card has-margin-bottom-md">
         <div class="card-content">
             @if ($album->body)
-                <div class="content article-body">
-                    <p class="has-text-justified">
-                        {!! $album->body !!}
-                    </p>
+                <div class="content has-text-justified is-family-secondary">
+                    {!! $album->body !!}
                 </div>
             @endif
 

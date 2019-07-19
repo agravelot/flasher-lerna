@@ -31,7 +31,7 @@
                             </div>
                             <div class="card-content">
                                 <div class="content">
-                                    <h3 class="title is-5">{{ $album->title }}</h3>
+                                    <h3 class="title">{{ $album->title }}</h3>
                                 </div>
                             </div>
                         </article>
@@ -58,7 +58,7 @@
                             </div>
                             <div class="card-content">
                                 <div class="content">
-                                    <h3 class="title is-5">{{ $album->title }}</h3>
+                                    <h3 class="title">{{ $album->title }}</h3>
                                 </div>
                             </div>
                         </article>
@@ -81,7 +81,7 @@
                 </div>
                 <div class="card-content">
                     <div class="content">
-                        <h3 class="title is-5">{{ $album->title }}</h3>
+                        <h3 class="title">{{ $album->title }}</h3>
                     </div>
                 </div>
             </article>
