@@ -33,7 +33,7 @@
         <div class="container">
             <div class="has-text-centered has-margin-bottom-lg">
                 <a href="{{ route('albums.index') }}">
-                    <h2 class="title">Découvrez mes albums</h2>
+                    <h2 class="title">{{ __('Discover my albums') }}</h2>
                 </a>
             </div>
 
@@ -79,24 +79,34 @@
         </div>
     </section>
 
-    <section class="section hero">
+    <section class="hero">
         <div class="hero-body">
             <div class="container has-text-centered">
-                <h2 class="title">{{ __('Testimonials') }}</h2>
+                <div class="has-text-centered has-margin-bottom-lg">
+                    <a href="{{ route('goldenbook.index') }}">
+                        <h2 class="title">{{ __('Testimonials') }}</h2>
+                    </a>
+                </div>
 
-                <div class="columns">
+                <div class="columns is-vcentered">
                     @foreach($testimonials as $testimonial)
                         <div class="column">
                             <div class="box">
                                 <article class="media">
                                     <div class="media-content">
                                         <div class="content">
-                                            <p>
-                                                <strong>{{ $testimonial->name }}</strong>
-                                                <small>{{ $testimonial->created_at }}</small>
-                                                <br>
+
+                                            <p class="is-italic has-text-centered is-family-secondary">
+                                                 <span class="icon is-inline-flex">
+                                                  @fas('quote-left')
+                                                </span>
                                                 {{ $testimonial->body }}
+                                                <span class="icon is-inline-flex">
+                                                  @fas('quote-right')
+                                                </span>
                                             </p>
+
+                                            <p class="has-text-right has-text-weight-light">- {{ $testimonial->name }}</p>
                                         </div>
                                     </div>
                                 </article>
