@@ -101,10 +101,8 @@ class Cosplayer extends Model implements HasMedia
             return;
         }
 
-        $name = "{$this->slug}.{$media->clientExtension()}";
-
         $this->addMedia($media)
-            ->usingFileName($name)
+            ->usingFileName("{$this->slug}.{$media->clientExtension()}")
             ->preservingOriginal()
             ->withResponsiveImages()
             ->toMediaCollectionOnCloudDisk('avatar');

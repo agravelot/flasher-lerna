@@ -10,6 +10,7 @@
 namespace Modules\Cosplayer\Transformers;
 
 use Illuminate\Http\Request;
+use Modules\User\Transformers\UserResource;
 use Illuminate\Http\Resources\Json\Resource;
 use Modules\Album\Transformers\MediaResource;
 
@@ -30,9 +31,9 @@ class CosplayerResource extends Resource
             'slug' => $this->slug,
             'description' => $this->description,
             'avatar' => new MediaResource($this->avatar),
-            'user_id' => optional($this->user)->id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'user' => $this->whenLoaded('user', new UserResource($this->user)),
             'links' => [
                 'related' => route('cosplayers.show', ['cosplayers' => $this]),
             ],

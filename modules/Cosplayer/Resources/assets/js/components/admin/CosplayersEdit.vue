@@ -60,15 +60,36 @@
                         :type="errors.user_id ? 'is-danger' : ''"
                         :message="errors.user_id ? errors.user_id[0] : null"
                     >
+                        <article v-if="this.cosplayer && this.cosplayer.user" class="media box">
+                            <figure class="media-left">
+                                <p class="image is-64x64">
+                                    <img src="https://bulma.io/images/placeholders/128x128.png" />
+                                </p>
+                            </figure>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <strong>{{ cosplayer.user.name }}</strong>
+                                        <br />
+                                        Role : {{ cosplayer.user.role }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="media-right">
+                                <button class="delete" @click="cosplayer.user = null"></button>
+                            </div>
+                        </article>
                         <b-autocomplete
+                            v-if="cosplayer && !cosplayer.user"
+                            v-model="cosplayer.user && cosplayer.user.name"
                             :data="searchUsers"
-                            v-model="cosplayer.user_id"
                             placeholder="e.g. Anne"
                             keep-first
                             open-on-focus
                             @typing="searchUser"
-                            field="id"
-                            @select="option => (selected = option)"
+                            field="name"
+                            @select="option => (cosplayer.user = option)"
+                            :disable="loading"
                         >
                             <template slot-scope="props">
                                 <div>
@@ -185,9 +206,9 @@ export default class CosplayersEdit extends VueBuefy {
             });
     }
 
-    searchUser(): void {
+    searchUser(name: string): void {
         this.axios
-            .get('/api/admin/users', { params: { 'filter[name]': this.cosplayer.user_id } })
+            .get('/api/admin/users', { params: { 'filter[name]': name } })
             .then(res => res.data)
             .then(res => {
                 this.searchUsers = res.data;
@@ -227,8 +248,8 @@ export default class CosplayersEdit extends VueBuefy {
         if (cosplayer.description) {
             formData.append('description', cosplayer.description);
         }
-        if (cosplayer.user_id) {
-            formData.append('user_id', String(cosplayer.user_id));
+        if (this.cosplayer.user && cosplayer.user.id) {
+            formData.append('user_id', String(cosplayer.user.id));
         }
         if (cosplayer.avatar) {
             formData.append('avatar', cosplayer.avatar);
