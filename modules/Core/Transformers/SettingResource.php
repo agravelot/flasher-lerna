@@ -20,14 +20,14 @@ class SettingResource extends Resource
      *
      * @param  Request
      *
-     * @return array|MediaSettingResource
+     * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         $isMediaSetting = $this->type->value === SettingType::Media;
 
         if ($isMediaSetting) {
-            return new MediaSettingResource($request);
+            return (new MediaSettingResource($this))->toArray($request);
         }
 
         return [

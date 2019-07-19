@@ -41,7 +41,7 @@
                 <div class="columns is-vcentered is-multiline is-mobile">
                     @foreach($albums as $album)
                         <div class="column is-half-touch">
-                            <a class="box is-paddingless has-hover-zoom"
+                            <a class="box is-paddingless has-hover-zoom is-clipped"
                                href="{{ route('albums.show', compact('album')) }}">
                                 <figure class="image is-square is-fitted">
                                     {{ $album->coverResponsive }}
