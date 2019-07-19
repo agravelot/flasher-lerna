@@ -59,15 +59,3 @@
         </div>
     </div>
 </nav>
-
-@if(! request()->is('admin*') && ! request()->is('/'))
-    <div class="hero is-black is-radiusless">
-        <div class="hero-body">
-            <div class="container has-text-centered">
-                <h1 class="title">
-                    @yield('pageTitle')
-                </h1>
-            </div>
-        </div>
-    </div>
-@endif
