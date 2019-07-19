@@ -28,6 +28,19 @@
 <body>
 @include('layouts.partials._navbar')
 
+@if(! request()->is('admin*') && ! request()->is('/'))
+    <div class="hero is-black is-radiusless">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title">
+                    @yield('pageTitle')
+                </h1>
+                @yield('headerTags')
+            </div>
+        </div>
+    </div>
+@endif
+
 @include('layouts.partials._impersonating')
 @yield('content')
 

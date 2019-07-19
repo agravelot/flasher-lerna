@@ -1,3 +1,17 @@
+@section('headerTags')
+    @if ($album->categories->count())
+        <div class="tags is-centered">
+            @foreach($album->categories as $category)
+                <span class="tag is-dark">
+                    <a href=" {{ route('categories.show', ['category'=> $category]) }}" class="has-text-white">
+                        {{ $category->name }}
+                    </a>
+                </span>
+            @endforeach
+        </div>
+    @endif
+@stop
+
 <div class="field has-addons">
     @can('download', $album)
         <div class="control">
@@ -18,24 +32,12 @@
     @endcan
 </div>
 
-@if ($album->body or $album->categories->count())
+@if ($album->body)
     <article class="card has-margin-bottom-md">
         <div class="card-content">
             @if ($album->body)
                 <div class="content has-text-justified is-family-secondary has-text-black">
                     {!! $album->body !!}
-                </div>
-            @endif
-
-            @if ($album->categories and $album->categories->count())
-                <div class="tags">
-                    @foreach($album->categories as $category)
-                        <span class="tag">
-                        <a href=" {{ route('categories.show', ['category'=> $category]) }}">
-                            {{ $category->name }}
-                        </a>
-                    </span>
-                    @endforeach
                 </div>
             @endif
         </div>
@@ -62,7 +64,8 @@
             <div class="column is-one-third">
                 @foreach($column as $mediaKey => $media)
                     @php($key = $mediaKey * 3 + $columnKey)
-                    <a class="modal-button is-inline-block has-hover-zoom is-shadowless has-text-hover-image" data-target="{{ "media-{$key}" }}">
+                    <a class="modal-button is-inline-block has-hover-zoom is-shadowless has-text-hover-image"
+                       data-target="{{ "media-{$key}" }}">
                         {{
                            $media(
                                \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,
@@ -87,7 +90,8 @@
             <div class="column is-half">
                 @foreach($column as $mediaKey => $media)
                     @php($key = $mediaKey * 2 + $columnKey)
-                    <a class="modal-button is-inline-block has-hover-zoom is-shadowless" data-target="{{ "media-{$key}" }}">
+                    <a class="modal-button is-inline-block has-hover-zoom is-shadowless"
+                       data-target="{{ "media-{$key}" }}">
                         {{
                            $media(
                                \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,
