@@ -17,6 +17,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Foundation\Auth\RedirectsUsers;
+use Illuminate\View\View;
 
 trait RegistersUsers
 {
@@ -25,9 +26,9 @@ trait RegistersUsers
     /**
      * Show the application registration form.
      *
-     * @return Response
+     * @return View
      */
-    public function showRegistrationForm(): Response
+    public function showRegistrationForm(): View
     {
         return view('auth.register');
     }
