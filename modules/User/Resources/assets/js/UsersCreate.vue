@@ -17,6 +17,13 @@
                 <b-input type="email" maxlength="30" v-model="user.email"></b-input>
             </b-field>
 
+            <b-field label="Role">
+                <b-select placeholder="Select a role" v-model="user.role" required>
+                    <option value="admin">Administrator</option>
+                    <option value="user">User</option>
+                </b-select>
+            </b-field>
+
             <b-field
                 label="Password"
                 :type="errors.password ? 'is-danger' : ''"
