@@ -11,6 +11,7 @@ namespace Modules\Core\Http\Controllers;
 
 use Illuminate\View\View;
 use App\Models\PublicAlbum;
+use App\Models\GoldenBookPost;
 use Illuminate\Routing\Controller;
 
 class HomeController extends Controller
@@ -23,7 +24,8 @@ class HomeController extends Controller
     public function __invoke(): View
     {
         $albums = PublicAlbum::latest()->take(4)->get();
+        $testimonials = GoldenBookPost::take(3)->get();
 
-        return view('core::home', compact('albums'));
+        return view('core::home', compact('albums', 'testimonials'));
     }
 }
