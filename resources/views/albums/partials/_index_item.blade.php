@@ -23,7 +23,7 @@
                     @php($key = $columnKey + $mediaKey)
                     <a href="{{ route('albums.show', compact('album')) }}"
                        class="has-margin-right-md">
-                        <article class="card album is-clipped">
+                        <article class="card has-hover-zoom is-clipped">
                             <div v-if="album.media" class="card-image">
                                 <figure class="image">
                                     {{ $album->coverResponsive }}
@@ -50,7 +50,7 @@
                     @php($key = $columnKey + $mediaKey)
                     <a href="{{ route('albums.show', compact('album')) }}"
                        class="has-margin-right-md">
-                        <article class="card album is-clipped">
+                        <article class="card has-hover-zoom is-clipped">
                             <div v-if="album.media" class="card-image">
                                 <figure class="image">
                                     {{ $album->coverResponsive }}
@@ -73,7 +73,7 @@
     @foreach($albums as $album)
         <a href="{{ route('albums.show', compact('album')) }}"
            class="has-margin-right-md">
-            <article class="card album is-clipped">
+            <article class="card has-hover-zoom is-clipped">
                 <div v-if="album.media" class="card-image">
                     <figure class="image">
                         {{ $album->coverResponsive }}
