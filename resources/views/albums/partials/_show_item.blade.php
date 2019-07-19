@@ -19,13 +19,11 @@
 </div>
 
 @if ($album->body or $album->categories->count())
-    <div class="card has-margin-bottom-md">
+    <article class="card has-margin-bottom-md">
         <div class="card-content">
             @if ($album->body)
-                <div class="content article-body">
-                    <p class="has-text-justified">
-                        {!! $album->body !!}
-                    </p>
+                <div class="content has-text-justified is-family-secondary has-text-black">
+                    {!! $album->body !!}
                 </div>
             @endif
 
@@ -41,7 +39,7 @@
                 </div>
             @endif
         </div>
-    </div>
+    </article>
 @endif
 
 @php
@@ -64,7 +62,7 @@
             <div class="column is-one-third">
                 @foreach($column as $mediaKey => $media)
                     @php($key = $mediaKey * 3 + $columnKey)
-                    <a class="modal-button is-inline-block" data-target="{{ "media-{$key}" }}">
+                    <a class="modal-button is-inline-block has-hover-zoom is-shadowless has-text-hover-image" data-target="{{ "media-{$key}" }}">
                         {{
                            $media(
                                \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,
@@ -73,6 +71,9 @@
                                ]
                            )
                        }}
+                        <span class="icon has-text-white has-text-hover-image-bottom-left">
+                            @fa('eye')
+                        </span>
                     </a>
                 @endforeach
             </div>
@@ -86,7 +87,7 @@
             <div class="column is-half">
                 @foreach($column as $mediaKey => $media)
                     @php($key = $mediaKey * 2 + $columnKey)
-                    <a class="modal-button is-inline-block" data-target="{{ "media-{$key}" }}">
+                    <a class="modal-button is-inline-block has-hover-zoom is-shadowless" data-target="{{ "media-{$key}" }}">
                         {{
                            $media(
                                \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,
@@ -106,7 +107,7 @@
     <div class="columns is-variable is-1">
         @foreach($medias as $key => $media)
             <div class="column">
-                <a class="modal-button is-inline-block" data-target="{{ "media-{$key}" }}">
+                <a class="modal-button is-inline-block has-hover-zoom is-shadowless" data-target="{{ "media-{$key}" }}">
                     {{
                        $media(
                            \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,

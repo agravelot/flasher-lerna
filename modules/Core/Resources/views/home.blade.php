@@ -3,7 +3,7 @@
 @section('pageTitle', 'Photographe')
 
 @section('content')
-    <section class="hero is-black is-medium has-hero-background">
+    <section class="hero is-black is-medium has-hero-background is-radiusless">
         <div class="hero-body">
             <div class="container">
                 <div class="columns is-vcentered">
@@ -41,7 +41,8 @@
                 <div class="columns is-vcentered is-multiline is-mobile">
                     @foreach($albums as $album)
                         <div class="column is-half-touch">
-                            <a class="box is-paddingless" href="{{ route('albums.show', compact('album')) }}">
+                            <a class="box is-paddingless has-hover-zoom"
+                               href="{{ route('albums.show', compact('album')) }}">
                                 <figure class="image is-square is-fitted">
                                     {{ $album->coverResponsive }}
                                 </figure>
@@ -75,6 +76,36 @@
             {{--                    </div>--}}
             {{--                </div>--}}
             {{--            </section>--}}
+        </div>
+    </section>
+
+    <section class="section hero">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h2 class="title">{{ __('Testimonials') }}</h2>
+
+                <div class="columns">
+                    @foreach($testimonials as $testimonial)
+                        <div class="column">
+                            <div class="box">
+                                <article class="media">
+                                    <div class="media-content">
+                                        <div class="content">
+                                            <p>
+                                                <strong>{{ $testimonial->name }}</strong>
+                                                <small>{{ $testimonial->created_at }}</small>
+                                                <br>
+                                                {{ $testimonial->body }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+            </div>
         </div>
     </section>
 @stop

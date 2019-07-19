@@ -65,7 +65,6 @@
         "tinymce": "^4.8",
         "tinymce-i18n": "^18.10",
         "ts-loader": "^6.0.0",
-        "typeface-nunito": "^0.0.72",
         "typescript": "^3.3.4000",
         "vue": "^2.6.10",
         "vue-axios": "^2.1.4",

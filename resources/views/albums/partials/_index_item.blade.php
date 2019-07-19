@@ -23,7 +23,7 @@
                     @php($key = $columnKey + $mediaKey)
                     <a href="{{ route('albums.show', compact('album')) }}"
                        class="has-margin-right-md">
-                        <div class="card album">
+                        <article class="card has-hover-zoom is-clipped">
                             <div v-if="album.media" class="card-image">
                                 <figure class="image">
                                     {{ $album->coverResponsive }}
@@ -31,10 +31,10 @@
                             </div>
                             <div class="card-content">
                                 <div class="content">
-                                    <h3 class="title is-5">{{ $album->title }}</h3>
+                                    <h3 class="title">{{ $album->title }}</h3>
                                 </div>
                             </div>
-                        </div>
+                        </article>
                     </a>
                 @endforeach
             </div>
@@ -50,7 +50,7 @@
                     @php($key = $columnKey + $mediaKey)
                     <a href="{{ route('albums.show', compact('album')) }}"
                        class="has-margin-right-md">
-                        <div class="card album">
+                        <article class="card has-hover-zoom is-clipped">
                             <div v-if="album.media" class="card-image">
                                 <figure class="image">
                                     {{ $album->coverResponsive }}
@@ -58,10 +58,10 @@
                             </div>
                             <div class="card-content">
                                 <div class="content">
-                                    <h3 class="title is-5">{{ $album->title }}</h3>
+                                    <h3 class="title">{{ $album->title }}</h3>
                                 </div>
                             </div>
-                        </div>
+                        </article>
                     </a>
                 @endforeach
             </div>
@@ -73,7 +73,7 @@
     @foreach($albums as $album)
         <a href="{{ route('albums.show', compact('album')) }}"
            class="has-margin-right-md">
-            <div class="card album">
+            <article class="card has-hover-zoom is-clipped">
                 <div v-if="album.media" class="card-image">
                     <figure class="image">
                         {{ $album->coverResponsive }}
@@ -81,10 +81,10 @@
                 </div>
                 <div class="card-content">
                     <div class="content">
-                        <h3 class="title is-5">{{ $album->title }}</h3>
+                        <h3 class="title">{{ $album->title }}</h3>
                     </div>
                 </div>
-            </div>
+            </article>
         </a>
     @endforeach
 </section>

@@ -62,7 +62,7 @@
                     >
                         <b-autocomplete
                             :data="searchUsers"
-                            v-model="cosplayer.user_id"
+                            v-model="cosplayer.user.id"
                             placeholder="e.g. Anne"
                             keep-first
                             open-on-focus
@@ -134,7 +134,7 @@ export default class CosplayersCreate extends VueBuefy {
                 this.cosplayer = res.data;
                 this.loading = false;
                 this.showSuccess('Cosplayer created');
-                this.cosplayer = new Cosplayer();
+                this.$router.push({ name: 'admin.cosplayers.index' });
             })
             .catch(err => {
                 this.loading = false;
@@ -155,7 +155,7 @@ export default class CosplayersCreate extends VueBuefy {
 
     searchUser(): void {
         this.axios
-            .get('/api/admin/users', { params: { 'filter[name]': this.cosplayer.user_id } })
+            .get('/api/admin/users', { params: { 'filter[name]': this.cosplayer.user.id } })
             .then(res => res.data)
             .then(res => {
                 this.searchUsers = res.data;
@@ -194,8 +194,8 @@ export default class CosplayersCreate extends VueBuefy {
         if (cosplayer.description) {
             formData.append('description', cosplayer.description);
         }
-        if (cosplayer.user_id) {
-            formData.append('user_id', String(cosplayer.user_id));
+        if (cosplayer.user.id) {
+            formData.append('user.id', String(cosplayer.user.id));
         }
         if (cosplayer.avatar != null) {
             formData.append('avatar', cosplayer.avatar);

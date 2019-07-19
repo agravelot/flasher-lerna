@@ -1,4 +1,4 @@
-<nav class="navbar" role="navigation" aria-label="dropdown navigation">
+<nav class="navbar is-black" role="navigation" aria-label="dropdown navigation">
     <div class="container">
         <div class="navbar-brand">
 
@@ -60,8 +60,8 @@
     </div>
 </nav>
 
-@if(! request()->is('admin*') and ! request()->is('/'))
-    <div class="hero is-primary">
+@if(! request()->is('admin*') && ! request()->is('/'))
+    <div class="hero is-black is-radiusless">
         <div class="hero-body">
             <div class="container has-text-centered">
                 <h1 class="title">

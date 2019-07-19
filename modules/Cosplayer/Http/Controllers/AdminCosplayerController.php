@@ -63,6 +63,8 @@ class AdminCosplayerController extends Controller
      */
     public function show(Cosplayer $cosplayer): CosplayerResource
     {
+        $cosplayer->load('user');
+
         return new CosplayerResource($cosplayer);
     }
 
