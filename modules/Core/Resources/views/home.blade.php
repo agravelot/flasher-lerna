@@ -93,26 +93,7 @@
                 <div class="columns is-vcentered">
                     @foreach($testimonials as $testimonial)
                         <div class="column">
-                            <div class="box">
-                                <article class="media">
-                                    <div class="media-content">
-                                        <div class="content">
-
-                                            <p class="is-italic has-text-centered is-family-secondary">
-                                                 <span class="icon is-inline-flex">
-                                                  @fas('quote-left')
-                                                </span>
-                                                {{ $testimonial->body }}
-                                                <span class="icon is-inline-flex">
-                                                  @fas('quote-right')
-                                                </span>
-                                            </p>
-
-                                            <p class="has-text-right has-text-weight-light">- {{ $testimonial->name }}</p>
-                                        </div>
-                                    </div>
-                                </article>
-                            </div>
+                           @include('goldenbook._goldenbook_item', ['goldenBookPost' => $testimonial])
                         </div>
                     @endforeach
                 </div>
