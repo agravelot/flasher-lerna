@@ -37,7 +37,7 @@ class AdminPictureAlbumController extends Controller
      * @return JsonResponse|ProcessingUploadPictureResource
      * @throws UploadMissingFileException
      */
-    public function store(StorePictureAlbumRequest $request, FileReceiver $receiver): JsonResponse
+    public function store(StorePictureAlbumRequest $request, FileReceiver $receiver)
     {
         if ($receiver->isUploaded() === false) {
             throw new UploadMissingFileException();
