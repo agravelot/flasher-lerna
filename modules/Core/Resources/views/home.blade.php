@@ -35,14 +35,14 @@
         <div class="container">
             <div class="has-text-centered has-margin-bottom-lg">
                 <a href="{{ route('albums.index') }}">
-                    <h2 class="title">{{ __('Discover my albums') }}</h2>
+                    <h2 class="title">{{ __('Discover my last albums') }}</h2>
                 </a>
             </div>
 
             <section>
-                <div class="columns is-vcentered is-multiline is-mobile">
-                    @foreach($albums as $album)
-                        <div class="column is-half-touch">
+                <div class="columns is-vcentered is-multiline">
+                    @foreach($albums as $key => $album)
+                        <div class="column {{ $key === 0 ? 'is-full-touch' : null }}">
                             <a href="{{ route('albums.show', compact('album')) }}"
                                class="has-margin-right-md">
                                 <article class="card has-hover-zoom is-clipped">
