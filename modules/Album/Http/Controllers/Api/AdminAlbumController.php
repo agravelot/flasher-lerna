@@ -65,7 +65,7 @@ class AdminAlbumController extends Controller
             );
         }
 
-        return new AlbumShowResource($album->fresh());
+        return new AlbumShowResource($album);
     }
 
     /**
