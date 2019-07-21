@@ -5,11 +5,11 @@
 
 @php
     /** @var \Illuminate\Support\Collection $albums */
-    $columnsDesktop = $albums->groupBy(function ($item, int $key) {
+    $columnsDesktop = $albums->groupBy(static function ($item, int $key) {
             return $key % 3;
         });
 
-    $columnsTablet = $albums->groupBy(function ($item, int $key) {
+    $columnsTablet = $albums->groupBy(static function ($item, int $key) {
             return $key % 2;
         });
 
@@ -32,6 +32,13 @@
                             <div class="card-content">
                                 <div class="content">
                                     <h3 class="title">{{ $album->title }}</h3>
+                                    <div class="tags">
+                                        @foreach($album->categories as $category)
+                                            <span class="tag">
+                                                {{ $category->name }}
+                                            </span>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                         </article>
@@ -59,6 +66,13 @@
                             <div class="card-content">
                                 <div class="content">
                                     <h3 class="title">{{ $album->title }}</h3>
+                                    <div class="tags">
+                                        @foreach($album->categories as $category)
+                                            <span class="tag">
+                                                {{ $category->name }}
+                                            </span>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                         </article>
@@ -71,21 +85,29 @@
 
 <section class="is-hidden-tablet">
     @foreach($albums as $album)
-        <a href="{{ route('albums.show', compact('album')) }}"
-           class="has-margin-right-md">
-            <article class="card has-hover-zoom is-clipped">
-                <div v-if="album.media" class="card-image">
-                    <figure class="image">
-                        {{ $album->coverResponsive }}
-                    </figure>
-                </div>
-                <div class="card-content">
-                    <div class="content">
-                        <h3 class="title">{{ $album->title }}</h3>
+        <div class="has-margin-top-md">
+            <a href="{{ route('albums.show', compact('album')) }}">
+                <article class="card has-hover-zoom is-clipped">
+                    <div v-if="album.media" class="card-image">
+                        <figure class="image">
+                            {{ $album->coverResponsive }}
+                        </figure>
                     </div>
-                </div>
-            </article>
-        </a>
+                    <div class="card-content">
+                        <div class="content">
+                            <h3 class="title">{{ $album->title }}</h3>
+                            <div class="tags">
+                                @foreach($album->categories as $category)
+                                    <span class="tag">
+                                        {{ $category->name }}
+                                    </span>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </a>
+        </div>
     @endforeach
 </section>
 
