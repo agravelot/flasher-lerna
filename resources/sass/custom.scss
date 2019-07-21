@@ -95,3 +95,7 @@ img {
 .is-fitted img {
     object-fit: cover;
 }
+
+.ql-font-serif {
+    @extend .is-family-secondary
+}
