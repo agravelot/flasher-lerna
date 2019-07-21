@@ -43,15 +43,39 @@
                 <div class="columns is-vcentered is-multiline is-mobile">
                     @foreach($albums as $album)
                         <div class="column is-half-touch">
-                            <a class="box is-paddingless has-hover-zoom is-clipped"
-                               href="{{ route('albums.show', compact('album')) }}">
-                                <figure class="image is-square is-fitted">
-                                    {{ $album->coverResponsive }}
-                                </figure>
+                            <a href="{{ route('albums.show', compact('album')) }}"
+                               class="has-margin-right-md">
+                                <article class="card has-hover-zoom is-clipped">
+                                    <div class="card-image">
+                                        <figure class="image">
+                                            {{ $album->coverResponsive }}
+                                        </figure>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="content">
+                                            <h3 class="title">{{ $album->title }}</h3>
+                                            <div class="tags">
+                                                @foreach($album->categories as $category)
+                                                    <span class="tag">
+                                                {{ $category->name }}
+                                            </span>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
                             </a>
                         </div>
                     @endforeach
                 </div>
+               <div class="has-text-centered">
+                   <a class="button is-medium is-white has-hover-zoom" href="{{ route('albums.index') }}">
+                       <span>{{ __('Discover more') }}</span>
+                       <span class="icon is-medium">
+                        @fa('chevron-right')
+                    </span>
+                   </a>
+               </div>
             </section>
 
         </div>
@@ -93,7 +117,7 @@
                 <div class="columns is-vcentered">
                     @foreach($testimonials as $testimonial)
                         <div class="column">
-                           @include('goldenbook._goldenbook_item', ['goldenBookPost' => $testimonial])
+                            @include('goldenbook._goldenbook_item', ['goldenBookPost' => $testimonial])
                         </div>
                     @endforeach
                 </div>
