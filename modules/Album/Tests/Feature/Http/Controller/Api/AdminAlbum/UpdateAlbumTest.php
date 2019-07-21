@@ -50,9 +50,16 @@ class UpdateAlbumTest extends TestCase
             'categories' => [['id' => $category->id]],
         ]);
 
+        $response->dump();
+
         $this->assertSame(1, Album::count());
         $this->assertNotNull(Album::first()->categories->first);
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertJson(['data' => [
+                'categories' => [
+                    ['id' => $category->id],
+                ],
+            ]]);
     }
 
     public function test_admin_can_update_an_album_with_an_non_existent_category_and_a_picture()
