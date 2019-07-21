@@ -23,7 +23,7 @@ class HomeController extends Controller
      */
     public function __invoke(): View
     {
-        $albums = PublicAlbum::latest()->take(4)->get();
+        $albums = PublicAlbum::with('categories')->latest()->take(3)->get();
         $testimonials = PublishedGoldenBookPost::take(3)->get();
 
         return view('core::home', compact('albums', 'testimonials'));
