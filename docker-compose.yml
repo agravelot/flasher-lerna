@@ -10,11 +10,11 @@ services:
 
   db_pg:
     image: postgres:11-alpine
-      restart: unless-stopped
-      volumes:
-        - db-pg-data:/var/lib/postgresql/data:rw,delegated
-      env_file:
-        - docker/db/.env
+    restart: unless-stopped
+    volumes:
+      - db-pg-data:/var/lib/postgresql/data:rw,delegated
+    env_file:
+      - docker/db/.env
 
   php: &php_base
     image: registry.gitlab.com/flasher/flasher/picblog_php:${CI_COMMIT_SHORT_SHA:-latest}
