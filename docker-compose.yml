@@ -120,6 +120,7 @@ volumes:
   storage:
   public_vendor:
   cache_data:
+  db-pg-data:
 
 networks:
   default:
