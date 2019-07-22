@@ -125,6 +125,7 @@ services:
       S3_BUCKET: ${DO_BUCKET}
       S3_PREFIX: ${APP_ENV}/backups
       S3_ENDPOINT: ${DO_ENDPOINT}
+      POSTGRES_HOST: db_pg
       POSTGRES_DATABASE: picblog
       POSTGRES_USER: picblog
       POSTGRES_PASSWORD: ${DB_PASSWORD}
