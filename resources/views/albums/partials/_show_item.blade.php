@@ -1,5 +1,5 @@
 @section('headerTags')
-    @if ($album->categories->count())
+    @if ($album->categories->isNotEmpty())
         <div class="tags is-centered">
             @foreach($album->categories as $category)
                 <span class="tag is-dark">

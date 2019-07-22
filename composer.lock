@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "816d0ab42a1d186a6d4175c376a84a1d",
+    "content-hash": "2083049f896a60806f6d783d48c6ef11",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -8969,51 +8969,6 @@
                 "unit testing"
             ],
             "time": "2019-07-01T18:01:41+00:00"
-        },
-        {
-            "name": "joedixon/laravel-translation",
-            "version": "v0.1.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/joedixon/laravel-translation.git",
-                "reference": "4cb940576277aa37afc2189863c05c584bc9b7b8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/joedixon/laravel-translation/zipball/4cb940576277aa37afc2189863c05c584bc9b7b8",
-                "reference": "4cb940576277aa37afc2189863c05c584bc9b7b8",
-                "shasum": ""
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.0.0",
-                "orchestra/testbench": "^3.6",
-                "phpunit/phpunit": "^7.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "JoeDixon\\Translation\\TranslationServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "JoeDixon\\Translation\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Joe Dixon",
-                    "email": "hello@joedixon.co.uk"
-                }
-            ],
-            "description": "A tool for managing all of your Laravel translations",
-            "time": "2019-02-12T10:20:22+00:00"
         },
         {
             "name": "justinrainbow/json-schema",

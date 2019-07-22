@@ -5,7 +5,7 @@
             <a href="{{ url('/') }}"
                class="navbar-item">{{ settings()->get('app_name', config('app.name', 'Flasher')) }}</a>
 
-            @include('layouts.partials._navbar_socials')
+            @include('layouts.partials._navbar_socials', ['class' => 'navbar-item'])
 
             <a role="button" class="navbar-burger burger" aria-label="menu" data-target="navMenu"
                aria-expanded="false">
