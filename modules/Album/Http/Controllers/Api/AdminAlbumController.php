@@ -38,6 +38,7 @@ class AdminAlbumController extends Controller
             QueryBuilder::for(Album::class)->allowedFilters('title')
                 ->with('media')
                 ->withCount('media')
+                ->latest()
                 ->paginate(15)
         );
     }
