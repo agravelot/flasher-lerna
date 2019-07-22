@@ -22,7 +22,7 @@ class CreateSettingsTable extends Migration
     {
         Schema::dropIfExists('settings');
         Schema::create('settings', function (Blueprint $table) {
-            $table->char('name', 100)->primary();
+            $table->string('name', 30)->primary();
             $table->string('value');
             $table->enum('type', ['string', 'numeric', 'bool', 'json', 'textarea']);
             $table->string('title');
