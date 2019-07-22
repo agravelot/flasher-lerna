@@ -32,13 +32,15 @@
                             <div class="card-content">
                                 <div class="content">
                                     <h3 class="title">{{ $album->title }}</h3>
-                                    <div class="tags">
-                                        @foreach($album->categories as $category)
-                                            <span class="tag">
+                                    @if ($album->categories->isNotEmpty())
+                                        <div class="tags">
+                                            @foreach($album->categories as $category)
+                                                <span class="tag">
                                                 {{ $category->name }}
                                             </span>
-                                        @endforeach
-                                    </div>
+                                            @endforeach
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </article>
@@ -66,13 +68,15 @@
                             <div class="card-content">
                                 <div class="content">
                                     <h3 class="title">{{ $album->title }}</h3>
-                                    <div class="tags">
-                                        @foreach($album->categories as $category)
-                                            <span class="tag">
+                                    @if ($album->categories->isNotEmpty())
+                                        <div class="tags">
+                                            @foreach($album->categories as $category)
+                                                <span class="tag">
                                                 {{ $category->name }}
                                             </span>
-                                        @endforeach
-                                    </div>
+                                            @endforeach
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </article>
@@ -96,13 +100,15 @@
                     <div class="card-content">
                         <div class="content">
                             <h3 class="title">{{ $album->title }}</h3>
-                            <div class="tags">
-                                @foreach($album->categories as $category)
-                                    <span class="tag">
-                                        {{ $category->name }}
-                                    </span>
-                                @endforeach
-                            </div>
+                            @if ($album->categories->isNotEmpty())
+                                <div class="tags">
+                                    @foreach($album->categories as $category)
+                                        <span class="tag">
+                                                {{ $category->name }}
+                                            </span>
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </article>
