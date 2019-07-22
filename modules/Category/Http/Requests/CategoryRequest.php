@@ -10,6 +10,7 @@
 namespace Modules\Category\Http\Requests;
 
 use App\Http\Requests\Request;
+use Illuminate\Validation\Rule;
 
 class CategoryRequest extends Request
 {
@@ -21,7 +22,7 @@ class CategoryRequest extends Request
     public function rules(): array
     {
         return [
-            'name' => 'string|required|min:2|max:255|unique:categories,name,'.optional($this->category)->id,
+            'name' => ['string', 'required', 'min:2', 'max:255', Rule::unique('categories')->ignore(optional($this->category)->id)],
             'description' => 'nullable|string|max:65555',
         ];
     }
