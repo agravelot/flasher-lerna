@@ -126,7 +126,7 @@ deploy_staging:
   - bash -c 'cd docker/ && ./deploy.sh staging'
   environment:
     name: staging
-    url: https://staging.picblog.agravelot.com
+    url: https://staging.picblog.agravelot.eu
   except:
     - master
 
