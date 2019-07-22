@@ -38,7 +38,7 @@ class AlbumController extends Controller
      */
     public function show(PublicAlbum $album): View
     {
-        $album->load(['cosplayers.media']);
+        $album->load(['cosplayers.media', 'categories']);
         $this->authorize('view', $album);
 
         return view('albums.show', compact('album'));
