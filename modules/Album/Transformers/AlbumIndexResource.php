@@ -30,7 +30,7 @@ class AlbumIndexResource extends Resource
             'title' => $this->title,
             'published_at' => $this->published_at,
             'private' => $this->private,
-            'media' => new MediaResource($this->getFirstMedia(Album::PICTURES_COLLECTION)),
+            //'media' => $this->whenLoaded('media', new MediaResource($this->getFirstMedia(Album::PICTURES_COLLECTION))),
             'media_count' => $this->media_count,
         ];
     }
