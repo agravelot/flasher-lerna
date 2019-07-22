@@ -116,7 +116,7 @@ services:
       MULTI_FILES: "true"
 
   pgbackups3:
-    image: schickling/postgres-backup-s3
+    image: itbm/postgresql-backup-s3 # fork of schickling/postgres-backup-s3
     links:
       - db_pg
     environment:
