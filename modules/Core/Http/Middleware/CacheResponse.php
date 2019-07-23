@@ -16,16 +16,25 @@ use Spatie\ResponseCache\Middlewares\CacheResponse as CacheResponseBase;
 
 class CacheResponse extends CacheResponseBase
 {
+    /**
+     * Bypass cache middleware after form submitted or when a defined flashed session data is set.
+     *
+     * @param  Request  $request
+     * @param  Closure  $next
+     * @param  int|null  $lifetimeInSeconds
+     *
+     * @return Response
+     */
     public function handle(Request $request, Closure $next, $lifetimeInSeconds = null): Response
     {
-        if (request()->session()->hasOldInput()) {
+        if ($request->session()->hasOldInput()) {
             return $next($request);
         }
 
         $flashs = ['errors', 'warning', 'notice', 'success'];
 
         foreach ($flashs as $flash) {
-            if (session()->has($flash)) {
+            if ($request->session()->has($flash)) {
                 return $next($request);
             }
         }
