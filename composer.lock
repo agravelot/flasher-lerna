@@ -117,16 +117,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.107.4",
+            "version": "3.107.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "37bacdae146326ed8008e3354e9e2c3547646996"
+                "reference": "99ec85834bbbeb9365c34a46b792c5421775f021"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/37bacdae146326ed8008e3354e9e2c3547646996",
-                "reference": "37bacdae146326ed8008e3354e9e2c3547646996",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/99ec85834bbbeb9365c34a46b792c5421775f021",
+                "reference": "99ec85834bbbeb9365c34a46b792c5421775f021",
                 "shasum": ""
             },
             "require": {
@@ -196,7 +196,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-07-19T18:14:22+00:00"
+            "time": "2019-07-22T18:31:27+00:00"
         },
         {
             "name": "bensampo/laravel-enum",
@@ -5131,16 +5131,16 @@
         },
         {
             "name": "spatie/crawler",
-            "version": "4.4.3",
+            "version": "4.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/crawler.git",
-                "reference": "54b268ff561af070062e1a15f128ef41b6315eae"
+                "reference": "05fbcfeaabb92e9a96a4c30a2c7d327e7fc321cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/crawler/zipball/54b268ff561af070062e1a15f128ef41b6315eae",
-                "reference": "54b268ff561af070062e1a15f128ef41b6315eae",
+                "url": "https://api.github.com/repos/spatie/crawler/zipball/05fbcfeaabb92e9a96a4c30a2c7d327e7fc321cb",
+                "reference": "05fbcfeaabb92e9a96a4c30a2c7d327e7fc321cb",
                 "shasum": ""
             },
             "require": {
@@ -5186,7 +5186,7 @@
                 "spatie",
                 "website"
             ],
-            "time": "2019-06-23T18:09:43+00:00"
+            "time": "2019-07-22T09:58:37+00:00"
         },
         {
             "name": "spatie/image",
