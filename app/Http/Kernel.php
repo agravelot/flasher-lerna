@@ -31,6 +31,8 @@ use Laravel\Passport\Http\Middleware\CreateFreshApiToken;
 use Illuminate\Foundation\Http\Middleware\ValidatePostSize;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
+use Spatie\ResponseCache\Middlewares\CacheResponse;
+use Spatie\ResponseCache\Middlewares\DoNotCacheResponse;
 
 class Kernel extends HttpKernel
 {
@@ -64,6 +66,7 @@ class Kernel extends HttpKernel
             VerifyCsrfToken::class,
             SubstituteBindings::class,
             CreateFreshApiToken::class,
+            CacheResponse::class,
         ],
 
         'api' => [
@@ -91,5 +94,6 @@ class Kernel extends HttpKernel
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
         'admin' => CheckAdmin::class,
+        'doNotCacheResponse' => DoNotCacheResponse::class,
     ];
 }

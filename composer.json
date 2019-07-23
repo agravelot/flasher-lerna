@@ -41,6 +41,7 @@
     "spatie/laravel-activitylog": "^3.1",
     "spatie/laravel-medialibrary": "^7.6",
     "spatie/laravel-query-builder": "^1.13",
+    "spatie/laravel-responsecache": "^6.0",
     "spatie/laravel-sitemap": "^5.3"
   },
   "require-dev": {
