@@ -69,6 +69,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Album public ()
  * @property mixed $cover
  * @property-read mixed $cover_responsive
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album public()
  */
 class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphable, ImagesOpenGraphable
 {
@@ -183,6 +184,16 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
     }
 
     /**
+     * Return all the categories of this album.
+     *
+     * @return MorphToMany
+     */
+    public function categories(): MorphToMany
+    {
+        return $this->morphToMany(Category::class, 'categorizable');
+    }
+
+    /**
      * Add media to Album::PICTURES_COLLECTION collection.
      *
      * @param  string|UploadedFile  $media
@@ -234,16 +245,6 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
     public function tags(): \Illuminate\Support\Collection
     {
         return $this->categories()->pluck('name');
-    }
-
-    /**
-     * Return all the categories of this album.
-     *
-     * @return MorphToMany
-     */
-    public function categories(): MorphToMany
-    {
-        return $this->morphToMany(Category::class, 'categorizable');
     }
 
     public function publishedAt(): string
