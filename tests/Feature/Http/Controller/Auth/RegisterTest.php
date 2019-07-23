@@ -11,9 +11,7 @@ namespace Tests\Feature\Http\Controller\Auth;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Jobs\VerifyEmail;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Queue;
+use Modules\Core\Entities\Setting;
 use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -23,6 +21,7 @@ class RegisterTest extends TestCase
 
     public function test_guest_can_register()
     {
+        Setting::where('name', 'email_from')->first()->update(['value'=> 'test@jkanda.fr']);
         NoCaptcha::shouldReceive('verifyResponse')
             ->once()
             ->andReturn(true);
@@ -34,25 +33,18 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'secret',
             'g-recaptcha-response' => '1',
         ];
-        Mail::assertNothingQueued();
-        Queue::assertNothingPushed();
 
         $response = $this->post('/register', $data);
 
         $response->assertRedirect('/');
         $this->followRedirects($response)
             ->assertStatus(200);
-//        Queue::assertPushedOn('emails', VerifyEmail::class);
-//        Mail::assertQueued(VerifyEmail::class, function ($mail) use ($user) {
-//            return $mail->hasTo($user->email);
-//        });
+        //TODO Assert Notification sent
     }
 
     protected function setUp(): void
     {
         parent::setUp();
         session()->setPreviousUrl('/register');
-        Mail::fake();
-        Queue::fake();
     }
 }

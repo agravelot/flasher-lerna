@@ -82,21 +82,21 @@ lint:
   dependencies:
     - build_vendor_dev
 
-insights:
-  stage: test_review
-  script:
-    - echo "LINT CODE"
-    - docker-compose pull
-    - chmod +x docker/*.sh
-    - bash -c 'cd docker/ && ./generate_env.sh staging'
-    - docker-compose up -d
-    - docker-compose stop queue scheduler nginx
-    - docker-compose exec -T cache redis-cli config set maxmemory 41943040
-    - docker cp vendor $(docker-compose ps -q php):/var/www/html/
-    - docker-compose exec -e APP_ENV=testing -T php php artisan insights --no-interaction --min-quality=80 --min-complexity=90 --min-architecture=75 --min-style=95
-  allow_failure: true
-  dependencies:
-    - build_vendor_dev
+#insights:
+#  stage: test_review
+#  script:
+#    - echo "LINT CODE"
+#    - docker-compose pull
+#    - chmod +x docker/*.sh
+#    - bash -c 'cd docker/ && ./generate_env.sh staging'
+#    - docker-compose up -d
+#    - docker-compose stop queue scheduler nginx
+#    - docker-compose exec -T cache redis-cli config set maxmemory 41943040
+#    - docker cp vendor $(docker-compose ps -q php):/var/www/html/
+#    - docker-compose exec -e APP_ENV=testing -T php php artisan insights --no-interaction --min-quality=80 --min-complexity=90 --min-architecture=75 --min-style=95
+#  allow_failure: true
+#  dependencies:
+#    - build_vendor_dev
 
 #security_audit:
 #  stage: test_review

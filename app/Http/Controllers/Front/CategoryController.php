@@ -22,7 +22,7 @@ class CategoryController extends Controller
      */
     public function index(): View
     {
-        $categories = Category::paginate(10);
+        $categories = Category::with('media')->paginate(10);
 
         return view('categories.index', compact('categories'));
     }

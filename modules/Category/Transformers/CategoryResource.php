@@ -11,6 +11,7 @@ namespace Modules\Category\Transformers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
+use Modules\Album\Transformers\MediaResource;
 
 class CategoryResource extends Resource
 {
@@ -28,6 +29,7 @@ class CategoryResource extends Resource
             'slug' => $this->slug,
             'name' => $this->name,
             'description' => $this->description,
+            'cover' => $this->whenLoaded('media', new MediaResource($this->cover)),
             'links' => [
                 'related' => route('categories.show', ['category' => $this]),
             ],
