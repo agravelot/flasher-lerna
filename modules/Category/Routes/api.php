@@ -14,7 +14,7 @@ Route::name('api.')->group(function () {
             Route::prefix('admin')->group(function () {
                 Route::apiResource('categories', 'AdminCategoryController');
                 Route::apiResource('cover-categories', 'AdminCoverCategoryController')
-                    ->only('update')
+                    ->only(['store', 'destroy'])
                     ->parameters([
                         'cover-categories' => 'category',
                     ]);

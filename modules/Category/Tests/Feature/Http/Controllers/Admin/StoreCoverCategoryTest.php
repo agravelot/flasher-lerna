@@ -15,7 +15,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class UpdateCoverCategoryTest extends TestCase
+class StoreCoverCategoryTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -26,15 +26,16 @@ class UpdateCoverCategoryTest extends TestCase
 
         $response = $this->updateCoverCategory($category);
 
-        $response->assertStatus(200)
+        $response->assertStatus(201)
             ->assertJson(['name' => "{$category->slug}.png"]);
         $this->assertNotNull($category->cover);
     }
 
     private function updateCoverCategory(Category $category, ?string $imageName = 'test.png'): TestResponse
     {
-        return $this->json('patch', "/api/admin/cover-categories/{$category->slug}", [
-            UploadedFile::fake()->image($imageName),
+        return $this->json('post', '/api/admin/cover-categories', [
+            'category_slug' => $category->slug,
+            'file' => UploadedFile::fake()->image($imageName),
         ]);
     }
 

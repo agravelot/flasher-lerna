@@ -9,11 +9,11 @@
 
 namespace Modules\Category\Tests\Features\Http\Controllers\Admin;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\Category;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ShowCategoryTest extends TestCase
 {
@@ -21,7 +21,6 @@ class ShowCategoryTest extends TestCase
 
     public function test_admin_cant_index_categories(): void
     {
-        $this->disableExceptionHandling();
         $this->actingAsAdmin();
         $category = factory(Category::class)->state('withCover')->create();
         $category->setCover(UploadedFile::fake()->image('fake.jpg'));
