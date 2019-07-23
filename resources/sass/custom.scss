@@ -55,14 +55,14 @@
 
 .avatar-circle {
   @include avatar(64px);
-}
 
-.avatar-circle-sm {
-  @include avatar(50px);
-}
+    &-sm {
+        @include avatar(50px);
+    }
 
-.avatar-circle-lg {
-  @include avatar(250px);
+    &-lg {
+        @include avatar(250px);
+    }
 }
 
 .album-image img {
