@@ -137,10 +137,12 @@
         <div class="modal-background"></div>
         <div class="modal-content is-image is-huge is-clipped">
             {{ $media(\Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION, ['class' => null]) }}
-            {{ $key + 1 . '/' . $medias->count() }}
+            <span>{{ $key + 1 . '/' . $medias->count() }}</span>
         </div>
-        <a class="prev" onclick="this.dispatchEvent(new KeyboardEvent('keydown', {'key':'ArrowLeft'}));">&#10094;</a>
-        <a class="next" onclick="this.dispatchEvent(new KeyboardEvent('keydown', {'key':'ArrowRight'}));">&#10095;</a>
+        <a class="prev" onclick="this.dispatchEvent(new KeyboardEvent('keydown', {'key':'ArrowLeft'}));"
+           aria-label="{{ __('Previous') }}">&#10094;</a>
+        <a class="next" onclick="this.dispatchEvent(new KeyboardEvent('keydown', {'key':'ArrowRight'}));"
+           aria-label="{{ __('Next') }}">&#10095;</a>
         <button class="modal-close is-large" aria-label="{{ __('Close') }}"></button>
     </div>
 @endforeach
