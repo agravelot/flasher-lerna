@@ -23,7 +23,7 @@ class SocialMediaRequest extends Request
         $id = $this->route('social_media');
 
         return [
-            'name' => ['required','string', Rule::unique('social_media')->ignore($id)],
+            'name' => ['required', 'string', Rule::unique('social_media')->ignore($id)],
             'icon' => 'required|string',
             'color' => 'required',
             'url' => 'required',

@@ -21,14 +21,16 @@ class CategoryTest extends ModelTestCase
 
     public function test_can_not_create_two_categories_with_the_same_name()
     {
+        $count = 0;
         $categories = factory(Category::class, 2)->make(['name' => 'A name']);
 
         try {
-            $categories->each(function (Category $category) {
+            $categories->each(function (Category $category) use (&$count) {
                 $category->save();
+                $count++;
             });
         } catch (QueryException $e) {
-            $this->assertSame(1, Category::count());
+            $this->assertSame(1, $count);
 
             return;
         }
@@ -42,7 +44,7 @@ class CategoryTest extends ModelTestCase
 
         $category->save();
 
-        $this->assertSame(1, Category::count());
+        $this->assertCount(1, Category::all());
     }
 
     public function testRouteKeyName()
