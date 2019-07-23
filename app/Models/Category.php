@@ -92,7 +92,6 @@ class Category extends Model implements HasMedia
         return $this->addMedia($media)
             ->usingFileName("{$this->slug}.{$media->clientExtension()}")
             ->preservingOriginal()
-            ->withResponsiveImages()
             ->toMediaCollectionOnCloudDisk(self::COVER_COLLECTION);
     }
 
