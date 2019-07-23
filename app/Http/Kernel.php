@@ -21,18 +21,18 @@ use Illuminate\Session\Middleware\StartSession;
 use App\Http\Middleware\CheckForMaintenanceMode;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Routing\Middleware\ThrottleRequests;
+use Spatie\ResponseCache\Middlewares\CacheResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Spatie\ResponseCache\Middlewares\DoNotCacheResponse;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Laravel\Passport\Http\Middleware\CreateFreshApiToken;
 use Illuminate\Foundation\Http\Middleware\ValidatePostSize;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
-use Spatie\ResponseCache\Middlewares\CacheResponse;
-use Spatie\ResponseCache\Middlewares\DoNotCacheResponse;
 
 class Kernel extends HttpKernel
 {
