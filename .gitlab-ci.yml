@@ -16,6 +16,7 @@ variables:
   CONTAINER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH
   DOCKER_HOST: tcp://docker:2375
   DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "" # Workaround https://gitlab.com/gitlab-org/gitlab-ce/issues/64959
 
 before_script:
 - touch docker/db/.env docker/nginx/.env docker/php-fpm/.env
