@@ -149,33 +149,17 @@
 
 @if ($album->cosplayers->count())
     <section class="section">
-        <h2 class="title is-2 has-text-centered">Cosplayers</h2>
+        <h2 class="title is-2 has-text-centered">{{ __('Cosplayers') }}</h2>
 
         <div class="card">
             <div class="card-content">
-                <div class="columns is-multiline is-mobile">
+                <ul class="columns is-multiline is-mobile">
                     @foreach($album->cosplayers as $cosplayer)
-                        <div class="column">
-                            @if ($cosplayer->avatar)
-                                <figure class="is-centered image is-64x64">
-                                    {{ $cosplayer->getFirstMedia('avatar')('thumb', ['class' => 'is-rounded']) }}
-                                </figure>
-                            @else
-                                <figure class="is-centered avatar-circle"
-                                        style="background-color: {{ string_to_color($cosplayer->name) }}">
-                                    <span class="initials">
-                                        {{ $cosplayer->initial }}
-                                    </span>
-                                </figure>
-                            @endif
-                            <a href="{{ route('cosplayers.show', ['cosplayer' => $cosplayer]) }}">
-                                <p class="has-text-centered has-margin-top-sm">
-                                    {{ $cosplayer->name }}
-                                </p>
-                            </a>
-                        </div>
+                        <li class="column">
+                           @include('cosplayers.partials._cosplayer_badge', compact('cosplayer'))
+                        </li>
                     @endforeach
-                </div>
+                </ul>
             </div>
         </div>
     </section>

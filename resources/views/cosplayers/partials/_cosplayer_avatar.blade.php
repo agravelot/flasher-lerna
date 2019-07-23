@@ -1,9 +1,12 @@
-@if ($cosplayer->getFirstMediaUrl('avatar'))
-    <figure class="is-centered image is-96x96">
-        <img class="is-rounded" src="{{ $cosplayer->getFirstMediaUrl('avatar', 'thumb') }}">
+@if ($cosplayer->avatar)
+    <figure class="is-centered image is-64x64">
+        {{ $cosplayer->getFirstMedia('avatar')('thumb', ['class' => 'is-rounded']) }}
     </figure>
 @else
-    <div class="is-centered avatar-circle">
-        <span class="initials"> {{ $cosplayer->initial }}</span>
-    </div>
+    <figure class="is-centered avatar-circle"
+            style="background-color: {{ string_to_color($cosplayer->name) }}">
+        <span class="initials">
+            {{ $cosplayer->initial }}
+        </span>
+    </figure>
 @endif
