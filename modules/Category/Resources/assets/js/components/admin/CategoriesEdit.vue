@@ -199,7 +199,29 @@ export default class CategoriesEdit extends VueBuefy {
     }
 
     deleteCurrentCategoryCover(): void {
-        //TODO
+        this.loading = true;
+
+        this.axios
+            .delete(`/api/admin/cover-categories/${this.$route.params.slug}`)
+            .then(res => res.data)
+            .then(res => {
+                this.category.cover = null;
+                this.loading = false;
+            })
+            .catch(err => {
+                this.loading = false;
+                this.$snackbar.open({
+                    message: 'Unable to delete cover category, maybe you are offline?',
+                    type: 'is-danger',
+                    position: 'is-top',
+                    actionText: 'Retry',
+                    indefinite: true,
+                    onAction: () => {
+                        this.deleteCurrentCategoryCover();
+                    },
+                });
+                throw err;
+            });
     }
 
     showSuccess(message: string): void {
