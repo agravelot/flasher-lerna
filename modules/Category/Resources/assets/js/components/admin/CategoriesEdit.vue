@@ -29,7 +29,9 @@
         </div>
         <section class="section">
             <div class="card">
-                <div class="card-title">Cover</div>
+                <div class="card-header">
+                    <div class="card-header-title">Cover</div>
+                </div>
                 <div class="card-content">
                     <div v-if="category.cover">
                         <img :src="category.cover.thumb" :alt="category.cover.name" />
