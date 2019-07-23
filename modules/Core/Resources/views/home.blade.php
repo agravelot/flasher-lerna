@@ -44,7 +44,7 @@
                     @foreach($albums as $key => $album)
                         <div class="column {{ $key === 0 ? 'is-full-touch' : null }}">
                             <a href="{{ route('albums.show', compact('album')) }}"
-                               class="has-margin-right-md">
+                               class="has-margin-right-md" aria-label="{{ $album->title }}">
                                 <article class="card has-hover-zoom is-clipped">
                                     <div class="card-image">
                                         <figure class="image">

@@ -31,7 +31,7 @@
                     </div>
                 </div>
 
-                @include('layouts.partials._navbar_socials', ['class' => ''])
+                @include('layouts.partials._navbar_socials', ['class' => 'button is-text is-black'])
 
                 <p>{!! settings()->get('footer_content') !!}</p>
                 <div class="has-text-centered">

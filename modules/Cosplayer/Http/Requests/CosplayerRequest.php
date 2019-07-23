@@ -10,6 +10,7 @@
 namespace Modules\Cosplayer\Http\Requests;
 
 use App\Http\Requests\Request;
+use Illuminate\Validation\Rule;
 
 class CosplayerRequest extends Request
 {
@@ -21,7 +22,10 @@ class CosplayerRequest extends Request
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:2|max:255|unique:cosplayers,name,'.optional($this->route('cosplayer'))->id,
+            'name' => [
+                'required', 'string', 'min:2', 'max:255',
+                Rule::unique('cosplayers')->ignore(optional($this->route('cosplayer'))->id),
+            ],
             'description' => 'nullable|string|max:65000',
             'avatar' => 'sometimes|nullable|file|image|mimetypes:image/*|max:20000',
             'user_id' => 'nullable|integer|min:1|exists:users,id',
