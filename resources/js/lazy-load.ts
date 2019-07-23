@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-
     const ratio: number = 0.01;
 
     const options: object = {
