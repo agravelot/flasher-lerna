@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Illuminate\Database\Eloquent\Collection;
+use Modules\Core\Traits\ClearsResponseCache;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
@@ -49,10 +50,12 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static Builder|Category whereUpdatedAt($value)
  * @mixin Eloquent
  * @property Collection|PublicAlbum[] $publishedAlbums
+ * @property-read mixed $cover
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\MediaLibrary\Models\Media[] $media
  */
 class Category extends Model implements HasMedia
 {
-    use HasMediaTrait, Sluggable, SluggableScopeHelpers, HasSlugRouteKey, HasNameAsSlug;
+    use HasMediaTrait, Sluggable, SluggableScopeHelpers, HasSlugRouteKey, HasNameAsSlug, ClearsResponseCache;
 
     public const COVER_COLLECTION = 'cover';
     public const RESPONSIVE_CONVERSION = 'responsive';

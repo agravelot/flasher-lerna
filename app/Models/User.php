@@ -21,6 +21,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Lab404\Impersonate\Models\Impersonate;
 use Illuminate\Database\Eloquent\Collection;
+use Modules\Core\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -64,7 +65,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailInterface;
  */
 class User extends Authenticatable implements MustVerifyEmailInterface
 {
-    use MustVerifyEmail, CanResetPassword, Notifiable, Impersonate, HasApiTokens;
+    use MustVerifyEmail, CanResetPassword, Notifiable, Impersonate, HasApiTokens, ClearsResponseCache;
 
     /**
      * The attributes that are mass assignable.

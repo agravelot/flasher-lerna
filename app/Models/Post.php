@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Collection;
+use Modules\Core\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -53,7 +54,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  */
 class Post extends Model
 {
-    use Sluggable, HasSlugRouteKey, HasTitleAsSlug;
+    use Sluggable, HasSlugRouteKey, HasTitleAsSlug, ClearsResponseCache;
 
     /**
      * The attributes that are mass assignable.

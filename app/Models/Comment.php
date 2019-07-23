@@ -13,6 +13,7 @@ use Eloquent;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Modules\Core\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -42,6 +43,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Comment extends Model
 {
+    use ClearsResponseCache;
+
     /**
      * The attributes that are mass assignable.
      *
