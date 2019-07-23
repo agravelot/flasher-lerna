@@ -31,9 +31,30 @@ class StoreCategoryTest extends TestCase
         $this->assertCount(1, Category::all());
     }
 
+    public function test_user_cannot_store_category(): void
+    {
+        $this->actingAsUser();
+        $category = factory(Category::class)->make();
+
+        $response = $this->storeCategory($category);
+
+        $response->assertStatus(403);
+        $this->assertCount(0, Category::all());
+    }
+
+    public function test_guest_cannot_store_category(): void
+    {
+        $category = factory(Category::class)->make();
+
+        $response = $this->storeCategory($category);
+
+        $response->assertStatus(401);
+        $this->assertCount(0, Category::all());
+    }
+
     private function storeCategory(Category $category): TestResponse
     {
-        return $this->json('post', "/api/admin/categories/{$category->slug}", [
+        return $this->json('post', '/api/admin/categories', [
             'name' => $category->name,
             'description' => $category->description,
         ]);

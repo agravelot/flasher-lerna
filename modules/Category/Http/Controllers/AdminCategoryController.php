@@ -58,6 +58,8 @@ class AdminCategoryController extends Controller
      */
     public function show(Category $category): CategoryResource
     {
+        $category->load('media');
+
         return new CategoryResource($category);
     }
 

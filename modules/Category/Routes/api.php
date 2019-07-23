@@ -13,6 +13,11 @@ Route::name('api.')->group(function () {
         Route::name('admin.')->group(function () {
             Route::prefix('admin')->group(function () {
                 Route::apiResource('categories', 'AdminCategoryController');
+                Route::apiResource('cover-categories', 'AdminCoverCategoryController')
+                    ->only('update')
+                    ->parameters([
+                        'cover-categories' => 'category',
+                    ]);
             });
         });
     });
