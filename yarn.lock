@@ -861,13 +861,6 @@
   resolved "https://registry.yarnpkg.com/@types/svgo/-/svgo-1.2.1.tgz#7b7f2f7966c8301001e955c8d488c9eb7e868b16"
   integrity sha512-UYSpRjkiiThPS3L2L7VhmmKGheGmyCBE382LCHaJIjLe6PeBb1HJvUSNqsZyuRyNMGcDcHcBQEV/CovlWjzFsw==
 
-"@types/tinymce@^4.5.20":
-  version "4.5.22"
-  resolved "https://registry.yarnpkg.com/@types/tinymce/-/tinymce-4.5.22.tgz#134827d2d6cfd7c7ed14d7ee1bfbfe4d66f7eb84"
-  integrity sha512-qmvmXUYgkdQ6jAbsRSQclfttq3nk8mbJYi6xthyhF2J9GFgzbNPcBntsrOr9CpnY6uE1Z8L0NBB1eA7TA+5GKA==
-  dependencies:
-    "@types/jquery" "*"
-
 "@types/typescript@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/typescript/-/typescript-2.0.0.tgz#c433539c98bae28682b307eaa7a0fd2115b83c28"
@@ -8329,16 +8322,6 @@ timsort@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
-
-tinymce-i18n@^18.10:
-  version "18.12.25"
-  resolved "https://registry.yarnpkg.com/tinymce-i18n/-/tinymce-i18n-18.12.25.tgz#e20c5f7494edd79f70936dd5c39198b7ade7b059"
-  integrity sha512-+VsZcwxW94yGov63ZNM0K4cMAqMnY7yl+rv09tU4efRj+V2CUj4QeejptQtjxjRdEdCVQvB9HjDaz4UzHaEQlw==
-
-tinymce@^4.8:
-  version "4.9.5"
-  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-4.9.5.tgz#ada57b1d8aab7f280d4df94b25b8147c1074b354"
-  integrity sha512-ID7oGvk7qYjx3rYck4vRkQLEM5jYKIik2JlNwKrUogZ/1c2tXHJ5Y8/Y74/IULyqlxClNdlE4d+YXzUTPvP1og==
 
 tmp@^0.0.33:
   version "0.0.33"

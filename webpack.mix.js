@@ -17,7 +17,6 @@ mix.mergeManifest();
  */
 mix.ts('resources/js/app.ts', 'public/js/main')
     .ts('resources/js/admin/admin.ts', 'public/js/main')
-    .js('resources/js/admin/tinymce.js', 'public/js/main')
 ;
 
 mix.sass('resources/sass/app.scss', 'public/css')
