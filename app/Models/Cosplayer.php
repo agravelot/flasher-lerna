@@ -74,14 +74,14 @@ class Cosplayer extends Model implements HasMedia
     /**
      * Return the initials of the cosplayer.
      *
-     * @return bool|false|mixed|string|string[]|null
+     * @return string
      */
-    public function getInitialAttribute()
+    public function getInitialAttribute(): string
     {
         return mb_strtoupper(mb_substr($this->name, 0, 1));
     }
 
-    public function getAvatarAttribute()
+    public function getAvatarAttribute(): ?Media
     {
         return $this->getFirstMedia('avatar');
     }
@@ -91,7 +91,7 @@ class Cosplayer extends Model implements HasMedia
      *
      * @param  UploadedFile|null  $media
      */
-    public function setAvatarAttribute($media)
+    public function setAvatarAttribute($media): void
     {
         if (! $media && $this->avatar) {
             $this->avatar->delete();
@@ -171,7 +171,6 @@ class Cosplayer extends Model implements HasMedia
     {
         $this->addMediaConversion('thumb')
             ->crop('crop-center', 96, 96)
-            ->sharpen(7)
             ->performOnCollections('avatar');
     }
 }

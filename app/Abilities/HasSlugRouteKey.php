@@ -16,7 +16,7 @@ trait HasSlugRouteKey
      *
      * @return string
      */
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }
