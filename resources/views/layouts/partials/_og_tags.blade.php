@@ -3,7 +3,7 @@
 @stop
 
 @section('head')
-    <meta property="og:title" content="{{ $model->title }}"/>
+    <meta property="og:title" content="{{ $model->title() }}"/>
     <meta property="og:description" content="{{ $model->description() }}"/>
     <meta property="og:type" content="article"/>
     <meta property="og:url" content="{{ request()->url() }}"/>
