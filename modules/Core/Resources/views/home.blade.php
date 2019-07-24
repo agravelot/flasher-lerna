@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@section('pageTitle', 'Photographe')
-
 @section('content')
     <section class="hero is-black is-medium has-hero-background is-radiusless">
         <div class="hero-body">

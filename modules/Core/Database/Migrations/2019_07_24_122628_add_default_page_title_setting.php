@@ -11,21 +11,21 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddEmailFromSetting extends Migration
+class AddDefaultPageTitleSetting extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('settings', function (Blueprint $table) {
             DB::table('settings')->insert([
-                'name' => 'email_from',
-                'value' => null,
-                'type' => 'email',
-                'title' => 'Email address to send notifications',
+                'name' => 'default_page_title',
+                'value' => 'Default page title',
+                'type' => 'string',
+                'title' => 'Default page title',
                 'description' => '',
             ]);
         });
@@ -36,8 +36,8 @@ class AddEmailFromSetting extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
-        DB::table('settings')->where('name', 'email_from')->delete();
+        DB::table('settings')->where('name', 'default_page_title')->delete();
     }
 }
