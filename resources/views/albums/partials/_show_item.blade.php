@@ -12,6 +12,18 @@
     @endif
 @stop
 
+@if ($album->body)
+    <article class="card has-margin-bottom-md" style="margin-top: -120px;">
+        <div class="card-content">
+            @if ($album->body)
+                <div class="content has-text-justified is-family-secondary has-text-black">
+                    {!! $album->body !!}
+                </div>
+            @endif
+        </div>
+    </article>
+@endif
+
 <div class="field has-addons">
     @can('download', $album)
         <div class="control">
@@ -31,18 +43,6 @@
         </div>
     @endcan
 </div>
-
-@if ($album->body)
-    <article class="card has-margin-bottom-md">
-        <div class="card-content">
-            @if ($album->body)
-                <div class="content has-text-justified is-family-secondary has-text-black">
-                    {!! $album->body !!}
-                </div>
-            @endif
-        </div>
-    </article>
-@endif
 
 @php
     /** @var \App\Models\Album $album */

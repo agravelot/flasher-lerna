@@ -85,14 +85,14 @@
                         </div>
                     @endforeach
                 </div>
-               <div class="has-text-centered">
-                   <a class="button is-medium is-white has-hover-zoom" href="{{ route('albums.index') }}">
-                       <span>{{ __('Discover more') }}</span>
-                       <span class="icon is-medium">
+                <div class="has-text-centered">
+                    <a class="button is-medium is-white has-hover-zoom" href="{{ route('albums.index') }}">
+                        <span>{{ __('Discover more') }}</span>
+                        <span class="icon is-medium">
                         @fa('chevron-right')
                     </span>
-                   </a>
-               </div>
+                    </a>
+                </div>
             </section>
 
         </div>
