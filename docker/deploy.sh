@@ -38,6 +38,8 @@ echo " * SAVING REDIS STATES"
 docker-compose exec -T cache redis-cli SAVE || echo "Container is not running"
 echo " * UPDATING RUNNING CONTAINERS"
 docker-compose up -d --remove-orphans
+echo " * CLEARING CACHE"
+docker-compose exec -T php php artisan responsecache:clear
 echo " * LEAVING MAINTENANCE MODE"
 docker-compose exec -T php php artisan up
 docker-compose exec -T queue php artisan horizon:continue

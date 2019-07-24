@@ -18,6 +18,7 @@ use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Http\Middleware\SetCacheHeaders;
 use Illuminate\Session\Middleware\StartSession;
+use Modules\Core\Http\Middleware\CacheResponse;
 use App\Http\Middleware\CheckForMaintenanceMode;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Routing\Middleware\ThrottleRequests;
@@ -26,6 +27,7 @@ use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Spatie\ResponseCache\Middlewares\DoNotCacheResponse;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Laravel\Passport\Http\Middleware\CreateFreshApiToken;
 use Illuminate\Foundation\Http\Middleware\ValidatePostSize;
@@ -64,6 +66,7 @@ class Kernel extends HttpKernel
             VerifyCsrfToken::class,
             SubstituteBindings::class,
             CreateFreshApiToken::class,
+            CacheResponse::class,
         ],
 
         'api' => [
@@ -91,5 +94,6 @@ class Kernel extends HttpKernel
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
         'admin' => CheckAdmin::class,
+        'doNotCacheResponse' => DoNotCacheResponse::class,
     ];
 }

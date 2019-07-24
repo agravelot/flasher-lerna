@@ -13,6 +13,7 @@ use Eloquent;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Modules\Core\Traits\ClearsResponseCache;
 
 /**
  * App\Models\SocialMedia.
@@ -41,6 +42,7 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class SocialMedia extends Model
 {
+    use ClearsResponseCache;
     /**
      * The attributes that are mass assignable.
      *
