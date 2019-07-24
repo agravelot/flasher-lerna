@@ -1,16 +1,16 @@
 .menu-list a, .hero, .card, .box {
-  border-radius: 5px;
+    border-radius: 5px;
 }
 
 .has-hover-zoom {
-    box-shadow: 8px 14px 38px rgba(39,44,49,.06),1px 3px 8px rgba(39,44,49,.03);
+    box-shadow: 8px 14px 38px rgba(39, 44, 49, .06), 1px 3px 8px rgba(39, 44, 49, .03);
     transition: all .5s ease;
 
     &:hover {
-        transform: translate3D(0,-1px,0) scale(1.02);
-        box-shadow: 8px 28px 50px rgba(39,44,49,.07),1px 6px 12px rgba(39,44,49,.04);
+        transform: translate3D(0, -1px, 0) scale(1.02);
+        box-shadow: 8px 28px 50px rgba(39, 44, 49, .07), 1px 6px 12px rgba(39, 44, 49, .04);
         transition: all .4s ease;
-  }
+    }
 }
 
 .has-text-hover-image {
@@ -33,28 +33,28 @@
 }
 
 .is-centered {
-  margin: auto;
+    margin: auto;
 }
 
 @mixin avatar($size) {
-  width: $size;
-  height: $size;
-  background-color: grey;
-  text-align: center;
-  border-radius: 50%;
+    width: $size;
+    height: $size;
+    background-color: grey;
+    text-align: center;
+    border-radius: 50%;
 
-  .initials {
-    position: relative;
-    top: $size*0.25;
-    font-size: $size*0.3;
-    line-height: $size*0.5;
-    color: #fff;
-    font-weight: bold;
-  }
+    .initials {
+        position: relative;
+        top: $size*0.25;
+        font-size: $size*0.3;
+        line-height: $size*0.5;
+        color: #fff;
+        font-weight: bold;
+    }
 }
 
 .avatar-circle {
-  @include avatar(64px);
+    @include avatar(64px);
 
     &-sm {
         @include avatar(50px);
@@ -65,31 +65,27 @@
     }
 }
 
-.album-image img {
-  image-rendering: optimizequality;
-}
-
 .admin-collapse-button {
-  position: fixed;
-  bottom: 42px;
-  left: 10px;
-  z-index: 5;
-  visibility: hidden;
+    position: fixed;
+    bottom: 42px;
+    left: 10px;
+    z-index: 5;
+    visibility: hidden;
 }
 
 img {
-  pointer-events: none !important;
-  user-select: none;
+    pointer-events: none !important;
+    user-select: none;
 
-  &:-moz-loading {
-    visibility: hidden;
-  }
+    &:-moz-loading {
+        visibility: hidden;
+    }
 }
 
 @media screen and (min-width: 769px) {
-  .admin-collapse-button {
-    visibility: visible;
-  }
+    .admin-collapse-button {
+        visibility: visible;
+    }
 }
 
 .is-fitted img {
