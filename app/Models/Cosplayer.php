@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Illuminate\Database\Eloquent\Collection;
+use Modules\Core\Traits\ClearsResponseCache;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -62,7 +63,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Cosplayer extends Model implements HasMedia
 {
-    use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey, HasNameAsSlug;
+    use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey, HasNameAsSlug, ClearsResponseCache;
 
     /**
      * The attributes that are mass assignable.

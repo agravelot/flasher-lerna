@@ -38,6 +38,7 @@ elif [[ "$role" = "publisher" ]]; then
       php artisan view:clear
       php artisan optimize
       php artisan view:cache
+      php artisan event:cache
   fi
 else
     echo "Could not match the container role \"$role\""
