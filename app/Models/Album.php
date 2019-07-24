@@ -79,7 +79,7 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
     public const PICTURES_COLLECTION = 'pictures';
     public const RESPONSIVE_PICTURES_CONVERSION = 'responsive';
 
-//    protected $with = ['media'];
+    protected $with = ['media'];
 
     protected $dates = [
         'published_at', 'updated_at', 'created_at',
