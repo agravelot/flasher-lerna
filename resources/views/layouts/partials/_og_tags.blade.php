@@ -5,7 +5,7 @@
 @section('head')
     <meta property="og:title" content="{{ $model->title() }}"/>
     <meta property="og:description" content="{{ $model->description() }}"/>
-    <meta property="og:type" content="article"/>
+    <meta property="og:type" content="{{ $model->type() }}"/>
     <meta property="og:url" content="{{ request()->url() }}"/>
 
     <meta property="og:locale" content="{{ app()->getLocale() }}"/>

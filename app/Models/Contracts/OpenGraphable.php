@@ -14,4 +14,6 @@ interface OpenGraphable
     public function title(): string;
 
     public function description(): string;
+
+    public function type(): string;
 }

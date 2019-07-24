@@ -11,6 +11,9 @@
         public function description() : string {
             return '';
         }
+        public function type() : string {
+            return 'website';
+        }
     }
 @endphp
 
