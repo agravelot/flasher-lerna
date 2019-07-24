@@ -99,3 +99,20 @@ img {
 .ql-font-serif {
     @extend .is-family-secondary
 }
+
+.navbar-item.is-active{
+    @include from($desktop) {
+        position: relative;
+        margin-bottom: 3px;
+
+        &:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -7px;
+            height: 4px;
+            background-color: white;
+            width: 100%;
+        }
+    }
+}
