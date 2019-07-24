@@ -17,6 +17,7 @@ use Spatie\MediaLibrary\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
  * Class Setting.
@@ -96,5 +97,18 @@ class Setting extends Model implements HasMedia
             ->acceptsFile(static function (File $file) {
                 return mb_strpos($file->mimeType, 'image/') === 0;
             });
+    }
+
+    /**
+     * @param  Media|null  $media
+     *
+     * @throws InvalidManipulation
+     */
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(400)
+            ->optimize()
+            ->performOnCollections(self::SETTING_COLLECTION);
     }
 }
