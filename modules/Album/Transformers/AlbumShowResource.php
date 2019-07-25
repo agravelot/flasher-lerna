@@ -43,7 +43,7 @@ class AlbumShowResource extends Resource
             'created_at' => $this->created_at,
             'body' => $this->body,
             'private' => $this->private,
-            'medias' => MediaResource::collection($this->media),
+            'medias' => MediaResource::collection($this->getMedia(Album::PICTURES_COLLECTION)),
             'categories' => CategoryResource::collection($this->categories),
             'cosplayers' => CosplayerResource::collection($this->cosplayers),
             'user' => new UserResource($this->user),

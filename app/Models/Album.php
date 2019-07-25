@@ -225,7 +225,7 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
      *
      * @throws InvalidManipulation
      */
-    public function registerMediaConversions(Media $media = null)
+    public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion(self::RESPONSIVE_PICTURES_CONVERSION)
             ->optimize()
@@ -271,5 +271,10 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
     public function description(): string
     {
         return '';
+    }
+
+    public function type(): string
+    {
+        return 'article';
     }
 }

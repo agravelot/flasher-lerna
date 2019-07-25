@@ -1,6 +1,23 @@
 @extends('layouts.app')
 
-@section('pageTitle', 'Photographe')
+@php
+    class HomeOpenGraph implements \App\Models\Contracts\OpenGraphable, \App\Models\Contracts\ImagesOpenGraphable {
+        public function images() : \Illuminate\Support\Collection {
+             return collect([settings()->get('profile_picture_homepage')]);
+        }
+        public function title() : string {
+            return settings()->get('default_page_title');
+        }
+        public function description() : string {
+            return '';
+        }
+        public function type() : string {
+            return 'website';
+        }
+    }
+@endphp
+
+@include('layouts.partials._og_tags', ['model' => new HomeOpenGraph()])
 
 @section('content')
     <section class="hero is-black is-medium has-hero-background is-radiusless">
@@ -68,14 +85,14 @@
                         </div>
                     @endforeach
                 </div>
-               <div class="has-text-centered">
-                   <a class="button is-medium is-white has-hover-zoom" href="{{ route('albums.index') }}">
-                       <span>{{ __('Discover more') }}</span>
-                       <span class="icon is-medium">
+                <div class="has-text-centered">
+                    <a class="button is-medium is-white has-hover-zoom" href="{{ route('albums.index') }}">
+                        <span>{{ __('Discover more') }}</span>
+                        <span class="icon is-medium">
                         @fa('chevron-right')
                     </span>
-                   </a>
-               </div>
+                    </a>
+                </div>
             </section>
 
         </div>
