@@ -9,6 +9,9 @@
                 </span>
             @endforeach
         </div>
+
+        @include('layouts.partials._share_socials')
+
     @endif
 @stop
 
