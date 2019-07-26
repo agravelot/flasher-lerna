@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 namespace Modules\Testimonials\Providers;
 
 use Illuminate\Support\ServiceProvider;
@@ -18,7 +25,7 @@ class TestimonialsServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->registerFactories();
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');
     }
 
     /**
@@ -58,11 +65,11 @@ class TestimonialsServiceProvider extends ServiceProvider
         $sourcePath = __DIR__.'/../Resources/views';
 
         $this->publishes([
-            $sourcePath => $viewPath
-        ],'views');
+            $sourcePath => $viewPath,
+        ], 'views');
 
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
-            return $path . '/modules/testimonials';
+            return $path.'/modules/testimonials';
         }, \Config::get('view.paths')), [$sourcePath]), 'testimonials');
     }
 
@@ -78,7 +85,7 @@ class TestimonialsServiceProvider extends ServiceProvider
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, 'testimonials');
         } else {
-            $this->loadTranslationsFrom(__DIR__ .'/../Resources/lang', 'testimonials');
+            $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'testimonials');
         }
     }
 
