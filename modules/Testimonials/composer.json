@@ -1,0 +1,25 @@
+{
+    "name": "nevax/testimonials",
+    "description": "",
+    "authors": [
+        {
+            "name": "Antoine GRAVELOT",
+            "email": "antoine.gravelot@hotmail.fr"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Testimonials\\Providers\\TestimonialsServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Testimonials\\": ""
+        }
+    }
+}
