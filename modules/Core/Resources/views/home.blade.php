@@ -3,7 +3,13 @@
 @php
     class HomeOpenGraph implements \App\Models\Contracts\OpenGraphable, \App\Models\Contracts\ImagesOpenGraphable {
         public function images() : \Illuminate\Support\Collection {
-             return collect([settings()->get('profile_picture_homepage')]);
+            $image = settings()->get('profile_picture_homepage');
+
+            if ($image === null) {
+                return collect();
+            }
+
+            return collect([$image]);
         }
         public function title() : string {
             return settings()->get('default_page_title');
