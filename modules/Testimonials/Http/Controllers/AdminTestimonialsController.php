@@ -22,17 +22,7 @@ class AdminTestimonialsController extends Controller
      */
     public function index()
     {
-        return view('testimonials::index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        return view('testimonials::create');
+        //
     }
 
     /**
@@ -56,19 +46,7 @@ class AdminTestimonialsController extends Controller
      */
     public function show($id)
     {
-        return view('testimonials::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     *
-     * @return Response
-     */
-    public function edit($id)
-    {
-        return view('testimonials::edit');
+        //
     }
 
     /**
