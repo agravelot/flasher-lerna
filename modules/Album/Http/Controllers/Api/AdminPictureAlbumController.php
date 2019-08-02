@@ -13,7 +13,7 @@ use App\Models\Album;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\Resource;
-use Modules\Album\Transformers\AlbumIndexResource;
+use Modules\Album\Transformers\AlbumShowResource;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Modules\Album\Http\Requests\StorePictureAlbumRequest;
 use Modules\Album\Http\Requests\DeletePictureAlbumRequest;
@@ -73,6 +73,6 @@ class AdminPictureAlbumController extends Controller
 
         $album->media->firstWhere('id', $request->get('media_id'))->delete();
 
-        return (new AlbumIndexResource($album))->response()->setStatusCode(204);
+        return (new AlbumShowResource($album))->response()->setStatusCode(204);
     }
 }
