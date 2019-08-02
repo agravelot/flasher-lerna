@@ -7,8 +7,6 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,6 +18,12 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/testimonials', function (Request $request) {
-    return $request->user();
+Route::name('api.')->group(function () {
+    Route::middleware(['auth:api', 'verified', 'admin'])->group(function () {
+        Route::name('admin.')->group(function () {
+            Route::prefix('admin')->group(function () {
+                Route::apiResource('testimonials', 'AdminTestimonialsController');
+            });
+        });
+    });
 });

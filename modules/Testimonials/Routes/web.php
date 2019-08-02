@@ -6,7 +6,3 @@
  * Proprietary and confidential
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
-
-Route::prefix('testimonials')->group(function () {
-    Route::get('/', 'TestimonialsController@index');
-});

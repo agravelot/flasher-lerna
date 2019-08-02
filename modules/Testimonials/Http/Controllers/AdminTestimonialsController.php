@@ -9,68 +9,70 @@
 
 namespace Modules\Testimonials\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Models\GoldenBookPost;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use App\Models\PublishedGoldenBookPost;
+use Modules\Testimonials\Transformers\TestimonialResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Modules\Testimonials\Http\Requests\AdminUpdateTestimonialRequest;
 
 class AdminTestimonialsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return AnonymousResourceCollection
      */
     public function index()
     {
-        //
-    }
+        $testimonials = PublishedGoldenBookPost::paginate();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     *
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
+        return TestimonialResource::collection($testimonials);
     }
 
     /**
      * Show the specified resource.
      *
-     * @param  int  $id
+     * @param  GoldenBookPost  $testimonial
      *
-     * @return Response
+     * @return TestimonialResource
      */
-    public function show($id)
+    public function show(GoldenBookPost $testimonial): TestimonialResource
     {
-        //
+        return new TestimonialResource($testimonial);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
-     * @param  int  $id
+     * @param  AdminUpdateTestimonialRequest  $request
+     * @param  GoldenBookPost  $testimonial
      *
-     * @return Response
+     * @return TestimonialResource
      */
-    public function update(Request $request, $id)
+    public function update(AdminUpdateTestimonialRequest $request, GoldenBookPost $testimonial): TestimonialResource
     {
-        //
+        $testimonial->update($request->validated());
+
+        return new TestimonialResource($testimonial);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  GoldenBookPost  $testimonial
      *
-     * @return Response
+     * @return JsonResponse
+     * @throws Exception
      */
-    public function destroy($id)
+    public function destroy(GoldenBookPost $testimonial): JsonResponse
     {
-        //
+        $testimonial->delete();
+
+        return response()->json(null, 204);
     }
 }

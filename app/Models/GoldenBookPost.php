@@ -57,6 +57,8 @@ class GoldenBookPost extends Model
         'name', 'body', 'email', 'published_at',
     ];
 
+    protected $dates = ['created_at', 'updated_at', 'published_at'];
+
     /**
      * Return if the golden book post is published or not.
      *
