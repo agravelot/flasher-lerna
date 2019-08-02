@@ -10,6 +10,7 @@
 namespace Modules\Testimonial\Tests\Feature\Http\Controllers\Front;
 
 use Tests\TestCase;
+use App\Models\GoldenBookPost;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

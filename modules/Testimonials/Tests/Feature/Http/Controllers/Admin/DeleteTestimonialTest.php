@@ -54,4 +54,23 @@ class DeleteTestimonialTest extends TestCase
         $response->assertStatus(401);
         $this->assertNotNull($testimonial->fresh());
     }
+
+    public function test_user_cant_index_testimonials(): void
+    {
+        $this->actingAsUser();
+        $testimonial = factory(GoldenBookPost::class)->create();
+
+        $response = $this->deleteTestimonial($testimonial);
+
+        $response->assertStatus(403);
+    }
+
+    public function test_guest_cant_index_testimonials(): void
+    {
+        $testimonial = factory(GoldenBookPost::class)->create();
+
+        $response = $this->deleteTestimonial($testimonial);
+
+        $response->assertStatus(401);
+    }
 }

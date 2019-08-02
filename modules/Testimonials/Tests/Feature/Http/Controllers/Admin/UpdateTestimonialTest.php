@@ -49,4 +49,23 @@ class UpdateTestimonialTest extends TestCase
         $response->assertStatus(200);
         $this->assertFalse($testimonial->fresh()->isPublished(), 'Testimonial should be published');
     }
+
+    public function test_user_cannot_update_testimonial()
+    {
+        $this->actingAsUser();
+        $testimonial = factory(GoldenBookPost::class)->create();
+
+        $response = $this->updateTestimonial($testimonial);
+
+        $response->assertStatus(403);
+    }
+
+    public function test_guest_cannot_update_testimonial()
+    {
+        $testimonial = factory(GoldenBookPost::class)->create();
+
+        $response = $this->updateTestimonial($testimonial);
+
+        $response->assertStatus(401);
+    }
 }

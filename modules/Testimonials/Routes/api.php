@@ -22,7 +22,7 @@ Route::name('api.')->group(function () {
     Route::middleware(['auth:api', 'verified', 'admin'])->group(function () {
         Route::name('admin.')->group(function () {
             Route::prefix('admin')->group(function () {
-                Route::apiResource('testimonials', 'AdminTestimonialsController');
+                Route::apiResource('testimonials', 'AdminTestimonialsController')->except('store');
             });
         });
     });
