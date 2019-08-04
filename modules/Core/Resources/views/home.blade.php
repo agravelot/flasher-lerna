@@ -1,29 +1,6 @@
 @extends('layouts.app')
 
-@php
-    class HomeOpenGraph implements \App\Models\Contracts\OpenGraphable, \App\Models\Contracts\ImagesOpenGraphable {
-        public function images() : \Illuminate\Support\Collection {
-            $image = settings()->get('profile_picture_homepage');
-
-            if ($image === null) {
-                return collect();
-            }
-
-            return collect([$image]);
-        }
-        public function title() : string {
-            return settings()->get('default_page_title');
-        }
-        public function description() : string {
-            return '';
-        }
-        public function type() : string {
-            return 'website';
-        }
-    }
-@endphp
-
-@include('layouts.partials._og_tags', ['model' => new HomeOpenGraph()])
+@include('layouts.partials._og_tags', ['model' => $og])
 
 @section('content')
     <section class="hero is-black is-medium has-hero-background is-radiusless">
