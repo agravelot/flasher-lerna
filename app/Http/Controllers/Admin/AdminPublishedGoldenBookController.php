@@ -32,7 +32,7 @@ class AdminPublishedGoldenBookController extends Controller
         $this->authorize('create', $goldenbookPost);
         $goldenbookPost->publish()->save();
 
-        return redirect(route('admin.goldenbook.index'))
+        return redirect(route('admin.testimonials.index'))
             ->withSuccess('Goldenbook post published');
     }
 
@@ -51,7 +51,7 @@ class AdminPublishedGoldenBookController extends Controller
         $this->authorize('delete', $goldenbookPost);
         $goldenbookPost->unpublish()->save();
 
-        return redirect(route('admin.goldenbook.index'))
+        return redirect(route('admin.testimonials.index'))
             ->withSuccess('Goldenbook post unpublished');
     }
 }

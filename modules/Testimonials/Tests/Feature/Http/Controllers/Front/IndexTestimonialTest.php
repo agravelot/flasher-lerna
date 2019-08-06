@@ -20,7 +20,7 @@ class IndexTestimonialTest extends TestCase
 
     private function indexCategories(): TestResponse
     {
-        return $this->json('get', '/api/testimonials');
+        return $this->get('/testimonials');
     }
 
     public function test_guest_can_index_testimonials(): void

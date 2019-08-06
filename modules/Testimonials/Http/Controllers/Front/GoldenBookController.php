@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace App\Http\Controllers\Front;
+namespace Modules\Testimonials\Http\Controllers\Front;
 
 use Illuminate\View\View;
 use App\Models\GoldenBookPost;

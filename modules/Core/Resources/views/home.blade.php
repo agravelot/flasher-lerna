@@ -109,7 +109,7 @@
         <div class="hero-body">
             <div class="container has-text-centered">
                 <div class="has-text-centered has-margin-bottom-lg">
-                    <a href="{{ route('goldenbook.index') }}">
+                    <a href="{{ route('testimonials.index') }}">
                         <h2 class="title">{{ __('Testimonials') }}</h2>
                     </a>
                 </div>

@@ -29,7 +29,7 @@ class AdminGoldenBookController extends Controller
         $this->authorize('viewAny', GoldenBookPost::class);
         $goldenBookPosts = GoldenBookPost::paginate(10);
 
-        return view('admin.goldenbook.index', [
+        return view('admin.testimonials.index', [
             'goldenBookPosts' => $goldenBookPosts,
         ]);
     }
@@ -70,7 +70,7 @@ class AdminGoldenBookController extends Controller
         $this->authorize('delete', $goldenBookPost);
         $goldenBookPost->delete();
 
-        return redirect(route('admin.goldenbook.index'))
+        return redirect(route('admin.testimonials.index'))
             ->withSuccess('Goldenbook post successfully deleted');
     }
 }
