@@ -117,16 +117,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.108.4",
+            "version": "3.108.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "8ac2bc5d36ed0e3fe9b0ecdd2f407b91273b86e8"
+                "reference": "9cb7267b2ea6cd9ab46afb14400c52e58cd4be1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8ac2bc5d36ed0e3fe9b0ecdd2f407b91273b86e8",
-                "reference": "8ac2bc5d36ed0e3fe9b0ecdd2f407b91273b86e8",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9cb7267b2ea6cd9ab46afb14400c52e58cd4be1f",
+                "reference": "9cb7267b2ea6cd9ab46afb14400c52e58cd4be1f",
                 "shasum": ""
             },
             "require": {
@@ -196,7 +196,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-08-05T18:08:07+00:00"
+            "time": "2019-08-06T18:08:33+00:00"
         },
         {
             "name": "bensampo/laravel-enum",
@@ -2369,16 +2369,16 @@
         },
         {
             "name": "laravel/horizon",
-            "version": "v3.2.7",
+            "version": "v3.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/horizon.git",
-                "reference": "7268aad5003fbe264abce232976d66da156f2450"
+                "reference": "02ddc3936c4b99f2d7914857a66ef432480876c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/horizon/zipball/7268aad5003fbe264abce232976d66da156f2450",
-                "reference": "7268aad5003fbe264abce232976d66da156f2450",
+                "url": "https://api.github.com/repos/laravel/horizon/zipball/02ddc3936c4b99f2d7914857a66ef432480876c4",
+                "reference": "02ddc3936c4b99f2d7914857a66ef432480876c4",
                 "shasum": ""
             },
             "require": {
@@ -2434,20 +2434,20 @@
                 "laravel",
                 "queue"
             ],
-            "time": "2019-07-30T15:28:48+00:00"
+            "time": "2019-08-06T18:04:38+00:00"
         },
         {
             "name": "laravel/passport",
-            "version": "v7.3.4",
+            "version": "v7.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/passport.git",
-                "reference": "f75c95abc211a06fbe3cd566c2ca4abea44dd537"
+                "reference": "57937b08dc8e444b4756782a5ba172b5ba54d4f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/passport/zipball/f75c95abc211a06fbe3cd566c2ca4abea44dd537",
-                "reference": "f75c95abc211a06fbe3cd566c2ca4abea44dd537",
+                "url": "https://api.github.com/repos/laravel/passport/zipball/57937b08dc8e444b4756782a5ba172b5ba54d4f5",
+                "reference": "57937b08dc8e444b4756782a5ba172b5ba54d4f5",
                 "shasum": ""
             },
             "require": {
@@ -2504,7 +2504,7 @@
                 "oauth",
                 "passport"
             ],
-            "time": "2019-07-30T15:55:16+00:00"
+            "time": "2019-08-06T18:10:19+00:00"
         },
         {
             "name": "laravel/slack-notification-channel",
@@ -3241,16 +3241,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.22.0",
+            "version": "2.22.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "1a0e48b5f656065ba3c265b058b25d36c2162a5e"
+                "reference": "f572ec37cf37e192e851197a5867d041ab404785"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/1a0e48b5f656065ba3c265b058b25d36c2162a5e",
-                "reference": "1a0e48b5f656065ba3c265b058b25d36c2162a5e",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/f572ec37cf37e192e851197a5867d041ab404785",
+                "reference": "f572ec37cf37e192e851197a5867d041ab404785",
                 "shasum": ""
             },
             "require": {
@@ -3304,7 +3304,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2019-07-28T09:02:12+00:00"
+            "time": "2019-08-06T18:57:53+00:00"
         },
         {
             "name": "nicmart/tree",
@@ -7489,7 +7489,7 @@
         },
         {
             "name": "tightenco/collect",
-            "version": "v5.8.30",
+            "version": "v5.8.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tightenco/collect.git",
