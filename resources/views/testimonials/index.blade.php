@@ -10,7 +10,7 @@
             {{ __('Write') }}
         </a>
 
-        @each('testimonials._goldenbook_item', $goldenBooksPosts, 'goldenBookPost', 'layouts.partials._empty')
+        @each('testimonials._item', $goldenBooksPosts, 'goldenBookPost', 'layouts.partials._empty')
 
         {{ $goldenBooksPosts->links() }}
     </div>

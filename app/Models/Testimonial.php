@@ -17,7 +17,7 @@ use Modules\Core\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * App\Models\GoldenBookPost.
+ * App\Models\Testimonial.
  *
  * @property int $id
  * @property string $name
@@ -28,23 +28,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property User|null $user
- * @method static Builder|GoldenBookPost newModelQuery()
- * @method static Builder|GoldenBookPost newQuery()
- * @method static Builder|GoldenBookPost query()
- * @method static Builder|GoldenBookPost whereActive($value)
- * @method static Builder|GoldenBookPost whereBody($value)
- * @method static Builder|GoldenBookPost whereCreatedAt($value)
- * @method static Builder|GoldenBookPost whereEmail($value)
- * @method static Builder|GoldenBookPost whereId($value)
- * @method static Builder|GoldenBookPost whereName($value)
- * @method static Builder|GoldenBookPost whereUpdatedAt($value)
- * @method static Builder|GoldenBookPost whereUserId($value)
+ * @method static Builder|Testimonial newModelQuery()
+ * @method static Builder|Testimonial newQuery()
+ * @method static Builder|Testimonial query()
+ * @method static Builder|Testimonial whereActive($value)
+ * @method static Builder|Testimonial whereBody($value)
+ * @method static Builder|Testimonial whereCreatedAt($value)
+ * @method static Builder|Testimonial whereEmail($value)
+ * @method static Builder|Testimonial whereId($value)
+ * @method static Builder|Testimonial whereName($value)
+ * @method static Builder|Testimonial whereUpdatedAt($value)
+ * @method static Builder|Testimonial whereUserId($value)
  * @mixin Eloquent
  * @property Carbon|null $published_at
- * @method static Builder|GoldenBookPost published()
- * @method static Builder|GoldenBookPost wherePublishedAt($value)
+ * @method static Builder|Testimonial published()
+ * @method static Builder|Testimonial wherePublishedAt($value)
  */
-class GoldenBookPost extends Model
+class Testimonial extends Model
 {
     use ClearsResponseCache;
 

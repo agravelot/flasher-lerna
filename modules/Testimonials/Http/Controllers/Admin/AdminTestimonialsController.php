@@ -11,10 +11,10 @@ namespace Modules\Testimonials\Http\Controllers\Admin;
 
 use Exception;
 use Carbon\Carbon;
-use App\Models\GoldenBookPost;
+use App\Models\Testimonial;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use App\Models\PublishedGoldenBookPost;
+use App\Models\PublishedTestimonial;
 use Modules\Testimonials\Transformers\TestimonialResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Modules\Testimonials\Http\Requests\AdminUpdateTestimonialRequest;
@@ -28,7 +28,7 @@ class AdminTestimonialsController extends Controller
      */
     public function index()
     {
-        $testimonials = PublishedGoldenBookPost::paginate();
+        $testimonials = PublishedTestimonial::paginate();
 
         return TestimonialResource::collection($testimonials);
     }
@@ -36,11 +36,11 @@ class AdminTestimonialsController extends Controller
     /**
      * Show the specified resource.
      *
-     * @param  GoldenBookPost  $testimonial
+     * @param  Testimonial  $testimonial
      *
      * @return TestimonialResource
      */
-    public function show(GoldenBookPost $testimonial): TestimonialResource
+    public function show(Testimonial $testimonial): TestimonialResource
     {
         return new TestimonialResource($testimonial);
     }
@@ -49,11 +49,11 @@ class AdminTestimonialsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  AdminUpdateTestimonialRequest  $request
-     * @param  GoldenBookPost  $testimonial
+     * @param  Testimonial  $testimonial
      *
      * @return TestimonialResource
      */
-    public function update(AdminUpdateTestimonialRequest $request, GoldenBookPost $testimonial): TestimonialResource
+    public function update(AdminUpdateTestimonialRequest $request, Testimonial $testimonial): TestimonialResource
     {
         $publishedAt = $request->input('published_at');
 
@@ -72,12 +72,12 @@ class AdminTestimonialsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  GoldenBookPost  $testimonial
+     * @param  Testimonial  $testimonial
      *
      * @return JsonResponse
      * @throws Exception
      */
-    public function destroy(GoldenBookPost $testimonial): JsonResponse
+    public function destroy(Testimonial $testimonial): JsonResponse
     {
         $testimonial->delete();
 

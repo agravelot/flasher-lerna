@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersTableSeeder::class);
         $this->call(AlbumsTableSeeder::class);
         $this->call(PostsTableSeeder::class);
-        $this->call(GoldenBooksPostsTableSeeder::class);
+        $this->call(TestimonialTableSeeder::class);
         $this->call(ContactTableSeeder::class);
         $this->call(CosplayerSeeder::class);
         $this->call(CategoriesSeeder::class);

@@ -8,5 +8,5 @@
  */
 
 Route::namespace('Front')->group(function () {
-    Route::resource('testimonials', 'GoldenBookController')->only(['index', 'create', 'store']);
+    Route::resource('testimonials', 'TestimonialController')->only(['index', 'create', 'store']);
 });

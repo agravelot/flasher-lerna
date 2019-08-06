@@ -9,7 +9,7 @@
 
 namespace App\Http\Requests;
 
-class GoldenBookRequest extends Request
+class TestimonialRequest extends Request
 {
     /**
      * Get the validation rules that apply to the request.

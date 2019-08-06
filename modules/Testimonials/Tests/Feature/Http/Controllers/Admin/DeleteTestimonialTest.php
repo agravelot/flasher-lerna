@@ -10,7 +10,7 @@
 namespace Modules\Testimonial\Tests\Features\Http\Controllers\Admin;
 
 use Tests\TestCase;
-use App\Models\GoldenBookPost;
+use App\Models\Testimonial;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -21,7 +21,7 @@ class DeleteTestimonialTest extends TestCase
     public function test_admin_can_delete_testimonial(): void
     {
         $this->actingAsAdmin();
-        $testimonial = factory(GoldenBookPost::class)->create();
+        $testimonial = factory(Testimonial::class)->create();
 
         $response = $this->deleteTestimonial($testimonial);
 
@@ -29,7 +29,7 @@ class DeleteTestimonialTest extends TestCase
         $this->assertNull($testimonial->fresh());
     }
 
-    private function deleteTestimonial(GoldenBookPost $testimonial): TestResponse
+    private function deleteTestimonial(Testimonial $testimonial): TestResponse
     {
         return $this->json('delete', "/api/admin/testimonials/{$testimonial->id}");
     }
@@ -37,7 +37,7 @@ class DeleteTestimonialTest extends TestCase
     public function test_user_cannot_delete_testimonial(): void
     {
         $this->actingAsUser();
-        $testimonial = factory(GoldenBookPost::class)->create();
+        $testimonial = factory(Testimonial::class)->create();
 
         $response = $this->deleteTestimonial($testimonial);
 
@@ -47,7 +47,7 @@ class DeleteTestimonialTest extends TestCase
 
     public function test_guest_cannot_delete_testimonial(): void
     {
-        $testimonial = factory(GoldenBookPost::class)->create();
+        $testimonial = factory(Testimonial::class)->create();
 
         $response = $this->deleteTestimonial($testimonial);
 
@@ -58,7 +58,7 @@ class DeleteTestimonialTest extends TestCase
     public function test_user_cant_index_testimonials(): void
     {
         $this->actingAsUser();
-        $testimonial = factory(GoldenBookPost::class)->create();
+        $testimonial = factory(Testimonial::class)->create();
 
         $response = $this->deleteTestimonial($testimonial);
 
@@ -67,7 +67,7 @@ class DeleteTestimonialTest extends TestCase
 
     public function test_guest_cant_index_testimonials(): void
     {
-        $testimonial = factory(GoldenBookPost::class)->create();
+        $testimonial = factory(Testimonial::class)->create();
 
         $response = $this->deleteTestimonial($testimonial);
 

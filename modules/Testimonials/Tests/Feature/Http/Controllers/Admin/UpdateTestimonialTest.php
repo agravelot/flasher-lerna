@@ -10,7 +10,7 @@
 namespace Modules\Testimonail\Tests\Features\Http\Controllers\Admin;
 
 use Tests\TestCase;
-use App\Models\GoldenBookPost;
+use App\Models\Testimonial;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -20,9 +20,8 @@ class UpdateTestimonialTest extends TestCase
 
     public function test_admin_can_publish_an_unpublished_testimonial()
     {
-        $this->disableExceptionHandling();
         $this->actingAsAdmin();
-        $testimonial = factory(GoldenBookPost::class)->state('unpublished')->create();
+        $testimonial = factory(Testimonial::class)->state('unpublished')->create();
         $this->assertFalse($testimonial->isPublished(), 'Testimonial should be published');
 
         $testimonial->publish();
@@ -31,7 +30,7 @@ class UpdateTestimonialTest extends TestCase
         $this->assertTrue($testimonial->fresh()->isPublished(), 'Testimonial should not be published');
     }
 
-    private function updateTestimonial(GoldenBookPost $testimonial): TestResponse
+    private function updateTestimonial(Testimonial $testimonial): TestResponse
     {
         return $this->json('put', "/api/admin/testimonials/{$testimonial->id}", [
             'published_at' => $testimonial->published_at,
@@ -41,7 +40,7 @@ class UpdateTestimonialTest extends TestCase
     public function test_admin_can_unpublish_an_published_testimonial()
     {
         $this->actingAsAdmin();
-        $testimonial = factory(GoldenBookPost::class)->state('published')->create();
+        $testimonial = factory(Testimonial::class)->state('published')->create();
         $this->assertTrue($testimonial->isPublished(), 'Testimonial should not be published');
 
         $testimonial->unpublish();
@@ -53,7 +52,7 @@ class UpdateTestimonialTest extends TestCase
     public function test_user_cannot_update_testimonial()
     {
         $this->actingAsUser();
-        $testimonial = factory(GoldenBookPost::class)->create();
+        $testimonial = factory(Testimonial::class)->create();
 
         $response = $this->updateTestimonial($testimonial);
 
@@ -62,7 +61,7 @@ class UpdateTestimonialTest extends TestCase
 
     public function test_guest_cannot_update_testimonial()
     {
-        $testimonial = factory(GoldenBookPost::class)->create();
+        $testimonial = factory(Testimonial::class)->create();
 
         $response = $this->updateTestimonial($testimonial);
 

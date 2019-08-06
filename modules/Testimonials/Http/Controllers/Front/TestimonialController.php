@@ -10,13 +10,13 @@
 namespace Modules\Testimonials\Http\Controllers\Front;
 
 use Illuminate\View\View;
-use App\Models\GoldenBookPost;
+use App\Models\Testimonial;
 use App\Http\Controllers\Controller;
+use App\Models\PublishedTestimonial;
 use Illuminate\Http\RedirectResponse;
-use App\Models\PublishedGoldenBookPost;
-use App\Http\Requests\GoldenBookRequest;
+use App\Http\Requests\TestimonialRequest;
 
-class GoldenBookController extends Controller
+class TestimonialController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,7 +25,7 @@ class GoldenBookController extends Controller
      */
     public function index(): View
     {
-        $goldenBooksPosts = PublishedGoldenBookPost::latest()->paginate(10);
+        $goldenBooksPosts = PublishedTestimonial::latest()->paginate(10);
 
         return view('testimonials.index', compact('goldenBooksPosts'));
     }
@@ -43,13 +43,13 @@ class GoldenBookController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  GoldenBookRequest  $request
+     * @param  TestimonialRequest  $request
      *
      * @return RedirectResponse
      */
-    public function store(GoldenBookRequest $request): RedirectResponse
+    public function store(TestimonialRequest $request): RedirectResponse
     {
-        GoldenBookPost::create($request->validated());
+        Testimonial::create($request->validated());
 
         return redirect()->route('testimonials.index')
             ->withSuccess(__('Your message has been added to the golden book'));

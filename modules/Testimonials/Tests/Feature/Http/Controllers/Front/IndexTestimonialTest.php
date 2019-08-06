@@ -10,7 +10,7 @@
 namespace Modules\Testimonial\Tests\Feature\Http\Controllers\Front;
 
 use Tests\TestCase;
-use App\Models\GoldenBookPost;
+use App\Models\Testimonial;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -25,7 +25,7 @@ class IndexTestimonialTest extends TestCase
 
     public function test_guest_can_index_testimonials(): void
     {
-        $testimonials = factory(GoldenBookPost::class, 5)->create();
+        $testimonials = factory(Testimonial::class, 5)->create();
 
         $response = $this->indexCategories();
 

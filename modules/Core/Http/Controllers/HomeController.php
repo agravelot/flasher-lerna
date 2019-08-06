@@ -12,7 +12,7 @@ namespace Modules\Core\Http\Controllers;
 use Illuminate\View\View;
 use App\Models\PublicAlbum;
 use Illuminate\Routing\Controller;
-use App\Models\PublishedGoldenBookPost;
+use App\Models\PublishedTestimonial;
 
 class HomeController extends Controller
 {
@@ -24,7 +24,7 @@ class HomeController extends Controller
     public function __invoke(): View
     {
         $albums = PublicAlbum::with('categories')->latest()->take(3)->get();
-        $testimonials = PublishedGoldenBookPost::take(3)->get();
+        $testimonials = PublishedTestimonial::take(3)->get();
         $og = new HomeOpenGraph();
 
         return view('core::home', compact('albums', 'testimonials', 'og'));

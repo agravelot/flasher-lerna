@@ -29,9 +29,9 @@ Route::middleware(['web', 'auth', 'verified', 'admin'])->group(function () {
         Route::prefix('admin')->group(function () {
             Route::namespace('Admin')->group(function () {
                 Route::get('', 'AdminController')->name('dashboard');
-                Route::resource('goldenbook', 'AdminGoldenBookController');
+                Route::resource('goldenbook', 'AdminTestimonialController');
                 Route::resource('social-medias', 'AdminSocialMediaController')->except('show');
-                Route::resource('published-goldenbook', 'AdminPublishedGoldenBookController')->only('store', 'destroy');
+                Route::resource('published-goldenbook', 'AdminPublishedTestimonialController')->only('store', 'destroy');
                 Route::resource('contacts', 'AdminContactController')->except('edit', 'update');
             });
             Route::get('/{any}', 'SpaController@index')->where('any', '.*');

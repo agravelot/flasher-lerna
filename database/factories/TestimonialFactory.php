@@ -8,10 +8,10 @@
  */
 
 use Carbon\Carbon;
+use App\Models\Testimonial;
 use Faker\Generator as Faker;
-use App\Models\GoldenBookPost;
 
-$factory->define(GoldenBookPost::class, function (Faker $faker) {
+$factory->define(Testimonial::class, function (Faker $faker) {
     return [
         'name' => $faker->sentence,
         'email' => $faker->email,
@@ -22,13 +22,13 @@ $factory->define(GoldenBookPost::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(GoldenBookPost::class, 'published', function (Faker $faker) {
+$factory->state(Testimonial::class, 'published', function (Faker $faker) {
     return [
         'published_at' => Carbon::now(),
     ];
 });
 
-$factory->state(GoldenBookPost::class, 'unpublished', function () {
+$factory->state(Testimonial::class, 'unpublished', function () {
     return [
         'published_at' => null,
     ];

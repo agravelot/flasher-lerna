@@ -10,7 +10,7 @@
 namespace Modules\Testimonial\Tests\Features\Http\Controllers\Admin;
 
 use Tests\TestCase;
-use App\Models\GoldenBookPost;
+use App\Models\Testimonial;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -21,7 +21,7 @@ class ShowTestimonialTest extends TestCase
     public function test_admin_cant_index_testimonials(): void
     {
         $this->actingAsAdmin();
-        $testimonial = factory(GoldenBookPost::class)->create();
+        $testimonial = factory(Testimonial::class)->create();
 
         $response = $this->getTestimonial($testimonial);
 
@@ -39,7 +39,7 @@ class ShowTestimonialTest extends TestCase
             ]);
     }
 
-    private function getTestimonial(GoldenBookPost $testimonial): TestResponse
+    private function getTestimonial(Testimonial $testimonial): TestResponse
     {
         return $this->json('get', "/api/admin/testimonials/{$testimonial->id}");
     }
@@ -47,7 +47,7 @@ class ShowTestimonialTest extends TestCase
     public function test_user_cant_index_testimonials(): void
     {
         $this->actingAsUser();
-        $testimonial = factory(GoldenBookPost::class)->create();
+        $testimonial = factory(Testimonial::class)->create();
 
         $response = $this->getTestimonial($testimonial);
 
@@ -56,7 +56,7 @@ class ShowTestimonialTest extends TestCase
 
     public function test_guest_cant_index_testimonials(): void
     {
-        $testimonial = factory(GoldenBookPost::class)->create();
+        $testimonial = factory(Testimonial::class)->create();
 
         $response = $this->getTestimonial($testimonial);
 

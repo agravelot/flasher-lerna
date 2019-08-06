@@ -9,6 +9,6 @@
 
 namespace App\Observers;
 
-class GoldenBookPostObserver extends ActivityObserverBase
+class TestimonialObserver extends ActivityObserverBase
 {
 }

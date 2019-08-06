@@ -7,35 +7,35 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Tests\Feature\Http\Controller\Front\GoldenBook;
+namespace Tests\Feature\Http\Controller\Front\Testimonial;
 
 use Tests\TestCase;
-use App\Models\GoldenBookPost;
+use App\Models\Testimonial;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class IndexGoldenBookTest extends TestCase
+class IndexTestimonialTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_can_see_empty_golden_book_index()
+    public function test_guest_can_see_empty_testimonial_index()
     {
-        $response = $this->showGoldenBooks();
+        $response = $this->showTestimonials();
 
         $response->assertStatus(200);
         $response->assertSee('Nothing to show');
     }
 
-    private function showGoldenBooks(): TestResponse
+    private function showTestimonials(): TestResponse
     {
         return $this->get('/testimonials');
     }
 
-    public function test_guest_can_see_active_golden_book_index()
+    public function test_guest_can_see_active_testimonial_index()
     {
-        $goldenBookPosts = factory(GoldenBookPost::class, 2)->state('published')->create();
+        $goldenBookPosts = factory(Testimonial::class, 2)->state('published')->create();
 
-        $response = $this->showGoldenBooks();
+        $response = $this->showTestimonials();
 
         $response->assertStatus(200);
         $response->assertDontSee('Nothing to show');
@@ -47,11 +47,11 @@ class IndexGoldenBookTest extends TestCase
         $response->assertDontSee($goldenBookPosts->get(1)->email);
     }
 
-    public function test_guest_can_not_see_unactive_golden_book_index()
+    public function test_guest_can_not_see_unactive_testimonial_index()
     {
-        $goldenBookPosts = factory(GoldenBookPost::class, 2)->state('unpublished')->create();
+        $goldenBookPosts = factory(Testimonial::class, 2)->state('unpublished')->create();
 
-        $response = $this->showGoldenBooks();
+        $response = $this->showTestimonials();
 
         $response->assertStatus(200);
         $response->assertSee('Nothing to show');

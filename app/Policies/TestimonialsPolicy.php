@@ -10,9 +10,9 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\GoldenBookPost;
+use App\Models\Testimonial;
 
-class GoldenBookPolicy extends Policy
+class TestimonialsPolicy extends Policy
 {
     /**
      * Determine whether the user can view the categorys.
@@ -30,11 +30,11 @@ class GoldenBookPolicy extends Policy
      * Determine whether the user can view the category.
      *
      * @param  User  $user
-     * @param  GoldenBookPost|null  $goldenBookPost
+     * @param  Testimonial|null  $goldenBookPost
      *
      * @return bool
      */
-    public function view(User $user, ?GoldenBookPost $goldenBookPost = null): bool
+    public function view(User $user, ?Testimonial $goldenBookPost = null): bool
     {
         return false;
     }
@@ -55,11 +55,11 @@ class GoldenBookPolicy extends Policy
      * Determine whether the user can update the category.
      *
      * @param  User  $user
-     * @param  GoldenBookPost  $goldenBookPost
+     * @param  Testimonial  $goldenBookPost
      *
      * @return bool
      */
-    public function update(User $user, GoldenBookPost $goldenBookPost): bool
+    public function update(User $user, Testimonial $goldenBookPost): bool
     {
         return false;
     }
@@ -68,11 +68,11 @@ class GoldenBookPolicy extends Policy
      * Determine whether the user can delete the category.
      *
      * @param  User  $user
-     * @param  GoldenBookPost|null  $goldenBookPost
+     * @param  Testimonial|null  $goldenBookPost
      *
      * @return bool
      */
-    public function delete(User $user, ?GoldenBookPost $goldenBookPost = null): bool
+    public function delete(User $user, ?Testimonial $goldenBookPost = null): bool
     {
         return false;
     }
@@ -81,11 +81,11 @@ class GoldenBookPolicy extends Policy
      * Determine whether the user can restore the category.
      *
      * @param  User  $user
-     * @param  GoldenBookPost  $goldenBookPost
+     * @param  Testimonial  $goldenBookPost
      *
      * @return bool
      */
-    public function restore(User $user, GoldenBookPost $goldenBookPost): bool
+    public function restore(User $user, Testimonial $goldenBookPost): bool
     {
         return false;
     }
@@ -94,11 +94,11 @@ class GoldenBookPolicy extends Policy
      * Determine whether the user can permanently delete the category.
      *
      * @param  User  $user
-     * @param  GoldenBookPost  $goldenBookPost
+     * @param  Testimonial  $goldenBookPost
      *
      * @return bool
      */
-    public function forceDelete(User $user, GoldenBookPost $goldenBookPost): bool
+    public function forceDelete(User $user, Testimonial $goldenBookPost): bool
     {
         return false;
     }

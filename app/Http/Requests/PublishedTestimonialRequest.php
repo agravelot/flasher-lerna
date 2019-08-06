@@ -9,7 +9,7 @@
 
 namespace App\Http\Requests;
 
-class PublishedGoldenBookRequest extends Request
+class PublishedTestimonialRequest extends Request
 {
     /**
      * Get the validation rules that apply to the request.
@@ -19,7 +19,7 @@ class PublishedGoldenBookRequest extends Request
     public function rules(): array
     {
         return [
-            'goldenbook_id' => 'required|exists:golden_book_posts,id',
+            'goldenbook_id' => 'required|exists:testimonials,id',
         ];
     }
 }

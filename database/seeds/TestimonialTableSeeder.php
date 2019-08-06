@@ -9,14 +9,14 @@
 
 use Illuminate\Database\Seeder;
 
-class GoldenBooksPostsTableSeeder extends Seeder
+class TestimonialTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run()
     {
-        $goldenBookPosts = factory(\App\Models\GoldenBookPost::class, 10)
+        $goldenBookPosts = factory(\App\Models\Testimonial::class, 10)
             ->create();
     }
 }

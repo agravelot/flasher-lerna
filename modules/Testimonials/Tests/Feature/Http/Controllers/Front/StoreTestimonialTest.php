@@ -10,7 +10,7 @@
 namespace Modules\Testimonial\Tests\Features\Http\Controllers\Front;
 
 use Tests\TestCase;
-use App\Models\GoldenBookPost;
+use App\Models\Testimonial;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -21,17 +21,17 @@ class StoreTestimonialTest extends TestCase
     public function test_admin_can_store_a_testimonial(): void
     {
         $this->actingAsAdmin();
-        $testimonial = factory(GoldenBookPost::class)->make();
+        $testimonial = factory(Testimonial::class)->make();
         $testimonial->name = 'Test title';
 
         $response = $this->storeTestimonial($testimonial);
 
         $response->assertStatus(201)
             ->assertSee($testimonial->title);
-        $this->assertCount(1, GoldenBookPost::all());
+        $this->assertCount(1, Testimonial::all());
     }
 
-    private function storeTestimonial(GoldenBookPost $testimonial): TestResponse
+    private function storeTestimonial(Testimonial $testimonial): TestResponse
     {
         return $this->post('/testimonials', [
             'name' => $testimonial->name,
@@ -42,25 +42,25 @@ class StoreTestimonialTest extends TestCase
     public function test_user_can_store_a_testimonial(): void
     {
         $this->actingAsUser();
-        $testimonial = factory(GoldenBookPost::class)->make();
+        $testimonial = factory(Testimonial::class)->make();
         $testimonial->name = 'Test title';
 
         $response = $this->storeTestimonial($testimonial);
 
         $response->assertStatus(201)
             ->assertSee($testimonial->title);
-        $this->assertCount(1, GoldenBookPost::all());
+        $this->assertCount(1, Testimonial::all());
     }
 
     public function test_guest_can_store_a_testimonial(): void
     {
-        $testimonial = factory(GoldenBookPost::class)->make();
+        $testimonial = factory(Testimonial::class)->make();
         $testimonial->name = 'Test title';
 
         $response = $this->storeTestimonial($testimonial);
 
         $response->assertStatus(201)
             ->assertSee($testimonial->title);
-        $this->assertCount(1, GoldenBookPost::all());
+        $this->assertCount(1, Testimonial::all());
     }
 }
