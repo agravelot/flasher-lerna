@@ -18,19 +18,12 @@ class IndexTestimonialTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_can_index_testimonials()
-    {
-        $response = $this->indexCategories();
-
-        $response->assertStatus(200);
-    }
-
     private function indexCategories(): TestResponse
     {
         return $this->json('get', '/api/testimonials');
     }
 
-    public function test_guest_can_index_testimonials_with_data()
+    public function test_guest_can_index_testimonials(): void
     {
         $testimonials = factory(GoldenBookPost::class, 5)->create();
 
