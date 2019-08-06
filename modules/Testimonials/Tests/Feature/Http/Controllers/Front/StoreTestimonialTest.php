@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Testimonial\Tests\Features\Http\Controllers\Admin;
+namespace Modules\Testimonial\Tests\Features\Http\Controllers\Front;
 
 use Tests\TestCase;
 use App\Models\GoldenBookPost;

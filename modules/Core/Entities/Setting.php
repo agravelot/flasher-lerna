@@ -42,7 +42,7 @@ class Setting extends Model implements HasMedia
      */
     public function getValueAttribute($value)
     {
-        if (SettingType::getAliasType($this->type) === Media::class) {
+        if (SettingType::getAliasType($this->type) === \Modules\Core\Entities\Media::class) {
             return $this->getFirstMedia(self::SETTING_COLLECTION);
         }
 
@@ -79,6 +79,7 @@ class Setting extends Model implements HasMedia
                 ->preservingOriginal()
                 ->withResponsiveImages()
                 ->toMediaCollectionOnCloudDisk(self::SETTING_COLLECTION);
+
             $this->attributes['value'] = null;
 
             return;
@@ -100,7 +101,7 @@ class Setting extends Model implements HasMedia
     }
 
     /**
-     * @param  Media|null  $media
+     * @param  Media  $media
      *
      * @throws InvalidManipulation
      */

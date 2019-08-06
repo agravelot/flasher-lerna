@@ -10,14 +10,14 @@
 namespace Modules\Core\Enums;
 
 use BenSampo\Enum\Enum;
-use Spatie\MediaLibrary\Models\Media;
+use Modules\Core\Entities\Media;
 
 final class SettingType extends Enum
 {
     public const String = 'string';
     public const Numeric = 'numeric';
     public const Boolean = 'bool';
-    const TextArea = 'textarea';
+    public const TextArea = 'textarea';
 //    public const Json = 'json';
     public const Media = 'media';
     public const Email = 'email';
