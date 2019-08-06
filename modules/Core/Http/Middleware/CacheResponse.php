@@ -26,7 +26,7 @@ class CacheResponse extends CacheResponseBase
      *
      * @return Response
      */
-    public function handle(Request $request, Closure $next, $lifetimeInSeconds = null, ...$args ): Response
+    public function handle(Request $request, Closure $next, $lifetimeInSeconds = null, ...$args): Response
     {
         if ($request->session()->hasOldInput()) {
             return $next($request);
