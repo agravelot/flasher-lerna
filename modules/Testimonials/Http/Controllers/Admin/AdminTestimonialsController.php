@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Testimonials\Http\Controllers;
+namespace Modules\Testimonials\Http\Controllers\Admin;
 
 use Exception;
 use Carbon\Carbon;

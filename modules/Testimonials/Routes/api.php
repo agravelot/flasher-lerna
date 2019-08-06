@@ -17,12 +17,13 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::name('api.')->group(function () {
-    Route::middleware(['auth:api', 'verified', 'admin'])->group(function () {
-        Route::name('admin.')->group(function () {
-            Route::prefix('admin')->group(function () {
-                Route::apiResource('testimonials', 'AdminTestimonialsController')->except('store');
+Route::namespace('Admin')->group(function () {
+    Route::name('api.')->group(function () {
+        Route::middleware(['auth:api', 'verified', 'admin'])->group(function () {
+            Route::name('admin.')->group(function () {
+                Route::prefix('admin')->group(function () {
+                    Route::apiResource('testimonials', 'AdminTestimonialsController')->except('store');
+                });
             });
         });
     });
