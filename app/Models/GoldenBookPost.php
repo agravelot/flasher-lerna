@@ -40,7 +40,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|GoldenBookPost whereUpdatedAt($value)
  * @method static Builder|GoldenBookPost whereUserId($value)
  * @mixin Eloquent
- * @property string|null $published_at
+ * @property Carbon|null $published_at
  * @method static Builder|GoldenBookPost published()
  * @method static Builder|GoldenBookPost wherePublishedAt($value)
  */
@@ -53,11 +53,9 @@ class GoldenBookPost extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'body', 'email', 'published_at',
-    ];
+    protected $fillable = ['name', 'body', 'email', 'published_at'];
 
-    protected $dates = ['created_at', 'updated_at', 'published_at'];
+    protected $dates = ['published_at'];
 
     /**
      * Return if the golden book post is published or not.
