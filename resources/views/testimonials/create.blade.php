@@ -10,7 +10,7 @@
 
             @include('layouts.partials._messages')
 
-            <form method="POST" action="{{ route('goldenbook.store') }}">
+            <form method="POST" action="{{ route('testimonials.store') }}">
                 @csrf
 
                 <div class="field is-horizontal">

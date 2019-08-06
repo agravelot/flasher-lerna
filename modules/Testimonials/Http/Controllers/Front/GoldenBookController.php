@@ -27,7 +27,7 @@ class GoldenBookController extends Controller
     {
         $goldenBooksPosts = PublishedGoldenBookPost::latest()->paginate(10);
 
-        return view('goldenbook.index', compact('goldenBooksPosts'));
+        return view('testimonials.index', compact('goldenBooksPosts'));
     }
 
     /**
@@ -37,7 +37,7 @@ class GoldenBookController extends Controller
      */
     public function create(): View
     {
-        return view('goldenbook.create');
+        return view('testimonials.create');
     }
 
     /**
@@ -51,7 +51,7 @@ class GoldenBookController extends Controller
     {
         GoldenBookPost::create($request->validated());
 
-        return redirect()->route('goldenbook.index')
+        return redirect()->route('testimonials.index')
             ->withSuccess(__('Your message has been added to the golden book'));
     }
 }

@@ -28,7 +28,7 @@ class IndexGoldenBookTest extends TestCase
 
     private function showGoldenBooks(): TestResponse
     {
-        return $this->get('/goldenbook');
+        return $this->get('/testimonials');
     }
 
     public function test_guest_can_see_active_golden_book_index()

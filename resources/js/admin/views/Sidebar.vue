@@ -60,7 +60,7 @@
                     </li>
 
                     <li>
-                        <a href="/admin/goldenbook">
+                        <a href="/admin/testimonials">
                             <span class="icon">
                                 <i class="fas fa-book"></i>
                             </span>

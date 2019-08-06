@@ -30,7 +30,7 @@ class StoreGoldenBookTest extends TestCase
 
         $response = $this->storeGoldenbookPost($post, $data);
 
-        $response->assertRedirect('/goldenbook');
+        $response->assertRedirect('/testimonials');
         $this->assertSame(1, GoldenBookPost::count());
         $this->assertSame(0, PublishedGoldenBookPost::count());
         $this->followRedirects($response)
@@ -39,9 +39,9 @@ class StoreGoldenBookTest extends TestCase
 
     private function storeGoldenbookPost(GoldenBookPost $goldenBookPost, array $data = []): TestResponse
     {
-        session()->setPreviousUrl('/goldenbook');
+        session()->setPreviousUrl('/testimonials');
 
-        return $this->post('/goldenbook', array_merge($goldenBookPost->toArray(), $data));
+        return $this->post('/testimonials', array_merge($goldenBookPost->toArray(), $data));
     }
 
     public function test_guest_can_not_post_to_the_golden_book_without_captcha()
@@ -50,7 +50,7 @@ class StoreGoldenBookTest extends TestCase
 
         $response = $this->storeGoldenbookPost($post);
 
-        $response->assertRedirect('/goldenbook');
+        $response->assertRedirect('/testimonials');
         $this->assertSame(0, GoldenBookPost::count());
         $this->assertSame(0, PublishedGoldenBookPost::count());
         $this->followRedirects($response)
@@ -69,7 +69,7 @@ class StoreGoldenBookTest extends TestCase
 
         $response = $this->storeGoldenbookPost($post, $data);
 
-        $response->assertRedirect('/goldenbook');
+        $response->assertRedirect('/testimonials');
         $this->assertSame(1, GoldenBookPost::count());
         $this->assertSame(0, PublishedGoldenBookPost::count());
         $this->followRedirects($response)
@@ -84,7 +84,7 @@ class StoreGoldenBookTest extends TestCase
 
         $response = $this->storeGoldenbookPost($post);
 
-        $response->assertRedirect('/goldenbook');
+        $response->assertRedirect('/testimonials');
         $this->assertSame(0, GoldenBookPost::count());
         $this->assertSame(0, PublishedGoldenBookPost::count());
         $this->followRedirects($response)

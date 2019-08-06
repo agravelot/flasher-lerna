@@ -6,11 +6,11 @@
     <div class="container">
         @include('layouts.partials._messages')
 {{--        <h1 class="title">{{ __('Golden book') }}</h1>--}}
-        <a href="{{ route('goldenbook.create') }}" class="button is-primary is-outlined is-medium has-margin-md">
+        <a href="{{ route('testimonials.create') }}" class="button is-primary is-outlined is-medium has-margin-md">
             {{ __('Write') }}
         </a>
 
-        @each('goldenbook._goldenbook_item', $goldenBooksPosts, 'goldenBookPost', 'layouts.partials._empty')
+        @each('testimonials._goldenbook_item', $goldenBooksPosts, 'goldenBookPost', 'layouts.partials._empty')
 
         {{ $goldenBooksPosts->links() }}
     </div>
