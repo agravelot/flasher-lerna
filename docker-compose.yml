@@ -29,10 +29,10 @@ services:
     - storage:/var/www/html/storage:rw,delegated
     - public_vendor:/var/www/html/public/vendor:rw,delegated
     links:
-    - db
+    - db_pg
     - cache
     depends_on:
-    - db
+    - db_pg
     - cache
 
   queue:
@@ -117,6 +117,8 @@ services:
 
   pgbackups3:
     image: itbm/postgresql-backup-s3 # fork of schickling/postgres-backup-s3
+    depends_on:
+      - db_pg
     links:
       - db_pg
     environment:
