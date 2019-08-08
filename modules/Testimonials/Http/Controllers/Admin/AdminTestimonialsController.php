@@ -26,9 +26,9 @@ class AdminTestimonialsController extends Controller
      *
      * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
-        $testimonials = PublishedTestimonial::paginate();
+        $testimonials = Testimonial::paginate();
 
         return TestimonialResource::collection($testimonials);
     }

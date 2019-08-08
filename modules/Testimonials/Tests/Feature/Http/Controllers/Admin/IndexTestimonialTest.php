@@ -9,18 +9,55 @@
 
 namespace Modules\Testimonial\Tests\Features\Http\Controllers\Admin;
 
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
+use Tests\TestCase;
 
 class IndexTestimonialTest extends TestCase
 {
-    public function test_admin_cant_index_testimonials(): void
+
+    use RefreshDatabase;
+
+    public function test_admin_can_index_published_and_unpublished_testimonials(): void
     {
         $this->actingAsAdmin();
+        $publishedTestimonial = factory(\App\Models\Testimonial::class)
+            ->state('published')
+            ->create();
+        $unpublishedTestimonial = factory(\App\Models\Testimonial::class)
+            ->state('unpublished')
+            ->create();
 
         $response = $this->indexTestimonials();
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    [
+                        'id' => $publishedTestimonial->id,
+                        'name' => $publishedTestimonial->name,
+                        'email' => $publishedTestimonial->email,
+                        'body' => $publishedTestimonial->body,
+                        'published_at' => $publishedTestimonial->published_at->jsonSerialize(),
+                        'created_at' => $publishedTestimonial->created_at->jsonSerialize(),
+                        'updated_at' => $publishedTestimonial->updated_at->jsonSerialize(),
+                    ],
+                    [
+                        'id' => $unpublishedTestimonial->id,
+                        'name' => $unpublishedTestimonial->name,
+                        'email' => $unpublishedTestimonial->email,
+                        'body' => $unpublishedTestimonial->body,
+                        'published_at' => null,
+                        'created_at' => $unpublishedTestimonial->created_at->jsonSerialize(),
+                        'updated_at' => $unpublishedTestimonial->updated_at->jsonSerialize(),
+                    ],
+                ],
+            ]);
+    }
+
+    private function indexTestimonials(): TestResponse
+    {
+        return $this->json('get', '/api/admin/testimonials');
     }
 
     public function test_user_cant_index_testimonials(): void
@@ -37,10 +74,5 @@ class IndexTestimonialTest extends TestCase
         $response = $this->indexTestimonials();
 
         $response->assertStatus(401);
-    }
-
-    private function indexTestimonials(): TestResponse
-    {
-        return $this->json('get', '/api/admin/testimonials');
     }
 }
