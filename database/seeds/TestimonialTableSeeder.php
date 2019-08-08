@@ -16,7 +16,11 @@ class TestimonialTableSeeder extends Seeder
      */
     public function run()
     {
-        $goldenBookPosts = factory(\App\Models\Testimonial::class, 10)
+        factory(\App\Models\Testimonial::class, 20)
+            ->state('published')
+            ->create();
+        factory(\App\Models\Testimonial::class, 20)
+            ->state('unpublished')
             ->create();
     }
 }
