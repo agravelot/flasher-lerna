@@ -3,12 +3,16 @@
         <section>
             <div class="buttons">
 <!--                <b-button-->
-<!--                    tag="router-link"-->
-<!--                    :to="{ name: 'admin.testimonials.create' }"-->
 <!--                    type="is-success"-->
-<!--                    icon-left="plus"-->
-<!--                    >Add-->
+<!--                    icon-left="check"-->
+<!--                    >Publish-->
 <!--                </b-button>-->
+                <b-button
+                    type="is-success"
+                    icon-left="check"
+                    @click="toggleSelectedArePublishedAndUpdate()"
+                >Publish / Un-publish
+                </b-button>
                 <b-button
                     type="is-danger"
                     icon-left="trash-alt"
@@ -38,29 +42,43 @@
                 checkable
                 :checked-rows.sync="checkedRows"
             >
-                <template slot-scope="user">
+                <template slot-scope="testimonial">
                     <b-table-column field="name" label="Name" sortable>
                         <router-link
-                            :to="{ name: 'admin.testimonials.edit', params: { id: user.row.id } }"
+                            :to="{ name: 'admin.testimonials.edit', params: { id: testimonial.row.id } }"
                         >
-                            {{ user.row.name }}
+                            {{ testimonial.row.name }}
                         </router-link>
                     </b-table-column>
 
                     <b-table-column field="email" label="E-mail" sortable>
                         <router-link
-                            :to="{ name: 'admin.testimonials.edit', params: { id: user.row.id } }"
+                            :to="{ name: 'admin.testimonials.edit', params: { id: testimonial.row.id } }"
                         >
-                            {{ user.row.email }}
+                            {{ testimonial.row.email }}
                         </router-link>
                     </b-table-column>
 
                     <b-table-column field="published_at" label="Published" sortable>
-                        <router-link
-                            :to="{ name: 'admin.testimonials.edit', params: { id: user.row.id } }"
+                        <a
+                            :title="testimonial.row.published_at"
+                            @click="toggleIsPublishedAndUpdate(testimonial.row)"
                         >
-                            {{ user.row.published_at }}
-                        </router-link>
+                            <span v-if="testimonial.row.published_at">
+                                <b-icon
+                                    icon="check"
+                                    size="is-small"
+                                    type="is-success">
+                                 </b-icon>
+                            </span>
+                            <span v-else>
+                                <b-icon
+                                    icon="lock"
+                                    size="is-small"
+                                    type="is-warning">
+                                 </b-icon>
+                            </span>
+                        </a>
                     </b-table-column>
 
                 </template>
@@ -197,21 +215,58 @@ export default class TestimonialsIndex extends VueBuefy {
     }
 
     /**
-     * Delete user from slug
+     * Delete testimonial from slug
      */
     deleteSelectedTestimonials(): void {
-        this.checkedRows.forEach(user => {
+        this.checkedRows.forEach(testimonial => {
             this.axios
-                .delete(`/api/admin/testimonials/${user.id}`)
+                .delete(`/api/admin/testimonials/${testimonial.id}`)
                 .then(res => {
                     this.showSuccess('Testimonials deleted');
                     this.fetchTestimonials();
                 })
                 .catch(err => {
-                    this.showError(`Unable to delete user <br> <small>${err.message}</small>`);
+                    this.showError(`Unable to delete testimonial <br> <small>${err.message}</small>`);
                     throw err;
                 });
         });
+    }
+
+    toggleSelectedArePublishedAndUpdate() : void {
+        this.checkedRows.forEach(testimonial => {
+            this.toggleIsPublishedAndUpdate(testimonial)
+        });
+    }
+
+    toggleIsPublishedAndUpdate(testimonial: Testimonial) : void{
+        testimonial.published_at = testimonial.published_at ? null : new Date();
+        this.updateTestimonial(testimonial);
+    }
+
+    updateTestimonial(testimonial: Testimonial) : void{
+        console.log('updating testimonial');
+
+        this.axios
+            .patch(`/api/admin/testimonials/${testimonial.id}`, testimonial)
+            .then(res => res.data)
+            .then(res => {
+                // this.testimonials = res.data;
+                this.loading = false;
+            })
+            .catch(err => {
+                this.loading = false;
+                this.$snackbar.open({
+                    message: 'Unable to update testimonial, maybe you are offline?',
+                    type: 'is-danger',
+                    position: 'is-top',
+                    actionText: 'Retry',
+                    indefinite: true,
+                    onAction: () => {
+                        this.fetchTestimonials();
+                    },
+                });
+                throw err;
+            });
     }
 }
 </script>
