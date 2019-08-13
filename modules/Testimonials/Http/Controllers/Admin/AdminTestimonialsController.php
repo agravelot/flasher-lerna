@@ -14,7 +14,6 @@ use Carbon\Carbon;
 use App\Models\Testimonial;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use App\Models\PublishedTestimonial;
 use Modules\Testimonials\Transformers\TestimonialResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Modules\Testimonials\Http\Requests\AdminUpdateTestimonialRequest;

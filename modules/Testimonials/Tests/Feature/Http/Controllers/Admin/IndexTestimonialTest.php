@@ -9,13 +9,12 @@
 
 namespace Modules\Testimonial\Tests\Features\Http\Controllers\Admin;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class IndexTestimonialTest extends TestCase
 {
-
     use RefreshDatabase;
 
     public function test_admin_can_index_published_and_unpublished_testimonials(): void
