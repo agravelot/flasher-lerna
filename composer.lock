@@ -117,16 +117,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.109.2",
+            "version": "3.109.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "bfbf0f0f1e4949747bd3e77dd8de94af47f7fb72"
+                "reference": "a7948d0de42185cb1af551713a0e99ad593fd962"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/bfbf0f0f1e4949747bd3e77dd8de94af47f7fb72",
-                "reference": "bfbf0f0f1e4949747bd3e77dd8de94af47f7fb72",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a7948d0de42185cb1af551713a0e99ad593fd962",
+                "reference": "a7948d0de42185cb1af551713a0e99ad593fd962",
                 "shasum": ""
             },
             "require": {
@@ -196,7 +196,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-08-12T18:14:30+00:00"
+            "time": "2019-08-20T18:42:25+00:00"
         },
         {
             "name": "bensampo/laravel-enum",
@@ -1136,16 +1136,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.10",
+            "version": "2.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "a6c8d7101b19a451c1707b1b79bbbc56e4bdb7ec"
+                "reference": "92dd169c32f6f55ba570c309d83f5209cefb5e23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/a6c8d7101b19a451c1707b1b79bbbc56e4bdb7ec",
-                "reference": "a6c8d7101b19a451c1707b1b79bbbc56e4bdb7ec",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/92dd169c32f6f55ba570c309d83f5209cefb5e23",
+                "reference": "92dd169c32f6f55ba570c309d83f5209cefb5e23",
                 "shasum": ""
             },
             "require": {
@@ -1164,7 +1164,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "2.1.x-dev"
                 }
             },
             "autoload": {
@@ -1190,7 +1190,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2019-07-19T20:52:08+00:00"
+            "time": "2019-08-13T17:33:27+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -2222,16 +2222,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.8.32",
+            "version": "v5.8.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "ee16d719516dfd77ed6c9538000bca49ded284e2"
+                "reference": "58b81842cbdcfbbd8302790ac0f98119ea1c56e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/ee16d719516dfd77ed6c9538000bca49ded284e2",
-                "reference": "ee16d719516dfd77ed6c9538000bca49ded284e2",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/58b81842cbdcfbbd8302790ac0f98119ea1c56e5",
+                "reference": "58b81842cbdcfbbd8302790ac0f98119ea1c56e5",
                 "shasum": ""
             },
             "require": {
@@ -2365,20 +2365,20 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2019-08-13T14:11:52+00:00"
+            "time": "2019-08-20T15:45:17+00:00"
         },
         {
             "name": "laravel/horizon",
-            "version": "v3.3.0",
+            "version": "v3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/horizon.git",
-                "reference": "f471caa512fb37aecbfb29b588cf55e230d1c30f"
+                "reference": "30528b0a1de4870b53ece136ae4944affb38c7d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/horizon/zipball/f471caa512fb37aecbfb29b588cf55e230d1c30f",
-                "reference": "f471caa512fb37aecbfb29b588cf55e230d1c30f",
+                "url": "https://api.github.com/repos/laravel/horizon/zipball/30528b0a1de4870b53ece136ae4944affb38c7d7",
+                "reference": "30528b0a1de4870b53ece136ae4944affb38c7d7",
                 "shasum": ""
             },
             "require": {
@@ -2434,20 +2434,20 @@
                 "laravel",
                 "queue"
             ],
-            "time": "2019-08-13T14:39:16+00:00"
+            "time": "2019-08-20T18:05:14+00:00"
         },
         {
             "name": "laravel/passport",
-            "version": "v7.3.5",
+            "version": "v7.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/passport.git",
-                "reference": "57937b08dc8e444b4756782a5ba172b5ba54d4f5"
+                "reference": "4460bd1fb5d913d75e547caf02a5a19c6d77794d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/passport/zipball/57937b08dc8e444b4756782a5ba172b5ba54d4f5",
-                "reference": "57937b08dc8e444b4756782a5ba172b5ba54d4f5",
+                "url": "https://api.github.com/repos/laravel/passport/zipball/4460bd1fb5d913d75e547caf02a5a19c6d77794d",
+                "reference": "4460bd1fb5d913d75e547caf02a5a19c6d77794d",
                 "shasum": ""
             },
             "require": {
@@ -2458,6 +2458,7 @@
                 "illuminate/console": "~5.6.0|~5.7.0|~5.8.0|^6.0",
                 "illuminate/container": "~5.6.0|~5.7.0|~5.8.0|^6.0",
                 "illuminate/contracts": "~5.6.0|~5.7.0|~5.8.0|^6.0",
+                "illuminate/cookie": "~5.6.0|~5.7.0|~5.8.0|^6.0",
                 "illuminate/database": "~5.6.0|~5.7.0|~5.8.0|^6.0",
                 "illuminate/encryption": "~5.6.0|~5.7.0|~5.8.0|^6.0",
                 "illuminate/http": "~5.6.0|~5.7.0|~5.8.0|^6.0",
@@ -2504,7 +2505,7 @@
                 "oauth",
                 "passport"
             ],
-            "time": "2019-08-06T18:10:19+00:00"
+            "time": "2019-08-20T18:10:43+00:00"
         },
         {
             "name": "laravel/slack-notification-channel",
@@ -3196,16 +3197,16 @@
         },
         {
             "name": "myclabs/php-enum",
-            "version": "1.7.1",
+            "version": "1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/php-enum.git",
-                "reference": "f46847626b8739de22e4ebc6b56010f317d4448d"
+                "reference": "45f01adf6922df6082bcda36619deb466e826acf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/php-enum/zipball/f46847626b8739de22e4ebc6b56010f317d4448d",
-                "reference": "f46847626b8739de22e4ebc6b56010f317d4448d",
+                "url": "https://api.github.com/repos/myclabs/php-enum/zipball/45f01adf6922df6082bcda36619deb466e826acf",
+                "reference": "45f01adf6922df6082bcda36619deb466e826acf",
                 "shasum": ""
             },
             "require": {
@@ -3237,20 +3238,20 @@
             "keywords": [
                 "enum"
             ],
-            "time": "2019-05-05T10:12:03+00:00"
+            "time": "2019-08-19T13:53:00+00:00"
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.22.3",
+            "version": "2.23.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "738fbd8d80b2c5e158fda76c29c2de432fcc6f7e"
+                "reference": "767617a047e5b8b8b3b0b6023a2650847ed7df02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/738fbd8d80b2c5e158fda76c29c2de432fcc6f7e",
-                "reference": "738fbd8d80b2c5e158fda76c29c2de432fcc6f7e",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/767617a047e5b8b8b3b0b6023a2650847ed7df02",
+                "reference": "767617a047e5b8b8b3b0b6023a2650847ed7df02",
                 "shasum": ""
             },
             "require": {
@@ -3297,14 +3298,14 @@
                     "homepage": "http://github.com/kylekatarnls"
                 }
             ],
-            "description": "A simple API extension for DateTime.",
+            "description": "A API extension for DateTime that supports 281 different languages.",
             "homepage": "http://carbon.nesbot.com",
             "keywords": [
                 "date",
                 "datetime",
                 "time"
             ],
-            "time": "2019-08-07T12:36:44+00:00"
+            "time": "2019-08-17T13:57:34+00:00"
         },
         {
             "name": "nicmart/tree",
@@ -5077,16 +5078,16 @@
         },
         {
             "name": "spatie/browsershot",
-            "version": "3.32.1",
+            "version": "3.32.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/browsershot.git",
-                "reference": "b889a79c529d97692f79ac04d654635143203535"
+                "reference": "6aa8750308a0473d1e3cc079e698b78f9495e6d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/browsershot/zipball/b889a79c529d97692f79ac04d654635143203535",
-                "reference": "b889a79c529d97692f79ac04d654635143203535",
+                "url": "https://api.github.com/repos/spatie/browsershot/zipball/6aa8750308a0473d1e3cc079e698b78f9495e6d7",
+                "reference": "6aa8750308a0473d1e3cc079e698b78f9495e6d7",
                 "shasum": ""
             },
             "require": {
@@ -5129,7 +5130,7 @@
                 "screenshot",
                 "webpage"
             ],
-            "time": "2019-08-02T07:48:43+00:00"
+            "time": "2019-08-16T08:36:39+00:00"
         },
         {
             "name": "spatie/crawler",
@@ -7489,7 +7490,7 @@
         },
         {
             "name": "tightenco/collect",
-            "version": "v5.8.31",
+            "version": "v5.8.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tightenco/collect.git",
@@ -10225,16 +10226,16 @@
         },
         {
             "name": "nunomaduro/larastan",
-            "version": "v0.3.18",
+            "version": "v0.3.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/larastan.git",
-                "reference": "53ba36f7ef35804a8512e120f4f7c546ab33fb72"
+                "reference": "4dca6af24373eb83aa7fcc1018495ef2680838c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/53ba36f7ef35804a8512e120f4f7c546ab33fb72",
-                "reference": "53ba36f7ef35804a8512e120f4f7c546ab33fb72",
+                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/4dca6af24373eb83aa7fcc1018495ef2680838c2",
+                "reference": "4dca6af24373eb83aa7fcc1018495ef2680838c2",
                 "shasum": ""
             },
             "require": {
@@ -10248,7 +10249,7 @@
                 "mockery/mockery": "^1.0|0.9.*",
                 "orchestra/testbench": "^3.6",
                 "php": "^7.1.3",
-                "phpstan/phpstan": "^0.11.8",
+                "phpstan/phpstan": "^0.11.15",
                 "symfony/process": "^4.2"
             },
             "require-dev": {
@@ -10288,20 +10289,20 @@
                 "php",
                 "static analysis"
             ],
-            "time": "2019-08-04T13:15:39+00:00"
+            "time": "2019-08-18T21:52:50+00:00"
         },
         {
             "name": "nunomaduro/phpinsights",
-            "version": "v1.7.0",
+            "version": "v1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/phpinsights.git",
-                "reference": "320780b4acb092777f8b08dd2b8e31230b84b0b4"
+                "reference": "7453929847df79aeaacddc2753186aa6b16cbdb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/phpinsights/zipball/320780b4acb092777f8b08dd2b8e31230b84b0b4",
-                "reference": "320780b4acb092777f8b08dd2b8e31230b84b0b4",
+                "url": "https://api.github.com/repos/nunomaduro/phpinsights/zipball/7453929847df79aeaacddc2753186aa6b16cbdb4",
+                "reference": "7453929847df79aeaacddc2753186aa6b16cbdb4",
                 "shasum": ""
             },
             "require": {
@@ -10315,9 +10316,9 @@
                 "sensiolabs/security-checker": "^6.0",
                 "symfony/console": "^4.2",
                 "symfony/finder": "^4.2",
-                "symplify/coding-standard": "^6.0",
-                "symplify/easy-coding-standard": "^6.0",
-                "symplify/package-builder": "^6.0"
+                "symplify/coding-standard": "^6.0.4",
+                "symplify/easy-coding-standard": "^6.0.4",
+                "symplify/package-builder": "^6.0.4"
             },
             "require-dev": {
                 "illuminate/console": "^5.8",
@@ -10366,7 +10367,7 @@
                 "quality",
                 "source"
             ],
-            "time": "2019-06-20T16:01:33+00:00"
+            "time": "2019-08-20T14:41:42+00:00"
         },
         {
             "name": "object-calisthenics/phpcs-calisthenics-rules",
@@ -11323,16 +11324,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.11.12",
+            "version": "0.11.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "56b3eb2a371b60537fd20794e24af9e7e8ed4e30"
+                "reference": "1be5b3a706db16ac472a4c40ec03cf4c810b118d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/56b3eb2a371b60537fd20794e24af9e7e8ed4e30",
-                "reference": "56b3eb2a371b60537fd20794e24af9e7e8ed4e30",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/1be5b3a706db16ac472a4c40ec03cf4c810b118d",
+                "reference": "1be5b3a706db16ac472a4c40ec03cf4c810b118d",
                 "shasum": ""
             },
             "require": {
@@ -11343,7 +11344,7 @@
                 "nette/robot-loader": "^3.0.1",
                 "nette/schema": "^1.0",
                 "nette/utils": "^2.4.5 || ^3.0",
-                "nikic/php-parser": "^4.0.2",
+                "nikic/php-parser": "^4.2.3",
                 "php": "~7.1",
                 "phpstan/phpdoc-parser": "^0.3.5",
                 "symfony/console": "~3.2 || ~4.0",
@@ -11353,7 +11354,7 @@
                 "symfony/console": "3.4.16 || 4.1.5"
             },
             "require-dev": {
-                "brianium/paratest": "^2.0",
+                "brianium/paratest": "^2.0 || ^3.0",
                 "consistence/coding-standard": "^3.5",
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
                 "ext-intl": "*",
@@ -11368,7 +11369,7 @@
                 "phpstan/phpstan-php-parser": "^0.11",
                 "phpstan/phpstan-phpunit": "^0.11",
                 "phpstan/phpstan-strict-rules": "^0.11",
-                "phpunit/phpunit": "^7.0",
+                "phpunit/phpunit": "^7.5.14 || ^8.0",
                 "slevomat/coding-standard": "^4.7.2",
                 "squizlabs/php_codesniffer": "^3.3.2"
             },
@@ -11394,7 +11395,7 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "time": "2019-07-08T06:55:18+00:00"
+            "time": "2019-08-18T20:51:53+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -11869,23 +11870,23 @@
         },
         {
             "name": "react/dns",
-            "version": "v1.1.0",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/dns.git",
-                "reference": "a04f6f23ee40afec2e5814ddfbdf71b9e88bbc1f"
+                "reference": "a214d90c2884dac18d0cac6176202f247b66d762"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/dns/zipball/a04f6f23ee40afec2e5814ddfbdf71b9e88bbc1f",
-                "reference": "a04f6f23ee40afec2e5814ddfbdf71b9e88bbc1f",
+                "url": "https://api.github.com/repos/reactphp/dns/zipball/a214d90c2884dac18d0cac6176202f247b66d762",
+                "reference": "a214d90c2884dac18d0cac6176202f247b66d762",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "react/cache": "^1.0 || ^0.6 || ^0.5",
-                "react/event-loop": "^1.0 || ^0.5 || ^0.4 || ^0.3.5",
-                "react/promise": "^2.1 || ^1.2.1",
+                "react/event-loop": "^1.0 || ^0.5",
+                "react/promise": "^2.7 || ^1.2.1",
                 "react/promise-timer": "^1.2"
             },
             "require-dev": {
@@ -11909,7 +11910,7 @@
                 "dns-resolver",
                 "reactphp"
             ],
-            "time": "2019-07-18T09:47:47+00:00"
+            "time": "2019-08-15T09:06:31+00:00"
         },
         {
             "name": "react/event-loop",
