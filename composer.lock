@@ -117,16 +117,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.109.8",
+            "version": "3.110.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "a7948d0de42185cb1af551713a0e99ad593fd962"
+                "reference": "39094b2d8e0424184fe9f12f5359d62ce8849b9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a7948d0de42185cb1af551713a0e99ad593fd962",
-                "reference": "a7948d0de42185cb1af551713a0e99ad593fd962",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/39094b2d8e0424184fe9f12f5359d62ce8849b9d",
+                "reference": "39094b2d8e0424184fe9f12f5359d62ce8849b9d",
                 "shasum": ""
             },
             "require": {
@@ -196,7 +196,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-08-20T18:42:25+00:00"
+            "time": "2019-08-21T18:23:39+00:00"
         },
         {
             "name": "bensampo/laravel-enum",
@@ -5368,16 +5368,16 @@
         },
         {
             "name": "spatie/laravel-medialibrary",
-            "version": "7.9.0",
+            "version": "7.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-medialibrary.git",
-                "reference": "7e5b22f7c6ed39631d82377b94b9bc09e159fc92"
+                "reference": "cb069c4916c1777fdc9292bbaabe9c5fd8b0d243"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/7e5b22f7c6ed39631d82377b94b9bc09e159fc92",
-                "reference": "7e5b22f7c6ed39631d82377b94b9bc09e159fc92",
+                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/cb069c4916c1777fdc9292bbaabe9c5fd8b0d243",
+                "reference": "cb069c4916c1777fdc9292bbaabe9c5fd8b0d243",
                 "shasum": ""
             },
             "require": {
@@ -5449,7 +5449,7 @@
                 "media",
                 "spatie"
             ],
-            "time": "2019-08-07T07:13:55+00:00"
+            "time": "2019-08-21T16:14:50+00:00"
         },
         {
             "name": "spatie/laravel-query-builder",
@@ -7814,16 +7814,16 @@
     "packages-dev": [
         {
             "name": "barryvdh/laravel-debugbar",
-            "version": "v3.2.4",
+            "version": "v3.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-debugbar.git",
-                "reference": "2d195779ea4f809f69764a795e2ec371dbb76a96"
+                "reference": "85463ebc4993cfe168cc763ad25ee83074797f9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/2d195779ea4f809f69764a795e2ec371dbb76a96",
-                "reference": "2d195779ea4f809f69764a795e2ec371dbb76a96",
+                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/85463ebc4993cfe168cc763ad25ee83074797f9c",
+                "reference": "85463ebc4993cfe168cc763ad25ee83074797f9c",
                 "shasum": ""
             },
             "require": {
@@ -7878,7 +7878,7 @@
                 "profiler",
                 "webprofiler"
             ],
-            "time": "2019-03-25T09:39:08+00:00"
+            "time": "2019-08-20T05:28:53+00:00"
         },
         {
             "name": "barryvdh/laravel-ide-helper",
