@@ -119,7 +119,9 @@ export default class CosplayersCreate extends VueBuefy {
         theme: 'snow',
     };
 
-    created(): void {}
+    created(): void {
+        this.cosplayer.user = new User();
+    }
 
     createCosplayer(): void {
         this.loading = true;
