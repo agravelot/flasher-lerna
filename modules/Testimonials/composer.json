@@ -12,9 +12,7 @@
             "providers": [
                 "Modules\\Testimonials\\Providers\\TestimonialsServiceProvider"
             ],
-            "aliases": {
-                
-            }
+            "aliases": {}
         }
     },
     "autoload": {

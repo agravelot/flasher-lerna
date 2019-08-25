@@ -165,19 +165,19 @@ const routes: Array<any> = [
     //     path: '/admin/users/create',
     //     name: 'admin.users.create',
     //     component: UsersCreate,
-        // component: () =>
-        //     import(
-        //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
-        //     ),
+    // component: () =>
+    //     import(
+    //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
+    //     ),
     // },
     // {
     //     path: '/admin/users/:id/edit',
     //     name: 'admin.users.edit',
     //     component: UsersEdit,
-        // component: () =>
-        //     import(
-        //         /* webpackChunkName: "cosplayersEdit" */ '../../../modules/User/Resources/assets/js/UserEdit.vue'
-        //     ),
+    // component: () =>
+    //     import(
+    //         /* webpackChunkName: "cosplayersEdit" */ '../../../modules/User/Resources/assets/js/UserEdit.vue'
+    //     ),
     // },
     // Settings
     {

@@ -113,7 +113,9 @@ export default class AlbumsCreate extends AlbumDesc {
                 this.$router.push({ name: 'admin.albums.edit', params: { slug: res.data.slug } });
             })
             .catch(err => {
-                this.showError(`Unable to create the album <br><small>${err.response.data.message}</small>`);
+                this.showError(
+                    `Unable to create the album <br><small>${err.response.data.message}</small>`
+                );
                 this.errors = err.response.data.errors;
             });
     }

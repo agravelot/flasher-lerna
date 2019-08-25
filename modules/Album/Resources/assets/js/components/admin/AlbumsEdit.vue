@@ -204,7 +204,9 @@ export default class AlbumsEdit extends AlbumDesc {
                 this.$router.push({ name: 'admin.albums.edit', params: { slug: this.album.slug } });
             })
             .catch(err => {
-                this.showError(`Unable to update the album <br><small>${err.response.data.message}</small>`);
+                this.showError(
+                    `Unable to update the album <br><small>${err.response.data.message}</small>`
+                );
                 this.errors = err.response.data.errors;
                 throw err;
             });
@@ -218,7 +220,9 @@ export default class AlbumsEdit extends AlbumDesc {
                 this.album.medias = res.data.medias;
             })
             .catch(err => {
-                this.showError(`Unable to refresh the album <br><small>${err.response.data.message}</small>`);
+                this.showError(
+                    `Unable to refresh the album <br><small>${err.response.data.message}</small>`
+                );
                 throw err;
             });
     }
