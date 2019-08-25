@@ -133,23 +133,13 @@ export default class CosplayersCreate extends VueBuefy {
             })
             .then(res => res.data)
             .then(res => {
-                this.cosplayer = res.data;
                 this.loading = false;
                 this.showSuccess('Cosplayer created');
                 this.$router.push({ name: 'admin.cosplayers.index' });
             })
             .catch(err => {
                 this.loading = false;
-                this.$snackbar.open({
-                    message: 'Unable to load cosplayer, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.createCosplayer();
-                    },
-                });
+                this.showError('Unable to create cosplayer');
                 this.errors = err.response.data.errors;
                 throw err;
             });
@@ -173,14 +163,14 @@ export default class CosplayersCreate extends VueBuefy {
     }
 
     showSuccess(message: string): void {
-        this.$toast.open({
+        this.$buefy.toast.open({
             message: message,
             type: 'is-success',
         });
     }
 
     showError(message: string): void {
-        this.$toast.open({
+        this.$buefy.toast.open({
             message: message,
             type: 'is-danger',
             duration: 5000,
@@ -196,7 +186,7 @@ export default class CosplayersCreate extends VueBuefy {
         if (cosplayer.description) {
             formData.append('description', cosplayer.description);
         }
-        if (cosplayer.user.id) {
+        if (cosplayer.user && cosplayer.user.id) {
             formData.append('user.id', String(cosplayer.user.id));
         }
         if (cosplayer.avatar != null) {
