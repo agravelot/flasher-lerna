@@ -164,21 +164,6 @@ export default class TestimonialsIndex extends VueBuefy {
             });
     }
 
-    showSuccess(message: string): void {
-        this.$toast.open({
-            message: message,
-            type: 'is-success',
-        });
-    }
-
-    showError(message: string): void {
-        this.$toast.open({
-            message: message,
-            type: 'is-danger',
-            duration: 5000,
-        });
-    }
-
     toggle(row: object): void {
         this.$refs.table.toggleDetails(row);
     }
@@ -238,7 +223,7 @@ export default class TestimonialsIndex extends VueBuefy {
         });
     }
 
-    toggleIsPublishedAndUpdate(testimonial: Testimonial) : void{
+    toggleIsPublishedAndUpdate(testimonial: Testimonial) : void {
         testimonial.published_at = testimonial.published_at ? null : new Date();
         this.updateTestimonial(testimonial);
     }

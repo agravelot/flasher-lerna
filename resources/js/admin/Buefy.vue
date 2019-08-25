@@ -13,6 +13,21 @@ export default class VueBuefy extends Vue {
     $snackbar: any;
     $toast: any;
     $refs: any;
+
+    showSuccess(message: string): void {
+        this.$buefy.toast.open({
+            message: message,
+            type: 'is-success',
+        });
+    }
+
+    showError(message: string): void {
+        this.$buefy.toast.open({
+            message: message,
+            type: 'is-danger',
+            duration: 5000,
+        });
+    }
 }
 </script>
 

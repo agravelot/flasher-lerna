@@ -164,13 +164,6 @@ export default class Settings extends VueBuefy {
             });
     }
 
-    showSuccess(message: string): void {
-        this.$toast.open({
-            message: message,
-            type: 'is-success',
-        });
-    }
-
     fetchSettings(): void {
         this.loading = true;
 
