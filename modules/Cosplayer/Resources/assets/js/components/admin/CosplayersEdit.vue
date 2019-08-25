@@ -223,21 +223,6 @@ export default class CosplayersEdit extends VueBuefy {
             });
     }
 
-    showSuccess(message: string): void {
-        this.$toast.open({
-            message: message,
-            type: 'is-success',
-        });
-    }
-
-    showError(message: string): void {
-        this.$toast.open({
-            message: message,
-            type: 'is-danger',
-            duration: 5000,
-        });
-    }
-
     cosplayerToFormData(cosplayer: Cosplayer): FormData {
         let formData = new FormData();
         formData.append('_method', 'PATCH');

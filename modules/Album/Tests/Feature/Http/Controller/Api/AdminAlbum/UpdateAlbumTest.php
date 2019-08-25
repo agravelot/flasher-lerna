@@ -50,8 +50,6 @@ class UpdateAlbumTest extends TestCase
             'categories' => [['id' => $category->id]],
         ]);
 
-        $response->dump();
-
         $this->assertSame(1, Album::count());
         $this->assertNotNull(Album::first()->categories->first);
         $response->assertStatus(200)

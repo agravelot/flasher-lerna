@@ -200,21 +200,11 @@ export default class AlbumsEdit extends AlbumDesc {
             .then(res => res.data)
             .then(res => {
                 this.album = res.data;
-                this.$toast.open({
-                    message: `Album updated`,
-                    type: 'is-success',
-                    duration: 5000,
-                });
+                this.showSuccess('Album updated');
                 this.$router.push({ name: 'admin.albums.edit', params: { slug: this.album.slug } });
             })
             .catch(err => {
-                this.$toast.open({
-                    message: `Unable to update the album <br><small>${
-                        err.response.data.message
-                    }</small>`,
-                    type: 'is-danger',
-                    duration: 5000,
-                });
+                this.showError(`Unable to update the album <br><small>${err.response.data.message}</small>`);
                 this.errors = err.response.data.errors;
                 throw err;
             });
@@ -228,13 +218,7 @@ export default class AlbumsEdit extends AlbumDesc {
                 this.album.medias = res.data.medias;
             })
             .catch(err => {
-                this.$toast.open({
-                    message: `Unable to refresh the album <br><small>${
-                        err.response.data.message
-                    }</small>`,
-                    type: 'is-danger',
-                    duration: 5000,
-                });
+                this.showError(`Unable to refresh the album <br><small>${err.response.data.message}</small>`);
                 throw err;
             });
     }
@@ -256,17 +240,10 @@ export default class AlbumsEdit extends AlbumDesc {
             .delete(`/api/admin/albums/${this.album.slug}`)
             .then(res => {
                 this.$router.push({ name: 'admin.albums.index' });
-                this.$toast.open({
-                    message: 'Album successfully deleted!',
-                    type: 'is-success',
-                });
+                this.showSuccess('Album successfully deleted!');
             })
             .catch(err => {
-                this.$toast.open({
-                    message: `Unable to delete the picture`,
-                    type: 'is-danger',
-                    duration: 5000,
-                });
+                this.showError(`Unable to delete the picture`);
                 throw err;
             });
     }
@@ -280,17 +257,10 @@ export default class AlbumsEdit extends AlbumDesc {
             })
             .then(res => {
                 this.refreshMedias();
-                this.$toast.open({
-                    message: 'Picture successfully deleted!',
-                    type: 'is-success',
-                });
+                this.showSuccess('Picture successfully deleted!');
             })
             .catch(err => {
-                this.$toast.open({
-                    message: `Unable to delete the picture`,
-                    type: 'is-danger',
-                    duration: 5000,
-                });
+                this.showError('Unable to delete the picture');
                 throw err;
             });
     }

@@ -62,9 +62,9 @@
                     </a>
                 </li>
             @endcan
-            @can('index', \App\Models\GoldenBookPost::class)
+            @can('index', \App\Models\Testimonial::class)
                 <li>
-                    <a href="{{ route('admin.goldenbook.index') }}" {{ Request::is('admin/goldenbook*') ? 'class=is-active' : '' }}>
+                    <a href="{{ route('admin.testimonials.index') }}" {{ Request::is('admin/testimonials*') ? 'class=is-active' : '' }}>
                     <span class="icon">
                         @fas('book')
                     </span>

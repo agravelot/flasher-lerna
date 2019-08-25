@@ -14,15 +14,15 @@ use App\Models\Album;
 use App\Models\Contact;
 use App\Models\Category;
 use App\Models\Cosplayer;
-use App\Models\GoldenBookPost;
+use App\Models\Testimonial;
 use App\Observers\UserObserver;
 use App\Observers\AlbumObserver;
 use App\Observers\ContactObserver;
 use App\Observers\CategoryObserver;
 use App\Observers\CosplayerObserver;
 use Illuminate\Support\Facades\Event;
+use App\Observers\TestimonialObserver;
 use Illuminate\Auth\Events\Registered;
-use App\Observers\GoldenBookPostObserver;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -49,7 +49,7 @@ class EventServiceProvider extends ServiceProvider
         Category::observe(CategoryObserver::class);
         Contact::observe(ContactObserver::class);
         Cosplayer::observe(CosplayerObserver::class);
-        GoldenBookPost::observe(GoldenBookPostObserver::class);
+        Testimonial::observe(TestimonialObserver::class);
         User::observe(UserObserver::class);
     }
 }

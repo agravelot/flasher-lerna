@@ -13,6 +13,7 @@ import CosplayersEdit from '../../../modules/Cosplayer/Resources/assets/js/compo
 import UsersIndex from '../../../modules/User/Resources/assets/js/UsersIndex.vue';
 import UsersCreate from '../../../modules/User/Resources/assets/js/UsersCreate.vue';
 import UsersEdit from '../../../modules/User/Resources/assets/js/UsersEdit.vue';
+import TestimonialsIndex from '../../../modules/Testimonials/Resources/assets/js/TestimonialsIndex.vue';
 import NotFound from '../../../modules/Core/Resources/assets/js/components/NotFound.vue';
 import Settings from '../../../modules/Core/Resources/assets/js/components/Settings.vue';
 import PagesIndex from '../../../modules/Core/Resources/assets/js/components/pages/PagesIndex.vue';
@@ -150,6 +151,34 @@ const routes: Array<any> = [
         //         /* webpackChunkName: "cosplayersEdit" */ '../../../modules/User/Resources/assets/js/UserEdit.vue'
         //     ),
     },
+    // Testimonials
+    {
+        path: '/admin/testimonials',
+        name: 'admin.testimonials.index',
+        component: TestimonialsIndex,
+        // component: () =>
+        //     import(
+        //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
+        //     ),
+    },
+    // {
+    //     path: '/admin/users/create',
+    //     name: 'admin.users.create',
+    //     component: UsersCreate,
+        // component: () =>
+        //     import(
+        //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
+        //     ),
+    // },
+    // {
+    //     path: '/admin/users/:id/edit',
+    //     name: 'admin.users.edit',
+    //     component: UsersEdit,
+        // component: () =>
+        //     import(
+        //         /* webpackChunkName: "cosplayersEdit" */ '../../../modules/User/Resources/assets/js/UserEdit.vue'
+        //     ),
+    // },
     // Settings
     {
         path: '/admin/settings',

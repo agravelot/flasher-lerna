@@ -161,21 +161,6 @@ export default class CategoriesIndex extends VueBuefy {
             });
     }
 
-    showSuccess(message: string): void {
-        this.$toast.open({
-            message: message,
-            type: 'is-success',
-        });
-    }
-
-    showError(message: string): void {
-        this.$toast.open({
-            message: message,
-            type: 'is-danger',
-            duration: 5000,
-        });
-    }
-
     /*
      * Handle page-change event
      */

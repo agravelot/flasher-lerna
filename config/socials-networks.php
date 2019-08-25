@@ -11,11 +11,11 @@ return [
 
     'facebook' => [
         'icon' => 'facebook-f',
-        'url' => 'https://www.facebook.com/sharer/sharer.php?u='
+        'url' => 'https://www.facebook.com/sharer/sharer.php?u=',
     ],
     'twitter' => [
         'icon' => 'twitter',
-        'url' => 'https://twitter.com/intent/tweet?text='
-    ]
+        'url' => 'https://twitter.com/intent/tweet?text=',
+    ],
 
 ];

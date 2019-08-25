@@ -1,23 +1,6 @@
 @extends('layouts.app')
 
-@php
-    class HomeOpenGraph implements \App\Models\Contracts\OpenGraphable, \App\Models\Contracts\ImagesOpenGraphable {
-        public function images() : \Illuminate\Support\Collection {
-             return collect([settings()->get('profile_picture_homepage')]);
-        }
-        public function title() : string {
-            return settings()->get('default_page_title');
-        }
-        public function description() : string {
-            return '';
-        }
-        public function type() : string {
-            return 'website';
-        }
-    }
-@endphp
-
-@include('layouts.partials._og_tags', ['model' => new HomeOpenGraph()])
+@include('layouts.partials._og_tags', ['model' => $og])
 
 @section('content')
     <section class="hero is-black is-medium has-hero-background is-radiusless">
@@ -126,7 +109,7 @@
         <div class="hero-body">
             <div class="container has-text-centered">
                 <div class="has-text-centered has-margin-bottom-lg">
-                    <a href="{{ route('goldenbook.index') }}">
+                    <a href="{{ route('testimonials.index') }}">
                         <h2 class="title">{{ __('Testimonials') }}</h2>
                     </a>
                 </div>
@@ -134,7 +117,7 @@
                 <div class="columns is-vcentered">
                     @foreach($testimonials as $testimonial)
                         <div class="column">
-                            @include('goldenbook._goldenbook_item', ['goldenBookPost' => $testimonial])
+                            @include('testimonials._item', ['goldenBookPost' => $testimonial])
                         </div>
                     @endforeach
                 </div>

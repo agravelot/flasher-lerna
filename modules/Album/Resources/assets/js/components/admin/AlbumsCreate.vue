@@ -109,20 +109,11 @@ export default class AlbumsCreate extends AlbumDesc {
             .post(`/api/admin/albums/`, this.album)
             .then(res => res.data)
             .then(res => {
-                this.$toast.open({
-                    message: `Album successfully created`,
-                    type: 'is-success',
-                });
+                this.showSuccess('Album successfully created');
                 this.$router.push({ name: 'admin.albums.edit', params: { slug: res.data.slug } });
             })
             .catch(err => {
-                this.$toast.open({
-                    message: `Unable to create the album <br><small>${
-                        err.response.data.message
-                    }</small>`,
-                    type: 'is-danger',
-                    duration: 5000,
-                });
+                this.showError(`Unable to create the album <br><small>${err.response.data.message}</small>`);
                 this.errors = err.response.data.errors;
             });
     }

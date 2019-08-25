@@ -60,12 +60,12 @@
                     </li>
 
                     <li>
-                        <a href="/admin/goldenbook">
+                        <router-link :to="{ name: 'admin.testimonials.index' }">
                             <span class="icon">
                                 <i class="fas fa-book"></i>
                             </span>
-                            Golden book
-                        </a>
+                            Testimonials
+                        </router-link>
                     </li>
 
                     <li>

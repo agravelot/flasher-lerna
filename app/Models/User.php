@@ -44,7 +44,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailInterface;
  * @property Collection|Album[] $albums
  * @property Collection|Contact[] $contact
  * @property Cosplayer $cosplayer
- * @property Collection|GoldenBookPost[] $goldenBookPosts
+ * @property Collection|Testimonial[] $goldenBookPosts
  * @property DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property Collection|Post[] $posts
  * @method static Builder|User newModelQuery()
@@ -146,9 +146,9 @@ class User extends Authenticatable implements MustVerifyEmailInterface
      *
      * @return HasMany
      */
-    public function goldenBookPosts(): HasMany
+    public function testimonials(): HasMany
     {
-        return $this->hasMany(GoldenBookPost::class);
+        return $this->hasMany(Testimonial::class);
     }
 
     /**

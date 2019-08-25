@@ -22,6 +22,7 @@
 
     <meta name="description" content="@yield('seo_description', settings()->get('seo_description'))"/>
 
+    <link rel="preconnect" href="{{ config('medialibrary.s3.domain') }}" crossorigin>
     <link rel="dns-prefetch" href="{{ config('medialibrary.s3.domain') }}">
 
     <!-- Styles -->
@@ -32,6 +33,7 @@
 
 <body>
 @include('layouts.partials._navbar')
+@include('layouts.partials._impersonating')
 
 @if(! request()->is('admin*') && ! request()->is('/'))
     <div class="hero is-black is-radiusless">
@@ -46,7 +48,6 @@
     </div>
 @endif
 
-@include('layouts.partials._impersonating')
 @yield('content')
 
 @include('layouts.partials._footer')

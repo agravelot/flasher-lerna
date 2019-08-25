@@ -225,20 +225,5 @@ export default class CategoriesEdit extends VueBuefy {
                 throw err;
             });
     }
-
-    showSuccess(message: string): void {
-        this.$toast.open({
-            message: message,
-            type: 'is-success',
-        });
-    }
-
-    showError(message: string): void {
-        this.$toast.open({
-            message: message,
-            type: 'is-danger',
-            duration: 5000,
-        });
-    }
 }
 </script>
