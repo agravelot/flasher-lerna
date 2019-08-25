@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "43243de9b5908143937fef934d397dca",
+    "content-hash": "353a344ecc551b8fb07f1bfa20e05709",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -5453,16 +5453,16 @@
         },
         {
             "name": "spatie/laravel-query-builder",
-            "version": "1.17.5",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-query-builder.git",
-                "reference": "8c5cecd27f69d8d4e6817a9207e796d34dab6a70"
+                "reference": "39c022ca7b6037b03b74ce2cccd89fda866c6d50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-query-builder/zipball/8c5cecd27f69d8d4e6817a9207e796d34dab6a70",
-                "reference": "8c5cecd27f69d8d4e6817a9207e796d34dab6a70",
+                "url": "https://api.github.com/repos/spatie/laravel-query-builder/zipball/39c022ca7b6037b03b74ce2cccd89fda866c6d50",
+                "reference": "39c022ca7b6037b03b74ce2cccd89fda866c6d50",
                 "shasum": ""
             },
             "require": {
@@ -5496,9 +5496,9 @@
             "authors": [
                 {
                     "name": "Alex Vanderbist",
+                    "role": "Developer",
                     "email": "alex@spatie.be",
-                    "homepage": "https://spatie.be",
-                    "role": "Developer"
+                    "homepage": "https://spatie.be"
                 }
             ],
             "description": "Easily build Eloquent queries from API requests",
@@ -5507,7 +5507,7 @@
                 "laravel-query-builder",
                 "spatie"
             ],
-            "time": "2019-07-08T09:08:34+00:00"
+            "time": "2019-08-12T15:01:29+00:00"
         },
         {
             "name": "spatie/laravel-responsecache",
