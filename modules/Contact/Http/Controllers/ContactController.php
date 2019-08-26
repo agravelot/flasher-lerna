@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace App\Http\Controllers\Front;
+namespace Modules\Contact\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\View\View;
@@ -38,6 +38,7 @@ class ContactController extends Controller
     {
         Contact::create($request->validated());
 
-        return redirect(route('contact.index'))->withSuccess('Your message has been sent');
+        return redirect(route('contact.index'))
+            ->withSuccess('Your message has been sent');
     }
 }

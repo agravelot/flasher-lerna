@@ -7,6 +7,7 @@ import AlbumsEdit from '../../../modules/Album/Resources/assets/js/components/ad
 import CategoriesIndex from '../../../modules/Category/Resources/assets/js/components/admin/CategoriesIndex.vue';
 import CategoriesCreate from '../../../modules/Category/Resources/assets/js/components/admin/CategoriesCreate.vue';
 import CategoriesEdit from '../../../modules/Category/Resources/assets/js/components/admin/CategoriesEdit.vue';
+import ConstactsIndex from '../../../modules/Contact/Resources/assets/js/components/admin/ContactsIndex.vue';
 import CosplayersIndex from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersIndex.vue';
 import CosplayersCreate from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersCreate.vue';
 import CosplayersEdit from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersEdit.vue';
@@ -93,6 +94,16 @@ const routes: Array<any> = [
         // component: () =>
         //     import(
         //         /* webpackChunkName: "categoriesEdit" */ '../../../modules/Category/Resources/assets/js/components/admin/CategoriesEdit.vue'
+        //     ),
+    },
+    // Contacts
+    {
+        path: '/admin/contacts',
+        name: 'admin.contacts.index',
+        component: ConstactsIndex,
+        // component: () =>
+        //     import(
+        //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersIndex.vue'
         //     ),
     },
     //Cosplayers
