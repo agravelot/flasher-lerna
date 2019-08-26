@@ -1,15 +1,21 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 namespace Modules\Contact\Http\Controllers;
 
-use App\Http\Requests\ContactStoreRequest;
-use App\Models\Contact;
 use Exception;
+use App\Models\Contact;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
-use Modules\Contact\Transformers\ContactResource;
 use Spatie\QueryBuilder\QueryBuilder;
+use Modules\Contact\Transformers\ContactResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminContactController extends Controller
 {

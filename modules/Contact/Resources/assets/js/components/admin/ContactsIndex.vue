@@ -49,12 +49,31 @@
                 @sort="onSort"
                 icon-pack="fas"
                 checkable
+                :opened-detailed="defaultOpenedDetails"
+                detailed
+                detail-key="id"
+                @details-open="(row, index) => $buefy.toast.open(`Expanded ${row.user.first_name}`)"
+                :show-detail-icon="showDetailIcon"
                 :checked-rows.sync="checkedRows"
             >
                 <template slot-scope="contact">
                     <b-table-column field="name" label="Name" sortable>
                         {{ contact.row.name }}
                     </b-table-column>
+
+                    <b-table-column field="email" label="Email" sortable>
+                        <a :href="`mailto:${contact.row.email}`" target="_blank">{{
+                            contact.row.email
+                        }}</a>
+                    </b-table-column>
+                </template>
+
+                <template slot="detail" slot-scope="props">
+                    <article>
+                        <p>
+                            {{ props.row.message }}
+                        </p>
+                    </article>
                 </template>
 
                 <template slot="empty">
@@ -80,7 +99,7 @@
 <script lang="ts">
 import Component from 'vue-class-component';
 import VueBuefy from '../../../../../../../resources/js/admin/Buefy.vue';
-import Contact from "../../contact";
+import Contact from '../../contact';
 
 @Component({
     name: 'ContactsIndex',

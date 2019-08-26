@@ -9,11 +9,9 @@
 
 namespace Tests\Feature\Http\Controller\Front\Contact;
 
-use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
-use App\Models\Contact;
-use App\Models\PublishedTestimonial;
-use App\Models\Testimonial;
 use Tests\TestCase;
+use App\Models\Contact;
+use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -46,6 +44,7 @@ class StoreContactTest extends TestCase
             ->zeroOrMoreTimes()
             ->andReturn('?');
         session()->setPreviousUrl('/contact');
+
         return $this->post('/contact', [
             'email' => $contact->email,
             'name' => $contact->name,

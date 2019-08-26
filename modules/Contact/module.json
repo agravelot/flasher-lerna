@@ -5,9 +5,7 @@
     "keywords": [],
     "active": 1,
     "order": 0,
-    "providers": [
-        "Modules\\Contact\\Providers\\ContactServiceProvider"
-    ],
+    "providers": ["Modules\\Contact\\Providers\\ContactServiceProvider"],
     "aliases": {},
     "files": [],
     "requires": []

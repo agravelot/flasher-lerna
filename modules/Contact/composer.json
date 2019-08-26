@@ -12,9 +12,7 @@
             "providers": [
                 "Modules\\Contact\\Providers\\ContactServiceProvider"
             ],
-            "aliases": {
-                
-            }
+            "aliases": {}
         }
     },
     "autoload": {
