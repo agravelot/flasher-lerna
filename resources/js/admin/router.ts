@@ -7,6 +7,7 @@ import AlbumsEdit from '../../../modules/Album/Resources/assets/js/components/ad
 import CategoriesIndex from '../../../modules/Category/Resources/assets/js/components/admin/CategoriesIndex.vue';
 import CategoriesCreate from '../../../modules/Category/Resources/assets/js/components/admin/CategoriesCreate.vue';
 import CategoriesEdit from '../../../modules/Category/Resources/assets/js/components/admin/CategoriesEdit.vue';
+import ConstactsIndex from '../../../modules/Contact/Resources/assets/js/components/admin/ContactsIndex.vue';
 import CosplayersIndex from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersIndex.vue';
 import CosplayersCreate from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersCreate.vue';
 import CosplayersEdit from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersEdit.vue';
@@ -95,6 +96,16 @@ const routes: Array<any> = [
         //         /* webpackChunkName: "categoriesEdit" */ '../../../modules/Category/Resources/assets/js/components/admin/CategoriesEdit.vue'
         //     ),
     },
+    // Contacts
+    {
+        path: '/admin/contacts',
+        name: 'admin.contacts.index',
+        component: ConstactsIndex,
+        // component: () =>
+        //     import(
+        //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersIndex.vue'
+        //     ),
+    },
     //Cosplayers
     {
         path: '/admin/cosplayers',
@@ -165,19 +176,19 @@ const routes: Array<any> = [
     //     path: '/admin/users/create',
     //     name: 'admin.users.create',
     //     component: UsersCreate,
-        // component: () =>
-        //     import(
-        //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
-        //     ),
+    // component: () =>
+    //     import(
+    //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
+    //     ),
     // },
     // {
     //     path: '/admin/users/:id/edit',
     //     name: 'admin.users.edit',
     //     component: UsersEdit,
-        // component: () =>
-        //     import(
-        //         /* webpackChunkName: "cosplayersEdit" */ '../../../modules/User/Resources/assets/js/UserEdit.vue'
-        //     ),
+    // component: () =>
+    //     import(
+    //         /* webpackChunkName: "cosplayersEdit" */ '../../../modules/User/Resources/assets/js/UserEdit.vue'
+    //     ),
     // },
     // Settings
     {

@@ -7,6 +7,6 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-Route::prefix('cosplayer')->group(function () {
+Route::prefix('cosplayer')->group(static function () {
     Route::get('/', 'AdminCosplayerController@index');
 });

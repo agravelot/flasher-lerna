@@ -7,6 +7,6 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-Route::namespace('Front')->group(function () {
+Route::namespace('Front')->group(static function () {
     Route::resource('testimonials', 'TestimonialController')->only(['index', 'create', 'store']);
 });

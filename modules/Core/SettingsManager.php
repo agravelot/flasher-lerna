@@ -24,7 +24,7 @@ class SettingsManager
         $this->loadSettings();
     }
 
-    private function loadSettings()
+    private function loadSettings(): void
     {
         $this->settings = Setting::all();
     }

@@ -17,11 +17,11 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::namespace('Admin')->group(function () {
-    Route::name('api.')->group(function () {
-        Route::middleware(['auth:api', 'verified', 'admin'])->group(function () {
-            Route::name('admin.')->group(function () {
-                Route::prefix('admin')->group(function () {
+Route::namespace('Admin')->group(static function () {
+    Route::name('api.')->group(static function () {
+        Route::middleware(['auth:api', 'verified', 'admin'])->group(static function () {
+            Route::name('admin.')->group(static function () {
+                Route::prefix('admin')->group(static function () {
                     Route::apiResource('testimonials', 'AdminTestimonialsController')->except('store');
                 });
             });

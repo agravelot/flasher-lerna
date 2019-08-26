@@ -2,16 +2,16 @@
     <div>
         <section>
             <div class="buttons">
-<!--                <b-button-->
-<!--                    type="is-success"-->
-<!--                    icon-left="check"-->
-<!--                    >Publish-->
-<!--                </b-button>-->
+                <!--                <b-button-->
+                <!--                    type="is-success"-->
+                <!--                    icon-left="check"-->
+                <!--                    >Publish-->
+                <!--                </b-button>-->
                 <b-button
                     type="is-success"
                     icon-left="check"
                     @click="toggleSelectedArePublishedAndUpdate()"
-                >Publish / Un-publish
+                    >Publish / Un-publish
                 </b-button>
                 <b-button
                     type="is-danger"
@@ -45,7 +45,10 @@
                 <template slot-scope="testimonial">
                     <b-table-column field="name" label="Name" sortable>
                         <router-link
-                            :to="{ name: 'admin.testimonials.edit', params: { id: testimonial.row.id } }"
+                            :to="{
+                                name: 'admin.testimonials.edit',
+                                params: { id: testimonial.row.id },
+                            }"
                         >
                             {{ testimonial.row.name }}
                         </router-link>
@@ -53,7 +56,10 @@
 
                     <b-table-column field="email" label="E-mail" sortable>
                         <router-link
-                            :to="{ name: 'admin.testimonials.edit', params: { id: testimonial.row.id } }"
+                            :to="{
+                                name: 'admin.testimonials.edit',
+                                params: { id: testimonial.row.id },
+                            }"
                         >
                             {{ testimonial.row.email }}
                         </router-link>
@@ -65,22 +71,13 @@
                             @click="toggleIsPublishedAndUpdate(testimonial.row)"
                         >
                             <span v-if="testimonial.row.published_at">
-                                <b-icon
-                                    icon="check"
-                                    size="is-small"
-                                    type="is-success">
-                                 </b-icon>
+                                <b-icon icon="check" size="is-small" type="is-success"> </b-icon>
                             </span>
                             <span v-else>
-                                <b-icon
-                                    icon="lock"
-                                    size="is-small"
-                                    type="is-warning">
-                                 </b-icon>
+                                <b-icon icon="lock" size="is-small" type="is-warning"> </b-icon>
                             </span>
                         </a>
                     </b-table-column>
-
                 </template>
 
                 <template slot="empty">
@@ -107,7 +104,6 @@
 import Component from 'vue-class-component';
 import VueBuefy from '../../../../../resources/js/admin/Buefy.vue';
 import Testimonial from './testimonial';
-
 
 @Component({
     name: 'TestimonialsIndex',
@@ -211,24 +207,26 @@ export default class TestimonialsIndex extends VueBuefy {
                     this.fetchTestimonials();
                 })
                 .catch(err => {
-                    this.showError(`Unable to delete testimonial <br> <small>${err.message}</small>`);
+                    this.showError(
+                        `Unable to delete testimonial <br> <small>${err.message}</small>`
+                    );
                     throw err;
                 });
         });
     }
 
-    toggleSelectedArePublishedAndUpdate() : void {
+    toggleSelectedArePublishedAndUpdate(): void {
         this.checkedRows.forEach(testimonial => {
-            this.toggleIsPublishedAndUpdate(testimonial)
+            this.toggleIsPublishedAndUpdate(testimonial);
         });
     }
 
-    toggleIsPublishedAndUpdate(testimonial: Testimonial) : void {
+    toggleIsPublishedAndUpdate(testimonial: Testimonial): void {
         testimonial.published_at = testimonial.published_at ? null : new Date();
         this.updateTestimonial(testimonial);
     }
 
-    updateTestimonial(testimonial: Testimonial) : void{
+    updateTestimonial(testimonial: Testimonial): void {
         console.log('updating testimonial');
 
         this.axios

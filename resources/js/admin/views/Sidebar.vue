@@ -42,21 +42,21 @@
                     </li>
 
                     <li>
+                        <router-link :to="{ name: 'admin.contacts.index' }">
+                            <span class="icon">
+                                <i class="fas fa-pen-fancy"></i>
+                            </span>
+                            Contacts
+                        </router-link>
+                    </li>
+
+                    <li>
                         <router-link :to="{ name: 'admin.users.index' }">
                             <span class="icon">
                                 <i class="fas fa-user"></i>
                             </span>
                             Users
                         </router-link>
-                    </li>
-
-                    <li>
-                        <a href="/admin/contacts">
-                            <span class="icon">
-                                <i class="fas fa-pen-fancy"></i>
-                            </span>
-                            Contacts
-                        </a>
                     </li>
 
                     <li>

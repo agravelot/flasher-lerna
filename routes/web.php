@@ -11,7 +11,7 @@ Auth::routes(['verify' => true]);
 Route::impersonate();
 
 //FRONT
-Route::namespace('Front')->group(function () {
+Route::namespace('Front')->group(static function () {
     Route::resource('albums', 'AlbumController')->only(['index', 'show']);
     Route::resource('download-albums', 'DownloadAlbumController')->only(['show'])
         ->middleware(['auth', 'verified'])
@@ -24,15 +24,12 @@ Route::namespace('Front')->group(function () {
 });
 
 //BACK
-Route::middleware(['web', 'auth', 'verified', 'admin'])->group(function () {
-    Route::name('admin.')->group(function () {
-        Route::prefix('admin')->group(function () {
-            Route::namespace('Admin')->group(function () {
+Route::middleware(['web', 'auth', 'verified', 'admin'])->group(static function () {
+    Route::name('admin.')->group(static function () {
+        Route::prefix('admin')->group(static function () {
+            Route::namespace('Admin')->group(static function () {
                 Route::get('', 'AdminController')->name('dashboard');
-                Route::resource('goldenbook', 'AdminTestimonialController');
                 Route::resource('social-medias', 'AdminSocialMediaController')->except('show');
-                Route::resource('published-goldenbook', 'AdminPublishedTestimonialController')->only('store', 'destroy');
-                Route::resource('contacts', 'AdminContactController')->except('edit', 'update');
             });
             Route::get('/{any}', 'SpaController@index')->where('any', '.*');
         });
