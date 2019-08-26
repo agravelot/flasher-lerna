@@ -15,9 +15,9 @@ Route::resource('contact', 'ContactController')->only(['index', 'store']);
 
 
 //BACK
-Route::middleware(['web', 'auth', 'verified', 'admin'])->group(function () {
-    Route::name('admin.')->group(function () {
-        Route::prefix('admin')->group(function () {
+Route::middleware(['web', 'auth', 'verified', 'admin'])->group(static function () {
+    Route::name('admin.')->group(static function () {
+        Route::prefix('admin')->group(static function () {
                 Route::resource('contacts', 'AdminContactController')->except('edit', 'update');
             });
     });

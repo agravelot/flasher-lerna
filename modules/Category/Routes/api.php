@@ -7,11 +7,11 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-Route::name('api.')->group(function () {
+Route::name('api.')->group(static function () {
     Route::apiResource('categories', 'CategoryController')->only(['index', 'show']);
-    Route::middleware(['auth:api', 'verified', 'admin'])->group(function () {
-        Route::name('admin.')->group(function () {
-            Route::prefix('admin')->group(function () {
+    Route::middleware(['auth:api', 'verified', 'admin'])->group(static function () {
+        Route::name('admin.')->group(static function () {
+            Route::prefix('admin')->group(static function () {
                 Route::apiResource('categories', 'AdminCategoryController');
                 Route::apiResource('cover-categories', 'AdminCoverCategoryController')
                     ->only(['store', 'destroy'])

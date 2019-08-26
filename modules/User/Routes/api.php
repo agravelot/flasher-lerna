@@ -7,9 +7,9 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-Route::middleware(['auth:api', 'verified', 'admin'])->group(function () {
-    Route::name('api.admin.')->group(function () {
-        Route::prefix('admin')->group(function () {
+Route::middleware(['auth:api', 'verified', 'admin'])->group(static function () {
+    Route::name('api.admin.')->group(static function () {
+        Route::prefix('admin')->group(static function () {
             Route::apiResource('users', 'AdminUsersController');
         });
     });
