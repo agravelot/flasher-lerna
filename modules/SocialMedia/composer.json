@@ -1,0 +1,25 @@
+{
+    "name": "nevax/socialmedia",
+    "description": "",
+    "authors": [
+        {
+            "name": "Antoine GRAVELOT",
+            "email": "antoine.gravelot@hotmail.fr"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\SocialMedia\\Providers\\SocialMediaServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\SocialMedia\\": ""
+        }
+    }
+}
