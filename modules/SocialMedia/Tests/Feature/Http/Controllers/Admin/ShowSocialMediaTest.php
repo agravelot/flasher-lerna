@@ -36,7 +36,7 @@ class ShowSocialMediaTest extends TestCase
                'active' => $socialMedia->active,
                'created_at' => $socialMedia->created_at->toJSON(),
                'updated_at' => $socialMedia->updated_at->toJSON(),
-           ]
+           ],
         ]);
     }
 
@@ -69,5 +69,5 @@ class ShowSocialMediaTest extends TestCase
     public function getSocialMedia(SocialMedia $socialMedia): TestResponse
     {
         return $this->getJson("/api/admin/social-medias/{$socialMedia->id}");
-}
+    }
 }

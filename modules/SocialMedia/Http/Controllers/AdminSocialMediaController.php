@@ -1,15 +1,22 @@
 <?php
 
+/*
+ * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Antoine Gravelot <agravelot@hotmail.fr>
+ */
+
 namespace Modules\SocialMedia\Http\Controllers;
 
-use App\Http\Requests\SocialMediaRequest;
-use App\Models\SocialMedia;
 use Exception;
+use App\Models\SocialMedia;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
-use Modules\SocialMedia\Transformers\SocialMediaResource;
 use Spatie\QueryBuilder\QueryBuilder;
+use App\Http\Requests\SocialMediaRequest;
+use Modules\SocialMedia\Transformers\SocialMediaResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminSocialMediaController extends Controller
 {
