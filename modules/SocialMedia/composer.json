@@ -12,9 +12,7 @@
             "providers": [
                 "Modules\\SocialMedia\\Providers\\SocialMediaServiceProvider"
             ],
-            "aliases": {
-                
-            }
+            "aliases": {}
         }
     },
     "autoload": {
