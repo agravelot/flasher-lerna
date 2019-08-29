@@ -20,7 +20,7 @@
                    href="{{ url('/') }}">{{ __('Home') }}</a>
                 @include('layouts.partials._navbar_albums')
                 @include('layouts.partials._navbar_categories')
-                <a class="navbar-item {{ Request::is('goldenbook*') ? 'is-active' : '' }}"
+                <a class="navbar-item {{ Request::is('testimonials*') ? 'is-active' : '' }}"
                    href="{{ route('testimonials.index') }}">{{ __('Golden book') }}</a>
                 {{--                <a class="navbar-item {{ Request::is('about') ? 'is-active' : '' }}" href="#">{{ __('About') }}</a>--}}
                 <a class="navbar-item {{ Request::is('contact*') ? 'is-active' : '' }}"
