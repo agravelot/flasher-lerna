@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bf5e66b2d9c891fa68d15b908c8143de",
+    "content-hash": "a48d4f7659325e11d0300d54754c481f",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -117,16 +117,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.110.4",
+            "version": "3.110.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "784750852cb940e44de46b748d528123729edf99"
+                "reference": "428152b84c4dc668738e98d266d88670064d31ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/784750852cb940e44de46b748d528123729edf99",
-                "reference": "784750852cb940e44de46b748d528123729edf99",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/428152b84c4dc668738e98d266d88670064d31ea",
+                "reference": "428152b84c4dc668738e98d266d88670064d31ea",
                 "shasum": ""
             },
             "require": {
@@ -196,7 +196,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-08-27T18:10:37+00:00"
+            "time": "2019-08-29T18:08:32+00:00"
         },
         {
             "name": "bensampo/laravel-enum",

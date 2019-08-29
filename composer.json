@@ -1,6 +1,6 @@
 {
-  "name": "laravel/laravel",
-  "description": "The Laravel Framework.",
+  "name": "nevax/flasher",
+  "description": "CMS solution for photographer.",
   "keywords": [
     "framework",
     "laravel"
