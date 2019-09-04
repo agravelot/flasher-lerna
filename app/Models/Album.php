@@ -103,12 +103,13 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
 
     public function getCoverAttribute(): ?Media
     {
-        return $this->getFirstMedia(self::PICTURES_COLLECTION);
+        return $this->media()->where('collection_name', self::PICTURES_COLLECTION)
+            ->cursor()->first();
     }
 
     public function getCoverResponsiveAttribute(): ?HtmlString
     {
-        return optional($this->getFirstMedia(self::PICTURES_COLLECTION), function (Media $media) {
+        return optional($this->cover, static function (Media $media) {
             return $media(self::RESPONSIVE_PICTURES_CONVERSION);
         });
     }
