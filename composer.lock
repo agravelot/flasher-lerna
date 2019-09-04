@@ -117,16 +117,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.110.8",
+            "version": "3.110.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "1c4ec294479c0ab1d231431b04b2b2f14a72407f"
+                "reference": "25fb32317e4dbd2b34caca01ed940cce12f7362c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1c4ec294479c0ab1d231431b04b2b2f14a72407f",
-                "reference": "1c4ec294479c0ab1d231431b04b2b2f14a72407f",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/25fb32317e4dbd2b34caca01ed940cce12f7362c",
+                "reference": "25fb32317e4dbd2b34caca01ed940cce12f7362c",
                 "shasum": ""
             },
             "require": {
@@ -196,7 +196,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-09-03T19:34:31+00:00"
+            "time": "2019-09-04T18:17:50+00:00"
         },
         {
             "name": "bensampo/laravel-enum",
@@ -2162,16 +2162,16 @@
         },
         {
             "name": "lab404/laravel-impersonate",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/404labfr/laravel-impersonate.git",
-                "reference": "8804a1555b59710e5960a0dd4a35269145b1b4b6"
+                "reference": "8b07d122793cbfc27103a1345dae75b97cbd7a44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/404labfr/laravel-impersonate/zipball/8804a1555b59710e5960a0dd4a35269145b1b4b6",
-                "reference": "8804a1555b59710e5960a0dd4a35269145b1b4b6",
+                "url": "https://api.github.com/repos/404labfr/laravel-impersonate/zipball/8b07d122793cbfc27103a1345dae75b97cbd7a44",
+                "reference": "8b07d122793cbfc27103a1345dae75b97cbd7a44",
                 "shasum": ""
             },
             "require": {
@@ -2179,8 +2179,8 @@
                 "php": ">=7.1.3"
             },
             "require-dev": {
-                "orchestra/database": "^3.8",
-                "orchestra/testbench": "^3.8",
+                "orchestra/database": "^3.8 | ^4.0",
+                "orchestra/testbench": "^3.8 | ^4.0",
                 "phpunit/phpunit": "^7.5 | ^8.0"
             },
             "type": "library",
@@ -2218,7 +2218,7 @@
                 "plugin",
                 "user"
             ],
-            "time": "2019-08-09T13:26:51+00:00"
+            "time": "2019-09-04T13:56:51+00:00"
         },
         {
             "name": "laravel/framework",
@@ -4843,25 +4843,25 @@
         },
         {
             "name": "s-ichikawa/laravel-sendgrid-driver",
-            "version": "2.0.6",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/s-ichikawa/laravel-sendgrid-driver.git",
-                "reference": "5092c3f856581bd61b691d7e86ebb9fcb6867683"
+                "reference": "116a6e624323883ddcc56bfaf92ef19f9218f6fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/s-ichikawa/laravel-sendgrid-driver/zipball/5092c3f856581bd61b691d7e86ebb9fcb6867683",
-                "reference": "5092c3f856581bd61b691d7e86ebb9fcb6867683",
+                "url": "https://api.github.com/repos/s-ichikawa/laravel-sendgrid-driver/zipball/116a6e624323883ddcc56bfaf92ef19f9218f6fd",
+                "reference": "116a6e624323883ddcc56bfaf92ef19f9218f6fd",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/guzzle": "~5.3|~6.2",
-                "illuminate/mail": "~5.5"
+                "illuminate/mail": ">=5.5"
             },
             "require-dev": {
-                "illuminate/container": "~5.5",
-                "illuminate/filesystem": "~5.5",
+                "illuminate/container": ">=5.5",
+                "illuminate/filesystem": ">=5.5",
                 "phpunit/phpunit": "~5.7"
             },
             "suggest": {
@@ -4895,7 +4895,7 @@
                 "laravel",
                 "sendgrid"
             ],
-            "time": "2019-04-09T14:22:02+00:00"
+            "time": "2019-09-04T15:31:39+00:00"
         },
         {
             "name": "sentry/sdk",
@@ -5375,26 +5375,26 @@
         },
         {
             "name": "spatie/laravel-medialibrary",
-            "version": "7.10.1",
+            "version": "7.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-medialibrary.git",
-                "reference": "4dafd857c3dd16909d04f808b431eb590f037241"
+                "reference": "49340036359996c61e767fb2617461c3098130e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/4dafd857c3dd16909d04f808b431eb590f037241",
-                "reference": "4dafd857c3dd16909d04f808b431eb590f037241",
+                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/49340036359996c61e767fb2617461c3098130e0",
+                "reference": "49340036359996c61e767fb2617461c3098130e0",
                 "shasum": ""
             },
             "require": {
                 "ext-fileinfo": "*",
                 "ext-imagick": "*",
-                "illuminate/bus": "~5.5.0|~5.6.0|~5.7.0|~5.8.0",
-                "illuminate/console": "~5.5.0|~5.6.0|~5.7.0|~5.8.0",
-                "illuminate/database": "~5.5.0|~5.6.0|~5.7.0|~5.8.0",
-                "illuminate/pipeline": "~5.5.0|~5.6.0|~5.7.0|~5.8.0",
-                "illuminate/support": "~5.5.0|~5.6.0|~5.7.0|~5.8.0",
+                "illuminate/bus": "~5.5.0|~5.6.0|~5.7.0|~5.8.0|^6.0",
+                "illuminate/console": "~5.5.0|~5.6.0|~5.7.0|~5.8.0|^6.0",
+                "illuminate/database": "~5.5.0|~5.6.0|~5.7.0|~5.8.0|^6.0",
+                "illuminate/pipeline": "~5.5.0|~5.6.0|~5.7.0|~5.8.0|^6.0",
+                "illuminate/support": "~5.5.0|~5.6.0|~5.7.0|~5.8.0|^6.0",
                 "league/flysystem": "^1.0.8",
                 "maennchen/zipstream-php": "^0.4|^1.0",
                 "php": "^7.2",
@@ -5411,7 +5411,7 @@
                 "guzzlehttp/guzzle": "^6.3",
                 "league/flysystem-aws-s3-v3": "^1.0.13",
                 "mockery/mockery": "^1.0.0",
-                "orchestra/testbench": "~3.8.0",
+                "orchestra/testbench": "~3.8.0|^4.0",
                 "phpunit/phpunit": "^8.0",
                 "spatie/phpunit-snapshot-assertions": "^2.0"
             },
@@ -5439,9 +5439,9 @@
             "authors": [
                 {
                     "name": "Freek Van der Herten",
-                    "role": "Developer",
                     "email": "freek@spatie.be",
-                    "homepage": "https://murze.be"
+                    "homepage": "https://murze.be",
+                    "role": "Developer"
                 }
             ],
             "description": "Associate files with Eloquent models",
@@ -5456,7 +5456,7 @@
                 "media",
                 "spatie"
             ],
-            "time": "2019-08-28T12:39:17+00:00"
+            "time": "2019-09-04T12:47:00+00:00"
         },
         {
             "name": "spatie/laravel-query-builder",
