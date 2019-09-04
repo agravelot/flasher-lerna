@@ -45,7 +45,7 @@
     "beyondcode/laravel-dump-server": "^1.2",
     "beyondcode/laravel-query-detector": "^1.0",
     "beyondcode/laravel-tinker-server": "^1.0",
-    "filp/whoops": "^2.0",
+    "facade/ignition": "^1.4",
     "friendsofphp/php-cs-fixer": "^2.13",
     "fruitcake/laravel-telescope-toolbar": "^1.0",
     "fzaninotto/faker": "^1.8",
