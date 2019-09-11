@@ -23,7 +23,7 @@
     "ipunkt/laravel-analytics": "^2.0",
     "jerodev/laravel-font-awesome": "^1.0",
     "lab404/laravel-impersonate": "^1.2",
-    "laravel/framework": "6.0.1 as 5.8.34",
+    "laravel/framework": "6.0.3 as 5.8.34",
     "laravel/helpers": "^1.1",
     "laravel/horizon": "^3.0",
     "laravel/passport": "^7.2",
