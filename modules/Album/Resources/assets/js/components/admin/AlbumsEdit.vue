@@ -159,7 +159,7 @@ export default class AlbumsEdit extends AlbumDesc {
         chunkSize: 1000000,
         autoProcessQueue: false,
         retryChunks: true,
-        retryChunksLimit: 5,
+        retryChunksLimit: 15,
         maxThumbnailFilesize: 25,
         // If true, the individual chunks of a file are being uploaded simultaneously.
         // parallelChunkUploads: true,
