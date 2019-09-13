@@ -69,7 +69,7 @@ class SocialMediaServiceProvider extends ServiceProvider
         ], 'views');
 
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
-            return $path.'/modules/socialmedia';
+            return __DIR__.'/../Resources/views';
         }, \Config::get('view.paths')), [$sourcePath]), 'socialmedia');
     }
 
