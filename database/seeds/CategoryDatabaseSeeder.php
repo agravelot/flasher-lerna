@@ -12,7 +12,7 @@ namespace App\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class AlbumDatabaseSeeder extends Seeder
+class CategoryDatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.

@@ -11,42 +11,4 @@ namespace App\Observers;
 
 abstract class ActivityObserverBase
 {
-    /**
-     * Handle the album "created" event.
-     *
-     * @param $album
-     */
-    public function created($album): void
-    {
-        activity()
-            ->performedOn($album)
-            ->causedBy(auth()->user())
-            ->withProperties(['action' => 'created'])
-            ->log('');
-    }
-
-    /**
-     * Handle the album "updated" event.
-     *
-     * @param  $album
-     */
-    public function updated($album): void
-    {
-        activity()
-            ->performedOn($album)
-            ->causedBy(auth()->user())
-            ->withProperties(['action' => 'updated'])
-            ->log('');
-    }
-
-    /**
-     * Handle the album "deleted" event.
-     */
-    public function deleted(): void
-    {
-        activity()
-            ->causedBy(auth()->user())
-            ->withProperties(['action' => 'deleted'])
-            ->log('');
-    }
 }

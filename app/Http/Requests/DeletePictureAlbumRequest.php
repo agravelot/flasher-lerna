@@ -7,10 +7,9 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Album\Http\Requests;
+namespace App\Http\Requests;
 
 use App\Models\Album;
-use App\Http\Requests\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Query\Builder;
 

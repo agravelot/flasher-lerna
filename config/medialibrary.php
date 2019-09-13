@@ -82,7 +82,7 @@ return [
      * if your files are stored locally above the site root or on s3.
      */
     // TODO Remove old generator
-    // 'url_generator' => \Modules\Album\Generators\RelativeLocalUrlGenerator::class,
+    // 'url_generator' => \App\Generators\RelativeLocalUrlGenerator::class,
     'url_generator' => null,
 
     /*

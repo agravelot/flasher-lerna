@@ -15,11 +15,11 @@ use Modules\Core\Entities\Setting;
 use Modules\Core\Enums\SettingType;
 use Illuminate\Http\Resources\Json\Resource;
 use Modules\Core\Transformers\SettingResource;
+use App\Transformers\CompleteUploadPictureResource;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Modules\Core\Http\Requests\UpdateSettingRequest;
-use Modules\Album\Transformers\CompleteUploadPictureResource;
+use App\Transformers\ProcessingUploadPictureResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Modules\Album\Transformers\ProcessingUploadPictureResource;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 
 class AdminSettingsController extends Controller

@@ -13,7 +13,6 @@ use App\Models\Album;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Resources\Json\Resource;
-use Modules\Category\Transformers\CategoryResource;
 use Modules\Cosplayer\Transformers\CosplayerResource;
 
 class AlbumShowResource extends Resource
@@ -60,7 +59,6 @@ class AlbumShowResource extends Resource
 
     /**
      * Check if the user has the ability to according to the policy.
-     *
      *
      * @return bool
      */

@@ -4,9 +4,9 @@ import Dashboard from '../../../modules/Dashboard/Resources/assets/js/Dashboard.
 import AlbumsIndex from '../components/admin/AlbumsIndex.vue';
 import AlbumsCreate from '../components/admin/AlbumsCreate.vue';
 import AlbumsEdit from '../components/admin/AlbumsEdit.vue';
-import CategoriesIndex from '../../../modules/Category/Resources/assets/js/components/admin/CategoriesIndex.vue';
-import CategoriesCreate from '../../../modules/Category/Resources/assets/js/components/admin/CategoriesCreate.vue';
-import CategoriesEdit from '../../../modules/Category/Resources/assets/js/components/admin/CategoriesEdit.vue';
+import CategoriesIndex from '../components/admin/CategoriesIndex.vue';
+import CategoriesCreate from '../components/admin/CategoriesCreate.vue';
+import CategoriesEdit from '../components/admin/CategoriesEdit.vue';
 import ConstactsIndex from '../../../modules/Contact/Resources/assets/js/components/admin/ContactsIndex.vue';
 import CosplayersIndex from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersIndex.vue';
 import CosplayersCreate from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersCreate.vue';

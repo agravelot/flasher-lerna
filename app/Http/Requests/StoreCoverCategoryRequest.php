@@ -9,7 +9,7 @@
 
 namespace App\Http\Requests;
 
-class StorePictureAlbumRequest extends Request
+class StoreCoverCategoryRequest extends Request
 {
     /**
      * Get the validation rules that apply to the request.
@@ -17,7 +17,7 @@ class StorePictureAlbumRequest extends Request
     public function rules(): array
     {
         return [
-            'album_slug' => 'required|exists:albums,slug',
+            'category_slug' => 'required|exists:categories,slug',
             'file' => 'required|file|max:20000',
         ];
     }
