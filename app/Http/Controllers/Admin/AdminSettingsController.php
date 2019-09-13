@@ -43,8 +43,8 @@ class AdminSettingsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     *
      * @return JsonResponse|ProcessingUploadPictureResource|SettingResource
+     *
      * @throws UploadMissingFileException
      */
     public function update(Setting $setting, UpdateSettingRequest $request, FileReceiver $receiver)

@@ -92,8 +92,8 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import VueBuefy from '../../../../../resources/js/admin/Buefy.vue';
-import User from './user';
+import VueBuefy from '../../admin/Buefy.vue';
+import User from '../../user';
 
 @Component({
     name: 'UsersIndex',

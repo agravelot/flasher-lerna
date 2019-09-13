@@ -100,7 +100,7 @@ import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
 import { quillEditor } from 'vue-quill-editor';
-import User from '../../../../../../User/Resources/assets/js/user';
+import User from '../../../../../../../resources/js/user';
 
 @Component({
     name: 'CosplayersCreate',

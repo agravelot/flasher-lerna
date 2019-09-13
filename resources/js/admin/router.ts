@@ -11,9 +11,9 @@ import ConstactsIndex from '../../../modules/Contact/Resources/assets/js/compone
 import CosplayersIndex from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersIndex.vue';
 import CosplayersCreate from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersCreate.vue';
 import CosplayersEdit from '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersEdit.vue';
-import UsersIndex from '../../../modules/User/Resources/assets/js/UsersIndex.vue';
-import UsersCreate from '../../../modules/User/Resources/assets/js/UsersCreate.vue';
-import UsersEdit from '../../../modules/User/Resources/assets/js/UsersEdit.vue';
+import UsersIndex from '../components/admin/UsersIndex.vue';
+import UsersCreate from '../components/admin/UsersCreate.vue';
+import UsersEdit from '../components/admin/UsersEdit.vue';
 import TestimonialsIndex from '../../../modules/Testimonials/Resources/assets/js/TestimonialsIndex.vue';
 import NotFound from '../components/admin/NotFound.vue';
 import Settings from '../components/admin/Settings.vue';

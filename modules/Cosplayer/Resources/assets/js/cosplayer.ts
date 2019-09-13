@@ -1,4 +1,4 @@
-import User from '../../../../User/Resources/assets/js/user';
+import User from '../../../../../resources/js/user';
 
 export default class Cosplayer {
     public name: string = '';

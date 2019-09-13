@@ -7,16 +7,15 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\User\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Resources\UserResource;
 use Exception;
 use App\Models\User;
-use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\UserRequest;
 use Illuminate\Routing\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
-use Modules\User\Transformers\UserResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminUsersController extends Controller
@@ -61,7 +60,6 @@ class AdminUsersController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
      *
      * @throws Exception
      */

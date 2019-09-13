@@ -36,7 +36,7 @@ import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
 import { quillEditor } from 'vue-quill-editor';
-import User from '../../../../modules/User/Resources/assets/js/user';
+import User from '../../user';
 
 @Component({
     name: 'CategoriesEdit',

@@ -110,9 +110,7 @@ class AdminSocialMediaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     *
      * @throws Exception
-     *
      * @throws AuthorizationException
      */
     public function destroy(int $id): RedirectResponse

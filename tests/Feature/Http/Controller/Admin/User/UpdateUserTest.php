@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\User\Tests\Feature;
+namespace Tests\Feature\Http\Controller\Admin\User;
 
 use Tests\TestCase;
 use App\Models\User;
