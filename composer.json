@@ -48,7 +48,7 @@
     "beyondcode/laravel-tinker-server": "^1.0",
     "facade/ignition": "^1.4",
     "friendsofphp/php-cs-fixer": "^2.13",
-    "fruitcake/laravel-telescope-toolbar": "^1.0",
+    "fruitcake/laravel-telescope-toolbar": "^1.1",
     "fzaninotto/faker": "^1.8",
     "infection/infection": "^0.13.4",
     "lanin/laravel-api-debugger": "^3.4",
