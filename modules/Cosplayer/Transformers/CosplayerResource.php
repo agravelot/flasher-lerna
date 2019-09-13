@@ -10,9 +10,9 @@
 namespace Modules\Cosplayer\Transformers;
 
 use Illuminate\Http\Request;
+use App\Http\Resources\MediaResource;
 use Modules\User\Transformers\UserResource;
 use Illuminate\Http\Resources\Json\Resource;
-use Modules\Album\Transformers\MediaResource;
 
 class CosplayerResource extends Resource
 {

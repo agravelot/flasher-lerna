@@ -52,7 +52,6 @@ use Illuminate\Database\Eloquent\Collection;
  * @property User $user
  * @property mixed $cover
  * @property-read mixed $cover_responsive
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album public()
  */
 class PublicAlbum extends Album
 {

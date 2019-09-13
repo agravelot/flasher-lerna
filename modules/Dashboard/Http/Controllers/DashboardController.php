@@ -10,10 +10,10 @@
 namespace Modules\Dashboard\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Album;
 use App\Models\Contact;
 use App\Models\Cosplayer;
 use Illuminate\Http\JsonResponse;
-use Modules\Album\Entities\Album;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\Models\Media;
@@ -33,7 +33,8 @@ class DashboardController extends Controller
             'albumsCount' => Album::count(),
             'contactsCount' => Contact::count(),
             'albumMediasCount' => Media::count(),
-            'activities' => Activity::with(['causer', 'subject'])->latest()->limit(10)->get(),
+            'activities' => Activity::with(['causer', 'subject'])
+                ->latest()->limit(10)->get(),
         ]);
     }
 }

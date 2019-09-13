@@ -10,8 +10,8 @@
 namespace Modules\Category\Transformers;
 
 use Illuminate\Http\Request;
+use App\Http\Resources\MediaResource;
 use Illuminate\Http\Resources\Json\Resource;
-use Modules\Album\Transformers\MediaResource;
 
 class CategoryResource extends Resource
 {

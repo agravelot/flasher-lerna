@@ -15,9 +15,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\Resource;
 use Modules\Category\Transformers\CategoryResource;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
-use Modules\Album\Transformers\CompleteUploadPictureResource;
+use App\Http\Resources\CompleteUploadPictureResource;
+use App\Http\Resources\ProcessingUploadPictureResource;
 use Modules\Category\Http\Requests\StoreCoverCategoryRequest;
-use Modules\Album\Transformers\ProcessingUploadPictureResource;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 
 class AdminCoverCategoryController extends Controller
@@ -26,7 +26,7 @@ class AdminCoverCategoryController extends Controller
      * Update the specified resource in storage.
      *
      *
-     * @return JsonResponse|ProcessingUploadPictureResource
+     * @return CompleteUploadPictureResource|ProcessingUploadPictureResource|JsonResponse
      * @throws UploadMissingFileException
      */
     public function store(StoreCoverCategoryRequest $request, FileReceiver $receiver)

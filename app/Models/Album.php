@@ -70,7 +70,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Album public ()
  * @property mixed $cover
  * @property-read mixed $cover_responsive
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album public()
  */
 class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphable, ImagesOpenGraphable
 {

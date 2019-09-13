@@ -12,7 +12,7 @@ namespace Modules\Cosplayer\Tests\Feature;
 use Tests\TestCase;
 use App\Models\Cosplayer;
 use Illuminate\Http\UploadedFile;
-use Modules\Album\Transformers\MediaResource;
+use App\Http\Resources\MediaResource;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

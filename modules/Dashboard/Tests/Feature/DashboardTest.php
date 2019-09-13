@@ -11,9 +11,9 @@ namespace Modules\Dashboard\Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Album;
 use App\Models\Contact;
 use App\Models\Cosplayer;
-use Modules\Album\Entities\Album;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardTest extends TestCase

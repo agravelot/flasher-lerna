@@ -18,4 +18,21 @@
 |
  */
 
-// Please see Modules folder for more routes
+Route::namespace('Api')->group(static function () {
+    Route::name('api.')->group(static function () {
+        Route::apiResource('albums', 'AlbumController')->only('index', 'show');
+    });
+
+    Route::middleware(['auth:api', 'verified', 'admin'])->group(static function () {
+        Route::name('api.admin.')->group(static function () {
+            Route::prefix('admin')->group(static function () {
+                Route::apiResource('albums', 'AdminAlbumController');
+                Route::apiResource('album-pictures', 'AdminPictureAlbumController')
+                    ->only('store', 'destroy')
+                    ->parameters([
+                        'album-pictures' => 'album',
+                    ]);
+            });
+        });
+    });
+});

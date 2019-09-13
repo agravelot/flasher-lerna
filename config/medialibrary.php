@@ -88,7 +88,7 @@ return [
     /*
      * The class that contains the strategy for determining a media file's path.
      */
-    'path_generator' => \Modules\Album\Generators\PathGenerator::class,
+    'path_generator' => \App\Generators\PathGenerator::class,
 
     /*
      * Medialibrary will try to optimize all converted images by removing
