@@ -13,3 +13,15 @@ if (! function_exists('string_to_color')) {
         return '#00000';
     }
 }
+
+if (! function_exists('settings')) {
+    /**
+     * Get the settings manager instance.
+     *
+     * @return App\SettingsManager
+     */
+    function settings()
+    {
+        return app('App\SettingManager');
+    }
+}

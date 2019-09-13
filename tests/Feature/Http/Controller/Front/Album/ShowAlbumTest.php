@@ -126,7 +126,7 @@ class ShowAlbumTest extends TestCase
 
     public function test_album_has_og_tags_with_image()
     {
-        /** @var \App\Entities\Album $album */
+        /** @var \App\Models\Album $album */
         $album = factory(PublicAlbum::class)->state('withUser')->create();
         $album->addPicture(UploadedFile::fake()->image('test.png'));
         $response = $this->get("/albums/{$album->slug}");

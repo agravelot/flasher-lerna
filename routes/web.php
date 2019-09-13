@@ -35,3 +35,7 @@ Route::middleware(['web', 'auth', 'verified', 'admin'])->group(static function (
         });
     });
 });
+
+Route::namespace('Front')->group(static function () {
+    Route::get('/', 'HomeController')->name('home');
+});

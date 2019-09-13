@@ -11,7 +11,7 @@ namespace Tests\Feature\Http\Controller\Auth;
 
 use Tests\TestCase;
 use App\Models\User;
-use Modules\Core\Entities\Setting;
+use App\Models\Setting;
 use App\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\RefreshDatabase;

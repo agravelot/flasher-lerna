@@ -9,11 +9,11 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Album;
+use App\Enums\SettingType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
 
-class AlbumIndexResource extends Resource
+class SettingResource extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -22,14 +22,19 @@ class AlbumIndexResource extends Resource
      */
     public function toArray($request): array
     {
+        $isMediaSetting = $this->type->value === SettingType::Media;
+
+        if ($isMediaSetting) {
+            return (new MediaSettingResource($this))->toArray($request);
+        }
+
         return [
             'id' => $this->id,
-            'slug' => $this->slug,
+            'name' => $this->name,
+            'value' => $this->value,
+            'type' => $this->type->value,
             'title' => $this->title,
-            'published_at' => $this->published_at,
-            'private' => $this->private,
-            //'media' => $this->whenLoaded('media', new MediaResource($this->getFirstMedia(Album::PICTURES_COLLECTION))),
-            'media_count' => $this->media_count,
+            'description' => $this->description,
         ];
     }
 }

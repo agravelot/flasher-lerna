@@ -15,8 +15,8 @@ import UsersIndex from '../../../modules/User/Resources/assets/js/UsersIndex.vue
 import UsersCreate from '../../../modules/User/Resources/assets/js/UsersCreate.vue';
 import UsersEdit from '../../../modules/User/Resources/assets/js/UsersEdit.vue';
 import TestimonialsIndex from '../../../modules/Testimonials/Resources/assets/js/TestimonialsIndex.vue';
-import NotFound from '../../../modules/Core/Resources/assets/js/components/NotFound.vue';
-import Settings from '../../../modules/Core/Resources/assets/js/components/Settings.vue';
+import NotFound from '../components/admin/NotFound.vue';
+import Settings from '../components/admin/Settings.vue';
 
 Vue.use(VueRouter);
 

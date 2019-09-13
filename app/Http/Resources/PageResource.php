@@ -9,11 +9,10 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Album;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
 
-class AlbumIndexResource extends Resource
+class PageResource extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -24,12 +23,9 @@ class AlbumIndexResource extends Resource
     {
         return [
             'id' => $this->id,
-            'slug' => $this->slug,
+            'name' => $this->name,
             'title' => $this->title,
-            'published_at' => $this->published_at,
-            'private' => $this->private,
-            //'media' => $this->whenLoaded('media', new MediaResource($this->getFirstMedia(Album::PICTURES_COLLECTION))),
-            'media_count' => $this->media_count,
+            'description' => $this->description,
         ];
     }
 }
