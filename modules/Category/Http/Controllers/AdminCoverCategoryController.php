@@ -10,7 +10,6 @@
 namespace Modules\Category\Http\Controllers;
 
 use App\Models\Category;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\Resource;
@@ -26,8 +25,6 @@ class AdminCoverCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  StoreCoverCategoryRequest  $request
-     * @param  FileReceiver  $receiver
      *
      * @return JsonResponse|ProcessingUploadPictureResource
      * @throws UploadMissingFileException
@@ -56,10 +53,6 @@ class AdminCoverCategoryController extends Controller
 
     /**
      * Delete the cover of the specified category.
-     *
-     * @param  Category  $category
-     *
-     * @return JsonResponse
      */
     public function destroy(Category $category): JsonResponse
     {

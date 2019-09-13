@@ -23,8 +23,6 @@ class AdminCosplayerController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return AnonymousResourceCollection
      */
     public function index(): AnonymousResourceCollection
     {
@@ -38,10 +36,6 @@ class AdminCosplayerController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  CosplayerRequest  $request
-     *
-     * @return CosplayerResource
      */
     public function store(CosplayerRequest $request): CosplayerResource
     {
@@ -56,10 +50,6 @@ class AdminCosplayerController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  Cosplayer  $cosplayer
-     *
-     * @return CosplayerResource
      */
     public function show(Cosplayer $cosplayer): CosplayerResource
     {
@@ -70,11 +60,6 @@ class AdminCosplayerController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  CosplayerRequest  $request
-     * @param  Cosplayer  $cosplayer
-     *
-     * @return CosplayerResource
      */
     public function update(CosplayerRequest $request, Cosplayer $cosplayer): CosplayerResource
     {
@@ -91,9 +76,7 @@ class AdminCosplayerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Cosplayer  $cosplayer
      *
-     * @return JsonResponse
      * @throws Exception
      */
     public function destroy(Cosplayer $cosplayer): JsonResponse

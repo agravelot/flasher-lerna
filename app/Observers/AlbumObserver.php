@@ -15,10 +15,6 @@ class AlbumObserver extends ActivityObserverBase
 {
     /**
      * Handle the album "creating" event.
-     *
-     * @param  Album  $album
-     *
-     * @return void
      */
     public function creating(Album $album): void
     {

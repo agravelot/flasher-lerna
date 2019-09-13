@@ -24,8 +24,6 @@ class AdminCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return AnonymousResourceCollection
      */
     public function index(): AnonymousResourceCollection
     {
@@ -37,10 +35,6 @@ class AdminCategoryController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  CategoryRequest  $request
-     *
-     * @return CategoryResource
      */
     public function store(CategoryRequest $request): CategoryResource
     {
@@ -51,10 +45,6 @@ class AdminCategoryController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  Category  $category
-     *
-     * @return CategoryResource
      */
     public function show(Category $category): CategoryResource
     {
@@ -65,11 +55,6 @@ class AdminCategoryController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  CategoryRequest  $request
-     * @param  Category  $category
-     *
-     * @return CategoryResource
      */
     public function update(CategoryRequest $request, Category $category): CategoryResource
     {
@@ -82,9 +67,7 @@ class AdminCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Category  $category
      *
-     * @return JsonResponse
      * @throws Exception
      */
     public function destroy(Category $category): JsonResponse

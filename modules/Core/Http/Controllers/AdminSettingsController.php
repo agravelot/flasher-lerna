@@ -26,8 +26,6 @@ class AdminSettingsController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return AnonymousResourceCollection
      */
     public function index(): AnonymousResourceCollection
     {
@@ -36,10 +34,6 @@ class AdminSettingsController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  Setting  $setting
-     *
-     * @return SettingResource
      */
     public function show(Setting $setting): SettingResource
     {
@@ -49,9 +43,6 @@ class AdminSettingsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Setting  $setting
-     * @param  UpdateSettingRequest  $request
-     * @param  FileReceiver  $receiver
      *
      * @return JsonResponse|ProcessingUploadPictureResource|SettingResource
      * @throws UploadMissingFileException

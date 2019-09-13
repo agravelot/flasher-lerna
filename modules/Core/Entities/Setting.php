@@ -37,8 +37,6 @@ class Setting extends Model implements HasMedia
      * Get the ability to return an Media for media settings.
      *
      * @param $value
-     *
-     * @return mixed
      */
     public function getValueAttribute($value)
     {

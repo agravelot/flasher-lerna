@@ -17,8 +17,6 @@ class CosplayerController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return View
      */
     public function index(): View
     {
@@ -29,10 +27,6 @@ class CosplayerController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  Cosplayer  $cosplayer
-     *
-     * @return View
      */
     public function show(Cosplayer $cosplayer): View
     {

@@ -55,11 +55,6 @@ class StoreSocialMediaTest extends TestCase
         $this->assertSame(0, SocialMedia::count());
     }
 
-    /**
-     * @param  SocialMedia  $socialMedia
-     *
-     * @return TestResponse
-     */
     public function storeSocialMedia(SocialMedia $socialMedia): TestResponse
     {
         return $this->json('post', '/api/admin/social-medias', [

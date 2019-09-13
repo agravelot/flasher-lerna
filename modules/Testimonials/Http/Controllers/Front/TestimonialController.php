@@ -20,8 +20,6 @@ class TestimonialController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return View
      */
     public function index(): View
     {
@@ -32,8 +30,6 @@ class TestimonialController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return View
      */
     public function create(): View
     {
@@ -42,10 +38,6 @@ class TestimonialController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  TestimonialRequest  $request
-     *
-     * @return RedirectResponse
      */
     public function store(TestimonialRequest $request): RedirectResponse
     {

@@ -103,8 +103,6 @@ class User extends Authenticatable implements MustVerifyEmailInterface
 
     /**
      * Return the albums posted by this user.
-     *
-     * @return HasMany
      */
     public function albums(): HasMany
     {
@@ -113,8 +111,6 @@ class User extends Authenticatable implements MustVerifyEmailInterface
 
     /**
      * Return the posts posted by this user.
-     *
-     * @return HasMany
      */
     public function posts(): HasMany
     {
@@ -123,8 +119,6 @@ class User extends Authenticatable implements MustVerifyEmailInterface
 
     /**
      * Return the linked cosplayer to this user.
-     *
-     * @return HasOne
      */
     public function cosplayer(): HasOne
     {
@@ -133,8 +127,6 @@ class User extends Authenticatable implements MustVerifyEmailInterface
 
     /**
      * Return the contact from this user.
-     *
-     * @return HasMany
      */
     public function contact(): HasMany
     {
@@ -143,8 +135,6 @@ class User extends Authenticatable implements MustVerifyEmailInterface
 
     /**
      * Return the golden book posts by this user.
-     *
-     * @return HasMany
      */
     public function testimonials(): HasMany
     {
@@ -153,8 +143,6 @@ class User extends Authenticatable implements MustVerifyEmailInterface
 
     /**
      * Return if this user has the ability to impersonate.
-     *
-     * @return bool
      */
     public function canImpersonate(): bool
     {
@@ -163,8 +151,6 @@ class User extends Authenticatable implements MustVerifyEmailInterface
 
     /**
      * Return if this user is an admin.
-     *
-     * @return bool
      */
     public function isAdmin(): bool
     {

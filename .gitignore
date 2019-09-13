@@ -32,3 +32,4 @@ _ide_helper_models.php
 /infection.log
 /per-mutator.md
 /summary.log
+.php_cs

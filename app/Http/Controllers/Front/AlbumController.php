@@ -18,8 +18,6 @@ class AlbumController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return View
      */
     public function index(): View
     {
@@ -31,9 +29,7 @@ class AlbumController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  PublicAlbum  $album
      *
-     * @return View
      * @throws AuthorizationException
      */
     public function show(PublicAlbum $album): View

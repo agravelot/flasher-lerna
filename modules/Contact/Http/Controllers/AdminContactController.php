@@ -21,8 +21,6 @@ class AdminContactController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return AnonymousResourceCollection
      */
     public function index(): AnonymousResourceCollection
     {
@@ -34,10 +32,6 @@ class AdminContactController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  Contact  $contact
-     *
-     * @return ContactResource
      */
     public function show(Contact $contact): ContactResource
     {
@@ -47,9 +41,7 @@ class AdminContactController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Contact  $contact
      *
-     * @return JsonResponse
      * @throws Exception
      */
     public function destroy(Contact $contact): JsonResponse

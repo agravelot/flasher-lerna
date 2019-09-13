@@ -37,7 +37,6 @@ class SettingsManager
     /**
      * Return the setting with the casted type.
      *
-     * @param  string  $name
      * @param  null  $default
      *
      * @return string|bool|int|Media

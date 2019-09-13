@@ -19,12 +19,8 @@ class CacheResponse extends CacheResponseBase
     /**
      * Bypass cache middleware after form submitted or when a defined flashed session data is set.
      *
-     * @param  Request  $request
-     * @param  Closure  $next
      * @param  int|null  $lifetimeInSeconds
      * @param  array  $args
-     *
-     * @return Response
      */
     public function handle(Request $request, Closure $next, $lifetimeInSeconds = null, ...$args): Response
     {

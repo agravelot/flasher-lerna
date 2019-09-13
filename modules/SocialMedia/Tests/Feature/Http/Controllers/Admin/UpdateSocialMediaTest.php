@@ -57,11 +57,6 @@ class UpdateSocialMediaTest extends TestCase
         $this->assertSame(1, SocialMedia::count());
     }
 
-    /**
-     * @param  SocialMedia  $socialMedia
-     *
-     * @return TestResponse
-     */
     public function updateSocialMedia(SocialMedia $socialMedia): TestResponse
     {
         return $this->json('patch', "/api/admin/social-medias/{$socialMedia->id}", [

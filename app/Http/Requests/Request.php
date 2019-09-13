@@ -15,8 +15,6 @@ abstract class Request extends FormRequest
 {
     /**
      * Authorization.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {

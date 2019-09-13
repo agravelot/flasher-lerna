@@ -74,8 +74,6 @@ class Cosplayer extends Model implements HasMedia
 
     /**
      * Return the initials of the cosplayer.
-     *
-     * @return string
      */
     public function getInitialAttribute(): string
     {
@@ -111,8 +109,6 @@ class Cosplayer extends Model implements HasMedia
 
     /**
      * Return the linked user.
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -121,8 +117,6 @@ class Cosplayer extends Model implements HasMedia
 
     /**
      * Return the albums posted by this user.
-     *
-     * @return BelongsToMany
      */
     public function albums(): BelongsToMany
     {
@@ -131,8 +125,6 @@ class Cosplayer extends Model implements HasMedia
 
     /**
      * Return the public albums posted by this user.
-     *
-     * @return BelongsToMany
      */
     public function publicAlbums(): BelongsToMany
     {
@@ -141,8 +133,6 @@ class Cosplayer extends Model implements HasMedia
 
     /**
      * Return the categories related to this user.
-     *
-     * @return MorphToMany
      */
     public function categories(): MorphToMany
     {
@@ -164,7 +154,6 @@ class Cosplayer extends Model implements HasMedia
     /**
      * Register the media conversions.
      *
-     * @param  Media|null  $media
      *
      * @throws InvalidManipulation
      */

@@ -23,8 +23,6 @@ class DashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return JsonResponse
      */
     public function __invoke(): JsonResponse
     {

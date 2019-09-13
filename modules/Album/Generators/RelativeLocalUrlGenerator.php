@@ -15,8 +15,6 @@ class RelativeLocalUrlGenerator extends LocalUrlGenerator
 {
     /**
      * Get the url to the directory containing responsive images.
-     *
-     * @return string
      */
     public function getResponsiveImagesDirectoryUrl(): string
     {

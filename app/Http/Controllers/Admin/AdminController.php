@@ -18,7 +18,6 @@ class AdminController extends Controller
     /**
      * Display dashboard.
      *
-     * @return View
      * @throws AuthorizationException
      */
     public function __invoke(): View

@@ -31,8 +31,6 @@ class AdminPictureAlbumController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StorePictureAlbumRequest  $request
-     * @param  FileReceiver  $receiver
      *
      * @return JsonResponse|ProcessingUploadPictureResource
      * @throws UploadMissingFileException
@@ -61,11 +59,6 @@ class AdminPictureAlbumController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  Album  $album
-     * @param  DeletePictureAlbumRequest  $request
-     *
-     * @return JsonResponse
      */
     public function destroy(Album $album, DeletePictureAlbumRequest $request): JsonResponse
     {

@@ -29,8 +29,6 @@ class AdminAlbumController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return AnonymousResourceCollection
      */
     public function index(): AnonymousResourceCollection
     {
@@ -44,10 +42,6 @@ class AdminAlbumController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  AlbumRequest  $request
-     *
-     * @return AlbumShowResource
      */
     public function store(AlbumRequest $request): AlbumShowResource
     {
@@ -70,10 +64,6 @@ class AdminAlbumController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  Album  $album
-     *
-     * @return AlbumShowResource
      */
     public function show(Album $album): AlbumShowResource
     {
@@ -84,11 +74,6 @@ class AdminAlbumController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  AlbumRequest  $request
-     * @param  Album  $album
-     *
-     * @return AlbumShowResource
      */
     public function update(Album $album, AlbumRequest $request): AlbumShowResource
     {
@@ -113,9 +98,7 @@ class AdminAlbumController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Album  $album
      *
-     * @return JsonResponse
      * @throws Exception
      */
     public function destroy(Album $album): JsonResponse

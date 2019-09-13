@@ -52,8 +52,6 @@ class Contact extends Model
 
     /**
      * Return the related user of this contact (is nullable).
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {

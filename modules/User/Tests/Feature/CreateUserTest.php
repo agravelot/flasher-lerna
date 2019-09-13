@@ -29,14 +29,6 @@ class CreateUserTest extends TestCase
         $this->assertNotNull(User::where('email', $user->email)->first());
     }
 
-    /**
-     * @param  User  $user
-     *
-     * @param  string|null  $password
-     * @param  string|null  $passwordConfirmation
-     *
-     * @return TestResponse
-     */
     public function createUser(User $user, ?string $password = null, ?string $passwordConfirmation = null): TestResponse
     {
         return $this->json('post', '/api/admin/users', [

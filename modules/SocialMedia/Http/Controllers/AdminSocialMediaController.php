@@ -22,8 +22,6 @@ class AdminSocialMediaController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return AnonymousResourceCollection
      */
     public function index(): AnonymousResourceCollection
     {
@@ -35,10 +33,6 @@ class AdminSocialMediaController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  SocialMedia  $socialMedia
-     *
-     * @return SocialMediaResource
      */
     public function show(SocialMedia $socialMedia): SocialMediaResource
     {
@@ -62,9 +56,7 @@ class AdminSocialMediaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  SocialMedia  $socialMedia
      *
-     * @return JsonResponse
      * @throws Exception
      */
     public function destroy(SocialMedia $socialMedia): JsonResponse

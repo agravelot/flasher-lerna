@@ -34,10 +34,6 @@ final class SettingType extends Enum
 
     /**
      * Return the corresponding php type according to the setting type.
-     *
-     * @param  string  $key
-     *
-     * @return string
      */
     public static function getAliasType(string $key): string
     {

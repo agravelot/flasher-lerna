@@ -18,8 +18,6 @@ class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return AnonymousResourceCollection
      */
     public function index(): AnonymousResourceCollection
     {
@@ -28,10 +26,6 @@ class CategoryController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  Category  $category
-     *
-     * @return CategoryResource
      */
     public function show(Category $category): CategoryResource
     {

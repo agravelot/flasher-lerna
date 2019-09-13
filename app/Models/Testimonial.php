@@ -59,8 +59,6 @@ class Testimonial extends Model
 
     /**
      * Return if the golden book post is published or not.
-     *
-     * @return bool
      */
     public function isPublished(): bool
     {
@@ -69,8 +67,6 @@ class Testimonial extends Model
 
     /**
      * Scope for published golden book posts.
-     *
-     * @param  Builder  $query
      */
     public function scopePublished(Builder $query): void
     {
@@ -103,8 +99,6 @@ class Testimonial extends Model
 
     /**
      * Return the related user.
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {

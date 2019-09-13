@@ -23,8 +23,6 @@ class AdminPagesController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return AnonymousResourceCollection
      */
     public function index(): AnonymousResourceCollection
     {
@@ -35,21 +33,12 @@ class AdminPagesController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  Page  $page
-     *
-     * @return PageResource
      */
     public function show(Page $page): PageResource
     {
         return new PageResource($page);
     }
 
-    /**
-     * @param  Request  $request
-     *
-     * @return PageResource
-     */
     public function store(Request $request): PageResource
     {
         $page = Page::create($request->all());
@@ -59,11 +48,6 @@ class AdminPagesController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Page  $page
-     * @param  Request  $request
-     *
-     * @return PageResource
      */
     public function update(Page $page, Request $request): PageResource
     {
@@ -73,9 +57,6 @@ class AdminPagesController extends Controller
     }
 
     /**
-     * @param  Page  $page
-     *
-     * @return JsonResponse
      * @throws Exception
      */
     public function destroy(Page $page): JsonResponse

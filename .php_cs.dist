@@ -26,6 +26,10 @@ return (new MattAllan\LaravelCodeStyle\Config())
     ->setRules([
         '@Laravel' => true,
         '@Laravel:risky' => true,
-        'header_comment' => ['header' => $fileHeaderComment, 'separate' => 'both'],
+        'header_comment' => [
+            'header' => $fileHeaderComment,
+            'separate' => 'both',
+        ],
+        'no_superfluous_phpdoc_tags' => true,
     ])
     ->setRiskyAllowed(true);

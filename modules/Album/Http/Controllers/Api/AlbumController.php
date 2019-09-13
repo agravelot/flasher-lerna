@@ -26,8 +26,6 @@ class AlbumController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return AnonymousResourceCollection
      */
     public function index(): AnonymousResourceCollection
     {
@@ -41,10 +39,6 @@ class AlbumController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  PublicAlbum  $album
-     *
-     * @return AlbumShowResource
      */
     public function show(PublicAlbum $album): AlbumShowResource
     {

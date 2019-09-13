@@ -22,8 +22,6 @@ class AdminTestimonialsController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return AnonymousResourceCollection
      */
     public function index(): AnonymousResourceCollection
     {
@@ -34,10 +32,6 @@ class AdminTestimonialsController extends Controller
 
     /**
      * Show the specified resource.
-     *
-     * @param  Testimonial  $testimonial
-     *
-     * @return TestimonialResource
      */
     public function show(Testimonial $testimonial): TestimonialResource
     {
@@ -46,11 +40,6 @@ class AdminTestimonialsController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  AdminUpdateTestimonialRequest  $request
-     * @param  Testimonial  $testimonial
-     *
-     * @return TestimonialResource
      */
     public function update(AdminUpdateTestimonialRequest $request, Testimonial $testimonial): TestimonialResource
     {
@@ -71,9 +60,7 @@ class AdminTestimonialsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Testimonial  $testimonial
      *
-     * @return JsonResponse
      * @throws Exception
      */
     public function destroy(Testimonial $testimonial): JsonResponse

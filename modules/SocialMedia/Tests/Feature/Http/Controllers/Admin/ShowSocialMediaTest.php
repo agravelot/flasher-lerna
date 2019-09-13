@@ -61,11 +61,6 @@ class ShowSocialMediaTest extends TestCase
         $response->assertUnauthorized();
     }
 
-    /**
-     * @param  SocialMedia  $socialMedia
-     *
-     * @return TestResponse
-     */
     public function getSocialMedia(SocialMedia $socialMedia): TestResponse
     {
         return $this->getJson("/api/admin/social-medias/{$socialMedia->id}");

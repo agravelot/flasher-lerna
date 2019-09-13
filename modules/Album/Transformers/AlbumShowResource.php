@@ -27,8 +27,6 @@ class AlbumShowResource extends Resource
      * Transform the resource into an array.
      *
      * @param  Request
-     *
-     * @return array
      */
     public function toArray($request): array
     {
@@ -63,8 +61,6 @@ class AlbumShowResource extends Resource
     /**
      * Check if the user has the ability to according to the policy.
      *
-     * @param  string  $permission
-     * @param  Album  $album
      *
      * @return bool
      */

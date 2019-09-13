@@ -17,8 +17,6 @@ class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return View
      */
     public function index(): View
     {
@@ -29,10 +27,6 @@ class CategoryController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  Category  $category
-     *
-     * @return View
      */
     public function show(Category $category): View
     {

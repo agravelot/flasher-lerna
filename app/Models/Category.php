@@ -77,8 +77,6 @@ class Category extends Model implements HasMedia
      * Add media to Category::COVER_COLLECTION collection.
      *
      * @param  UploadedFile|null  $media
-     *
-     * @return Media|null
      */
     public function setCover($media): ?Media
     {
@@ -113,7 +111,6 @@ class Category extends Model implements HasMedia
     /**
      * Register the media conversions.
      *
-     * @param  Media|null  $media
      *
      * @throws InvalidManipulation
      */
@@ -132,8 +129,6 @@ class Category extends Model implements HasMedia
 
     /**
      * Posts relationships.
-     *
-     * @return MorphToMany
      */
     public function posts(): MorphToMany
     {
@@ -142,8 +137,6 @@ class Category extends Model implements HasMedia
 
     /**
      * Albums relationships.
-     *
-     * @return MorphToMany
      */
     public function albums(): MorphToMany
     {
@@ -152,8 +145,6 @@ class Category extends Model implements HasMedia
 
     /**
      * Album relationship, only published.
-     *
-     * @return MorphToMany
      */
     public function publishedAlbums(): MorphToMany
     {

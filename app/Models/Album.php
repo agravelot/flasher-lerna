@@ -116,8 +116,6 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
 
     /**
      * Scope for public albums.
-     *
-     * @param  Builder  $query
      */
     public function scopePublic(Builder $query)
     {
@@ -127,8 +125,6 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
 
     /**
      * Return if the album is public.
-     *
-     * @return bool
      */
     public function isPublic(): bool
     {
@@ -137,8 +133,6 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
 
     /**
      * Return if the album is published.
-     *
-     * @return bool
      */
     public function isPublished(): bool
     {
@@ -147,8 +141,6 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
 
     /**
      * Return if the album is password less.
-     *
-     * @return bool
      */
     public function isPasswordLess(): bool
     {
@@ -157,8 +149,6 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
 
     /**
      * Return the related user to this album.
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -167,8 +157,6 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
 
     /**
      * Return all the comments of this albums.
-     *
-     * @return MorphMany
      */
     public function comments(): MorphMany
     {
@@ -177,8 +165,6 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
 
     /**
      * Return all the cosplayers of this album.
-     *
-     * @return BelongsToMany
      */
     public function cosplayers(): BelongsToMany
     {
@@ -187,8 +173,6 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
 
     /**
      * Return all the categories of this album.
-     *
-     * @return MorphToMany
      */
     public function categories(): MorphToMany
     {
@@ -199,8 +183,6 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
      * Add media to Album::PICTURES_COLLECTION collection.
      *
      * @param  string|UploadedFile  $media
-     *
-     * @return Media
      */
     public function addPicture($media): Media
     {
@@ -222,8 +204,6 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
     }
 
     /**
-     * @param  Media|null  $media
-     *
      * @throws InvalidManipulation
      */
     public function registerMediaConversions(Media $media = null): void

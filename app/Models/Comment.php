@@ -54,8 +54,6 @@ class Comment extends Model
 
     /**
      * One to Many relation.
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
