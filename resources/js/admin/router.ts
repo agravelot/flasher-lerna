@@ -17,7 +17,6 @@ import UsersEdit from '../../../modules/User/Resources/assets/js/UsersEdit.vue';
 import TestimonialsIndex from '../../../modules/Testimonials/Resources/assets/js/TestimonialsIndex.vue';
 import NotFound from '../../../modules/Core/Resources/assets/js/components/NotFound.vue';
 import Settings from '../../../modules/Core/Resources/assets/js/components/Settings.vue';
-import PagesIndex from '../../../modules/Core/Resources/assets/js/components/pages/PagesIndex.vue';
 
 Vue.use(VueRouter);
 
@@ -198,15 +197,6 @@ const routes: Array<any> = [
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Core/Resources/assets/js/components/Settings.vue'
-        //     ),
-    },
-    {
-        path: '/admin/pages',
-        name: 'admin.pages.index',
-        component: PagesIndex,
-        // component: () =>
-        //     import(
-        //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Core/Resources/assets/js/components/pages/PagesIndex.vue'
         //     ),
     },
     { path: '*', name: '404', component: NotFound },
