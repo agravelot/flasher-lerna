@@ -56,3 +56,7 @@ Route::middleware(['web', 'auth', 'verified', 'admin'])->group(static function (
 Route::prefix('cosplayer')->group(static function () {
     Route::get('/', 'AdminCosplayerController@index');
 });
+
+Route::namespace('Front')->group(static function () {
+    Route::resource('testimonials', 'TestimonialController')->only(['index', 'create', 'store']);
+});

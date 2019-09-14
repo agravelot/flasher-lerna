@@ -14,7 +14,7 @@ import CosplayersEdit from '../components/admin/CosplayersEdit.vue';
 import UsersIndex from '../components/admin/UsersIndex.vue';
 import UsersCreate from '../components/admin/UsersCreate.vue';
 import UsersEdit from '../components/admin/UsersEdit.vue';
-import TestimonialsIndex from '../../../modules/Testimonials/Resources/assets/js/TestimonialsIndex.vue';
+import TestimonialsIndex from '../components/admin/TestimonialsIndex.vue';
 import NotFound from '../components/admin/NotFound.vue';
 import Settings from '../components/admin/Settings.vue';
 

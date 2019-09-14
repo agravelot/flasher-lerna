@@ -7,16 +7,16 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Testimonials\Http\Controllers\Admin;
+namespace App\Http\Controllers\Api;
 
 use Exception;
 use Carbon\Carbon;
 use App\Models\Testimonial;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use Modules\Testimonials\Transformers\TestimonialResource;
+use App\Http\Resources\TestimonialResource;
+use App\Http\Requests\AdminUpdateTestimonialRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Modules\Testimonials\Http\Requests\AdminUpdateTestimonialRequest;
 
 class AdminTestimonialsController extends Controller
 {

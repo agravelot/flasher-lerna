@@ -7,9 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Testimonials\Http\Requests;
-
-use App\Http\Requests\Request;
+namespace App\Http\Requests;
 
 class AdminUpdateTestimonialRequest extends Request
 {

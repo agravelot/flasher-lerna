@@ -9,13 +9,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Resources\SocialMediaResource;
 use Exception;
 use App\Models\SocialMedia;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Requests\SocialMediaRequest;
+use App\Http\Resources\SocialMediaResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminSocialMediaController extends Controller
