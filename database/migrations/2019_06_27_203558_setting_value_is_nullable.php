@@ -11,7 +11,7 @@ class SettingValueIsNullable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('settings', function (Blueprint $table) {
             $table->string('value')->nullable()->change();
@@ -24,7 +24,7 @@ class SettingValueIsNullable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         DB::table('settings')->where('value', null)->update(['value' => '']);
         Schema::table('settings', function (Blueprint $table) {

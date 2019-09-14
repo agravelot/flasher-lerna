@@ -9,7 +9,7 @@ class CreateAlbumCosplayerTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('album_cosplayer', function (Blueprint $table) {
             $table->increments('id');
@@ -22,7 +22,7 @@ class CreateAlbumCosplayerTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('album_cosplayer');
     }

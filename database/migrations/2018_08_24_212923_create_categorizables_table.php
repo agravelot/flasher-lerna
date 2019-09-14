@@ -9,7 +9,7 @@ class CreateCategorizablesTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('categorizables', function (Blueprint $table) {
 //            $table->increments('id');
@@ -22,7 +22,7 @@ class CreateCategorizablesTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('categorizables');
     }

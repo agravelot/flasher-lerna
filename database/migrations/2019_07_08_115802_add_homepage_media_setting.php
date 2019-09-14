@@ -9,7 +9,7 @@ class AddHomepageMediaSetting extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         DB::table('settings')->insert([
             'name' => 'profile_picture_homepage',
@@ -33,7 +33,7 @@ class AddHomepageMediaSetting extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         DB::table('settings')->where('name', 'profile_picture_homepage')->delete();
         DB::table('settings')->where('name', 'background_picture_homepage')->delete();

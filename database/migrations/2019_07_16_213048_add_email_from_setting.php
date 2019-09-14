@@ -11,7 +11,7 @@ class AddEmailFromSetting extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('settings', function (Blueprint $table) {
             DB::table('settings')->insert([
@@ -29,7 +29,7 @@ class AddEmailFromSetting extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         DB::table('settings')->where('name', 'email_from')->delete();
     }

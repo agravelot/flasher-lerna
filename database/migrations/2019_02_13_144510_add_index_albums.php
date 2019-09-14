@@ -9,7 +9,7 @@ class AddIndexAlbums extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('albums', function (Blueprint $table) {
             $table->index(['published_at', 'private']);
@@ -19,7 +19,7 @@ class AddIndexAlbums extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('albums', function (Blueprint $table) {
             $table->dropIndex('albums_published_at_private_index');

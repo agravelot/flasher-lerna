@@ -9,7 +9,7 @@ class CreateCommentsTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
@@ -24,7 +24,7 @@ class CreateCommentsTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('comments');
     }

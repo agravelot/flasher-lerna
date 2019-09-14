@@ -9,7 +9,7 @@ class CreateForeignKeys extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('albums', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users')
@@ -69,7 +69,7 @@ class CreateForeignKeys extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('albums', function (Blueprint $table) {
             $table->dropForeign('albums_user_id_foreign');

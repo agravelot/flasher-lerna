@@ -9,7 +9,7 @@ class CreateGoldenBookPostsTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('golden_book_posts', function (Blueprint $table) {
             $table->increments('id');
@@ -25,7 +25,7 @@ class CreateGoldenBookPostsTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('golden_book_posts');
     }

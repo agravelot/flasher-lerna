@@ -9,7 +9,7 @@ class CreatePostsTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
@@ -26,7 +26,7 @@ class CreatePostsTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('posts');
     }

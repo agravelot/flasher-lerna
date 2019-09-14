@@ -9,7 +9,7 @@ class MigrateAllMediasToS3 extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         DB::table('media')->update(['disk' => 's3']);
     }
@@ -19,7 +19,7 @@ class MigrateAllMediasToS3 extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         DB::table('media')->update(['disk' => 'public']);
     }
