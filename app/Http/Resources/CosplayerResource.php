@@ -7,11 +7,9 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Cosplayer\Transformers;
+namespace App\Http\Resources;
 
-use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
-use App\Http\Resources\MediaResource;
 use Illuminate\Http\Resources\Json\Resource;
 
 class CosplayerResource extends Resource

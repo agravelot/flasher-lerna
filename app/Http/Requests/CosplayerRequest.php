@@ -7,9 +7,8 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Cosplayer\Http\Requests;
+namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
 use Illuminate\Validation\Rule;
 
 class CosplayerRequest extends Request

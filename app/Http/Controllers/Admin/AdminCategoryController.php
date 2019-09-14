@@ -9,14 +9,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CosplayerResource;
 use Exception;
 use App\Models\Category;
-use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
-use Modules\Cosplayer\Transformers\CosplayerResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminCategoryController extends Controller

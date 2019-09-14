@@ -60,15 +60,36 @@
                         :type="errors.user_id ? 'is-danger' : ''"
                         :message="errors.user_id ? errors.user_id[0] : null"
                     >
+                        <article v-if="this.cosplayer && this.cosplayer.user" class="media box">
+                            <figure class="media-left">
+                                <p class="image is-64x64">
+                                    <img src="https://bulma.io/images/placeholders/128x128.png" />
+                                </p>
+                            </figure>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <strong>{{ cosplayer.user.name }}</strong>
+                                        <br />
+                                        Role : {{ cosplayer.user.role }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="media-right">
+                                <button class="delete" @click="cosplayer.user = null"></button>
+                            </div>
+                        </article>
                         <b-autocomplete
+                            v-if="cosplayer && !cosplayer.user"
+                            v-model="cosplayer.user && cosplayer.user.name"
                             :data="searchUsers"
-                            v-model="cosplayer.user.id"
                             placeholder="e.g. Anne"
                             keep-first
                             open-on-focus
                             @typing="searchUser"
-                            field="id"
-                            @select="option => (selected = option)"
+                            field="name"
+                            @select="option => (cosplayer.user = option)"
+                            :disable="loading"
                         >
                             <template slot-scope="props">
                                 <div>
@@ -85,8 +106,8 @@
                 </div>
             </div>
 
-            <b-button type="is-primary" :loading="this.loading" @click="createCosplayer()"
-                >Create
+            <b-button type="is-primary" :loading="this.loading" @click="updateCosplayer()"
+                >Update
             </b-button>
         </div>
     </div>
@@ -94,21 +115,21 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import VueBuefy from '../../../../../../../resources/js/admin/Buefy.vue';
+import VueBuefy from '../../admin/Buefy.vue';
 import Cosplayer from '../../cosplayer';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
 import { quillEditor } from 'vue-quill-editor';
-import User from '../../../../../../../resources/js/user';
+import User from '../../user';
 
 @Component({
-    name: 'CosplayersCreate',
+    name: 'CosplayersEdit',
     components: {
         quillEditor,
     },
 })
-export default class CosplayersCreate extends VueBuefy {
+export default class CosplayersEdit extends VueBuefy {
     private cosplayer: Cosplayer = new Cosplayer();
     private loading: boolean = false;
     private searchUsers: Array<User> = [];
@@ -120,34 +141,74 @@ export default class CosplayersCreate extends VueBuefy {
     };
 
     created(): void {
-        this.cosplayer.user = new User();
+        this.fetchCosplayer();
     }
 
-    createCosplayer(): void {
+    updateCosplayer(): void {
         this.loading = true;
 
         let formData: FormData = this.cosplayerToFormData(this.cosplayer);
         this.axios
-            .post(`/api/admin/cosplayers`, formData, {
+            .post(`/api/admin/cosplayers/${this.$route.params.slug}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             })
             .then(res => res.data)
             .then(res => {
+                this.cosplayer = res.data;
                 this.loading = false;
-                this.showSuccess('Cosplayer created');
-                this.$router.push({ name: 'admin.cosplayers.index' });
+                this.showSuccess('Cosplayer updated');
+                this.$router.push({
+                    name: 'admin.cosplayers.edit',
+                    params: { slug: this.cosplayer.slug },
+                });
             })
             .catch(err => {
                 this.loading = false;
-                this.showError('Unable to create cosplayer');
+                this.$snackbar.open({
+                    message: 'Unable to load cosplayer, maybe you are offline?',
+                    type: 'is-danger',
+                    position: 'is-top',
+                    actionText: 'Retry',
+                    indefinite: true,
+                    onAction: () => {
+                        this.updateCosplayer();
+                    },
+                });
                 this.errors = err.response.data.errors;
                 throw err;
             });
     }
 
-    searchUser(): void {
+    fetchCosplayer(): void {
+        this.loading = true;
+
         this.axios
-            .get('/api/admin/users', { params: { 'filter[name]': this.cosplayer.user.id } })
+            .get(`/api/admin/cosplayers/${this.$route.params.slug}`)
+            .then(res => res.data)
+            .then(res => {
+                this.cosplayer = res.data;
+                this.loading = false;
+            })
+            .catch(err => {
+                this.cosplayer = new Cosplayer();
+                this.loading = false;
+                this.$snackbar.open({
+                    message: 'Unable to load cosplayer, maybe you are offline?',
+                    type: 'is-danger',
+                    position: 'is-top',
+                    actionText: 'Retry',
+                    indefinite: true,
+                    onAction: () => {
+                        this.fetchCosplayer();
+                    },
+                });
+                throw err;
+            });
+    }
+
+    searchUser(name: string): void {
+        this.axios
+            .get('/api/admin/users', { params: { 'filter[name]': name } })
             .then(res => res.data)
             .then(res => {
                 this.searchUsers = res.data;
@@ -164,6 +225,7 @@ export default class CosplayersCreate extends VueBuefy {
 
     cosplayerToFormData(cosplayer: Cosplayer): FormData {
         let formData = new FormData();
+        formData.append('_method', 'PATCH');
         //TODO Rewrite
         if (cosplayer.name) {
             formData.append('name', cosplayer.name);
@@ -171,10 +233,10 @@ export default class CosplayersCreate extends VueBuefy {
         if (cosplayer.description) {
             formData.append('description', cosplayer.description);
         }
-        if (cosplayer.user && cosplayer.user.id) {
-            formData.append('user.id', String(cosplayer.user.id));
+        if (this.cosplayer.user && cosplayer.user.id) {
+            formData.append('user_id', String(cosplayer.user.id));
         }
-        if (cosplayer.avatar != null) {
+        if (cosplayer.avatar) {
             formData.append('avatar', cosplayer.avatar);
         }
 

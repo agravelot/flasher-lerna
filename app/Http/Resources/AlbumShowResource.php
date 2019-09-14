@@ -13,7 +13,6 @@ use App\Models\Album;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Resources\Json\Resource;
-use Modules\Cosplayer\Transformers\CosplayerResource;
 
 class AlbumShowResource extends Resource
 {

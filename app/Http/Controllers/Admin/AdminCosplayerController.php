@@ -7,16 +7,15 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Cosplayer\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\CosplayerRequest;
+use App\Http\Resources\CosplayerResource;
 use Exception;
 use App\Models\Cosplayer;
-use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
-use Modules\Cosplayer\Http\Requests\CosplayerRequest;
-use Modules\Cosplayer\Transformers\CosplayerResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminCosplayerController extends Controller
