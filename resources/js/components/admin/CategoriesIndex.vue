@@ -147,7 +147,7 @@ export default class CategoriesIndex extends VueBuefy {
                 this.categories = [];
                 this.total = 0;
                 this.loading = false;
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to load categories, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',
@@ -179,7 +179,7 @@ export default class CategoriesIndex extends VueBuefy {
     }
 
     confirmDeleteSelectedCategories(): void {
-        this.$dialog.confirm({
+        this.$buefy.dialog.confirm({
             title: 'Deleting Categories',
             message:
                 'Are you sure you want to <b>delete</b> these categories? This action cannot be undone.',

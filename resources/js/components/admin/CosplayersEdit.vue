@@ -164,7 +164,7 @@ export default class CosplayersEdit extends VueBuefy {
             })
             .catch(err => {
                 this.loading = false;
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to load cosplayer, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',
@@ -192,7 +192,7 @@ export default class CosplayersEdit extends VueBuefy {
             .catch(err => {
                 this.cosplayer = new Cosplayer();
                 this.loading = false;
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to load cosplayer, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',
@@ -214,7 +214,7 @@ export default class CosplayersEdit extends VueBuefy {
                 this.searchUsers = res.data;
             })
             .catch(err => {
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to load users, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',

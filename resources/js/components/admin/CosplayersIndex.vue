@@ -147,7 +147,7 @@ export default class CosplayersIndex extends VueBuefy {
                 this.cosplayers = [];
                 this.total = 0;
                 this.loading = false;
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to load cosplayers, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',
@@ -183,7 +183,7 @@ export default class CosplayersIndex extends VueBuefy {
     }
 
     confirmDeleteSelectedCosplayers(): void {
-        this.$dialog.confirm({
+        this.$buefy.dialog.confirm({
             title: 'Deleting Cosplayers',
             message:
                 'Are you sure you want to <b>delete</b> these cosplayers? This action cannot be undone.',

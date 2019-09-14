@@ -168,7 +168,7 @@ export default class AlbumsIndex extends VueBuefy {
                 this.albums = [];
                 this.total = 0;
                 this.loading = false;
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to load albums, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',
@@ -204,7 +204,7 @@ export default class AlbumsIndex extends VueBuefy {
     }
 
     confirmDeleteSelectedAlbums(): void {
-        this.$dialog.confirm({
+        this.$buefy.dialog.confirm({
             title: 'Deleting Albums',
             message:
                 'Are you sure you want to <b>delete</b> these albums? This action cannot be undone.',

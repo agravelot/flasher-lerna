@@ -150,7 +150,7 @@ export default class Settings extends VueBuefy {
             })
             .catch(err => {
                 this.loading = false;
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to save setting, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',
@@ -177,7 +177,7 @@ export default class Settings extends VueBuefy {
             .catch(err => {
                 this.settings = [];
                 this.loading = false;
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to load settings, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',

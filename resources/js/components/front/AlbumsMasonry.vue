@@ -141,7 +141,7 @@ export default class AlbumsMasonry extends VueBuefy {
                 this.albums = [];
                 this.total = 0;
                 this.loading = false;
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to load albums, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',

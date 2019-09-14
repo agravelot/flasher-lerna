@@ -135,7 +135,7 @@ export default class AlbumsShowGallery extends Vue {
             .catch(err => {
                 this.album = {};
                 this.loading = false;
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to load album, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',

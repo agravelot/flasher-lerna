@@ -80,7 +80,7 @@ export default class UsersCreate extends VueBuefy {
             })
             .catch(err => {
                 this.loading = false;
-                // this.$snackbar.open({
+                // this.$buefy.snackbar.open({
                 //     message: 'Unable to update user, maybe you are offline?',
                 //     type: 'is-danger',
                 //     position: 'is-top',
@@ -96,7 +96,7 @@ export default class UsersCreate extends VueBuefy {
     }
 
     confirmDeleteUser(): void {
-        this.$dialog.confirm({
+        this.$buefy.dialog.confirm({
             title: 'Deleting Albums',
             message:
                 'Are you sure you want to <b>delete</b> these users? This action cannot be undone.',

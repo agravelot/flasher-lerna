@@ -229,7 +229,7 @@ export default class AlbumsEdit extends AlbumDesc {
     }
 
     confirmDeleteAlbum(): void {
-        this.$dialog.confirm({
+        this.$buefy.dialog.confirm({
             title: 'Deleting Album',
             message:
                 'Are you sure you want to <b>delete</b> this album? This action cannot be undone.',

@@ -127,7 +127,7 @@ export default class AlbumDesc extends VueBuefy {
             })
             .catch(err => {
                 // this.filteredCosplayers = [];
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to load categories, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',
@@ -154,7 +154,7 @@ export default class AlbumDesc extends VueBuefy {
             })
             .catch(err => {
                 // this.filteredCosplayers = [];
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to load cosplayers, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',

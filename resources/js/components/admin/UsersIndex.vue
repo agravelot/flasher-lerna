@@ -136,7 +136,7 @@ export default class UsersIndex extends VueBuefy {
                 this.users = [];
                 this.total = 0;
                 this.loading = false;
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to load users, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',
@@ -172,7 +172,7 @@ export default class UsersIndex extends VueBuefy {
     }
 
     confirmDeleteSelectedUsers(): void {
-        this.$dialog.confirm({
+        this.$buefy.dialog.confirm({
             title: 'Deleting Users',
             message:
                 'Are you sure you want to <b>delete</b> these users? This action cannot be undone.',

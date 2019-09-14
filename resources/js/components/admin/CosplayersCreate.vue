@@ -153,7 +153,7 @@ export default class CosplayersCreate extends VueBuefy {
                 this.searchUsers = res.data;
             })
             .catch(err => {
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to load users, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',

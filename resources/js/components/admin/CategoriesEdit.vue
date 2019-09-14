@@ -124,7 +124,7 @@ export default class CategoriesEdit extends VueBuefy {
             })
             .catch(err => {
                 this.loading = false;
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to load category, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',
@@ -152,7 +152,7 @@ export default class CategoriesEdit extends VueBuefy {
             .catch(err => {
                 this.category = new Category();
                 this.loading = false;
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to load category, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',
@@ -186,7 +186,7 @@ export default class CategoriesEdit extends VueBuefy {
             .catch(err => {
                 this.category.cover = null;
                 this.loading = false;
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to load category, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',
@@ -212,7 +212,7 @@ export default class CategoriesEdit extends VueBuefy {
             })
             .catch(err => {
                 this.loading = false;
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to delete cover category, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',

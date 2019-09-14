@@ -146,7 +146,7 @@ export default class TestimonialsIndex extends VueBuefy {
                 this.testimonials = [];
                 this.total = 0;
                 this.loading = false;
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to load testimonials, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',
@@ -182,7 +182,7 @@ export default class TestimonialsIndex extends VueBuefy {
     }
 
     confirmDeleteSelectedTestimonials(): void {
-        this.$dialog.confirm({
+        this.$buefy.dialog.confirm({
             title: 'Deleting Testimonials',
             message:
                 'Are you sure you want to <b>delete</b> these testimonials? This action cannot be undone.',
@@ -238,7 +238,7 @@ export default class TestimonialsIndex extends VueBuefy {
             })
             .catch(err => {
                 this.loading = false;
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to update testimonial, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',

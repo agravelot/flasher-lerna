@@ -71,7 +71,7 @@ export default class CategoriesCreate extends VueBuefy {
             })
             .catch(err => {
                 this.loading = false;
-                this.$snackbar.open({
+                this.$buefy.snackbar.open({
                     message: 'Unable to load category, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',
