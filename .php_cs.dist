@@ -20,8 +20,6 @@ return (new MattAllan\LaravelCodeStyle\Config())
             ->in(resource_path('lang'))
             ->in(base_path('routes'))
             ->in(base_path('tests'))
-            ->in('modules/')
-            ->notPath('modules/*/Database/Migrations')
     )
     ->setRules([
         '@Laravel' => true,
