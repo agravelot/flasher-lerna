@@ -115,7 +115,7 @@
 <script lang="ts">
 import Component from 'vue-class-component';
 import VueBuefy from '../../admin/Buefy.vue';
-import Album from '../../album';
+import Album from '../../models/album';
 
 @Component({
     name: 'AlbumsIndex',

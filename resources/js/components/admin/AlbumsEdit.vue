@@ -135,7 +135,7 @@ import Component from 'vue-class-component';
 import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 import AlbumDesc from './AlbumDesc.vue';
-import Album from '../../album';
+import Album from '../../models/album';
 
 @Component({
     name: 'AlbumsEdit',

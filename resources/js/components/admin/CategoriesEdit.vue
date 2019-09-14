@@ -58,7 +58,7 @@
 import Component from 'vue-class-component';
 import vue2Dropzone from 'vue2-dropzone';
 import VueBuefy from '../../admin/Buefy.vue';
-import Category from '../../category';
+import Category from '../../models/category';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';

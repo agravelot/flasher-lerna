@@ -99,7 +99,7 @@
 <script lang="ts">
 import Component from 'vue-class-component';
 import VueBuefy from '../../admin/Buefy.vue';
-import Contact from '../../contact';
+import Contact from '../../models/contact';
 
 @Component({
     name: 'ContactsIndex',

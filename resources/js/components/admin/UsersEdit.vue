@@ -74,7 +74,7 @@
 <script lang="ts">
 import Component from 'vue-class-component';
 import VueBuefy from '../../admin/Buefy.vue';
-import User from '../../user';
+import User from '../../models/user';
 
 @Component({
     name: 'UsersEdit',

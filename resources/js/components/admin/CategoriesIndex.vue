@@ -94,7 +94,7 @@
 <script lang="ts">
 import Component from 'vue-class-component';
 import VueBuefy from '../../admin/Buefy.vue';
-import Category from '../../category';
+import Category from '../../models/category';
 
 @Component({
     name: 'CategoriesIndex',

@@ -91,7 +91,7 @@
 <script lang="ts">
 import Component from 'vue-class-component';
 import VueBuefy from '../../../admin/Buefy.vue';
-import Page from '../../../page';
+import Page from '../../../models/page';
 
 @Component({
     name: 'Core.Resources.assets.js.components.pages.PagesIndex',

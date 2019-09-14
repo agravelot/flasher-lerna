@@ -94,7 +94,7 @@
 <script lang="ts">
 import Component from 'vue-class-component';
 import VueBuefy from '../../admin/Buefy.vue';
-import Cosplayer from '../../cosplayer';
+import Cosplayer from '../../models/cosplayer';
 
 @Component({
     name: 'CosplayersIndex',
