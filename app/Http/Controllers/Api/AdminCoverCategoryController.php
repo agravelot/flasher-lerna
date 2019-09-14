@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Requests\StoreCoverCategoryRequest;

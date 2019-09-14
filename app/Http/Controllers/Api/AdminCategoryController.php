@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Exception;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
