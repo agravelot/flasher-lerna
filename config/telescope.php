@@ -90,6 +90,7 @@ return [
     */
 
     'ignore_paths' => [
+        '_ignition/*',
     ],
 
     'ignore_commands' => [
