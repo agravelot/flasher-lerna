@@ -15,7 +15,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(User::class, function (Faker $faker) {
+$factory->define(User::class, static function (Faker $faker) {
     return [
         'name' => $faker->unique()->userName,
         'email' => $faker->unique()->email,
@@ -28,13 +28,13 @@ $factory->define(User::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(User::class, 'admin', function () {
+$factory->state(User::class, 'admin', static function () {
     return [
         'role' => 'admin',
     ];
 });
 
-$factory->state(User::class, 'user', function () {
+$factory->state(User::class, 'user', static function () {
     return [
         'role' => 'user',
     ];

@@ -18,7 +18,7 @@ class CategoryTest extends ModelTestCase
         $categories = factory(Category::class, 2)->make(['name' => 'A name']);
 
         try {
-            $categories->each(function (Category $category) use (&$count) {
+            $categories->each(static function (Category $category) use (&$count) {
                 $category->save();
                 $count++;
             });

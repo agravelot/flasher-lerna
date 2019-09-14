@@ -4,7 +4,7 @@ use Carbon\Carbon;
 use App\Models\Testimonial;
 use Faker\Generator as Faker;
 
-$factory->define(Testimonial::class, function (Faker $faker) {
+$factory->define(Testimonial::class, static function (Faker $faker) {
     return [
         'name' => $faker->sentence,
         'email' => $faker->email,
@@ -15,13 +15,13 @@ $factory->define(Testimonial::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(Testimonial::class, 'published', function (Faker $faker) {
+$factory->state(Testimonial::class, 'published', static function (Faker $faker) {
     return [
         'published_at' => Carbon::now(),
     ];
 });
 
-$factory->state(Testimonial::class, 'unpublished', function () {
+$factory->state(Testimonial::class, 'unpublished', static function () {
     return [
         'published_at' => null,
     ];

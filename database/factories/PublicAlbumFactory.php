@@ -8,7 +8,7 @@ use Illuminate\Support\Carbon;
 $withMedias = false;
 
 /* @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(PublicAlbum::class, function (Faker $faker) use (&$withMedias) {
+$factory->define(PublicAlbum::class, static function (Faker $faker) use (&$withMedias) {
     $withMedias = false;
 
     return [
@@ -20,7 +20,7 @@ $factory->define(PublicAlbum::class, function (Faker $faker) use (&$withMedias) 
     ];
 });
 
-$factory->afterMaking(PublicAlbum::class, function (Album $album, Faker $faker) use (&$withMedias) {
+$factory->afterMaking(PublicAlbum::class, static function (Album $album, Faker $faker) use (&$withMedias) {
     if ($withMedias) {
         foreach (range(1, 5) as $i) {
             $album->addMediaFromUrl($faker->imageUrl(640 * $faker->numberBetween(1, 3), 480 * $faker->numberBetween(1, 3)))
@@ -29,37 +29,37 @@ $factory->afterMaking(PublicAlbum::class, function (Album $album, Faker $faker) 
     }
 });
 
-$factory->state(PublicAlbum::class, 'withMedias', function () use (&$withMedias) {
+$factory->state(PublicAlbum::class, 'withMedias', static function () use (&$withMedias) {
     $withMedias = true;
 
     return [];
 });
 
-$factory->state(PublicAlbum::class, 'published', function () {
+$factory->state(PublicAlbum::class, 'published', static function () {
     return [
         'published_at' => Carbon::now(),
     ];
 });
 
-$factory->state(PublicAlbum::class, 'unpublished', function () {
+$factory->state(PublicAlbum::class, 'unpublished', static function () {
     return [
         'published_at' => null,
     ];
 });
 
-$factory->state(PublicAlbum::class, 'password', function () {
+$factory->state(PublicAlbum::class, 'password', static function () {
     return [
         'private' => true,
     ];
 });
 
-$factory->state(PublicAlbum::class, 'passwordLess', function () {
+$factory->state(PublicAlbum::class, 'passwordLess', static function () {
     return [
         'private' => false,
     ];
 });
 
-$factory->state(PublicAlbum::class, 'withUser', function () {
+$factory->state(PublicAlbum::class, 'withUser', static function () {
     return [
         'user_id' => factory(\App\Models\User::class)->create()->id,
     ];

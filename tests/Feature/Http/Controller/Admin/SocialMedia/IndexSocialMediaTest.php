@@ -20,7 +20,7 @@ class IndexSocialMediaTest extends TestCase
 
         $response->assertStatus(200)
             ->assertDontSee('Nothing to show');
-        $socialMedias->each(function (SocialMedia $socialMedia) use ($response) {
+        $socialMedias->each(static function (SocialMedia $socialMedia) use ($response) {
             $response->assertSee($socialMedia->name);
         });
     }

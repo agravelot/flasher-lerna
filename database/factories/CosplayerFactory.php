@@ -5,7 +5,7 @@ use App\Models\Cosplayer;
 use Faker\Generator as Faker;
 use Illuminate\Http\UploadedFile;
 
-$factory->define(Cosplayer::class, function (Faker $faker) {
+$factory->define(Cosplayer::class, static function (Faker $faker) {
     return [
         'name' => $faker->name,
         'description' => $faker->paragraph,
@@ -14,7 +14,7 @@ $factory->define(Cosplayer::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(Cosplayer::class, 'avatar', function () {
+$factory->state(Cosplayer::class, 'avatar', static function () {
     return [
         'avatar' => UploadedFile::fake()->image('fake.jpg'),
     ];

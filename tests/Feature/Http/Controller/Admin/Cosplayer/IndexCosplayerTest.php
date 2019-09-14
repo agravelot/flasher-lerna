@@ -30,7 +30,7 @@ class IndexCosplayerTest extends TestCase
 
     private function assertJsonUserFragment(TestResponse $response, Collection $cosplayers): void
     {
-        $cosplayers->each(function (Cosplayer $cosplayer) use ($response) {
+        $cosplayers->each(static function (Cosplayer $cosplayer) use ($response) {
             $response->assertJsonFragment([
                 'name' => $cosplayer->name,
                 'slug' => $cosplayer->slug,

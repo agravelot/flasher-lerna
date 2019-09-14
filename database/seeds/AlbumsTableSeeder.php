@@ -10,7 +10,7 @@ class AlbumsTableSeeder extends Seeder
      */
     public function run()
     {
-        User::all()->each(function (User $user) {
+        User::all()->each(static function (User $user) {
             $user->albums()->saveMany(
                 collect()
                     ->push(factory(App\Models\Album::class)->states(['password', 'published'])->make())

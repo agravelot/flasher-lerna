@@ -16,7 +16,7 @@ class RedirectIfAuthenticatedTest extends TestCase
     public function test_it_redirect_if_logged_in()
     {
         $request = new Request();
-        $next = function ($request) {
+        $next = static function ($request) {
             return new Response('Test Response');
         };
         $guard = null;
@@ -43,7 +43,7 @@ class RedirectIfAuthenticatedTest extends TestCase
     public function test_it_if_not_login()
     {
         $request = new Request();
-        $next = function ($request) {
+        $next = static function ($request) {
             return new Response('Test Response');
         };
         $guard = null;

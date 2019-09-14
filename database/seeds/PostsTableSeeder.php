@@ -11,7 +11,7 @@ class PostsTableSeeder extends Seeder
      */
     public function run()
     {
-        User::all()->each(function ($user) {
+        User::all()->each(static function ($user) {
             $user->posts()->saveMany(
                 factory(Post::class, 2)
                     ->make()

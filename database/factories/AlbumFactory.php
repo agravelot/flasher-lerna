@@ -8,7 +8,7 @@ use Illuminate\Http\UploadedFile;
 $withMedias = false;
 
 /* @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(Album::class, function (Faker $faker) use (&$withMedias) {
+$factory->define(Album::class, static function (Faker $faker) use (&$withMedias) {
     $withMedias = false;
 
     return [
@@ -19,7 +19,7 @@ $factory->define(Album::class, function (Faker $faker) use (&$withMedias) {
     ];
 });
 
-$factory->afterMaking(Album::class, function (Album $album, Faker $faker) use (&$withMedias) {
+$factory->afterMaking(Album::class, static function (Album $album, Faker $faker) use (&$withMedias) {
     if ($withMedias) {
         foreach (range(1, 15) as $i) {
             $album->addPicture(UploadedFile::fake()->image('fake.jpg'));
@@ -32,37 +32,37 @@ $factory->afterMaking(Album::class, function (Album $album, Faker $faker) use (&
     }
 });
 
-$factory->state(Album::class, 'withMedias', function () use (&$withMedias) {
+$factory->state(Album::class, 'withMedias', static function () use (&$withMedias) {
     $withMedias = true;
 
     return [];
 });
 
-$factory->state(Album::class, 'published', function () {
+$factory->state(Album::class, 'published', static function () {
     return [
         'published_at' => Carbon::now(),
     ];
 });
 
-$factory->state(Album::class, 'unpublished', function () {
+$factory->state(Album::class, 'unpublished', static function () {
     return [
         'published_at' => null,
     ];
 });
 
-$factory->state(Album::class, 'password', function () {
+$factory->state(Album::class, 'password', static function () {
     return [
         'private' => true,
     ];
 });
 
-$factory->state(Album::class, 'passwordLess', function () {
+$factory->state(Album::class, 'passwordLess', static function () {
     return [
         'private' => false,
     ];
 });
 
-$factory->state(Album::class, 'withUser', function () {
+$factory->state(Album::class, 'withUser', static function () {
     return [
         'user_id' => factory(\App\Models\User::class)->create()->id,
     ];
