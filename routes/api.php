@@ -31,89 +31,14 @@ Route::namespace('Api')->group(static function () {
                         ->parameters([
                             'cover-categories' => 'category',
                         ]);
-                });
-            });
-        });
-    });
-});
-
-Route::name('api.')->group(static function () {
-    Route::middleware(['auth:api', 'verified', 'admin'])->group(static function () {
-        Route::name('admin.')->group(static function () {
-            Route::prefix('admin')->group(static function () {
-            });
-        });
-    });
-});
-
-Route::namespace('Admin')->group(static function () {
-    Route::middleware(['auth:api', 'verified', 'admin'])->group(static function () {
-        Route::name('api.admin.')->group(static function () {
-            Route::prefix('admin')->group(static function () {
-                Route::apiResource('pages', 'AdminPagesController');
-                Route::apiResource('settings', 'AdminSettingsController')->only(['index', 'show', 'update']);
-            });
-        });
-    });
-});
-
-Route::namespace('Admin')->group(static function () {
-    Route::middleware(['auth:api', 'verified', 'admin'])->group(static function () {
-        Route::name('api.admin.')->group(static function () {
-            Route::prefix('admin')->group(static function () {
-                Route::apiResource('users', 'AdminUsersController');
-            });
-        });
-    });
-});
-
-Route::namespace('Admin')->group(static function () {
-    Route::name('api.')->group(static function () {
-        Route::middleware(['auth:api', 'verified', 'admin'])->group(static function () {
-            Route::name('admin.')->group(static function () {
-                Route::prefix('admin')->group(static function () {
-                    Route::apiResource('contacts', 'AdminContactController')->except('store', 'update');
-                });
-            });
-        });
-    });
-});
-Route::namespace('Api')->group(static function () {
-    Route::middleware(['auth:api', 'verified', 'admin'])->group(static function () {
-        Route::name('api.admin.')->group(static function () {
-            Route::prefix('admin')->group(static function () {
-                Route::get('dashboard', 'DashboardController');
-            });
-        });
-    });
-});
-Route::namespace('Admin')->group(static function () {
-    Route::middleware(['auth:api', 'verified', 'admin'])->group(static function () {
-        Route::name('api.admin.')->group(static function () {
-            Route::prefix('admin')->group(static function () {
-                Route::apiResource('cosplayers', 'AdminCosplayerController');
-            });
-        });
-    });
-});
-Route::namespace('Api')->group(static function () {
-    Route::name('api.')->group(static function () {
-        Route::middleware(['auth:api', 'verified', 'admin'])->group(static function () {
-            Route::name('admin.')->group(static function () {
-                Route::prefix('admin')->group(static function () {
+                    Route::apiResource('pages', 'AdminPagesController');
+                    Route::apiResource('settings', 'AdminSettingsController')->only(['index', 'show', 'update']);
+                    Route::apiResource('users', 'AdminUsersController');
+                    Route::get('dashboard', 'DashboardController');
                     Route::apiResource('social-medias', 'AdminSocialMediaController');
-                });
-            });
-        });
-    });
-});
-
-Route::namespace('Api')->group(static function () {
-    Route::name('api.')->group(static function () {
-        Route::middleware(['auth:api', 'verified', 'admin'])->group(static function () {
-            Route::name('admin.')->group(static function () {
-                Route::prefix('admin')->group(static function () {
                     Route::apiResource('testimonials', 'AdminTestimonialsController')->except('store');
+                    Route::apiResource('contacts', 'AdminContactController')->except('store', 'update');
+                    Route::apiResource('cosplayers', 'AdminCosplayerController');
                 });
             });
         });
