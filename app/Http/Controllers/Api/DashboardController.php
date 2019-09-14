@@ -26,8 +26,6 @@ class DashboardController extends Controller
             'albumsCount' => Album::count(),
             'contactsCount' => Contact::count(),
             'albumMediasCount' => Media::count(),
-            'activities' => Activity::with(['causer', 'subject'])
-                ->latest()->limit(10)->get(),
         ]);
     }
 }
