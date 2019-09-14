@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Dashboard from '../../../modules/Dashboard/Resources/assets/js/Dashboard.vue';
+import Dashboard from '../components/admin/Dashboard.vue';
 import AlbumsIndex from '../components/admin/AlbumsIndex.vue';
 import AlbumsCreate from '../components/admin/AlbumsCreate.vue';
 import AlbumsEdit from '../components/admin/AlbumsEdit.vue';

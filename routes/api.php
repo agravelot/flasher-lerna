@@ -85,4 +85,12 @@ Route::namespace('Admin')->group(static function () {
         });
     });
 });
-
+Route::namespace('Api')->group(static function () {
+    Route::middleware(['auth:api', 'verified', 'admin'])->group(static function () {
+        Route::name('api.admin.')->group(static function () {
+            Route::prefix('admin')->group(static function () {
+                Route::get('dashboard', 'DashboardController');
+            });
+        });
+    });
+});
