@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "829bf09813186e3f7cd554bc7a29ba0b",
+    "content-hash": "2c4aa1ec64abf314cce078fe3466bbce",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -7568,6 +7568,65 @@
     ],
     "packages-dev": [
         {
+            "name": "astrotomic/ignition-stackoverflow",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Astrotomic/ignition-stackoverflow.git",
+                "reference": "84652121c14047b1dde354435c6c62ae6fae2818"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Astrotomic/ignition-stackoverflow/zipball/84652121c14047b1dde354435c6c62ae6fae2818",
+                "reference": "84652121c14047b1dde354435c6c62ae6fae2818",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "facade/ignition": "^1.0",
+                "facade/ignition-contracts": "^1.0",
+                "illuminate/support": "5.8.* || ^6.0",
+                "php": ">=7.2.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "3.8.* || ^4.0",
+                "phpunit/phpunit": "^8.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Astrotomic\\IgnitionStackOverflowTab\\TabServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Astrotomic\\IgnitionStackOverflowTab\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tom Witkowski",
+                    "email": "dev.gummibeer@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A tab that fetches stackoverflow questions",
+            "homepage": "https://github.com/astrotomic/ignition-stackoverflow",
+            "keywords": [
+                "flare",
+                "ignition",
+                "laravel"
+            ],
+            "time": "2019-09-09T20:42:28+00:00"
+        },
+        {
             "name": "barryvdh/laravel-debugbar",
             "version": "v3.2.8",
             "source": {
@@ -8510,6 +8569,61 @@
             "time": "2017-07-23T21:35:13+00:00"
         },
         {
+            "name": "fabpot/goutte",
+            "version": "v3.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FriendsOfPHP/Goutte.git",
+                "reference": "3f0eaf0a40181359470651f1565b3e07e3dd31b8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FriendsOfPHP/Goutte/zipball/3f0eaf0a40181359470651f1565b3e07e3dd31b8",
+                "reference": "3f0eaf0a40181359470651f1565b3e07e3dd31b8",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.0",
+                "php": ">=5.5.0",
+                "symfony/browser-kit": "~2.1|~3.0|~4.0",
+                "symfony/css-selector": "~2.1|~3.0|~4.0",
+                "symfony/dom-crawler": "~2.1|~3.0|~4.0"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "^3.3 || ^4"
+            },
+            "type": "application",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Goutte\\": "Goutte"
+                },
+                "exclude-from-classmap": [
+                    "Goutte/Tests"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "A simple PHP Web Scraper",
+            "homepage": "https://github.com/FriendsOfPHP/Goutte",
+            "keywords": [
+                "scraper"
+            ],
+            "time": "2018-06-29T15:13:57+00:00"
+        },
+        {
             "name": "facade/flare-client-php",
             "version": "1.0.4",
             "source": {
@@ -8674,6 +8788,123 @@
                 "ignition"
             ],
             "time": "2019-08-30T14:06:08+00:00"
+        },
+        {
+            "name": "facade/ignition-self-diagnosis",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/facade/ignition-self-diagnosis.git",
+                "reference": "cacf6a524383bb53fbdcaf5b79c1fb0246c6ed64"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/facade/ignition-self-diagnosis/zipball/cacf6a524383bb53fbdcaf5b79c1fb0246c6ed64",
+                "reference": "cacf6a524383bb53fbdcaf5b79c1fb0246c6ed64",
+                "shasum": ""
+            },
+            "require": {
+                "beyondcode/laravel-self-diagnosis": "^1.3",
+                "facade/ignition": "^1.0",
+                "php": ">=7.1.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^3.8",
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Facade\\SelfDiagnosis\\TabServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Facade\\SelfDiagnosis\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marcel Pociot",
+                    "email": "marcel@flareapp.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Perform self diagnosis checks within your Ignition error page",
+            "homepage": "https://github.com/facade/ignition-self-diagnosis",
+            "keywords": [
+                "flare",
+                "ignition",
+                "laravel"
+            ],
+            "time": "2019-08-27T20:22:44+00:00"
+        },
+        {
+            "name": "facade/ignition-tinker-tab",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/facade/ignition-tinker-tab.git",
+                "reference": "e90033a29820a90865153af959cac53f309d3a7c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/facade/ignition-tinker-tab/zipball/e90033a29820a90865153af959cac53f309d3a7c",
+                "reference": "e90033a29820a90865153af959cac53f309d3a7c",
+                "shasum": ""
+            },
+            "require": {
+                "facade/ignition": "^1.0",
+                "illuminate/support": "^5.8|^6.0",
+                "laravel/tinker": "^1.0",
+                "php": "^7.2",
+                "spatie/laravel-web-tinker": "^1.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Facade\\IgnitionTinkerTab\\TinkerTabServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Facade\\IgnitionTinkerTab\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Use tinker on the Ignition error page",
+            "homepage": "https://github.com/facade/ignition-tinker-tab",
+            "keywords": [
+                "Tinker",
+                "debug",
+                "development",
+                "facade",
+                "laravel",
+                "web-tinker"
+            ],
+            "time": "2019-08-31T00:54:31+00:00"
         },
         {
             "name": "filp/whoops",
@@ -13191,6 +13422,66 @@
             "time": "2017-06-16T09:29:23+00:00"
         },
         {
+            "name": "spatie/laravel-web-tinker",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-web-tinker.git",
+                "reference": "412ce5dd94632e44451f0f1627163ff5cec718e0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-web-tinker/zipball/412ce5dd94632e44451f0f1627163ff5cec718e0",
+                "reference": "412ce5dd94632e44451f0f1627163ff5cec718e0",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.8|^6.0",
+                "laravel/tinker": "^1.0",
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^3.8|^4.0",
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\WebTinker\\WebTinkerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\WebTinker\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Artisan Tinker in your browser",
+            "homepage": "https://github.com/spatie/laravel-web-tinker",
+            "keywords": [
+                "Tinker",
+                "debug",
+                "development",
+                "laravel",
+                "spatie",
+                "web-tinker"
+            ],
+            "time": "2019-09-04T11:12:27+00:00"
+        },
+        {
             "name": "squizlabs/php_codesniffer",
             "version": "3.4.2",
             "source": {
@@ -13240,6 +13531,126 @@
                 "standards"
             ],
             "time": "2019-04-10T23:49:02+00:00"
+        },
+        {
+            "name": "stefanbauer/ignition-laracasts-tab",
+            "version": "v0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stefanbauer/ignition-laracasts-tab.git",
+                "reference": "b7efefac4ba1304c7f6b0c7d70eacc113b22d78e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stefanbauer/ignition-laracasts-tab/zipball/b7efefac4ba1304c7f6b0c7d70eacc113b22d78e",
+                "reference": "b7efefac4ba1304c7f6b0c7d70eacc113b22d78e",
+                "shasum": ""
+            },
+            "require": {
+                "fabpot/goutte": "^3.2",
+                "facade/ignition": "^1.0",
+                "php": ">=7.1.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "3.8.*|^4.0",
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "StefanBauer\\LaracastsTab\\TabServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "StefanBauer\\LaracastsTab\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Bauer",
+                    "email": "mail@stefanbauer.me",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Bobby Bouwmann",
+                    "email": "bobbybouwmann@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A tab to retrieve laracasts.com answers",
+            "homepage": "https://github.com/stefanbauer/ignition-laracasts-tab",
+            "keywords": [
+                "flare",
+                "ignition",
+                "laravel"
+            ],
+            "time": "2019-09-05T04:48:12+00:00"
+        },
+        {
+            "name": "symfony/browser-kit",
+            "version": "v4.3.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/browser-kit.git",
+                "reference": "9e5dddb637b13db82e35695a8603fe6e118cc119"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/9e5dddb637b13db82e35695a8603fe6e118cc119",
+                "reference": "9e5dddb637b13db82e35695a8603fe6e118cc119",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1.3",
+                "symfony/dom-crawler": "~3.4|~4.0"
+            },
+            "require-dev": {
+                "symfony/css-selector": "~3.4|~4.0",
+                "symfony/http-client": "^4.3",
+                "symfony/mime": "^4.3",
+                "symfony/process": "~3.4|~4.0"
+            },
+            "suggest": {
+                "symfony/process": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\BrowserKit\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony BrowserKit Component",
+            "homepage": "https://symfony.com",
+            "time": "2019-08-26T08:26:39+00:00"
         },
         {
             "name": "symfony/cache",

@@ -39,12 +39,15 @@
     "spatie/laravel-sitemap": "^5.3"
   },
   "require-dev": {
+    "astrotomic/ignition-stackoverflow": "^1.4",
     "barryvdh/laravel-debugbar": "^3.2",
     "barryvdh/laravel-ide-helper": "^2.6",
     "beyondcode/laravel-dump-server": "^1.2",
     "beyondcode/laravel-query-detector": "^1.0",
     "beyondcode/laravel-tinker-server": "^1.0",
     "facade/ignition": "^1.4",
+    "facade/ignition-self-diagnosis": "^1.0",
+    "facade/ignition-tinker-tab": "^1.0",
     "friendsofphp/php-cs-fixer": "^2.13",
     "fruitcake/laravel-telescope-toolbar": "^1.1",
     "fzaninotto/faker": "^1.8",
@@ -63,7 +66,8 @@
     "phpunit/phpunit": "^8.0",
     "roave/security-advisories": "dev-master",
     "sllh/composer-versions-check": "^2.0",
-    "squizlabs/php_codesniffer": "*"
+    "squizlabs/php_codesniffer": "*",
+    "stefanbauer/ignition-laracasts-tab": "^0.2.0"
   },
   "autoload": {
     "files": [
