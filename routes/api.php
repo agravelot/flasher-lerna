@@ -31,7 +31,9 @@ Route::namespace('Api')->group(static function () {
 });
 
 Route::name('api.')->group(static function () {
-    Route::apiResource('categories', 'CategoryController')->only(['index', 'show']);
+    Route::namespace('Api')->group(static function () {
+        Route::apiResource('categories', 'CategoryController')->only(['index', 'show']);
+    });
     Route::middleware(['auth:api', 'verified', 'admin'])->group(static function () {
         Route::name('admin.')->group(static function () {
             Route::prefix('admin')->group(static function () {

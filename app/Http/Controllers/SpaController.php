@@ -10,6 +10,7 @@ class SpaController extends Controller
 {
     /**
      * @return Factory|View
+     *
      * @throws AuthorizationException
      */
     public function index()
