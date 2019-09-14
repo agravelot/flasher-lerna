@@ -11,7 +11,7 @@ class CreateMediaTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('media', function (Blueprint $table) {
+        Schema::create('media', static function (Blueprint $table) {
             $table->increments('id');
             $table->morphs('model');
             $table->string('collection_name');

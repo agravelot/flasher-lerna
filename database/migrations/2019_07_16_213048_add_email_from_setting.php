@@ -8,12 +8,10 @@ class AddEmailFromSetting extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::table('settings', function (Blueprint $table) {
+        Schema::table('settings', static function (Blueprint $table) {
             DB::table('settings')->insert([
                 'name' => 'email_from',
                 'value' => null,
@@ -26,8 +24,6 @@ class AddEmailFromSetting extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

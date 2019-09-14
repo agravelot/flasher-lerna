@@ -11,7 +11,7 @@ class CreateGoldenBookPostsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('golden_book_posts', function (Blueprint $table) {
+        Schema::create('golden_book_posts', static function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('email');

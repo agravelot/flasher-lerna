@@ -8,13 +8,11 @@ class CreateSettingsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
         Schema::dropIfExists('settings');
-        Schema::create('settings', function (Blueprint $table) {
+        Schema::create('settings', static function (Blueprint $table) {
             $table->string('name', 30)->primary();
             $table->string('value');
             $table->enum('type', ['string', 'numeric', 'bool', 'json', 'textarea']);
@@ -74,8 +72,6 @@ class CreateSettingsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

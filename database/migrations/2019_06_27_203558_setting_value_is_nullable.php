@@ -8,12 +8,10 @@ class SettingValueIsNullable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::table('settings', function (Blueprint $table) {
+        Schema::table('settings', static function (Blueprint $table) {
             $table->string('value')->nullable()->change();
         });
         DB::table('settings')->where('value', '')->update(['value' => null]);
@@ -21,13 +19,11 @@ class SettingValueIsNullable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {
         DB::table('settings')->where('value', null)->update(['value' => '']);
-        Schema::table('settings', function (Blueprint $table) {
+        Schema::table('settings', static function (Blueprint $table) {
             $table->string('value')->nullable(false)->change();
         });
     }
