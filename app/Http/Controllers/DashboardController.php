@@ -6,14 +6,14 @@ use Illuminate\View\View;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Auth\Access\AuthorizationException;
 
-class SpaController extends Controller
+class DashboardController extends Controller
 {
     /**
      * @return Factory|View
      *
      * @throws AuthorizationException
      */
-    public function index()
+    public function __invoke()
     {
         $this->authorize('dashboard');
 
