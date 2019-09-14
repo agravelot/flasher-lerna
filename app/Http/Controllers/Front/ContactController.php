@@ -7,7 +7,7 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Contact\Http\Controllers;
+namespace App\Http\Controllers\Front;
 
 use App\Models\Contact;
 use Illuminate\View\View;

@@ -7,14 +7,14 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\Contact\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Resources\ContactResource;
 use Exception;
 use App\Models\Contact;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
-use Modules\Contact\Transformers\ContactResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminContactController extends Controller
