@@ -10,7 +10,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\Models\Media;
-use Spatie\Activitylog\Models\Activity;
 
 class DashboardController extends Controller
 {
