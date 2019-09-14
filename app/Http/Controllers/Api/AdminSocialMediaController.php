@@ -7,15 +7,15 @@
  * Written by Antoine Gravelot <agravelot@hotmail.fr>
  */
 
-namespace Modules\SocialMedia\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\SocialMediaResource;
 use Exception;
 use App\Models\SocialMedia;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Requests\SocialMediaRequest;
-use Modules\SocialMedia\Transformers\SocialMediaResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminSocialMediaController extends Controller
@@ -55,7 +55,6 @@ class AdminSocialMediaController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
      *
      * @throws Exception
      */

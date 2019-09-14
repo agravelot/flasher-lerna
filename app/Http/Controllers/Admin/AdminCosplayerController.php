@@ -9,13 +9,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\CosplayerRequest;
-use App\Http\Resources\CosplayerResource;
 use Exception;
 use App\Models\Cosplayer;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
+use App\Http\Requests\CosplayerRequest;
+use App\Http\Resources\CosplayerResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminCosplayerController extends Controller

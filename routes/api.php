@@ -103,3 +103,14 @@ Route::namespace('Admin')->group(static function () {
         });
     });
 });
+Route::namespace('Api')->group(static function () {
+    Route::name('api.')->group(static function () {
+        Route::middleware(['auth:api', 'verified', 'admin'])->group(static function () {
+            Route::name('admin.')->group(static function () {
+                Route::prefix('admin')->group(static function () {
+                    Route::apiResource('social-medias', 'AdminSocialMediaController');
+                });
+            });
+        });
+    });
+});

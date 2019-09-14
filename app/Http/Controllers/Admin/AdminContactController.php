@@ -9,12 +9,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Resources\ContactResource;
 use Exception;
 use App\Models\Contact;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
+use App\Http\Resources\ContactResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminContactController extends Controller

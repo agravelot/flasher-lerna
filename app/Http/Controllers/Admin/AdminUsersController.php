@@ -9,12 +9,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Resources\UserResource;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\UserRequest;
 use Illuminate\Routing\Controller;
+use App\Http\Resources\UserResource;
 use Spatie\QueryBuilder\QueryBuilder;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
