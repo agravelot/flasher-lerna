@@ -34,7 +34,7 @@ Route::namespace('Api')->group(static function () {
                     Route::apiResource('pages', 'AdminPagesController');
                     Route::apiResource('settings', 'AdminSettingsController')->only(['index', 'show', 'update']);
                     Route::apiResource('users', 'AdminUsersController');
-                    Route::get('dashboard', 'DashboardController')->name('dashboard');
+                    Route::get('dashboard', 'AdminDashboardController')->name('dashboard');
                     Route::apiResource('social-medias', 'AdminSocialMediaController');
                     Route::apiResource('testimonials', 'AdminTestimonialsController')->except('store');
                     Route::apiResource('contacts', 'AdminContactController')->except('store', 'update');
