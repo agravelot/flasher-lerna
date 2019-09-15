@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Contact\Tests\Feature\Http\Controllers\Admin;
+namespace Tests\Feature\Http\Controllers\Admin\Contact;
 
 use Tests\TestCase;
 use App\Models\Contact;

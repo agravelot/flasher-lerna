@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\SocialMedia\Tests\Feature\Http\Controllers\Admin;
+namespace Tests\Feature\Http\Controllers\Admin\SocialMedia;
 
 use Tests\TestCase;
 use App\Models\SocialMedia;

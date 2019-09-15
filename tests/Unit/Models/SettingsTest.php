@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\Tests\Unit\AdminPages;
+namespace Tests\Unit\Models;
 
 use Exception;
 use Tests\TestCase;

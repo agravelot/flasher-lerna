@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\Tests\Feature\AdminSettings;
+namespace Tests\Feature\Http\Controller\Admin\AdminSettings;
 
 use Tests\TestCase;
 use App\Models\Setting;

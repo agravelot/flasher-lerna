@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\Tests\Features\AdminPages;
+namespace Tests\Feature\Http\Controller\Admin\AdminPages;
 
 use Tests\TestCase;
 use App\Models\Page;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Cosplayer\Tests\Feature;
+namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 
 use Tests\TestCase;
 use App\Models\Cosplayer;
