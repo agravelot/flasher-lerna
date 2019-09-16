@@ -2,6 +2,7 @@
 
 Auth::routes(['verify' => true]);
 Route::impersonate();
+Route::feeds();
 
 //FRONT
 Route::namespace('Front')->group(static function () {
@@ -29,5 +30,3 @@ Route::middleware(['web', 'auth', 'verified', 'admin'])->group(static function (
         });
     });
 });
-
-

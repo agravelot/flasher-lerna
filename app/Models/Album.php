@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use Eloquent;
+use Spatie\Feed\Feedable;
 use Spatie\MediaLibrary\File;
 use Illuminate\Support\Carbon;
+use App\Abilities\AlbumFeedable;
 use App\Abilities\HasTitleAsSlug;
 use App\Abilities\AlbumWithOgTags;
 use App\Abilities\HasSlugRouteKey;
@@ -65,9 +67,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property mixed $cover
  * @property-read mixed $cover_responsive
  */
-class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphable, ImagesOpenGraphable
+class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphable, ImagesOpenGraphable, Feedable
 {
-    use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey, HasTitleAsSlug, ClearsResponseCache, AlbumWithOgTags;
+    use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey, HasTitleAsSlug, ClearsResponseCache, AlbumWithOgTags, AlbumFeedable;
 
     public const PICTURES_COLLECTION = 'pictures';
     public const RESPONSIVE_PICTURES_CONVERSION = 'responsive';
