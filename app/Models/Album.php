@@ -6,6 +6,7 @@ use Eloquent;
 use Spatie\MediaLibrary\File;
 use Illuminate\Support\Carbon;
 use App\Abilities\HasTitleAsSlug;
+use App\Abilities\AlbumWithOgTags;
 use App\Abilities\HasSlugRouteKey;
 use Illuminate\Support\HtmlString;
 use App\Traits\ClearsResponseCache;
@@ -66,7 +67,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphable, ImagesOpenGraphable
 {
-    use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey, HasTitleAsSlug, ClearsResponseCache;
+    use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey, HasTitleAsSlug, ClearsResponseCache, AlbumWithOgTags;
 
     public const PICTURES_COLLECTION = 'pictures';
     public const RESPONSIVE_PICTURES_CONVERSION = 'responsive';
@@ -209,45 +210,5 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
             ->width(400)
             ->optimize()
             ->performOnCollections(self::PICTURES_COLLECTION);
-    }
-
-    public function author(): string
-    {
-        return $this->user->name;
-    }
-
-    public function tags(): \Illuminate\Support\Collection
-    {
-        return $this->categories()->pluck('name');
-    }
-
-    public function publishedAt(): string
-    {
-        return $this->published_at->toIso8601String();
-    }
-
-    public function updatedAt(): string
-    {
-        return $this->updated_at->toIso8601String();
-    }
-
-    public function images(): \Illuminate\Support\Collection
-    {
-        return $this->getMedia(self::PICTURES_COLLECTION);
-    }
-
-    public function title(): string
-    {
-        return $this->title;
-    }
-
-    public function description(): string
-    {
-        return '';
-    }
-
-    public function type(): string
-    {
-        return 'article';
     }
 }
