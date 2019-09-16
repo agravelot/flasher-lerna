@@ -1,12 +1,5 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -16,9 +9,9 @@ class CreateAlbumCosplayerTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('album_cosplayer', function (Blueprint $table) {
+        Schema::create('album_cosplayer', static function (Blueprint $table) {
             $table->increments('id');
             $table->integer('album_id')->unsigned()->nullable();
             $table->unsignedInteger('cosplayer_id')->nullable();
@@ -29,7 +22,7 @@ class CreateAlbumCosplayerTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('album_cosplayer');
     }

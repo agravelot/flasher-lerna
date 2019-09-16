@@ -1,12 +1,5 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 namespace App\Models;
 
 use Eloquent;
@@ -15,13 +8,13 @@ use Illuminate\Support\Carbon;
 use App\Abilities\HasNameAsSlug;
 use Illuminate\Http\UploadedFile;
 use App\Abilities\HasSlugRouteKey;
+use App\Traits\ClearsResponseCache;
 use Spatie\MediaLibrary\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Illuminate\Database\Eloquent\Collection;
-use Modules\Core\Traits\ClearsResponseCache;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;

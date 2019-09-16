@@ -1,12 +1,5 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 namespace App\Http\Controllers\Admin;
 
 use Exception;
@@ -110,9 +103,7 @@ class AdminSocialMediaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     *
      * @throws Exception
-     *
      * @throws AuthorizationException
      */
     public function destroy(int $id): RedirectResponse

@@ -71,7 +71,7 @@
                        data-target="{{ "media-{$key}" }}">
                         {{
                            $media(
-                               \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,
+                               \App\Models\Album::RESPONSIVE_PICTURES_CONVERSION,
                                [
                                    'class' => 'modal-button responsive-media-lazy'
                                ]
@@ -97,7 +97,7 @@
                        data-target="{{ "media-{$key}" }}">
                         {{
                            $media(
-                               \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,
+                               \App\Models\Album::RESPONSIVE_PICTURES_CONVERSION,
                                [
                                    'class' => 'modal-button responsive-media-lazy'
                                ]
@@ -120,7 +120,7 @@
                 <a class="modal-button is-inline-block has-hover-zoom is-shadowless has-text-hover-image" data-target="{{ "media-{$key}" }}">
                     {{
                        $media(
-                           \Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION,
+                           \App\Models\Album::RESPONSIVE_PICTURES_CONVERSION,
                            [
                                'class' => 'modal-button responsive-media-lazy'
                            ]
@@ -139,7 +139,7 @@
     <div id="{{ "media-{$key}" }}" class="modal modal-fx-slideBottom is-modal-navigable">
         <div class="modal-background"></div>
         <div class="modal-content is-image is-huge is-clipped">
-            {{ $media(\Modules\Album\Entities\Album::RESPONSIVE_PICTURES_CONVERSION, ['class' => null]) }}
+            {{ $media(\App\Models\Album::RESPONSIVE_PICTURES_CONVERSION, ['class' => null]) }}
             <span>{{ $key + 1 . '/' . $medias->count() }}</span>
         </div>
         <a class="prev" onclick="this.dispatchEvent(new KeyboardEvent('keydown', {'key':'ArrowLeft'}));"

@@ -1,12 +1,5 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 namespace App\Models;
 
 use Eloquent;
@@ -16,12 +9,12 @@ use Illuminate\Support\Carbon;
 use App\Abilities\MustVerifyEmail;
 use Laravel\Passport\HasApiTokens;
 use App\Abilities\CanResetPassword;
+use App\Traits\ClearsResponseCache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Lab404\Impersonate\Models\Impersonate;
 use Illuminate\Database\Eloquent\Collection;
-use Modules\Core\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Database\Eloquent\Relations\HasMany;

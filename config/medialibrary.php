@@ -1,12 +1,5 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 return [
     /*
      * The disk on which to store added files and derived images by default. Choose
@@ -29,7 +22,7 @@ return [
     /*
      * The fully qualified class name of the media model.
      */
-    'media_model' => \Modules\Core\Entities\Media::class,
+    'media_model' => \App\Models\Media::class,
 
     's3' => [
         /*
@@ -82,13 +75,13 @@ return [
      * if your files are stored locally above the site root or on s3.
      */
     // TODO Remove old generator
-    // 'url_generator' => \Modules\Album\Generators\RelativeLocalUrlGenerator::class,
+    // 'url_generator' => \App\Generators\RelativeLocalUrlGenerator::class,
     'url_generator' => null,
 
     /*
      * The class that contains the strategy for determining a media file's path.
      */
-    'path_generator' => \Modules\Album\Generators\PathGenerator::class,
+    'path_generator' => \App\Generators\PathGenerator::class,
 
     /*
      * Medialibrary will try to optimize all converted images by removing

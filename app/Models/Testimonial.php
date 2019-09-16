@@ -1,19 +1,12 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 namespace App\Models;
 
 use Eloquent;
 use Illuminate\Support\Carbon;
+use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Modules\Core\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**

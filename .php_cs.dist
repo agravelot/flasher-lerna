@@ -3,13 +3,6 @@
 require __DIR__.'/vendor/autoload.php';
 require __DIR__.'/bootstrap/app.php';
 
-$fileHeaderComment = <<<COMMENT
-(c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
-Unauthorized copying of this file, via any medium is strictly prohibited
-Proprietary and confidential
-Written by Antoine Gravelot <agravelot@hotmail.fr>
-COMMENT;
-
 return (new MattAllan\LaravelCodeStyle\Config())
     ->setFinder(
         PhpCsFixer\Finder::create()
@@ -20,16 +13,11 @@ return (new MattAllan\LaravelCodeStyle\Config())
             ->in(resource_path('lang'))
             ->in(base_path('routes'))
             ->in(base_path('tests'))
-            ->in('modules/')
-            ->notPath('modules/*/Database/Migrations')
     )
     ->setRules([
         '@Laravel' => true,
         '@Laravel:risky' => true,
-        'header_comment' => [
-            'header' => $fileHeaderComment,
-            'separate' => 'both',
-        ],
         'no_superfluous_phpdoc_tags' => true,
+        'static_lambda' => true,
     ])
     ->setRiskyAllowed(true);

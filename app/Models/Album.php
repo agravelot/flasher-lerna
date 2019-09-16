@@ -1,12 +1,5 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 namespace App\Models;
 
 use Eloquent;
@@ -15,6 +8,7 @@ use Illuminate\Support\Carbon;
 use App\Abilities\HasTitleAsSlug;
 use App\Abilities\HasSlugRouteKey;
 use Illuminate\Support\HtmlString;
+use App\Traits\ClearsResponseCache;
 use Spatie\MediaLibrary\Models\Media;
 use App\Models\Contracts\OpenGraphable;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +16,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Illuminate\Database\Eloquent\Collection;
-use Modules\Core\Traits\ClearsResponseCache;
 use App\Models\Contracts\ImagesOpenGraphable;
 use App\Models\Contracts\ArticleOpenGraphable;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -70,7 +63,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Album public ()
  * @property mixed $cover
  * @property-read mixed $cover_responsive
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album public()
  */
 class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphable, ImagesOpenGraphable
 {

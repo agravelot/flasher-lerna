@@ -1,12 +1,5 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 namespace App\Http\Controllers\Front;
 
 use Illuminate\View\View;
@@ -28,7 +21,6 @@ class AlbumController extends Controller
 
     /**
      * Display the specified resource.
-     *
      *
      * @throws AuthorizationException
      */
