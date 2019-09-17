@@ -33,3 +33,4 @@ _ide_helper_models.php
 /per-mutator.md
 /summary.log
 .php_cs
+.env.*local
