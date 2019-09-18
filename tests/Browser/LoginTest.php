@@ -3,9 +3,9 @@
 namespace Tests\Browser;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class LoginTest extends DuskTestCase
 {
@@ -22,7 +22,7 @@ class LoginTest extends DuskTestCase
             'password' => $password,
         ]);
 
-        $this->browse(function (Browser $browser) use ($admin, $password) {
+        $this->browse(static function (Browser $browser) use ($admin, $password) {
             $browser->visit('/login')
                 ->type('email', $admin->email)
                 ->type('password', $password)
@@ -40,7 +40,7 @@ class LoginTest extends DuskTestCase
             'password' => $password,
         ]);
 
-        $this->browse(function (Browser $browser) use ($admin, $password) {
+        $this->browse(static function (Browser $browser) use ($admin, $password) {
             $browser->visit('/admin')
                 ->assertPathIs('/login')
                 ->type('email', $admin->email)

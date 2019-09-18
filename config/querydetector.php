@@ -54,5 +54,5 @@ return [
         \BeyondCode\QueryDetector\Outputs\Log::class,
         \BeyondCode\QueryDetector\Outputs\Json::class,
         \BeyondCode\QueryDetector\Outputs\Console::class,
-    ]
+    ],
 ];
