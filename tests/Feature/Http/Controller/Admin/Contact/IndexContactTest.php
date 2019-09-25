@@ -44,7 +44,6 @@ class IndexContactTest extends TestCase
     public function test_user_cannot_index_contacts(): void
     {
         $this->actingAsUser();
-        $contacts = factory(Contact::class, 8)->create();
 
         $response = $this->getContacts();
 
@@ -53,8 +52,6 @@ class IndexContactTest extends TestCase
 
     public function testGuestCannotIndexContacts(): void
     {
-        $contacts = factory(Contact::class, 8)->create();
-
         $response = $this->getContacts();
 
         $response->assertStatus(401);
