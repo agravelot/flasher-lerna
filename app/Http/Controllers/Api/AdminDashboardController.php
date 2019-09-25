@@ -11,7 +11,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\Models\Media;
 
-class DashboardController extends Controller
+class AdminDashboardController extends Controller
 {
     /**
      * Display a listing of the resource.

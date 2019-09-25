@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Dashboard\Tests\Feature;
+namespace Tests\Feature\Http\Controller\Api;
 
 use Tests\TestCase;
 use App\Models\User;

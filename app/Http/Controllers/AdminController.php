@@ -6,7 +6,7 @@ use Illuminate\View\View;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Auth\Access\AuthorizationException;
 
-class DashboardController extends Controller
+class AdminController extends Controller
 {
     /**
      * @return Factory|View
