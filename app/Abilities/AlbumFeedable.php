@@ -6,7 +6,7 @@ use Spatie\Feed\FeedItem;
 
 trait AlbumFeedable
 {
-    public function toFeedItem()
+    public function toFeedItem(): FeedItem
     {
         return FeedItem::create()
             ->id($this->id)

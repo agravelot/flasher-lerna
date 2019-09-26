@@ -2,6 +2,9 @@
 
 namespace App\Abilities;
 
+use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
+
 trait AlbumWithOgTags
 {
     public function author(): string
@@ -9,7 +12,7 @@ trait AlbumWithOgTags
         return $this->user->name;
     }
 
-    public function tags(): \Illuminate\Support\Collection
+    public function tags(): Collection
     {
         return $this->categories()->pluck('name');
     }
@@ -24,7 +27,7 @@ trait AlbumWithOgTags
         return $this->updated_at->toIso8601String();
     }
 
-    public function images(): \Illuminate\Support\Collection
+    public function images(): Collection
     {
         return $this->getMedia(self::PICTURES_COLLECTION);
     }
@@ -36,7 +39,7 @@ trait AlbumWithOgTags
 
     public function description(): string
     {
-        return '';
+        return Str::limit($this->body, 150);
     }
 
     public function type(): string
