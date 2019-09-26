@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\File;
 use App\Abilities\HasNameAsSlug;
 use Illuminate\Http\UploadedFile;
@@ -11,7 +12,6 @@ use Spatie\MediaLibrary\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Illuminate\Database\Eloquent\Collection;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,12 +21,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Cosplayer extends Model implements HasMedia
 {
-    use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey, HasNameAsSlug, ClearsResponseCache;
+    use Sluggable,
+        SluggableScopeHelpers,
+        HasMediaTrait,
+        HasSlugRouteKey,
+        HasNameAsSlug,
+        ClearsResponseCache;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = ['name', 'description', 'slug', 'user_id'];
 
@@ -50,11 +55,9 @@ class Cosplayer extends Model implements HasMedia
      */
     public function setAvatarAttribute($media): void
     {
-        if (! $media && $this->avatar) {
-            $this->avatar->delete();
-        }
-
         if (! $media) {
+            optional($this->avatar)->delete();
+
             return;
         }
 
@@ -104,7 +107,7 @@ class Cosplayer extends Model implements HasMedia
     {
         $this->addMediaCollection('avatar')
             ->acceptsFile(static function (File $file) {
-                return mb_strpos($file->mimeType, 'image/') === 0;
+                return Str::startsWith($file->mimeType, 'image/');
             })
             ->singleFile();
     }
@@ -112,10 +115,9 @@ class Cosplayer extends Model implements HasMedia
     /**
      * Register the media conversions.
      *
-     *
      * @throws InvalidManipulation
      */
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(Media $media = null)
     {
         $this->addMediaConversion('thumb')
             ->crop('crop-center', 96, 96)

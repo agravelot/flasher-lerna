@@ -30,23 +30,39 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphable, ImagesOpenGraphable, Feedable
 {
-    use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey, HasTitleAsSlug, ClearsResponseCache, AlbumWithOgTags, AlbumFeedable;
+    use Sluggable,
+        SluggableScopeHelpers,
+        HasMediaTrait,
+        HasSlugRouteKey,
+        HasTitleAsSlug,
+        ClearsResponseCache,
+        AlbumWithOgTags,
+        AlbumFeedable;
 
     public const PICTURES_COLLECTION = 'pictures';
     public const RESPONSIVE_PICTURES_CONVERSION = 'responsive';
 
+    /**
+     * @var array<string>
+     */
     protected $with = ['media'];
 
+    /**
+     * @var array<string>
+     */
     protected $dates = [
         'published_at', 'updated_at', 'created_at',
     ];
 
+    /**
+     * @var array<string>
+     */
     protected $casts = ['private' => 'bool'];
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'title',

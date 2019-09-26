@@ -14,7 +14,7 @@ class Comment extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = ['body', 'post_id', 'user_id', 'parent_id'];
 

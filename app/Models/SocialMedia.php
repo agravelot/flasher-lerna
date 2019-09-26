@@ -12,7 +12,7 @@ class SocialMedia extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = ['name', 'icon', 'url', 'color', 'active'];
 
@@ -21,6 +21,6 @@ class SocialMedia extends Model
      */
     public function scopeActive(): Builder
     {
-        return self::where('active', true);
+        return $this->where('active', true);
     }
 }

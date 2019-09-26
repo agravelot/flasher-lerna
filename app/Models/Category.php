@@ -28,7 +28,7 @@ class Category extends Model implements HasMedia
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = ['name', 'slug', 'description'];
 
@@ -74,7 +74,6 @@ class Category extends Model implements HasMedia
 
     /**
      * Register the media conversions.
-     *
      *
      * @throws InvalidManipulation
      */

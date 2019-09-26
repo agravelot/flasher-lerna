@@ -14,10 +14,13 @@ class Testimonial extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = ['name', 'body', 'email', 'published_at'];
 
+    /**
+     * @var array<string>
+     */
     protected $dates = ['published_at'];
 
     /**

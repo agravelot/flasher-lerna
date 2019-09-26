@@ -16,9 +16,16 @@ class Setting extends Model implements HasMedia
 {
     use CastsEnums, HasMediaTrait;
 
-    const SETTING_COLLECTION = 'setting_media';
+    private const SETTING_COLLECTION = 'setting_media';
 
+    /**
+     * @var array<string>
+     */
     protected $fillable = ['name', 'value'];
+
+    /**
+     * @var array<string, string>
+     */
     protected $enumCasts = [
         'type' => SettingType::class,
     ];
@@ -26,7 +33,9 @@ class Setting extends Model implements HasMedia
     /**
      * Get the ability to return an Media for media settings.
      *
-     * @param $value
+     * @param string $value
+     *
+     * @return Media|string|bool|int|null $value
      */
     public function getValueAttribute($value)
     {
@@ -42,7 +51,7 @@ class Setting extends Model implements HasMedia
     /**
      * Dynamic type casting for value from type.
      *
-     * @return mixed|string
+     * @param string $key
      */
     protected function getCastType($key): string
     {
@@ -58,7 +67,7 @@ class Setting extends Model implements HasMedia
     }
 
     /**
-     * @param $value void
+     * @param \Symfony\Component\HttpFoundation\File\File|string|bool|int|null $value
      */
     public function setValueAttribute($value): void
     {
@@ -89,8 +98,6 @@ class Setting extends Model implements HasMedia
     }
 
     /**
-     * @param  Media  $media
-     *
      * @throws InvalidManipulation
      */
     public function registerMediaConversions(Media $media = null): void

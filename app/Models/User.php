@@ -21,7 +21,7 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'name', 'email', 'password', 'role',
@@ -30,12 +30,15 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * The attributes that should be hidden for arrays.
      *
-     * @var array
+     * @var array<string>
      */
     protected $hidden = [
         'password', 'remember_token',
     ];
 
+    /**
+     * @var array<string>
+     */
     protected $dates = [
         'email_verified_at', 'updated_at', 'created_at',
     ];
@@ -43,9 +46,9 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * Hash the password.
      *
-     * @param $value Non hashed password
+     * @param string $value Non hashed password
      */
-    public function setPasswordAttribute($value)
+    public function setPasswordAttribute($value): void
     {
         if ($value !== null) {
             $this->attributes['password'] = Hash::make($value);
