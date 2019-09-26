@@ -45,6 +45,10 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property Collection|PublicAlbum[] $publishedAlbums
  * @property-read mixed $cover
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\MediaLibrary\Models\Media[] $media
+ * @property-read int|null $albums_count
+ * @property-read int|null $media_count
+ * @property-read int|null $posts_count
+ * @property-read int|null $published_albums_count
  */
 class Category extends Model implements HasMedia
 {

@@ -18,6 +18,6 @@ class DownloadAlbumController extends Controller
         $this->authorize('download', $album);
         $pictures = $album->getMedia(Album::PICTURES_COLLECTION);
 
-        return MediaStream::create($album->title.'.zip')->addMedia($pictures);
+        return MediaStream::create($album->zip_file_name)->addMedia($pictures);
     }
 }

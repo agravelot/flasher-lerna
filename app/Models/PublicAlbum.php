@@ -45,6 +45,12 @@ use Illuminate\Database\Eloquent\Collection;
  * @property User $user
  * @property mixed $cover
  * @property-read mixed $cover_responsive
+ * @property-read int|null $categories_count
+ * @property-read int|null $comments_count
+ * @property-read int|null $cosplayers_count
+ * @property-read int|null $media_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album public()
+ * @property-read mixed $zip_file_name
  */
 class PublicAlbum extends Album
 {

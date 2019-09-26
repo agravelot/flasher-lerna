@@ -44,6 +44,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static Builder|Post whereUpdatedAt($value)
  * @method static Builder|Post whereUserId($value)
  * @mixin Eloquent
+ * @property-read int|null $categories_count
+ * @property-read int|null $comments_count
  */
 class Post extends Model
 {

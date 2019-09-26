@@ -14,6 +14,29 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
  * Class Setting.
+ *
+ * @property string $name
+ * @property string|null $value
+ * @property string $title
+ * @property string|null $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string $type
+ * @property int $id
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Media[] $media
+ * @property-read int|null $media_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Setting newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Setting newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Setting query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Setting whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Setting whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Setting whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Setting whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Setting whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Setting whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Setting whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Setting whereValue($value)
+ * @mixin \Eloquent
  */
 class Setting extends Model implements HasMedia
 {

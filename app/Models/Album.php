@@ -66,6 +66,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder|Album public ()
  * @property mixed $cover
  * @property-read mixed $cover_responsive
+ * @property-read int|null $categories_count
+ * @property-read int|null $comments_count
+ * @property-read int|null $cosplayers_count
+ * @property-read int|null $media_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album public()
+ * @property-read mixed $zip_file_name
  */
 class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphable, ImagesOpenGraphable, Feedable
 {
@@ -95,6 +101,11 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
         'user_id',
         'private',
     ];
+
+    public function getZipFileNameAttribute(): string
+    {
+        return $this->title.'.zip';
+    }
 
     public function getCoverAttribute(): ?Media
     {
