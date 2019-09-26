@@ -22,8 +22,7 @@ class ShowDownloadAlbumTest extends TestCase
         $response = $this->getDownloadAlbum($album);
 
         $this->assertInstanceOf(StreamedResponse::class, $response->baseResponse);
-        $filename = $album->title.'.zip';
-        $response->assertHeader('Content-Disposition', 'attachment; filename="'.$filename.'"');
+        $response->assertHeader('Content-Disposition', 'attachment; filename="'.$album->zip_file_name.'"');
     }
 
     public function test_admin_can_download_a_unpublished_album()
@@ -34,8 +33,7 @@ class ShowDownloadAlbumTest extends TestCase
         $response = $this->getDownloadAlbum($album);
 
         $this->assertInstanceOf(StreamedResponse::class, $response->baseResponse);
-        $filename = $album->title.'.zip';
-        $response->assertHeader('Content-Disposition', 'attachment; filename="'.$filename.'"');
+        $response->assertHeader('Content-Disposition', 'attachment; filename="'.$album->zip_file_name.'"');
     }
 
     public function test_user_present_as_a_cosplayer_in_a_album_can_download_it()
@@ -52,8 +50,7 @@ class ShowDownloadAlbumTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertInstanceOf(StreamedResponse::class, $response->baseResponse);
-        $filename = $album->title.'.zip';
-        $response->assertHeader('Content-Disposition', 'attachment; filename="'.$filename.'"');
+        $response->assertHeader('Content-Disposition', 'attachment; filename="'.$album->zip_file_name.'"');
     }
 
     public function test_user_present_as_a_cosplayer_in_a_album_can_not_download_it_if_not_published()

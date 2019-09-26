@@ -96,6 +96,11 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
         'private',
     ];
 
+    public function getZipFileNameAttribute(): string
+    {
+        return $this->title.'.zip';
+    }
+
     public function getCoverAttribute(): ?Media
     {
         return $this->media()->where('collection_name', self::PICTURES_COLLECTION)
