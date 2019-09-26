@@ -55,6 +55,14 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailInterface;
  * @mixin Eloquent
  * @property Collection|Client[] $clients
  * @property Collection|Token[] $tokens
+ * @property-read int|null $albums_count
+ * @property-read int|null $clients_count
+ * @property-read int|null $contact_count
+ * @property-read int|null $notifications_count
+ * @property-read int|null $posts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Testimonial[] $testimonials
+ * @property-read int|null $testimonials_count
+ * @property-read int|null $tokens_count
  */
 class User extends Authenticatable implements MustVerifyEmailInterface
 {
