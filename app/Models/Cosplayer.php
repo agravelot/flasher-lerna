@@ -2,16 +2,13 @@
 
 namespace App\Models;
 
-use Eloquent;
 use Spatie\MediaLibrary\File;
-use Illuminate\Support\Carbon;
 use App\Abilities\HasNameAsSlug;
 use Illuminate\Http\UploadedFile;
 use App\Abilities\HasSlugRouteKey;
 use App\Traits\ClearsResponseCache;
 use Spatie\MediaLibrary\Models\Media;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Illuminate\Database\Eloquent\Collection;
@@ -22,42 +19,6 @@ use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-/**
- * App\Models\Cosplayer.
- *
- * @property int $id
- * @property string $name
- * @property string $slug
- * @property string|null $description
- * @property string|null $picture
- * @property int|null $user_id
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property Collection|Album[] $albums
- * @property Collection|Category[] $categories
- * @property Collection|Media[] $media
- * @property User|null $user
- * @method static Builder|Cosplayer findSimilarSlugs($attribute, $config, $slug)
- * @method static Builder|Cosplayer newModelQuery()
- * @method static Builder|Cosplayer newQuery()
- * @method static Builder|Cosplayer query()
- * @method static Builder|Cosplayer whereCreatedAt($value)
- * @method static Builder|Cosplayer whereDescription($value)
- * @method static Builder|Cosplayer whereId($value)
- * @method static Builder|Cosplayer whereName($value)
- * @method static Builder|Cosplayer wherePicture($value)
- * @method static Builder|Cosplayer whereSlug($value)
- * @method static Builder|Cosplayer whereUpdatedAt($value)
- * @method static Builder|Cosplayer whereUserId($value)
- * @mixin Eloquent
- * @property Collection|PublicAlbum[] $publicAlbums
- * @property mixed $initial
- * @property mixed $avatar
- * @property-read int|null $albums_count
- * @property-read int|null $categories_count
- * @property-read int|null $media_count
- * @property-read int|null $public_albums_count
- */
 class Cosplayer extends Model implements HasMedia
 {
     use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey, HasNameAsSlug, ClearsResponseCache;

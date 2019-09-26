@@ -2,8 +2,8 @@
 
 namespace App\Generators;
 
-use Spatie\MediaLibrary\Exceptions\UrlCannotBeDetermined;
 use Spatie\MediaLibrary\UrlGenerator\LocalUrlGenerator;
+use Spatie\MediaLibrary\Exceptions\UrlCannotBeDetermined;
 
 class RelativeLocalUrlGenerator extends LocalUrlGenerator
 {

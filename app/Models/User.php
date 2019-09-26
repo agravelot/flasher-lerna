@@ -2,68 +2,18 @@
 
 namespace App\Models;
 
-use Eloquent;
-use Laravel\Passport\Token;
-use Laravel\Passport\Client;
-use Illuminate\Support\Carbon;
 use App\Abilities\MustVerifyEmail;
 use Laravel\Passport\HasApiTokens;
 use App\Abilities\CanResetPassword;
 use App\Traits\ClearsResponseCache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Builder;
 use Lab404\Impersonate\Models\Impersonate;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailInterface;
 
-/**
- * App\Models\User.
- *
- * @property int $id
- * @property string $name
- * @property string $email
- * @property string $password
- * @property string $role
- * @property string|null $email_verified_at
- * @property string|null $remember_token
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property Collection|Album[] $albums
- * @property Collection|Contact[] $contact
- * @property Cosplayer $cosplayer
- * @property Collection|Testimonial[] $goldenBookPosts
- * @property DatabaseNotificationCollection|DatabaseNotification[] $notifications
- * @property Collection|Post[] $posts
- * @method static Builder|User newModelQuery()
- * @method static Builder|User newQuery()
- * @method static Builder|User query()
- * @method static Builder|User whereCreatedAt($value)
- * @method static Builder|User whereEmail($value)
- * @method static Builder|User whereEmailVerifiedAt($value)
- * @method static Builder|User whereId($value)
- * @method static Builder|User whereName($value)
- * @method static Builder|User wherePassword($value)
- * @method static Builder|User whereRememberToken($value)
- * @method static Builder|User whereRole($value)
- * @method static Builder|User whereUpdatedAt($value)
- * @mixin Eloquent
- * @property Collection|Client[] $clients
- * @property Collection|Token[] $tokens
- * @property-read int|null $albums_count
- * @property-read int|null $clients_count
- * @property-read int|null $contact_count
- * @property-read int|null $notifications_count
- * @property-read int|null $posts_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Testimonial[] $testimonials
- * @property-read int|null $testimonials_count
- * @property-read int|null $tokens_count
- */
 class User extends Authenticatable implements MustVerifyEmailInterface
 {
     use MustVerifyEmail, CanResetPassword, Notifiable, Impersonate, HasApiTokens, ClearsResponseCache;

@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use Eloquent;
 use Spatie\Feed\Feedable;
 use Spatie\MediaLibrary\File;
-use Illuminate\Support\Carbon;
 use App\Abilities\AlbumFeedable;
 use App\Abilities\HasTitleAsSlug;
 use App\Abilities\AlbumWithOgTags;
@@ -30,49 +28,6 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-/**
- * App\Models\Album.
- *
- * @property int $id
- * @property string $slug
- * @property string $title
- * @property string|null $body
- * @property string|null $published_at
- * @property string|null $password
- * @property int $user_id
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property Collection|Category[] $categories
- * @property Collection|Comment[] $comments
- * @property Collection|Cosplayer[] $cosplayers
- * @property Collection|Media[] $media
- * @property User $user
- * @method static Builder|Album findSimilarSlugs($attribute, $config, $slug)
- * @method static Builder|Album newModelQuery()
- * @method static Builder|Album newQuery()
- * @method static Builder|Album query()
- * @method static Builder|Album whereBody($value)
- * @method static Builder|Album whereCreatedAt($value)
- * @method static Builder|Album whereId($value)
- * @method static Builder|Album wherePassword($value)
- * @method static Builder|Album wherePublishedAt($value)
- * @method static Builder|Album whereSlug($value)
- * @method static Builder|Album whereTitle($value)
- * @method static Builder|Album whereUpdatedAt($value)
- * @method static Builder|Album whereUserId($value)
- * @mixin Eloquent
- * @property int $private
- * @method static Builder|Album wherePrivate($value)
- * @method static Builder|Album public ()
- * @property mixed $cover
- * @property-read mixed $cover_responsive
- * @property-read int|null $categories_count
- * @property-read int|null $comments_count
- * @property-read int|null $cosplayers_count
- * @property-read int|null $media_count
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Album public()
- * @property-read mixed $zip_file_name
- */
 class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphable, ImagesOpenGraphable, Feedable
 {
     use Sluggable, SluggableScopeHelpers, HasMediaTrait, HasSlugRouteKey, HasTitleAsSlug, ClearsResponseCache, AlbumWithOgTags, AlbumFeedable;
