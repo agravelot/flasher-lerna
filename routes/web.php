@@ -26,9 +26,7 @@ Route::middleware(['auth', 'verified', 'admin'])->group(static function () {
             Route::namespace('Admin')->group(static function () {
                 Route::resource('social-medias', 'AdminSocialMediaController')
                     ->except('show');
-            });
-            Route::namespace('Api')->group(static function () {
-                Route::get('/{any?}', 'AdminDashboardController')
+                Route::get('/{any?}', 'AdminController')
                     ->where('any', '.*')->name('dashboard');
             });
         });
