@@ -34,3 +34,4 @@ _ide_helper_models.php
 /summary.log
 .php_cs
 .env.*local
+.scannerwork
