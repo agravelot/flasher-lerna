@@ -6,19 +6,14 @@ use Spatie\Feed\Feedable;
 use Spatie\MediaLibrary\File;
 use App\Abilities\AlbumFeedable;
 use App\Abilities\HasTitleAsSlug;
-use App\Abilities\AlbumWithOgTags;
 use App\Abilities\HasSlugRouteKey;
 use Illuminate\Support\HtmlString;
 use App\Traits\ClearsResponseCache;
 use Spatie\MediaLibrary\Models\Media;
-use App\Models\Contracts\OpenGraphable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Illuminate\Database\Eloquent\Collection;
-use App\Models\Contracts\ImagesOpenGraphable;
-use App\Models\Contracts\ArticleOpenGraphable;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -28,7 +23,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphable, ImagesOpenGraphable, Feedable
+class Album extends Model implements HasMedia, Feedable
 {
     use Sluggable,
         SluggableScopeHelpers,
@@ -36,7 +31,6 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
         HasSlugRouteKey,
         HasTitleAsSlug,
         ClearsResponseCache,
-        AlbumWithOgTags,
         AlbumFeedable;
 
     public const PICTURES_COLLECTION = 'pictures';
@@ -55,7 +49,7 @@ class Album extends Model implements HasMedia, OpenGraphable, ArticleOpenGraphab
     ];
 
     /**
-     * @var array<string>
+     * @var array<string, string>
      */
     protected $casts = ['private' => 'bool'];
 

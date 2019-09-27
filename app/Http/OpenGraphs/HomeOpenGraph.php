@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Front;
+namespace App\Http\OpenGraphs;
 
 use Illuminate\Support\Collection;
 use App\Models\Contracts\OpenGraphable;

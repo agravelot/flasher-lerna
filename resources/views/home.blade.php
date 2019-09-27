@@ -1,10 +1,6 @@
 @extends('layouts.app')
 
-@php
-    $homeOpenGraph = new App\Http\Controllers\Front\HomeOpenGraph();
-@endphp
-
-@include('layouts.partials._og_tags', ['model' => $homeOpenGraph])
+@include('layouts.partials._og_tags', ['openGraph' => new App\Http\OpenGraphs\HomeOpenGraph()])
 
 @section('content')
     <section class="hero is-black is-medium has-hero-background is-radiusless">
