@@ -11,6 +11,13 @@
     <meta property="og:locale" content="{{ app()->getLocale() }}"/>
     {{--    <meta property="og:locale:alternate" content="{{ app()->getFallbackLocale() }}" />--}}
 
+    @if ($openGraph instanceof \App\Models\Contracts\ProfileOpenGraphable)
+        <meta property="profile:username" content="{{ $openGraph->username() }}">
+        <meta property="profile:first_name" content="{{ $openGraph->firstName() }}">
+        <meta property="profile:last_name" content="{{ $openGraph->lastName() }}">
+        <meta property="profile:gender" content="{{ $openGraph->gender() }}">
+    @endif
+
     @if ($openGraph instanceof \App\Models\Contracts\ArticleOpenGraphable)
         <meta property="article:published_time" content="{{ $openGraph->publishedAt() }}"/>
         <meta property="article:modified_time" content="{{ $openGraph->updatedAt() }}"/>

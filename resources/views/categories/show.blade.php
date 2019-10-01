@@ -21,3 +21,5 @@
         </div>
     </section>
 @endsection
+
+@include('layouts.partials._og_tags', ['openGraph' => new App\Http\OpenGraphs\CategoryOpenGraph($category)])
