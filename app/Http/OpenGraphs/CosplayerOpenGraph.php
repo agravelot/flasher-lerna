@@ -2,14 +2,9 @@
 
 namespace App\Http\OpenGraphs;
 
-use App\Models\Album;
-use App\Models\Contracts\ProfileOpenGraphable;
 use App\Models\Cosplayer;
-use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
 use App\Models\Contracts\OpenGraphable;
-use App\Models\Contracts\ImagesOpenGraphable;
-use App\Models\Contracts\ArticleOpenGraphable;
+use App\Models\Contracts\ProfileOpenGraphable;
 
 class CosplayerOpenGraph implements OpenGraphable, ProfileOpenGraphable
 {

@@ -2,7 +2,6 @@
 
 namespace App\Http\OpenGraphs;
 
-use App\Models\Album;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
