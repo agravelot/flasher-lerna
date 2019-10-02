@@ -43,12 +43,9 @@ class AlbumPolicy extends Policy
     {
         if ($album->isPublic()) {
             return true;
-        } elseif ($user == null) {
-            return false;
         }
 
-//        return $user == null && $user->id === $album->user_id;
-        return $user->id === $album->user_id;
+        return $album->user->is($user);
     }
 
     /**
