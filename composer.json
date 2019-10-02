@@ -30,7 +30,7 @@
     "laravel/slack-notification-channel": "^2.0",
     "laravel/tinker": "^1.0",
     "league/flysystem-aws-s3-v3": "^1.0",
-    "pion/laravel-chunk-upload": "^1.2",
+    "agravelot/laravel-chunk-upload-patched": "dev-sharpstream",
     "sentry/sentry-laravel": "^1.0",
     "spatie/laravel-feed": "^2.4",
     "spatie/laravel-medialibrary": "^7.6",
@@ -122,5 +122,11 @@
     "optimize-autoloader": true
   },
   "minimum-stability": "dev",
-  "prefer-stable": true
+  "prefer-stable": true,
+  "repositories": [
+      {
+          "type": "vcs",
+          "url": "https://github.com/agravelot/laravel-chunk-upload-patched"
+      }
+  ]
 }
