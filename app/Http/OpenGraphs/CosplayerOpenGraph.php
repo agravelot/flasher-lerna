@@ -23,6 +23,16 @@ class CosplayerOpenGraph implements OpenGraphable, ProfileOpenGraphable
         return 'profile';
     }
 
+    public function title(): string
+    {
+        return $this->cosplayer->name;
+    }
+
+    public function description(): string
+    {
+        return $this->cosplayer->description;
+    }
+
     public function username(): string
     {
         return $this->cosplayer->name;

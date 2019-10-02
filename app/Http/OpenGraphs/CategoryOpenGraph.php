@@ -7,9 +7,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use App\Models\Contracts\OpenGraphable;
 use App\Models\Contracts\ImagesOpenGraphable;
-use App\Models\Contracts\ArticleOpenGraphable;
 
-class CategoryOpenGraph implements OpenGraphable, ArticleOpenGraphable, ImagesOpenGraphable
+class CategoryOpenGraph implements OpenGraphable, ImagesOpenGraphable
 {
     /**
      * @var Category
@@ -21,19 +20,9 @@ class CategoryOpenGraph implements OpenGraphable, ArticleOpenGraphable, ImagesOp
         $this->category = $category;
     }
 
-    public function author(): string
-    {
-        return $this->category->user->name;
-    }
-
     public function tags(): Collection
     {
         return $this->category->categories()->pluck('name');
-    }
-
-    public function publishedAt(): string
-    {
-        return $this->category->published_at->toIso8601String();
     }
 
     public function updatedAt(): string
@@ -43,7 +32,11 @@ class CategoryOpenGraph implements OpenGraphable, ArticleOpenGraphable, ImagesOp
 
     public function images(): Collection
     {
-        return $this->category->cover;
+        if ($cover = $this->category->cover) {
+            return collect([$cover]);
+        }
+
+        return collect();
     }
 
     public function title(): string
@@ -58,7 +51,6 @@ class CategoryOpenGraph implements OpenGraphable, ArticleOpenGraphable, ImagesOp
 
     public function type(): string
     {
-        //TODO ???
-        return 'article';
+        return 'website';
     }
 }
