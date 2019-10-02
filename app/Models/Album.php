@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Spatie\Feed\Feedable;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\File;
 use App\Abilities\AlbumFeedable;
 use App\Abilities\HasTitleAsSlug;
@@ -92,8 +93,7 @@ class Album extends Model implements HasMedia, Feedable
      */
     public function scopePublic(Builder $query)
     {
-        $query->whereNotNull('published_at')
-            ->where('private', false);
+        $query->whereNotNull('published_at')->where('private', false);
     }
 
     /**
@@ -172,7 +172,7 @@ class Album extends Model implements HasMedia, Feedable
     {
         $this->addMediaCollection(self::PICTURES_COLLECTION)
             ->acceptsFile(static function (File $file) {
-                return mb_strpos($file->mimeType, 'image/') === 0;
+                return Str::startsWith('image/', $file->mimeType);
             });
     }
 
