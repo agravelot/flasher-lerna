@@ -51,7 +51,9 @@ class Album extends Model implements HasMedia, Feedable
     /**
      * @var array<string, string>
      */
-    protected $casts = ['private' => 'bool'];
+    protected $casts = [
+        'private' => 'bool',
+    ];
 
     /**
      * The attributes that are mass assignable.

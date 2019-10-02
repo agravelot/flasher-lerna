@@ -51,10 +51,8 @@ class AlbumShowResource extends Resource
 
     /**
      * Check if the user has the ability to according to the policy.
-     *
-     * @return bool
      */
-    private function checkCan(string $permission, Album $album)
+    private function checkCan(string $permission, Album $album): bool
     {
         // Because we are using this resource directly in your views.
         // We need need to check the request is an ajax request.
