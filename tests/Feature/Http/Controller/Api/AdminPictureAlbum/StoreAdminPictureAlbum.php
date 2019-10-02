@@ -4,7 +4,9 @@ namespace Tests\Feature\Http\Controller\Api\AdminPictureAlbum;
 
 use Tests\TestCase;
 use App\Models\Album;
+use App\Jobs\PerformConversions;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -14,14 +16,17 @@ class StoreAdminPictureAlbum extends TestCase
 
     public function test_admin_can_store_a_picture_to_an_album()
     {
+        Queue::fake();
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
         $image = UploadedFile::fake()->image('fake.jpg');
+        Queue::assertNothingPushed();
 
         $response = $this->storeAlbumPicture($album, $image);
 
         $this->assertSame(1, $album->fresh()->media->count());
         $response->assertStatus(201);
+        Queue::assertPushedOn('images', PerformConversions::class);
     }
 
     public function test_admin_can_not_store_a_video_to_an_album()
