@@ -3,6 +3,7 @@
 namespace App\Http\OpenGraphs;
 
 use App\Models\Cosplayer;
+use Illuminate\Support\Str;
 use App\Models\Contracts\OpenGraphable;
 use App\Models\Contracts\ProfileOpenGraphable;
 
@@ -30,7 +31,7 @@ class CosplayerOpenGraph implements OpenGraphable, ProfileOpenGraphable
 
     public function description(): string
     {
-        return $this->cosplayer->description;
+        return Str::limit($this->cosplayer->description ?? '', 150);
     }
 
     public function username(): string
