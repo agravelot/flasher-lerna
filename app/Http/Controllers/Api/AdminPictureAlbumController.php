@@ -9,9 +9,9 @@ use App\Transformers\AlbumShowResource;
 use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Requests\StorePictureAlbumRequest;
 use App\Http\Requests\DeletePictureAlbumRequest;
-use App\Transformers\CompleteUploadPictureResource;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
-use App\Transformers\ProcessingUploadPictureResource;
+use App\Http\Resources\CompleteUploadPictureResource;
+use App\Http\Resources\ProcessingUploadPictureResource;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 
 class AdminPictureAlbumController extends Controller
