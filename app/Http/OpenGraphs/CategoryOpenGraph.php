@@ -46,7 +46,7 @@ class CategoryOpenGraph implements OpenGraphable, ImagesOpenGraphable
 
     public function description(): string
     {
-        return Str::limit($this->category->description, 150);
+        return Str::limit($this->category->description ?? '', 150);
     }
 
     public function type(): string
