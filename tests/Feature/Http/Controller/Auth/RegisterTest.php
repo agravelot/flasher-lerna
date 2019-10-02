@@ -4,7 +4,7 @@ namespace Tests\Feature\Http\Controller\Auth;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Setting;
+use Illuminate\Support\Facades\Mail;
 use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -14,11 +14,11 @@ class RegisterTest extends TestCase
 
     public function test_guest_can_register()
     {
-        Setting::where('name', 'email_from')->first()->update(['value'=> 'test@jkanda.fr']);
+        Mail::fake();
         NoCaptcha::shouldReceive('verifyResponse')
             ->once()
             ->andReturn(true);
-        $user = factory(User::class)->make(['password' => 'secret']);
+        $user = factory(User::class)->make();
         $data = [
             'name' => $user->name,
             'email' => $user->email,
@@ -32,7 +32,8 @@ class RegisterTest extends TestCase
         $response->assertRedirect('/');
         $this->followRedirects($response)
             ->assertStatus(200);
-        //TODO Assert Notification sent
+        $registeredUser = User::latest()->first();
+        $this->assertAuthenticatedAs($registeredUser);
     }
 
     protected function setUp(): void
