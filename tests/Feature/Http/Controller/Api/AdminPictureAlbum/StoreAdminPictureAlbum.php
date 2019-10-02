@@ -31,6 +31,7 @@ class StoreAdminPictureAlbum extends TestCase
 
     public function test_admin_can_not_store_a_video_to_an_album()
     {
+        Queue::fake();
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
         $video = UploadedFile::fake()->image('fake.mp4');
@@ -39,10 +40,12 @@ class StoreAdminPictureAlbum extends TestCase
 
         $this->assertSame(0, $album->fresh()->media->count());
         $response->assertStatus(422);
+        Queue::assertNothingPushed();
     }
 
     public function test_user_can_not_store_a_picture_to_an_album()
     {
+        Queue::fake();
         $this->actingAsUser();
         $album = factory(Album::class)->create();
         $image = UploadedFile::fake()->image('fake.jpg');
@@ -51,10 +54,12 @@ class StoreAdminPictureAlbum extends TestCase
 
         $this->assertSame(0, $album->fresh()->media->count());
         $response->assertStatus(403);
+        Queue::assertNothingPushed();
     }
 
     public function test_guest_can_not_store_a_picture_to_an_album()
     {
+        Queue::fake();
         $album = factory(Album::class)->state('withUser')->create();
         $image = UploadedFile::fake()->image('fake.jpg');
 
@@ -62,6 +67,7 @@ class StoreAdminPictureAlbum extends TestCase
 
         $this->assertSame(0, $album->fresh()->media->count());
         $response->assertStatus(401);
+        Queue::assertNothingPushed();
     }
 
     public function test_uploaded_image_path_is_relative()
