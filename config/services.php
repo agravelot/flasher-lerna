@@ -13,19 +13,19 @@ return [
     |
     */
 
-    'sendgrid' => [
-        'api_key' => env('SENDGRID_API_KEY'),
+    'ses' => [
+        'key' => env('SES_KEY'),
+        'secret' => env('SES_SECRET'),
+        'region' => env('SES_REGION', 'us-east-1'),
     ],
 
+//    'sendgrid' => [
+//        'api_key' => env('SENDGRID_API_KEY'),
+//    ],
+//
 //    'mailgun' => [
 //        'domain' => env('MAILGUN_DOMAIN'),
 //        'secret' => env('MAILGUN_SECRET'),
-//    ],
-//
-//    'ses' => [
-//        'key' => env('SES_KEY'),
-//        'secret' => env('SES_SECRET'),
-//        'region' => env('SES_REGION', 'us-east-1'),
 //    ],
 //
 //    'sparkpost' => [
