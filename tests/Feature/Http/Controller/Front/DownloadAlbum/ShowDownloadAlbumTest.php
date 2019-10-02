@@ -28,7 +28,7 @@ class ShowDownloadAlbumTest extends TestCase
     public function test_admin_can_download_a_unpublished_album()
     {
         $this->actingAsAdmin();
-        $album = factory(Album::class)->states(['published'])->create();
+        $album = factory(Album::class)->states(['unpublished'])->create();
 
         $response = $this->getDownloadAlbum($album);
 
@@ -43,7 +43,7 @@ class ShowDownloadAlbumTest extends TestCase
         /** @var Cosplayer $cosplayer */
         $cosplayer = factory(Cosplayer::class)->create(['user_id' => $user->id]);
         /** @var Album $album */
-        $album = factory(Album::class)->states(['published'])->create();
+        $album = factory(Album::class)->states(['published', 'passwordLess'])->create();
         $album->cosplayers()->attach($cosplayer);
         $album->save();
 
