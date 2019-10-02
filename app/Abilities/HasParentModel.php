@@ -1,20 +1,14 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 namespace App\Abilities;
 
 use ReflectionClass;
+use ReflectionException;
 use Illuminate\Support\Str;
 
 trait HasParentModel
 {
-    public function getTable()
+    public function getTable(): string
     {
         if (! isset($this->table)) {
             return str_replace('\\', '', Str::snake(Str::plural(class_basename($this->getParentClass()))));
@@ -23,17 +17,26 @@ trait HasParentModel
         return $this->table;
     }
 
-    protected function getParentClass()
+    /**
+     * @throws ReflectionException
+     */
+    protected function getParentClass(): string
     {
         return (new ReflectionClass($this))->getParentClass()->getName();
     }
 
-    public function getForeignKey()
+    /**
+     * @throws ReflectionException
+     */
+    public function getForeignKey(): string
     {
         return Str::snake(class_basename($this->getParentClass())).'_'.$this->primaryKey;
     }
 
-    public function joiningTable($related, $instance = null)
+    /**
+     * @throws ReflectionException
+     */
+    public function joiningTable($related, $instance = null): string
     {
         $models = [
             Str::snake(class_basename($related)),

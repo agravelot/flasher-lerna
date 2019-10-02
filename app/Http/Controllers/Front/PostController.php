@@ -1,12 +1,5 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 namespace App\Http\Controllers\Front;
 
 use App\Models\Post;
@@ -17,8 +10,6 @@ class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return View
      */
     public function index(): View
     {
@@ -29,10 +20,6 @@ class PostController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  Post  $post
-     *
-     * @return View
      */
     public function show(Post $post): View
     {

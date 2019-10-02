@@ -1,49 +1,12 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 namespace App\Models;
 
-use Eloquent;
-use Illuminate\Support\Carbon;
+use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Modules\Core\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-/**
- * App\Models\Testimonial.
- *
- * @property int $id
- * @property string $name
- * @property string $email
- * @property string $body
- * @property int $active
- * @property int|null $user_id
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property User|null $user
- * @method static Builder|Testimonial newModelQuery()
- * @method static Builder|Testimonial newQuery()
- * @method static Builder|Testimonial query()
- * @method static Builder|Testimonial whereActive($value)
- * @method static Builder|Testimonial whereBody($value)
- * @method static Builder|Testimonial whereCreatedAt($value)
- * @method static Builder|Testimonial whereEmail($value)
- * @method static Builder|Testimonial whereId($value)
- * @method static Builder|Testimonial whereName($value)
- * @method static Builder|Testimonial whereUpdatedAt($value)
- * @method static Builder|Testimonial whereUserId($value)
- * @mixin Eloquent
- * @property Carbon|null $published_at
- * @method static Builder|Testimonial published()
- * @method static Builder|Testimonial wherePublishedAt($value)
- */
 class Testimonial extends Model
 {
     use ClearsResponseCache;
@@ -51,16 +14,17 @@ class Testimonial extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = ['name', 'body', 'email', 'published_at'];
 
+    /**
+     * @var array<string>
+     */
     protected $dates = ['published_at'];
 
     /**
      * Return if the golden book post is published or not.
-     *
-     * @return bool
      */
     public function isPublished(): bool
     {
@@ -69,8 +33,6 @@ class Testimonial extends Model
 
     /**
      * Scope for published golden book posts.
-     *
-     * @param  Builder  $query
      */
     public function scopePublished(Builder $query): void
     {
@@ -103,8 +65,6 @@ class Testimonial extends Model
 
     /**
      * Return the related user.
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
