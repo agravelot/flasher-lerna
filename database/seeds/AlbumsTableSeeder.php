@@ -1,12 +1,5 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -17,7 +10,7 @@ class AlbumsTableSeeder extends Seeder
      */
     public function run()
     {
-        User::all()->each(function (User $user) {
+        User::all()->each(static function (User $user) {
             $user->albums()->saveMany(
                 collect()
                     ->push(factory(App\Models\Album::class)->states(['password', 'published'])->make())

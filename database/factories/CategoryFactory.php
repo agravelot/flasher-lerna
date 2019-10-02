@@ -1,12 +1,5 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 use Carbon\Carbon;
 use App\Models\Category;
 use Faker\Generator as Faker;
@@ -14,7 +7,7 @@ use Illuminate\Http\UploadedFile;
 
 $withCover = false;
 
-$factory->define(Category::class, function (Faker $faker) use (&$withCover) {
+$factory->define(Category::class, static function (Faker $faker) use (&$withCover) {
     $withCover = false;
 
     return [
@@ -26,13 +19,13 @@ $factory->define(Category::class, function (Faker $faker) use (&$withCover) {
 });
 
 //TODO Fix not working
-$factory->afterMaking(Category::class, function (Category $category, Faker $faker) use (&$withCover) {
+$factory->afterMaking(Category::class, static function (Category $category, Faker $faker) use (&$withCover) {
     if ($withCover) {
         $category->setCover(UploadedFile::fake()->image('fake.jpg'));
     }
 });
 
-$factory->state(Category::class, 'withCover', function () use (&$withMedias) {
+$factory->state(Category::class, 'withCover', static function () use (&$withMedias) {
     $withMedias = true;
 
     return [];

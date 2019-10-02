@@ -1,12 +1,5 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 namespace App\Http\Controllers\Front;
 
 use App\MediaStream;
@@ -17,9 +10,6 @@ use Illuminate\Auth\Access\AuthorizationException;
 class DownloadAlbumController extends Controller
 {
     /**
-     * @param  Album  $album
-     *
-     * @return MediaStream
      * @throws AuthorizationException
      */
     public function show(Album $album): MediaStream
@@ -28,6 +18,6 @@ class DownloadAlbumController extends Controller
         $this->authorize('download', $album);
         $pictures = $album->getMedia(Album::PICTURES_COLLECTION);
 
-        return MediaStream::create($album->title.'.zip')->addMedia($pictures);
+        return MediaStream::create($album->zip_file_name)->addMedia($pictures);
     }
 }

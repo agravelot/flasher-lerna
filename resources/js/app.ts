@@ -6,3 +6,4 @@
 import './bulma';
 import './modal';
 import './lazy-load';
+import './sentry';

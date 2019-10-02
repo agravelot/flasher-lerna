@@ -1,12 +1,5 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -16,9 +9,9 @@ class AddIndexSocialMedia extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('social_media', function (Blueprint $table) {
+        Schema::table('social_media', static function (Blueprint $table) {
             $table->index('active');
         });
     }
@@ -26,9 +19,9 @@ class AddIndexSocialMedia extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('social_media', function (Blueprint $table) {
+        Schema::table('social_media', static function (Blueprint $table) {
             $table->dropIndex('social_media_active_index');
         });
     }

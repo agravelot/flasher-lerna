@@ -1,12 +1,5 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
@@ -47,11 +40,6 @@ class ResetPasswordController extends Controller
 
     /**
      * Reset the given user's password.
-     *
-     * @param  User  $user
-     * @param  string  $password
-     *
-     * @return void
      */
     protected function resetPassword(User $user, string $password): void
     {

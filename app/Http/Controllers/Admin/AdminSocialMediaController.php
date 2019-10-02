@@ -1,12 +1,5 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 namespace App\Http\Controllers\Admin;
 
 use Exception;
@@ -22,7 +15,6 @@ class AdminSocialMediaController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return View
      * @throws AuthorizationException
      */
     public function index(): View
@@ -36,7 +28,6 @@ class AdminSocialMediaController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return View
      * @throws AuthorizationException
      */
     public function create(): View
@@ -49,9 +40,7 @@ class AdminSocialMediaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  SocialMediaRequest  $request
      *
-     * @return RedirectResponse
      * @throws AuthorizationException
      */
     public function store(SocialMediaRequest $request): RedirectResponse
@@ -67,9 +56,7 @@ class AdminSocialMediaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      *
-     * @return View
      * @throws AuthorizationException
      */
     public function show(int $id): View
@@ -84,9 +71,7 @@ class AdminSocialMediaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
      *
-     * @return View
      * @throws AuthorizationException
      */
     public function edit(int $id): View
@@ -101,10 +86,7 @@ class AdminSocialMediaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  SocialMediaRequest  $request
-     * @param  int  $id
      *
-     * @return RedirectResponse
      * @throws AuthorizationException
      */
     public function update(SocialMediaRequest $request, int $id): RedirectResponse
@@ -121,11 +103,7 @@ class AdminSocialMediaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     *
-     * @return RedirectResponse
      * @throws Exception
-     *
      * @throws AuthorizationException
      */
     public function destroy(int $id): RedirectResponse

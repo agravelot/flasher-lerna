@@ -1,12 +1,5 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
@@ -45,11 +38,6 @@ class RegisterController extends Controller
 
     /**
      * Create a new user instance after a valid registration.
-     *
-     *
-     * @param  UserRequest  $request
-     *
-     * @return User
      */
     protected function create(UserRequest $request): User
     {

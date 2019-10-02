@@ -1,12 +1,5 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 namespace App\Console\Commands;
 
 use App\Models\Album;
@@ -40,10 +33,10 @@ class GenerateSitemap extends Command
     public function handle()
     {
         $sitemap = SitemapGenerator::create(config('app.url'))
-            ->shouldCrawl(function (UriInterface $uri) {
+            ->shouldCrawl(static function (UriInterface $uri) {
                 return mb_strpos($uri->getPath(), '/admin') === false;
             })
-            ->shouldCrawl(function (UriInterface $uri) {
+            ->shouldCrawl(static function (UriInterface $uri) {
                 $excludes = ['/albums/', '/cosplayers/', '/categories/'];
                 foreach ($excludes as $exclude) {
                     if (mb_strpos($uri->getPath(), $exclude)) {
@@ -54,19 +47,19 @@ class GenerateSitemap extends Command
                 return true;
             })->getSitemap();
 
-        PublicAlbum::all()->each(function (Album $album) use ($sitemap) {
+        PublicAlbum::all()->each(static function (Album $album) use ($sitemap) {
             $sitemap->add(Url::create(route('albums.show', compact('album')))
                 ->setPriority(1.0)->setLastModificationDate($album->updated_at)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
         });
 
-        Cosplayer::all()->each(function (Cosplayer $cosplayer) use ($sitemap) {
+        Cosplayer::all()->each(static function (Cosplayer $cosplayer) use ($sitemap) {
             $sitemap->add(Url::create(route('cosplayers.show', compact('cosplayer')))
                 ->setPriority(0.6)->setLastModificationDate($cosplayer->updated_at)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
         });
 
-        Category::all()->each(function (Category $category) use ($sitemap) {
+        Category::all()->each(static function (Category $category) use ($sitemap) {
             $sitemap->add(Url::create(route('categories.show', compact('category')))
                 ->setPriority(0.6)->setLastModificationDate($category->updated_at)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
