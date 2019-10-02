@@ -39,8 +39,9 @@ class ShowDownloadAlbumTest extends TestCase
     public function test_user_present_as_a_cosplayer_in_a_album_can_download_it()
     {
         $user = factory(User::class)->create();
-        $cosplayer = factory(Cosplayer::class)->create(['user_id' => $user->id]);
         $this->actingAs($user);
+        /** @var Cosplayer $cosplayer */
+        $cosplayer = factory(Cosplayer::class)->create(['user_id' => $user->id]);
         /** @var Album $album */
         $album = factory(Album::class)->states(['published'])->create();
         $album->cosplayers()->attach($cosplayer);

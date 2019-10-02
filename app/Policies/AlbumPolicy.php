@@ -12,15 +12,15 @@ class AlbumPolicy extends Policy
      */
     public function download(User $user, Album $album): bool
     {
-        if ($user && $user->isAdmin()) {
+        if (optional($user)->isAdmin()) {
             return true;
         }
 
-        if (! $album->isPublic()) {
-            return false;
+        if ($album->isPublic() && $album->cosplayers->contains($user->cosplayer)) {
+            return true;
         }
 
-        return $album->cosplayers->contains($user->cosplayer);
+        return false;
     }
 
     /**
