@@ -172,7 +172,7 @@ class Album extends Model implements HasMedia, Feedable
     {
         $this->addMediaCollection(self::PICTURES_COLLECTION)
             ->acceptsFile(static function (File $file) {
-                return Str::startsWith('image/', $file->mimeType);
+                return Str::startsWith($file->mimeType, 'image/');
             });
     }
 
