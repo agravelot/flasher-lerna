@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
 /*
@@ -22,7 +23,7 @@ $factory->define(User::class, static function (Faker $faker) {
         'password' => Hash::make('secret'),
         'role' => 'user',
         'email_verified_at' => Carbon::now(),
-        'remember_token' => str_random(10),
+        'remember_token' => Str::random(10),
         'created_at' => $faker->dateTimeThisDecade,
         'updated_at' => Carbon::now(),
     ];
