@@ -1,68 +1,19 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 namespace App\Models;
 
-use Eloquent;
-use Laravel\Passport\Token;
-use Laravel\Passport\Client;
-use Illuminate\Support\Carbon;
 use App\Abilities\MustVerifyEmail;
 use Laravel\Passport\HasApiTokens;
 use App\Abilities\CanResetPassword;
+use App\Traits\ClearsResponseCache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Builder;
 use Lab404\Impersonate\Models\Impersonate;
-use Illuminate\Database\Eloquent\Collection;
-use Modules\Core\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailInterface;
 
-/**
- * App\Models\User.
- *
- * @property int $id
- * @property string $name
- * @property string $email
- * @property string $password
- * @property string $role
- * @property string|null $email_verified_at
- * @property string|null $remember_token
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property Collection|Album[] $albums
- * @property Collection|Contact[] $contact
- * @property Cosplayer $cosplayer
- * @property Collection|Testimonial[] $goldenBookPosts
- * @property DatabaseNotificationCollection|DatabaseNotification[] $notifications
- * @property Collection|Post[] $posts
- * @method static Builder|User newModelQuery()
- * @method static Builder|User newQuery()
- * @method static Builder|User query()
- * @method static Builder|User whereCreatedAt($value)
- * @method static Builder|User whereEmail($value)
- * @method static Builder|User whereEmailVerifiedAt($value)
- * @method static Builder|User whereId($value)
- * @method static Builder|User whereName($value)
- * @method static Builder|User wherePassword($value)
- * @method static Builder|User whereRememberToken($value)
- * @method static Builder|User whereRole($value)
- * @method static Builder|User whereUpdatedAt($value)
- * @mixin Eloquent
- * @property Collection|Client[] $clients
- * @property Collection|Token[] $tokens
- */
 class User extends Authenticatable implements MustVerifyEmailInterface
 {
     use MustVerifyEmail, CanResetPassword, Notifiable, Impersonate, HasApiTokens, ClearsResponseCache;
@@ -70,7 +21,7 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = [
         'name', 'email', 'password', 'role',
@@ -79,12 +30,15 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * The attributes that should be hidden for arrays.
      *
-     * @var array
+     * @var array<string>
      */
     protected $hidden = [
         'password', 'remember_token',
     ];
 
+    /**
+     * @var array<string>
+     */
     protected $dates = [
         'email_verified_at', 'updated_at', 'created_at',
     ];
@@ -92,9 +46,9 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * Hash the password.
      *
-     * @param $value Non hashed password
+     * @param string $value Non hashed password
      */
-    public function setPasswordAttribute($value)
+    public function setPasswordAttribute($value): void
     {
         if ($value !== null) {
             $this->attributes['password'] = Hash::make($value);
@@ -103,8 +57,6 @@ class User extends Authenticatable implements MustVerifyEmailInterface
 
     /**
      * Return the albums posted by this user.
-     *
-     * @return HasMany
      */
     public function albums(): HasMany
     {
@@ -113,8 +65,6 @@ class User extends Authenticatable implements MustVerifyEmailInterface
 
     /**
      * Return the posts posted by this user.
-     *
-     * @return HasMany
      */
     public function posts(): HasMany
     {
@@ -123,8 +73,6 @@ class User extends Authenticatable implements MustVerifyEmailInterface
 
     /**
      * Return the linked cosplayer to this user.
-     *
-     * @return HasOne
      */
     public function cosplayer(): HasOne
     {
@@ -133,8 +81,6 @@ class User extends Authenticatable implements MustVerifyEmailInterface
 
     /**
      * Return the contact from this user.
-     *
-     * @return HasMany
      */
     public function contact(): HasMany
     {
@@ -143,8 +89,6 @@ class User extends Authenticatable implements MustVerifyEmailInterface
 
     /**
      * Return the golden book posts by this user.
-     *
-     * @return HasMany
      */
     public function testimonials(): HasMany
     {
@@ -153,8 +97,6 @@ class User extends Authenticatable implements MustVerifyEmailInterface
 
     /**
      * Return if this user has the ability to impersonate.
-     *
-     * @return bool
      */
     public function canImpersonate(): bool
     {
@@ -163,8 +105,6 @@ class User extends Authenticatable implements MustVerifyEmailInterface
 
     /**
      * Return if this user is an admin.
-     *
-     * @return bool
      */
     public function isAdmin(): bool
     {

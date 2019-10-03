@@ -1,12 +1,10 @@
-import Sidebar from '../admin/views/Sidebar.vue';
+import Sidebar from '../components/admin/Sidebar.vue';
 import Vue from 'vue';
 import router from './router';
 import './menu.ts';
 import './fontawsome.ts';
 import '../bootstrap';
-import '../fontawsome';
 import '../bulma';
-import '../vue-masonry';
 import 'bulma-modal-fx/src/_js/modal-fx';
 
 /**

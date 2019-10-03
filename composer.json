@@ -1,6 +1,6 @@
 {
-  "name": "laravel/laravel",
-  "description": "The Laravel Framework.",
+  "name": "nevax/flasher",
+  "description": "CMS solution for photographer.",
   "keywords": [
     "framework",
     "laravel"
@@ -12,57 +12,62 @@
     "ext-gd": "*",
     "ext-imagick": "*",
     "ext-json": "*",
-    "anhskohbo/no-captcha": "^3.0",
+    "ext-redis": "*",
+    "anhskohbo/no-captcha": "^3.1",
     "bensampo/laravel-enum": "^1.20",
     "beyondcode/laravel-self-diagnosis": "^1.0",
-    "cviebrock/eloquent-sluggable": "^4.8",
+    "cviebrock/eloquent-sluggable": "^6.0",
     "doctrine/dbal": "^2.9",
     "fideloper/proxy": "^4.0",
     "intervention/imagecache": "^2.3",
-    "ipunkt/laravel-analytics": "^1.5",
+    "ipunkt/laravel-analytics": "^2.0",
     "jerodev/laravel-font-awesome": "^1.0",
     "lab404/laravel-impersonate": "^1.2",
-    "laravel/framework": "5.8.*",
+    "laravel/framework": "6.1.0 as 5.8.34",
     "laravel/horizon": "^3.0",
     "laravel/passport": "^7.2",
     "laravel/slack-notification-channel": "^2.0",
     "laravel/tinker": "^1.0",
     "league/flysystem-aws-s3-v3": "^1.0",
-    "nwidart/laravel-modules": "^5.0",
-    "pion/laravel-chunk-upload": "^1.2",
-    "s-ichikawa/laravel-sendgrid-driver": "^2.0",
+    "agravelot/laravel-chunk-upload-patched": "dev-sharpstream",
     "sentry/sentry-laravel": "^1.0",
-    "spatie/laravel-activitylog": "^3.1",
+    "spatie/laravel-feed": "^2.4",
     "spatie/laravel-medialibrary": "^7.6",
     "spatie/laravel-query-builder": "^2.0.1",
     "spatie/laravel-responsecache": "^6.0",
     "spatie/laravel-sitemap": "^5.3"
   },
   "require-dev": {
+    "astrotomic/ignition-stackoverflow": "^1.4",
     "barryvdh/laravel-debugbar": "^3.2",
-    "barryvdh/laravel-ide-helper": "^2.5",
+    "barryvdh/laravel-ide-helper": "^2.6",
     "beyondcode/laravel-dump-server": "^1.2",
     "beyondcode/laravel-query-detector": "^1.0",
     "beyondcode/laravel-tinker-server": "^1.0",
-    "filp/whoops": "^2.0",
+    "facade/ignition": "^1.4",
+    "facade/ignition-self-diagnosis": "^1.0",
+    "facade/ignition-tinker-tab": "^1.0",
     "friendsofphp/php-cs-fixer": "^2.13",
-    "fruitcake/laravel-telescope-toolbar": "^1.0",
+    "fruitcake/laravel-telescope-toolbar": "^1.1",
     "fzaninotto/faker": "^1.8",
-    "infection/infection": "^0.13.4",
+    "infection/infection": "^0.14.1",
     "lanin/laravel-api-debugger": "^3.4",
+    "laravel/dusk": "^5.5",
     "laravel/telescope": "^2.0",
-    "matt-allan/laravel-code-style": "^0.3.0",
+    "matt-allan/laravel-code-style": "^0.4.0",
     "mockery/mockery": "^1.0",
     "nunomaduro/collision": "^3.0",
-    "nunomaduro/larastan": "^0.3.16",
+    "nunomaduro/larastan": "^0.4.0",
     "nunomaduro/phpinsights": "^1.2",
     "pheromone/phpcs-security-audit": "^2.0",
     "phploc/phploc": "*",
     "phpmd/phpmd": "^2.6",
     "phpmetrics/phpmetrics": "^2.4",
     "phpunit/phpunit": "^8.0",
+    "roave/security-advisories": "dev-master",
     "sllh/composer-versions-check": "^2.0",
-    "squizlabs/php_codesniffer": "*"
+    "squizlabs/php_codesniffer": "*",
+    "stefanbauer/ignition-laracasts-tab": "^0.2.0"
   },
   "autoload": {
     "files": [
@@ -101,10 +106,10 @@
     ],
     "post-update-cmd": [
       "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-      "php artisan ide-helper:generate",
-      "php artisan ide-helper:meta",
-      "php artisan ide-helper:models -W",
-      "vendor/bin/php-cs-fixer fix"
+      "vendor/bin/php-cs-fixer fix",
+      "@php artisan ide-helper:generate",
+      "@php artisan ide-helper:meta",
+      "@php artisan ide-helper:models -N"
     ],
     "format": [
       "vendor/bin/php-cs-fixer fix"
@@ -116,5 +121,11 @@
     "optimize-autoloader": true
   },
   "minimum-stability": "dev",
-  "prefer-stable": true
+  "prefer-stable": true,
+  "repositories": [
+      {
+          "type": "vcs",
+          "url": "https://github.com/agravelot/laravel-chunk-upload-patched"
+      }
+  ]
 }

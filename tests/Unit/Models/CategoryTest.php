@@ -1,12 +1,5 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 namespace Tests\Unit\Models;
 
 use App\Models\Category;
@@ -25,7 +18,7 @@ class CategoryTest extends ModelTestCase
         $categories = factory(Category::class, 2)->make(['name' => 'A name']);
 
         try {
-            $categories->each(function (Category $category) use (&$count) {
+            $categories->each(static function (Category $category) use (&$count) {
                 $category->save();
                 $count++;
             });

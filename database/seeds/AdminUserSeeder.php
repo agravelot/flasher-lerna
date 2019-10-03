@@ -1,14 +1,8 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class AdminUserSeeder extends Seeder
 {
@@ -25,7 +19,7 @@ class AdminUserSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
             'email_verified_at' => Carbon::now(),
-            'remember_token' => str_random(10),
+            'remember_token' => Str::random(10),
         ]);
     }
 }

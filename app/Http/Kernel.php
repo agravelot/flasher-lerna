@@ -1,24 +1,17 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 namespace App\Http;
 
 use App\Http\Middleware\CheckAdmin;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
+use App\Http\Middleware\CacheResponse;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Http\Middleware\SetCacheHeaders;
 use Illuminate\Session\Middleware\StartSession;
-use Modules\Core\Http\Middleware\CacheResponse;
 use App\Http\Middleware\CheckForMaintenanceMode;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Routing\Middleware\ThrottleRequests;
@@ -41,7 +34,7 @@ class Kernel extends HttpKernel
      *
      * These middleware are run during every request to your application.
      *
-     * @var array
+     * @var array<string>
      */
     protected $middleware = [
         CheckForMaintenanceMode::class,
@@ -54,7 +47,7 @@ class Kernel extends HttpKernel
     /**
      * The application's route middleware groups.
      *
-     * @var array
+     * @var array<string<array<string>>>
      */
     protected $middlewareGroups = [
         'web' => [
@@ -81,7 +74,7 @@ class Kernel extends HttpKernel
      *
      * These middleware may be assigned to groups or used individually.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $routeMiddleware = [
         'auth' => Authenticate::class,

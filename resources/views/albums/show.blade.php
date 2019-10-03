@@ -13,4 +13,4 @@
     </section>
 @endsection
 
-@include('layouts.partials._og_tags', ['model' => $album])
+@include('layouts.partials._og_tags', ['openGraph' => new App\Http\OpenGraphs\AlbumOpenGraph($album)])

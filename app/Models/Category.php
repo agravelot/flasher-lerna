@@ -1,58 +1,22 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 namespace App\Models;
 
-use Eloquent;
 use Spatie\MediaLibrary\File;
-use Illuminate\Support\Carbon;
 use App\Abilities\HasNameAsSlug;
 use Illuminate\Http\UploadedFile;
 use App\Abilities\HasSlugRouteKey;
+use App\Traits\ClearsResponseCache;
 use Spatie\MediaLibrary\Models\Media;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Illuminate\Database\Eloquent\Collection;
-use Modules\Core\Traits\ClearsResponseCache;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
-/**
- * App\Models\Category.
- *
- * @property int $id
- * @property string $name
- * @property string $slug
- * @property string|null $description
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property Collection|Album[] $albums
- * @property Collection|Post[] $posts
- * @method static Builder|Category findSimilarSlugs($attribute, $config, $slug)
- * @method static Builder|Category newModelQuery()
- * @method static Builder|Category newQuery()
- * @method static Builder|Category query()
- * @method static Builder|Category whereCreatedAt($value)
- * @method static Builder|Category whereDescription($value)
- * @method static Builder|Category whereId($value)
- * @method static Builder|Category whereName($value)
- * @method static Builder|Category whereSlug($value)
- * @method static Builder|Category whereUpdatedAt($value)
- * @mixin Eloquent
- * @property Collection|PublicAlbum[] $publishedAlbums
- * @property-read mixed $cover
- * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\MediaLibrary\Models\Media[] $media
- */
 class Category extends Model implements HasMedia
 {
     use HasMediaTrait, Sluggable, SluggableScopeHelpers, HasSlugRouteKey, HasNameAsSlug, ClearsResponseCache;
@@ -64,7 +28,7 @@ class Category extends Model implements HasMedia
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = ['name', 'slug', 'description'];
 
@@ -77,8 +41,6 @@ class Category extends Model implements HasMedia
      * Add media to Category::COVER_COLLECTION collection.
      *
      * @param  UploadedFile|null  $media
-     *
-     * @return Media|null
      */
     public function setCover($media): ?Media
     {
@@ -113,8 +75,6 @@ class Category extends Model implements HasMedia
     /**
      * Register the media conversions.
      *
-     * @param  Media|null  $media
-     *
      * @throws InvalidManipulation
      */
     public function registerMediaConversions(Media $media = null): void
@@ -132,8 +92,6 @@ class Category extends Model implements HasMedia
 
     /**
      * Posts relationships.
-     *
-     * @return MorphToMany
      */
     public function posts(): MorphToMany
     {
@@ -142,8 +100,6 @@ class Category extends Model implements HasMedia
 
     /**
      * Albums relationships.
-     *
-     * @return MorphToMany
      */
     public function albums(): MorphToMany
     {
@@ -152,8 +108,6 @@ class Category extends Model implements HasMedia
 
     /**
      * Album relationship, only published.
-     *
-     * @return MorphToMany
      */
     public function publishedAlbums(): MorphToMany
     {

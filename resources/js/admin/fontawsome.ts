@@ -23,12 +23,18 @@ import {
     faTag,
     faTags,
     faTasks,
-    faTrash,
     faTrashAlt,
     faUpload,
     faUserTag,
     faLink,
     faEye,
+    faDownload,
+    faEnvelope,
+    faHeart,
+    faHome,
+    faKey,
+    faSadTear,
+    faUser,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -60,7 +66,14 @@ library.add(
     faStickyNote,
     faEdit,
     faLink,
-    faEye
+    faEye,
+    faDownload,
+    faEnvelope,
+    faHeart,
+    faHome,
+    faKey,
+    faSadTear,
+    faUser
 );
 
 // Replace any existing <i> tags with <svg> and set up a MutationObserver to

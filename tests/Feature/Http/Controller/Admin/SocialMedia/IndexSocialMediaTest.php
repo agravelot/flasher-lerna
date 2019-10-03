@@ -1,12 +1,5 @@
 <?php
 
-/*
- * (c) Antoine GRAVELOT <antoine.gravelot@hotmail.fr> - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Antoine Gravelot <agravelot@hotmail.fr>
- */
-
 namespace Tests\Feature\Http\Controller\Admin\SocialMedia;
 
 use Tests\TestCase;
@@ -27,7 +20,7 @@ class IndexSocialMediaTest extends TestCase
 
         $response->assertStatus(200)
             ->assertDontSee('Nothing to show');
-        $socialMedias->each(function (SocialMedia $socialMedia) use ($response) {
+        $socialMedias->each(static function (SocialMedia $socialMedia) use ($response) {
             $response->assertSee($socialMedia->name);
         });
     }
