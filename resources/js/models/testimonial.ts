@@ -4,6 +4,6 @@ export default class Testimonial {
     email: string;
     body: string;
     created_at: Date;
-    updated_at: Date | null;
-    published_at: Date | null;
+    updated_at: Date;
+    published_at: Date;
 }
