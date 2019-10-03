@@ -6,7 +6,7 @@ export default class Cosplayer {
     public slug: string;
     public description: string | null;
     public avatar: File | null;
-    public user: User|null;
+    public user: User | null;
     public created_at: Date;
     public updated_at: Date;
 }
