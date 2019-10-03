@@ -23,7 +23,6 @@ import {
     faTag,
     faTags,
     faTasks,
-    faTrash,
     faTrashAlt,
     faUpload,
     faUserTag,
