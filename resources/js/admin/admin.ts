@@ -5,7 +5,6 @@ import './menu.ts';
 import './fontawsome.ts';
 import '../bootstrap';
 import '../bulma';
-import '../vue-masonry';
 import 'bulma-modal-fx/src/_js/modal-fx';
 
 /**
