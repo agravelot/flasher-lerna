@@ -1,4 +1,4 @@
-import Sidebar from '../admin/views/Sidebar.vue';
+import Sidebar from '../components/admin/Sidebar.vue';
 import Vue from 'vue';
 import router from './router';
 import './menu.ts';
