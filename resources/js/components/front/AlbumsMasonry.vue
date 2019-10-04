@@ -47,7 +47,6 @@
                 :total="total"
                 :current.sync="page"
                 order="is-centered"
-                icon-pack="fas"
                 :per-page="perPage"
             >
             </b-pagination>

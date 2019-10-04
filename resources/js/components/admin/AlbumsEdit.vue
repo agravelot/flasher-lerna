@@ -5,7 +5,7 @@
         <div class="card">
             <div class="card-content">
                 <b-tabs type="is-boxed" size="is-medium" class="block">
-                    <b-tab-item label="Album" icon-pack="fas" icon="info">
+                    <b-tab-item label="Album" icon="info">
                         <form @submit.prevent="updateAlbum">
                             <b-field
                                 label="Title"
@@ -34,7 +34,6 @@
                                     :allow-new="false"
                                     field="name"
                                     placeholder="Add a category"
-                                    icon-pack="fas"
                                     icon="tag"
                                     @typing="getFilteredCategories"
                                 >
@@ -101,7 +100,7 @@
                             </div>
                         </form>
                     </b-tab-item>
-                    <b-tab-item label="Pictures" icon-pack="fas" icon="images">
+                    <b-tab-item label="Pictures" icon="images">
                         <vue-dropzone
                             ref="myVueDropzone"
                             :options="dropzoneOptions"

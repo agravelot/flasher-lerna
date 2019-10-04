@@ -31,7 +31,6 @@
                             :allow-new="false"
                             field="name"
                             placeholder="Add a category"
-                            icon-pack="fas"
                             icon="tag"
                             @typing="getFilteredCategories"
                         >
@@ -50,7 +49,6 @@
                             :allow-new="false"
                             field="name"
                             placeholder="Add a cosplayer"
-                            icon-pack="fas"
                             icon="user-tag"
                             @typing="getFilteredCosplayers"
                         >
