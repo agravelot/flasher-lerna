@@ -1,6 +1,8 @@
-import { dom, library } from '@fortawesome/fontawesome-svg-core';
+import Vue from 'vue';
+import Buefy from 'buefy';
+import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBell, faEdit, faStickyNote } from '@fortawesome/free-regular-svg-icons';
-// We are only using the wanted icons
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
     faAngleDown,
     faAngleLeft,
@@ -76,6 +78,9 @@ library.add(
     faUser
 );
 
-// Replace any existing <i> tags with <svg> and set up a MutationObserver to
-// continue doing this as the DOM changes.
-dom.watch();
+Vue.component('vue-fontawesome', FontAwesomeIcon);
+
+Vue.use(Buefy, {
+    defaultIconComponent: 'vue-fontawesome',
+    defaultIconPack: 'fas',
+});

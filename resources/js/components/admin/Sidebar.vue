@@ -8,80 +8,62 @@
                     </li>
 
                     <router-link :to="{ name: 'admin.dashboard' }" exact>
-                        <span class="icon">
-                            <i class="fas fa-home"></i>
-                        </span>
+                        <b-icon icon="home"></b-icon>
                         Dashboard
                     </router-link>
 
                     <li>
                         <router-link :to="{ name: 'admin.albums.index' }">
-                            <span class="icon">
-                                <i class="fas fa-images"></i>
-                            </span>
+                            <b-icon icon="images"></b-icon>
                             Albums
                         </router-link>
                     </li>
 
                     <li>
                         <router-link :to="{ name: 'admin.categories.index' }">
-                            <span class="icon">
-                                <i class="fas fa-tags"></i>
-                            </span>
+                            <b-icon icon="tags"></b-icon>
                             Categories
                         </router-link>
                     </li>
 
                     <li>
                         <router-link :to="{ name: 'admin.cosplayers.index' }">
-                            <span class="icon">
-                                <i class="fas fa-user-tag"></i>
-                            </span>
+                            <b-icon icon="user-tag"></b-icon>
                             Cosplayers
                         </router-link>
                     </li>
 
                     <li>
                         <router-link :to="{ name: 'admin.contacts.index' }">
-                            <span class="icon">
-                                <i class="fas fa-pen-fancy"></i>
-                            </span>
+                            <b-icon icon="pen-fancy"></b-icon>
                             Contacts
                         </router-link>
                     </li>
 
                     <li>
                         <router-link :to="{ name: 'admin.users.index' }">
-                            <span class="icon">
-                                <i class="fas fa-user"></i>
-                            </span>
+                            <b-icon icon="user"></b-icon>
                             Users
                         </router-link>
                     </li>
 
                     <li>
                         <router-link :to="{ name: 'admin.testimonials.index' }">
-                            <span class="icon">
-                                <i class="fas fa-book"></i>
-                            </span>
+                            <b-icon icon="book"></b-icon>
                             Testimonials
                         </router-link>
                     </li>
 
                     <li>
                         <a href="/admin/social-medias">
-                            <span class="icon">
-                                <i class="fas fa-external-link-alt"></i>
-                            </span>
+                            <b-icon icon="external-link-alt"></b-icon>
                             Social medias
                         </a>
                     </li>
 
                     <li>
                         <router-link :to="{ name: 'admin.settings.index' }">
-                            <span class="icon">
-                                <i class="fas fa-cog"></i>
-                            </span>
+                            <b-icon icon="cog"></b-icon>
                             Settings
                         </router-link>
                     </li>
@@ -93,17 +75,13 @@
                     </li>
                     <li>
                         <a href="#">
-                            <span class="icon">
-                                <i class="fas fa-tachometer-alt"></i>
-                            </span>
+                            <b-icon icon="tachometer-alt"></b-icon>
                             Statistics
                         </a>
                     </li>
                     <li>
                         <a href="/horizon">
-                            <span class="icon">
-                                <i class="fas fa-tasks"></i>
-                            </span>
+                            <b-icon icon="tasks"></b-icon>
                             Background tasks
                         </a>
                     </li>
@@ -112,9 +90,7 @@
                 <ul class="menu-list">
                     <li>
                         <a class="has-text-info has-margin-top-lg" href="/">
-                            <span class="icon">
-                                <i class="fas fa-chevron-circle-left"></i>
-                            </span>
+                            <b-icon icon="chevron-circle-left"></b-icon>
                             Back to the website
                         </a>
                     </li>
@@ -124,9 +100,7 @@
 
         <div class="admin-collapse-button">
             <a class="has-text-info has-margin-top-lg" id="collapse-admin-menu">
-                <span class="icon">
-                    <i class="fas fa-chevron-circle-left"></i>
-                </span>
+                <b-icon icon="chevron-circle-left"></b-icon>
                 Collapse
             </a>
         </div>
