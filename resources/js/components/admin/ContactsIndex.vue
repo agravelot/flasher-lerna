@@ -22,7 +22,7 @@
                         <b-input
                             placeholder="Search..."
                             type="search"
-                            icon="search "
+                            icon="search"
                             :loading="loading"
                             v-model="search"
                             @input="fetchContacts()"
@@ -47,7 +47,6 @@
                 :default-sort-direction="defaultSortOrder"
                 :default-sort="[sortField, sortOrder]"
                 @sort="onSort"
-                icon-pack="fas"
                 checkable
                 :opened-detailed="defaultOpenedDetails"
                 detailed
@@ -80,7 +79,7 @@
                     <section class="section">
                         <div class="content has-text-grey has-text-centered">
                             <p>
-                                <b-icon pack="fas" icon="sad-tear" size="is-large"></b-icon>
+                                <b-icon icon="sad-tear" size="is-large"></b-icon>
                             </p>
                             <p>Nothing here.</p>
                         </div>

@@ -29,7 +29,7 @@
                         <b-input
                             placeholder="Search..."
                             type="search"
-                            icon="search "
+                            icon="search"
                             :loading="loading"
                             v-model="search"
                             @input="fetchCosplayers()"
@@ -75,7 +75,7 @@
                     <section class="section">
                         <div class="content has-text-grey has-text-centered">
                             <p>
-                                <b-icon pack="fas" icon="sad-tear" size="is-large"></b-icon>
+                                <b-icon icon="sad-tear" size="is-large"></b-icon>
                             </p>
                             <p>Nothing here.</p>
                         </div>
