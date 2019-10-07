@@ -123,6 +123,15 @@
                             </div>
                         </div>
                     </b-tab-item>
+
+                    <b-tab-item label="Share" icon="share">
+                        <h3 class="title is-3">Partager</h3>
+                        <b-icon pack="fab" icon="facebook"></b-icon>
+                        <b-icon pack="fab" icon="twitter"></b-icon>
+                        <b-icon pack="fab" icon="linkedin"></b-icon>
+                        <b-icon pack="fab" icon="instagram"></b-icon>
+                        <b-icon icon="link"></b-icon>
+                    </b-tab-item>
                 </b-tabs>
             </div>
         </div>
