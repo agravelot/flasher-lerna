@@ -130,7 +130,7 @@
 
                         <b-button tag="a" target="_blank" :href="shareLinkBuilder.getFacebookLink()" icon-pack="fab" icon-right="facebook" />
                         <b-button tag="a" target="_blank" :href="shareLinkBuilder.getTwitterLink()" icon-pack="fab" icon-right="twitter" />
-                        <b-button tag="a" target="_blank" :href="shareLinkBuilder.getLinkedinLink()" icon-pack="fab" icon-right="linkedin" />
+<!--                        <b-button tag="a" target="_blank" :href="shareLinkBuilder.getLinkedinLink()" icon-pack="fab" icon-right="linkedin" />-->
                         <b-button @click="addToClipboard(shareLinkBuilder.getLink())" icon-right="link" />
                     </b-tab-item>
                 </b-tabs>
