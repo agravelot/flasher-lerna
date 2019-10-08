@@ -126,12 +126,30 @@
 
                     <b-tab-item label="Share" icon="share">
                         <h3 class="title is-3">Modèles</h3>
+
+                        <share-album-to-cosplayer :album="this.album"></share-album-to-cosplayer>
+
                         <h3 class="title is-3">Partager</h3>
 
-                        <b-button tag="a" target="_blank" :href="shareLinkBuilder.getFacebookLink()" icon-pack="fab" icon-right="facebook" />
-                        <b-button tag="a" target="_blank" :href="shareLinkBuilder.getTwitterLink()" icon-pack="fab" icon-right="twitter" />
-<!--                        <b-button tag="a" target="_blank" :href="shareLinkBuilder.getLinkedinLink()" icon-pack="fab" icon-right="linkedin" />-->
-                        <b-button @click="addToClipboard(shareLinkBuilder.getLink())" icon-right="link" />
+                        <b-button
+                            tag="a"
+                            target="_blank"
+                            :href="shareLinkBuilder.getFacebookLink()"
+                            icon-pack="fab"
+                            icon-right="facebook"
+                        />
+                        <b-button
+                            tag="a"
+                            target="_blank"
+                            :href="shareLinkBuilder.getTwitterLink()"
+                            icon-pack="fab"
+                            icon-right="twitter"
+                        />
+                        <!--                        <b-button tag="a" target="_blank" :href="shareLinkBuilder.getLinkedinLink()" icon-pack="fab" icon-right="linkedin" />-->
+                        <b-button
+                            @click="addToClipboard(shareLinkBuilder.getLink())"
+                            icon-right="link"
+                        />
                     </b-tab-item>
                 </b-tabs>
             </div>
@@ -144,18 +162,18 @@ import Component from 'vue-class-component';
 import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 import AlbumDesc from './AlbumDesc.vue';
-import Album from '../../models/album';
-import AlbumShareSocialMediaLinkBuilder from "../../admin/AlbumShareSocialMediaLinkBuilder";
+import AlbumShareSocialMediaLinkBuilder from '../../admin/AlbumShareSocialMediaLinkBuilder';
+import ShareAlbumToCosplayer from './ShareAlbumToCosplayer.vue';
 
 @Component({
     name: 'AlbumsEdit',
     components: {
         vueDropzone: vue2Dropzone,
         'album-desc': AlbumDesc,
+        'share-album-to-cosplayer': ShareAlbumToCosplayer,
     },
     extends: AlbumDesc,
 })
-
 export default class AlbumsEdit extends AlbumDesc {
     shareLinkBuilder: AlbumShareSocialMediaLinkBuilder;
     allowNew: boolean = false;
@@ -283,14 +301,17 @@ export default class AlbumsEdit extends AlbumDesc {
             });
     }
 
-    addToClipboard(value: any) : void {
-        (navigator as any).permissions.query({name: 'clipboard-write'}).then(result => {
-            if (result.state == "granted" || result.state == "prompt") {
-                navigator.clipboard.writeText(value).then(() => {
-                    this.showSuccess('Link copied');
-                }, function() {
-                    this.showError('Something went wrong');
-                });
+    addToClipboard(value: any): void {
+        (navigator as any).permissions.query({ name: 'clipboard-write' }).then(result => {
+            if (result.state == 'granted' || result.state == 'prompt') {
+                navigator.clipboard.writeText(value).then(
+                    () => {
+                        this.showSuccess('Link copied');
+                    },
+                    function() {
+                        this.showError('Something went wrong');
+                    }
+                );
             }
         });
     }
