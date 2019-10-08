@@ -39,7 +39,7 @@ import {
     faUser,
     faShare,
 } from '@fortawesome/free-solid-svg-icons';
-import {faFacebook, faInstagram, faLinkedin, faTwitter} from "@fortawesome/free-brands-svg-icons";
+import { faFacebook, faInstagram, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
 
 library.add(
     faImages,

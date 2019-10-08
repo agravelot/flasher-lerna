@@ -1,10 +1,10 @@
 import User from './user';
-import Category from "./category";
+import Category from './category';
 
 interface ILinks {
-    view: string,
-    download?: string,
-    edit? : string
+    view: string;
+    download?: string;
+    edit?: string;
 }
 
 export default class Album {
