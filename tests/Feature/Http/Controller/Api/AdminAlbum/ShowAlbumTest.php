@@ -23,6 +23,19 @@ class ShowAlbumTest extends TestCase
             ->assertSee($album->title);
     }
 
+    public function test_get_album_contains_links()
+    {
+        $this->actingAsAdmin();
+        $album = factory(Album::class)->create();
+
+        $response = $this->showAlbum($album);
+
+        $response->assertStatus(200)
+            ->assertJsonPath('data.links.download', route('download-albums.show', compact('album')))
+            ->assertJsonPath('data.links.view', route('albums.show', compact('album')))
+            ->assertJsonPath('data.links.edit', "/admin/albums/{$album->slug}/edit");
+    }
+
     private function showAlbum(Album $album): TestResponse
     {
         return $this->json('get', "/api/admin/albums/{$album->slug}");

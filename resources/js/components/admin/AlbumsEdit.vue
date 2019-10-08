@@ -125,12 +125,13 @@
                     </b-tab-item>
 
                     <b-tab-item label="Share" icon="share">
+                        <h3 class="title is-3">Modèles</h3>
                         <h3 class="title is-3">Partager</h3>
-                        <b-icon pack="fab" icon="facebook"></b-icon>
-                        <b-icon pack="fab" icon="twitter"></b-icon>
-                        <b-icon pack="fab" icon="linkedin"></b-icon>
-                        <b-icon pack="fab" icon="instagram"></b-icon>
-                        <b-icon icon="link"></b-icon>
+
+                        <b-button tag="a" target="_blank" :href="shareLinkBuilder.getFacebookLink()" icon-pack="fab" icon-right="facebook" />
+                        <b-button tag="a" target="_blank" :href="shareLinkBuilder.getTwitterLink()" icon-pack="fab" icon-right="twitter" />
+                        <b-button tag="a" target="_blank" :href="shareLinkBuilder.getLinkedinLink()" icon-pack="fab" icon-right="linkedin" />
+                        <b-button @click="addToClipboard(shareLinkBuilder.getLink())" icon-right="link" />
                     </b-tab-item>
                 </b-tabs>
             </div>
@@ -144,6 +145,7 @@ import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 import AlbumDesc from './AlbumDesc.vue';
 import Album from '../../models/album';
+import AlbumShareSocialMediaLinkBuilder from "../../admin/AlbumShareSocialMediaLinkBuilder";
 
 @Component({
     name: 'AlbumsEdit',
@@ -153,7 +155,9 @@ import Album from '../../models/album';
     },
     extends: AlbumDesc,
 })
+
 export default class AlbumsEdit extends AlbumDesc {
+    shareLinkBuilder: AlbumShareSocialMediaLinkBuilder;
     allowNew: boolean = false;
     dropzoneOptions: object = {
         url: '/api/admin/album-pictures',
@@ -190,6 +194,7 @@ export default class AlbumsEdit extends AlbumDesc {
             .then(res => res.data)
             .then(res => {
                 this.album = res.data;
+                this.shareLinkBuilder = new AlbumShareSocialMediaLinkBuilder(this.album);
             })
             .catch(err => {
                 throw err;
@@ -276,6 +281,18 @@ export default class AlbumsEdit extends AlbumDesc {
                 this.showError('Unable to delete the picture');
                 throw err;
             });
+    }
+
+    addToClipboard(value: any) : void {
+        (navigator as any).permissions.query({name: 'clipboard-write'}).then(result => {
+            if (result.state == "granted" || result.state == "prompt") {
+                navigator.clipboard.writeText(value).then(() => {
+                    this.showSuccess('Link copied');
+                }, function() {
+                    this.showError('Something went wrong');
+                });
+            }
+        });
     }
 }
 </script>

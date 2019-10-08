@@ -1,5 +1,11 @@
 import User from './user';
 
+interface ILinks {
+    view: string,
+    download?: string,
+    edit? : string
+}
+
 export default class Album {
     public id: number;
     public slug: string;
@@ -11,4 +17,5 @@ export default class Album {
     public user: User;
     public created_at: Date;
     public updated_at: Date;
+    public links: ILinks;
 }
