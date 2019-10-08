@@ -94,7 +94,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import VueBuefy from '../../admin/Buefy.vue';
+import Buefy from '../../admin/Buefy.vue';
 import Cosplayer from '../../models/cosplayer';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
@@ -108,7 +108,7 @@ import User from '../../models/user';
         quillEditor,
     },
 })
-export default class CosplayersCreate extends VueBuefy {
+export default class CosplayersCreate extends Buefy {
     private cosplayer: Cosplayer = new Cosplayer();
     private loading: boolean = false;
     private searchUsers: Array<User> = [];

@@ -44,8 +44,8 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import VueBuefy from '../../admin/Buefy.vue';
+import Buefy from '../../admin/Buefy.vue';
 
 @Component
-export default class Sidebar extends VueBuefy {}
+export default class Sidebar extends Buefy {}
 </script>

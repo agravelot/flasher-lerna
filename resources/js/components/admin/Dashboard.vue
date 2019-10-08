@@ -56,10 +56,10 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import VueBuefy from '../../admin/Buefy.vue';
+import Buefy from '../../admin/Buefy.vue';
 
 @Component
-export default class Dashboard extends VueBuefy {
+export default class Dashboard extends Buefy {
     private loading: boolean = true;
     private cosplayersCount: number = 0;
     private usersCount: number = 0;

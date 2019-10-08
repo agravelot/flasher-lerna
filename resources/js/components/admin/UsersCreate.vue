@@ -55,13 +55,13 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import VueBuefy from '../../admin/Buefy.vue';
+import Buefy from '../../admin/Buefy.vue';
 import User from '../../models/user';
 
 @Component({
     name: 'UsersCreate',
 })
-export default class UsersCreate extends VueBuefy {
+export default class UsersCreate extends Buefy {
     private user: User = new User();
     private loading: boolean = false;
     protected errors: object = {};

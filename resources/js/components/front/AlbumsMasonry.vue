@@ -56,16 +56,16 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import VueBuefy from '../../admin/Buefy.vue';
+import Buefy from '../../admin/Buefy.vue';
 import { Prop } from 'vue-property-decorator';
 import VueMasonry from 'vue-masonry-css';
 
-VueBuefy.use(VueMasonry);
+Buefy.use(VueMasonry);
 
 @Component({
     name: 'AlbumsMasonry',
 })
-export default class AlbumsMasonry extends VueBuefy {
+export default class AlbumsMasonry extends Buefy {
     @Prop() readonly data: any;
 
     protected albums: Array<object> = [];
