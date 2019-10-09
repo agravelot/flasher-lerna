@@ -86,8 +86,3 @@ library.add(
 );
 
 Vue.component('vue-fontawesome', FontAwesomeIcon);
-
-Vue.use(Buefy, {
-    defaultIconComponent: 'vue-fontawesome',
-    defaultIconPack: 'fas',
-});
