@@ -1,5 +1,5 @@
 <template>
-    <div class="modal-card" style="width: auto">
+    <div class="modal-card">
         <header class="modal-card-head">
             <p class="modal-card-title">Share album to cosplayers</p>
         </header>
@@ -19,7 +19,7 @@
         </section>
         <footer class="modal-card-foot">
             <button class="button" type="button" @click="$parent.close()">Close</button>
-            <button class="button is-primary">Send</button>
+            <button class="button is-primary" :disabled="!contacts">Send</button>
         </footer>
     </div>
 </template>

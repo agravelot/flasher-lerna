@@ -60,6 +60,7 @@ import Buefy from '../../admin/Buefy.vue';
 import Album from '../../models/album';
 import { Prop } from 'vue-property-decorator';
 import ShareAlbumToCosplayerModal from './ShareAlbumToCosplayerModal.vue';
+import Cosplayer from "../../models/cosplayer";
 
 @Component({
     name: 'share-album-to-cosplayer',
@@ -76,20 +77,15 @@ export default class ShareAlbumToCosplayer extends Buefy {
             component: ShareAlbumToCosplayerModal,
             hasModalCard: true,
             props: {
-                contacts: [
-                    {
-                        id: 1,
-                        name: 'NJonh',
-                        email: 'jon@snow.fr',
-                    },
-                    {
-                        id: 2,
-                        name: 'azeaze',
-                        email: 'jazeon@snow.fr',
-                    },
-                ],
+                contacts: this.getSelectedContact()
             },
         });
+    }
+
+    getSelectedContact() : Array<object> {
+        return this.checkedRows.map((cosplayer: Cosplayer) => {
+            return {id: cosplayer.id, name: cosplayer.name, email: cosplayer.user.email}
+        })
     }
 }
 </script>
