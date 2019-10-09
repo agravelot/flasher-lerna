@@ -6,6 +6,7 @@ import './fontawsome.ts';
 import '../bootstrap';
 import '../bulma';
 import 'bulma-modal-fx/src/_js/modal-fx';
+import '../sentry';
 import Buefy from 'buefy';
 
 /**
