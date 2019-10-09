@@ -14,7 +14,14 @@
                         {{ cosplayer.row.name }}
                 </b-table-column>
                 <b-table-column field="email" label="Email">
-                    {{ cosplayer.row.user && cosplayer.row.user.email }}
+                    <div v-if="cosplayer.row.user">
+                        {{ cosplayer.row.user.email }}
+                    </div>
+                    <div v-else>
+                        <b-field>
+                            <b-input placeholder="Email" type="email" maxlength="50" icon="mail"></b-input>
+                        </b-field>
+                    </div>
                 </b-table-column>
             </template>
 
@@ -30,8 +37,11 @@
             </template>
 
             <template slot="bottom-left">
-                <b>Total checked</b>
+                <b-button type="is-success" :disabled="!checkedRows.length">Send</b-button>
+                <span>
+                    <b>Total checked</b>
                 : {{ checkedRows.length }}
+                </span>
             </template>
         </b-table>
     </div>

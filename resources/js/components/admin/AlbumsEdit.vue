@@ -125,10 +125,10 @@
                     </b-tab-item>
 
                     <b-tab-item label="Share" icon="share">
-                        <h3 class="title is-3">Modèles</h3>
+                        <h3 class="title is-3">Models</h3>
                         <share-album-to-cosplayer :album="album"></share-album-to-cosplayer>
 
-                        <h3 class="title is-3">Partager</h3>
+                        <h3 class="title is-3">Share</h3>
                         <share-album :album="album"></share-album>
 
                     </b-tab-item>
