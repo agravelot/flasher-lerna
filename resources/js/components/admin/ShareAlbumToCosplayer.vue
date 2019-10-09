@@ -2,13 +2,36 @@
     <div>
         <b-table
             :data="album.cosplayers"
-            :columns="columns"
-            :checked-rows.sync="checkedRows"
+            :loading="album === null"
+            striped
+            hoverable
+            mobile-cards
             checkable
-            :checkbox-position="checkboxPosition"
+            :checked-rows.sync="checkedRows"
         >
+            <template slot-scope="cosplayer">
+                <b-table-column field="name" label="Name">
+                        {{ cosplayer.row.name }}
+                </b-table-column>
+                <b-table-column field="email" label="Email">
+                    {{ cosplayer.row.user && cosplayer.row.user.email }}
+                </b-table-column>
+            </template>
+
+            <template slot="empty">
+                <section class="section">
+                    <div class="content has-text-grey has-text-centered">
+                        <p>
+                            <b-icon icon="sad-tear" size="is-large"></b-icon>
+                        </p>
+                        <p>No cosplayers.</p>
+                    </div>
+                </section>
+            </template>
+
             <template slot="bottom-left">
-                <b>Total checked</b>: {{ checkedRows.length }}
+                <b>Total checked</b>
+                : {{ checkedRows.length }}
             </template>
         </b-table>
     </div>
@@ -25,17 +48,7 @@ import { Prop } from 'vue-property-decorator';
 })
 export default class ShareAlbumToCosplayer extends Buefy {
     @Prop()
-    album: Album;
-    private columns: Array<object> = [
-        {
-            field: 'name',
-            label: 'Name',
-        },
-        {
-            field: 'user.email',
-            label: 'Email',
-        },
-    ];
+    protected album: Album;
     private checkedRows: Array<any> = [];
     private checkboxPosition: Array<any>;
 }
