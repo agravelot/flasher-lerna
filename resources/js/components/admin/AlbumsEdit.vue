@@ -130,7 +130,6 @@
 
                         <h3 class="title is-3">Share</h3>
                         <share-album :album="album"></share-album>
-
                     </b-tab-item>
                 </b-tabs>
             </div>
@@ -144,8 +143,8 @@ import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 import AlbumDesc from './AlbumDesc.vue';
 import ShareAlbumToCosplayer from './ShareAlbumToCosplayer.vue';
-import ShareAlbum from "./ShareAlbum.vue";
-import Album from "../../models/album";
+import ShareAlbum from './ShareAlbum.vue';
+import Album from '../../models/album';
 
 @Component({
     name: 'AlbumsEdit',

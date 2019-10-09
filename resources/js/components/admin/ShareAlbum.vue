@@ -1,24 +1,21 @@
 <template>
-   <div v-if="album">
-       <b-button
-           tag="a"
-           target="_blank"
-           :href="getFacebookLink()"
-           icon-pack="fab"
-           icon-right="facebook"
-       />
-       <b-button
-           tag="a"
-           target="_blank"
-           :href="getTwitterLink()"
-           icon-pack="fab"
-           icon-right="twitter"
-       />
-       <b-button
-           @click="addToClipboard(getLink())"
-           icon-right="link"
-       />
-   </div>
+    <div v-if="album">
+        <b-button
+            tag="a"
+            target="_blank"
+            :href="getFacebookLink()"
+            icon-pack="fab"
+            icon-right="facebook"
+        />
+        <b-button
+            tag="a"
+            target="_blank"
+            :href="getTwitterLink()"
+            icon-pack="fab"
+            icon-right="twitter"
+        />
+        <b-button @click="addToClipboard(getLink())" icon-right="link" />
+    </div>
 </template>
 
 <script lang="ts">
@@ -70,20 +67,22 @@ export default class ShareAlbum extends Buefy {
     }
 
     private getCategoriesHashTags(): Array<string> {
-        return this.album.categories
-            .map(category => {
-                return category.name;
-            })
-            // each words uppercase
-            .map(name => {
-                return name.replace(/(?:^|\s)\S/g, word => {
-                    return word.toUpperCase();
-                });
-            })
-            // remove whitespaces
-            .map(name => {
-                return name.replace(/\s/g, '');
-            });
+        return (
+            this.album.categories
+                .map(category => {
+                    return category.name;
+                })
+                // each words uppercase
+                .map(name => {
+                    return name.replace(/(?:^|\s)\S/g, word => {
+                        return word.toUpperCase();
+                    });
+                })
+                // remove whitespaces
+                .map(name => {
+                    return name.replace(/\s/g, '');
+                })
+        );
     }
 }
 </script>

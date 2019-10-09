@@ -11,7 +11,7 @@
         >
             <template slot-scope="cosplayer">
                 <b-table-column field="name" label="Name">
-                        {{ cosplayer.row.name }}
+                    {{ cosplayer.row.name }}
                 </b-table-column>
                 <b-table-column field="email" label="Email">
                     <div v-if="cosplayer.row.user">
@@ -19,7 +19,12 @@
                     </div>
                     <div v-else>
                         <b-field>
-                            <b-input placeholder="Email" type="email" maxlength="50" icon="mail"></b-input>
+                            <b-input
+                                placeholder="Email"
+                                type="email"
+                                maxlength="50"
+                                icon="mail"
+                            ></b-input>
                         </b-field>
                     </div>
                 </b-table-column>
@@ -37,10 +42,12 @@
             </template>
 
             <template slot="bottom-left">
-                <b-button type="is-success" :disabled="!checkedRows.length">Send</b-button>
+                <b-button type="is-success" :disabled="!checkedRows.length" @click="showModal()"
+                    >Next</b-button
+                >
                 <span>
                     <b>Total checked</b>
-                : {{ checkedRows.length }}
+                    : {{ checkedRows.length }}
                 </span>
             </template>
         </b-table>
@@ -52,6 +59,7 @@ import Component from 'vue-class-component';
 import Buefy from '../../admin/Buefy.vue';
 import Album from '../../models/album';
 import { Prop } from 'vue-property-decorator';
+import ShareAlbumToCosplayerModal from './ShareAlbumToCosplayerModal.vue';
 
 @Component({
     name: 'share-album-to-cosplayer',
@@ -61,5 +69,27 @@ export default class ShareAlbumToCosplayer extends Buefy {
     protected album: Album;
     private checkedRows: Array<any> = [];
     private checkboxPosition: Array<any>;
+
+    showModal(): void {
+        this.$buefy.modal.open({
+            parent: this,
+            component: ShareAlbumToCosplayerModal,
+            hasModalCard: true,
+            props: {
+                contacts: [
+                    {
+                        id: 1,
+                        name: 'NJonh',
+                        email: 'jon@snow.fr',
+                    },
+                    {
+                        id: 2,
+                        name: 'azeaze',
+                        email: 'jazeon@snow.fr',
+                    },
+                ],
+            },
+        });
+    }
 }
 </script>
