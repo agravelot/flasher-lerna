@@ -15,7 +15,6 @@
             <b-field label="Message">
                 <b-input type="textarea" v-model="message"></b-input>
             </b-field>
-
         </section>
         <footer class="modal-card-foot">
             <button class="button" type="button" @click="$parent.close()">Close</button>
