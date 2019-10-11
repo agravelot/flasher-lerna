@@ -93,7 +93,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import VueBuefy from '../../admin/Buefy.vue';
+import Buefy from '../../admin/Buefy.vue';
 import Cosplayer from '../../models/cosplayer';
 
 @Component({
@@ -107,7 +107,7 @@ import Cosplayer from '../../models/cosplayer';
         },
     },
 })
-export default class CosplayersIndex extends VueBuefy {
+export default class CosplayersIndex extends Buefy {
     private cosplayers: Array<Cosplayer> = [];
     private checkedRows: Array<Cosplayer> = [];
     private total: number = 0;

@@ -113,7 +113,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import VueBuefy from '../../admin/Buefy.vue';
+import Buefy from '../../admin/Buefy.vue';
 import Album from '../../models/album';
 
 @Component({
@@ -127,7 +127,7 @@ import Album from '../../models/album';
         },
     },
 })
-export default class AlbumsIndex extends VueBuefy {
+export default class AlbumsIndex extends Buefy {
     private albums: Array<Album> = [];
     private checkedRows: Array<Album> = [];
     private total: number = 0;

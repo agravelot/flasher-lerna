@@ -2,22 +2,22 @@
 import Vue from 'vue';
 import './fontawsome';
 
-export default class VueBuefy extends Vue {
-    $dialog: any;
-    $loading: any;
-    $modal: any;
-    $snackbar: any;
-    $toast: any;
-    $refs: any;
+export default class Buefy extends Vue {
+    public $dialog: any;
+    public $loading: any;
+    public $modal: any;
+    public $snackbar: any;
+    public $toast: any;
+    public $refs: any;
 
-    showSuccess(message: string): void {
+    public showSuccess(message: string): void {
         this.$buefy.toast.open({
             message: message,
             type: 'is-success',
         });
     }
 
-    showError(message: string): void {
+    public showError(message: string): void {
         this.$buefy.toast.open({
             message: message,
             type: 'is-danger',

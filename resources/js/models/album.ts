@@ -1,4 +1,11 @@
 import User from './user';
+import Category from './category';
+
+interface ILinks {
+    view: string;
+    download?: string;
+    edit?: string;
+}
 
 export default class Album {
     public id: number;
@@ -11,4 +18,6 @@ export default class Album {
     public user: User;
     public created_at: Date;
     public updated_at: Date;
+    public links: ILinks;
+    public categories?: Array<Category>;
 }

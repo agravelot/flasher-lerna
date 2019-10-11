@@ -91,7 +91,7 @@ import Album from '../../models/album';
 import Category from '../../models/category';
 import Cosplayer from '../../models/cosplayer';
 import { quillEditor } from 'vue-quill-editor';
-import VueBuefy from '../../admin/Buefy.vue';
+import Buefy from '../../admin/Buefy.vue';
 
 @Component({
     name: 'AlbumDesc',
@@ -99,7 +99,7 @@ import VueBuefy from '../../admin/Buefy.vue';
         quillEditor,
     },
 })
-export default class AlbumDesc extends VueBuefy {
+export default class AlbumDesc extends Buefy {
     protected errors: object = {};
     protected album: Album = new Album();
     protected allowNew: boolean = false;

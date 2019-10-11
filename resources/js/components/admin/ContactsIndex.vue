@@ -97,7 +97,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import VueBuefy from '../../admin/Buefy.vue';
+import Buefy from '../../admin/Buefy.vue';
 import Contact from '../../models/contact';
 
 @Component({
@@ -111,7 +111,7 @@ import Contact from '../../models/contact';
         },
     },
 })
-export default class ContactsIndex extends VueBuefy {
+export default class ContactsIndex extends Buefy {
     private contacts: Array<Contact> = [];
     private checkedRows: Array<Contact> = [];
     private total: number = 0;

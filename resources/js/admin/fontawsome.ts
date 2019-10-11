@@ -37,7 +37,9 @@ import {
     faKey,
     faSadTear,
     faUser,
+    faShare,
 } from '@fortawesome/free-solid-svg-icons';
+import { faFacebook, faInstagram, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
 
 library.add(
     faImages,
@@ -75,12 +77,12 @@ library.add(
     faHome,
     faKey,
     faSadTear,
-    faUser
+    faUser,
+    faShare,
+    faInstagram,
+    faTwitter,
+    faFacebook,
+    faLinkedin
 );
 
 Vue.component('vue-fontawesome', FontAwesomeIcon);
-
-Vue.use(Buefy, {
-    defaultIconComponent: 'vue-fontawesome',
-    defaultIconPack: 'fas',
-});

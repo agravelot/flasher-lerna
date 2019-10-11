@@ -57,7 +57,7 @@
 <script lang="ts">
 import Component from 'vue-class-component';
 import vue2Dropzone from 'vue2-dropzone';
-import VueBuefy from '../../admin/Buefy.vue';
+import Buefy from '../../admin/Buefy.vue';
 import Category from '../../models/category';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
@@ -71,7 +71,7 @@ import { quillEditor } from 'vue-quill-editor';
         quillEditor,
     },
 })
-export default class CategoriesEdit extends VueBuefy {
+export default class CategoriesEdit extends Buefy {
     private category: Category = new Category();
     private loading: boolean = false;
     protected errors: object = {};

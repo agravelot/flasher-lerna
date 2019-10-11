@@ -73,13 +73,13 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import VueBuefy from '../../admin/Buefy.vue';
+import Buefy from '../../admin/Buefy.vue';
 import User from '../../models/user';
 
 @Component({
     name: 'UsersEdit',
 })
-export default class UsersEdit extends VueBuefy {
+export default class UsersEdit extends Buefy {
     private user: User = null;
     private loading: boolean = false;
     protected errors: object = {};
