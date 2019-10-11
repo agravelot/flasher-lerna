@@ -156,7 +156,7 @@ export default class AlbumsEdit extends AlbumDesc {
         method: 'POST',
         maxFilesize: 400000000,
         chunkSize: 1000000,
-        autoProcessQueue: false,
+        //autoProcessQueue: false,
         retryChunks: true,
         retryChunksLimit: 15,
         maxThumbnailFilesize: 25,
