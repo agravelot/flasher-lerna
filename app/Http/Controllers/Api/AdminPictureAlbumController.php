@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Album;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Transformers\AlbumShowResource;
+use App\Http\Resources\AlbumShowResource;
 use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Requests\StorePictureAlbumRequest;
 use App\Http\Requests\DeletePictureAlbumRequest;
