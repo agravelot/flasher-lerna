@@ -30,7 +30,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import VueBuefy from '../../admin/Buefy.vue';
+import Buefy from '../../admin/Buefy.vue';
 import Category from '../../models/category';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
@@ -44,7 +44,7 @@ import User from '../../models/user';
         quillEditor,
     },
 })
-export default class CategoriesCreate extends VueBuefy {
+export default class CategoriesCreate extends Buefy {
     private category: Category = new Category();
     private loading: boolean = false;
     private searchUsers: Array<User> = [];

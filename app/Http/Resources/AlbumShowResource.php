@@ -37,13 +37,14 @@ class AlbumShowResource extends Resource
             'cosplayers' => CosplayerResource::collection($this->cosplayers),
             'user' => new UserResource($this->user),
             'links' => [
-                'download' => $this->when(
-                    $this->checkCan('download', $album),
-                    route('download-albums.show', ['album' => $this])
-                ),
+                'view' => route('albums.show', ['album' => $this]),
                 'edit' => $this->when(
                     $this->checkCan('update', $album),
                     "/admin/albums/{$this->slug}/edit"
+                ),
+                'download' => $this->when(
+                    $this->checkCan('download', $album),
+                    route('download-albums.show', ['album' => $this])
                 ),
             ],
         ];

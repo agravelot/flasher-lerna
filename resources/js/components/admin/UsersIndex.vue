@@ -91,13 +91,13 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import VueBuefy from '../../admin/Buefy.vue';
+import Buefy from '../../admin/Buefy.vue';
 import User from '../../models/user';
 
 @Component({
     name: 'UsersIndex',
 })
-export default class UsersIndex extends VueBuefy {
+export default class UsersIndex extends Buefy {
     private users: Array<User> = [];
     private checkedRows: Array<User> = [];
     private total: number = 0;

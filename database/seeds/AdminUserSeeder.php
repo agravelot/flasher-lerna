@@ -1,8 +1,8 @@
 <?php
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class AdminUserSeeder extends Seeder
 {

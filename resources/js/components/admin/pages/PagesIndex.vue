@@ -89,7 +89,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import VueBuefy from '../../../admin/Buefy.vue';
+import Buefy from '../../../admin/Buefy.vue';
 import Page from '../../../models/page';
 
 @Component({
@@ -103,7 +103,7 @@ import Page from '../../../models/page';
         },
     },
 })
-export default class PagesIndex extends VueBuefy {
+export default class PagesIndex extends Buefy {
     private pages: Array<Page> = [];
     //TODO Clearer types
     defaultOpenedDetails: Array<any> = [];

@@ -101,13 +101,13 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import VueBuefy from '../../admin/Buefy.vue';
+import Buefy from '../../admin/Buefy.vue';
 import Testimonial from '../../models/testimonial';
 
 @Component({
     name: 'TestimonialsIndex',
 })
-export default class TestimonialsIndex extends VueBuefy {
+export default class TestimonialsIndex extends Buefy {
     private testimonials: Array<Testimonial> = [];
     private checkedRows: Array<Testimonial> = [];
     private total: number = 0;

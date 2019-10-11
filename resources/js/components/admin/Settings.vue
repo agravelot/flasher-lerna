@@ -77,7 +77,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import VueBuefy from '../../admin/Buefy.vue';
+import Buefy from '../../admin/Buefy.vue';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
@@ -97,7 +97,7 @@ class Setting {
         vueDropzone: vue2Dropzone,
     },
 })
-export default class Settings extends VueBuefy {
+export default class Settings extends Buefy {
     private loading: boolean = false;
     private settings: Array<Setting> = [];
 

@@ -92,7 +92,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import VueBuefy from '../../admin/Buefy.vue';
+import Buefy from '../../admin/Buefy.vue';
 import Category from '../../models/category';
 
 @Component({
@@ -106,7 +106,7 @@ import Category from '../../models/category';
         },
     },
 })
-export default class CategoriesIndex extends VueBuefy {
+export default class CategoriesIndex extends Buefy {
     private categories: Array<Category> = [];
     private checkedRows: Array<Category> = [];
     private total: number = 0;
