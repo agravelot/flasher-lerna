@@ -32,6 +32,6 @@ import { Prop } from 'vue-property-decorator';
 export default class ShareAlbumToCosplayerModal extends Buefy {
     @Prop()
     protected contacts: Array<object> = [];
-    protected message: string;
+    protected message: string = '';
 }
 </script>

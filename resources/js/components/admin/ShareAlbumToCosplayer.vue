@@ -77,14 +77,14 @@ export default class ShareAlbumToCosplayer extends Buefy {
             component: ShareAlbumToCosplayerModal,
             hasModalCard: true,
             props: {
-                contacts: this.getSelectedContact(),
+                contacts: this.getSelectedContacts(),
             },
         });
     }
 
-    getSelectedContact(): Array<object> {
+    getSelectedContacts(): Array<object> {
         return this.checkedRows.map((cosplayer: Cosplayer) => {
-            return { id: cosplayer.id, name: cosplayer.name, email: cosplayer.user.email };
+            return { id: cosplayer.id, name: cosplayer.name, email: cosplayer.user && cosplayer.user.email || '' };
         });
     }
 }
