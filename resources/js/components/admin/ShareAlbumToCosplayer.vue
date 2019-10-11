@@ -24,6 +24,7 @@
                                 type="email"
                                 maxlength="50"
                                 icon="mail"
+                                v-model="customEmails[cosplayer.row.id]"
                             ></b-input>
                         </b-field>
                     </div>
@@ -61,6 +62,8 @@ import Album from '../../models/album';
 import { Prop } from 'vue-property-decorator';
 import ShareAlbumToCosplayerModal from './ShareAlbumToCosplayerModal.vue';
 import Cosplayer from '../../models/cosplayer';
+import CosplayerContact from '../../models/sharer';
+import User from '../../models/user';
 
 @Component({
     name: 'share-album-to-cosplayer',
@@ -70,6 +73,7 @@ export default class ShareAlbumToCosplayer extends Buefy {
     protected album: Album;
     private checkedRows: Array<any> = [];
     private checkboxPosition: Array<any>;
+    private customEmails: Array<string> = [];
 
     showModal(): void {
         this.$buefy.modal.open({
@@ -77,14 +81,20 @@ export default class ShareAlbumToCosplayer extends Buefy {
             component: ShareAlbumToCosplayerModal,
             hasModalCard: true,
             props: {
-                contacts: this.getSelectedContacts(),
+                contacts: this.getSelectedRows(),
             },
         });
     }
 
-    getSelectedContacts(): Array<object> {
+    private getSelectedRows(): Array<CosplayerContact> {
         return this.checkedRows.map((cosplayer: Cosplayer) => {
-            return { id: cosplayer.id, name: cosplayer.name, email: cosplayer.user && cosplayer.user.email || '' };
+            console.log(cosplayer.id);
+            console.log(customElements[cosplayer.id]);
+            return new CosplayerContact(
+                cosplayer.id,
+                cosplayer.name,
+                (cosplayer.user && cosplayer.user.email) || this.customEmails[cosplayer.id]
+            );
         });
     }
 }

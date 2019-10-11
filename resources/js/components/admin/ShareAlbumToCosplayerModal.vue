@@ -27,11 +27,12 @@
 import Component from 'vue-class-component';
 import Buefy from '../../admin/Buefy.vue';
 import { Prop } from 'vue-property-decorator';
+import Sharer from '../../models/sharer';
 
 @Component({ name: 'share-album-to-cosplayer-modal' })
 export default class ShareAlbumToCosplayerModal extends Buefy {
     @Prop()
-    protected contacts: Array<object> = [];
+    protected contacts: Array<Sharer> = [];
     protected message: string = '';
 }
 </script>
