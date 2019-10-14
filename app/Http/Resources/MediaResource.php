@@ -3,9 +3,11 @@
 namespace App\Http\Resources;
 
 use App\Models\Album;
+use App\Models\Media;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
 
+/** @mixin Media */
 class MediaResource extends Resource
 {
     /**
