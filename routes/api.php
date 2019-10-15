@@ -39,6 +39,11 @@ Route::namespace('Api')->group(static function () {
                     Route::apiResource('testimonials', 'AdminTestimonialsController')->except('store');
                     Route::apiResource('contacts', 'AdminContactController')->except('store', 'update');
                     Route::apiResource('cosplayers', 'AdminCosplayerController');
+                    Route::namespace('Admin')->group(static function () {
+                        Route::namespace('AlbumShare')->group(static function () {
+                            Route::post('share-albums/{slug}', 'AdminShareAlbumController')->name('share-album');
+                        });
+                    });
                 });
             });
         });
