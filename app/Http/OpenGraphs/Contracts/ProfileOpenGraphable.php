@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Contracts;
+namespace App\Http\OpenGraphs\Contracts;
 
 interface ProfileOpenGraphable
 {
