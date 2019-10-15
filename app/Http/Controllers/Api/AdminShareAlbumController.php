@@ -16,7 +16,7 @@ class AdminShareAlbumController extends Controller
      */
     public function __invoke(Album $album, ShareAlbumRequest $request): JsonResponse
     {
-        $this->authorize('update', Album::class);
+        $this->authorize('update', $album);
 
         return new JsonResponse(null, 201);
     }
