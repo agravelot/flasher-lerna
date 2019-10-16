@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api\Admin\AlbumShare;
 
-use App\Http\Requests\ShareAlbumRequest;
 use App\Models\Album;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ShareAlbumRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 
 class AdminShareAlbumController extends Controller

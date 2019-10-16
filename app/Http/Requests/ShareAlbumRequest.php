@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class ShareAlbumRequest extends Request
 {
     /**
@@ -17,7 +15,7 @@ class ShareAlbumRequest extends Request
             'contacts' => 'required|array',
             'contacts.*.name' => 'required|string',
             'contacts.*.email' => 'required|email',
-            'message' => 'required|string'
+            'message' => 'required|string',
         ];
     }
 }

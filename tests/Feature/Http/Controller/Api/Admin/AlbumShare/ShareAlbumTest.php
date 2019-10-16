@@ -23,7 +23,7 @@ class ShareAlbumTest extends TestCase
             [
                 'name' => 'John Doe',
                 'email' => 'john@doe.fr',
-            ]
+            ],
         ]);
 
         $response = $this->shareAlbum($album, $contacts, 'message');
@@ -62,7 +62,7 @@ class ShareAlbumTest extends TestCase
             [
                 'name' => 'John Doe',
                 'email' => 'john@doe.fr',
-            ]
+            ],
         ]);
 
         $response = $this->shareAlbum($album, $contacts, 'message');
@@ -126,7 +126,7 @@ class ShareAlbumTest extends TestCase
             [
                 'name' => 'John Doe',
                 'email' => '',
-            ]
+            ],
         ]);
 
         $response = $this->shareAlbum($album, $contacts);
@@ -144,7 +144,7 @@ class ShareAlbumTest extends TestCase
         $contacts = collect([
             [
                 'name' => 'John Doe',
-            ]
+            ],
         ]);
 
         $response = $this->shareAlbum($album, $contacts);
@@ -163,7 +163,7 @@ class ShareAlbumTest extends TestCase
             [
                 'name' => 'John Doe',
                 'email' => 'malfomedemail@',
-            ]
+            ],
         ]);
 
         $response = $this->shareAlbum($album, $contacts);
@@ -182,7 +182,7 @@ class ShareAlbumTest extends TestCase
             [
                 'name' => '',
                 'email' => 'aze@aze.fr',
-            ]
+            ],
         ]);
 
         $response = $this->shareAlbum($album, $contacts);
@@ -200,7 +200,7 @@ class ShareAlbumTest extends TestCase
         $contacts = collect([
             [
                 'email' => 'aze@aze.fr',
-            ]
+            ],
         ]);
 
         $response = $this->shareAlbum($album, $contacts);
@@ -219,7 +219,7 @@ class ShareAlbumTest extends TestCase
             [
                 'name' => 'John Doe',
                 'email' => 'aze@aze.fr',
-            ]
+            ],
         ]);
         $message = '';
 
