@@ -77,8 +77,7 @@
       "database/factories"
     ],
     "psr-4": {
-      "App\\": "app/",
-      "Modules\\": "modules/"
+      "App\\": "app/"
     }
   },
   "autoload-dev": {
@@ -105,7 +104,7 @@
     ],
     "post-update-cmd": [
       "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-      "vendor/bin/php-cs-fixer fix",
+      "@composer format",
       "@composer ide-helper"
     ],
     "format": [
