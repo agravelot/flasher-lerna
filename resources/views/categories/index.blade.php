@@ -3,10 +3,13 @@
 @section('pageTitle', __('Categories'))
 
 @section('content')
-    <div class="hero is-black is-radiusless">
-        <div class="hero-body"></div>
-    </div>
-    <section class="section" style="margin-top: -120px;">
+    @if ($categories->isNotEmpty())
+        <div class="hero is-black is-radiusless">
+            <div class="hero-body"></div>
+        </div>
+    @endif
+
+    <section class="section" style="margin-top: {{ $categories->isEmpty() ? '0' : '-120' }}px;">
         <div class="container">
             <div class="columns is-multiline">
                 @each('categories.partials._category_item', $categories, 'category', 'layouts.partials._empty')
