@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use App\Jobs\GenerateSitemap;
+use App\Jobs\NotifySitemapUpdate;
 use Spatie\ResponseCache\Facades\ResponseCache;
 
 trait ClearsResponseCache
@@ -10,14 +12,23 @@ trait ClearsResponseCache
     {
         self::created(static function (): void {
             ResponseCache::clear();
+            GenerateSitemap::withChain([
+                new NotifySitemapUpdate(),
+            ])->dispatch();
         });
 
         self::updated(static function (): void {
             ResponseCache::clear();
+            GenerateSitemap::withChain([
+                new NotifySitemapUpdate(),
+            ])->dispatch();
         });
 
         self::deleted(static function (): void {
             ResponseCache::clear();
+            GenerateSitemap::withChain([
+                new NotifySitemapUpdate(),
+            ])->dispatch();
         });
     }
 }
