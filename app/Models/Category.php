@@ -19,7 +19,12 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Category extends Model implements HasMedia
 {
-    use HasMediaTrait, Sluggable, SluggableScopeHelpers, HasSlugRouteKey, HasNameAsSlug, ClearsResponseCache;
+    use HasMediaTrait,
+        Sluggable,
+        SluggableScopeHelpers,
+        HasSlugRouteKey,
+        HasNameAsSlug,
+        ClearsResponseCache;
 
     public const COVER_COLLECTION = 'cover';
     public const RESPONSIVE_CONVERSION = 'responsive';
@@ -95,7 +100,7 @@ class Category extends Model implements HasMedia
      */
     public function posts(): MorphToMany
     {
-        return $this->morphedByMany(Post::class, 'categorizable');
+        return $this->morphedByMany(Post::class, 'categorizable')->latest();
     }
 
     /**
@@ -103,7 +108,7 @@ class Category extends Model implements HasMedia
      */
     public function albums(): MorphToMany
     {
-        return $this->morphedByMany(Album::class, 'categorizable');
+        return $this->morphedByMany(Album::class, 'categorizable')->latest();
     }
 
     /**
@@ -111,6 +116,7 @@ class Category extends Model implements HasMedia
      */
     public function publishedAlbums(): MorphToMany
     {
-        return $this->morphedByMany(PublicAlbum::class, 'categorizable');
+        return $this->morphedByMany(PublicAlbum::class, 'categorizable')
+            ->latest();
     }
 }
