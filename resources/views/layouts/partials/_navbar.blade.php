@@ -2,8 +2,9 @@
     <div class="container">
         <div class="navbar-brand">
 
-            <a href="{{ url('/') }}"
-               class="navbar-item">{{ settings()->get('app_name', config('app.name', 'Flasher')) }}</a>
+            <a class="navbar-item" href="/">
+                <img src="{{ asset('svg/logo.svg') }}" alt="{{ __('Logo of') }} {{ settings()->get('app_name', config('app.name', 'Flasher')) }}">
+            </a>
 
             @include('layouts.partials._navbar_socials', ['class' => 'navbar-item'])
 
@@ -21,7 +22,7 @@
                 @include('layouts.partials._navbar_albums')
                 @include('layouts.partials._navbar_categories')
                 <a class="navbar-item {{ Request::is('testimonials*') ? 'is-active' : '' }}"
-                   href="{{ route('testimonials.index') }}">{{ __('Golden book') }}</a>
+                   href="{{ route('testimonials.index') }}">{{ __('Testimonial') }}</a>
                 {{--                <a class="navbar-item {{ Request::is('about') ? 'is-active' : '' }}" href="#">{{ __('About') }}</a>--}}
                 <a class="navbar-item {{ Request::is('contact*') ? 'is-active' : '' }}"
                    href="{{ route('contact.index') }}">{{ __('Contact') }}</a>
