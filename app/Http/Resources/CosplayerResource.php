@@ -2,9 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Cosplayer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
 
+/** @mixin Cosplayer */
 class CosplayerResource extends Resource
 {
     /**

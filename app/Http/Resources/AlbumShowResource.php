@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Resources\Json\Resource;
 
+/** @mixin Album */
 class AlbumShowResource extends Resource
 {
     /**

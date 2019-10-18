@@ -6,6 +6,7 @@ use App\Models\Album;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
 
+/** @mixin Album */
 class AlbumIndexResource extends Resource
 {
     /**

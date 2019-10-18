@@ -2,9 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
 
+/** @mixin Setting */
 class MediaSettingResource extends Resource
 {
     /**

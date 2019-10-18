@@ -5,8 +5,8 @@ namespace App\Http\OpenGraphs;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
-use App\Models\Contracts\OpenGraphable;
-use App\Models\Contracts\ImagesOpenGraphable;
+use App\Http\OpenGraphs\Contracts\OpenGraphable;
+use App\Http\OpenGraphs\Contracts\ImagesOpenGraphable;
 
 class CategoryOpenGraph implements OpenGraphable, ImagesOpenGraphable
 {

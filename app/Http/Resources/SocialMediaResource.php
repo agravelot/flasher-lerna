@@ -2,9 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Models\SocialMedia;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
 
+/** @mixin SocialMedia */
 class SocialMediaResource extends Resource
 {
     /**
