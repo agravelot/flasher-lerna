@@ -3,7 +3,7 @@
         <div class="navbar-brand">
 
             <a class="navbar-item" href="/">
-                <img src="{{ asset('svg/logo.svg') }}" alt="{{ __('Logo of') }} {{ settings()->get('app_name', config('app.name', 'Flasher')) }}">
+                <img src="{{ mix('svg/logo.svg') }}" alt="{{ __('Logo of') }} {{ settings()->get('app_name', config('app.name', 'Flasher')) }}">
             </a>
 
             @include('layouts.partials._navbar_socials', ['class' => 'navbar-item'])
