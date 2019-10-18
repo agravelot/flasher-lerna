@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\App;
 
 class NotifySitemapUpdate implements ShouldQueue
 {
@@ -27,6 +28,8 @@ class NotifySitemapUpdate implements ShouldQueue
      */
     public function handle(): void
     {
+        $this->guardAgainstNotRunningInProduction();
+
         $siteMapUrl = url('/sitemap.xml');
         $url = 'https://www.google.com/webmasters/tools/ping?sitemap='.$siteMapUrl;
         $data = file_get_contents($url);
@@ -35,6 +38,13 @@ class NotifySitemapUpdate implements ShouldQueue
             $this->fail(new \Exception(
                 'Unable to send google sitemap update notification'
             ));
+        }
+    }
+
+    public function guardAgainstNotRunningInProduction(): void
+    {
+        if (! App::environment('production')) {
+            $this->delete();
         }
     }
 }
