@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac1cf2c58d170d04838355e1024ce4b8",
+    "content-hash": "fbb793e70580127b3232eff4af464448",
     "packages": [
         {
             "name": "agravelot/laravel-chunk-upload-patched",
