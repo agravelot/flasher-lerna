@@ -26,6 +26,7 @@ _ide_helper_models.php
 /public/vendor
 /public/sitemap\.xml
 /public/svg
+/public/img
 
 /storage/medialibrary
 

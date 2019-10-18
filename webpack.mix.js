@@ -1,9 +1,6 @@
 let mix = require('laravel-mix');
 require('laravel-mix-purgecss');
-require('laravel-mix-merge-manifest');
-
-// Allow multiple Laravel Mix applications
-mix.mergeManifest();
+require('laravel-mix-favicon');
 
 /*
  |--------------------------------------------------------------------------
@@ -22,7 +19,7 @@ mix.ts('resources/js/app.ts', 'public/js/main')
 mix.sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/error-illustrated.scss', 'public/css')
     .copy('resources/svg/*', 'public/svg')
-        .purgeCss(
+    .purgeCss(
         {
             // Your custom globs are merged with the default globs.
             globs: [
@@ -32,6 +29,7 @@ mix.sass('resources/sass/app.scss', 'public/css')
             whitelistPatterns: [/^svg-inline.*/, /^fa.*/, /^ql-font-serif$/],
         }
     )
+    .favicon()
 // .extract([
 //     'vue',
 //     'buefy',
