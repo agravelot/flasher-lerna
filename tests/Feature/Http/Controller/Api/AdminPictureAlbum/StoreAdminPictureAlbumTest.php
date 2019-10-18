@@ -20,7 +20,7 @@ class StoreAdminPictureAlbumTest extends TestCase
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
         $image = UploadedFile::fake()->image('fake.jpg');
-        Queue::assertNothingPushed();
+        Queue::assertNotPushed(PerformConversions::class);
 
         $response = $this->storeAlbumPicture($album, $image);
 
@@ -54,7 +54,7 @@ class StoreAdminPictureAlbumTest extends TestCase
 
         $this->assertSame(0, $album->fresh()->media->count());
         $response->assertStatus(403);
-        Queue::assertNothingPushed();
+        Queue::assertNotPushed(PerformConversions::class);
     }
 
     public function test_guest_can_not_store_a_picture_to_an_album(): void
@@ -67,16 +67,16 @@ class StoreAdminPictureAlbumTest extends TestCase
 
         $this->assertSame(0, $album->fresh()->media->count());
         $response->assertStatus(401);
-        Queue::assertNothingPushed();
+        Queue::assertNotPushed(PerformConversions::class);
     }
 
-    public function storeAlbumPicture(Album $album, $media, array $optional = []): TestResponse
+    public function storeAlbumPicture(Album $album, $media, array $data = []): TestResponse
     {
         session()->setPreviousUrl('/admin/albums/create');
 
         return $this->json('post', '/api/admin/album-pictures',
             array_merge([
                 'album_slug' => $album->slug, 'file' => $media,
-            ], $optional));
+            ], $data));
     }
 }
