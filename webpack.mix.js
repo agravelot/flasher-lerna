@@ -21,6 +21,7 @@ mix.ts('resources/js/app.ts', 'public/js/main')
 
 mix.sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/error-illustrated.scss', 'public/css')
+    .copy('resources/svg/*', 'public/svg')
         .purgeCss(
         {
             // Your custom globs are merged with the default globs.

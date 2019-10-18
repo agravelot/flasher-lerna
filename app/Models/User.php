@@ -82,7 +82,7 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     /**
      * Return the contact from this user.
      */
-    public function contact(): HasMany
+    public function contacts(): HasMany
     {
         return $this->hasMany(Contact::class);
     }

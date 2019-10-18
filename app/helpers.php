@@ -13,7 +13,7 @@ if (! function_exists('settings')) {
      *
      * @return App\SettingsManager
      */
-    function settings()
+    function settings(): \App\SettingsManager
     {
         return app('App\SettingManager');
     }

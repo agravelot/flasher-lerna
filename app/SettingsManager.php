@@ -19,7 +19,7 @@ class SettingsManager
 
     private function loadSettings(): void
     {
-        $this->settings = Setting::all();
+        $this->settings = Setting::with('media')->get();
     }
 
     public function has(string $name): bool
