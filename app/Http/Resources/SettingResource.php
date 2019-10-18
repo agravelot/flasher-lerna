@@ -2,10 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Setting;
 use App\Enums\SettingType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
 
+/** @mixin Setting */
 class SettingResource extends Resource
 {
     /**

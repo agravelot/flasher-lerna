@@ -2,9 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Testimonial;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
 
+/** @mixin Testimonial */
 class TestimonialResource extends Resource
 {
     /**

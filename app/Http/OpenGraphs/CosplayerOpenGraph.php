@@ -4,8 +4,8 @@ namespace App\Http\OpenGraphs;
 
 use App\Models\Cosplayer;
 use Illuminate\Support\Str;
-use App\Models\Contracts\OpenGraphable;
-use App\Models\Contracts\ProfileOpenGraphable;
+use App\Http\OpenGraphs\Contracts\OpenGraphable;
+use App\Http\OpenGraphs\Contracts\ProfileOpenGraphable;
 
 class CosplayerOpenGraph implements OpenGraphable, ProfileOpenGraphable
 {
