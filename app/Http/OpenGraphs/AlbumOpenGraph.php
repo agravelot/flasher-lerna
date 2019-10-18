@@ -51,7 +51,7 @@ class AlbumOpenGraph implements OpenGraphable, ArticleOpenGraphable, ImagesOpenG
         return $this->album->title;
     }
 
-    public function description(): string
+    public function description(): ?string
     {
         return Str::limit($this->album->body, 150);
     }
