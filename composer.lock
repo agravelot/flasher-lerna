@@ -142,16 +142,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.112.21",
+            "version": "3.112.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "218d29c4729eb40a668242a53cbfde905fd94792"
+                "reference": "6997f23a47714d084cd2d40b6348b99e10439d64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/218d29c4729eb40a668242a53cbfde905fd94792",
-                "reference": "218d29c4729eb40a668242a53cbfde905fd94792",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6997f23a47714d084cd2d40b6348b99e10439d64",
+                "reference": "6997f23a47714d084cd2d40b6348b99e10439d64",
                 "shasum": ""
             },
             "require": {
@@ -221,7 +221,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-10-14T18:08:52+00:00"
+            "time": "2019-10-17T18:10:45+00:00"
         },
         {
             "name": "bensampo/laravel-enum",
@@ -2758,16 +2758,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.56",
+            "version": "1.0.57",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "90e3f83cb10ef6b058d70f95267030e7a6236518"
+                "reference": "0e9db7f0b96b9f12dcf6f65bc34b72b1a30ea55a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/90e3f83cb10ef6b058d70f95267030e7a6236518",
-                "reference": "90e3f83cb10ef6b058d70f95267030e7a6236518",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/0e9db7f0b96b9f12dcf6f65bc34b72b1a30ea55a",
+                "reference": "0e9db7f0b96b9f12dcf6f65bc34b72b1a30ea55a",
                 "shasum": ""
             },
             "require": {
@@ -2838,7 +2838,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2019-10-12T13:05:59+00:00"
+            "time": "2019-10-16T21:01:05+00:00"
         },
         {
             "name": "league/flysystem-aws-s3-v3",
@@ -4802,16 +4802,16 @@
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "1.3.1",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "dd234ff068899e0ccd509dd7e39eaae1a9e704dc"
+                "reference": "c06c2dfb04b2b0e2a16f996d5fbfe239f32b9f0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/dd234ff068899e0ccd509dd7e39eaae1a9e704dc",
-                "reference": "dd234ff068899e0ccd509dd7e39eaae1a9e704dc",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/c06c2dfb04b2b0e2a16f996d5fbfe239f32b9f0d",
+                "reference": "c06c2dfb04b2b0e2a16f996d5fbfe239f32b9f0d",
                 "shasum": ""
             },
             "require": {
@@ -4867,20 +4867,20 @@
                 "logging",
                 "sentry"
             ],
-            "time": "2019-10-01T12:03:02+00:00"
+            "time": "2019-10-18T07:13:03+00:00"
         },
         {
             "name": "spatie/browsershot",
-            "version": "3.32.2",
+            "version": "3.33.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/browsershot.git",
-                "reference": "6aa8750308a0473d1e3cc079e698b78f9495e6d7"
+                "reference": "52578c132a13908a2c0a1b0368c48a2072ddb1bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/browsershot/zipball/6aa8750308a0473d1e3cc079e698b78f9495e6d7",
-                "reference": "6aa8750308a0473d1e3cc079e698b78f9495e6d7",
+                "url": "https://api.github.com/repos/spatie/browsershot/zipball/52578c132a13908a2c0a1b0368c48a2072ddb1bf",
+                "reference": "52578c132a13908a2c0a1b0368c48a2072ddb1bf",
                 "shasum": ""
             },
             "require": {
@@ -4906,9 +4906,9 @@
             "authors": [
                 {
                     "name": "Freek Van der Herten",
-                    "role": "Developer",
                     "email": "freek@spatie.be",
-                    "homepage": "https://github.com/freekmurze"
+                    "homepage": "https://github.com/freekmurze",
+                    "role": "Developer"
                 }
             ],
             "description": "Convert a webpage to an image or pdf using headless Chrome",
@@ -4923,7 +4923,7 @@
                 "screenshot",
                 "webpage"
             ],
-            "time": "2019-08-16T08:36:39+00:00"
+            "time": "2019-10-17T21:45:20+00:00"
         },
         {
             "name": "spatie/crawler",
@@ -5161,16 +5161,16 @@
         },
         {
             "name": "spatie/laravel-medialibrary",
-            "version": "7.14.1",
+            "version": "7.14.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-medialibrary.git",
-                "reference": "34f3700a2dc58032d0ab443dcb09c2be72d2a826"
+                "reference": "f96fd75f70e893b1b2c85224526e6d4a2c235ef8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/34f3700a2dc58032d0ab443dcb09c2be72d2a826",
-                "reference": "34f3700a2dc58032d0ab443dcb09c2be72d2a826",
+                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/f96fd75f70e893b1b2c85224526e6d4a2c235ef8",
+                "reference": "f96fd75f70e893b1b2c85224526e6d4a2c235ef8",
                 "shasum": ""
             },
             "require": {
@@ -5241,7 +5241,7 @@
                 "media",
                 "spatie"
             ],
-            "time": "2019-09-26T22:59:00+00:00"
+            "time": "2019-10-16T13:46:56+00:00"
         },
         {
             "name": "spatie/laravel-query-builder",
@@ -7229,7 +7229,7 @@
         },
         {
             "name": "tightenco/collect",
-            "version": "v6.2.0",
+            "version": "v6.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tightenco/collect.git",
@@ -9277,16 +9277,16 @@
         },
         {
             "name": "infection/infection",
-            "version": "0.14.1",
+            "version": "0.14.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infection/infection.git",
-                "reference": "34fec898ddbaf8c013bdba9e96324a6e6ccf4411"
+                "reference": "517851e38ae0140d64ddf5a2da78776234ab4c93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infection/infection/zipball/34fec898ddbaf8c013bdba9e96324a6e6ccf4411",
-                "reference": "34fec898ddbaf8c013bdba9e96324a6e6ccf4411",
+                "url": "https://api.github.com/repos/infection/infection/zipball/517851e38ae0140d64ddf5a2da78776234ab4c93",
+                "reference": "517851e38ae0140d64ddf5a2da78776234ab4c93",
                 "shasum": ""
             },
             "require": {
@@ -9369,27 +9369,27 @@
                 "testing",
                 "unit testing"
             ],
-            "time": "2019-09-22T17:52:17+00:00"
+            "time": "2019-10-16T18:54:55+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "5.2.8",
+            "version": "5.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "dcb6e1006bb5fd1e392b4daa68932880f37550d4"
+                "reference": "44c6787311242a979fa15c704327c20e7221a0e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/dcb6e1006bb5fd1e392b4daa68932880f37550d4",
-                "reference": "dcb6e1006bb5fd1e392b4daa68932880f37550d4",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/44c6787311242a979fa15c704327c20e7221a0e4",
+                "reference": "44c6787311242a979fa15c704327c20e7221a0e4",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "~2.2.20",
+                "friendsofphp/php-cs-fixer": "~2.2.20||~2.15.1",
                 "json-schema/json-schema-test-suite": "1.2.0",
                 "phpunit/phpunit": "^4.8.35"
             },
@@ -9435,7 +9435,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2019-01-14T23:55:14+00:00"
+            "time": "2019-09-25T14:49:45+00:00"
         },
         {
             "name": "lanin/laravel-api-debugger",
@@ -10568,19 +10568,21 @@
         },
         {
             "name": "nunomaduro/larastan",
-            "version": "v0.4.1",
+            "version": "v0.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/larastan.git",
-                "reference": "f5a9522ac158976daba4c2323d7018017220b9cb"
+                "reference": "c66d4f3cfcfe0c041c40b38227de1b9a5a106f6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/f5a9522ac158976daba4c2323d7018017220b9cb",
-                "reference": "f5a9522ac158976daba4c2323d7018017220b9cb",
+                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/c66d4f3cfcfe0c041c40b38227de1b9a5a106f6c",
+                "reference": "c66d4f3cfcfe0c041c40b38227de1b9a5a106f6c",
                 "shasum": ""
             },
             "require": {
+                "composer/composer": "^1.0",
+                "ext-json": "*",
                 "illuminate/console": "5.6.*|5.7.*|5.8.*|^6.0",
                 "illuminate/container": "5.6.*|5.7.*|5.8.*|^6.0",
                 "illuminate/contracts": "5.6.*|5.7.*|5.8.*|^6.0",
@@ -10639,7 +10641,7 @@
                 "php",
                 "static analysis"
             ],
-            "time": "2019-10-07T07:01:51+00:00"
+            "time": "2019-10-16T12:45:23+00:00"
         },
         {
             "name": "nunomaduro/phpinsights",
@@ -13431,19 +13433,21 @@
         },
         {
             "name": "spatie/laravel-web-tinker",
-            "version": "1.5.3",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-web-tinker.git",
-                "reference": "43d4f310b40b746eb193e57ea2e57fe28ef9f3f0"
+                "reference": "8dbecfbfc6b47b8bda504414bd4d7ac198b115f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-web-tinker/zipball/43d4f310b40b746eb193e57ea2e57fe28ef9f3f0",
-                "reference": "43d4f310b40b746eb193e57ea2e57fe28ef9f3f0",
+                "url": "https://api.github.com/repos/spatie/laravel-web-tinker/zipball/8dbecfbfc6b47b8bda504414bd4d7ac198b115f4",
+                "reference": "8dbecfbfc6b47b8bda504414bd4d7ac198b115f4",
                 "shasum": ""
             },
             "require": {
+                "illuminate/cookie": "^5.8|^6.0",
+                "illuminate/session": "^5.8|^6.0",
                 "illuminate/support": "^5.8|^6.0",
                 "laravel/tinker": "^1.0",
                 "php": "^7.2"
@@ -13487,20 +13491,20 @@
                 "spatie",
                 "web-tinker"
             ],
-            "time": "2019-10-12T14:18:17+00:00"
+            "time": "2019-10-16T13:38:28+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.5.0",
+            "version": "3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "0afebf16a2e7f1e434920fa976253576151effe9"
+                "reference": "82cd0f854ceca17731d6d019c7098e3755c45060"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/0afebf16a2e7f1e434920fa976253576151effe9",
-                "reference": "0afebf16a2e7f1e434920fa976253576151effe9",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/82cd0f854ceca17731d6d019c7098e3755c45060",
+                "reference": "82cd0f854ceca17731d6d019c7098e3755c45060",
                 "shasum": ""
             },
             "require": {
@@ -13538,7 +13542,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2019-09-26T23:12:26+00:00"
+            "time": "2019-10-16T21:14:26+00:00"
         },
         {
             "name": "stefanbauer/ignition-laracasts-tab",
