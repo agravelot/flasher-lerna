@@ -22,7 +22,7 @@ class CategoryOpenGraph implements OpenGraphable, ImagesOpenGraphable
 
     public function tags(): Collection
     {
-        return $this->category->categories()->pluck('name');
+        return $this->category->name;
     }
 
     public function updatedAt(): string
@@ -32,8 +32,8 @@ class CategoryOpenGraph implements OpenGraphable, ImagesOpenGraphable
 
     public function images(): Collection
     {
-        if ($cover = $this->category->cover) {
-            return collect([$cover]);
+        if ($this->category->cover) {
+            return collect([$this->category->cover]);
         }
 
         return collect();
@@ -44,7 +44,7 @@ class CategoryOpenGraph implements OpenGraphable, ImagesOpenGraphable
         return $this->category->name;
     }
 
-    public function description(): string
+    public function description(): ?string
     {
         return Str::limit($this->category->description ?? '', 150);
     }
