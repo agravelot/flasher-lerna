@@ -11,9 +11,27 @@
                 @endforeach
             </div>
 
-            @include('layouts.partials._share_socials')
-
         @endif
+
+        <div class="media has-margin-top-md has-margin-bottom-md">
+            @php
+                $profilePicture = settings()->get('profile_picture_homepage');
+            @endphp
+            @if ($profilePicture)
+                <div class="media-left">
+                    <figure class="image is-128x128 is-pulled-right">
+                        {{ $profilePicture('', ['class' => 'is-rounded responsive-media']) }}
+                    </figure>
+                </div>
+            @endif
+            <div class="media-content">
+                <div class="content has-text-centered">
+                    <a class="has-text-white" href="{{ url('/') }}" rel="author">{{ __('By') }} {{ settings()->get('app_name') }}</a>
+                </div>
+            </div>
+        </div>
+
+        @include('layouts.partials._share_socials')
     @stop
 
     @if ($album->body)
