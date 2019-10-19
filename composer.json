@@ -13,6 +13,7 @@
     "ext-imagick": "*",
     "ext-json": "*",
     "ext-redis": "*",
+    "agravelot/laravel-chunk-upload-patched": "dev-sharpstream",
     "anhskohbo/no-captcha": "^3.1",
     "bensampo/laravel-enum": "^1.20",
     "beyondcode/laravel-self-diagnosis": "^1.0",
@@ -29,13 +30,13 @@
     "laravel/slack-notification-channel": "^2.0",
     "laravel/tinker": "^1.0",
     "league/flysystem-aws-s3-v3": "^1.0",
-    "agravelot/laravel-chunk-upload-patched": "dev-sharpstream",
     "sentry/sentry-laravel": "^1.0",
     "spatie/laravel-feed": "^2.4",
     "spatie/laravel-medialibrary": "^7.6",
     "spatie/laravel-query-builder": "^2.0.1",
     "spatie/laravel-responsecache": "^6.0",
-    "spatie/laravel-sitemap": "^5.3"
+    "spatie/laravel-sitemap": "^5.3",
+    "spatie/schema-org": "^2.9"
   },
   "require-dev": {
     "astrotomic/ignition-stackoverflow": "^1.4",

@@ -31,6 +31,8 @@
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
     @yield('head')
     {!! Analytics::render() !!}
+
+    {!! new \App\Http\Schemas\HomepageSchema() !!}
 </head>
 
 <body>

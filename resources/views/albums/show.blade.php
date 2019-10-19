@@ -10,6 +10,7 @@
         <div class="container">
             @include('albums.partials._show_item', compact('album'))
         </div>
+        {!! new \App\Http\Schemas\AlbumSchema($album) !!}
     </section>
 @endsection
 

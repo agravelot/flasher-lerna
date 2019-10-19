@@ -4,3 +4,4 @@
 	<image width="{{ $originalImageWidth }}" height="{{ $originalImageHeight }}" xlink:href="{{ $tinyImageBase64 }}">
 	</image>
 </svg>
+{!! new \App\Http\Schemas\MediaSchema($media) !!}
