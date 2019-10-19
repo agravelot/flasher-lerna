@@ -17,8 +17,6 @@ class ContactSent extends Notification
 
     /**
      * Create a new notification instance.
-     *
-     * @return void
      */
     public function __construct(Contact $contact)
     {
@@ -27,11 +25,8 @@ class ContactSent extends Notification
 
     /**
      * Get the notification's delivery channels.
-     *
-     *
-     * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
