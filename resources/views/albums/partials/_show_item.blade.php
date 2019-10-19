@@ -26,7 +26,7 @@
             @endif
             <div class="media-content">
                 <div class="content has-text-centered">
-                    <a class="has-text-white" href="{{ url('/') }}" rel="author">{{ __('By') }} {{ settings()->get('app_name') }}</a>
+                    <a class="has-text-white" href="{{ url('/') }}" rel="author">{{ __('By') }} {{ $album->user->name }}</a>
                 </div>
             </div>
         </div>
