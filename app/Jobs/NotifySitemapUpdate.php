@@ -28,7 +28,10 @@ class NotifySitemapUpdate implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->guardAgainstNotRunningInProduction();
+        if (! App::environment('production')) {
+            $this->delete();
+            return;
+        }
 
         $siteMapUrl = url('/sitemap.xml');
         $url = 'https://www.google.com/webmasters/tools/ping?sitemap='.$siteMapUrl;
@@ -38,13 +41,6 @@ class NotifySitemapUpdate implements ShouldQueue
             $this->fail(new \Exception(
                 'Unable to send google sitemap update notification'
             ));
-        }
-    }
-
-    public function guardAgainstNotRunningInProduction(): void
-    {
-        if (! App::environment('production')) {
-            $this->delete();
         }
     }
 }

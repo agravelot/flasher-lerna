@@ -19,3 +19,9 @@ $factory->state(Cosplayer::class, 'avatar', static function () {
         'avatar' => UploadedFile::fake()->image('fake.jpg'),
     ];
 });
+
+$factory->state(Cosplayer::class, 'withUser', static function () {
+    return [
+        'user_id' => factory(\App\Models\User::class)->create()->id,
+    ];
+});
