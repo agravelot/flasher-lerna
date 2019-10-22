@@ -29,7 +29,7 @@ class UserTest extends ModelTestCase
     public function testModelConfiguration()
     {
         $this->runConfigurationAssertions(new User(), [
-            'name', 'email', 'password', 'role',
+            'name', 'email', 'password', 'role', 'notify_on_album_published',
         ], [
             'password', 'remember_token',
         ], ['*'], [], ['id' => 'int'], [
