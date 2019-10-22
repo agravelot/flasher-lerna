@@ -43,9 +43,10 @@ class PublishedAlbum extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->line(__('A new album in which you appear has been published.'))
+                    ->action(__('Show album'), url(route('albums.show', $this->album)))
+                    ->line(__('If this album is not accessible, make sure to authenticate to your account.'))
+                    ->action(__('Login'), url(route('login')));
     }
 
     /**
