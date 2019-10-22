@@ -56,6 +56,10 @@ class Album extends Model implements HasMedia, Feedable
         'private' => 'bool',
     ];
 
+    protected $attributes = [
+        'notify_users_on_published' => true,
+    ];
+
     /**
      * The attributes that are mass assignable.
      *

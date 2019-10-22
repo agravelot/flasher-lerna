@@ -27,6 +27,10 @@ class User extends Authenticatable implements MustVerifyEmailInterface
         'name', 'email', 'password', 'role', 'notify_on_album_published',
     ];
 
+    protected $attributes = [
+        'notify_on_album_published' => true,
+    ];
+
     /**
      * The attributes that should be hidden for arrays.
      *
