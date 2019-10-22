@@ -2,6 +2,8 @@
 
 @section('pageTitle', $album->title)
 
+@section('seo_description', (new App\Http\OpenGraphs\AlbumOpenGraph($album))->description())
+
 @section('content')
     <div class="hero is-black is-radiusless">
         <div class="hero-body"></div>
