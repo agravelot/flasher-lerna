@@ -2,15 +2,12 @@
 
 namespace App\Http\Schemas;
 
-use App\Models\Album;
 use App\Models\Media;
 use Spatie\SchemaOrg\Person;
-use Spatie\SchemaOrg\Thing;
 use Spatie\SchemaOrg\Schema;
 
 class MediaSchema implements SchemaInterface
 {
-
     /**
      * @var Media
      */
@@ -38,8 +35,7 @@ class MediaSchema implements SchemaInterface
             ->copyrightHolder($author)
             ->uploadDate($this->media->created_at)
             ->exifData('')
-            ->fileFormat($this->media->mime_type)
-        ;
+            ->fileFormat($this->media->mime_type);
 
         return $schema->toScript();
     }

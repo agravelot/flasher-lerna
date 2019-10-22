@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ShareAlbumTest extends TestCase
+class CosplayerInvitationTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -30,15 +30,15 @@ class ShareAlbumTest extends TestCase
 
         $response->assertStatus(201);
         $contacts->each(static function ($contact) use ($album) {
-            Mail::assertSent(ShareAlbum::class, static function (Mailable $mail) use ($album, $contact) {
+            Mail::assertSent(CosplayerInvitation::class, static function (Mailable $mail) use ($album, $contact) {
                 return $mail->album->id === $album->id;
             });
             // Assert a message was sent to the given users...
-            Mail::assertSent(ShareAlbum::class, static function (Mailable $mail) use ($album, $contact) {
+            Mail::assertSent(CosplayerInvitation::class, static function (Mailable $mail) use ($album, $contact) {
                 return $mail->hasTo($contact->email);
             });
         });
-        Mail::assertSent(ShareAlbum::class, $contacts->count());
+        Mail::assertSent(CosplayerInvitation::class, $contacts->count());
     }
 
     public function test_admin_can_not_share_unpublished_album()
@@ -69,15 +69,15 @@ class ShareAlbumTest extends TestCase
 
         $response->assertStatus(201);
         $contacts->each(static function ($contact) use ($album) {
-            Mail::assertSent(ShareAlbum::class, static function (Mailable $mail) use ($album, $contact) {
+            Mail::assertSent(CosplayerInvitation::class, static function (Mailable $mail) use ($album, $contact) {
                 return $mail->album->id === $album->id;
             });
             // Assert a message was sent to the given users...
-            Mail::assertSent(ShareAlbum::class, static function (Mailable $mail) use ($album, $contact) {
+            Mail::assertSent(CosplayerInvitation::class, static function (Mailable $mail) use ($album, $contact) {
                 return $mail->hasTo($contact->email);
             });
         });
-        Mail::assertSent(ShareAlbum::class, $contacts->count());
+        Mail::assertSent(CosplayerInvitation::class, $contacts->count());
     }
 
     public function test_user_can_not_share_album()

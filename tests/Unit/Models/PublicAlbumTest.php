@@ -45,7 +45,7 @@ class PublicAlbumTest extends ModelTestCase
     public function testModelConfiguration()
     {
         $this->runConfigurationAssertions(new PublicAlbum(), [
-            'title', 'slug', 'body', 'published_at', 'user_id', 'private',
+            'title', 'slug', 'body', 'published_at', 'user_id', 'private', 'notify_users_on_published',
         ], [], ['*'], [], ['id' => 'int', 'private' => 'bool'], [
             'published_at',
             'updated_at',
