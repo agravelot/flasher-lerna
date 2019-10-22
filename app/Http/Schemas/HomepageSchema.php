@@ -2,6 +2,7 @@
 
 namespace App\Http\Schemas;
 
+use App\Models\SocialMedia;
 use Spatie\SchemaOrg\Thing;
 use Spatie\SchemaOrg\Schema;
 
@@ -12,6 +13,7 @@ class HomepageSchema implements SchemaInterface
         $schema = Schema::photograph()
             ->name(settings()->get('app_name'))
             ->alternateName('Jujune kanda')
+            ->sameAs(SocialMedia::active()->get()->pluck('url')->toArray())
             ->audience([
                 'CreativeWork',
                 'Event',
