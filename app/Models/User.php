@@ -24,7 +24,7 @@ class User extends Authenticatable implements MustVerifyEmailInterface
      * @var array<string>
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role',
+        'name', 'email', 'password', 'role', 'notify_on_album_published',
     ];
 
     /**

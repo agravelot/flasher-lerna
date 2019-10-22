@@ -68,6 +68,7 @@ class Album extends Model implements HasMedia, Feedable
         'published_at',
         'user_id',
         'private',
+        'notify_users_on_published',
     ];
 
     public function getZipFileNameAttribute(): string
