@@ -24,7 +24,7 @@ class AlbumSchema implements SchemaInterface
             ->name($this->album->name)
             ->keywords($this->album->categories->toArray())
             ->isAccessibleForFree(true)
-            ->primaryImageOfPage($this->album->cover->getUrl('thumb'))
+            ->primaryImageOfPage(optional($this->album->cover)->getUrl())
             ->specialty($this->album->categories->toArray())
             ->author([
                 (new Person())->name($this->album->user->name)
@@ -36,7 +36,7 @@ class AlbumSchema implements SchemaInterface
             ->dateCreated($this->album->created_at)
             ->dateModified($this->album->updated_at)
             ->datePublished($this->album->published_at)
-            ->thumbnailUrl($this->album->cover->getUrl('thumb'));
+            ->thumbnailUrl(optional($this->album->cover)->getUrl('thumb'));
 
         return $schema->toScript();
     }
