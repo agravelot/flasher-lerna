@@ -10,13 +10,10 @@ class HomeOpenGraph implements OpenGraphable, ImagesOpenGraphable
 {
     public function images(): Collection
     {
-        $image = settings()->get('profile_picture_homepage');
+        $images[] = asset('/svg/logo.svg');
+        $images[] = settings()->get('profile_picture_homepage');
 
-        if ($image === null) {
-            return collect();
-        }
-
-        return collect([$image]);
+        return collect($images);
     }
 
     public function title(): string
@@ -26,7 +23,7 @@ class HomeOpenGraph implements OpenGraphable, ImagesOpenGraphable
 
     public function description(): string
     {
-        return '';
+        return settings()->get('seo_description');
     }
 
     public function type(): string
