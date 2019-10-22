@@ -11,10 +11,14 @@ class HomeOpenGraph implements OpenGraphable, ImagesOpenGraphable
 {
     public function images(): Collection
     {
-        $images[] = asset('/svg/logo.svg');
-        $images[] = settings()->get('profile_picture_homepage');
+        //$logo = asset('/svg/logo.svg');
+        $profile = settings()->get('profile_picture_homepage');
 
-        return collect($images);
+        if ($profile === null) {
+            return collect();
+        }
+
+        return collect([$profile]);
     }
 
     public function title(): string
