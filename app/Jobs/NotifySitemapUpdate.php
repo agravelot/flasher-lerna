@@ -30,6 +30,7 @@ class NotifySitemapUpdate implements ShouldQueue
     {
         if (! App::environment('production')) {
             $this->delete();
+
             return;
         }
 

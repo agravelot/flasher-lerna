@@ -4,7 +4,6 @@ namespace App\Http\Schemas;
 
 use App\Models\Album;
 use Spatie\SchemaOrg\Person;
-use Spatie\SchemaOrg\Thing;
 use Spatie\SchemaOrg\Schema;
 
 class AlbumSchema implements SchemaInterface
@@ -37,8 +36,7 @@ class AlbumSchema implements SchemaInterface
             ->dateCreated($this->album->created_at)
             ->dateModified($this->album->updated_at)
             ->datePublished($this->album->published_at)
-            ->thumbnailUrl($this->album->cover->getUrl('thumb'))
-        ;
+            ->thumbnailUrl($this->album->cover->getUrl('thumb'));
 
         return $schema->toScript();
     }
