@@ -17,18 +17,16 @@ class AlbumObserver extends ActivityObserverBase
 
     public function created(Album $album): void
     {
-         if ($this->hasBeenPublished($album)) {
-             $users = $album->cosplayers->pluck('user');
-             dump($users);
-             Notification::send($users, new PublishedAlbum($album));
-         }
+        if ($this->hasBeenPublished($album)) {
+            $users = $album->cosplayers->pluck('user');
+            Notification::send($users, new PublishedAlbum($album));
+        }
     }
 
     public function updated(Album $album): void
     {
         if ($this->hasBeenPublished($album)) {
             $users = $album->cosplayers->pluck('user');
-            dump($users);
             Notification::send($users, new PublishedAlbum($album));
         }
     }

@@ -2,19 +2,20 @@
 
 namespace Tests\Unit\Models;
 
+use Carbon\Carbon;
+use Tests\TestCase;
 use App\Models\Album;
 use App\Models\Cosplayer;
-use App\Notifications\PublishedAlbum;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
+use App\Notifications\PublishedAlbum;
 use Illuminate\Support\Facades\Notification;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PublishedAlbumTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_when_album_is_published_send_notification_to_cosplayers_related_to_an_user()
+    public function test_updating_album_as_published_send_notification_to_cosplayers_related_to_an_user()
     {
         Notification::fake();
         /** @var Collection $cosplayers */
@@ -24,7 +25,7 @@ class PublishedAlbumTest extends TestCase
         Notification::assertNothingSent();
 
         $album->cosplayers()->sync($cosplayers);
-        $album->update(['published_at' => null]);
+        $album->update(['published_at' => Carbon::now()]);
 
         $users = $album->cosplayers->pluck('user');
         Notification::assertTimesSent(5, PublishedAlbum::class);
@@ -34,15 +35,22 @@ class PublishedAlbumTest extends TestCase
     public function test_when_album_is_published_send_notification_to_cosplayers_related_to_an_user_and_ignore_others()
     {
         Notification::fake();
+        $cosplayers = factory(Cosplayer::class, 2)->state('withUser')->create();
+        dump($cosplayers);
         $cosplayers = collect([
             factory(Cosplayer::class)->state('withUser')->create(),
             factory(Cosplayer::class)->create(),
         ]);
+        dump($cosplayers);
+
         /** @var Album $album */
-        $album = factory(Album::class)->states(['published', 'withUser'])->create();
+        $album = factory(Album::class)->states(['unpublished', 'withUser'])->create();
+        Notification::assertNothingSent();
 
-        $users = $cosplayers->pluck('user');
+        $album->cosplayers()->sync($cosplayers);
+        $album->update(['published_at' => Carbon::now()]);
 
+        $users = $album->cosplayers->pluck('user');
         Notification::assertTimesSent(1, PublishedAlbum::class);
         Notification::assertSentTo($users, PublishedAlbum::class);
     }
