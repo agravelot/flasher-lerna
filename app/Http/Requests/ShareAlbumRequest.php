@@ -13,8 +13,8 @@ class ShareAlbumRequest extends Request
     {
         return [
             'contacts' => 'required|array',
-            'contacts.*.name' => 'required|string',
             'contacts.*.email' => 'required|email',
+            'contacts.*.cosplayer_id' => 'required|int|exists:cosplayers,id',
             'message' => 'required|string',
         ];
     }
