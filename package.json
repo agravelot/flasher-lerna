@@ -10,7 +10,8 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "watch:migrations": "onchange 'database/migrations/*.php' -- php artisan migrate:refresh",
         "watch:migrations-seeds": "onchange 'database/*/*.php' -- php artisan migrate:refresh --seed",
-        "format": "eslint --ext .jsx,.js resources/ --fix ; prettier --write 'resources/**/*.{css,vue,ts,json}' 'nova-components/**/*.{css,vue,ts,json}' 'modules/**/*.{css,vue,ts,json}'"
+        "lint": "eslint --ext .jsx,.js,.ts,.vue resources/js/",
+        "format": "eslint --ext .jsx,.js,.ts,.vue resources/js/ --fix"
     },
     "browserslist": [
         "defaults"
@@ -48,7 +49,7 @@
         "eslint": "^5.14.1",
         "eslint-config-airbnb-base": "^13.1.0",
         "eslint-plugin-import": "^2.16.0",
-        "eslint-plugin-vue": "^5.2.2",
+        "eslint-plugin-vue": "^5.2.3",
         "laravel-mix": "^4.0.15",
         "laravel-mix-bundle-analyzer": "^1.0.2",
         "laravel-mix-favicon": "^0.1.0",
