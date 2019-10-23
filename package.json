@@ -18,10 +18,13 @@
     ],
     "devDependencies": {
         "@types/browser-sync": "^0.0.43",
+        "@typescript-eslint/eslint-plugin": "^2.5.0",
+        "@typescript-eslint/parser": "^2.5.0",
         "browser-sync": "^2.26.3",
         "browser-sync-webpack-plugin": "^2.2.2",
         "onchange": "^6.0",
-        "types-installer": "^1.6.1"
+        "types-installer": "^1.6.1",
+        "vue-eslint-parser": "^6.0.4"
     },
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^1.2.13",
@@ -46,7 +49,7 @@
         "bulma-modal-fx": "^1.1.1",
         "cross-env": "^5.1",
         "dropzone": "^5.5.1",
-        "eslint": "^5.14.1",
+        "eslint": "^6.5.1",
         "eslint-config-airbnb-base": "^13.1.0",
         "eslint-plugin-import": "^2.16.0",
         "eslint-plugin-vue": "^5.2.3",
