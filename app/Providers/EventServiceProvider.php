@@ -5,12 +5,14 @@ namespace App\Providers;
 use App\Models\User;
 use App\Models\Album;
 use App\Models\Contact;
+use App\Models\Setting;
 use App\Models\Category;
 use App\Models\Cosplayer;
 use App\Models\Testimonial;
 use App\Observers\UserObserver;
 use App\Observers\AlbumObserver;
 use App\Observers\ContactObserver;
+use App\Observers\SettingObserver;
 use App\Observers\CategoryObserver;
 use App\Observers\CosplayerObserver;
 use Illuminate\Support\Facades\Event;
@@ -44,5 +46,6 @@ class EventServiceProvider extends ServiceProvider
         Cosplayer::observe(CosplayerObserver::class);
         Testimonial::observe(TestimonialObserver::class);
         User::observe(UserObserver::class);
+        Setting::observe(SettingObserver::class);
     }
 }

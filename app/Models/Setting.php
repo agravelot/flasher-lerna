@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use LogicException;
 use App\Enums\SettingType;
 use Spatie\MediaLibrary\File;
+use App\Traits\ClearsResponseCache;
 use BenSampo\Enum\Traits\CastsEnums;
 use Spatie\MediaLibrary\Models\Media;
 use Illuminate\Database\Eloquent\Model;
@@ -14,9 +17,10 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 
 class Setting extends Model implements HasMedia
 {
-    use CastsEnums, HasMediaTrait;
+    use CastsEnums, HasMediaTrait, ClearsResponseCache;
 
     private const SETTING_COLLECTION = 'setting_media';
+    public const SETTINGS_CACHE_KEY = 'settings';
 
     /**
      * @var array<string>
@@ -29,6 +33,17 @@ class Setting extends Model implements HasMedia
     protected $enumCasts = [
         'type' => SettingType::class,
     ];
+
+    public static function refreshCache(): Collection
+    {
+        if (Cache::has(self::SETTINGS_CACHE_KEY)) {
+            Cache::forget(self::SETTINGS_CACHE_KEY);
+        }
+
+        return tap(Setting::with('media')->get(), function (Collection $settings) {
+            Cache::forever(self::SETTINGS_CACHE_KEY, $settings);
+        });
+    }
 
     /**
      * Get the ability to return an Media for media settings.
