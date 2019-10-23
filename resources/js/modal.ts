@@ -1,6 +1,6 @@
 // Trigger modals
-(function(): object {
-    const modalFX = (function(): object {
+(function(): void {
+    const modalFX = (function(): any {
         const elements = {
             target: 'data-target',
             active: 'is-active',
@@ -11,7 +11,7 @@
             navigable: 'is-modal-navigable',
         };
 
-        const onClickEach = function(selector, callback) {
+        const onClickEach = function(selector, callback): void {
             const arr = document.getElementsByClassName(selector);
             Array.from(arr).forEach(function(el) {
                 el.addEventListener('click', callback);
