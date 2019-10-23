@@ -5,7 +5,6 @@ namespace App;
 use App\Models\Setting;
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
 use Spatie\MediaLibrary\Models\Media;
 
 class SettingsManager
@@ -44,7 +43,7 @@ class SettingsManager
         return tap(Setting::updateOrCreate(['name' => $name], [
             'name' => $name,
             'value' => $value,
-        ]), function () {
+        ]), static function () {
             Setting::refreshCache();
         });
     }

@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
 use LogicException;
 use App\Enums\SettingType;
 use Spatie\MediaLibrary\File;
+use Illuminate\Support\Collection;
 use App\Traits\ClearsResponseCache;
 use BenSampo\Enum\Traits\CastsEnums;
+use Illuminate\Support\Facades\Cache;
 use Spatie\MediaLibrary\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
@@ -40,7 +40,7 @@ class Setting extends Model implements HasMedia
             Cache::forget(self::SETTINGS_CACHE_KEY);
         }
 
-        return tap(Setting::with('media')->get(), function (Collection $settings) {
+        return tap(self::with('media')->get(), static function (Collection $settings) {
             Cache::forever(self::SETTINGS_CACHE_KEY, $settings);
         });
     }

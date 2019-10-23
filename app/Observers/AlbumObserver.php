@@ -6,7 +6,7 @@ use App\Models\Album;
 use App\Notifications\PublishedAlbum;
 use Illuminate\Support\Facades\Notification;
 
-class AlbumObserver extends ActivityObserverBase
+class AlbumObserver
 {
     public function creating(Album $album): void
     {
@@ -15,16 +15,7 @@ class AlbumObserver extends ActivityObserverBase
         }
     }
 
-    public function created(Album $album): void
-    {
-        if ($this->hasBeenPublished($album)) {
-            $users = $album->cosplayers()->whereHas('user')->get()
-                ->pluck('user')->where('notify_on_album_published', true);
-            Notification::send($users, new PublishedAlbum($album));
-        }
-    }
-
-    public function updated(Album $album): void
+    public function saved(Album $album): void
     {
         if ($this->shouldBeNotified($album) && $this->hasBeenPublished($album)) {
             $users = $album->cosplayers()->whereHas('user')->get()

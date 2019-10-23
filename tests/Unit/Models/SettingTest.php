@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Models;
 
-use Illuminate\Support\Collection;
 use Tests\TestCase;
 use App\Models\Setting;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
