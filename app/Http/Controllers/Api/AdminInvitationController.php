@@ -20,9 +20,6 @@ class AdminInvitationController extends Controller
         $this->authorizeResource(Invitation::class);
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index(): AnonymousResourceCollection
     {
         $invitations = Invitation::all();
@@ -30,31 +27,16 @@ class AdminInvitationController extends Controller
         return InvitationResource::collection($invitations);
     }
 
-    public function store(Album $album, InvitationRequest $request): InvitationResource
+    public function store(InvitationRequest $request): InvitationResource
     {
         $invitation = Invitation::create($request->validated());
 
         return new InvitationResource($invitation);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Invitation $invitation): InvitationResource
     {
         return new InvitationResource($invitation);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Invitation  $invitation
-     *
-     * @return Response
-     */
-    public function update(Request $request, Invitation $invitation)
-    {
-        //
     }
 
     /**
