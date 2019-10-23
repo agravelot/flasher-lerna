@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Models\Album;
 use App\Models\Setting;
+use App\Models\Invitation;
 use App\Observers\AlbumObserver;
 use App\Observers\SettingObserver;
+use App\Observers\InvitationObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -31,5 +33,6 @@ class EventServiceProvider extends ServiceProvider
         parent::boot();
         Album::observe(AlbumObserver::class);
         Setting::observe(SettingObserver::class);
+        Invitation::observe(InvitationObserver::class);
     }
 }
