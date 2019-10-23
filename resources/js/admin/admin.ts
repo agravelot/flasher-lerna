@@ -1,5 +1,5 @@
-import Sidebar from '../components/admin/Sidebar.vue';
 import Vue from 'vue';
+import Sidebar from '../components/admin/Sidebar.vue';
 import router from './router';
 import './menu.ts';
 import './fontawsome.ts';
@@ -16,13 +16,13 @@ import Buefy from 'buefy';
  */
 
 Vue.use(Buefy, {
-    defaultIconComponent: 'vue-fontawesome',
-    defaultIconPack: 'fas',
-    // defaultFieldLabelPosition: 'on-border',
+  defaultIconComponent: 'vue-fontawesome',
+  defaultIconPack: 'fas',
+  // defaultFieldLabelPosition: 'on-border',
 });
 
 const app = new Vue({
-    el: '#app',
-    components: { Sidebar },
-    router,
+  el: '#app',
+  components: { Sidebar },
+  router,
 });
