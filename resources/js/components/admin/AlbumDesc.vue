@@ -1,85 +1,93 @@
 <template>
-    <section>
-        <b-field
-            label="Title"
-            :type="errors.title ? 'is-danger' : ''"
-            :message="errors.title ? errors.title[0] : null"
+  <section>
+    <b-field
+      :type="errors.title ? 'is-danger' : ''"
+      :message="errors.title ? errors.title[0] : null"
+      label="Title"
+    >
+      <b-input
+        v-model="album.title"
+        type="text"
+        maxlength="30"
+      />
+    </b-field>
+
+    <quill-editor
+      ref="myQuillEditor"
+      v-model="album.body"
+      :options="editorOption"
+    />
+
+    <b-field
+      :type="errors.categories ? 'is-danger' : ''"
+      :message="errors.categories ? errors.categories[0] : null"
+      label="Enter some categories"
+    >
+      <b-taginput
+        v-model="album.categories"
+        :data="filteredCategories"
+        :allow-new="false"
+        @typing="getFilteredCategories"
+        autocomplete
+        field="name"
+        placeholder="Add a category"
+        icon="tag"
+      />
+    </b-field>
+
+    <b-field
+      :type="errors.cosplayers ? 'is-danger' : ''"
+      :message="errors.cosplayers ? errors.cosplayers[0] : null"
+      label="Enter some cosplayers"
+    >
+      <b-taginput
+        v-model="album.cosplayers"
+        :data="filteredCosplayers"
+        :allow-new="false"
+        @typing="getFilteredCosplayers"
+        autocomplete
+        field="name"
+        placeholder="Add a cosplayer"
+        icon="user-tag"
+      />
+    </b-field>
+
+    <b-field
+      :type="errors.published_at ? 'is-danger' : ''"
+      :message="errors.published_at ? errors.published_at[0] : null"
+      label="Should this album be published?"
+    >
+      <div class="field">
+        <b-switch
+          v-model="album.published_at"
+          :true-value="album.published_at || new Date()"
+          :false-value="null"
         >
-            <b-input type="text" v-model="album.title" maxlength="30"></b-input>
-        </b-field>
+          {{ album.published_at ? 'Published' : 'Draft' }}
+        </b-switch>
+      </div>
+    </b-field>
 
-        <quill-editor
-            v-model="album.body"
-            ref="myQuillEditor"
-            :options="editorOption"
-        ></quill-editor>
-
-        <b-field
-            label="Enter some categories"
-            :type="errors.categories ? 'is-danger' : ''"
-            :message="errors.categories ? errors.categories[0] : null"
+    <b-field
+      :type="errors.private ? 'is-danger' : ''"
+      :message="errors.private ? errors.private[0] : null"
+      label="Should it be accessible publicly?"
+    >
+      <div class="field">
+        <b-switch
+          v-model.numeric="album.private"
+          :true-value="1"
+          :false-value="0"
         >
-            <b-taginput
-                v-model="album.categories"
-                :data="filteredCategories"
-                autocomplete
-                :allow-new="false"
-                field="name"
-                placeholder="Add a category"
-                icon="tag"
-                @typing="getFilteredCategories"
-            >
-            </b-taginput>
-        </b-field>
+          {{ album.private ? 'Publicly' : 'Private' }}
+        </b-switch>
+      </div>
+    </b-field>
 
-        <b-field
-            label="Enter some cosplayers"
-            :type="errors.cosplayers ? 'is-danger' : ''"
-            :message="errors.cosplayers ? errors.cosplayers[0] : null"
-        >
-            <b-taginput
-                v-model="album.cosplayers"
-                :data="filteredCosplayers"
-                autocomplete
-                :allow-new="false"
-                field="name"
-                placeholder="Add a cosplayer"
-                icon="user-tag"
-                @typing="getFilteredCosplayers"
-            >
-            </b-taginput>
-        </b-field>
-
-        <b-field
-            label="Should this album be published?"
-            :type="errors.published_at ? 'is-danger' : ''"
-            :message="errors.published_at ? errors.published_at[0] : null"
-        >
-            <div class="field">
-                <b-switch
-                    v-model="album.published_at"
-                    :true-value="album.published_at || new Date()"
-                    :false-value="null"
-                >
-                    {{ album.published_at ? 'Published' : 'Draft' }}
-                </b-switch>
-            </div>
-        </b-field>
-
-        <b-field
-            label="Should it be accessible publicly?"
-            :type="errors.private ? 'is-danger' : ''"
-            :message="errors.private ? errors.private[0] : null"
-        >
-            <div class="field">
-                <b-switch v-model.numeric="album.private" :true-value="1" :false-value="0">
-                    {{ album.private ? 'Publicly' : 'Private' }}
-                </b-switch>
-            </div>
-        </b-field>
-
-        <button class="button is-primary">Update</button>
-    </section>
+    <button class="button is-primary">
+      Update
+    </button>
+  </section>
 </template>
 
 <script lang="ts">
@@ -102,7 +110,7 @@ import Buefy from '../../admin/Buefy.vue';
 export default class AlbumDesc extends Buefy {
     protected errors: object = {};
     protected album: Album = new Album();
-    protected allowNew: boolean = false;
+    protected allowNew = false;
     protected allCategories: Array<Category> = [];
     protected allCosplayers: Array<Cosplayer> = [];
     protected filteredCategories: Array<object> = [];

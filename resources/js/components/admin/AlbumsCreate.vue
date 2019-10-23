@@ -1,93 +1,103 @@
 <template>
-    <section>
-        <h1 class="title">Create album</h1>
+  <section>
+    <h1 class="title">
+      Create album
+    </h1>
 
-        <div class="card">
-            <div class="card-content">
-                <form @submit.prevent="createAlbum">
-                    <b-field
-                        label="Title"
-                        :type="errors.title ? 'is-danger' : ''"
-                        :message="errors.title ? errors.title[0] : null"
-                    >
-                        <b-input type="text" v-model="album.title" maxlength="30"></b-input>
-                    </b-field>
+    <div class="card">
+      <div class="card-content">
+        <form @submit.prevent="createAlbum">
+          <b-field
+            :type="errors.title ? 'is-danger' : ''"
+            :message="errors.title ? errors.title[0] : null"
+            label="Title"
+          >
+            <b-input
+              v-model="album.title"
+              type="text"
+              maxlength="30"
+            />
+          </b-field>
 
-                    <quill-editor
-                        v-model="album.body"
-                        ref="myQuillEditor"
-                        :options="editorOption"
-                    ></quill-editor>
+          <quill-editor
+            ref="myQuillEditor"
+            v-model="album.body"
+            :options="editorOption"
+          />
 
-                    <b-field
-                        label="Enter some categories"
-                        :type="errors.categories ? 'is-danger' : ''"
-                        :message="errors.categories ? errors.categories[0] : null"
-                    >
-                        <b-taginput
-                            v-model="album.categories"
-                            :data="filteredCategories"
-                            autocomplete
-                            :allow-new="false"
-                            field="name"
-                            placeholder="Add a category"
-                            icon="tag"
-                            @typing="getFilteredCategories"
-                        >
-                        </b-taginput>
-                    </b-field>
+          <b-field
+            :type="errors.categories ? 'is-danger' : ''"
+            :message="errors.categories ? errors.categories[0] : null"
+            label="Enter some categories"
+          >
+            <b-taginput
+              v-model="album.categories"
+              :data="filteredCategories"
+              :allow-new="false"
+              @typing="getFilteredCategories"
+              autocomplete
+              field="name"
+              placeholder="Add a category"
+              icon="tag"
+            />
+          </b-field>
 
-                    <b-field
-                        label="Enter some cosplayers"
-                        :type="errors.cosplayers ? 'is-danger' : ''"
-                        :message="errors.cosplayers ? errors.cosplayers[0] : null"
-                    >
-                        <b-taginput
-                            v-model="album.cosplayers"
-                            :data="filteredCosplayers"
-                            autocomplete
-                            :allow-new="false"
-                            field="name"
-                            placeholder="Add a cosplayer"
-                            icon="user-tag"
-                            @typing="getFilteredCosplayers"
-                        >
-                        </b-taginput>
-                    </b-field>
+          <b-field
+            :type="errors.cosplayers ? 'is-danger' : ''"
+            :message="errors.cosplayers ? errors.cosplayers[0] : null"
+            label="Enter some cosplayers"
+          >
+            <b-taginput
+              v-model="album.cosplayers"
+              :data="filteredCosplayers"
+              :allow-new="false"
+              @typing="getFilteredCosplayers"
+              autocomplete
+              field="name"
+              placeholder="Add a cosplayer"
+              icon="user-tag"
+            />
+          </b-field>
 
-                    <b-field
-                        label="Should this album be published?"
-                        :type="errors.published_at ? 'is-danger' : ''"
-                        :message="errors.published_at ? errors.published_at[0] : null"
-                    >
-                        <div class="field">
-                            <b-switch
-                                v-model="album.published_at"
-                                :true-value="album.published_at || new Date().toISOString()"
-                                :false-value="null"
-                            >
-                                {{ album.published_at ? 'Yes' : 'No' }}
-                            </b-switch>
-                        </div>
-                    </b-field>
-
-                    <b-field
-                        label="Should it be accessible publicly?"
-                        :type="errors.private ? 'is-danger' : ''"
-                        :message="errors.private ? errors.private[0] : null"
-                    >
-                        <div class="field">
-                            <b-switch v-model="album.private" :false-value="1" :true-value="0">
-                                {{ album.private ? 'No' : 'Yes' }}
-                            </b-switch>
-                        </div>
-                    </b-field>
-
-                    <button class="button is-primary">Create</button>
-                </form>
+          <b-field
+            :type="errors.published_at ? 'is-danger' : ''"
+            :message="errors.published_at ? errors.published_at[0] : null"
+            label="Should this album be published?"
+          >
+            <div class="field">
+              <b-switch
+                v-model="album.published_at"
+                :true-value="album.published_at || new Date().toISOString()"
+                :false-value="null"
+              >
+                {{ album.published_at ? 'Yes' : 'No' }}
+              </b-switch>
             </div>
-        </div>
-    </section>
+          </b-field>
+
+          <b-field
+            :type="errors.private ? 'is-danger' : ''"
+            :message="errors.private ? errors.private[0] : null"
+            label="Should it be accessible publicly?"
+          >
+            <div class="field">
+              <b-switch
+                v-model="album.private"
+                :false-value="1"
+                :true-value="0"
+              >
+                {{ album.private ? 'No' : 'Yes' }}
+              </b-switch>
+            </div>
+          </b-field>
+
+          <button class="button is-primary">
+            Create
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script lang="ts">

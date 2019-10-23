@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const ratio: number = 0.01;
+    const ratio = 0.01;
 
     const options: object = {
         root: null,
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ) => {
         entries.forEach((entry: IntersectionObserverEntry) => {
             if (entry.intersectionRatio > ratio) {
-                let computedSize: number = Math.ceil(
+                const computedSize: number = Math.ceil(
                     (entry.target.getBoundingClientRect().width / window.innerWidth) * 100
                 );
                 // Avoid to set 0vw and load full sized image

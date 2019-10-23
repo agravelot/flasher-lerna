@@ -3,14 +3,14 @@ import debounce from 'lodash/debounce';
 
 // Bulma NavBar Burger Script
 document.addEventListener('DOMContentLoaded', () => {
-    let resizeResponsiveMedias = () => {
+    const resizeResponsiveMedias = () => {
         // onload="this.onload=null;this.sizes=Math.ceil(this.getBoundingClientRect().width/window.innerWidth*100)+'vw';console.log(this.sizes);"
         const responsiveMedias: HTMLCollectionOf<Element> = document.getElementsByClassName(
             'responsive-media'
         );
 
         Array.from(responsiveMedias).forEach((el: Element) => {
-            let computedSize: number = Math.ceil(
+            const computedSize: number = Math.ceil(
                 (el.getBoundingClientRect().width / window.innerWidth) * 100
             );
             // Avoid to set 0vw and load full sized image

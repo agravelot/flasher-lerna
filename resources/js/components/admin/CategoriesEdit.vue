@@ -1,57 +1,69 @@
 <template>
-    <section>
-        <div class="card">
-            <div class="card-content">
-                <b-field
-                    label="Name"
-                    :type="errors.name ? 'is-danger' : ''"
-                    :message="errors.name ? errors.name[0] : null"
-                >
-                    <b-input v-model="category.name"></b-input>
-                </b-field>
+  <section>
+    <div class="card">
+      <div class="card-content">
+        <b-field
+          :type="errors.name ? 'is-danger' : ''"
+          :message="errors.name ? errors.name[0] : null"
+          label="Name"
+        >
+          <b-input v-model="category.name" />
+        </b-field>
 
-                <b-field
-                    label="Description"
-                    :type="errors.description ? 'is-danger' : ''"
-                    :message="errors.description ? errors.description[0] : null"
-                >
-                    <quill-editor
-                        v-model="category.description"
-                        ref="myQuillEditor"
-                        :options="editorOption"
-                    ></quill-editor>
-                </b-field>
+        <b-field
+          :type="errors.description ? 'is-danger' : ''"
+          :message="errors.description ? errors.description[0] : null"
+          label="Description"
+        >
+          <quill-editor
+            ref="myQuillEditor"
+            v-model="category.description"
+            :options="editorOption"
+          />
+        </b-field>
 
-                <b-button type="is-primary" :loading="this.loading" @click="updateCategory()"
-                    >Update
-                </b-button>
-            </div>
+        <b-button
+          :loading="this.loading"
+          @click="updateCategory()"
+          type="is-primary"
+        >
+          Update
+        </b-button>
+      </div>
+    </div>
+    <section class="section">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-title">
+            Cover
+          </div>
         </div>
-        <section class="section">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-header-title">Cover</div>
-                </div>
-                <div class="card-content">
-                    <div v-if="category.cover">
-                        <img :src="category.cover.thumb" :alt="category.cover.name" />
-                        <a class="button has-text-danger" @click="deleteCurrentCategoryCover()">
-                            Delete
-                        </a>
-                    </div>
-                    <div v-else>
-                        <vue-dropzone
-                            ref="myVueDropzone"
-                            :options="dropzoneOptions"
-                            v-on:vdropzone-sending="sendingEvent"
-                            v-on:vdropzone-complete="refreshCover"
-                            class="has-margin-bottom-md"
-                        ></vue-dropzone>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <div class="card-content">
+          <div v-if="category.cover">
+            <img
+              :src="category.cover.thumb"
+              :alt="category.cover.name"
+            >
+            <a
+              @click="deleteCurrentCategoryCover()"
+              class="button has-text-danger"
+            >
+              Delete
+            </a>
+          </div>
+          <div v-else>
+            <vue-dropzone
+              ref="myVueDropzone"
+              :options="dropzoneOptions"
+              v-on:vdropzone-sending="sendingEvent"
+              v-on:vdropzone-complete="refreshCover"
+              class="has-margin-bottom-md"
+            />
+          </div>
+        </div>
+      </div>
     </section>
+  </section>
 </template>
 
 <script lang="ts">
@@ -73,7 +85,7 @@ import { quillEditor } from 'vue-quill-editor';
 })
 export default class CategoriesEdit extends Buefy {
     private category: Category = new Category();
-    private loading: boolean = false;
+    private loading = false;
     protected errors: object = {};
 
     // TODO Limit 1 file

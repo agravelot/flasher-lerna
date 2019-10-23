@@ -1,94 +1,101 @@
 <template>
-    <div>
-        <section>
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <div class="buttons">
-                            <b-button
-                                tag="router-link"
-                                :to="{ name: 'admin.cosplayers.create' }"
-                                type="is-success"
-                                icon-left="plus"
-                                >Add
-                            </b-button>
-                            <b-button
-                                type="is-danger"
-                                icon-left="trash-alt"
-                                :disabled="!checkedRows.length"
-                                @click="confirmDeleteSelectedCosplayers"
-                            >
-                                Delete checked
-                            </b-button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="level-right">
-                    <b-field class="is-pulled-right">
-                        <b-input
-                            placeholder="Search..."
-                            type="search"
-                            icon="search"
-                            :loading="loading"
-                            v-model="search"
-                            @input="fetchCosplayers()"
-                        >
-                        </b-input>
-                    </b-field>
-                </div>
+  <div>
+    <section>
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <div class="buttons">
+              <b-button
+                :to="{ name: 'admin.cosplayers.create' }"
+                tag="router-link"
+                type="is-success"
+                icon-left="plus"
+              >
+                Add
+              </b-button>
+              <b-button
+                :disabled="!checkedRows.length"
+                @click="confirmDeleteSelectedCosplayers"
+                type="is-danger"
+                icon-left="trash-alt"
+              >
+                Delete checked
+              </b-button>
             </div>
+          </div>
+        </div>
 
-            <b-table
-                :data="cosplayers"
-                :loading="loading"
-                striped
-                hoverable
-                mobile-cards
-                paginated
-                backend-pagination
-                :total="total"
-                :per-page="perPage"
-                @page-change="onPageChange"
-                backend-sorting
-                :default-sort-direction="defaultSortOrder"
-                :default-sort="[sortField, sortOrder]"
-                @sort="onSort"
-                icon-pack="fas"
-                checkable
-                :checked-rows.sync="checkedRows"
+        <div class="level-right">
+          <b-field class="is-pulled-right">
+            <b-input
+              :loading="loading"
+              v-model="search"
+              @input="fetchCosplayers()"
+              placeholder="Search..."
+              type="search"
+              icon="search"
+            />
+          </b-field>
+        </div>
+      </div>
+
+      <b-table
+        :data="cosplayers"
+        :loading="loading"
+        :total="total"
+        :per-page="perPage"
+        @page-change="onPageChange"
+        :default-sort-direction="defaultSortOrder"
+        :default-sort="[sortField, sortOrder]"
+        @sort="onSort"
+        :checked-rows.sync="checkedRows"
+        striped
+        hoverable
+        mobile-cards
+        paginated
+        backend-pagination
+        backend-sorting
+        icon-pack="fas"
+        checkable
+      >
+        <template slot-scope="cosplayer">
+          <b-table-column
+            field="name"
+            label="Name"
+            sortable
+          >
+            <router-link
+              :to="{
+                name: 'admin.cosplayers.edit',
+                params: { slug: cosplayer.row.slug },
+              }"
             >
-                <template slot-scope="cosplayer">
-                    <b-table-column field="name" label="Name" sortable>
-                        <router-link
-                            :to="{
-                                name: 'admin.cosplayers.edit',
-                                params: { slug: cosplayer.row.slug },
-                            }"
-                        >
-                            {{ cosplayer.row.name }}
-                        </router-link>
-                    </b-table-column>
-                </template>
+              {{ cosplayer.row.name }}
+            </router-link>
+          </b-table-column>
+        </template>
 
-                <template slot="empty">
-                    <section class="section">
-                        <div class="content has-text-grey has-text-centered">
-                            <p>
-                                <b-icon icon="sad-tear" size="is-large"></b-icon>
-                            </p>
-                            <p>Nothing here.</p>
-                        </div>
-                    </section>
-                </template>
+        <template slot="empty">
+          <section class="section">
+            <div class="content has-text-grey has-text-centered">
+              <p>
+                <b-icon
+                  icon="sad-tear"
+                  size="is-large"
+                />
+              </p>
+              <p>Nothing here.</p>
+            </div>
+          </section>
+        </template>
 
-                <template slot="bottom-left">
-                    <b>Total checked</b>
-                    : {{ checkedRows.length }}
-                </template>
-            </b-table>
-        </section>
-    </div>
+        <template slot="bottom-left">
+          <b>Total checked</b>
+          : {{ checkedRows.length }}
+        </template>
+      </b-table>
+    </section>
+  </div>
 </template>
 
 <script lang="ts">
@@ -110,15 +117,15 @@ import Cosplayer from '../../models/cosplayer';
 export default class CosplayersIndex extends Buefy {
     private cosplayers: Array<Cosplayer> = [];
     private checkedRows: Array<Cosplayer> = [];
-    private total: number = 0;
-    private page: number = 1;
-    perPage: number = 10;
-    private loading: boolean = false;
-    private sortField: string = 'id';
-    private sortOrder: string = 'desc';
-    showDetailIcon: boolean = true;
-    defaultSortOrder: string = 'desc';
-    private search: string = '';
+    private total = 0;
+    private page = 1;
+    perPage = 10;
+    private loading = false;
+    private sortField = 'id';
+    private sortOrder = 'desc';
+    showDetailIcon = true;
+    defaultSortOrder = 'desc';
+    private search = '';
 
     created(): void {
         this.fetchCosplayers();

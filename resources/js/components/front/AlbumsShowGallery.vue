@@ -1,50 +1,61 @@
 <template>
-    <div v-if="this.album">
-        <div v-if="album.medias && album.medias.length">
-            <!--            <h2 class="title is-2 has-text-centered">Pictures</h2>-->
-            <!--TODO Add nothing to show-->
-            <masonry
-                :gutter="{ default: '0.5rem' }"
-                :cols="{ default: 3, 1000: 2, 700: 1, 400: 1 }"
+  <div v-if="this.album">
+    <div v-if="album.medias && album.medias.length">
+      <!--            <h2 class="title is-2 has-text-centered">Pictures</h2>-->
+      <!--TODO Add nothing to show-->
+      <masonry
+        :gutter="{ default: '0.5rem' }"
+        :cols="{ default: 3, 1000: 2, 700: 1, 400: 1 }"
+      >
+        <div
+          v-for="(media, index) in album.medias"
+          :key="index"
+          @click="openPicture(media)"
+          class="has-margin-top-sm"
+        >
+          <figure class="image">
+            <img
+              v-if="media.src_set"
+              :srcset="media.src_set"
+              :src="media.thumb"
+              :alt="media.name"
+              class="responsive-media"
+              sizes="1px"
+              loading="auto"
             >
-                <div
-                    v-for="(media, index) in album.medias"
-                    :key="index"
-                    @click="openPicture(media)"
-                    class="has-margin-top-sm"
-                >
-                    <figure class="image">
-                        <img
-                            v-if="media.src_set"
-                            class="responsive-media"
-                            :srcset="media.src_set"
-                            :src="media.thumb"
-                            :alt="media.name"
-                            sizes="1px"
-                            loading="auto"
-                        />
-                        <img v-else :src="media.thumb" :alt="media.name" loading="auto" />
-                    </figure>
-                </div>
-            </masonry>
+            <img
+              v-else
+              :src="media.thumb"
+              :alt="media.name"
+              loading="auto"
+            >
+          </figure>
         </div>
-
-        <div v-if="openedPicture" class="modal is-active modal-fx-fadeInScale">
-            <div class="modal-background" @click="closePicture()"></div>
-            <div class="modal-content is-huge is-image">
-                <img
-                    :srcset="openedPicture.src_set"
-                    :src="openedPicture.thumb"
-                    :alt="openedPicture.name"
-                />
-            </div>
-            <button
-                class="modal-close is-large"
-                aria-label="close"
-                @click="closePicture()"
-            ></button>
-        </div>
+      </masonry>
     </div>
+
+    <div
+      v-if="openedPicture"
+      class="modal is-active modal-fx-fadeInScale"
+    >
+      <div
+        @click="closePicture()"
+        class="modal-background"
+      />
+      <div class="modal-content is-huge is-image">
+        <img
+          :srcset="openedPicture.src_set"
+          :src="openedPicture.thumb"
+          :alt="openedPicture.name"
+        >
+      </div>
+      <button
+        @click="closePicture()"
+        class="modal-close is-large"
+        aria-label="close"
+      />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -64,7 +75,7 @@ export default class AlbumsShowGallery extends Vue {
 
     protected album: object = null;
     protected openedPicture: object = null;
-    loading: boolean = false;
+    loading = false;
 
     updated(): void {
         this.$nextTick(() => {

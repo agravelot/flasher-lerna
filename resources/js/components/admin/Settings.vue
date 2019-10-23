@@ -1,78 +1,85 @@
 <template>
-    <section class="card">
-        <div class="card-header">
-            <div class="card-header-title">
-                <h1>Settings</h1>
-            </div>
-        </div>
-        <div class="card-content">
-            <div v-for="setting in settings">
-                <b-field :label="setting.title">
-                    <b-numberinput
-                        v-if="setting.type === 'numeric'"
-                        v-model="setting.value"
-                    ></b-numberinput>
-                    <b-checkbox
-                        v-else-if="setting.type === 'bool'"
-                        true-value="1"
-                        false-value="0"
-                        v-model.numeric="setting.value"
-                    >
-                        {{ setting.desciption }}
-                    </b-checkbox>
-                    <quill-editor
-                        v-else-if="setting.type === 'textarea'"
-                        v-model="setting.value"
-                        ref="myQuillEditor"
-                        :options="editorOption"
-                    ></quill-editor>
-                    <section v-else-if="setting.type === 'media'">
-                        <vue-dropzone
-                            v-if="setting.value === null"
-                            ref="myVueDropzone"
-                            :options="getDropzoneOptions(setting)"
-                            v-on:vdropzone-sending="sendingEvent"
-                            v-on:vdropzone-complete="fetchSettings"
-                            class="has-margin-bottom-md"
-                        ></vue-dropzone>
+  <section class="card">
+    <div class="card-header">
+      <div class="card-header-title">
+        <h1>Settings</h1>
+      </div>
+    </div>
+    <div class="card-content">
+      <div v-for="setting in settings">
+        <b-field :label="setting.title">
+          <b-numberinput
+            v-if="setting.type === 'numeric'"
+            v-model="setting.value"
+          />
+          <b-checkbox
+            v-else-if="setting.type === 'bool'"
+            v-model.numeric="setting.value"
+            true-value="1"
+            false-value="0"
+          >
+            {{ setting.desciption }}
+          </b-checkbox>
+          <quill-editor
+            ref="myQuillEditor"
+            v-else-if="setting.type === 'textarea'"
+            v-model="setting.value"
+            :options="editorOption"
+          />
+          <section v-else-if="setting.type === 'media'">
+            <vue-dropzone
+              ref="myVueDropzone"
+              v-if="setting.value === null"
+              :options="getDropzoneOptions(setting)"
+              v-on:vdropzone-sending="sendingEvent"
+              v-on:vdropzone-complete="fetchSettings"
+              class="has-margin-bottom-md"
+            />
 
-                        <img
-                            v-if="setting.value"
-                            :src="setting.value.url"
-                            :alt="setting.value.name"
-                        />
+            <img
+              v-if="setting.value"
+              :src="setting.value.url"
+              :alt="setting.value.name"
+            >
 
-                        <div v-if="setting.value" class="tags">
-                            <span class="tag is-primary">
-                                {{ setting.value.name }}
-                                <button
-                                    class="delete is-small"
-                                    type="button"
-                                    @click="setting.value = null"
-                                ></button>
-                            </span>
-                        </div>
-                    </section>
-                    <b-input
-                        v-else-if="setting.type === 'email'"
-                        type="email"
-                        maxlength="30"
-                        v-model="setting.value"
-                    ></b-input>
-                    <b-input v-else v-model="setting.value" expanded></b-input>
-                </b-field>
-                <div class="control">
-                    <button
-                        v-if="setting.type !== 'media'"
-                        class="button is-primary"
-                        @click="sendSetting(setting)"
-                    >
-                        Update
-                    </button>
-                </div>
+            <div
+              v-if="setting.value"
+              class="tags"
+            >
+              <span class="tag is-primary">
+                {{ setting.value.name }}
+                <button
+                  @click="setting.value = null"
+                  class="delete is-small"
+                  type="button"
+                />
+              </span>
             </div>
+          </section>
+          <b-input
+            v-else-if="setting.type === 'email'"
+            v-model="setting.value"
+            type="email"
+            maxlength="30"
+          />
+          <b-input
+            v-else
+            v-model="setting.value"
+            expanded
+          />
+        </b-field>
+        <div class="control">
+          <button
+            v-if="setting.type !== 'media'"
+            @click="sendSetting(setting)"
+            class="button is-primary"
+          >
+            Update
+          </button>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script lang="ts">
@@ -98,7 +105,7 @@ class Setting {
     },
 })
 export default class Settings extends Buefy {
-    private loading: boolean = false;
+    private loading = false;
     private settings: Array<Setting> = [];
 
     getDropzoneOptions(setting: Setting): object {

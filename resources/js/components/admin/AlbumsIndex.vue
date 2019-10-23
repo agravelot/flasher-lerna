@@ -1,114 +1,134 @@
 <template>
-    <div>
-        <section>
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <div class="buttons">
-                            <b-button
-                                tag="router-link"
-                                :to="{ name: 'admin.albums.create' }"
-                                type="is-success"
-                                icon-left="plus"
-                                >Add
-                            </b-button>
-                            <b-button
-                                type="is-danger"
-                                icon-left="trash-alt"
-                                :disabled="!checkedRows.length"
-                                @click="confirmDeleteSelectedAlbums"
-                            >
-                                Delete checked
-                            </b-button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="level-right">
-                    <b-field class="is-pulled-right">
-                        <b-input
-                            placeholder="Search..."
-                            type="search"
-                            icon="search"
-                            :loading="loading"
-                            v-model="search"
-                            @input="fetchAlbums()"
-                        >
-                        </b-input>
-                    </b-field>
-                </div>
+  <div>
+    <section>
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <div class="buttons">
+              <b-button
+                :to="{ name: 'admin.albums.create' }"
+                tag="router-link"
+                type="is-success"
+                icon-left="plus"
+              >
+                Add
+              </b-button>
+              <b-button
+                :disabled="!checkedRows.length"
+                @click="confirmDeleteSelectedAlbums"
+                type="is-danger"
+                icon-left="trash-alt"
+              >
+                Delete checked
+              </b-button>
             </div>
+          </div>
+        </div>
 
-            <b-table
-                :data="albums"
-                :loading="loading"
-                striped
-                hoverable
-                mobile-cards
-                paginated
-                backend-pagination
-                :total="total"
-                :per-page="perPage"
-                @page-change="onPageChange"
-                backend-sorting
-                :default-sort-direction="defaultSortOrder"
-                :default-sort="[sortField, sortOrder]"
-                @sort="onSort"
-                checkable
-                :checked-rows.sync="checkedRows"
+        <div class="level-right">
+          <b-field class="is-pulled-right">
+            <b-input
+              :loading="loading"
+              v-model="search"
+              @input="fetchAlbums()"
+              placeholder="Search..."
+              type="search"
+              icon="search"
+            />
+          </b-field>
+        </div>
+      </div>
+
+      <b-table
+        :data="albums"
+        :loading="loading"
+        :total="total"
+        :per-page="perPage"
+        @page-change="onPageChange"
+        :default-sort-direction="defaultSortOrder"
+        :default-sort="[sortField, sortOrder]"
+        @sort="onSort"
+        :checked-rows.sync="checkedRows"
+        striped
+        hoverable
+        mobile-cards
+        paginated
+        backend-pagination
+        backend-sorting
+        checkable
+      >
+        <template slot-scope="album">
+          <b-table-column
+            field="title"
+            label="Title"
+            sortable
+          >
+            <router-link
+              :to="{ name: 'admin.albums.edit', params: { slug: album.row.slug } }"
             >
-                <template slot-scope="album">
-                    <b-table-column field="title" label="Title" sortable>
-                        <router-link
-                            :to="{ name: 'admin.albums.edit', params: { slug: album.row.slug } }"
-                        >
-                            {{ album.row.title }}
-                        </router-link>
-                    </b-table-column>
+              {{ album.row.title }}
+            </router-link>
+          </b-table-column>
 
-                    <b-table-column field="media_count" label="Nb. photos" centered numeric>
-                        {{ album.row.media_count }}
-                    </b-table-column>
+          <b-table-column
+            field="media_count"
+            label="Nb. photos"
+            centered
+            numeric
+          >
+            {{ album.row.media_count }}
+          </b-table-column>
 
-                    <b-table-column field="status" label="Status" centered>
-                        <span
-                            v-if="album.row.private === 1"
-                            class="tag is-danger"
-                            v-bind:title="'This album is private'"
-                        >
-                            {{ 'Private' }}
-                        </span>
-                        <span
-                            v-else-if="typeof album.row.published_at === 'string'"
-                            class="tag is-success"
-                            v-bind:title="new Date(album.row.published_at).toLocaleDateString()"
-                        >
-                            {{ 'Published' }}
-                        </span>
-                        <span v-else class="tag is-dark" v-bind:title="'This album is a draft'">{{
-                            'Draft'
-                        }}</span>
-                    </b-table-column>
-                </template>
+          <b-table-column
+            field="status"
+            label="Status"
+            centered
+          >
+            <span
+              v-if="album.row.private === 1"
+              v-bind:title="'This album is private'"
+              class="tag is-danger"
+            >
+              {{ 'Private' }}
+            </span>
+            <span
+              v-else-if="typeof album.row.published_at === 'string'"
+              v-bind:title="new Date(album.row.published_at).toLocaleDateString()"
+              class="tag is-success"
+            >
+              {{ 'Published' }}
+            </span>
+            <span
+              v-else
+              v-bind:title="'This album is a draft'"
+              class="tag is-dark"
+            >{{
+              'Draft'
+            }}</span>
+          </b-table-column>
+        </template>
 
-                <template slot="empty">
-                    <section class="section">
-                        <div class="content has-text-grey has-text-centered">
-                            <p>
-                                <b-icon icon="sad-tear" size="is-large"></b-icon>
-                            </p>
-                            <p>Nothing here.</p>
-                        </div>
-                    </section>
-                </template>
+        <template slot="empty">
+          <section class="section">
+            <div class="content has-text-grey has-text-centered">
+              <p>
+                <b-icon
+                  icon="sad-tear"
+                  size="is-large"
+                />
+              </p>
+              <p>Nothing here.</p>
+            </div>
+          </section>
+        </template>
 
-                <template slot="bottom-left">
-                    <b>Total checked</b>
-                    : {{ checkedRows.length }}
-                </template>
-            </b-table>
-        </section>
-    </div>
+        <template slot="bottom-left">
+          <b>Total checked</b>
+          : {{ checkedRows.length }}
+        </template>
+      </b-table>
+    </section>
+  </div>
 </template>
 
 <script lang="ts">
@@ -130,15 +150,15 @@ import Album from '../../models/album';
 export default class AlbumsIndex extends Buefy {
     private albums: Array<Album> = [];
     private checkedRows: Array<Album> = [];
-    private total: number = 0;
-    private page: number = 1;
-    perPage: number = 10;
-    private loading: boolean = false;
-    private sortField: string = 'id';
-    private sortOrder: string = 'desc';
-    showDetailIcon: boolean = true;
-    defaultSortOrder: string = 'desc';
-    private search: string = '';
+    private total = 0;
+    private page = 1;
+    perPage = 10;
+    private loading = false;
+    private sortField = 'id';
+    private sortOrder = 'desc';
+    showDetailIcon = true;
+    defaultSortOrder = 'desc';
+    private search = '';
 
     created(): void {
         this.fetchAlbums();
