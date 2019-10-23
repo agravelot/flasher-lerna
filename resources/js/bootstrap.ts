@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import axios from 'axios';
+import axios, {AxiosResponse} from 'axios';
 import VueAxios from 'vue-axios';
 
 /**
@@ -10,3 +10,13 @@ import VueAxios from 'vue-axios';
 Vue.use(VueAxios, axios);
 
 Vue.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+Vue.axios.interceptors.response.use(
+    request => request,
+    request => (response: AxiosResponse): AxiosResponse => {
+        if (response.status === 401) {
+            location.reload();
+        }
+        return response
+    }
+);
