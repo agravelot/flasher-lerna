@@ -15,34 +15,7 @@ class CosplayerInvitationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_share_published_album()
-    {
-        Mail::fake();
-        $this->actingAsAdmin();
-        $cosplayer = factory(Cosplayer::class)->create();
-        $contacts = collect([
-            [
-                'email' => 'john@doe.fr',
-                'cosplayer_id' => $cosplayer->id,
-            ],
-        ]);
-
-        $response = $this->shareToCosplayer($contacts, 'message');
-
-        $response->assertStatus(201);
-        $contacts->each(static function ($contact) use ($cosplayer) {
-            Mail::assertQueued(CosplayerInvitation::class, static function (Mailable $mail) use ($cosplayer, $contact) {
-                return $mail->cosplayer->id === $cosplayer->id;
-            });
-            // Assert a message was sent to the given users...
-            Mail::assertQueued(CosplayerInvitation::class, static function (Mailable $mail) use ($cosplayer, $contact) {
-                return $mail->hasTo($contact['email']);
-            });
-        });
-        Mail::assertQueued(CosplayerInvitation::class, $contacts->count());
-    }
-
-    public function test_admin_can_share_published_album_with_password()
+    public function test_admin_can_sned_invitation_to_cosplayers()
     {
         Mail::fake();
         $this->actingAsAdmin();
@@ -90,7 +63,7 @@ class CosplayerInvitationTest extends TestCase
         Mail::assertNothingSent();
     }
 
-    public function test_admin_cannot_share_with_contacts()
+    public function test_admin_cannot_share_without_contacts()
     {
         Mail::fake();
         $this->actingAsAdmin();
@@ -110,6 +83,7 @@ class CosplayerInvitationTest extends TestCase
         $contacts = collect([
             [
                 'email' => '',
+                'cosplayer_id' => factory(Cosplayer::class)->create()->id,
             ],
         ]);
 
@@ -126,6 +100,7 @@ class CosplayerInvitationTest extends TestCase
         $this->actingAsAdmin();
         $contacts = collect([
             [
+                'cosplayer_id' => factory(Cosplayer::class)->create()->id,
             ],
         ]);
 
@@ -143,6 +118,7 @@ class CosplayerInvitationTest extends TestCase
         $contacts = collect([
             [
                 'email' => 'malfomedemail@',
+                'cosplayer_id' => factory(Cosplayer::class)->create()->id,
             ],
         ]);
 
@@ -160,6 +136,7 @@ class CosplayerInvitationTest extends TestCase
         $contacts = collect([
             [
                 'email' => 'aze@aze.fr',
+                'cosplayer_id' => factory(Cosplayer::class)->create()->id,
             ],
         ]);
         $message = '';
@@ -169,6 +146,25 @@ class CosplayerInvitationTest extends TestCase
         $response->assertStatus(422)
             ->assertJsonValidationErrors('message');
         Mail::assertNothingSent();
+    }
+
+    public function test_if_cosplayer_not_found_return_error_and_email_not_send()
+    {
+        Mail::fake();
+        $this->actingAsAdmin();
+        $contacts = collect([
+            [
+                'email' => 'john@doe.fr',
+                'cosplayer_id' => 4242,
+            ],
+        ]);
+
+        $response = $this->shareToCosplayer($contacts, 'message');
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors('contacts.0.cosplayer_id');
+
+        Mail::assertNothingQueued(CosplayerInvitation::class);
     }
 
     private function shareToCosplayer(Collection $contacts, string $message = ''): TestResponse

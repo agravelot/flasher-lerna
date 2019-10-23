@@ -22,8 +22,7 @@ class AdminCosplayerInvitationController extends Controller
     {
         $this->authorize('update', $album);
 
-        $contacts = $request->get('contacts');
-        foreach ($contacts as $contact) {
+        foreach ($request->get('contacts') as $contact) {
             $cosplayer = Cosplayer::findOrFail($contact['cosplayer_id']);
             $email = $contact['email'];
 
