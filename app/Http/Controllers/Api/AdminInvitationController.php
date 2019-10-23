@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Album;
 use App\Models\Invitation;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
@@ -37,14 +39,10 @@ class AdminInvitationController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Invitation  $invitation
-     *
-     * @return Response
      */
-    public function show(Invitation $invitation)
+    public function show(Invitation $invitation): InvitationResource
     {
-        //
+        return new InvitationResource($invitation);
     }
 
     /**
@@ -62,12 +60,12 @@ class AdminInvitationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Invitation  $invitation
-     *
-     * @return Response
+     * @throws Exception
      */
-    public function destroy(Invitation $invitation)
+    public function destroy(Invitation $invitation): JsonResponse
     {
-        //
+        $invitation->delete();
+
+        return new JsonResponse(null, 204);
     }
 }
