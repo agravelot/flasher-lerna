@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('pageTitle', $album->title)
+@section('pageTitle', $album->title . ' - Album')
 
 @section('seo_description', (new App\Http\OpenGraphs\AlbumOpenGraph($album))->description())
 
