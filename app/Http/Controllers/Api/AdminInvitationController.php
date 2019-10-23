@@ -15,12 +15,12 @@ class AdminInvitationController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
-        //
+        $invitations = Invitation::all();
+
+        return InvitationResource::collection($invitations);
     }
 
     public function store(Album $album, InvitationRequest $request): InvitationResource

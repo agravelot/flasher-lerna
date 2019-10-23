@@ -14,7 +14,7 @@
 Route::namespace('Api')->group(static function () {
     Route::name('api.')->group(static function () {
         Route::apiResource('albums', 'AlbumController')->only('index', 'show');
-        Route::apiResource('categories', 'CategoryController')->only(['index', 'show']);
+        Route::apiResource('categories', 'CategoryController')->only('index', 'show');
 
         Route::middleware(['auth:api', 'verified', 'admin'])->group(static function () {
             Route::name('admin.')->group(static function () {
@@ -39,7 +39,7 @@ Route::namespace('Api')->group(static function () {
                     Route::apiResource('testimonials', 'AdminTestimonialsController')->except('store');
                     Route::apiResource('contacts', 'AdminContactController')->except('store', 'update');
                     Route::apiResource('cosplayers', 'AdminCosplayerController');
-                    Route::post('invitations', 'AdminInvitationController@store');
+                    Route::apiResource('invitations', 'AdminInvitationController')->only('index', 'store');
                 });
             });
         });
