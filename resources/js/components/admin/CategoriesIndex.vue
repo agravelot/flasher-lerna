@@ -205,7 +205,7 @@ export default class CategoriesIndex extends Buefy {
         this.checkedRows.forEach(category => {
             this.axios
                 .delete(`/api/admin/categories/${category.slug}`)
-                .then(res => {
+                .then(() => {
                     this.showSuccess('Categories deleted');
                     this.fetchCategories();
                 })

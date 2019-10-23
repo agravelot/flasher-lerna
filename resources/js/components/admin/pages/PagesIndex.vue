@@ -204,7 +204,7 @@ export default class PagesIndex extends Buefy {
         this.checkedRows.forEach(page => {
             this.axios
                 .delete(`/api/admin/pages/${page.id}`)
-                .then(res => {
+                .then(() => {
                     this.showSuccess('Pages deleted');
                     this.fetchPages();
                 })

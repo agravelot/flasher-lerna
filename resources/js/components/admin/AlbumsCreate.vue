@@ -112,7 +112,7 @@ import AlbumDesc from './AlbumDesc.vue';
     },
 })
 export default class AlbumsCreate extends AlbumDesc {
-    createAlbum() {
+    createAlbum(): void {
         this.axios
             .post(`/api/admin/albums/`, this.album)
             .then(res => res.data)

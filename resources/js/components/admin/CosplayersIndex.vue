@@ -210,7 +210,7 @@ export default class CosplayersIndex extends Buefy {
         this.checkedRows.forEach(cosplayer => {
             this.axios
                 .delete(`/api/admin/cosplayers/${cosplayer.slug}`)
-                .then(res => {
+                .then(() => {
                     this.showSuccess('Cosplayers deleted');
                     this.fetchCosplayers();
                 })

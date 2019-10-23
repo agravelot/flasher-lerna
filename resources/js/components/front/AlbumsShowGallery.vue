@@ -1,5 +1,5 @@
 <template>
-  <div v-if="this.album">
+  <div v-if="album">
     <div v-if="album.medias && album.medias.length">
       <!--            <h2 class="title is-2 has-text-centered">Pictures</h2>-->
       <!--TODO Add nothing to show-->
@@ -121,7 +121,7 @@ export default class AlbumsShowGallery extends Vue {
         );
         Array.from(responsiveMedias).forEach(
             (el: Element): void => {
-                (<HTMLImageElement>el).sizes = `${Math.ceil(
+                (el as HTMLImageElement).sizes = `${Math.ceil(
                     (el.getBoundingClientRect().width / window.innerWidth) * 100
                 )}vw`;
             }

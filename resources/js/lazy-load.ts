@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 );
                 // Avoid to set 0vw and load full sized image
                 if (computedSize !== 0) {
-                    (<HTMLImageElement>entry.target).sizes = `${computedSize}vw`;
+                    (entry.target as HTMLImageElement).sizes = `${computedSize}vw`;
                     entry.target.classList.add('responsive-media');
                 }
                 observer.unobserve(entry.target);

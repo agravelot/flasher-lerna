@@ -62,7 +62,7 @@
 
       <div class="buttons">
         <b-button
-          :loading="this.loading"
+          :loading="loading"
           @click="updateUser()"
           type="is-primary"
         >
@@ -71,7 +71,7 @@
         <b-button
           v-if="user && user.actions && user.actions.impersonate"
           :href="user.actions.impersonate"
-          :loading="this.loading"
+          :loading="loading"
           type="is-info"
           icon-right="sign-in-alt"
           tag="a"
@@ -79,7 +79,7 @@
           Impersonate
         </b-button>
         <b-button
-          :loading="this.loading"
+          :loading="loading"
           @click="confirmDeleteUser()"
           type="is-danger"
           icon-right="trash-alt"
@@ -114,7 +114,7 @@ export default class UsersEdit extends Buefy {
         this.axios
             .patch(`/api/admin/users/${this.$route.params.id}`, this.user)
             .then(res => res.data)
-            .then(res => {
+            .then(() => {
                 this.errors = {};
                 this.loading = false;
                 this.$router.push({ name: 'admin.users.index' });
@@ -183,7 +183,7 @@ export default class UsersEdit extends Buefy {
     deleteUser(): void {
         this.axios
             .delete(`/api/admin/users/${this.user.id}`)
-            .then(res => {
+            .then(() => {
                 this.$router.push({ name: 'admin.users.index' });
                 this.showSuccess('User deleted');
             })

@@ -76,7 +76,6 @@ import { Prop } from 'vue-property-decorator';
 import ShareAlbumToCosplayerModal from './ShareAlbumToCosplayerModal.vue';
 import Cosplayer from '../../models/cosplayer';
 import CosplayerContact from '../../models/sharer';
-import User from '../../models/user';
 
 @Component({
     name: 'share-album-to-cosplayer',

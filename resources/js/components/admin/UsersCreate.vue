@@ -62,7 +62,7 @@
 
       <div class="buttons">
         <b-button
-          :loading="this.loading"
+          :loading="loading"
           @click="createUser()"
           type="is-primary"
         >
@@ -92,7 +92,7 @@ export default class UsersCreate extends Buefy {
         this.axios
             .post('/api/admin/users', this.user)
             .then(res => res.data)
-            .then(res => {
+            .then(() => {
                 this.errors = {};
                 this.loading = false;
                 this.$router.push({ name: 'admin.users.index' });
@@ -135,7 +135,7 @@ export default class UsersCreate extends Buefy {
     deleteUser(): void {
         this.axios
             .delete(`/api/admin/users/${this.user.id}`)
-            .then(res => {
+            .then(() => {
                 this.$router.push({ name: 'admin.users.index' });
                 this.showSuccess('User deleted');
             })

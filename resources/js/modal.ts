@@ -1,6 +1,6 @@
 // Trigger modals
-(function() {
-    const modalFX = (function() {
+(function(): object {
+    const modalFX = (function(): object {
         const elements = {
             target: 'data-target',
             active: 'is-active',
@@ -18,7 +18,7 @@
             });
         };
 
-        const events = function() {
+        const events = function(): void {
             onClickEach(elements.button, openModal);
 
             onClickEach(elements.close, closeModal);
@@ -33,7 +33,7 @@
             });
         };
 
-        const closeAll = function() {
+        const closeAll = function(): void {
             const openModal = document.getElementsByClassName(elements.active);
             Array.from(openModal).forEach(function(modal) {
                 modal.classList.remove(elements.active);
@@ -41,7 +41,7 @@
             unFreeze();
         };
 
-        const openModal = function() {
+        const openModal = function(): void {
             const targetModal = this.getAttribute(elements.target);
             freeze();
             const modal: Element = document.getElementById(targetModal);
@@ -54,7 +54,7 @@
             image.classList.add('responsive-media');
         };
 
-        const closeModal = function() {
+        const closeModal = function(): void {
             const targetModal = this.parentElement.id;
             const modal: Element = document.getElementById(targetModal);
             modal.classList.remove(elements.active);
@@ -66,18 +66,18 @@
         };
 
         // Freeze scrollbars
-        const freeze = function() {
+        const freeze = function(): void {
             document.getElementsByTagName('html')[0].style.overflow = 'hidden';
             document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
         };
 
-        const unFreeze = function() {
+        const unFreeze = function(): void {
             document.getElementsByTagName('html')[0].style.overflow = '';
             document.getElementsByTagName('body')[0].style.overflowY = '';
         };
 
         return {
-            init: function() {
+            init: function(): void {
                 events();
 
                 window.addEventListener(
@@ -110,7 +110,7 @@
                     true
                 );
 
-                function previousModal() {
+                function previousModal(): void {
                     const currentActiveModal: Element = getCurrentModal();
                     const previousModal: Element = currentActiveModal.previousElementSibling;
 
@@ -122,7 +122,7 @@
                     openModal(previousModal);
                 }
 
-                function nextModal() {
+                function nextModal(): void {
                     const currentActiveModal: Element = getCurrentModal();
                     const nextModal: Element = currentActiveModal.nextElementSibling;
 

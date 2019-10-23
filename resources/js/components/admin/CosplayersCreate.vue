@@ -98,7 +98,7 @@
       </div>
 
       <b-button
-        :loading="this.loading"
+        :loading="loading"
         @click="createCosplayer()"
         type="is-primary"
       >
@@ -148,7 +148,7 @@ export default class CosplayersCreate extends Buefy {
                 headers: { 'Content-Type': 'multipart/form-data' },
             })
             .then(res => res.data)
-            .then(res => {
+            .then(() => {
                 this.loading = false;
                 this.showSuccess('Cosplayer created');
                 this.$router.push({ name: 'admin.cosplayers.index' });

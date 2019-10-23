@@ -210,7 +210,7 @@ export default class UsersIndex extends Buefy {
         this.checkedRows.forEach(user => {
             this.axios
                 .delete(`/api/admin/users/${user.id}`)
-                .then(res => {
+                .then(() => {
                     this.showSuccess('Users deleted');
                     this.fetchUsers();
                 })

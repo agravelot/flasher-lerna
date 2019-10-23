@@ -127,9 +127,9 @@ export default class Settings extends Buefy {
             acceptedFiles: 'image/*',
             dictDefaultMessage: "<i class='fas fa-images'></i> Upload",
             headers: {
-                'X-CSRF-Token': (<HTMLMetaElement>(
-                    document.head.querySelector('meta[name="csrf-token"]')
-                )).content,
+                'X-CSRF-Token': (
+                    document.head.querySelector('meta[name="csrf-token"]') as HTMLMetaElement
+                ).content,
             },
         };
     }
@@ -151,7 +151,7 @@ export default class Settings extends Buefy {
                 test: 'test',
             })
             .then(res => res.data)
-            .then(res => {
+            .then(() => {
                 this.loading = false;
                 this.showSuccess('Setting updated');
             })

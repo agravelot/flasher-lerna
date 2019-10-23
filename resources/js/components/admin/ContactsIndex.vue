@@ -219,7 +219,7 @@ export default class ContactsIndex extends Buefy {
         this.checkedRows.forEach(contact => {
             this.axios
                 .delete(`/api/admin/contacts/${contact.id}`)
-                .then(res => {
+                .then(() => {
                     this.showSuccess('Contacts deleted');
                     this.fetchContacts();
                 })

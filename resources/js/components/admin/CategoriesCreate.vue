@@ -22,7 +22,7 @@
       </b-field>
 
       <b-button
-        :loading="this.loading"
+        :loading="loading"
         @click="createCategory()"
         type="is-primary"
       >
@@ -58,8 +58,6 @@ export default class CategoriesCreate extends Buefy {
         placeholder: 'Enter your description...',
         theme: 'snow',
     };
-
-    created(): void {}
 
     createCategory(): void {
         this.loading = true;

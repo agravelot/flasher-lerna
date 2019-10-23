@@ -21,7 +21,7 @@ Vue.use(Buefy, {
   // defaultFieldLabelPosition: 'on-border',
 });
 
-const app = new Vue({
+new Vue({
   el: '#app',
   components: { Sidebar },
   router,

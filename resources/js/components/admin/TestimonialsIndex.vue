@@ -225,7 +225,7 @@ export default class TestimonialsIndex extends Buefy {
         this.checkedRows.forEach(testimonial => {
             this.axios
                 .delete(`/api/admin/testimonials/${testimonial.id}`)
-                .then(res => {
+                .then(() => {
                     this.showSuccess('Testimonials deleted');
                     this.fetchTestimonials();
                 })

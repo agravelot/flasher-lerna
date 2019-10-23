@@ -23,7 +23,7 @@
         </b-field>
 
         <b-button
-          :loading="this.loading"
+          :loading="loading"
           @click="updateCategory()"
           type="is-primary"
         >
@@ -107,9 +107,9 @@ export default class CategoriesEdit extends Buefy {
         acceptedFiles: 'image/*',
         dictDefaultMessage: "<i class='fas fa-images'></i> Upload",
         headers: {
-            'X-CSRF-Token': (<HTMLMetaElement>(
-                document.head.querySelector('meta[name="csrf-token"]')
-            )).content,
+            'X-CSRF-Token': (
+                document.head.querySelector('meta[name="csrf-token"]') as HTMLMetaElement
+            ).content,
         },
     };
 
@@ -182,7 +182,7 @@ export default class CategoriesEdit extends Buefy {
         if (!this.category.slug) {
             throw new DOMException('category slug is null');
         }
-        formData.append('category_slug', <string>this.category.slug);
+        formData.append('category_slug', this.category.slug as string);
     }
 
     refreshCover(): void {
@@ -218,7 +218,7 @@ export default class CategoriesEdit extends Buefy {
         this.axios
             .delete(`/api/admin/cover-categories/${this.$route.params.slug}`)
             .then(res => res.data)
-            .then(res => {
+            .then(() => {
                 this.category.cover = null;
                 this.loading = false;
             })

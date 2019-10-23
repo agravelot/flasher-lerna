@@ -203,8 +203,8 @@ export default class AlbumsEdit extends AlbumDesc {
         acceptedFiles: 'image/*',
         dictDefaultMessage: "<i class='fas fa-images'></i> Upload",
         headers: {
-            'X-CSRF-Token': (<HTMLMetaElement>(
-                document.head.querySelector('meta[name="csrf-token"]')
+            'X-CSRF-Token': ((
+                document.head.querySelector('meta[name="csrf-token"]') as HTMLMetaElement
             )).content,
         },
     };
@@ -229,7 +229,7 @@ export default class AlbumsEdit extends AlbumDesc {
         if (!this.album.slug) {
             throw new DOMException('album slug is null');
         }
-        formData.append('album_slug', <string>this.album.slug);
+        formData.append('album_slug', this.album.slug as string);
     }
 
     updateAlbum(): void {
@@ -280,7 +280,7 @@ export default class AlbumsEdit extends AlbumDesc {
     deleteAlbum(): void {
         this.axios
             .delete(`/api/admin/albums/${this.album.slug}`)
-            .then(res => {
+            .then(() => {
                 this.$router.push({ name: 'admin.albums.index' });
                 this.showSuccess('Album successfully deleted!');
             })
@@ -297,7 +297,7 @@ export default class AlbumsEdit extends AlbumDesc {
                     media_id: mediaId,
                 },
             })
-            .then(res => {
+            .then(() => {
                 this.refreshMedias();
                 this.showSuccess('Picture successfully deleted!');
             })

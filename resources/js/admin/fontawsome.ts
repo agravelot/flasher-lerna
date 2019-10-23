@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import Buefy from 'buefy';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBell, faEdit, faStickyNote } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';

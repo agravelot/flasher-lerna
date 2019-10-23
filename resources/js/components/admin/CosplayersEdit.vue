@@ -73,7 +73,7 @@
             label="Linked user"
           >
             <article
-              v-if="this.cosplayer && this.cosplayer.user"
+              v-if="cosplayer && cosplayer.user"
               class="media box"
             >
               <figure class="media-left">
@@ -125,7 +125,7 @@
       </div>
 
       <b-button
-        :loading="this.loading"
+        :loading="loading"
         @click="updateCosplayer()"
         type="is-primary"
       >

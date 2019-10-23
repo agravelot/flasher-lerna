@@ -90,7 +90,7 @@ export default class AlbumsMasonry extends Buefy {
         window.removeEventListener('resize', this.onResize);
     }
 
-    mounted() {
+    mounted(): void {
         this.albums = this.data.data;
         this.perPage = this.data.meta.per_page;
         this.total = this.data.meta.total;
@@ -109,7 +109,7 @@ export default class AlbumsMasonry extends Buefy {
         this.fetchAlbums();
     }
 
-    onResize() {
+    onResize(): void {
         this.refreshSizes();
     }
 
@@ -118,7 +118,7 @@ export default class AlbumsMasonry extends Buefy {
             'responsive-media'
         );
         Array.from(responsiveMedias).forEach((el: Element) => {
-            (<HTMLImageElement>el).sizes = `${Math.ceil(
+            (el as HTMLImageElement).sizes = `${Math.ceil(
                 (el.getBoundingClientRect().width / window.innerWidth) * 100
             )}vw`;
         });

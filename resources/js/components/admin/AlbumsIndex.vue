@@ -243,7 +243,7 @@ export default class AlbumsIndex extends Buefy {
         this.checkedRows.forEach(album => {
             this.axios
                 .delete(`/api/admin/albums/${album.slug}`)
-                .then(res => {
+                .then(() => {
                     this.showSuccess('Albums deleted');
                     this.fetchAlbums();
                 })
