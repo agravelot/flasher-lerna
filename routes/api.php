@@ -39,11 +39,7 @@ Route::namespace('Api')->group(static function () {
                     Route::apiResource('testimonials', 'AdminTestimonialsController')->except('store');
                     Route::apiResource('contacts', 'AdminContactController')->except('store', 'update');
                     Route::apiResource('cosplayers', 'AdminCosplayerController');
-                    Route::namespace('Admin')->group(static function () {
-                        Route::namespace('CosplayerInvitation')->group(static function () {
-                            Route::post('cosplayer-invitation', 'AdminCosplayerInvitationController')->name('cosplayer-invitation');
-                        });
-                    });
+                    Route::post('invitations', 'AdminInvitationController@store');
                 });
             });
         });

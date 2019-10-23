@@ -2,35 +2,29 @@
 
 namespace App\Mail;
 
-use App\Models\Cosplayer;
+use App\Models\Invitation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class CosplayerInvitation extends Mailable implements ShouldQueue
+class InvitationMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     /**
-     * @var Cosplayer
+     * @var Invitation
      */
-    public $cosplayer;
-
-    /**
-     * @var string
-     */
-    public $message;
+    public $invitation;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Cosplayer $cosplayer, string $message)
+    public function __construct(Invitation $invitation)
     {
-        $this->cosplayer = $cosplayer;
-        $this->message = $message;
+        $this->invitation = $invitation;
     }
 
     /**
