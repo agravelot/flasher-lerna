@@ -5,25 +5,24 @@ module.exports = {
   },
   extends: [
       'plugin:vue/recommended',
-
-      "eslint:recommended",
-      "plugin:@typescript-eslint/eslint-recommended",
-      "plugin:@typescript-eslint/recommended",
+      'eslint:recommended',
+      'plugin:@typescript-eslint/eslint-recommended',
+      'plugin:@typescript-eslint/recommended',
   ],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
-  "parser": "vue-eslint-parser",
+  'parser': 'vue-eslint-parser',
   parserOptions: {
-      'parser': "@typescript-eslint/parser"
+    'parser': '@typescript-eslint/parser'
   },
   plugins: [
     'vue',
-      "@typescript-eslint",
+    '@typescript-eslint',
   ],
   rules: {
-      // 'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-      // 'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
   },
 };
