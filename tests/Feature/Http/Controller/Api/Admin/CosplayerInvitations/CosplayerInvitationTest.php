@@ -23,7 +23,7 @@ class CosplayerInvitationTest extends TestCase
         $contacts = collect([
             [
                 'email' => 'john@doe.fr',
-                'cosplayer_id' => factory(Cosplayer::class)->state('withUser')->create()->id,
+                'cosplayer_id' => $cosplayer->id,
             ],
         ]);
 
@@ -36,7 +36,7 @@ class CosplayerInvitationTest extends TestCase
             });
             // Assert a message was sent to the given users...
             Mail::assertQueued(CosplayerInvitation::class, static function (Mailable $mail) use ($cosplayer, $contact) {
-                return $mail->hasTo($contact->email);
+                return $mail->hasTo($contact['email']);
             });
         });
         Mail::assertQueued(CosplayerInvitation::class, $contacts->count());
@@ -50,7 +50,7 @@ class CosplayerInvitationTest extends TestCase
         $contacts = collect([
             [
                 'email' => 'john@doe.fr',
-                'cosplayer_id' => factory(Cosplayer::class)->state('withUser')->create()->id,
+                'cosplayer_id' => $cosplayer->id,
             ],
         ]);
 
@@ -63,7 +63,7 @@ class CosplayerInvitationTest extends TestCase
             });
             // Assert a message was sent to the given users...
             Mail::assertQueued(CosplayerInvitation::class, static function (Mailable $mail) use ($cosplayer, $contact) {
-                return $mail->hasTo($contact->email);
+                return $mail->hasTo($contact['email']);
             });
         });
         Mail::assertQueued(CosplayerInvitation::class, $contacts->count());

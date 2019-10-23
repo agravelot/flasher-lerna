@@ -23,10 +23,10 @@ class AdminCosplayerInvitationController extends Controller
         $this->authorize('update', $album);
 
         $contacts = $request->get('contacts');
-        dump($contacts);
         foreach ($contacts as $contact) {
             $cosplayer = Cosplayer::findOrFail($contact['cosplayer_id']);
             $email = $contact['email'];
+
             Mail::to($email)->send(
                 new CosplayerInvitation($cosplayer, $request->get('message'))
             );
