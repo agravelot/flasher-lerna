@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controller\Api\Admin\Invitation;
 
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 use App\Models\Invitation;
 use Illuminate\Support\Collection;
@@ -14,6 +15,7 @@ class IndexInvitationTest extends TestCase
 
     public function test_admin_can_index_invitations(): void
     {
+        Mail::fake();
         /** @var Collection $invitations */
         $invitations = factory(Invitation::class, 5)->create();
         $this->actingAsAdmin();

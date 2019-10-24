@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controller\Api\Admin\Invitation;
 
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 use App\Models\Invitation;
 use Illuminate\Support\Collection;
@@ -14,6 +15,7 @@ class DeleteInvitationTest extends TestCase
 
     public function test_admin_can_delete_invitations(): void
     {
+        Mail::fake();
         /** @var Collection $invitations */
         $invitation = factory(Invitation::class)->create();
         $this->actingAsAdmin();
@@ -26,6 +28,7 @@ class DeleteInvitationTest extends TestCase
 
     public function test_user_cannot_delete_invitations(): void
     {
+        Mail::fake();
         $this->actingAsUser();
         $invitation = factory(Invitation::class)->create();
 
@@ -36,6 +39,7 @@ class DeleteInvitationTest extends TestCase
 
     public function test_guest_cannot_delete_invitations(): void
     {
+        Mail::fake();
         $invitation = factory(Invitation::class)->create();
 
         $response = $this->deleteInvitation($invitation);

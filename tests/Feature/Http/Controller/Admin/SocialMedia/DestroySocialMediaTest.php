@@ -21,9 +21,9 @@ class DestroySocialMediaTest extends TestCase
 
         $response = $this->deleteSocialMedia($socialMedia->id);
 
-        $this->assertSame(0, SocialMedia::count());
         $response->assertStatus(302);
         $response->assertRedirect('/admin/social-medias');
+        $this->assertSame(0, SocialMedia::count());
         $this->followRedirects($response)
             ->assertStatus(200)
             ->assertSee('Social media successfully deleted')
