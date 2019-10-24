@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Album;
-use App\Models\Invitation;
 use Exception;
+use App\Models\Invitation;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InvitationRequest;
 use App\Http\Resources\InvitationResource;
