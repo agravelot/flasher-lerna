@@ -5,7 +5,7 @@ Route::impersonate();
 Route::feeds();
 
 //FRONT
-Route::namespace('Front')->group(static function () {
+Route::namespace('Front')->group(static function (): void {
     Route::get('/', 'HomeController')->name('home');
     Route::resource('albums', 'AlbumController')->only(['index', 'show']);
     Route::resource('download-albums', 'DownloadAlbumController')->only(['show'])
