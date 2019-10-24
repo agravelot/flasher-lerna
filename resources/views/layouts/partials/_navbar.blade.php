@@ -55,7 +55,7 @@
                             </form>
                         </div>
                     </div>
-                @endguest
+                @endauth
             </div>
         </div>
     </div>
