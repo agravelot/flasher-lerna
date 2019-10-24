@@ -29,4 +29,3 @@ Route::group([
     Route::resource('social-medias', 'AdminSocialMediaController')->except('show');
     Route::get('/{any?}', 'AdminController')->where('any', '.*')->name('dashboard');
 });
-
