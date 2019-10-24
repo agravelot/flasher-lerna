@@ -51,6 +51,7 @@ Default credentails :
 composer install
 php artisan key:generate
 php artisan passport:keys
+php artisan storage:link
 ```
 
 Fill up `.env` file.
