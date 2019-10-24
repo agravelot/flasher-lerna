@@ -1,22 +1,20 @@
-<footer>
-    <section class="hero is-black is-radiusless">
-        <div class="hero-body">
-            <div class="content has-text-centered">
-                <div class="columns is-centered">
-                    <div class="column is-narrow">
-                        <div class="has-text-centered">
-                            <a class="has-text-white" href="{{ url('/') }}">{{ __('Home') }}</a>
-                        </div>
+<section class="hero is-black is-radiusless">
+    <div class="hero-body">
+        <div class="content has-text-centered">
+            <div class="columns is-centered">
+                <div class="column is-narrow">
+                    <div class="has-text-centered">
+                        <a class="has-text-white" href="{{ url('/') }}">{{ __('Home') }}</a>
                     </div>
-                    <div class="column is-narrow">
-                        <div class="has-text-centered">
-                            <a class="has-text-white" href="{{ route('albums.index')  }}">{{ __('Albums') }}</a>
-                        </div>
+                </div>
+                <div class="column is-narrow">
+                    <div class="has-text-centered">
+                        <a class="has-text-white" href="{{ route('albums.index')  }}">{{ __('Albums') }}</a>
                     </div>
-                    <div class="column is-narrow">
-                        <div class="has-text-centered">
-                            <a class="has-text-white" href="{{ route('categories.index')  }}">{{ __('Categories') }}</a>
-                        </div>
+                </div>
+                <div class="column is-narrow">
+                    <div class="has-text-centered">
+                        <a class="has-text-white" href="{{ route('categories.index')  }}">{{ __('Categories') }}</a>
                     </div>
                     <div class="column is-narrow">
                         <div class="has-text-centered">
@@ -24,14 +22,15 @@
                                href="{{ route('testimonials.index')  }}">{{ __('Testimonial') }}</a>
                         </div>
                     </div>
-                    <div class="column is-narrow">
-                        <div class="has-text-centered">
-                            <a class="has-text-white" href="{{ route('contact.index')  }}">{{ __('Contact') }}</a>
-                        </div>
+                </div>
+                <div class="column is-narrow">
+                    <div class="has-text-centered">
+                        <a class="has-text-white" href="{{ route('contact.index')  }}">{{ __('Contact') }}</a>
                     </div>
                 </div>
+            </div>
 
-                @include('layouts.partials._navbar_socials', ['class' => 'button is-text is-black'])
+            @include('layouts.partials._navbar_socials', ['class' => 'button is-text is-black'])
 
                 <p>{!! settings()->get('footer_content') !!}</p>
                 <div class="has-text-centered">
@@ -46,5 +45,5 @@
                 </div>
             </div>
         </div>
-    </section>
-</footer>
+    </div>
+</section>

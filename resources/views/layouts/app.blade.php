@@ -36,25 +36,31 @@
 </head>
 
 <body>
-@include('layouts.partials._navbar')
-@include('layouts.partials._impersonating')
+<header>
+    @include('layouts.partials._navbar')
+    @include('layouts.partials._impersonating')
+</header>
 
-@if(! request()->is('admin*') && ! request()->is('/'))
-    <div class="hero is-black is-radiusless">
-        <div class="hero-body">
-            <div class="container has-text-centered">
-                <h1 class="title">
-                    @yield('pageTitle')
-                </h1>
-                @yield('headerTags')
+<main>
+    @if(! request()->is('admin*') && ! request()->is('/'))
+        <div class="hero is-black is-radiusless">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <h1 class="title">
+                        @yield('pageTitle')
+                    </h1>
+                    @yield('headerTags')
+                </div>
             </div>
         </div>
-    </div>
-@endif
+    @endif
 
-@yield('content')
+    @yield('content')
+</main>
 
-@include('layouts.partials._footer')
+<footer>
+    @include('layouts.partials._footer')
+</footer>
 
 <!-- Scripts -->
 @yield('js')
