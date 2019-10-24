@@ -20,7 +20,8 @@ class MediaSchema implements SchemaInterface
 
     public function __toString(): string
     {
-        $author = (new Person())->name(settings()->get('app_name'))->url(url('/'));
+        $author = (new Person())->name(settings()->get('app_name'))
+            ->url(url('/'));
         $schema = Schema::imageObject()
             ->thumbnailUrl($this->media->getUrl('thumb'))
             ->dateCreated($this->media->created_at)
