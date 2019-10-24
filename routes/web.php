@@ -20,15 +20,12 @@ Route::namespace('Front')->group(static function () {
 });
 
 //BACK
-Route::middleware(['auth', 'verified', 'admin'])->group(static function () {
-    Route::name('admin.')->group(static function () {
-        Route::prefix('admin')->group(static function () {
-            Route::namespace('Admin')->group(static function () {
-                Route::resource('social-medias', 'AdminSocialMediaController')
-                    ->except('show');
-                Route::get('/{any?}', 'AdminController')
-                    ->where('any', '.*')->name('dashboard');
-            });
-        });
-    });
+Route::group([
+    'middleware' => ['auth', 'verified', 'admin'],
+    'as' => 'admin.',
+    'namespace' => 'Admin',
+], static function (): void {
+    Route::resource('social-medias', 'AdminSocialMediaController')->except('show');
+    Route::get('/{any?}', 'AdminController')->where('any', '.*')->name('dashboard');
 });
+
