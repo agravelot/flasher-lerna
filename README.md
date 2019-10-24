@@ -50,6 +50,7 @@ Default credentails :
 ```bash
 composer install
 php artisan key:generate
+php artisan passport:keys
 ```
 
 Fill up `.env` file.
@@ -59,8 +60,10 @@ yarn install
 ```
 
 ```bash
-yarn run dev # or watch
+yarn dev # or watch
 ```
+
+To enable telescope `php artisan telescope:install`.
 
 If you want to force usage of local storage instead of S3, set this env `FILESYSTEM_CLOUD=public`.
 
