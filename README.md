@@ -15,6 +15,11 @@ Administration panel is accessible from `/admin` path.
 
 ## Prerequisite
 
+Required PHP extensions :
+- gd
+- redis
+- imagick
+
 ## Deploying in production
 
 ### Docker
@@ -44,15 +49,20 @@ Default credentails :
 
 ```bash
 composer install
+php artisan key:generate
 ```
+
+Fill up `.env` file.
 
 ```bash
 yarn install
 ```
 
 ```bash
-yarn run dev
+yarn run dev # or watch
 ```
+
+If you want to force usage of local storage instead of S3, set this env `FILESYSTEM_CLOUD=public`.
 
 ## Coding Standards
 
