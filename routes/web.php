@@ -22,6 +22,7 @@ Route::namespace('Front')->group(static function (): void {
 //BACK
 Route::group([
     'middleware' => ['auth', 'verified', 'admin'],
+    'prefix' => 'admin',
     'as' => 'admin.',
     'namespace' => 'Admin',
 ], static function (): void {
