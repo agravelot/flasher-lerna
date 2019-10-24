@@ -1,7 +1,7 @@
 import User from './user';
 import Category from './category';
 
-interface ILinks {
+interface LinksInterface {
     view: string;
     download?: string;
     edit?: string;
@@ -18,6 +18,6 @@ export default class Album {
     public user: User;
     public created_at: Date;
     public updated_at: Date;
-    public links: ILinks;
+    public links: LinksInterface;
     public categories?: Array<Category>;
 }

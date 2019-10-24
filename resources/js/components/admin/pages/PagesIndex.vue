@@ -1,90 +1,97 @@
 <template>
-    <div>
-        <section>
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <div class="buttons">
-                            <b-button
-                                tag="router-link"
-                                :to="{ name: 'admin.pages.create' }"
-                                type="is-success"
-                                icon-left="plus"
-                                >Add
-                            </b-button>
-                            <b-button
-                                type="is-danger"
-                                icon-left="trash-alt"
-                                :disabled="!checkedRows.length"
-                                @click="confirmDeleteSelectedPages()"
-                            >
-                                Delete checked
-                            </b-button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="level-right">
-                    <b-field class="is-pulled-right">
-                        <b-input
-                            placeholder="Search..."
-                            type="search"
-                            icon="search"
-                            :loading="loading"
-                            v-model="search"
-                            @input="fetchPages()"
-                        >
-                        </b-input>
-                    </b-field>
-                </div>
+  <div>
+    <section>
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <div class="buttons">
+              <b-button
+                :to="{ name: 'admin.pages.create' }"
+                tag="router-link"
+                type="is-success"
+                icon-left="plus"
+              >
+                Add
+              </b-button>
+              <b-button
+                :disabled="!checkedRows.length"
+                @click="confirmDeleteSelectedPages()"
+                type="is-danger"
+                icon-left="trash-alt"
+              >
+                Delete checked
+              </b-button>
             </div>
+          </div>
+        </div>
 
-            <b-table
-                :data="pages"
-                :loading="loading"
-                striped
-                hoverable
-                mobile-cards
-                paginated
-                backend-pagination
-                :total="total"
-                :per-page="perPage"
-                @page-change="onPageChange"
-                backend-sorting
-                :default-sort-direction="defaultSortOrder"
-                :default-sort="[sortField, sortOrder]"
-                @sort="onSort"
-                checkable
-                :checked-rows.sync="checkedRows"
+        <div class="level-right">
+          <b-field class="is-pulled-right">
+            <b-input
+              :loading="loading"
+              v-model="search"
+              @input="fetchPages()"
+              placeholder="Search..."
+              type="search"
+              icon="search"
+            />
+          </b-field>
+        </div>
+      </div>
+
+      <b-table
+        :data="pages"
+        :loading="loading"
+        :total="total"
+        :per-page="perPage"
+        @page-change="onPageChange"
+        :default-sort-direction="defaultSortOrder"
+        :default-sort="[sortField, sortOrder]"
+        @sort="onSort"
+        :checked-rows.sync="checkedRows"
+        striped
+        hoverable
+        mobile-cards
+        paginated
+        backend-pagination
+        backend-sorting
+        checkable
+      >
+        <template slot-scope="page">
+          <b-table-column
+            field="name"
+            label="Name"
+            sortable
+          >
+            <router-link
+              :to="{ name: 'admin.pages.edit', params: { slug: page.row.slug } }"
             >
-                <template slot-scope="page">
-                    <b-table-column field="name" label="Name" sortable>
-                        <router-link
-                            :to="{ name: 'admin.pages.edit', params: { slug: page.row.slug } }"
-                        >
-                            {{ page.row.name }}
-                        </router-link>
-                    </b-table-column>
-                </template>
+              {{ page.row.name }}
+            </router-link>
+          </b-table-column>
+        </template>
 
-                <template slot="empty">
-                    <section class="section">
-                        <div class="content has-text-grey has-text-centered">
-                            <p>
-                                <b-icon icon="sad-tear" size="is-large"></b-icon>
-                            </p>
-                            <p>Nothing here.</p>
-                        </div>
-                    </section>
-                </template>
+        <template slot="empty">
+          <section class="section">
+            <div class="content has-text-grey has-text-centered">
+              <p>
+                <b-icon
+                  icon="sad-tear"
+                  size="is-large"
+                />
+              </p>
+              <p>Nothing here.</p>
+            </div>
+          </section>
+        </template>
 
-                <template slot="bottom-left">
-                    <b>Total checked</b>
-                    : {{ checkedRows.length }}
-                </template>
-            </b-table>
-        </section>
-    </div>
+        <template slot="bottom-left">
+          <b>Total checked</b>
+          : {{ checkedRows.length }}
+        </template>
+      </b-table>
+    </section>
+  </div>
 </template>
 
 <script lang="ts">
@@ -108,15 +115,15 @@ export default class PagesIndex extends Buefy {
     //TODO Clearer types
     defaultOpenedDetails: Array<any> = [];
     private checkedRows: Array<any> = [];
-    private total: number = 0;
-    private page: number = 1;
-    perPage: number = 10;
-    private loading: boolean = false;
-    private sortField: string = 'id';
-    private sortOrder: string = 'desc';
-    showDetailIcon: boolean = true;
-    defaultSortOrder: string = 'desc';
-    private search: string = '';
+    private total = 0;
+    private page = 1;
+    perPage = 10;
+    private loading = false;
+    private sortField = 'id';
+    private sortOrder = 'desc';
+    showDetailIcon = true;
+    defaultSortOrder = 'desc';
+    private search = '';
 
     created(): void {
         this.fetchPages();
@@ -197,7 +204,7 @@ export default class PagesIndex extends Buefy {
         this.checkedRows.forEach(page => {
             this.axios
                 .delete(`/api/admin/pages/${page.id}`)
-                .then(res => {
+                .then(() => {
                     this.showSuccess('Pages deleted');
                     this.fetchPages();
                 })

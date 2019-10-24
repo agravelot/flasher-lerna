@@ -1,56 +1,76 @@
 <template>
-    <div class="card">
-        <div class="card-content">
-            <b-field
-                label="Name"
-                :type="errors.name ? 'is-danger' : ''"
-                :message="errors.name ? errors.name[0] : null"
-            >
-                <b-input v-model="user.name"></b-input>
-            </b-field>
+  <div class="card">
+    <div class="card-content">
+      <b-field
+        :type="errors.name ? 'is-danger' : ''"
+        :message="errors.name ? errors.name[0] : null"
+        label="Name"
+      >
+        <b-input v-model="user.name" />
+      </b-field>
 
-            <b-field
-                label="Email"
-                :type="errors.email ? 'is-danger' : ''"
-                :message="errors.email ? errors.email[0] : null"
-            >
-                <b-input type="email" maxlength="30" v-model="user.email"></b-input>
-            </b-field>
+      <b-field
+        :type="errors.email ? 'is-danger' : ''"
+        :message="errors.email ? errors.email[0] : null"
+        label="Email"
+      >
+        <b-input
+          v-model="user.email"
+          type="email"
+          maxlength="30"
+        />
+      </b-field>
 
-            <b-field label="Role">
-                <b-select placeholder="Select a role" v-model="user.role" required>
-                    <option value="admin">Administrator</option>
-                    <option value="user">User</option>
-                </b-select>
-            </b-field>
+      <b-field label="Role">
+        <b-select
+          v-model="user.role"
+          placeholder="Select a role"
+          required
+        >
+          <option value="admin">
+            Administrator
+          </option>
+          <option value="user">
+            User
+          </option>
+        </b-select>
+      </b-field>
 
-            <b-field
-                label="Password"
-                :type="errors.password ? 'is-danger' : ''"
-                :message="errors.password ? errors.password[0] : null"
-            >
-                <b-input v-model="user.password" type="password" password-reveal></b-input>
-            </b-field>
+      <b-field
+        :type="errors.password ? 'is-danger' : ''"
+        :message="errors.password ? errors.password[0] : null"
+        label="Password"
+      >
+        <b-input
+          v-model="user.password"
+          type="password"
+          password-reveal
+        />
+      </b-field>
 
-            <b-field
-                label="Password confirmation"
-                :type="errors.password_confirmation ? 'is-danger' : ''"
-                :message="errors.password_confirmation ? errors.password_confirmation[0] : null"
-            >
-                <b-input
-                    v-model="user.password_confirmation"
-                    type="password"
-                    password-reveal
-                ></b-input>
-            </b-field>
+      <b-field
+        :type="errors.password_confirmation ? 'is-danger' : ''"
+        :message="errors.password_confirmation ? errors.password_confirmation[0] : null"
+        label="Password confirmation"
+      >
+        <b-input
+          v-model="user.password_confirmation"
+          type="password"
+          password-reveal
+        />
+      </b-field>
 
-            <div class="buttons">
-                <b-button type="is-primary" :loading="this.loading" @click="createUser()">
-                    Create
-                </b-button>
-            </div>
-        </div>
+      <div class="buttons">
+        <b-button
+          :loading="loading"
+          @click="createUser()"
+          type="is-primary"
+        >
+          Create
+        </b-button>
+      </div>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -63,7 +83,7 @@ import User from '../../models/user';
 })
 export default class UsersCreate extends Buefy {
     private user: User = new User();
-    private loading: boolean = false;
+    private loading = false;
     protected errors: object = {};
 
     createUser(): void {
@@ -72,7 +92,7 @@ export default class UsersCreate extends Buefy {
         this.axios
             .post('/api/admin/users', this.user)
             .then(res => res.data)
-            .then(res => {
+            .then(() => {
                 this.errors = {};
                 this.loading = false;
                 this.$router.push({ name: 'admin.users.index' });
@@ -115,7 +135,7 @@ export default class UsersCreate extends Buefy {
     deleteUser(): void {
         this.axios
             .delete(`/api/admin/users/${this.user.id}`)
-            .then(res => {
+            .then(() => {
                 this.$router.push({ name: 'admin.users.index' });
                 this.showSuccess('User deleted');
             })

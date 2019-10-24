@@ -1,12 +1,12 @@
-import Sidebar from '../components/admin/Sidebar.vue';
 import Vue from 'vue';
+import Sidebar from '../components/admin/Sidebar.vue';
 import router from './router';
 import './menu.ts';
 import './fontawsome.ts';
 import '../bootstrap';
 import '../bulma';
 import 'bulma-modal-fx/src/_js/modal-fx';
-import '../sentry';
+import '../sentry-vue';
 import Buefy from 'buefy';
 
 /**
@@ -16,13 +16,13 @@ import Buefy from 'buefy';
  */
 
 Vue.use(Buefy, {
-    defaultIconComponent: 'vue-fontawesome',
-    defaultIconPack: 'fas',
-    // defaultFieldLabelPosition: 'on-border',
+  defaultIconComponent: 'vue-fontawesome',
+  defaultIconPack: 'fas',
+  // defaultFieldLabelPosition: 'on-border',
 });
 
-const app = new Vue({
-    el: '#app',
-    components: { Sidebar },
-    router,
+new Vue({
+  el: '#app',
+  components: { Sidebar },
+  router,
 });

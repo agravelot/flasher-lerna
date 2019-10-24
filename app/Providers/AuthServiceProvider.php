@@ -7,6 +7,7 @@ use App\Models\Album;
 use App\Models\Contact;
 use App\Models\Category;
 use App\Models\Cosplayer;
+use App\Models\Invitation;
 use App\Models\SocialMedia;
 use App\Models\Testimonial;
 use App\Policies\UserPolicy;
@@ -15,6 +16,7 @@ use Laravel\Passport\Passport;
 use App\Policies\ContactPolicy;
 use App\Policies\CategoryPolicy;
 use App\Policies\CosplayerPolicy;
+use App\Policies\InvitationPolicy;
 use App\Policies\SocialMediaPolicy;
 use App\Policies\TestimonialsPolicy;
 use Illuminate\Support\Facades\Gate;
@@ -25,7 +27,7 @@ class AuthServiceProvider extends ServiceProvider
     /**
      * The policy mappings for the application.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $policies = [
         Album::class => AlbumPolicy::class,
@@ -35,6 +37,7 @@ class AuthServiceProvider extends ServiceProvider
         Category::class => CategoryPolicy::class,
         Testimonial::class => TestimonialsPolicy::class,
         SocialMedia::class => SocialMediaPolicy::class,
+        Invitation::class => InvitationPolicy::class,
     ];
 
     /**

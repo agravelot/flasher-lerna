@@ -1,21 +1,20 @@
-// @ts-ignore
 import debounce from 'lodash/debounce';
 
 // Bulma NavBar Burger Script
 document.addEventListener('DOMContentLoaded', () => {
-    let resizeResponsiveMedias = () => {
+    const resizeResponsiveMedias = (): void => {
         // onload="this.onload=null;this.sizes=Math.ceil(this.getBoundingClientRect().width/window.innerWidth*100)+'vw';console.log(this.sizes);"
         const responsiveMedias: HTMLCollectionOf<Element> = document.getElementsByClassName(
             'responsive-media'
         );
 
         Array.from(responsiveMedias).forEach((el: Element) => {
-            let computedSize: number = Math.ceil(
+            const computedSize: number = Math.ceil(
                 (el.getBoundingClientRect().width / window.innerWidth) * 100
             );
             // Avoid to set 0vw and load full sized image
             if (computedSize !== 0) {
-                (<HTMLImageElement>el).sizes = `${computedSize}vw`;
+                (el as HTMLImageElement ).sizes = `${computedSize}vw`;
             }
         });
     };
@@ -29,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     Array.from(navbarBurgers).forEach((el: Element) => {
         el.addEventListener('click', () => {
             // Get the target from the "data-target" attribute
-            const dataSetTarget: string | undefined = (<HTMLCanvasElement>el).dataset.target;
+            const dataSetTarget: string | undefined = (el as HTMLCanvasElement).dataset.target;
             const target: '' | HTMLElement | null | undefined =
                 dataSetTarget && document.getElementById(dataSetTarget);
 

@@ -1,7 +1,7 @@
 // Trigger modals
-(function() {
-    let modalFX = (function() {
-        let elements = {
+(function(): void {
+    const modalFX = (function(): any {
+        const elements = {
             target: 'data-target',
             active: 'is-active',
             button: 'modal-button',
@@ -11,14 +11,14 @@
             navigable: 'is-modal-navigable',
         };
 
-        let onClickEach = function(selector, callback) {
-            let arr = document.getElementsByClassName(selector);
+        const onClickEach = function(selector, callback): void {
+            const arr = document.getElementsByClassName(selector);
             Array.from(arr).forEach(function(el) {
                 el.addEventListener('click', callback);
             });
         };
 
-        let events = function() {
+        const events = function(): void {
             onClickEach(elements.button, openModal);
 
             onClickEach(elements.close, closeModal);
@@ -33,51 +33,51 @@
             });
         };
 
-        let closeAll = function() {
-            let openModal = document.getElementsByClassName(elements.active);
+        const closeAll = function(): void {
+            const openModal = document.getElementsByClassName(elements.active);
             Array.from(openModal).forEach(function(modal) {
                 modal.classList.remove(elements.active);
             });
             unFreeze();
         };
 
-        let openModal = function() {
-            let targetModal = this.getAttribute(elements.target);
+        const openModal = function(): void {
+            const targetModal = this.getAttribute(elements.target);
             freeze();
-            let modal: Element = document.getElementById(targetModal);
+            const modal: Element = document.getElementById(targetModal);
             modal.classList.add(elements.active);
 
-            let image = modal.getElementsByTagName('img')[0];
+            const image = modal.getElementsByTagName('img')[0];
             image.sizes = `${Math.ceil(
                 (image.getBoundingClientRect().width / window.innerWidth) * 100
             )}vw`;
             image.classList.add('responsive-media');
         };
 
-        let closeModal = function() {
-            let targetModal = this.parentElement.id;
-            let modal: Element = document.getElementById(targetModal);
+        const closeModal = function(): void {
+            const targetModal = this.parentElement.id;
+            const modal: Element = document.getElementById(targetModal);
             modal.classList.remove(elements.active);
             unFreeze();
 
             // Remove 'responsive-media' class
-            let image = modal.getElementsByTagName('img')[0];
+            const image = modal.getElementsByTagName('img')[0];
             image.classList.remove('responsive-media');
         };
 
         // Freeze scrollbars
-        let freeze = function() {
+        const freeze = function(): void {
             document.getElementsByTagName('html')[0].style.overflow = 'hidden';
             document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
         };
 
-        let unFreeze = function() {
+        const unFreeze = function(): void {
             document.getElementsByTagName('html')[0].style.overflow = '';
             document.getElementsByTagName('body')[0].style.overflowY = '';
         };
 
         return {
-            init: function() {
+            init: function(): void {
                 events();
 
                 window.addEventListener(
@@ -110,9 +110,9 @@
                     true
                 );
 
-                function previousModal() {
-                    let currentActiveModal: Element = getCurrentModal();
-                    let previousModal: Element = currentActiveModal.previousElementSibling;
+                function previousModal(): void {
+                    const currentActiveModal: Element = getCurrentModal();
+                    const previousModal: Element = currentActiveModal.previousElementSibling;
 
                     if (!previousModal || !previousModal.classList.contains(elements.navigable)) {
                         return;
@@ -122,9 +122,9 @@
                     openModal(previousModal);
                 }
 
-                function nextModal() {
-                    let currentActiveModal: Element = getCurrentModal();
-                    let nextModal: Element = currentActiveModal.nextElementSibling;
+                function nextModal(): void {
+                    const currentActiveModal: Element = getCurrentModal();
+                    const nextModal: Element = currentActiveModal.nextElementSibling;
 
                     if (!nextModal || !nextModal.classList.contains(elements.navigable)) {
                         return;
@@ -142,13 +142,13 @@
 
                 function closeModal(modal: Element): void {
                     modal.classList.remove(elements.active);
-                    let image = modal.getElementsByTagName('img')[0];
+                    const image = modal.getElementsByTagName('img')[0];
                     image.classList.remove('responsive-media');
                 }
 
                 function openModal(modal: Element): void {
                     modal.classList.add(elements.active);
-                    let image = modal.getElementsByTagName('img')[0];
+                    const image = modal.getElementsByTagName('img')[0];
                     image.sizes = `${Math.ceil(
                         (image.getBoundingClientRect().width / window.innerWidth) * 100
                     )}vw`;

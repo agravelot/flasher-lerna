@@ -1,31 +1,35 @@
 <template>
-    <div class="card">
-        <div class="card-content">
-            <b-field
-                label="Name"
-                :type="errors.name ? 'is-danger' : ''"
-                :message="errors.name ? errors.name[0] : null"
-            >
-                <b-input v-model="category.name"></b-input>
-            </b-field>
+  <div class="card">
+    <div class="card-content">
+      <b-field
+        :type="errors.name ? 'is-danger' : ''"
+        :message="errors.name ? errors.name[0] : null"
+        label="Name"
+      >
+        <b-input v-model="category.name" />
+      </b-field>
 
-            <b-field
-                label="Description"
-                :type="errors.description ? 'is-danger' : ''"
-                :message="errors.description ? errors.description[0] : null"
-            >
-                <quill-editor
-                    v-model="category.description"
-                    ref="myQuillEditor"
-                    :options="editorOption"
-                ></quill-editor>
-            </b-field>
+      <b-field
+        :type="errors.description ? 'is-danger' : ''"
+        :message="errors.description ? errors.description[0] : null"
+        label="Description"
+      >
+        <quill-editor
+          ref="myQuillEditor"
+          v-model="category.description"
+          :options="editorOption"
+        />
+      </b-field>
 
-            <b-button type="is-primary" :loading="this.loading" @click="createCategory()"
-                >Create
-            </b-button>
-        </div>
+      <b-button
+        :loading="loading"
+        @click="createCategory()"
+        type="is-primary"
+      >
+        Create
+      </b-button>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -46,7 +50,7 @@ import User from '../../models/user';
 })
 export default class CategoriesCreate extends Buefy {
     private category: Category = new Category();
-    private loading: boolean = false;
+    private loading = false;
     private searchUsers: Array<User> = [];
     protected errors: object = {};
 
@@ -54,8 +58,6 @@ export default class CategoriesCreate extends Buefy {
         placeholder: 'Enter your description...',
         theme: 'snow',
     };
-
-    created(): void {}
 
     createCategory(): void {
         this.loading = true;

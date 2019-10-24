@@ -1,74 +1,94 @@
 <template>
-    <div class="card">
-        <div class="card-content">
-            <b-field
-                label="Name"
-                :type="errors.name ? 'is-danger' : ''"
-                :message="errors.name ? errors.name[0] : null"
-            >
-                <b-input v-model="user.name"></b-input>
-            </b-field>
+  <div class="card">
+    <div class="card-content">
+      <b-field
+        :type="errors.name ? 'is-danger' : ''"
+        :message="errors.name ? errors.name[0] : null"
+        label="Name"
+      >
+        <b-input v-model="user.name" />
+      </b-field>
 
-            <b-field
-                label="Email"
-                :type="errors.email ? 'is-danger' : ''"
-                :message="errors.email ? errors.email[0] : null"
-            >
-                <b-input type="email" maxlength="30" v-model="user.email"></b-input>
-            </b-field>
+      <b-field
+        :type="errors.email ? 'is-danger' : ''"
+        :message="errors.email ? errors.email[0] : null"
+        label="Email"
+      >
+        <b-input
+          v-model="user.email"
+          type="email"
+          maxlength="30"
+        />
+      </b-field>
 
-            <b-field label="Role">
-                <b-select placeholder="Select a role" v-model="user.role" required>
-                    <option value="admin">Administrator</option>
-                    <option value="user">User</option>
-                </b-select>
-            </b-field>
+      <b-field label="Role">
+        <b-select
+          v-model="user.role"
+          placeholder="Select a role"
+          required
+        >
+          <option value="admin">
+            Administrator
+          </option>
+          <option value="user">
+            User
+          </option>
+        </b-select>
+      </b-field>
 
-            <b-field
-                label="Password"
-                :type="errors.password ? 'is-danger' : ''"
-                :message="errors.password ? errors.password[0] : null"
-            >
-                <b-input v-model="user.password" type="password" password-reveal></b-input>
-            </b-field>
+      <b-field
+        :type="errors.password ? 'is-danger' : ''"
+        :message="errors.password ? errors.password[0] : null"
+        label="Password"
+      >
+        <b-input
+          v-model="user.password"
+          type="password"
+          password-reveal
+        />
+      </b-field>
 
-            <b-field
-                label="Password confirmation"
-                :type="errors.password_confirmation ? 'is-danger' : ''"
-                :message="errors.password_confirmation ? errors.password_confirmation[0] : null"
-            >
-                <b-input
-                    v-model="user.password_confirmation"
-                    type="password"
-                    password-reveal
-                ></b-input>
-            </b-field>
+      <b-field
+        :type="errors.password_confirmation ? 'is-danger' : ''"
+        :message="errors.password_confirmation ? errors.password_confirmation[0] : null"
+        label="Password confirmation"
+      >
+        <b-input
+          v-model="user.password_confirmation"
+          type="password"
+          password-reveal
+        />
+      </b-field>
 
-            <div class="buttons">
-                <b-button type="is-primary" :loading="this.loading" @click="updateUser()">
-                    Update
-                </b-button>
-                <b-button
-                    v-if="user && user.actions && user.actions.impersonate"
-                    type="is-info"
-                    icon-right="sign-in-alt"
-                    tag="a"
-                    :href="user.actions.impersonate"
-                    :loading="this.loading"
-                >
-                    Impersonate
-                </b-button>
-                <b-button
-                    type="is-danger"
-                    icon-right="trash-alt"
-                    :loading="this.loading"
-                    @click="confirmDeleteUser()"
-                >
-                    Delete
-                </b-button>
-            </div>
-        </div>
+      <div class="buttons">
+        <b-button
+          :loading="loading"
+          @click="updateUser()"
+          type="is-primary"
+        >
+          Update
+        </b-button>
+        <b-button
+          v-if="user && user.actions && user.actions.impersonate"
+          :href="user.actions.impersonate"
+          :loading="loading"
+          type="is-info"
+          icon-right="sign-in-alt"
+          tag="a"
+        >
+          Impersonate
+        </b-button>
+        <b-button
+          :loading="loading"
+          @click="confirmDeleteUser()"
+          type="is-danger"
+          icon-right="trash-alt"
+        >
+          Delete
+        </b-button>
+      </div>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -81,7 +101,7 @@ import User from '../../models/user';
 })
 export default class UsersEdit extends Buefy {
     private user: User = null;
-    private loading: boolean = false;
+    private loading = false;
     protected errors: object = {};
 
     created(): void {
@@ -94,7 +114,7 @@ export default class UsersEdit extends Buefy {
         this.axios
             .patch(`/api/admin/users/${this.$route.params.id}`, this.user)
             .then(res => res.data)
-            .then(res => {
+            .then(() => {
                 this.errors = {};
                 this.loading = false;
                 this.$router.push({ name: 'admin.users.index' });
@@ -163,7 +183,7 @@ export default class UsersEdit extends Buefy {
     deleteUser(): void {
         this.axios
             .delete(`/api/admin/users/${this.user.id}`)
-            .then(res => {
+            .then(() => {
                 this.$router.push({ name: 'admin.users.index' });
                 this.showSuccess('User deleted');
             })

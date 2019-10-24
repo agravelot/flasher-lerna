@@ -1,58 +1,71 @@
 <template>
-    <div>
-        <b-table
-            :data="album.cosplayers"
-            :loading="album === null"
-            striped
-            hoverable
-            mobile-cards
-            checkable
-            :checked-rows.sync="checkedRows"
+  <div>
+    <b-table
+      :data="album.cosplayers"
+      :loading="album === null"
+      :checked-rows.sync="checkedRows"
+      striped
+      hoverable
+      mobile-cards
+      checkable
+    >
+      <template slot-scope="cosplayer">
+        <b-table-column
+          field="name"
+          label="Name"
         >
-            <template slot-scope="cosplayer">
-                <b-table-column field="name" label="Name">
-                    {{ cosplayer.row.name }}
-                </b-table-column>
-                <b-table-column field="email" label="Email">
-                    <div v-if="cosplayer.row.user">
-                        {{ cosplayer.row.user.email }}
-                    </div>
-                    <div v-else>
-                        <b-field>
-                            <b-input
-                                placeholder="Email"
-                                type="email"
-                                maxlength="50"
-                                icon="mail"
-                                v-model="customEmails[cosplayer.row.id]"
-                            ></b-input>
-                        </b-field>
-                    </div>
-                </b-table-column>
-            </template>
+          {{ cosplayer.row.name }}
+        </b-table-column>
+        <b-table-column
+          field="email"
+          label="Email"
+        >
+          <div v-if="cosplayer.row.user">
+            {{ cosplayer.row.user.email }}
+          </div>
+          <div v-else>
+            <b-field>
+              <b-input
+                v-model="customEmails[cosplayer.row.id]"
+                placeholder="Email"
+                type="email"
+                maxlength="50"
+                icon="mail"
+              />
+            </b-field>
+          </div>
+        </b-table-column>
+      </template>
 
-            <template slot="empty">
-                <section class="section">
-                    <div class="content has-text-grey has-text-centered">
-                        <p>
-                            <b-icon icon="sad-tear" size="is-large"></b-icon>
-                        </p>
-                        <p>No cosplayers.</p>
-                    </div>
-                </section>
-            </template>
+      <template slot="empty">
+        <section class="section">
+          <div class="content has-text-grey has-text-centered">
+            <p>
+              <b-icon
+                icon="sad-tear"
+                size="is-large"
+              />
+            </p>
+            <p>No cosplayers.</p>
+          </div>
+        </section>
+      </template>
 
-            <template slot="bottom-left">
-                <b-button type="is-success" :disabled="!checkedRows.length" @click="showModal()"
-                    >Next</b-button
-                >
-                <span>
-                    <b>Total checked</b>
-                    : {{ checkedRows.length }}
-                </span>
-            </template>
-        </b-table>
-    </div>
+      <template slot="bottom-left">
+        <b-button
+          :disabled="!checkedRows.length"
+          @click="showModal()"
+          type="is-success"
+        >
+          Next
+        </b-button>
+        <span>
+          <b>Total checked</b>
+          : {{ checkedRows.length }}
+        </span>
+      </template>
+    </b-table>
+  </div>
 </template>
 
 <script lang="ts">
@@ -63,7 +76,6 @@ import { Prop } from 'vue-property-decorator';
 import ShareAlbumToCosplayerModal from './ShareAlbumToCosplayerModal.vue';
 import Cosplayer from '../../models/cosplayer';
 import CosplayerContact from '../../models/sharer';
-import User from '../../models/user';
 
 @Component({
     name: 'share-album-to-cosplayer',

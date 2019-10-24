@@ -1,92 +1,111 @@
 <template>
-    <div>
-        <section>
-            <div class="buttons">
-                <b-button
-                    tag="router-link"
-                    :to="{ name: 'admin.users.create' }"
-                    type="is-success"
-                    icon-left="plus"
-                    >Add
-                </b-button>
-                <b-button
-                    type="is-danger"
-                    icon-left="trash-alt"
-                    :disabled="!checkedRows.length"
-                    @click="confirmDeleteSelectedUsers()"
-                >
-                    Delete checked
-                </b-button>
-            </div>
+  <div>
+    <section>
+      <div class="buttons">
+        <b-button
+          :to="{ name: 'admin.users.create' }"
+          tag="router-link"
+          type="is-success"
+          icon-left="plus"
+        >
+          Add
+        </b-button>
+        <b-button
+          :disabled="!checkedRows.length"
+          @click="confirmDeleteSelectedUsers()"
+          type="is-danger"
+          icon-left="trash-alt"
+        >
+          Delete checked
+        </b-button>
+      </div>
 
-            <b-table
-                :data="users"
-                :loading="loading"
-                striped
-                hoverable
-                mobile-cards
-                paginated
-                backend-pagination
-                :total="total"
-                :per-page="perPage"
-                @page-change="onPageChange"
-                backend-sorting
-                :default-sort-direction="defaultSortOrder"
-                :default-sort="[sortField, sortOrder]"
-                @sort="onSort"
-                checkable
-                :checked-rows.sync="checkedRows"
+      <b-table
+        :data="users"
+        :loading="loading"
+        :total="total"
+        :per-page="perPage"
+        @page-change="onPageChange"
+        :default-sort-direction="defaultSortOrder"
+        :default-sort="[sortField, sortOrder]"
+        @sort="onSort"
+        :checked-rows.sync="checkedRows"
+        striped
+        hoverable
+        mobile-cards
+        paginated
+        backend-pagination
+        backend-sorting
+        checkable
+      >
+        <template slot-scope="user">
+          <b-table-column
+            field="name"
+            label="Name"
+            sortable
+          >
+            <router-link
+              :to="{ name: 'admin.users.edit', params: { id: user.row.id } }"
             >
-                <template slot-scope="user">
-                    <b-table-column field="name" label="Name" sortable>
-                        <router-link
-                            :to="{ name: 'admin.users.edit', params: { id: user.row.id } }"
-                        >
-                            {{ user.row.name }}
-                        </router-link>
-                    </b-table-column>
+              {{ user.row.name }}
+            </router-link>
+          </b-table-column>
 
-                    <b-table-column field="email" label="E-mail" sortable>
-                        <router-link
-                            :to="{ name: 'admin.users.edit', params: { id: user.row.id } }"
-                        >
-                            {{ user.row.email }}
-                        </router-link>
-                    </b-table-column>
+          <b-table-column
+            field="email"
+            label="E-mail"
+            sortable
+          >
+            <router-link
+              :to="{ name: 'admin.users.edit', params: { id: user.row.id } }"
+            >
+              {{ user.row.email }}
+            </router-link>
+          </b-table-column>
 
-                    <b-table-column field="status" label="Role" centered>
-                        <span class="tag is-dark" v-bind:title="'User role'">{{
-                            user.row.role
-                        }}</span>
-                    </b-table-column>
+          <b-table-column
+            field="status"
+            label="Role"
+            centered
+          >
+            <span
+              v-bind:title="'User role'"
+              class="tag is-dark"
+            >{{
+              user.row.role
+            }}</span>
+          </b-table-column>
 
-                    <!--                    <b-table-column field="actions.impersonate" label="Impersonate" centered>-->
-                    <!--                        <a :href="user.row.actions.impersonate">-->
-                    <!--                            <span class="icon has-text-info">-->
-                    <!--                                <i class="fas fa-sign-in-alt"></i>-->
-                    <!--                            </span>-->
-                    <!--                        </a>-->
-                    <!--                    </b-table-column>-->
-                </template>
+          <!--                    <b-table-column field="actions.impersonate" label="Impersonate" centered>-->
+          <!--                        <a :href="user.row.actions.impersonate">-->
+          <!--                            <span class="icon has-text-info">-->
+          <!--                                <i class="fas fa-sign-in-alt"></i>-->
+          <!--                            </span>-->
+          <!--                        </a>-->
+          <!--                    </b-table-column>-->
+        </template>
 
-                <template slot="empty">
-                    <section class="section">
-                        <div class="content has-text-grey has-text-centered">
-                            <p>
-                                <b-icon icon="sad-tear" size="is-large"></b-icon>
-                            </p>
-                            <p>Nothing here.</p>
-                        </div>
-                    </section>
-                </template>
+        <template slot="empty">
+          <section class="section">
+            <div class="content has-text-grey has-text-centered">
+              <p>
+                <b-icon
+                  icon="sad-tear"
+                  size="is-large"
+                />
+              </p>
+              <p>Nothing here.</p>
+            </div>
+          </section>
+        </template>
 
-                <template slot="bottom-left">
-                    <b>Total checked</b>
-                    : {{ checkedRows.length }}
-                </template>
-            </b-table>
-        </section>
-    </div>
+        <template slot="bottom-left">
+          <b>Total checked</b>
+          : {{ checkedRows.length }}
+        </template>
+      </b-table>
+    </section>
+  </div>
 </template>
 
 <script lang="ts">
@@ -100,14 +119,14 @@ import User from '../../models/user';
 export default class UsersIndex extends Buefy {
     private users: Array<User> = [];
     private checkedRows: Array<User> = [];
-    private total: number = 0;
-    private page: number = 1;
-    perPage: number = 10;
-    private loading: boolean = false;
-    private sortField: string = 'id';
-    private sortOrder: string = 'desc';
-    showDetailIcon: boolean = true;
-    defaultSortOrder: string = 'desc';
+    private total = 0;
+    private page = 1;
+    perPage = 10;
+    private loading = false;
+    private sortField = 'id';
+    private sortOrder = 'desc';
+    showDetailIcon = true;
+    defaultSortOrder = 'desc';
 
     created(): void {
         this.fetchUsers();
@@ -191,7 +210,7 @@ export default class UsersIndex extends Buefy {
         this.checkedRows.forEach(user => {
             this.axios
                 .delete(`/api/admin/users/${user.id}`)
-                .then(res => {
+                .then(() => {
                     this.showSuccess('Users deleted');
                     this.fetchUsers();
                 })

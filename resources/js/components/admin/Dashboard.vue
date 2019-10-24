@@ -1,57 +1,90 @@
 <template>
-    <div>
-        <b-loading :is-full-page="false" :active="loading"></b-loading>
-        <div v-if="!loading">
-            <section class="hero is-info welcome is-small has-margin-bottom-sm">
-                <div class="hero-body">
-                    <div class="container">
-                        <h1 class="title is-1">Hello, {{ username }}.</h1>
-                        <h2 class="subtitle">
-                            I hope you are having a great day!
-                        </h2>
-                    </div>
-                </div>
-            </section>
-            <section class="info-tiles">
-                <div class="tile is-ancestor has-text-centered">
-                    <router-link :to="{ name: 'admin.users.index' }" class="tile is-parent">
-                        <article class="tile is-child box">
-                            <p class="title">{{ usersCount }}</p>
-                            <p class="subtitle">Users</p>
-                        </article>
-                    </router-link>
-
-                    <router-link :to="{ name: 'admin.albums.index' }" class="tile is-parent">
-                        <article class="tile is-child box">
-                            <p class="title">{{ albumsCount }}</p>
-                            <p class="subtitle">Albums</p>
-                        </article>
-                    </router-link>
-
-                    <router-link :to="{ name: 'admin.albums.index' }" class="tile is-parent">
-                        <article class="tile is-child box">
-                            <p class="title">{{ albumMediasCount }}</p>
-                            <p class="subtitle">Medias</p>
-                        </article>
-                    </router-link>
-
-                    <router-link :to="{ name: 'admin.cosplayers.index' }" class="tile is-parent">
-                        <article class="tile is-child box">
-                            <p class="title">{{ cosplayersCount }}</p>
-                            <p class="subtitle">Cosplayers</p>
-                        </article>
-                    </router-link>
-
-                    <a class="tile is-parent">
-                        <article class="tile is-child box">
-                            <p class="title">{{ contactsCount }}</p>
-                            <p class="subtitle">Contacts</p>
-                        </article>
-                    </a>
-                </div>
-            </section>
+  <div>
+    <b-loading
+      :is-full-page="false"
+      :active="loading"
+    />
+    <div v-if="!loading">
+      <section class="hero is-info welcome is-small has-margin-bottom-sm">
+        <div class="hero-body">
+          <div class="container">
+            <h1 class="title is-1">
+              Hello, {{ username }}.
+            </h1>
+            <h2 class="subtitle">
+              I hope you are having a great day!
+            </h2>
+          </div>
         </div>
+      </section>
+      <section class="info-tiles">
+        <div class="tile is-ancestor has-text-centered">
+          <router-link
+            :to="{ name: 'admin.users.index' }"
+            class="tile is-parent"
+          >
+            <article class="tile is-child box">
+              <p class="title">
+                {{ usersCount }}
+              </p>
+              <p class="subtitle">
+                Users
+              </p>
+            </article>
+          </router-link>
+
+          <router-link
+            :to="{ name: 'admin.albums.index' }"
+            class="tile is-parent"
+          >
+            <article class="tile is-child box">
+              <p class="title">
+                {{ albumsCount }}
+              </p>
+              <p class="subtitle">
+                Albums
+              </p>
+            </article>
+          </router-link>
+
+          <router-link
+            :to="{ name: 'admin.albums.index' }"
+            class="tile is-parent"
+          >
+            <article class="tile is-child box">
+              <p class="title">
+                {{ albumMediasCount }}
+              </p>
+              <p class="subtitle">
+                Medias
+              </p>
+            </article>
+          </router-link>
+
+          <router-link
+            :to="{ name: 'admin.cosplayers.index' }"
+            class="tile is-parent"
+          >
+            <article class="tile is-child box">
+              <p class="title">
+                {{ cosplayersCount }}
+              </p>
+              <p class="subtitle">
+                Cosplayers
+              </p>
+            </article>
+          </router-link>
+
+          <a class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">{{ contactsCount }}</p>
+              <p class="subtitle">Contacts</p>
+            </article>
+          </a>
+        </div>
+      </section>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -60,12 +93,12 @@ import Buefy from '../../admin/Buefy.vue';
 
 @Component
 export default class Dashboard extends Buefy {
-    private loading: boolean = true;
-    private cosplayersCount: number = 0;
-    private usersCount: number = 0;
-    private albumsCount: number = 0;
-    private contactsCount: number = 0;
-    private albumMediasCount: number = 0;
+    private loading = true;
+    private cosplayersCount = 0;
+    private usersCount = 0;
+    private albumsCount = 0;
+    private contactsCount = 0;
+    private albumMediasCount = 0;
     private username: string | null = null;
 
     created(): void {

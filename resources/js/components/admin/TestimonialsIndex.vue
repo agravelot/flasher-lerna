@@ -1,102 +1,126 @@
 <template>
-    <div>
-        <section>
-            <div class="buttons">
-                <!--                <b-button-->
-                <!--                    type="is-success"-->
-                <!--                    icon-left="check"-->
-                <!--                    >Publish-->
-                <!--                </b-button>-->
-                <b-button
-                    type="is-success"
-                    icon-left="check"
-                    @click="toggleSelectedArePublishedAndUpdate()"
-                    >Publish / Un-publish
-                </b-button>
-                <b-button
-                    type="is-danger"
-                    icon-left="trash-alt"
-                    :disabled="!checkedRows.length"
-                    @click="confirmDeleteSelectedTestimonials()"
-                >
-                    Delete checked
-                </b-button>
-            </div>
+  <div>
+    <section>
+      <div class="buttons">
+        <!--                <b-button-->
+        <!--                    type="is-success"-->
+        <!--                    icon-left="check"-->
+        <!--                    >Publish-->
+        <!--                </b-button>-->
+        <b-button
+          @click="toggleSelectedArePublishedAndUpdate()"
+          type="is-success"
+          icon-left="check"
+        >
+          Publish / Un-publish
+        </b-button>
+        <b-button
+          :disabled="!checkedRows.length"
+          @click="confirmDeleteSelectedTestimonials()"
+          type="is-danger"
+          icon-left="trash-alt"
+        >
+          Delete checked
+        </b-button>
+      </div>
 
-            <b-table
-                :data="testimonials"
-                :loading="loading"
-                striped
-                hoverable
-                mobile-cards
-                paginated
-                backend-pagination
-                :total="total"
-                :per-page="perPage"
-                @page-change="onPageChange"
-                backend-sorting
-                :default-sort-direction="defaultSortOrder"
-                :default-sort="[sortField, sortOrder]"
-                @sort="onSort"
-                checkable
-                :checked-rows.sync="checkedRows"
+      <b-table
+        :data="testimonials"
+        :loading="loading"
+        :total="total"
+        :per-page="perPage"
+        @page-change="onPageChange"
+        :default-sort-direction="defaultSortOrder"
+        :default-sort="[sortField, sortOrder]"
+        @sort="onSort"
+        :checked-rows.sync="checkedRows"
+        striped
+        hoverable
+        mobile-cards
+        paginated
+        backend-pagination
+        backend-sorting
+        checkable
+      >
+        <template slot-scope="testimonial">
+          <b-table-column
+            field="name"
+            label="Name"
+            sortable
+          >
+            <router-link
+              :to="{
+                name: 'admin.testimonials.edit',
+                params: { id: testimonial.row.id },
+              }"
             >
-                <template slot-scope="testimonial">
-                    <b-table-column field="name" label="Name" sortable>
-                        <router-link
-                            :to="{
-                                name: 'admin.testimonials.edit',
-                                params: { id: testimonial.row.id },
-                            }"
-                        >
-                            {{ testimonial.row.name }}
-                        </router-link>
-                    </b-table-column>
+              {{ testimonial.row.name }}
+            </router-link>
+          </b-table-column>
 
-                    <b-table-column field="email" label="E-mail" sortable>
-                        <router-link
-                            :to="{
-                                name: 'admin.testimonials.edit',
-                                params: { id: testimonial.row.id },
-                            }"
-                        >
-                            {{ testimonial.row.email }}
-                        </router-link>
-                    </b-table-column>
+          <b-table-column
+            field="email"
+            label="E-mail"
+            sortable
+          >
+            <router-link
+              :to="{
+                name: 'admin.testimonials.edit',
+                params: { id: testimonial.row.id },
+              }"
+            >
+              {{ testimonial.row.email }}
+            </router-link>
+          </b-table-column>
 
-                    <b-table-column field="published_at" label="Published" sortable>
-                        <a
-                            :title="testimonial.row.published_at"
-                            @click="toggleIsPublishedAndUpdate(testimonial.row)"
-                        >
-                            <span v-if="testimonial.row.published_at">
-                                <b-icon icon="check" size="is-small" type="is-success"> </b-icon>
-                            </span>
-                            <span v-else>
-                                <b-icon icon="lock" size="is-small" type="is-warning"> </b-icon>
-                            </span>
-                        </a>
-                    </b-table-column>
-                </template>
+          <b-table-column
+            field="published_at"
+            label="Published"
+            sortable
+          >
+            <a
+              :title="testimonial.row.published_at"
+              @click="toggleIsPublishedAndUpdate(testimonial.row)"
+            >
+              <span v-if="testimonial.row.published_at">
+                <b-icon
+                  icon="check"
+                  size="is-small"
+                  type="is-success"
+                />
+              </span>
+              <span v-else>
+                <b-icon
+                  icon="lock"
+                  size="is-small"
+                  type="is-warning"
+                />
+              </span>
+            </a>
+          </b-table-column>
+        </template>
 
-                <template slot="empty">
-                    <section class="section">
-                        <div class="content has-text-grey has-text-centered">
-                            <p>
-                                <b-icon icon="sad-tear" size="is-large"></b-icon>
-                            </p>
-                            <p>Nothing here.</p>
-                        </div>
-                    </section>
-                </template>
+        <template slot="empty">
+          <section class="section">
+            <div class="content has-text-grey has-text-centered">
+              <p>
+                <b-icon
+                  icon="sad-tear"
+                  size="is-large"
+                />
+              </p>
+              <p>Nothing here.</p>
+            </div>
+          </section>
+        </template>
 
-                <template slot="bottom-left">
-                    <b>Total checked</b>
-                    : {{ checkedRows.length }}
-                </template>
-            </b-table>
-        </section>
-    </div>
+        <template slot="bottom-left">
+          <b>Total checked</b>
+          : {{ checkedRows.length }}
+        </template>
+      </b-table>
+    </section>
+  </div>
 </template>
 
 <script lang="ts">
@@ -110,14 +134,14 @@ import Testimonial from '../../models/testimonial';
 export default class TestimonialsIndex extends Buefy {
     private testimonials: Array<Testimonial> = [];
     private checkedRows: Array<Testimonial> = [];
-    private total: number = 0;
-    private page: number = 1;
-    perPage: number = 10;
-    private loading: boolean = false;
-    private sortField: string = 'id';
-    private sortOrder: string = 'desc';
-    showDetailIcon: boolean = true;
-    defaultSortOrder: string = 'desc';
+    private total = 0;
+    private page = 1;
+    perPage = 10;
+    private loading = false;
+    private sortField = 'id';
+    private sortOrder = 'desc';
+    showDetailIcon = true;
+    defaultSortOrder = 'desc';
 
     created(): void {
         this.fetchTestimonials();
@@ -201,7 +225,7 @@ export default class TestimonialsIndex extends Buefy {
         this.checkedRows.forEach(testimonial => {
             this.axios
                 .delete(`/api/admin/testimonials/${testimonial.id}`)
-                .then(res => {
+                .then(() => {
                     this.showSuccess('Testimonials deleted');
                     this.fetchTestimonials();
                 })
