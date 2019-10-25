@@ -14,7 +14,7 @@
 
     <title>
         @hasSection('pageTitle')
-            @yield('pageTitle') - {{ settings()->get('app_name') }}
+            @yield('pageTitle') - {{ __('Photographer') }} | {{ settings()->get('app_name') }}
         @else
             {{ settings()->get('default_page_title') }}
         @endif
