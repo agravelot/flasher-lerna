@@ -117,7 +117,7 @@
                 <div class="columns is-vcentered">
                     @foreach($testimonials as $testimonial)
                         <div class="column">
-                            @include('testimonials._item', ['goldenBookPost' => $testimonial])
+                            @include('testimonials._item', ['testimonial' => $testimonial])
                         </div>
                     @endforeach
                 </div>

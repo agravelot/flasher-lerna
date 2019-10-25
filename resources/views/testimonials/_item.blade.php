@@ -6,14 +6,14 @@
                 <span class="icon is-inline-flex">
                     @fas('quote-left')
                 </span>
-                {{ $goldenBookPost->body }}
+                {{ $testimonial->body }}
                 <span class="icon is-inline-flex">
                     @fas('quote-right')
                 </span>
             </p>
 
-            <p class="has-text-right has-text-weight-light">- {{ $goldenBookPost->name }}</p>
-            <p class="has-text-right has-text-weight-light">{{ $goldenBookPost->created_at->toFormattedDateString() }}</p>
+            <p class="has-text-right has-text-weight-light">- {{ $testimonial->name }}</p>
+            <p class="has-text-right has-text-weight-light">{{ $testimonial->created_at->toFormattedDateString() }}</p>
         </div>
     </div>
 </article>
