@@ -147,11 +147,6 @@
             icon="share"
           >
             <h3 class="title is-3">
-              Models
-            </h3>
-            <share-album-to-cosplayer :album="album" />
-
-            <h3 class="title is-3">
               Share
             </h3>
             <share-album :album="album" />
@@ -167,7 +162,6 @@ import Component from 'vue-class-component';
 import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 import AlbumDesc from './AlbumDesc.vue';
-import ShareAlbumToCosplayer from './ShareAlbumToCosplayer.vue';
 import ShareAlbum from './ShareAlbum.vue';
 import Album from '../../models/album';
 
@@ -177,7 +171,6 @@ import Album from '../../models/album';
         vueDropzone: vue2Dropzone,
         'album-desc': AlbumDesc,
         'share-album': ShareAlbum,
-        'share-album-to-cosplayer': ShareAlbumToCosplayer,
     },
     extends: AlbumDesc,
 })
