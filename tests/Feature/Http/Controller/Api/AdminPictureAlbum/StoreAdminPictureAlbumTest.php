@@ -25,7 +25,7 @@ class StoreAdminPictureAlbumTest extends TestCase
         $response = $this->storeAlbumPicture($album, $image);
 
         $this->assertSame(1, $album->fresh()->media->count());
-        $response->assertStatus(201);
+        $response->assertCreated();
         Queue::assertPushedOn('images', PerformConversions::class);
     }
 
