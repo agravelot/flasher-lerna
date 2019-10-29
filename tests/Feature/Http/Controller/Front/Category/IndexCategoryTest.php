@@ -15,7 +15,7 @@ class IndexCategoryTest extends TestCase
     {
         $response = $this->showCategories();
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee('Nothing to show');
     }
 
@@ -30,7 +30,7 @@ class IndexCategoryTest extends TestCase
 
         $response = $this->showCategories();
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee($categories->get(0)->title);
         $response->assertSee($categories->get(1)->title);
     }

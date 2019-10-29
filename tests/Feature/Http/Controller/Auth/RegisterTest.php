@@ -31,7 +31,7 @@ class RegisterTest extends TestCase
 
         $response->assertRedirect('/');
         $this->followRedirects($response)
-            ->assertStatus(200);
+            ->assertOk();
         $registeredUser = User::latest()->first();
         $this->assertAuthenticatedAs($registeredUser);
     }

@@ -13,7 +13,7 @@ class IndexCategoryTest extends TestCase
 
         $response = $this->indexCategories();
 
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_user_cant_index_categories(): void

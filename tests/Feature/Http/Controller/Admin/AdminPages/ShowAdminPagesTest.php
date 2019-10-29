@@ -18,7 +18,7 @@ class ShowAdminPagesTest extends TestCase
 
         $response = $this->showPage($page);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJsonFragment(['name' => $page->name, 'title' => $page->title, 'description' => $page->description]);
     }
 

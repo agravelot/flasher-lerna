@@ -19,7 +19,7 @@ class IndexContactTest extends TestCase
 
         $response = $this->getContacts();
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertJsonFragments($response, $contacts);
     }
 

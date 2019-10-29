@@ -20,7 +20,7 @@ class ShowCategoryTest extends TestCase
 
         $response = $this->getCategory($category);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJson([
                 'data' => [
                     'id' => $category->id,

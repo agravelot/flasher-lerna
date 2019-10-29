@@ -23,7 +23,7 @@ class StoreSocialMediaTest extends TestCase
         $response->assertStatus(302)
             ->assertRedirect('/admin/social-medias');
         $this->followRedirects($response)
-            ->assertStatus(200)
+            ->assertOk()
             ->assertSee($socialMedia->name)
             ->assertSee('Social media successfully added');
     }
@@ -47,7 +47,7 @@ class StoreSocialMediaTest extends TestCase
         $response->assertStatus(302)
             ->assertRedirect('/admin/social-medias/create');
         $this->followRedirects($response)
-            ->assertStatus(200)
+            ->assertOk()
             ->assertSee('The name has already been taken.');
     }
 

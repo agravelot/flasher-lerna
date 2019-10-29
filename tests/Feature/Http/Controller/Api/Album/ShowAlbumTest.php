@@ -19,7 +19,7 @@ class ShowAlbumTest extends TestCase
 
         $response = $this->showAlbum($album);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertSee($album->title);
     }
 
@@ -35,7 +35,7 @@ class ShowAlbumTest extends TestCase
 
         $response = $this->showAlbum($album);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJson([
                 'data' => [
                     'links' => [
@@ -52,7 +52,7 @@ class ShowAlbumTest extends TestCase
 
         $response = $this->json('get', "/api/albums/{$album->slug}");
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJson([
                 'data' => [
                     'links' => [
@@ -100,7 +100,7 @@ class ShowAlbumTest extends TestCase
 
         $response = $this->showAlbum($album);
 
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_guest_can_view_public_album()
@@ -109,6 +109,6 @@ class ShowAlbumTest extends TestCase
 
         $response = $this->showAlbum($album);
 
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 }

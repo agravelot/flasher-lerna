@@ -23,7 +23,7 @@ class UpdateCosplayerTest extends TestCase
         $cosplayer->user = factory(User::class)->create();
         $response = $this->update($cosplayer);
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertNotNull($cosplayer->fresh()->user);
         $response->assertJson($this->getCosplayerJson($cosplayer->fresh()));
     }
@@ -66,7 +66,7 @@ class UpdateCosplayerTest extends TestCase
         $cosplayer->user = factory(User::class)->create();
         $response = $this->update($cosplayer);
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertNotNull($cosplayer->fresh()->user);
         $response->assertJson($this->getCosplayerJson($cosplayer->fresh()));
     }
@@ -80,7 +80,7 @@ class UpdateCosplayerTest extends TestCase
         $avatar = UploadedFile::fake()->image('fake.jpg');
         $response = $this->update($cosplayer, $avatar);
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertNotNull($cosplayer->fresh()->avatar);
         $response->assertJson($this->getCosplayerJson($cosplayer->fresh()));
     }
@@ -93,7 +93,7 @@ class UpdateCosplayerTest extends TestCase
 
         $response = $this->update($cosplayer, null);
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertJson($this->getCosplayerJson($cosplayer->fresh()));
         $this->assertNull($cosplayer->fresh()->avatar);
     }
@@ -107,7 +107,7 @@ class UpdateCosplayerTest extends TestCase
         $response = $this->update($cosplayer);
 
         $cosplayer = Cosplayer::latest()->first();
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertJson($this->getCosplayerJson($cosplayer));
     }
 
@@ -120,7 +120,7 @@ class UpdateCosplayerTest extends TestCase
         $response = $this->update($cosplayer);
 
         $this->assertSame(Str::slug($name), $cosplayer->fresh()->slug);
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJson($this->getCosplayerJson($cosplayer->fresh()));
     }
 

@@ -47,7 +47,7 @@ class EditSocialMediaTest extends TestCase
 
         $response = $this->showSocialMediaEdit($socialMedia->id);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertSee($socialMedia->name);
     }
 

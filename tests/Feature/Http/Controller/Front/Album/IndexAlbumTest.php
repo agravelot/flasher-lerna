@@ -15,7 +15,7 @@ class IndexAlbumTest extends TestCase
     {
         $response = $this->showAlbums();
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJson(['data' => []]);
     }
 
@@ -30,7 +30,7 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->showAlbums();
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee($albums->get(0)->title);
         $response->assertDontSee($albums->get(0)->body);
         $response->assertSee($albums->get(1)->title);
@@ -43,7 +43,7 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->showAlbums();
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJson([
                 'data' => [],
             ]);
@@ -55,7 +55,7 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->showAlbums();
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJson([
                 'data' => [],
             ]);
@@ -67,7 +67,7 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->showAlbums();
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJson([
                 'data' => [],
             ]);

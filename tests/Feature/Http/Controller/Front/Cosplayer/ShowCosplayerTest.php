@@ -17,7 +17,7 @@ class ShowCosplayerTest extends TestCase
 
         $response = $this->showCosplayers($cosplayer->slug);
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee($cosplayer->name);
         $response->assertSee($cosplayer->description);
     }

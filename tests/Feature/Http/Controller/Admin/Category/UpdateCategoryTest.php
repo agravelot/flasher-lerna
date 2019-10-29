@@ -20,7 +20,7 @@ class UpdateCategoryTest extends TestCase
 
         $response = $this->updateCategory($category);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertSee($category->title);
         $this->assertSame($category->name, $category->fresh()->name);
     }
@@ -41,7 +41,7 @@ class UpdateCategoryTest extends TestCase
 
         $response = $this->updateCategory($category);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJson([
                 'data' => [
                     'id' => $category->id,

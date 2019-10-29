@@ -38,6 +38,6 @@ class CreateSocialMediaTest extends TestCase
 
         $response = $this->showSocialMediaCreate();
 
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 }

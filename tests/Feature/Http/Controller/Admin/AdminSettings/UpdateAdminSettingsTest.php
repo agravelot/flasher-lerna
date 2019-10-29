@@ -24,7 +24,7 @@ class UpdateAdminSettingsTest extends TestCase
         $setting->value = 'newValue';
         $response = $this->updateSetting($setting);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJson([
                 'data' => [
                     'name' => 'test', 'value' => 'newValue', 'type' => 'string', 'description' => null,
@@ -84,7 +84,7 @@ class UpdateAdminSettingsTest extends TestCase
         $setting->value = 'randomString';
         $response = $this->updateSetting($setting);
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertSame(0, $setting->fresh()->value);
     }
 
