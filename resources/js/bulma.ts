@@ -21,8 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     resizeResponsiveMedias();
 
-    window.onresize = debounce(resizeResponsiveMedias, 100);
+    window.onresize = debounce(resizeResponsiveMedias, 500);
 
+    // Navbar
     const navbarBurgers = document.getElementsByClassName('navbar-burger');
 
     Array.from(navbarBurgers).forEach((el: Element) => {
@@ -35,6 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // Toggle the class on both the "navbar-burger" and the "navbar-menu"
             el.classList.toggle('is-active');
             target && target.classList.toggle('is-active');
+        });
+    });
+
+    // Notificaitons
+    (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+        const notification = $delete.parentNode;
+        $delete.addEventListener('click', () => {
+            notification.parentNode.removeChild(notification);
         });
     });
 });
