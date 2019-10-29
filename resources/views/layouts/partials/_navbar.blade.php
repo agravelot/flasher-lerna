@@ -55,6 +55,15 @@
                             </form>
                         </div>
                     </div>
+                @elseauth
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link" href="{{ route('login') }}">
+                            <span class="icon">
+                                @fas('sign-in-alt')
+                            </span>
+                            <span>{{ __('Login') }}</span>
+                        </a>
+                    </div>
                 @endauth
             </div>
         </div>
