@@ -142,16 +142,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.112.27",
+            "version": "3.112.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "fab980dbc5dc57e9c14a9ce26f55b6ad88b5b979"
+                "reference": "6d56cc8372e66a99c68f3e9d4bfe26fc485269bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fab980dbc5dc57e9c14a9ce26f55b6ad88b5b979",
-                "reference": "fab980dbc5dc57e9c14a9ce26f55b6ad88b5b979",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6d56cc8372e66a99c68f3e9d4bfe26fc485269bc",
+                "reference": "6d56cc8372e66a99c68f3e9d4bfe26fc485269bc",
                 "shasum": ""
             },
             "require": {
@@ -221,7 +221,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-10-23T18:13:05+00:00"
+            "time": "2019-10-28T21:23:42+00:00"
         },
         {
             "name": "bensampo/laravel-enum",
@@ -747,16 +747,16 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "v1.8.0",
+            "version": "v1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "d768d58baee9a4862ca783840eca1b9add7a7f57"
+                "reference": "d4374ae95b36062d02ef310100ed33d78738d76c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/d768d58baee9a4862ca783840eca1b9add7a7f57",
-                "reference": "d768d58baee9a4862ca783840eca1b9add7a7f57",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/d4374ae95b36062d02ef310100ed33d78738d76c",
+                "reference": "d4374ae95b36062d02ef310100ed33d78738d76c",
                 "shasum": ""
             },
             "require": {
@@ -792,16 +792,16 @@
             ],
             "authors": [
                 {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com"
+                },
+                {
                     "name": "Roman Borschel",
                     "email": "roman@code-factory.org"
                 },
                 {
                     "name": "Benjamin Eberlei",
                     "email": "kontakt@beberlei.de"
-                },
-                {
-                    "name": "Guilherme Blanco",
-                    "email": "guilhermeblanco@gmail.com"
                 },
                 {
                     "name": "Jonathan Wage",
@@ -818,7 +818,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2018-08-21T18:01:43+00:00"
+            "time": "2019-10-28T09:31:32+00:00"
         },
         {
             "name": "doctrine/dbal",
@@ -2188,16 +2188,16 @@
         },
         {
             "name": "lab404/laravel-impersonate",
-            "version": "1.4.1",
+            "version": "1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/404labfr/laravel-impersonate.git",
-                "reference": "8b07d122793cbfc27103a1345dae75b97cbd7a44"
+                "reference": "c1e6ce93eab6ccb916175c13da0f62baaa9718c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/404labfr/laravel-impersonate/zipball/8b07d122793cbfc27103a1345dae75b97cbd7a44",
-                "reference": "8b07d122793cbfc27103a1345dae75b97cbd7a44",
+                "url": "https://api.github.com/repos/404labfr/laravel-impersonate/zipball/c1e6ce93eab6ccb916175c13da0f62baaa9718c2",
+                "reference": "c1e6ce93eab6ccb916175c13da0f62baaa9718c2",
                 "shasum": ""
             },
             "require": {
@@ -2220,7 +2220,10 @@
             "autoload": {
                 "psr-4": {
                     "Lab404\\Impersonate\\": "src/"
-                }
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -2244,20 +2247,20 @@
                 "plugin",
                 "user"
             ],
-            "time": "2019-09-04T13:56:51+00:00"
+            "time": "2019-10-29T10:02:07+00:00"
         },
         {
             "name": "laravel/framework",
-            "version": "v6.4.0",
+            "version": "v6.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "bbaf5e956cb24512c48fc31129a5e357a09a8ea1"
+                "reference": "ebd8fcc038effa8c5f8791346c48047f7d0ed320"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/bbaf5e956cb24512c48fc31129a5e357a09a8ea1",
-                "reference": "bbaf5e956cb24512c48fc31129a5e357a09a8ea1",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/ebd8fcc038effa8c5f8791346c48047f7d0ed320",
+                "reference": "ebd8fcc038effa8c5f8791346c48047f7d0ed320",
                 "shasum": ""
             },
             "require": {
@@ -2390,7 +2393,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2019-10-23T13:29:43+00:00"
+            "time": "2019-10-29T14:30:39+00:00"
         },
         {
             "name": "laravel/horizon",
@@ -3373,16 +3376,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.2.4",
+            "version": "v4.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "97e59c7a16464196a8b9c77c47df68e4a39a45c4"
+                "reference": "b76bbc3c51f22c570648de48e8c2d941ed5e2cf2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/97e59c7a16464196a8b9c77c47df68e4a39a45c4",
-                "reference": "97e59c7a16464196a8b9c77c47df68e4a39a45c4",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/b76bbc3c51f22c570648de48e8c2d941ed5e2cf2",
+                "reference": "b76bbc3c51f22c570648de48e8c2d941ed5e2cf2",
                 "shasum": ""
             },
             "require": {
@@ -3390,6 +3393,7 @@
                 "php": ">=7.0"
             },
             "require-dev": {
+                "ircmaxell/php-yacc": "0.0.4",
                 "phpunit/phpunit": "^6.5 || ^7.0 || ^8.0"
             },
             "bin": [
@@ -3420,7 +3424,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2019-09-01T07:51:21+00:00"
+            "time": "2019-10-25T18:33:07+00:00"
         },
         {
             "name": "ocramius/package-versions",
@@ -4397,16 +4401,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd"
+                "reference": "bf73deb2b3b896a9d9c75f3f0d88185d2faa27e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
-                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/bf73deb2b3b896a9d9c75f3f0d88185d2faa27e2",
+                "reference": "bf73deb2b3b896a9d9c75f3f0d88185d2faa27e2",
                 "shasum": ""
             },
             "require": {
@@ -4415,7 +4419,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -4440,7 +4444,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2018-11-20T15:27:04+00:00"
+            "time": "2019-10-25T08:06:51+00:00"
         },
         {
             "name": "psr/simple-cache",
@@ -7340,21 +7344,23 @@
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
-            "version": "2.2.1",
+            "version": "2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tijsverkoyen/CssToInlineStyles.git",
-                "reference": "0ed4a2ea4e0902dac0489e6436ebcd5bbcae9757"
+                "reference": "dda2ee426acd6d801d5b7fd1001cde9b5f790e15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tijsverkoyen/CssToInlineStyles/zipball/0ed4a2ea4e0902dac0489e6436ebcd5bbcae9757",
-                "reference": "0ed4a2ea4e0902dac0489e6436ebcd5bbcae9757",
+                "url": "https://api.github.com/repos/tijsverkoyen/CssToInlineStyles/zipball/dda2ee426acd6d801d5b7fd1001cde9b5f790e15",
+                "reference": "dda2ee426acd6d801d5b7fd1001cde9b5f790e15",
                 "shasum": ""
             },
             "require": {
+                "ext-dom": "*",
+                "ext-libxml": "*",
                 "php": "^5.5 || ^7.0",
-                "symfony/css-selector": "^2.7 || ^3.0 || ^4.0"
+                "symfony/css-selector": "^2.7 || ^3.0 || ^4.0 || ^5.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.0"
@@ -7383,7 +7389,7 @@
             ],
             "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
             "homepage": "https://github.com/tijsverkoyen/CssToInlineStyles",
-            "time": "2017-11-27T11:13:29+00:00"
+            "time": "2019-10-24T08:53:34+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -9293,20 +9299,21 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v5.5.2",
+            "version": "v5.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "aed755282a13a9b36d26854a0105d519aa22fec9"
+                "reference": "db4f8d75b7c9acf88ef1712e9ccf51c15540934d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/aed755282a13a9b36d26854a0105d519aa22fec9",
-                "reference": "aed755282a13a9b36d26854a0105d519aa22fec9",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/db4f8d75b7c9acf88ef1712e9ccf51c15540934d",
+                "reference": "db4f8d75b7c9acf88ef1712e9ccf51c15540934d",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
+                "ext-pcntl": "*",
                 "ext-zip": "*",
                 "facebook/webdriver": "^1.7",
                 "illuminate/console": "~5.7.0|~5.8.0|^6.0|^7.0",
@@ -9354,7 +9361,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2019-09-24T20:30:07+00:00"
+            "time": "2019-10-29T15:58:57+00:00"
         },
         {
             "name": "laravel/telescope",
@@ -11556,16 +11563,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "8.4.1",
+            "version": "8.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "366a4a0f2b971fd43b7c351d621e8dd7d7131869"
+                "reference": "a142a7e66c0ea7b5b6c04ee27f08d10d1137cd9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/366a4a0f2b971fd43b7c351d621e8dd7d7131869",
-                "reference": "366a4a0f2b971fd43b7c351d621e8dd7d7131869",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a142a7e66c0ea7b5b6c04ee27f08d10d1137cd9b",
+                "reference": "a142a7e66c0ea7b5b6c04ee27f08d10d1137cd9b",
                 "shasum": ""
             },
             "require": {
@@ -11635,7 +11642,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-10-07T12:57:41+00:00"
+            "time": "2019-10-28T10:39:51+00:00"
         },
         {
             "name": "pimple/pimple",
@@ -12672,16 +12679,16 @@
         },
         {
             "name": "seld/jsonlint",
-            "version": "1.7.1",
+            "version": "1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/jsonlint.git",
-                "reference": "d15f59a67ff805a44c50ea0516d2341740f81a38"
+                "reference": "e2e5d290e4d2a4f0eb449f510071392e00e10d19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/jsonlint/zipball/d15f59a67ff805a44c50ea0516d2341740f81a38",
-                "reference": "d15f59a67ff805a44c50ea0516d2341740f81a38",
+                "url": "https://api.github.com/repos/Seldaek/jsonlint/zipball/e2e5d290e4d2a4f0eb449f510071392e00e10d19",
+                "reference": "e2e5d290e4d2a4f0eb449f510071392e00e10d19",
                 "shasum": ""
             },
             "require": {
@@ -12717,7 +12724,7 @@
                 "parser",
                 "validator"
             ],
-            "time": "2018-01-24T12:46:19+00:00"
+            "time": "2019-10-24T14:27:39+00:00"
         },
         {
             "name": "seld/phar-utils",
@@ -12969,16 +12976,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.5.1",
+            "version": "3.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "82cd0f854ceca17731d6d019c7098e3755c45060"
+                "reference": "65b12cdeaaa6cd276d4c3033a95b9b88b12701e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/82cd0f854ceca17731d6d019c7098e3755c45060",
-                "reference": "82cd0f854ceca17731d6d019c7098e3755c45060",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/65b12cdeaaa6cd276d4c3033a95b9b88b12701e7",
+                "reference": "65b12cdeaaa6cd276d4c3033a95b9b88b12701e7",
                 "shasum": ""
             },
             "require": {
@@ -13016,7 +13023,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2019-10-16T21:14:26+00:00"
+            "time": "2019-10-28T04:36:32+00:00"
         },
         {
             "name": "stefanbauer/ignition-laracasts-tab",
