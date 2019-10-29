@@ -1,4 +1,4 @@
-import debounce from 'lodash/debounce';
+import { debounce } from 'lodash-es';
 
 // Bulma NavBar Burger Script
 document.addEventListener('DOMContentLoaded', () => {
