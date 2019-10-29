@@ -4,10 +4,10 @@
             <div class="tags is-centered">
                 @foreach($album->categories as $category)
                     <span class="tag is-dark">
-                    <a href=" {{ route('categories.show', ['category'=> $category]) }}" class="has-text-white">
-                        {{ $category->name }}
-                    </a>
-                </span>
+                        <a href=" {{ route('categories.show', ['category'=> $category]) }}" class="has-text-white">
+                            {{ $category->name }}
+                        </a>
+                    </span>
                 @endforeach
             </div>
 

@@ -6,7 +6,7 @@
 
     <div class="container has-text-centered">
         <div class="column is-one-third is-offset-4">
-            <h1 class="title has-text-grey">{{ __('Login') }}</h1>
+            {{--<h1 class="title has-text-grey">{{ __('Login') }}</h1>--}}
             <p class="subtitle has-text-grey">{{ __('Please login to proceed.') }}</p>
             <div class="box">
                 <form class="login-form" method="POST" action="{{ route('login') }}">
