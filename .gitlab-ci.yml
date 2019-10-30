@@ -3,7 +3,7 @@
 image: tmaier/docker-compose:latest
 
 services:
-- docker:18.09.7-dind
+- docker:18-dind
 
 stages:
 - build
