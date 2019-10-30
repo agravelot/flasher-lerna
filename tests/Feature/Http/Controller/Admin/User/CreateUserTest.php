@@ -18,7 +18,7 @@ class CreateUserTest extends TestCase
 
         $response = $this->createUser($user, 'randomPassword');
 
-        $response->assertStatus(201);
+        $response->assertCreated();
         $this->assertNotNull(User::where('email', $user->email)->first());
     }
 

@@ -18,7 +18,7 @@ class ShowCategoryTest extends TestCase
 
         $response = $this->showCategory($category);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertSee($category->title)
             ->assertSee($category->description);
     }
@@ -37,7 +37,7 @@ class ShowCategoryTest extends TestCase
 
         $response = $this->showCategory($category);
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee($category->name);
         $response->assertSee($category->description);
         $response->assertDontSee('Nothing to show');
@@ -61,7 +61,7 @@ class ShowCategoryTest extends TestCase
 
         $response = $this->showCategory($category);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertSee($category->title)
             ->assertSee($category->description)
             ->assertDontSee($album->title);

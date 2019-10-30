@@ -19,7 +19,7 @@ class StoreSocialMediaTest extends TestCase
 
         $response = $this->storeSocialMedia($socialMedia);
 
-        $this->assertSame(201, $response->getStatusCode());
+        $response->assertCreated();
         $this->assertTrue(SocialMedia::latest()->first()->active);
         $this->assertSame(1, SocialMedia::count());
     }

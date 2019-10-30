@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('pageTitle', __('My albums'))
+@section('pageTitle', __('Albums'))
 
 @section('content')
     @if ($albums->isNotEmpty())

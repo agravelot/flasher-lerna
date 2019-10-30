@@ -19,7 +19,7 @@ class IndexSocialMediaTest extends TestCase
 
         $response = $this->getSocialMedias();
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertJsonFragments($response, $socialMedias);
     }
 

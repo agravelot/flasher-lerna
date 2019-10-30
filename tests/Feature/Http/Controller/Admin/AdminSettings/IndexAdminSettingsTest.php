@@ -18,7 +18,7 @@ class IndexAdminSettingsTest extends TestCase
 
         $response = $this->getSettings();
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJsonFragment(['name' => 'test', 'value' => 'Flasher', 'type' => 'string', 'description' => null]);
     }
 

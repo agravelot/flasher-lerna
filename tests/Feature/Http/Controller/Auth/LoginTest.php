@@ -28,7 +28,7 @@ class LoginTest extends TestCase
 
         $response->assertRedirect('/');
         $this->followRedirects($response)
-            ->assertStatus(200)
+            ->assertOk()
             ->assertSee($user->name);
     }
 }

@@ -24,7 +24,7 @@ class UpdateAlbumTest extends TestCase
         $response = $this->updateAlbum($album);
 
         $this->assertSame(1, Album::count());
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function updateAlbum(Album $album, array $optional = []): TestResponse
@@ -45,7 +45,7 @@ class UpdateAlbumTest extends TestCase
 
         $this->assertSame(1, Album::count());
         $this->assertNotNull(Album::first()->categories->first);
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJson(['data' => [
                 'categories' => [
                     ['id' => $category->id],
@@ -78,7 +78,7 @@ class UpdateAlbumTest extends TestCase
 
         $this->assertSame(1, Album::count());
         $this->assertNotNull(Album::first()->categories->first);
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_admin_can_not_update_an_album_with_an_non_existent_cosplayer()
@@ -102,7 +102,7 @@ class UpdateAlbumTest extends TestCase
         $response = $this->updateAlbum($album);
 
         $this->assertSame(1, Album::count());
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_user_cannot_update_an_album()
@@ -137,7 +137,7 @@ class UpdateAlbumTest extends TestCase
             'cosplayers' => [['id' => $cosplayer->id]],
         ]);
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertSame(1, $album->fresh()->cosplayers->count());
     }
 
@@ -152,7 +152,7 @@ class UpdateAlbumTest extends TestCase
             'categories' => [['id' => $category->id]],
         ]);
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertSame(1, $album->fresh()->categories->count());
     }
 
@@ -167,7 +167,7 @@ class UpdateAlbumTest extends TestCase
         ]);
 
         $this->assertSame(1, Album::count());
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_album_with_categories_can_un_attach()
@@ -185,7 +185,7 @@ class UpdateAlbumTest extends TestCase
 
         $this->assertCount(0, $album->fresh()->categories);
         $this->assertSame(1, Album::count());
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_album_with_multiple_categories_can_un_attach_one()
@@ -205,7 +205,7 @@ class UpdateAlbumTest extends TestCase
 
         $this->assertCount(4, $album->fresh()->categories);
         $this->assertSame(1, Album::count());
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_album_update_a_published_album_to_unpublished()
@@ -244,7 +244,7 @@ class UpdateAlbumTest extends TestCase
 
         $response = $this->updateAlbum($album);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJson([
                 'data' => [
                     'id' => $album->id,

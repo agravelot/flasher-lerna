@@ -26,7 +26,7 @@ class StoreInvitationTest extends TestCase
 
         $response = $this->storeInvitation($invitation);
 
-        $response->assertStatus(201)
+        $response->assertCreated()
             ->assertJson([
                 'data' => [
                     'email' => $invitation->email,

@@ -22,7 +22,7 @@ class IndexInvitationTest extends TestCase
 
         $response = $this->indexInvitations();
 
-        $response->assertSuccessful();
+        $response->assertOk();
         $invitations->each(function ($invitation) use ($response): void {
             $this->assertInvitationsJsonFragment($response, $invitation);
         });

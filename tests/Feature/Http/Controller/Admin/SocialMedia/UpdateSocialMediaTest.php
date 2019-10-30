@@ -23,7 +23,7 @@ class UpdateSocialMediaTest extends TestCase
         $response->assertStatus(302)
             ->assertRedirect('/admin/social-medias');
         $this->followRedirects($response)
-            ->assertStatus(200)
+            ->assertOk()
             ->assertSee($socialMedia->name);
     }
 
@@ -46,7 +46,7 @@ class UpdateSocialMediaTest extends TestCase
         $response->assertStatus(302)
             ->assertRedirect('/admin/social-medias/'.$socialMedias->get(1)->id.'/edit');
         $this->followRedirects($response)
-            ->assertStatus(200)
+            ->assertOk()
             ->assertSee($socialMedias->get(1)->name)
             ->assertSee($socialMedias->get(1)->description)
             ->assertSee('The name has already been taken.');

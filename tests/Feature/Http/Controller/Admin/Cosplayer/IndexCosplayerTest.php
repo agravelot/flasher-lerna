@@ -19,7 +19,7 @@ class IndexCosplayerTest extends TestCase
 
         $response = $this->getCosplayers();
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertJsonUserFragment($response, $cosplayers);
     }
 

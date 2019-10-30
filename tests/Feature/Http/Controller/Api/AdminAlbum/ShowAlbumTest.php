@@ -19,7 +19,7 @@ class ShowAlbumTest extends TestCase
 
         $response = $this->showAlbum($album);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertSee($album->title);
     }
 
@@ -30,7 +30,7 @@ class ShowAlbumTest extends TestCase
 
         $response = $this->showAlbum($album);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJsonPath('data.links.download', route('download-albums.show', compact('album')))
             ->assertJsonPath('data.links.view', route('albums.show', compact('album')))
             ->assertJsonPath('data.links.edit', "/admin/albums/{$album->slug}/edit");
@@ -48,7 +48,7 @@ class ShowAlbumTest extends TestCase
 
         $response = $this->showAlbum($album);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertSee($album->title);
     }
 
@@ -59,7 +59,7 @@ class ShowAlbumTest extends TestCase
 
         $response = $this->showAlbum($album);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertSee($album->title);
     }
 
@@ -70,7 +70,7 @@ class ShowAlbumTest extends TestCase
 
         $response = $this->showAlbum($album);
 
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_user_can_not_view_index()

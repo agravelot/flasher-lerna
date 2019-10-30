@@ -46,9 +46,7 @@
         <div class="hero is-black is-radiusless">
             <div class="hero-body">
                 <div class="container has-text-centered">
-                    <h1 class="title">
-                        @yield('pageTitle')
-                    </h1>
+                    <h1 class="title">@yield('pageTitle')</h1>
                     @yield('headerTags')
                 </div>
             </div>

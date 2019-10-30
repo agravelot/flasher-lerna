@@ -22,7 +22,7 @@ class UpdateUserTest extends TestCase
         $user->name = $excepted;
         $response = $this->updateUser($user);
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertSame($excepted, $user->fresh()->name);
         $this->assertJsonUserFragment($response, $user);
     }
@@ -61,7 +61,7 @@ class UpdateUserTest extends TestCase
 
         $response = $this->updateUser($user, $excepted);
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertTrue(Hash::check($excepted, $user->fresh()->password));
         $this->assertJsonUserFragment($response, $user);
     }
@@ -75,7 +75,7 @@ class UpdateUserTest extends TestCase
         $user->role = 'admin';
         $response = $this->updateUser($user);
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertSame('admin', $user->fresh()->role);
         $this->assertJsonUserFragment($response, $user);
     }

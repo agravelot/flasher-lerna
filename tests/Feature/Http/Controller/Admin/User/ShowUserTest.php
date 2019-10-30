@@ -18,7 +18,7 @@ class ShowUserTest extends TestCase
 
         $response = $this->getUser($user);
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertJsonUserFragment($response, $user);
     }
 

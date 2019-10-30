@@ -22,7 +22,7 @@ class ShowInvitationTest extends TestCase
 
         $response = $this->showInvitation($invitation);
 
-        $response->assertSuccessful();
+        $response->assertOk();
         $this->assertInvitationsJsonFragment($response, $invitation);
     }
 

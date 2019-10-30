@@ -19,7 +19,7 @@ class StoreCoverCategoryTest extends TestCase
 
         $response = $this->updateCoverCategory($category);
 
-        $response->assertStatus(201)
+        $response->assertCreated()
             ->assertJson(['name' => "{$category->slug}.png"]);
         $this->assertNotNull($category->cover);
     }

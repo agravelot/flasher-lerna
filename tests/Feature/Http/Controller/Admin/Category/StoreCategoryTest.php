@@ -19,7 +19,7 @@ class StoreCategoryTest extends TestCase
 
         $response = $this->storeCategory($category);
 
-        $response->assertStatus(201)
+        $response->assertCreated()
             ->assertSee($category->title);
         $this->assertCount(1, Category::all());
     }

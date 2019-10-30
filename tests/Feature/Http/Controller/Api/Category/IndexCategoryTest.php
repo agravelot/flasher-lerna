@@ -15,7 +15,7 @@ class IndexCategoryTest extends TestCase
     {
         $response = $this->indexCategories();
 
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     private function indexCategories(): TestResponse
@@ -29,7 +29,7 @@ class IndexCategoryTest extends TestCase
 
         $response = $this->indexCategories();
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertSeeInOrder($categories->pluck('title')->toArray());
     }
 }
