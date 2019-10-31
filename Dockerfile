@@ -16,7 +16,7 @@ RUN yarn install && yarn production
 #
 # PHP Dependencies
 #
-FROM composer:1.8 as vendor
+FROM composer:1.9 as vendor
 COPY . .
 
 RUN composer global require hirak/prestissimo \
@@ -55,7 +55,6 @@ RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
         && mkdir /var/www/html/public/vendor \
         && chown -h 1000:1000 /var/www/html/public/vendor \
         ;
-
 
 # Importing webpack assets
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
