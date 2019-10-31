@@ -29,7 +29,7 @@ mix.sass('resources/sass/app.scss', 'public/css')
             whitelistPatterns: [/^svg-inline.*/, /^fa.*/, /^ql-font-serif$/],
         }
     )
-    .favicon()
+//    .favicon()
 // .extract([
 //     'vue',
 //     'buefy',
