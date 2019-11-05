@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
-class ShowDownloadAlbumTest extends TestCase
+class AcceptInvitationTest extends TestCase
 {
     use RefreshDatabase;
 
