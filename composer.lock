@@ -4,82 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3cfaf113491aac92127b62285f87af4a",
+    "content-hash": "01fb5fead0f9a40bea2642dda10954e7",
     "packages": [
-        {
-            "name": "agravelot/laravel-chunk-upload-patched",
-            "version": "dev-sharpstream",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/agravelot/laravel-chunk-upload-patched.git",
-                "reference": "97916d2022a1d1c864c83ee43429d861af784aef"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/agravelot/laravel-chunk-upload-patched/zipball/97916d2022a1d1c864c83ee43429d861af784aef",
-                "reference": "97916d2022a1d1c864c83ee43429d861af784aef",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/console": "5.1 - 5.8|^6.0",
-                "illuminate/filesystem": "5.1 - 5.8|^6.0",
-                "illuminate/http": "5.1 - 5.8|^6.0",
-                "illuminate/support": "5.1 - 5.8|^6.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.12",
-                "laravel/laravel": "5.1 - 5.8|^6.0",
-                "mockery/mockery": "^1.1.0",
-                "overtrue/phplint": "^1.1",
-                "phpunit/phpunit": "5.7 || 6.0 || 7.0 || 7.5"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Pion\\Laravel\\ChunkUpload\\Providers\\ChunkUploadServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Pion\\Laravel\\ChunkUpload\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "lint:fix": [
-                    "./vendor/bin/php-cs-fixer fix --config=.php_cs --using-cache false"
-                ],
-                "lint:check": [
-                    "./vendor/bin/phplint"
-                ],
-                "lint": [
-                    "composer run-script lint:fix && composer run-script lint:check"
-                ],
-                "test": [
-                    "./vendor/bin/phpunit"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Martin Kluska",
-                    "email": "martin@kluska.cz"
-                }
-            ],
-            "description": "Service for chunked upload with several js providers",
-            "support": {
-                "source": "https://github.com/agravelot/laravel-chunk-upload-patched/tree/sharpstream"
-            },
-            "time": "2019-09-10T12:12:42+00:00"
-        },
         {
             "name": "anhskohbo/no-captcha",
             "version": "3.1.1",
@@ -4148,6 +4074,59 @@
                 "x509"
             ],
             "time": "2019-09-17T03:41:22+00:00"
+        },
+        {
+            "name": "pion/laravel-chunk-upload",
+            "version": "v1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pionl/laravel-chunk-upload.git",
+                "reference": "21051384b46f176d178933b67e967fc6658634e7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pionl/laravel-chunk-upload/zipball/21051384b46f176d178933b67e967fc6658634e7",
+                "reference": "21051384b46f176d178933b67e967fc6658634e7",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "5.1 - 5.8|^6.0",
+                "illuminate/filesystem": "5.1 - 5.8|^6.0",
+                "illuminate/http": "5.1 - 5.8|^6.0",
+                "illuminate/support": "5.1 - 5.8|^6.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.16.0",
+                "laravel/laravel": "5.1 - 5.8|^6.0",
+                "mockery/mockery": "^1.1.0",
+                "overtrue/phplint": "^1.1",
+                "phpunit/phpunit": "5.7 || 6.0 || 7.0 || 7.5 || 8.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Pion\\Laravel\\ChunkUpload\\Providers\\ChunkUploadServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Pion\\Laravel\\ChunkUpload\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Martin Kluska",
+                    "email": "martin@kluska.cz"
+                }
+            ],
+            "description": "Service for chunked upload with several js providers",
+            "time": "2019-11-05T21:28:04+00:00"
         },
         {
             "name": "predis/predis",
@@ -14624,7 +14603,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "agravelot/laravel-chunk-upload-patched": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": true,
