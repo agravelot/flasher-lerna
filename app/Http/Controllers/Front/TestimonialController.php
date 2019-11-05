@@ -37,6 +37,6 @@ class TestimonialController extends Controller
         Testimonial::create($request->validated());
 
         return redirect()->route('testimonials.index')
-            ->with('success', __('Your message has been added to the golden book'));
+            ->with('success', __('Your message has been added to the testimonials'));
     }
 }
