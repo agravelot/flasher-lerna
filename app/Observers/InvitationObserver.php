@@ -3,11 +3,17 @@
 namespace App\Observers;
 
 use App\Models\Invitation;
+use Illuminate\Support\Str;
 use App\Mail\InvitationMail;
 use Illuminate\Support\Facades\Mail;
 
 class InvitationObserver
 {
+    public function creating(Invitation $invitation): void
+    {
+        $invitation->token = Str::random(60);
+    }
+
     public function created(Invitation $invitation): void
     {
         Mail::to($invitation->email)->send(new InvitationMail($invitation));
