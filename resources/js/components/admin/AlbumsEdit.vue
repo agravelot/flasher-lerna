@@ -117,6 +117,7 @@
             icon="images"
           >
             <vue-dropzone
+              id="dropzone"
               ref="myVueDropzone"
               :options="dropzoneOptions"
               v-on:vdropzone-sending="sendingEvent"
