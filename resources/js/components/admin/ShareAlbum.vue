@@ -1,5 +1,5 @@
 <template>
-  <div v-if="album">
+  <div v-if="album && album.links">
     <b-button
       :href="getFacebookLink()"
       tag="a"
