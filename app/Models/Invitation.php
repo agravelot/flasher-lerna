@@ -13,12 +13,4 @@ class Invitation extends Model
     {
         return $this->belongsTo(Cosplayer::class);
     }
-
-    /**
-     * Get the route key for the model.
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'token';
-    }
 }
