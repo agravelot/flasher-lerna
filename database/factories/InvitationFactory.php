@@ -16,13 +16,13 @@ $factory->define(Invitation::class, static function (Faker $faker) {
     ];
 });
 
-$factory->state(Cosplayer::class, 'confirmed', static function (Faker $faker) {
+$factory->state(Invitation::class, 'confirmed', static function (Faker $faker) {
     return [
         'confirmed_at' => $faker->dateTime,
     ];
 });
 
-$factory->state(Cosplayer::class, 'unconfirmed', static function () {
+$factory->state(Invitation::class, 'unconfirmed', static function () {
     return [
         'confirmed_at' => null,
     ];
