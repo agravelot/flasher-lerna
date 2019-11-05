@@ -19,8 +19,6 @@ class InvitationPolicy extends Policy
 
     /**
      * Determine whether the user can view the invitation.
-     *
-     * @param  User  $user
      */
     public function view(?User $user, Invitation $invitation): bool
     {
