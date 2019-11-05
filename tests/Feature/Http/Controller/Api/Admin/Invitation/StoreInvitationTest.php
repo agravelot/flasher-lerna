@@ -15,7 +15,7 @@ class StoreInvitationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_sned_invitation_to_cosplayers(): void
+    public function test_admin_can_send_invitation_to_cosplayers(): void
     {
         Mail::fake();
         $this->actingAsAdmin();
