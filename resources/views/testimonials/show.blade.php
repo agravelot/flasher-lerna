@@ -7,11 +7,11 @@
             <div class="card-content">
                 <div class="media">
                     <div class="media-content">
-                        <p class="subtitle is-5">{{ $goldenBooksPost->name }}</p>
+                        <p class="subtitle is-5">{{ $testimonial->name }}</p>
                     </div>
                 </div>
                 <div class="content">
-                    {{ $goldenBooksPost->body }}
+                    {{ $testimonial->body }}
                 </div>
             </div>
 

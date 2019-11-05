@@ -16,9 +16,9 @@ class TestimonialController extends Controller
      */
     public function index(): View
     {
-        $goldenBooksPosts = PublishedTestimonial::latest()->paginate(10);
+        $testimonials = PublishedTestimonial::latest()->paginate(10);
 
-        return view('testimonials.index', compact('goldenBooksPosts'));
+        return view('testimonials.index', compact('testimonials'));
     }
 
     /**
@@ -37,6 +37,6 @@ class TestimonialController extends Controller
         Testimonial::create($request->validated());
 
         return redirect()->route('testimonials.index')
-            ->withSuccess(__('Your message has been added to the golden book'));
+            ->with('success', __('Your message has been added to the golden book'));
     }
 }
