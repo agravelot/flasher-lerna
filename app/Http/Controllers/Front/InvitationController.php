@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Models\Invitation;
 use Illuminate\View\View;
+use App\Models\Invitation;
 use App\Http\Controllers\Controller;
 
 class InvitationController extends Controller

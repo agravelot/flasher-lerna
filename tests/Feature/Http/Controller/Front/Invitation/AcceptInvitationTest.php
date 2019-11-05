@@ -2,13 +2,12 @@
 
 namespace Tests\Feature\Http\Controller\Front\DownloadAlbum;
 
-use App\Models\Cosplayer;
-use App\Models\Invitation;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
+use App\Models\User;
+use App\Models\Invitation;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AcceptInvitationTest extends TestCase
 {
@@ -38,11 +37,10 @@ class AcceptInvitationTest extends TestCase
         $response->assertRedirect('/login');
         $this->followRedirects($response)
             ->assertOk();
-
     }
 
     private function acceptInvitation(Invitation $invitation): TestResponse
     {
-        return $this->get('/invitations/' . $invitation->token);
+        return $this->get('/invitations/'.$invitation->token);
     }
 }
