@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use Exception;
-use Carbon\Carbon;
 use App\Models\Testimonial;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
@@ -36,23 +35,13 @@ class AdminTestimonialsController extends Controller
      */
     public function update(AdminUpdateTestimonialRequest $request, Testimonial $testimonial): TestimonialResource
     {
-        $publishedAt = $request->input('published_at');
-
-        if ($publishedAt !== null) {
-            $publishedAt = Carbon::parse($request->input('published_at'));
-        }
-
-        $testimonial->update(['published_at' => $publishedAt]);
-
-        // TODO Cast published_at to date
-        // $testimonial->update($request->validated());
+        $testimonial->update($request->validated());
 
         return new TestimonialResource($testimonial);
     }
 
     /**
      * Remove the specified resource from storage.
-     *
      *
      * @throws Exception
      */
