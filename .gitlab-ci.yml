@@ -30,6 +30,11 @@ build:
   script:
     - docker-compose build
     - docker-compose push php nginx
+    # Push latest tag, used as build cache
+    - docker tag registry.gitlab.com/flasher/flasher/picblog_nginx:${CI_COMMIT_SHORT_SHA:-latest} registry.gitlab.com/flasher/flasher/picblog_nginx:latest
+    - docker tag registry.gitlab.com/flasher/flasher/picblog_php:${CI_COMMIT_SHORT_SHA:-latest} registry.gitlab.com/flasher/flasher/picblog_php:latest
+    - docker push registry.gitlab.com/flasher/flasher/picblog_nginx:latest
+    - docker push registry.gitlab.com/flasher/flasher/picblog_php:latest
   artifacts:
     name: "build_logs"
     expire_in: 1 week

@@ -1,6 +1,5 @@
 version: '3.7'
 services:
-
   db_pg:
     image: postgres:11-alpine
     restart: unless-stopped
@@ -15,6 +14,8 @@ services:
       context: .
       dockerfile: Dockerfile
       target: php_app
+      cache_from:
+        - registry.gitlab.com/flasher/flasher/picblog_php:latest
     restart: unless-stopped
     env_file:
     - docker/php-fpm/.env
@@ -63,6 +64,8 @@ services:
       context: .
       dockerfile: Dockerfile
       target: nginx
+      cache_from:
+        - registry.gitlab.com/flasher/flasher/picblog_nginx:latest
     restart: unless-stopped
     ports:
     - 8080:80
