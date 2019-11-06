@@ -1,11 +1,12 @@
 <?php
 
-/** @var Factory $factory */
 use App\Models\Cosplayer;
 use App\Models\Invitation;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
+
+/* @var Factory $factory */
 
 $factory->define(Invitation::class, static function (Faker $faker) {
     return [

@@ -3,6 +3,9 @@
 use Carbon\Carbon;
 use App\Models\Testimonial;
 use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factory;
+
+/* @var Factory $factory */
 
 $factory->define(Testimonial::class, static function (Faker $faker) {
     return [

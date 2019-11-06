@@ -4,10 +4,12 @@ use App\Models\Album;
 use App\Models\PublicAlbum;
 use Faker\Generator as Faker;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Factory;
+
+/* @var Factory $factory */
 
 $withMedias = false;
 
-/* @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(PublicAlbum::class, static function (Faker $faker) use (&$withMedias) {
     $withMedias = false;
 

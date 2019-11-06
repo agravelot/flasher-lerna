@@ -4,6 +4,9 @@ use Carbon\Carbon;
 use App\Models\Category;
 use Faker\Generator as Faker;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Database\Eloquent\Factory;
+
+/* @var Factory $factory */
 
 $withCover = false;
 

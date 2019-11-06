@@ -4,6 +4,9 @@ use App\Models\Setting;
 use App\Enums\SettingType;
 use Faker\Generator as Faker;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Database\Eloquent\Factory;
+
+/* @var Factory $factory */
 
 $factory->define(Setting::class, static function (Faker $faker) {
     $randomType = SettingType::getRandomValue();
