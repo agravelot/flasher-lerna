@@ -18,7 +18,9 @@ class AcceptInvitationTest extends TestCase
         Mail::fake();
         $user = factory(User::class)->create();
         $this->actingAs($user);
-        $invitation = factory(Invitation::class)->create();
+        $invitation = factory(Invitation::class)->create([
+            'created_at' => now()->subDays(5),
+        ]);
 
         $response = $this->acceptInvitation($invitation);
 
@@ -32,7 +34,9 @@ class AcceptInvitationTest extends TestCase
         Mail::fake();
         $user = factory(User::class)->create();
         $this->actingAs($user);
-        $invitation = factory(Invitation::class)->state('confirmed')->create();
+        $invitation = factory(Invitation::class)->state('confirmed')->create([
+            'created_at' => now()->subDay(),
+        ]);
 
         $response = $this->acceptInvitation($invitation);
 
@@ -40,10 +44,28 @@ class AcceptInvitationTest extends TestCase
         $this->assertSame($invitation->confirmed_at->toString(), $invitation->fresh()->confirmed_at->toString());
     }
 
+    public function test_invited_user_can_not_accept_an_expired_invitation()
+    {
+        Mail::fake();
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+        $invitation = factory(Invitation::class)->create([
+            'created_at' => now()->subDays(20),
+        ]);
+
+        $response = $this->acceptInvitation($invitation);
+
+        $this->assertSame(403, $response->status());
+        $this->assertNull($invitation->fresh()->confirmed_at);
+        $this->assertFalse($user->is($invitation->cosplayer->user));
+    }
+
     public function test_unauthenticated_can_not_accept_invitation_and_is_redirected_to_login(): void
     {
         Mail::fake();
-        $invitation = factory(Invitation::class)->create();
+        $invitation = factory(Invitation::class)->create([
+            'created_at' => now()->subDay(),
+        ]);
 
         $response = $this->acceptInvitation($invitation);
 
