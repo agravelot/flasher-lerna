@@ -20,8 +20,8 @@ class InvitationController extends Controller
         $this->authorize('view', $invitation);
 
         $invitation->cosplayer->user()->associate(auth()->user());
-        $invitation->cosplayer->save();
-        $invitation->update(['confirmed_at' => now()]);
+        $invitation->fill(['confirmed_at' => now()])
+            ->push();
 
         return view('invitations.show', compact('invitation'));
     }
