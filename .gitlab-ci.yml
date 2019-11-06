@@ -14,7 +14,7 @@ variables:
   CONTAINER_TEST_IMAGE: registry.gitlab.com/flasher/flasher:$CI_BUILD_REF_NAME
   CONTAINER_RELEASE_IMAGE: registry.gitlab.com/flasher/flasher:latest
   CONTAINER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH
-  DOCKER_HOST: tcp://docker:2376
+  DOCKER_HOST: tcp://docker:2375
   DOCKER_DRIVER: overlay2
   # Create the certificates inside this directory for both the server
   # and client. The certificates used by the client will be created in
