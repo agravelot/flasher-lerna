@@ -9,8 +9,6 @@ class InvitationPolicy extends Policy
 {
     /**
      * Determine whether the user can view the invitations.
-     *
-     * @param  User  $user
      */
     public function viewAny(?User $user): bool
     {
@@ -22,7 +20,11 @@ class InvitationPolicy extends Policy
      */
     public function view(?User $user, Invitation $invitation): bool
     {
-        return false;
+        if ($invitation->isAccepted() || $invitation->isExpired()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
