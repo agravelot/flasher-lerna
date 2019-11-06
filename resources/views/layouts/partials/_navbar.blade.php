@@ -3,7 +3,8 @@
         <div class="navbar-brand">
 
             <a class="navbar-item" href="/">
-                <img src="{{ mix('svg/logo.svg') }}" alt="{{ __('Logo of') }} {{ settings()->get('app_name', config('app.name', 'Flasher')) }}">
+                <img src="{{ mix('svg/logo.svg') }}"
+                     alt="{{ __('Logo of') }} {{ settings()->get('app_name', config('app.name', 'Flasher')) }}">
             </a>
 
             @include('layouts.partials._navbar_socials', ['class' => 'navbar-item'])
@@ -55,14 +56,12 @@
                         </div>
                     </div>
                 @else
-                    <div class="navbar-item">
-                        <a class="navbar-link" href="{{ route('login') }}">
-                            <span class="icon">
-                                @fas('sign-in-alt')
-                            </span>
-                            <span>{{ __('Login') }}</span>
-                        </a>
-                    </div>
+                    <a class="navbar-item" href="{{ route('login') }}">
+                        <span class="icon">
+                            @fas('sign-in-alt')
+                        </span>
+                        <span>{{ __('Login') }}</span>
+                    </a>
                 @endauth
             </div>
         </div>
