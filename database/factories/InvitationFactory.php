@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factory;
 
 $factory->define(Invitation::class, static function (Faker $faker) {
     return [
-        'email' => $faker->email,
+        'email' => $faker->safeEmail,
         'token' => Str::random(60),
         'cosplayer_id' => factory(Cosplayer::class)->create()->id,
         'message' => $faker->paragraph,
