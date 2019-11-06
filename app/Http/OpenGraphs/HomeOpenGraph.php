@@ -11,7 +11,6 @@ class HomeOpenGraph implements OpenGraphable, ImagesOpenGraphable
 {
     public function images(): Collection
     {
-        //$logo = asset('/svg/logo.svg');
         $profile = settings()->get('profile_picture_homepage');
 
         if ($profile === null) {

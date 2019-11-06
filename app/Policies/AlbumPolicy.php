@@ -30,7 +30,6 @@ class AlbumPolicy extends Policy
      */
     public function viewAny(?User $user): bool
     {
-//        return $user->id == $album->user_id;
         return true;
     }
 
@@ -53,7 +52,6 @@ class AlbumPolicy extends Policy
      */
     public function create(User $user): bool
     {
-//        return $user->id == $album->user_id;
         return false;
     }
 
@@ -62,7 +60,6 @@ class AlbumPolicy extends Policy
      */
     public function update(User $user, Album $album): bool
     {
-//        return $user->id == $album->user_id;
         return false;
     }
 
@@ -71,7 +68,6 @@ class AlbumPolicy extends Policy
      */
     public function delete(User $user, Album $album): bool
     {
-//        return $user->id == $album->user_id;
         return false;
     }
 
