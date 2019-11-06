@@ -23,6 +23,6 @@ class InvitationController extends Controller
         $invitation->fill(['confirmed_at' => now()])
             ->push();
 
-        return view('invitations.show', compact('invitation'));
+        return view('invitations.welcome', compact('invitation'));
     }
 }
