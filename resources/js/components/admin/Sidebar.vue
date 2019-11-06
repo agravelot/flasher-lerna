@@ -49,10 +49,10 @@
           tag="router-link"
         />
         <b-menu-item
+          :to="{ name: 'admin.social-medias.index' }"
           label="Social medias"
           icon="external-link-alt"
-          tag="a"
-          to="/admin/social-medias"
+          tag="router-link"
         />
         <b-menu-item
           :to="{ name: 'admin.invitations.index' }"

@@ -28,6 +28,5 @@ Route::group([
     'as' => 'admin.',
     'namespace' => 'Admin',
 ], static function (): void {
-    Route::resource('social-medias', 'AdminSocialMediaController')->except('show');
     Route::get('/{any?}', 'AdminController')->where('any', '.*')->name('dashboard');
 });

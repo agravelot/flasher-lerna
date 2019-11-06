@@ -1,9 +1,10 @@
 <?php
 
-namespace Tests\Feature\Http\Controller\Admin\SocialMedia;
+namespace Tests\Feature\Http\Controllers\Admin\SocialMedia;
 
 use Tests\TestCase;
 use App\Models\SocialMedia;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -11,61 +12,51 @@ class IndexSocialMediaTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_view_index_page_with_multiple_social_medias()
+    public function test_admin_can_index_socialMedias(): void
     {
         $this->actingAsAdmin();
-        $socialMedias = factory(SocialMedia::class, 5)->create();
+        $socialMedias = factory(SocialMedia::class, 8)->create();
 
-        $response = $this->showSocialMediaIndex();
+        $response = $this->getSocialMedias();
 
-        $response->assertOk()
-            ->assertDontSee('Nothing to show');
+        $response->assertOk();
+        $this->assertJsonFragments($response, $socialMedias);
+    }
+
+    private function getSocialMedias(): TestResponse
+    {
+        return $this->json('get', '/api/admin/social-medias');
+    }
+
+    private function assertJsonFragments(TestResponse $response, Collection $socialMedias): void
+    {
         $socialMedias->each(static function (SocialMedia $socialMedia) use ($response) {
-            $response->assertSee($socialMedia->name);
+            $response->assertJsonFragment([
+                'name' => $socialMedia->name,
+                'url' => $socialMedia->url,
+                'active' => $socialMedia->active,
+                'created_at' => $socialMedia->created_at,
+                'updated_at' => $socialMedia->updated_at,
+            ]);
         });
     }
 
-    private function showSocialMediaIndex(): TestResponse
-    {
-        return $this->get('/admin/social-medias');
-    }
-
-    public function test_admin_can_view_index_page_with_one_socialMedia()
-    {
-        $this->actingAsAdmin();
-        $socialMedia = factory(SocialMedia::class)->create();
-
-        $response = $this->showSocialMediaIndex();
-
-        $response->assertOk()
-            ->assertSee($socialMedia->name)
-            ->assertDontSee('Nothing to show');
-    }
-
-    public function test_admin_can_view_index_page_with_no_socialMedia()
-    {
-        $this->actingAsAdmin();
-
-        $response = $this->showSocialMediaIndex();
-
-        $response->assertOk()
-            ->assertSee('Nothing to show');
-    }
-
-    public function test_guest_can_not_view_index_page_for_a_socialMedia_and_is_redirected_to_login()
-    {
-        $response = $this->showSocialMediaIndex();
-
-        $response->assertStatus(302);
-        $response->assertRedirect('/login');
-    }
-
-    public function test_user_can_not_view_index_page_for_a_socialMedia()
+    public function test_user_cannot_index_socialMedias(): void
     {
         $this->actingAsUser();
+        $socialMedias = factory(SocialMedia::class, 8)->create();
 
-        $response = $this->showSocialMediaIndex();
+        $response = $this->getSocialMedias();
 
         $response->assertStatus(403);
+    }
+
+    public function testGuestCannotIndexSocialMedias(): void
+    {
+        $socialMedias = factory(SocialMedia::class, 8)->create();
+
+        $response = $this->getSocialMedias();
+
+        $response->assertStatus(401);
     }
 }
