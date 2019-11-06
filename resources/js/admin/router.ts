@@ -17,6 +17,8 @@ import UsersEdit from '../components/admin/UsersEdit.vue';
 import TestimonialsIndex from '../components/admin/TestimonialsIndex.vue';
 import NotFound from '../components/admin/NotFound.vue';
 import Settings from '../components/admin/Settings.vue';
+import InvitationsIndex from "../components/admin/invitations/InvitationsIndex.vue";
+import SocialMediasIndex from "../components/admin/social-medias/SocialMediasIndex.vue";
 
 Vue.use(VueRouter);
 
@@ -161,6 +163,16 @@ const routes: Array<any> = [
         //         /* webpackChunkName: "cosplayersEdit" */ '../../../modules/User/Resources/assets/js/UserEdit.vue'
         //     ),
     },
+    // Social medias
+    {
+        path: '/admin/social-medias',
+        name: 'admin.social-medias.index',
+        component: SocialMediasIndex,
+        // component: () =>
+        //     import(
+        //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
+        //     ),
+    },
     // Testimonials
     {
         path: '/admin/testimonials',
@@ -194,6 +206,15 @@ const routes: Array<any> = [
         path: '/admin/settings',
         name: 'admin.settings.index',
         component: Settings,
+        // component: () =>
+        //     import(
+        //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Core/Resources/assets/js/components/Settings.vue'
+        //     ),
+    },
+    {
+        path: '/admin/invitations',
+        name: 'admin.invitations.index',
+        component: InvitationsIndex,
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Core/Resources/assets/js/components/Settings.vue'

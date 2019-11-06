@@ -19,7 +19,7 @@ class UpdateAdminPagesTest extends TestCase
         $page->title = $title = 'newValue';
         $response = $this->updatePage($page);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJson($this->getJsonArray($page));
         $this->assertSame($title, $page->fresh()->title);
     }

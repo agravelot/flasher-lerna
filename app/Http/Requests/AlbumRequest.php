@@ -16,7 +16,7 @@ class AlbumRequest extends Request
 
         return [
             'title' => ['required', 'string', 'min:2', 'max:255', Rule::unique('albums')->ignore($id)],
-            'body' => 'nullable|max:65000',
+            'body' => 'nullable|string',
             'published_at' => 'nullable|date', //2019-10-02T08:35:39.429Z
             'private' => 'sometimes|boolean',
             'categories' => 'nullable|array',

@@ -8,9 +8,9 @@ class AlbumsTableSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run()
+    public function run(): void
     {
-        User::all()->each(static function (User $user) {
+        User::all()->each(static function (User $user): void {
             $user->albums()->saveMany(
                 collect()
                     ->push(factory(App\Models\Album::class)->states(['password', 'published'])->make())

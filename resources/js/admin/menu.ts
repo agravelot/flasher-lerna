@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
         'collapse-admin-menu'
     );
     if (collapseAdminMenuButton && adminMenu) {
-        // @ts-ignore
         const icon = collapseAdminMenuButton
             .getElementsByTagName('span')
             .item(0)

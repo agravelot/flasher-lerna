@@ -1,140 +1,161 @@
 <template>
-    <section>
-        <h1 class="title">Update album</h1>
+  <section>
+    <h1 class="title">
+      Update album
+    </h1>
 
-        <div class="card">
-            <div class="card-content">
-                <b-tabs type="is-boxed" size="is-medium" class="block">
-                    <b-tab-item label="Album" icon="info">
-                        <form @submit.prevent="updateAlbum">
-                            <b-field
-                                label="Title"
-                                :type="errors.title ? 'is-danger' : ''"
-                                :message="errors.title ? errors.title[0] : null"
-                            >
-                                <b-input type="text" v-model="album.title" maxlength="30">
-                                </b-input>
-                            </b-field>
+    <div class="card">
+      <div class="card-content">
+        <b-tabs
+          type="is-boxed"
+          size="is-medium"
+          class="block"
+        >
+          <b-tab-item
+            label="Album"
+            icon="info"
+          >
+            <form @submit.prevent="updateAlbum">
+              <b-field
+                :type="errors.title ? 'is-danger' : ''"
+                :message="errors.title ? errors.title[0] : null"
+                label="Title"
+              >
+                <b-input
+                  v-model="album.title"
+                  type="text"
+                  maxlength="30"
+                />
+              </b-field>
 
-                            <quill-editor
-                                v-model="album.body"
-                                ref="myQuillEditor"
-                                :options="editorOption"
-                            ></quill-editor>
+              <quill-editor
+                ref="myQuillEditor"
+                v-model="album.body"
+                :options="editorOption"
+              />
 
-                            <b-field
-                                label="Enter some categories"
-                                :type="errors.categories ? 'is-danger' : ''"
-                                :message="errors.categories ? errors.categories[0] : null"
-                            >
-                                <b-taginput
-                                    v-model="album.categories"
-                                    :data="filteredCategories"
-                                    autocomplete
-                                    :allow-new="false"
-                                    field="name"
-                                    placeholder="Add a category"
-                                    icon="tag"
-                                    @typing="getFilteredCategories"
-                                >
-                                </b-taginput>
-                            </b-field>
+              <b-field
+                :type="errors.categories ? 'is-danger' : ''"
+                :message="errors.categories ? errors.categories[0] : null"
+                label="Enter some categories"
+              >
+                <b-taginput
+                  v-model="album.categories"
+                  :data="filteredCategories"
+                  :allow-new="false"
+                  @typing="getFilteredCategories"
+                  autocomplete
+                  field="name"
+                  placeholder="Add a category"
+                  icon="tag"
+                />
+              </b-field>
 
-                            <b-field
-                                label="Enter some cosplayers"
-                                :type="errors.cosplayers ? 'is-danger' : ''"
-                                :message="errors.cosplayers ? errors.cosplayers[0] : null"
-                            >
-                                <b-taginput
-                                    v-model="album.cosplayers"
-                                    :data="filteredCosplayers"
-                                    autocomplete
-                                    :allow-new="false"
-                                    field="name"
-                                    placeholder="Add a cosplayer"
-                                    icon="user-tag"
-                                    @typing="getFilteredCosplayers"
-                                >
-                                </b-taginput>
-                            </b-field>
+              <b-field
+                :type="errors.cosplayers ? 'is-danger' : ''"
+                :message="errors.cosplayers ? errors.cosplayers[0] : null"
+                label="Enter some cosplayers"
+              >
+                <b-taginput
+                  v-model="album.cosplayers"
+                  :data="filteredCosplayers"
+                  :allow-new="false"
+                  @typing="getFilteredCosplayers"
+                  autocomplete
+                  field="name"
+                  placeholder="Add a cosplayer"
+                  icon="user-tag"
+                />
+              </b-field>
 
-                            <b-field
-                                label="Should this album be published?"
-                                :type="errors.published_at ? 'is-danger' : ''"
-                                :message="errors.published_at ? errors.published_at[0] : null"
-                            >
-                                <div class="field">
-                                    <b-switch
-                                        v-model="album.published_at"
-                                        :true-value="album.published_at || new Date().toISOString()"
-                                        :false-value="null"
-                                    >
-                                        {{ album.published_at ? 'Yes' : 'No' }}
-                                    </b-switch>
-                                </div>
-                            </b-field>
+              <b-field
+                :type="errors.published_at ? 'is-danger' : ''"
+                :message="errors.published_at ? errors.published_at[0] : null"
+                label="Should this album be published?"
+              >
+                <div class="field">
+                  <b-switch
+                    v-model="album.published_at"
+                    :true-value="album.published_at || new Date().toISOString()"
+                    :false-value="null"
+                  >
+                    {{ album.published_at ? 'Yes' : 'No' }}
+                  </b-switch>
+                </div>
+              </b-field>
 
-                            <b-field
-                                label="Should it be accessible publicly?"
-                                :type="errors.private ? 'is-danger' : ''"
-                                :message="errors.private ? errors.private[0] : null"
-                            >
-                                <div class="field">
-                                    <b-switch
-                                        v-model.numeric="album.private"
-                                        :true-value="0"
-                                        :false-value="1"
-                                    >
-                                        {{ album.private ? 'No' : 'Yes' }}
-                                    </b-switch>
-                                </div>
-                            </b-field>
-                            <div class="buttons">
-                                <button class="button is-primary">Update</button>
-                                <a
-                                    class="button is-bottom-right is-danger"
-                                    @click="confirmDeleteAlbum()"
-                                >
-                                    Delete
-                                </a>
-                            </div>
-                        </form>
-                    </b-tab-item>
-                    <b-tab-item label="Pictures" icon="images">
-                        <vue-dropzone
-                            ref="myVueDropzone"
-                            :options="dropzoneOptions"
-                            v-on:vdropzone-sending="sendingEvent"
-                            v-on:vdropzone-complete="refreshMedias"
-                            class="has-margin-bottom-md"
-                        ></vue-dropzone>
-                        <div class="columns is-multiline">
-                            <div
-                                v-for="picture in album.medias"
-                                class="column is-two-thirds-tablet is-half-desktop is-one-third-widescreen"
-                            >
-                                <img :src="picture.thumb" :alt="picture.name" />
-                                <a
-                                    class="button has-text-danger"
-                                    @click="deleteAlbumPicture(album.slug, picture.id)"
-                                >
-                                    Delete
-                                </a>
-                            </div>
-                        </div>
-                    </b-tab-item>
-
-                    <b-tab-item label="Share" icon="share">
-                        <h3 class="title is-3">Models</h3>
-                        <share-album-to-cosplayer :album="album"></share-album-to-cosplayer>
-
-                        <h3 class="title is-3">Share</h3>
-                        <share-album :album="album"></share-album>
-                    </b-tab-item>
-                </b-tabs>
+              <b-field
+                :type="errors.private ? 'is-danger' : ''"
+                :message="errors.private ? errors.private[0] : null"
+                label="Should it be accessible publicly?"
+              >
+                <div class="field">
+                  <b-switch
+                    v-model.numeric="album.private"
+                    :true-value="0"
+                    :false-value="1"
+                  >
+                    {{ album.private ? 'No' : 'Yes' }}
+                  </b-switch>
+                </div>
+              </b-field>
+              <div class="buttons">
+                <button class="button is-primary">
+                  Update
+                </button>
+                <a
+                  @click="confirmDeleteAlbum()"
+                  class="button is-bottom-right is-danger"
+                >
+                  Delete
+                </a>
+              </div>
+            </form>
+          </b-tab-item>
+          <b-tab-item
+            label="Pictures"
+            icon="images"
+          >
+            <vue-dropzone
+              id="dropzone"
+              ref="myVueDropzone"
+              :options="dropzoneOptions"
+              v-on:vdropzone-sending="sendingEvent"
+              v-on:vdropzone-complete="refreshMedias"
+              class="has-margin-bottom-md"
+            />
+            <div class="columns is-multiline">
+              <div
+                v-for="picture in album.medias"
+                class="column is-two-thirds-tablet is-half-desktop is-one-third-widescreen"
+              >
+                <img
+                  :src="picture.thumb"
+                  :alt="picture.name"
+                >
+                <a
+                  @click="deleteAlbumPicture(album.slug, picture.id)"
+                  class="button has-text-danger"
+                >
+                  Delete
+                </a>
+              </div>
             </div>
-        </div>
-    </section>
+          </b-tab-item>
+
+          <b-tab-item
+            label="Share"
+            icon="share"
+          >
+            <h3 class="title is-3">
+              Share
+            </h3>
+            <share-album :album="album" />
+          </b-tab-item>
+        </b-tabs>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script lang="ts">
@@ -142,7 +163,6 @@ import Component from 'vue-class-component';
 import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 import AlbumDesc from './AlbumDesc.vue';
-import ShareAlbumToCosplayer from './ShareAlbumToCosplayer.vue';
 import ShareAlbum from './ShareAlbum.vue';
 import Album from '../../models/album';
 
@@ -152,13 +172,12 @@ import Album from '../../models/album';
         vueDropzone: vue2Dropzone,
         'album-desc': AlbumDesc,
         'share-album': ShareAlbum,
-        'share-album-to-cosplayer': ShareAlbumToCosplayer,
     },
     extends: AlbumDesc,
 })
 export default class AlbumsEdit extends AlbumDesc {
     protected album: Album;
-    protected allowNew: boolean = false;
+    protected allowNew = false;
     protected dropzoneOptions: object = {
         url: '/api/admin/album-pictures',
         thumbnailWidth: 200,
@@ -178,8 +197,8 @@ export default class AlbumsEdit extends AlbumDesc {
         acceptedFiles: 'image/*',
         dictDefaultMessage: "<i class='fas fa-images'></i> Upload",
         headers: {
-            'X-CSRF-Token': (<HTMLMetaElement>(
-                document.head.querySelector('meta[name="csrf-token"]')
+            'X-CSRF-Token': ((
+                document.head.querySelector('meta[name="csrf-token"]') as HTMLMetaElement
             )).content,
         },
     };
@@ -204,7 +223,7 @@ export default class AlbumsEdit extends AlbumDesc {
         if (!this.album.slug) {
             throw new DOMException('album slug is null');
         }
-        formData.append('album_slug', <string>this.album.slug);
+        formData.append('album_slug', this.album.slug as string);
     }
 
     updateAlbum(): void {
@@ -255,7 +274,7 @@ export default class AlbumsEdit extends AlbumDesc {
     deleteAlbum(): void {
         this.axios
             .delete(`/api/admin/albums/${this.album.slug}`)
-            .then(res => {
+            .then(() => {
                 this.$router.push({ name: 'admin.albums.index' });
                 this.showSuccess('Album successfully deleted!');
             })
@@ -272,7 +291,7 @@ export default class AlbumsEdit extends AlbumDesc {
                     media_id: mediaId,
                 },
             })
-            .then(res => {
+            .then(() => {
                 this.refreshMedias();
                 this.showSuccess('Picture successfully deleted!');
             })

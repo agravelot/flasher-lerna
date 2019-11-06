@@ -4,10 +4,11 @@ use App\Models\Album;
 use Faker\Generator as Faker;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Database\Eloquent\Factory;
 
 $withMedias = false;
 
-/* @var \Illuminate\Database\Eloquent\Factory $factory */
+/* @var Factory $factory */
 $factory->define(Album::class, static function (Faker $faker) use (&$withMedias) {
     $withMedias = false;
 

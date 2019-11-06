@@ -4,6 +4,9 @@ use Carbon\Carbon;
 use App\Models\Cosplayer;
 use Faker\Generator as Faker;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Database\Eloquent\Factory;
+
+/* @var Factory $factory */
 
 $factory->define(Cosplayer::class, static function (Faker $faker) {
     return [
@@ -17,5 +20,11 @@ $factory->define(Cosplayer::class, static function (Faker $faker) {
 $factory->state(Cosplayer::class, 'avatar', static function () {
     return [
         'avatar' => UploadedFile::fake()->image('fake.jpg'),
+    ];
+});
+
+$factory->state(Cosplayer::class, 'withUser', static function () {
+    return [
+        'user_id' => factory(\App\Models\User::class)->create()->id,
     ];
 });

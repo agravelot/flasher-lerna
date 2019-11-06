@@ -2,6 +2,7 @@
 
 namespace App\Http\OpenGraphs;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use App\Http\OpenGraphs\Contracts\OpenGraphable;
 use App\Http\OpenGraphs\Contracts\ImagesOpenGraphable;
@@ -10,13 +11,13 @@ class HomeOpenGraph implements OpenGraphable, ImagesOpenGraphable
 {
     public function images(): Collection
     {
-        $image = settings()->get('profile_picture_homepage');
+        $profile = settings()->get('profile_picture_homepage');
 
-        if ($image === null) {
+        if ($profile === null) {
             return collect();
         }
 
-        return collect([$image]);
+        return collect([$profile]);
     }
 
     public function title(): string
@@ -26,7 +27,7 @@ class HomeOpenGraph implements OpenGraphable, ImagesOpenGraphable
 
     public function description(): string
     {
-        return '';
+        return Str::limit(settings()->get('seo_description') ?? '', 150);
     }
 
     public function type(): string

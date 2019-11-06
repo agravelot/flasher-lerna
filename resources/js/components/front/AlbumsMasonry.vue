@@ -1,57 +1,59 @@
 <template>
-    <div>
-        <!--TODO Add nothing to show-->
-        <masonry
-            :gutter="{ default: '30px', 700: '15px' }"
-            :cols="{ default: 3, 1000: 2, 700: 1, 400: 1 }"
-        >
-            <a
-                v-for="(album, index) in albums"
-                :key="index"
-                :href="'/albums/' + album.slug"
-                class="has-margin-right-md"
-            >
-                <div class="card album">
-                    <div v-if="album.media" class="card-image">
-                        <figure class="image">
-                            <img
-                                v-if="album.media.src_set"
-                                class="responsive-media"
-                                :srcset="album.media.src_set"
-                                :alt="album.media.name"
-                                sizes="1px"
-                                loading="auto"
-                            />
-                            <img
-                                v-else
-                                :src="album.media.thumb"
-                                :alt="album.media.name"
-                                loading="auto"
-                            />
-                        </figure>
-                    </div>
-                    <div class="card-content">
-                        <div class="content">
-                            <h3 class="title is-5">{{ album.title }}</h3>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </masonry>
-
-        <div class="has-margin-md"></div>
-
-        <div v-if="total > perPage">
-            <b-pagination
-                v-on:change="onPageChanged"
-                :total="total"
-                :current.sync="page"
-                order="is-centered"
-                :per-page="perPage"
-            >
-            </b-pagination>
+  <div>
+    <!--TODO Add nothing to show-->
+    <masonry
+      :gutter="{ default: '30px', 700: '15px' }"
+      :cols="{ default: 3, 1000: 2, 700: 1, 400: 1 }"
+    >
+      <a
+        v-for="(album, index) in albums"
+        :key="index"
+        :href="'/albums/' + album.slug"
+        class="has-margin-right-md"
+      >
+        <div class="card album">
+          <div
+            v-if="album.media"
+            class="card-image"
+          >
+            <figure class="image">
+              <img
+                v-if="album.media.src_set"
+                :srcset="album.media.src_set"
+                :alt="album.media.name"
+                class="responsive-media"
+                sizes="1px"
+                loading="auto"
+              >
+              <img
+                v-else
+                :src="album.media.thumb"
+                :alt="album.media.name"
+                loading="auto"
+              >
+            </figure>
+          </div>
+          <div class="card-content">
+            <div class="content">
+              <h3 class="title is-5">{{ album.title }}</h3>
+            </div>
+          </div>
         </div>
+      </a>
+    </masonry>
+
+    <div class="has-margin-md" />
+
+    <div v-if="total > perPage">
+      <b-pagination
+        v-on:change="onPageChanged"
+        :total="total"
+        :current.sync="page"
+        :per-page="perPage"
+        order="is-centered"
+      />
     </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -69,10 +71,10 @@ export default class AlbumsMasonry extends Buefy {
     @Prop() readonly data: any;
 
     protected albums: Array<object> = [];
-    protected total: number = 0;
-    protected perPage: number = 0;
-    protected page: number = 1;
-    protected loading: boolean = false;
+    protected total = 0;
+    protected perPage = 0;
+    protected page = 1;
+    protected loading = false;
 
     updated(): void {
         this.$nextTick(() => {
@@ -88,7 +90,7 @@ export default class AlbumsMasonry extends Buefy {
         window.removeEventListener('resize', this.onResize);
     }
 
-    mounted() {
+    mounted(): void {
         this.albums = this.data.data;
         this.perPage = this.data.meta.per_page;
         this.total = this.data.meta.total;
@@ -107,7 +109,7 @@ export default class AlbumsMasonry extends Buefy {
         this.fetchAlbums();
     }
 
-    onResize() {
+    onResize(): void {
         this.refreshSizes();
     }
 
@@ -116,7 +118,7 @@ export default class AlbumsMasonry extends Buefy {
             'responsive-media'
         );
         Array.from(responsiveMedias).forEach((el: Element) => {
-            (<HTMLImageElement>el).sizes = `${Math.ceil(
+            (el as HTMLImageElement).sizes = `${Math.ceil(
                 (el.getBoundingClientRect().width / window.innerWidth) * 100
             )}vw`;
         });

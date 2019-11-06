@@ -1,44 +1,42 @@
-# Picblog
+# Flasher
+
+[![pipeline status](https://gitlab.com/flasher/flasher/badges/master/pipeline.svg)](https://gitlab.com/flasher/flasher/commits/master)
+[![coverage report](https://gitlab.com/flasher/flasher/badges/master/coverage.svg)](https://gitlab.com/flasher/flasher/commits/master)
+
+Flasher is a website specialized for photographer.
+Administration panel is accessible from `/admin` path.
+
+## Features
+- Show albums collections
+- Categories collections
+- Cosplayers (Model) collections
+- Testimonials
+- Contact page
 
 ## Prerequisite
 
-`docker docker-compose jpegoptim optipng pngquant gifsicle`
-
-Increase php max upload size
-
-; Maximum allowed size for uploaded files.
-; http://php.net/upload-max-filesize
-upload_max_filesize = 2M
-
-; Maximum number of files that can be uploaded via a single request
-max_file_uploads = 20
+Required PHP extensions :
+- gd
+- redis
+- imagick
 
 ## Deploying in production
 
 ### Docker
 
+On local enthronements, you can fill up `.env` files manually from `env.example` files.
+
+- `docker/db/.env.example` -> `docker/db/.env`
+- `docker/nginx/.env.example` -> `docker/nginx/.env`
+- `.env.production` -> `docker/php-fpm/.env`
+
+On CI/CD pipelines, you can generate the required `.env` files with `docker/generate_env.sh` script, make sure to provide the required variables. 
+
 ```bash
 docker-compose up -d 
 ```
 
-### First install
-
-```bash
-php artisan key:generate
-```
-
-Migrate the database schema
-
-```bash
-php artisan migrate
-```
-
-Publish 
-```bash 
- php artisan vendor:publish --tag=lfm_public
-```
-
-Add the admin user
+You can seed a default admin user.
 ```bash
 php artisan db:seed --class=AdminUserSeeder
 ```
@@ -47,23 +45,34 @@ Default credentails :
 - Email `admin@picblog.com`
 - Password `secret`
 
-### Updating
-
-## Testing in development
+## Testing in local
 
 ```bash
 composer install
+php artisan key:generate
+php artisan passport:keys
+php artisan storage:link
 ```
+
+Fill up `.env` file.
 
 ```bash
 yarn install
 ```
 
 ```bash
-yarn run dev
+yarn dev # or watch
 ```
-Check the `packages.json` file for more commands.
 
+To enable telescope `php artisan telescope:install`.
 
-env DOCKER_HOST=tcp://nevax.awsmppl.com.:4243 docker-compose -f /home/nevax/Lab/picblog/docker-compose.yml up -d --build --remove-orphans
-https://github.com/docker-library/docs/issues/496
+If you want to force usage of local storage instead of S3, set this env `FILESYSTEM_CLOUD=public`.
+
+## Coding Standards
+
+This project is following Laravel coding standard.
+You can read the php-cs-fixer rules [here](https://github.com/matt-allan/laravel-code-style).
+
+## License
+
+Flasher is open-sourced software licensed under GNU GPL V2.

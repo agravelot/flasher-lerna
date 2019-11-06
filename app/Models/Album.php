@@ -56,6 +56,10 @@ class Album extends Model implements HasMedia, Feedable
         'private' => 'bool',
     ];
 
+    protected $attributes = [
+        'notify_users_on_published' => true,
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -68,6 +72,7 @@ class Album extends Model implements HasMedia, Feedable
         'published_at',
         'user_id',
         'private',
+        'notify_users_on_published',
     ];
 
     public function getZipFileNameAttribute(): string

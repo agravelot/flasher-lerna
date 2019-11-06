@@ -1,10 +1,9 @@
 <?php
 
-namespace Tests\Feature\Http\Controller\Admin\SocialMedia;
+namespace Tests\Feature\Http\Controllers\Admin\SocialMedia;
 
 use Tests\TestCase;
 use App\Models\SocialMedia;
-use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -12,70 +11,51 @@ class StoreSocialMediaTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_store_a_socialMedia()
+    public function test_admin_can_update_social_media(): void
     {
         $this->actingAsAdmin();
-        $socialMedia = factory(SocialMedia::class)->make();
+        /** @var SocialMedia $socialMedia */
+        $socialMedia = factory(SocialMedia::class)->state('active')->make();
 
         $response = $this->storeSocialMedia($socialMedia);
 
+        $response->assertCreated();
+        $this->assertTrue(SocialMedia::latest()->first()->active);
         $this->assertSame(1, SocialMedia::count());
-        $response->assertStatus(302)
-            ->assertRedirect('/admin/social-medias');
-        $this->followRedirects($response)
-            ->assertStatus(200)
-            ->assertSee($socialMedia->name)
-            ->assertSee('Social media successfully added');
     }
 
-    private function storeSocialMedia(SocialMedia $socialMedia): TestResponse
-    {
-        session()->setPreviousUrl('/admin/social-medias/create');
-
-        return $this->post('/admin/social-medias', $socialMedia->toArray());
-    }
-
-    public function test_admin_can_not_create_two_social_medias_with_the_same_name_and_redirect_with_error()
-    {
-        $this->actingAsAdmin();
-        $socialMedia = factory(SocialMedia::class)->create();
-        $duplicateNameSocialMedia = factory(SocialMedia::class)->make(['name' => $socialMedia->name]);
-
-        $response = $this->storeSocialMedia($duplicateNameSocialMedia);
-
-        $this->assertSame(1, SocialMedia::count());
-        $response->assertStatus(302)
-            ->assertRedirect('/admin/social-medias/create');
-        $this->followRedirects($response)
-            ->assertStatus(200)
-            ->assertSee('The name has already been taken.');
-    }
-
-    public function test_user_can_not_store_a_socialMedia()
+    public function test_user_cannot_update_social_media(): void
     {
         $this->actingAsUser();
-        $socialMedia = factory(SocialMedia::class)->make();
+        /** @var SocialMedia $socialMedia */
+        $socialMedia = factory(SocialMedia::class)->state('active')->make();
 
         $response = $this->storeSocialMedia($socialMedia);
 
+        $this->assertSame(403, $response->getStatusCode());
         $this->assertSame(0, SocialMedia::count());
-        $response->assertStatus(403);
     }
 
-    public function test_guest_can_not_store_a_socialMedia_and_is_redirected_to_login()
+    public function test_guest_cannot_update_social_media(): void
     {
-        $socialMedia = factory(SocialMedia::class)->make();
+        /** @var SocialMedia $socialMedia */
+        $socialMedia = factory(SocialMedia::class)->state('active')->make();
 
+        $socialMedia->active = false;
         $response = $this->storeSocialMedia($socialMedia);
 
+        $response->assertUnauthorized();
         $this->assertSame(0, SocialMedia::count());
-        $response->assertStatus(302)
-            ->assertRedirect('/login');
     }
 
-    protected function setUp(): void
+    public function storeSocialMedia(SocialMedia $socialMedia): TestResponse
     {
-        parent::setUp();
-        $this->withoutMiddleware(VerifyCsrfToken::class);
+        return $this->json('post', '/api/admin/social-medias', [
+            'name' => $socialMedia->name,
+            'url' => $socialMedia->url,
+            'icon' => $socialMedia->icon,
+            'color' => $socialMedia->color,
+            'active' => $socialMedia->active,
+        ]);
     }
 }

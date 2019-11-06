@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('pageTitle', $category->name)
+@section('pageTitle', $category->name . ' - ' . __('Category'))
+
+@section('seo_description', (new App\Http\OpenGraphs\CategoryOpenGraph($category))->description())
 
 @section('content')
     <div class="hero is-black is-radiusless">

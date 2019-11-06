@@ -1,98 +1,112 @@
 <template>
-    <div>
-        <section>
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <div class="buttons">
-                            <b-button
-                                type="is-danger"
-                                icon-left="trash-alt"
-                                :disabled="!checkedRows.length"
-                                @click="confirmDeleteSelectedContacts"
-                            >
-                                Delete checked
-                            </b-button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="level-right">
-                    <b-field class="is-pulled-right">
-                        <b-input
-                            placeholder="Search..."
-                            type="search"
-                            icon="search"
-                            :loading="loading"
-                            v-model="search"
-                            @input="fetchContacts()"
-                        >
-                        </b-input>
-                    </b-field>
-                </div>
+  <div>
+    <section>
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <div class="buttons">
+              <b-button
+                :disabled="!checkedRows.length"
+                @click="confirmDeleteSelectedContacts"
+                type="is-danger"
+                icon-left="trash-alt"
+              >
+                Delete checked
+              </b-button>
             </div>
+          </div>
+        </div>
 
-            <b-table
-                :data="contacts"
-                :loading="loading"
-                striped
-                hoverable
-                mobile-cards
-                paginated
-                backend-pagination
-                :total="total"
-                :per-page="perPage"
-                @page-change="onPageChange"
-                backend-sorting
-                :default-sort-direction="defaultSortOrder"
-                :default-sort="[sortField, sortOrder]"
-                @sort="onSort"
-                checkable
-                :opened-detailed="defaultOpenedDetails"
-                detailed
-                detail-key="id"
-                @details-open="(row, index) => $buefy.toast.open(`Expanded ${row.user.first_name}`)"
-                :show-detail-icon="showDetailIcon"
-                :checked-rows.sync="checkedRows"
-            >
-                <template slot-scope="contact">
-                    <b-table-column field="name" label="Name" sortable>
-                        {{ contact.row.name }}
-                    </b-table-column>
+        <div class="level-right">
+          <b-field class="is-pulled-right">
+            <b-input
+              :loading="loading"
+              v-model="search"
+              @input="fetchContacts()"
+              placeholder="Search..."
+              type="search"
+              icon="search"
+            />
+          </b-field>
+        </div>
+      </div>
 
-                    <b-table-column field="email" label="Email" sortable>
-                        <a :href="`mailto:${contact.row.email}`" target="_blank">{{
-                            contact.row.email
-                        }}</a>
-                    </b-table-column>
-                </template>
+      <b-table
+        :data="contacts"
+        :loading="loading"
+        :total="total"
+        :per-page="perPage"
+        @page-change="onPageChange"
+        :default-sort-direction="defaultSortOrder"
+        :default-sort="[sortField, sortOrder]"
+        @sort="onSort"
+        :show-detail-icon="showDetailIcon"
+        :checked-rows.sync="checkedRows"
+        striped
+        hoverable
+        mobile-cards
+        paginated
+        backend-pagination
+        backend-sorting
+        checkable
+        detailed
+        detail-key="id"
+      >
+        <template slot-scope="contact">
+          <b-table-column
+            field="name"
+            label="Name"
+            sortable
+          >
+            {{ contact.row.name }}
+          </b-table-column>
 
-                <template slot="detail" slot-scope="props">
-                    <article>
-                        <p>
-                            {{ props.row.message }}
-                        </p>
-                    </article>
-                </template>
+          <b-table-column
+            field="email"
+            label="Email"
+            sortable
+          >
+            <a
+              :href="`mailto:${contact.row.email}`"
+              target="_blank"
+            >{{
+              contact.row.email
+            }}</a>
+          </b-table-column>
+        </template>
 
-                <template slot="empty">
-                    <section class="section">
-                        <div class="content has-text-grey has-text-centered">
-                            <p>
-                                <b-icon icon="sad-tear" size="is-large"></b-icon>
-                            </p>
-                            <p>Nothing here.</p>
-                        </div>
-                    </section>
-                </template>
+        <template
+          slot="detail"
+          slot-scope="props"
+        >
+          <article>
+            <p>
+              {{ props.row.message }}
+            </p>
+          </article>
+        </template>
 
-                <template slot="bottom-left">
-                    <b>Total checked</b>
-                    : {{ checkedRows.length }}
-                </template>
-            </b-table>
-        </section>
-    </div>
+        <template slot="empty">
+          <section class="section">
+            <div class="content has-text-grey has-text-centered">
+              <p>
+                <b-icon
+                  icon="sad-tear"
+                  size="is-large"
+                />
+              </p>
+              <p>Nothing here.</p>
+            </div>
+          </section>
+        </template>
+
+        <template slot="bottom-left">
+          <b>Total checked</b>
+          : {{ checkedRows.length }}
+        </template>
+      </b-table>
+    </section>
+  </div>
 </template>
 
 <script lang="ts">
@@ -114,15 +128,15 @@ import Contact from '../../models/contact';
 export default class ContactsIndex extends Buefy {
     private contacts: Array<Contact> = [];
     private checkedRows: Array<Contact> = [];
-    private total: number = 0;
-    private page: number = 1;
-    perPage: number = 10;
-    private loading: boolean = false;
-    private sortField: string = 'id';
-    private sortOrder: string = 'desc';
-    showDetailIcon: boolean = true;
-    defaultSortOrder: string = 'desc';
-    private search: string = '';
+    private total = 0;
+    private page = 1;
+    perPage = 10;
+    private loading = false;
+    private sortField = 'id';
+    private sortOrder = 'desc';
+    showDetailIcon = true;
+    defaultSortOrder = 'desc';
+    private search = '';
 
     created(): void {
         this.fetchContacts();
@@ -203,7 +217,7 @@ export default class ContactsIndex extends Buefy {
         this.checkedRows.forEach(contact => {
             this.axios
                 .delete(`/api/admin/contacts/${contact.id}`)
-                .then(res => {
+                .then(() => {
                     this.showSuccess('Contacts deleted');
                     this.fetchContacts();
                 })

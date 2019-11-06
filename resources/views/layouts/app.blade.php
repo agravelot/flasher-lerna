@@ -14,7 +14,7 @@
 
     <title>
         @hasSection('pageTitle')
-            @yield('pageTitle') - {{ settings()->get('app_name') }}
+            @yield('pageTitle') - {{ __('Photographer') }} | {{ settings()->get('app_name') }}
         @else
             {{ settings()->get('default_page_title') }}
         @endif
@@ -25,42 +25,40 @@
     <link rel="preconnect" href="{{ config('medialibrary.s3.domain') }}" crossorigin>
     <link rel="dns-prefetch" href="{{ config('medialibrary.s3.domain') }}">
 
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/favicon/apple-touch-icon.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/favicon/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/favicon/favicon-16x16.png') }}">
-    <link rel="manifest" href="{{ asset('img/favicon/site.webmanifest') }}">
-    <link rel="shortcut icon" href="{{ asset('img/favicon/favicon.ico') }}">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="{{ asset('img/favicon/mstile-144x144.png') }}">
-    <meta name="msapplication-config" content="{{ asset('img/favicon/browserconfig.xml') }}">
-    <meta name="theme-color" content="#ffffff">
+    @include('layouts.partials._favicon')
 
     <!-- Styles -->
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
     @yield('head')
     {!! Analytics::render() !!}
+
+    {!! new \App\Http\Schemas\HomepageSchema() !!}
 </head>
 
 <body>
-@include('layouts.partials._navbar')
-@include('layouts.partials._impersonating')
+<header>
+    @include('layouts.partials._navbar')
+    @include('layouts.partials._impersonating')
+</header>
 
-@if(! request()->is('admin*') && ! request()->is('/'))
-    <div class="hero is-black is-radiusless">
-        <div class="hero-body">
-            <div class="container has-text-centered">
-                <h1 class="title">
-                    @yield('pageTitle')
-                </h1>
-                @yield('headerTags')
+<main>
+    @if(! request()->is('admin*') && ! request()->is('/'))
+        <div class="hero is-black is-radiusless">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <h1 class="title">@yield('pageTitle')</h1>
+                    @yield('headerTags')
+                </div>
             </div>
         </div>
-    </div>
-@endif
+    @endif
 
-@yield('content')
+    @yield('content')
+</main>
 
-@include('layouts.partials._footer')
+<footer>
+    @include('layouts.partials._footer')
+</footer>
 
 <!-- Scripts -->
 @yield('js')

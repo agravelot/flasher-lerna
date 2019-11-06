@@ -15,7 +15,7 @@ class IndexCosplayerTest extends TestCase
     {
         $response = $this->showCosplayers();
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee('Nothing to show');
     }
 
@@ -30,7 +30,7 @@ class IndexCosplayerTest extends TestCase
 
         $response = $this->showCosplayers();
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee($cosplayers->get(0)->name);
         $response->assertDontSee($cosplayers->get(0)->description);
         $response->assertSee($cosplayers->get(1)->name);

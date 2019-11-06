@@ -17,7 +17,7 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->json('get', '/api/admin/albums');
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertSeeInOrder($albums->pluck('title')->toArray());
     }
 
@@ -28,7 +28,7 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->json('get', '/api/admin/albums');
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertSeeInOrder($albums->pluck('title')->toArray());
     }
 
@@ -39,7 +39,7 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->json('get', '/api/admin/albums');
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertSeeInOrder($albums->pluck('title')->toArray());
     }
 
@@ -50,7 +50,7 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->json('get', '/api/admin/albums');
 
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_user_can_not_view_index()

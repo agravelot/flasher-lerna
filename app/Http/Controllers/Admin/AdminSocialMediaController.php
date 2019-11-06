@@ -50,7 +50,7 @@ class AdminSocialMediaController extends Controller
         $this->authorize('view', $socialMedia);
 
         return redirect(route('admin.social-medias.index'))
-            ->withSuccess('Social media successfully added');
+            ->with('success', 'Social media successfully added');
     }
 
     /**
@@ -97,7 +97,7 @@ class AdminSocialMediaController extends Controller
         $socialMedia->update($request->validated());
 
         return redirect(route('admin.social-medias.index'))
-            ->withSuccess('Social media successfully updated');
+            ->with('success', 'Social media successfully updated');
     }
 
     /**
@@ -114,6 +114,6 @@ class AdminSocialMediaController extends Controller
         $socialMedia->delete();
 
         return redirect(route('admin.social-medias.index'))
-            ->withSuccess('Social media successfully deleted');
+            ->with('success', 'Social media successfully deleted');
     }
 }

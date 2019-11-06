@@ -5,7 +5,7 @@ Route::impersonate();
 Route::feeds();
 
 //FRONT
-Route::namespace('Front')->group(static function () {
+Route::namespace('Front')->group(static function (): void {
     Route::get('/', 'HomeController')->name('home');
     Route::resource('albums', 'AlbumController')->only(['index', 'show']);
     Route::resource('download-albums', 'DownloadAlbumController')->only(['show'])
@@ -17,18 +17,16 @@ Route::namespace('Front')->group(static function () {
     Route::resource('categories', 'CategoryController')->only(['index', 'show']);
     Route::resource('contact', 'ContactController')->only(['index', 'store']);
     Route::resource('testimonials', 'TestimonialController')->only(['index', 'create', 'store']);
+    Route::resource('invitations', 'InvitationController')->only(['show'])->middleware(['auth']);
+    Route::get('/profile/my-albums', 'MyAlbumsController')->middleware(['auth'])->name('profile.my-albums');
 });
 
 //BACK
-Route::middleware(['auth', 'verified', 'admin'])->group(static function () {
-    Route::name('admin.')->group(static function () {
-        Route::prefix('admin')->group(static function () {
-            Route::namespace('Admin')->group(static function () {
-                Route::resource('social-medias', 'AdminSocialMediaController')
-                    ->except('show');
-                Route::get('/{any?}', 'AdminController')
-                    ->where('any', '.*')->name('dashboard');
-            });
-        });
-    });
+Route::group([
+    'middleware' => ['auth', 'verified', 'admin'],
+    'prefix' => 'admin',
+    'as' => 'admin.',
+    'namespace' => 'Admin',
+], static function (): void {
+    Route::get('/{any?}', 'AdminController')->where('any', '.*')->name('dashboard');
 });

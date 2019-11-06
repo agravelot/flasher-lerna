@@ -15,8 +15,8 @@ class IndexTestimonialTest extends TestCase
     {
         $response = $this->showTestimonials();
 
-        $response->assertStatus(200);
-        $response->assertSee('Nothing to show');
+        $response->assertOk()
+            ->assertSee('Nothing to show');
     }
 
     private function showTestimonials(): TestResponse
@@ -30,14 +30,14 @@ class IndexTestimonialTest extends TestCase
 
         $response = $this->showTestimonials();
 
-        $response->assertStatus(200);
-        $response->assertDontSee('Nothing to show');
-        $response->assertSee($goldenBookPosts->get(0)->name);
-        $response->assertSee($goldenBookPosts->get(0)->body);
-        $response->assertDontSee($goldenBookPosts->get(0)->email);
-        $response->assertSee($goldenBookPosts->get(1)->name);
-        $response->assertSee($goldenBookPosts->get(1)->body);
-        $response->assertDontSee($goldenBookPosts->get(1)->email);
+        $response->assertOk()
+            ->assertDontSee('Nothing to show')
+            ->assertSee($goldenBookPosts->get(0)->name)
+            ->assertSee($goldenBookPosts->get(0)->body)
+            ->assertDontSee($goldenBookPosts->get(0)->email)
+            ->assertSee($goldenBookPosts->get(1)->name)
+            ->assertSee($goldenBookPosts->get(1)->body)
+            ->assertDontSee($goldenBookPosts->get(1)->email);
     }
 
     public function test_guest_can_not_see_unactive_testimonial_index()
@@ -46,13 +46,13 @@ class IndexTestimonialTest extends TestCase
 
         $response = $this->showTestimonials();
 
-        $response->assertStatus(200);
-        $response->assertSee('Nothing to show');
-        $response->assertDontSee($goldenBookPosts->get(0)->name);
-        $response->assertDontSee($goldenBookPosts->get(0)->body);
-        $response->assertDontSee($goldenBookPosts->get(0)->email);
-        $response->assertDontSee($goldenBookPosts->get(1)->name);
-        $response->assertDontSee($goldenBookPosts->get(1)->body);
-        $response->assertDontSee($goldenBookPosts->get(1)->email);
+        $response->assertOk()
+            ->assertSee('Nothing to show')
+            ->assertDontSee($goldenBookPosts->get(0)->name)
+            ->assertDontSee($goldenBookPosts->get(0)->body)
+            ->assertDontSee($goldenBookPosts->get(0)->email)
+            ->assertDontSee($goldenBookPosts->get(1)->name)
+            ->assertDontSee($goldenBookPosts->get(1)->body)
+            ->assertDontSee($goldenBookPosts->get(1)->email);
     }
 }

@@ -27,7 +27,7 @@ class StoreTestimonialTest extends TestCase
         $this->assertSame(1, Testimonial::count());
         $this->assertSame(0, PublishedTestimonial::count());
         $this->followRedirects($response)
-            ->assertSee('Your message has been added to the golden book');
+            ->assertSee('Your message has been added to the testimonials');
     }
 
     private function storeTestimonial(Testimonial $goldenBookPost, array $data = []): TestResponse
@@ -66,7 +66,7 @@ class StoreTestimonialTest extends TestCase
         $this->assertSame(1, Testimonial::count());
         $this->assertSame(0, PublishedTestimonial::count());
         $this->followRedirects($response)
-            ->assertSee('Your message has been added to the golden book')
+            ->assertSee('Your message has been added to the testimonials')
             ->assertDontSee($post->name);
     }
 

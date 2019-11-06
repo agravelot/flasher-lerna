@@ -19,7 +19,7 @@ class DeleteAdminPagesTest extends TestCase
 
         $response = $this->deletePage($page);
 
-        $response->assertStatus(204);
+        $response->assertSuccessful();
         $this->assertCount(0, Page::all());
     }
 

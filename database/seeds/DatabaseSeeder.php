@@ -7,7 +7,7 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
-    public function run()
+    public function run(): void
     {
         $this->call(AdminUserSeeder::class);
         $this->call(UsersTableSeeder::class);
@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CosplayerSeeder::class);
         $this->call(CategoriesSeeder::class);
         $this->call(SocialMediaSeeder::class);
+        $this->call(InvitationsTableSeeder::class);
     }
 }

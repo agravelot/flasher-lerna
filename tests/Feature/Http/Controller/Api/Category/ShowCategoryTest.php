@@ -17,7 +17,7 @@ class ShowCategoryTest extends TestCase
 
         $response = $this->showCategory($category);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertSee($category->title);
     }
 

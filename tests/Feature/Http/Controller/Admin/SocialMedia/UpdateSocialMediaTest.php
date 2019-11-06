@@ -1,10 +1,9 @@
 <?php
 
-namespace Tests\Feature\Http\Controller\Admin\SocialMedia;
+namespace Tests\Feature\Http\Controllers\Admin\SocialMedia;
 
 use Tests\TestCase;
 use App\Models\SocialMedia;
-use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -12,79 +11,53 @@ class UpdateSocialMediaTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_update_a_social_media_with_the_same_data()
+    public function test_admin_can_update_social_media(): void
     {
         $this->actingAsAdmin();
-        $socialMedia = factory(SocialMedia::class)->create();
+        /** @var SocialMedia $socialMedia */
+        $socialMedia = factory(SocialMedia::class)->state('active')->create();
 
-        $response = $this->updateSocialMedia($socialMedia, $socialMedia->id);
+        $socialMedia->active = false;
+        $response = $this->updateSocialMedia($socialMedia);
 
+        $response->assertOk();
+        $this->assertFalse($socialMedia->fresh()->active);
         $this->assertSame(1, SocialMedia::count());
-        $response->assertStatus(302)
-            ->assertRedirect('/admin/social-medias');
-        $this->followRedirects($response)
-            ->assertStatus(200)
-            ->assertSee($socialMedia->name);
     }
 
-    private function updateSocialMedia(SocialMedia $socialMedia, ?int $id = null): TestResponse
-    {
-        session()->setPreviousUrl('/admin/social-medias/'.$id.'/edit');
-
-        return $this->patch('/admin/social-medias/'.$id, $socialMedia->toArray());
-    }
-
-    public function test_admin_can_not_update_a_social_media_with_another_social_media_name()
-    {
-        $this->actingAsAdmin();
-        $socialMedias = factory(SocialMedia::class, 2)->create();
-        $socialMedias->get(1)->name = $socialMedias->get(0)->name;
-
-        $response = $this->updateSocialMedia($socialMedias->get(1), $socialMedias->get(1)->id);
-
-        $this->assertSame(2, SocialMedia::count());
-        $response->assertStatus(302)
-            ->assertRedirect('/admin/social-medias/'.$socialMedias->get(1)->id.'/edit');
-        $this->followRedirects($response)
-            ->assertStatus(200)
-            ->assertSee($socialMedias->get(1)->name)
-            ->assertSee($socialMedias->get(1)->description)
-            ->assertSee('The name has already been taken.');
-    }
-
-    public function test_user_can_not_update_a_social_media()
+    public function test_user_cannot_update_social_media(): void
     {
         $this->actingAsUser();
-        $socialMedia = factory(SocialMedia::class)->create();
-        $socialMediaUpdate = factory(SocialMedia::class)->make();
+        /** @var SocialMedia $socialMedia */
+        $socialMedia = factory(SocialMedia::class)->state('active')->create();
 
-        $response = $this->updateSocialMedia($socialMediaUpdate, $socialMedia->id);
+        $socialMedia->active = false;
+        $response = $this->updateSocialMedia($socialMedia);
 
+        $this->assertSame(403, $response->getStatusCode());
         $this->assertSame(1, SocialMedia::count());
-        $this->assertSame($socialMedia->id, $socialMedia->fresh()->id);
-        $this->assertSame($socialMedia->title, $socialMedia->fresh()->title);
-        $this->assertSame($socialMedia->description, $socialMedia->fresh()->description);
-        $response->assertStatus(403);
     }
 
-    public function test_guest_can_not_update_a_social_media_and_is_redirected_to_login()
+    public function test_guest_cannot_update_social_media(): void
     {
-        $socialMedia = factory(SocialMedia::class)->create();
-        $socialMediaUpdate = factory(SocialMedia::class)->make();
+        /** @var SocialMedia $socialMedia */
+        $socialMedia = factory(SocialMedia::class)->state('active')->create();
 
-        $response = $this->updateSocialMedia($socialMediaUpdate, $socialMedia->id);
+        $socialMedia->active = false;
+        $response = $this->updateSocialMedia($socialMedia);
 
+        $response->assertUnauthorized();
         $this->assertSame(1, SocialMedia::count());
-        $this->assertSame($socialMedia->id, $socialMedia->fresh()->id);
-        $this->assertSame($socialMedia->title, $socialMedia->fresh()->title);
-        $this->assertSame($socialMedia->description, $socialMedia->fresh()->description);
-        $response->assertStatus(302)
-            ->assertRedirect('/login');
     }
 
-    protected function setUp(): void
+    public function updateSocialMedia(SocialMedia $socialMedia): TestResponse
     {
-        parent::setUp();
-        $this->withoutMiddleware(VerifyCsrfToken::class);
+        return $this->json('patch', "/api/admin/social-medias/{$socialMedia->id}", [
+            'name' => $socialMedia->name,
+            'url' => $socialMedia->url,
+            'icon' => $socialMedia->icon,
+            'color' => $socialMedia->color,
+            'active' => $socialMedia->active,
+        ]);
     }
 }

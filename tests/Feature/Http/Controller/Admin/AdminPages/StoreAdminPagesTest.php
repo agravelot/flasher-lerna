@@ -18,7 +18,7 @@ class StoreAdminPagesTest extends TestCase
 
         $response = $this->storePage($page);
 
-        $response->assertStatus(201)
+        $response->assertCreated()
             ->assertJson($this->getJsonArray($page));
     }
 

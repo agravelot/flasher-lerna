@@ -19,10 +19,10 @@
                     @endif
                     <div class="column">
                         <h1 class="title">
-                            JKanda
+                            {{ settings()->get('app_name') }}
                         </h1>
                         <p class="subtitle">
-                            Photographe passionnée
+                            {{ settings()->get('homepage_header_subtitle') }}
                         </p>
                     </div>
                 </div>
@@ -117,7 +117,7 @@
                 <div class="columns is-vcentered">
                     @foreach($testimonials as $testimonial)
                         <div class="column">
-                            @include('testimonials._item', ['goldenBookPost' => $testimonial])
+                            @include('testimonials._item', ['testimonial' => $testimonial])
                         </div>
                     @endforeach
                 </div>

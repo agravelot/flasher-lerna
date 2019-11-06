@@ -1,21 +1,24 @@
 <template>
-    <div v-if="album">
-        <b-button
-            tag="a"
-            target="_blank"
-            :href="getFacebookLink()"
-            icon-pack="fab"
-            icon-right="facebook"
-        />
-        <b-button
-            tag="a"
-            target="_blank"
-            :href="getTwitterLink()"
-            icon-pack="fab"
-            icon-right="twitter"
-        />
-        <b-button @click="addToClipboard(getLink())" icon-right="link" />
-    </div>
+  <div v-if="album && album.links">
+    <b-button
+      :href="getFacebookLink()"
+      tag="a"
+      target="_blank"
+      icon-pack="fab"
+      icon-right="facebook"
+    />
+    <b-button
+      :href="getTwitterLink()"
+      tag="a"
+      target="_blank"
+      icon-pack="fab"
+      icon-right="twitter"
+    />
+    <b-button
+      @click="addToClipboard(getLink())"
+      icon-right="link"
+    />
+  </div>
 </template>
 
 <script lang="ts">

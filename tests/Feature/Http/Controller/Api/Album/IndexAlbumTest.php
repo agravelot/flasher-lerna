@@ -17,7 +17,7 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->json('get', '/api/albums');
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertSame($album->title, $response->decodeResponseJson('data')[0]['title']);
     }
 
@@ -28,7 +28,7 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->json('get', '/api/albums');
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJson(['data' => []]);
     }
 
@@ -39,7 +39,7 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->json('get', '/api/albums');
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJson(['data' => []]);
     }
 
@@ -49,7 +49,7 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->json('get', '/api/albums');
 
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_user_can_view_published_albums()
@@ -59,7 +59,7 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->json('get', '/api/albums');
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertSame($album->title, $response->decodeResponseJson('data')[0]['title']);
     }
 
@@ -70,7 +70,7 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->json('get', '/api/albums');
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJson(['data' => []]);
     }
 
@@ -81,7 +81,7 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->json('get', '/api/albums');
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJson(['data' => []]);
     }
 
@@ -89,7 +89,7 @@ class IndexAlbumTest extends TestCase
     {
         $response = $this->json('get', '/api/albums');
 
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_guest_can_view_published_albums()
@@ -99,7 +99,7 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->json('get', '/api/albums');
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertSame($album->title, $response->decodeResponseJson('data')[0]['title']);
     }
 
@@ -110,7 +110,7 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->json('get', '/api/albums');
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJson(['data' => []]);
     }
 
@@ -121,7 +121,7 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->json('get', '/api/albums');
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertJson(['data' => []]);
     }
 }

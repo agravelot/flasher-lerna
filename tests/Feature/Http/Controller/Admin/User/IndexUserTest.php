@@ -19,7 +19,7 @@ class IndexUserTest extends TestCase
 
         $response = $this->getUsers();
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertJsonUserFragment($response, $users);
     }
 

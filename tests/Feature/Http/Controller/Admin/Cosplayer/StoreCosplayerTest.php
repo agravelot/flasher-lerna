@@ -21,8 +21,8 @@ class StoreCosplayerTest extends TestCase
         $response = $this->storeCosplayer($cosplayer);
 
         $cosplayer = Cosplayer::latest()->first();
-        $response->assertStatus(201);
-        $response->assertJson([
+        $response->assertCreated()
+            ->assertJson([
             'data' => [
                 'id' => $cosplayer->id,
                 'name' => $cosplayer->name,
@@ -55,7 +55,7 @@ class StoreCosplayerTest extends TestCase
         $response = $this->storeCosplayer($cosplayer, $avatar);
 
         $cosplayer = Cosplayer::latest()->first();
-        $response->assertStatus(201)
+        $response->assertCreated()
             ->assertJson([
                 'data' => [
                     'id' => $cosplayer->id,

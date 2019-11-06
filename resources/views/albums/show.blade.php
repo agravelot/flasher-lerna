@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('pageTitle', $album->title)
+@section('pageTitle', $album->title . ' - Album')
+
+@section('seo_description', (new App\Http\OpenGraphs\AlbumOpenGraph($album))->description())
 
 @section('content')
     <div class="hero is-black is-radiusless">
@@ -10,6 +12,7 @@
         <div class="container">
             @include('albums.partials._show_item', compact('album'))
         </div>
+        {!! new \App\Http\Schemas\AlbumSchema($album) !!}
     </section>
 @endsection
 

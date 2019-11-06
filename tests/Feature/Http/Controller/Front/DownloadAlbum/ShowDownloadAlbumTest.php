@@ -49,7 +49,7 @@ class ShowDownloadAlbumTest extends TestCase
 
         $response = $this->getDownloadAlbum($album);
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $this->assertInstanceOf(StreamedResponse::class, $response->baseResponse);
         $response->assertHeader('Content-Disposition', 'attachment; filename="'.$album->zip_file_name.'"');
     }
@@ -87,7 +87,7 @@ class ShowDownloadAlbumTest extends TestCase
 
         $response->assertRedirect('/login');
         $this->followRedirects($response)
-            ->assertStatus(200);
+            ->assertOk();
     }
 
     private function getDownloadAlbum(Album $album): TestResponse

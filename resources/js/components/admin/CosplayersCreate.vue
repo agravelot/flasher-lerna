@@ -1,95 +1,111 @@
 <template>
-    <div class="card">
-        <div class="card-content">
-            <b-field
-                label="Name"
-                :type="errors.name ? 'is-danger' : ''"
-                :message="errors.name ? errors.name[0] : null"
+  <div class="card">
+    <div class="card-content">
+      <b-field
+        :type="errors.name ? 'is-danger' : ''"
+        :message="errors.name ? errors.name[0] : null"
+        label="Name"
+      >
+        <b-input v-model="cosplayer.name" />
+      </b-field>
+
+      <b-field
+        :type="errors.description ? 'is-danger' : ''"
+        :message="errors.description ? errors.description[0] : null"
+        label="Description"
+      >
+        <quill-editor
+          ref="myQuillEditor"
+          v-model="cosplayer.description"
+          :options="editorOption"
+        />
+      </b-field>
+
+      <div class="columns">
+        <div class="column">
+          <div v-if="cosplayer.avatar">
+            <label class="label">Current avatar</label>
+            <img
+              :src="cosplayer.avatar.thumb"
+              alt=""
             >
-                <b-input v-model="cosplayer.name"></b-input>
-            </b-field>
+            <b-button
+              @click="cosplayer.avatar = null"
+              type="is-danger"
+              icon-right="trash-alt"
+            />
+          </div>
 
-            <b-field
-                label="Description"
-                :type="errors.description ? 'is-danger' : ''"
-                :message="errors.description ? errors.description[0] : null"
+          <b-field
+            v-else
+            :type="errors.avatar ? 'is-danger' : ''"
+            :message="errors.avatar ? errors.avatar[0] : null"
+            label="Upload avatar"
+          >
+            <b-upload
+              v-model="cosplayer.avatar"
+              drag-drop
             >
-                <quill-editor
-                    v-model="cosplayer.description"
-                    ref="myQuillEditor"
-                    :options="editorOption"
-                ></quill-editor>
-            </b-field>
-
-            <div class="columns">
-                <div class="column">
-                    <div v-if="cosplayer.avatar">
-                        <label class="label">Current avatar</label>
-                        <img :src="cosplayer.avatar.thumb" alt="" />
-                        <b-button
-                            type="is-danger"
-                            icon-right="trash-alt"
-                            @click="cosplayer.avatar = null"
-                        ></b-button>
-                    </div>
-
-                    <b-field
-                        v-else
-                        label="Upload avatar"
-                        :type="errors.avatar ? 'is-danger' : ''"
-                        :message="errors.avatar ? errors.avatar[0] : null"
-                    >
-                        <b-upload v-model="cosplayer.avatar" drag-drop>
-                            <section class="section">
-                                <div class="content has-text-centered">
-                                    <p>
-                                        <b-icon icon="upload" size="is-large"></b-icon>
-                                    </p>
-                                    <p>Drop your files here or click to upload</p>
-                                    <span class="file-name" v-if="cosplayer.avatar">
-                                        {{ cosplayer.avatar.name }}
-                                    </span>
-                                </div>
-                            </section>
-                        </b-upload>
-                    </b-field>
+              <section class="section">
+                <div class="content has-text-centered">
+                  <p>
+                    <b-icon
+                      icon="upload"
+                      size="is-large"
+                    />
+                  </p>
+                  <p>Drop your files here or click to upload</p>
+                  <span
+                    v-if="cosplayer.avatar"
+                    class="file-name"
+                  >
+                    {{ cosplayer.avatar.name }}
+                  </span>
                 </div>
-                <div class="column">
-                    <b-field
-                        label="Linked user"
-                        :type="errors.user_id ? 'is-danger' : ''"
-                        :message="errors.user_id ? errors.user_id[0] : null"
-                    >
-                        <b-autocomplete
-                            :data="searchUsers"
-                            v-model="cosplayer.user.id"
-                            placeholder="e.g. Anne"
-                            keep-first
-                            open-on-focus
-                            @typing="searchUser"
-                            field="id"
-                            @select="option => (selected = option)"
-                        >
-                            <template slot-scope="props">
-                                <div>
-                                    {{ props.option.name }}
-                                    <br />
-                                    <small>
-                                        Email: {{ props.option.email }}, role
-                                        <b>{{ props.option.role }}</b>
-                                    </small>
-                                </div>
-                            </template>
-                        </b-autocomplete>
-                    </b-field>
-                </div>
-            </div>
-
-            <b-button type="is-primary" :loading="this.loading" @click="createCosplayer()"
-                >Create
-            </b-button>
+              </section>
+            </b-upload>
+          </b-field>
         </div>
+        <div class="column">
+          <b-field
+            :type="errors.user_id ? 'is-danger' : ''"
+            :message="errors.user_id ? errors.user_id[0] : null"
+            label="Linked user"
+          >
+            <b-autocomplete
+              :data="searchUsers"
+              v-model="cosplayer.user.id"
+              @typing="searchUser"
+              @select="option => (selected = option)"
+              placeholder="e.g. Anne"
+              keep-first
+              open-on-focus
+              field="id"
+            >
+              <template slot-scope="props">
+                <div>
+                  {{ props.option.name }}
+                  <br>
+                  <small>
+                    Email: {{ props.option.email }}, role
+                    <b>{{ props.option.role }}</b>
+                  </small>
+                </div>
+              </template>
+            </b-autocomplete>
+          </b-field>
+        </div>
+      </div>
+
+      <b-button
+        :loading="loading"
+        @click="createCosplayer()"
+        type="is-primary"
+      >
+        Create
+      </b-button>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -110,7 +126,7 @@ import User from '../../models/user';
 })
 export default class CosplayersCreate extends Buefy {
     private cosplayer: Cosplayer = new Cosplayer();
-    private loading: boolean = false;
+    private loading = false;
     private searchUsers: Array<User> = [];
     protected errors: object = {};
 
@@ -126,13 +142,13 @@ export default class CosplayersCreate extends Buefy {
     createCosplayer(): void {
         this.loading = true;
 
-        let formData: FormData = this.cosplayerToFormData(this.cosplayer);
+        const formData: FormData = this.cosplayerToFormData(this.cosplayer);
         this.axios
             .post(`/api/admin/cosplayers`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             })
             .then(res => res.data)
-            .then(res => {
+            .then(() => {
                 this.loading = false;
                 this.showSuccess('Cosplayer created');
                 this.$router.push({ name: 'admin.cosplayers.index' });
@@ -163,7 +179,7 @@ export default class CosplayersCreate extends Buefy {
     }
 
     cosplayerToFormData(cosplayer: Cosplayer): FormData {
-        let formData = new FormData();
+        const formData = new FormData();
         //TODO Rewrite
         if (cosplayer.name) {
             formData.append('name', cosplayer.name);

@@ -22,7 +22,7 @@ class StoreAlbumTest extends TestCase
 
         $this->assertSame(1, Album::count());
         $this->assertNotNull(Album::first()->media->first);
-        $response->assertStatus(201);
+        $response->assertCreated();
     }
 
     public function storeAlbum(Album $album, array $optional = []): TestResponse
@@ -41,7 +41,7 @@ class StoreAlbumTest extends TestCase
 
         $this->assertSame(1, Album::count());
         $this->assertNotNull(Album::first()->media->first);
-        $response->assertStatus(201);
+        $response->assertCreated();
     }
 
     public function test_admin_can_store_an_album_with_a_category_and_a_picture()
@@ -56,7 +56,7 @@ class StoreAlbumTest extends TestCase
 
         $this->assertSame(1, Album::count());
         $this->assertNotNull(Album::first()->categories->first);
-        $response->assertStatus(201);
+        $response->assertCreated();
     }
 
     public function test_admin_can_not_store_an_album_with_an_non_existent_category_and_a_picture()
@@ -84,7 +84,7 @@ class StoreAlbumTest extends TestCase
 
         $this->assertSame(1, Album::count());
         $this->assertNotNull(Album::first()->categories->first);
-        $response->assertStatus(201);
+        $response->assertCreated();
     }
 
     public function test_admin_can_store_an_album_with_an_non_existent_cosplayer()
@@ -108,7 +108,7 @@ class StoreAlbumTest extends TestCase
         $response = $this->storeAlbum($album);
 
         $this->assertSame(1, Album::count());
-        $response->assertStatus(201);
+        $response->assertCreated();
     }
 
     public function test_admin_can_store_an_album_with_published_now()
@@ -119,7 +119,7 @@ class StoreAlbumTest extends TestCase
         $response = $this->storeAlbum($album);
 
         $this->assertSame(1, Album::count());
-        $response->assertStatus(201);
+        $response->assertCreated();
     }
 
     public function test_user_cannot_store_an_album()

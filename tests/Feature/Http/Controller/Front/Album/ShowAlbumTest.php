@@ -24,7 +24,7 @@ class ShowAlbumTest extends TestCase
 
         $response = $this->showAlbum($album);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertSee('Test title')
             ->assertSee('Some test body, this is a good day!');
     }
@@ -48,7 +48,7 @@ class ShowAlbumTest extends TestCase
 
         $response = $this->showAlbum($album);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertSee('Test title')
             ->assertSee('Some test body, this is a good day!')
             ->assertSee('Category name');
@@ -73,7 +73,7 @@ class ShowAlbumTest extends TestCase
 
         $response = $this->showAlbum($album);
 
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertSee('Test title')
             ->assertSee('Some test body, this is a good day!')
             ->assertSee('Category name')

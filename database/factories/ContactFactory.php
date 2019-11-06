@@ -2,6 +2,9 @@
 
 use Carbon\Carbon;
 use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factory;
+
+/* @var Factory $factory */
 
 $factory->define(\App\Models\Contact::class, static function (Faker $faker) {
     return [

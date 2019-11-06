@@ -3,7 +3,7 @@
 image: tmaier/docker-compose:latest
 
 services:
-- docker:dind
+- docker:18.06.3-dind
 
 stages:
 - build
@@ -16,7 +16,11 @@ variables:
   CONTAINER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH
   DOCKER_HOST: tcp://docker:2375
   DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: "" # Workaround https://gitlab.com/gitlab-org/gitlab-ce/issues/64959
+  # Create the certificates inside this directory for both the server
+  # and client. The certificates used by the client will be created in
+  # /certs/client so we only need to share this directory with the
+  # volume mount in `config.toml`.
+  DOCKER_TLS_CERTDIR: "/certs"
 
 before_script:
 - touch docker/db/.env docker/nginx/.env docker/php-fpm/.env
@@ -31,6 +35,11 @@ build:
   script:
     - docker-compose build
     - docker-compose push php nginx
+    # Push latest tag, used as build cache
+    - docker tag registry.gitlab.com/flasher/flasher/picblog_nginx:${CI_COMMIT_SHORT_SHA:-latest} registry.gitlab.com/flasher/flasher/picblog_nginx:latest
+    - docker tag registry.gitlab.com/flasher/flasher/picblog_php:${CI_COMMIT_SHORT_SHA:-latest} registry.gitlab.com/flasher/flasher/picblog_php:latest
+    - docker push registry.gitlab.com/flasher/flasher/picblog_nginx:latest
+    - docker push registry.gitlab.com/flasher/flasher/picblog_php:latest
   artifacts:
     name: "build_logs"
     expire_in: 1 week

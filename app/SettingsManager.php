@@ -14,23 +14,16 @@ class SettingsManager
 
     public function __construct()
     {
-        $this->loadSettings();
-    }
-
-    private function loadSettings(): void
-    {
-        $this->settings = Setting::with('media')->get();
+        $this->settings = Setting::refreshCache();
     }
 
     public function has(string $name): bool
     {
-        return $this->get($name, false) ? true : false;
+        return (bool) $this->get($name, false);
     }
 
     /**
      * Return the setting with the casted type.
-     *
-     * @param  null  $default
      *
      * @return string|bool|int|Media
      */
@@ -45,10 +38,13 @@ class SettingsManager
         return optional($setting)->value ?: $default;
     }
 
-    public function set(array $setting): Setting
+    public function set(string $name, $value): Setting
     {
-        return tap(Setting::create($setting), function () {
-            $this->loadSettings();
+        return tap(Setting::updateOrCreate(['name' => $name], [
+            'name' => $name,
+            'value' => $value,
+        ]), static function () {
+            Setting::refreshCache();
         });
     }
 }
