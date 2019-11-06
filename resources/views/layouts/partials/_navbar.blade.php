@@ -43,6 +43,10 @@
                                     {{ __('Admin') }}
                                 </a>
                             @endcan
+                            <a class="navbar-item {{ Request::is('profile/my-albums*') ? 'is-active' : '' }}"
+                               href="{{ route('profile.my-albums') }}">
+                                {{ __('My albums') }}
+                            </a>
                             <hr class="navbar-divider">
                             <a class="navbar-item has-text-danger"
                                onclick="event.preventDefault();document.getElementById('logout-form').submit();">
