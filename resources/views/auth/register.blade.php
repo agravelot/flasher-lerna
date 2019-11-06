@@ -8,7 +8,7 @@
 
     <div class="container has-text-centered">
         <div class="column is-half is-offset-3">
-            <h1 class="title has-text-grey">{{ __('Register') }}</h1>
+            {{--<h1 class="title has-text-grey">{{ __('Register') }}</h1>--}}
             <p class="subtitle has-text-grey">{{ __('Please register to proceed.') }}</p>
             <div class="box">
                 <form class="register-form" method="POST" action="{{ route('register') }}">
