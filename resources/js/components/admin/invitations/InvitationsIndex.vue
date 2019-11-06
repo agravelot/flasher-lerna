@@ -50,27 +50,15 @@
 
           <b-table-column
             field="confirmed_at"
-            label="Confirmed at"
+            label="Confirmed"
             sortable
           >
-            <a
-              :title="invitation.row.confirmed_at"
-            >
-              <span v-if="invitation.row.confirmed_at">
-                <b-icon
-                  icon="check"
-                  size="is-small"
-                  type="is-success"
-                />
-              </span>
-              <span v-else>
-                <b-icon
-                  icon="lock"
-                  size="is-small"
-                  type="is-warning"
-                />
-              </span>
-            </a>
+            <span v-if="invitation.row.confirmed_at">
+              Yes
+            </span>
+            <span v-else>
+              No
+            </span>
           </b-table-column>
         </template>
 
