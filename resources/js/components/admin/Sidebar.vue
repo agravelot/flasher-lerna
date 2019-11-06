@@ -55,6 +55,12 @@
           to="/admin/social-medias"
         />
         <b-menu-item
+          :to="{ name: 'admin.invitations.index' }"
+          label="Invitations"
+          icon="envelope-open-text"
+          tag="router-link"
+        />
+        <b-menu-item
           :to="{ name: 'admin.settings.index' }"
           label="Settings"
           icon="cog"

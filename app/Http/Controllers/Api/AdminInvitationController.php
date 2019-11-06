@@ -19,7 +19,7 @@ class AdminInvitationController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
-        $invitations = Invitation::all();
+        $invitations = Invitation::paginate();
 
         return InvitationResource::collection($invitations);
     }

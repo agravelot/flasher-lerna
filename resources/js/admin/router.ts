@@ -17,6 +17,7 @@ import UsersEdit from '../components/admin/UsersEdit.vue';
 import TestimonialsIndex from '../components/admin/TestimonialsIndex.vue';
 import NotFound from '../components/admin/NotFound.vue';
 import Settings from '../components/admin/Settings.vue';
+import InvitationsIndex from "../components/admin/invitations/InvitationsIndex.vue";
 
 Vue.use(VueRouter);
 
@@ -194,6 +195,15 @@ const routes: Array<any> = [
         path: '/admin/settings',
         name: 'admin.settings.index',
         component: Settings,
+        // component: () =>
+        //     import(
+        //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Core/Resources/assets/js/components/Settings.vue'
+        //     ),
+    },
+    {
+        path: '/admin/invitations',
+        name: 'admin.invitations.index',
+        component: InvitationsIndex,
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Core/Resources/assets/js/components/Settings.vue'

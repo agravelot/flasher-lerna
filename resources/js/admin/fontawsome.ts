@@ -37,6 +37,7 @@ import {
   faSadTear,
   faUser,
   faShare,
+  faEnvelopeOpenText
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faFacebook, faInstagram, faLinkedin, faTwitter,
@@ -84,6 +85,7 @@ library.add(
   faTwitter,
   faFacebook,
   faLinkedin,
+  faEnvelopeOpenText,
 );
 
 Vue.component('vue-fontawesome', FontAwesomeIcon);
