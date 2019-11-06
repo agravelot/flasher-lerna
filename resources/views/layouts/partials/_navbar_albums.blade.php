@@ -5,7 +5,7 @@
 
     <div class="navbar-dropdown is-boxed">
         <span class="navbar-item">
-            {{ __('Show by :') }}
+            {{ __('Show by:') }}
         </span>
         <hr class="navbar-divider">
         <a class="navbar-item {{ Request::is('albums*') ? 'is-active' : '' }}" href="{{ route('albums.index') }}">
