@@ -29,6 +29,8 @@
         backend-pagination
         backend-sorting
         checkable
+        detailed
+        show-detail-icon
       >
         <template slot-scope="invitation">
           <b-table-column
@@ -70,6 +72,17 @@
               </span>
             </a>
           </b-table-column>
+        </template>
+
+        <template
+          slot="detail"
+          slot-scope="props"
+        >
+          <article>
+            <p>
+              {{ props.row.message }}
+            </p>
+          </article>
         </template>
 
         <template slot="empty">
