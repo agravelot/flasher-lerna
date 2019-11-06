@@ -40,8 +40,6 @@
         :default-sort-direction="defaultSortOrder"
         :default-sort="[sortField, sortOrder]"
         @sort="onSort"
-        :opened-detailed="defaultOpenedDetails"
-        @details-open="(row, index) => $buefy.toast.open(`Expanded ${row.user.first_name}`)"
         :show-detail-icon="showDetailIcon"
         :checked-rows.sync="checkedRows"
         striped
