@@ -10,7 +10,7 @@
         @forelse($albums as $album)
             <p>{{ $album->title }}</p>
         @empty
-            <span>Nothing to show</span>
+            <span>{{ __('Nothing to show') }}</span>
         @endforelse
     </div>
 @endsection
