@@ -64,8 +64,8 @@ services:
       dockerfile: Dockerfile
       target: nginx
     restart: unless-stopped
-    ports:
-    - 8080:80
+    expose:
+    - 80
     env_file: ./docker/nginx/.env
     volumes:
     - storage:/var/www/html/storage:ro,delegated
