@@ -22,7 +22,7 @@ class AlbumSchema implements SchemaInterface
     {
         $schema = Schema::imageGallery()
             ->name($this->album->name)
-            ->keywords($this->album->categories->toArray())
+            ->keywords($this->album->categories->pluck('name')->toArray())
             ->isAccessibleForFree(true)
             ->primaryImageOfPage(optional($this->album->cover)->getUrl())
             ->specialty($this->album->categories->toArray())
