@@ -25,7 +25,7 @@ class AlbumSchema implements SchemaInterface
             ->keywords($this->album->categories->pluck('name')->toArray())
             ->isAccessibleForFree(true)
             ->primaryImageOfPage(optional($this->album->cover)->getUrl())
-            ->specialty($this->album->categories->toArray())
+            ->specialty($this->album->categories->pluck('name')->toArray())
             ->author([
                 (new Person())->name($this->album->user->name)
                     ->email('contact@jkanda.fr')
