@@ -12,7 +12,13 @@
         </a>
 
         <div class="columns is-multiline">
-            @each('testimonials._item', $testimonials, 'testimonial', 'layouts.partials._empty')
+            @forelse($testimonials as $testimonial)
+                <div class="column is-half-desktop is-full-touch">
+                    @include('testimonials._item', compact('testimonial'))
+                </div>
+            @empty
+                @include('layouts.partials._empty')
+            @endforelse
         </div>
 
         {{ $testimonials->links() }}
