@@ -16,7 +16,7 @@ class SocialMediaComposer
     /**
      * Bind data to the view.
      */
-    public function compose(View $view): void
+    public function create(View $view): void
     {
         if (! $this->socialMedias) {
             $this->socialMedias = SocialMedia::active()->get();

@@ -6,8 +6,6 @@
     <div class="container">
         <div class="card-content">
 
-            <h1 class="title is-1 has-text-centered">{{ __('Add your message') }}</h1>
-
             @include('layouts.partials._messages')
 
             <form method="POST" action="{{ route('testimonials.store') }}">

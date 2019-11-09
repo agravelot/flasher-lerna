@@ -21,6 +21,6 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('layouts.partials._navbar_socials', SocialMediaComposer::class);
+        View::creator('layouts.partials._navbar_socials', SocialMediaComposer::class);
     }
 }
