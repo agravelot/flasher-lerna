@@ -13,22 +13,22 @@
 
         @endif
 
-        <div class="columns is-mobile has-margin-top-md has-margin-bottom-md">
+        <div class="columns is-mobile is-vcentered has-margin-top-md has-margin-bottom-md">
             @php
                 $profilePicture = settings()->get('profile_picture_homepage');
             @endphp
-            <div class="column">
-                @if ($profilePicture)
+            @if ($profilePicture)
+                <div class="column">
                     <figure class="image is-64x64 is-pulled-right">
                         {{ $profilePicture('', ['class' => 'is-rounded responsive-media']) }}
                     </figure>
-                @endif
-            </div>
+                </div>
+            @endif
 
             <div class="column">
-                <div class="content is-pulled-left">
-                    <a class="has-text-white" href="{{ url('/') }}"
-                       rel="author">{{ __('By') }} {{ $album->user->name }}</a>
+                <div class="content {{ $profilePicture ? 'is-pulled-left' : '' }}">
+                    {{ __('By') }}&nbsp;
+                    <a class="has-text-white" href="{{ url('/') }}" rel="author">{{ $album->user->name }}</a>
                 </div>
             </div>
         </div>
