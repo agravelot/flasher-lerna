@@ -126,12 +126,3 @@
         </div>
     </section>
 @stop
-
-@section('head')
-    <style>
-        .has-hero-background {
-            background: url("{{ optional(settings()->get('background_picture_homepage'))->getUrl() }}") center center;
-            background-size: cover;
-        }
-    </style>
-@endsection
