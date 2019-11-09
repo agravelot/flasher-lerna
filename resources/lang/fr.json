@@ -79,5 +79,19 @@
     "Your message has been added to the testimonials": "Votre message a été ajouté au livre d'or.",
     "Photographer": "Photographe",
     "Show by:": "Afficher par :",
-    "Invitation accepted": "Invitation acceptée"
+    "Invitation accepted": "Invitation acceptée",
+    "We'll be back soon": "Nous serons bientôt de retour",
+    "Service Unavailable": "Service indisponible",
+    "Sorry, you are not authorized to access this page.": "Désolé, vous n'êtes pas autorisé à accéder à cette page.",
+    "Unauthorized": "Non autorisé",
+    "Forbidden": "Interdit",
+    "Sorry, you are forbidden from accessing this page.": "Désolé, il vous est interdit d'accéder à cette page.",
+    "Page Not Found": "Page introuvable",
+    "Page Expired": "Page expirée",
+    "Sorry, your session has expired. Please refresh and try again.": "Désolé, votre session a expiré. Veuillez vous rafraîchir et réessayer.",
+    "Too Many Requests": "Trop de demandes",
+    "Error": "Erreur",
+    "Whoops, something went wrong on our servers.": "Oups, quelque chose a mal tourné sur nos serveurs.",
+    "Oh no": "Oh non",
+    "Go Home": "Aller à l'accueil"
 }
