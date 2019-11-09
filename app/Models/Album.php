@@ -82,8 +82,7 @@ class Album extends Model implements HasMedia, Feedable
 
     public function getCoverAttribute(): ?Media
     {
-        return $this->media()->where('collection_name', self::PICTURES_COLLECTION)
-            ->cursor()->first();
+        return $this->media->where('collection_name', self::PICTURES_COLLECTION)->first();
     }
 
     public function getCoverResponsiveAttribute(): ?HtmlString
