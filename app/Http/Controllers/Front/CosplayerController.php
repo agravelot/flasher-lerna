@@ -13,7 +13,7 @@ class CosplayerController extends Controller
      */
     public function index(): View
     {
-        $cosplayers = Cosplayer::with('media')->paginate();
+        $cosplayers = Cosplayer::with('media')->orderBy('name')->paginate();
 
         return view('cosplayers.index', compact('cosplayers'));
     }
