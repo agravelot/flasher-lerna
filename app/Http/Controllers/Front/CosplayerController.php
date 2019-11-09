@@ -13,7 +13,7 @@ class CosplayerController extends Controller
      */
     public function index(): View
     {
-        $cosplayers = Cosplayer::with('media')->get();
+        $cosplayers = Cosplayer::with('media')->paginate();
 
         return view('cosplayers.index', compact('cosplayers'));
     }
@@ -23,7 +23,7 @@ class CosplayerController extends Controller
      */
     public function show(Cosplayer $cosplayer): View
     {
-        $albums = $cosplayer->load('publicAlbums.media')->publicAlbums()->paginate();
+        $albums = $cosplayer->publicAlbums()->paginate();
 
         return view('cosplayers.show', compact('cosplayer', 'albums'));
     }
