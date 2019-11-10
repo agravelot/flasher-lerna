@@ -6,16 +6,8 @@
           <div class="level-item">
             <div class="buttons">
               <b-button
-                :to="{ name: 'admin.categories.create' }"
-                tag="router-link"
-                type="is-success"
-                icon-left="plus"
-              >
-                Add
-              </b-button>
-              <b-button
                 :disabled="!checkedRows.length"
-                @click="confirmDeleteSelectedCategories"
+                @click="confirmDeleteSelectedContacts"
                 type="is-danger"
                 icon-left="trash-alt"
               >
@@ -30,7 +22,7 @@
             <b-input
               :loading="loading"
               v-model="search"
-              @input="fetchCategories()"
+              @input="fetchContacts()"
               placeholder="Search..."
               type="search"
               icon="search"
@@ -40,7 +32,7 @@
       </div>
 
       <b-table
-        :data="categories"
+        :data="contacts"
         :loading="loading"
         :total="total"
         :per-page="perPage"
@@ -48,6 +40,7 @@
         :default-sort-direction="defaultSortOrder"
         :default-sort="[sortField, sortOrder]"
         @sort="onSort"
+        :show-detail-icon="showDetailIcon"
         :checked-rows.sync="checkedRows"
         striped
         hoverable
@@ -56,22 +49,41 @@
         backend-pagination
         backend-sorting
         checkable
+        detailed
+        detail-key="id"
       >
-        <template slot-scope="category">
+        <template slot-scope="contact">
           <b-table-column
             field="name"
             label="Name"
             sortable
           >
-            <router-link
-              :to="{
-                name: 'admin.categories.edit',
-                params: { slug: category.row.slug },
-              }"
-            >
-              {{ category.row.name }}
-            </router-link>
+            {{ contact.row.name }}
           </b-table-column>
+
+          <b-table-column
+            field="email"
+            label="Email"
+            sortable
+          >
+            <a
+              :href="`mailto:${contact.row.email}`"
+              target="_blank"
+            >{{
+              contact.row.email
+            }}</a>
+          </b-table-column>
+        </template>
+
+        <template
+          slot="detail"
+          slot-scope="props"
+        >
+          <article>
+            <p>
+              {{ props.row.message }}
+            </p>
+          </article>
         </template>
 
         <template slot="empty">
@@ -99,11 +111,11 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import Buefy from '../../admin/Buefy.vue';
-import Category from '../../models/category';
+import Buefy from '../../../admin/Buefy.vue';
+import Contact from '../../../models/contact';
 
 @Component({
-    name: 'CategoriesIndex',
+    name: 'ContactsIndex',
     filters: {
         /**
          * Filter to truncate string, accepts a length parameter
@@ -113,9 +125,9 @@ import Category from '../../models/category';
         },
     },
 })
-export default class CategoriesIndex extends Buefy {
-    private categories: Array<Category> = [];
-    private checkedRows: Array<Category> = [];
+export default class ContactsIndex extends Buefy {
+    private contacts: Array<Contact> = [];
+    private checkedRows: Array<Contact> = [];
     private total = 0;
     private page = 1;
     perPage = 10;
@@ -127,15 +139,15 @@ export default class CategoriesIndex extends Buefy {
     private search = '';
 
     created(): void {
-        this.fetchCategories();
+        this.fetchContacts();
     }
 
-    fetchCategories(): void {
+    fetchContacts(): void {
         this.loading = true;
         const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
         this.axios
-            .get('/api/admin/categories', {
+            .get('/api/admin/contacts', {
                 params: {
                     page: this.page,
                     sort: sortOrder + this.sortField,
@@ -146,21 +158,21 @@ export default class CategoriesIndex extends Buefy {
             .then(res => {
                 this.perPage = res.meta.per_page;
                 this.total = res.meta.total;
-                this.categories = res.data;
+                this.contacts = res.data;
                 this.loading = false;
             })
             .catch(err => {
-                this.categories = [];
+                this.contacts = [];
                 this.total = 0;
                 this.loading = false;
                 this.$buefy.snackbar.open({
-                    message: 'Unable to load categories, maybe you are offline?',
+                    message: 'Unable to load contacts, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',
                     actionText: 'Retry',
                     indefinite: true,
                     onAction: () => {
-                        this.fetchCategories();
+                        this.fetchContacts();
                     },
                 });
                 throw err;
@@ -172,7 +184,7 @@ export default class CategoriesIndex extends Buefy {
      */
     onPageChange(page: number): void {
         this.page = page;
-        this.fetchCategories();
+        this.fetchContacts();
     }
 
     /*
@@ -181,36 +193,36 @@ export default class CategoriesIndex extends Buefy {
     onSort(field: string, order: string): void {
         this.sortField = field;
         this.sortOrder = order;
-        this.fetchCategories();
+        this.fetchContacts();
     }
 
-    confirmDeleteSelectedCategories(): void {
+    confirmDeleteSelectedContacts(): void {
         this.$buefy.dialog.confirm({
-            title: 'Deleting Categories',
+            title: 'Deleting Contacts',
             message:
-                'Are you sure you want to <b>delete</b> these categories? This action cannot be undone.',
-            confirmText: 'Delete Categories',
+                'Are you sure you want to <b>delete</b> these contacts? This action cannot be undone.',
+            confirmText: 'Delete Contacts',
             type: 'is-danger',
             hasIcon: true,
             onConfirm: () => {
-                this.deleteSelectedCategories();
+                this.deleteSelectedContacts();
             },
         });
     }
 
     /**
-     * Delete category from slug
+     * Delete contact from slug
      */
-    deleteSelectedCategories(): void {
-        this.checkedRows.forEach(category => {
+    deleteSelectedContacts(): void {
+        this.checkedRows.forEach(contact => {
             this.axios
-                .delete(`/api/admin/categories/${category.slug}`)
+                .delete(`/api/admin/contacts/${contact.id}`)
                 .then(() => {
-                    this.showSuccess('Categories deleted');
-                    this.fetchCategories();
+                    this.showSuccess('Contacts deleted');
+                    this.fetchContacts();
                 })
                 .catch(err => {
-                    this.showError(`Unable to delete category <br> <small>${err.message}</small>`);
+                    this.showError(`Unable to delete contact <br> <small>${err.message}</small>`);
                     throw err;
                 });
         });

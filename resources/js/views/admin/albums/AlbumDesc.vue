@@ -95,11 +95,11 @@ import Component from 'vue-class-component';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
-import Album from '../../models/album';
-import Category from '../../models/category';
-import Cosplayer from '../../models/cosplayer';
+import Album from '../../../models/album';
+import Category from '../../../models/category';
+import Cosplayer from '../../../models/cosplayer';
 import { quillEditor } from 'vue-quill-editor';
-import Buefy from '../../admin/Buefy.vue';
+import Buefy from '../../../admin/Buefy.vue';
 
 @Component({
     name: 'AlbumDesc',

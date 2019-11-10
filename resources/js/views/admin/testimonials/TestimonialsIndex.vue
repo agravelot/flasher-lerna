@@ -138,8 +138,8 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import Buefy from '../../admin/Buefy.vue';
-import Testimonial from '../../models/testimonial';
+import Buefy from '../../../admin/Buefy.vue';
+import Testimonial from '../../../models/testimonial';
 
 @Component({
     name: 'TestimonialsIndex',

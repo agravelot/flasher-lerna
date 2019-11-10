@@ -137,13 +137,13 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import Buefy from '../../admin/Buefy.vue';
-import Cosplayer from '../../models/cosplayer';
+import Buefy from '../../../admin/Buefy.vue';
+import Cosplayer from '../../../models/cosplayer';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
 import { quillEditor } from 'vue-quill-editor';
-import User from '../../models/user';
+import User from '../../../models/user';
 
 @Component({
     name: 'CosplayersEdit',
