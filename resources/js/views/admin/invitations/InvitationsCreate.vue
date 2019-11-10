@@ -14,8 +14,7 @@
           >
             <b-input
               v-model="invitation.email"
-              type="text"
-              maxlength="30"
+              type="email"
             />
           </b-field>
 
