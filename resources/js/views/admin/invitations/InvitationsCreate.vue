@@ -30,23 +30,10 @@
             />
           </b-field>
 
-          <b-field label="Select cosplayer">
-            <b-autocomplete
-              :data="filteredCosplayers"
-              :loading="loading"
-              @typing="getFilteredCosplayers"
-              @select="option => invitation.cosplayer_id = option.id"
-              placeholder="Cosplayer name"
-              field="name"
-            >
-              <template slot-scope="props">
-                {{ props.option.name }}
-              </template>
-            </b-autocomplete>
-          </b-field>
+          <pick-one-cosplayer :cosplayer-id.sync="invitation.cosplayer_id"/>
 
           <button class="button is-primary">
-            Send
+            Send invitation
           </button>
         </form>
       </div>
@@ -60,8 +47,13 @@
     import Buefy from "../../../admin/Buefy.vue";
     import Invitation from "../../../models/invitation";
     import Cosplayer from "../../../models/cosplayer";
+    import PickOneCosplayer from "../../../components/admin/PickOneCosplayer.vue";
 
-    @Component
+    @Component({
+        components: {
+            PickOneCosplayer
+        }
+    })
     export default class InvitationsCreate extends Buefy {
         private invitation: Invitation = new Invitation();
         protected errors: object = {};
