@@ -72,7 +72,7 @@
             :message="errors.user_id ? errors.user_id[0] : null"
             label="Linked user"
           >
-            <article
+            <div
               v-if="cosplayer && cosplayer.user"
               class="media box"
             >
@@ -96,30 +96,10 @@
                   class="delete"
                 />
               </div>
-            </article>
-            <b-autocomplete
-              v-if="cosplayer && !cosplayer.user"
-              v-model="cosplayer.user && cosplayer.user.name"
-              :data="searchUsers"
-              @typing="searchUser"
-              @select="option => (cosplayer.user = option)"
-              :disable="loading"
-              placeholder="e.g. Anne"
-              keep-first
-              open-on-focus
-              field="name"
-            >
-              <template slot-scope="props">
-                <div>
-                  {{ props.option.name }}
-                  <br>
-                  <small>
-                    Email: {{ props.option.email }}, role
-                    <b>{{ props.option.role }}</b>
-                  </small>
-                </div>
-              </template>
-            </b-autocomplete>
+            </div>
+            <div v-else-if="cosplayer && !cosplayer.user">
+              <pick-one-user :user.sync="cosplayer.user" />
+            </div>
           </b-field>
         </div>
       </div>
@@ -136,19 +116,21 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import Buefy from '../../../admin/Buefy.vue';
-import Cosplayer from '../../../models/cosplayer';
-import 'quill/dist/quill.core.css';
-import 'quill/dist/quill.snow.css';
-import 'quill/dist/quill.bubble.css';
-import { quillEditor } from 'vue-quill-editor';
+    import {Component} from "vue-property-decorator";
+    import { quillEditor } from 'vue-quill-editor';
+    import Buefy from '../../../admin/Buefy.vue';
+    import Cosplayer from '../../../models/cosplayer';
+    import 'quill/dist/quill.core.css';
+    import 'quill/dist/quill.snow.css';
+    import 'quill/dist/quill.bubble.css';
 import User from '../../../models/user';
+    import PickOneUser from "../../../components/admin/PickOneUser.vue";
 
 @Component({
     name: 'CosplayersEdit',
     components: {
         quillEditor,
+        PickOneUser,
     },
 })
 export default class CosplayersEdit extends Buefy {
