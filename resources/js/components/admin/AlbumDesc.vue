@@ -76,8 +76,8 @@
       <div class="field">
         <b-switch
           v-model.numeric="album.private"
-          :true-value="1"
-          :false-value="0"
+          :true-value="true"
+          :false-value="false"
         >
           {{ album.private ? 'Publicly' : 'Private' }}
         </b-switch>
