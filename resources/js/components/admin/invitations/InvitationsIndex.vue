@@ -10,6 +10,12 @@
         >
           Delete checked
         </b-button>
+        <b-button
+          :to="{ name: 'admin.invitations.create' }"
+          tag="router-link"
+          type="is-success"
+          icon-left="plus"
+        >Create</b-button>
       </div>
 
       <b-table

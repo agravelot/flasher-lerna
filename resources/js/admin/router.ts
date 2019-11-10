@@ -18,6 +18,7 @@ import TestimonialsIndex from '../components/admin/TestimonialsIndex.vue';
 import NotFound from '../components/admin/NotFound.vue';
 import Settings from '../components/admin/Settings.vue';
 import InvitationsIndex from "../components/admin/invitations/InvitationsIndex.vue";
+import InvitationsCreate from "../components/admin/invitations/InvitationsCreate.vue";
 import SocialMediasIndex from "../components/admin/social-medias/SocialMediasIndex.vue";
 
 Vue.use(VueRouter);
@@ -220,9 +221,16 @@ const routes: Array<any> = [
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Core/Resources/assets/js/components/Settings.vue'
         //     ),
     },
+    {
+        path: '/admin/invitations/create',
+        name: 'admin.invitations.create',
+        component: InvitationsCreate,
+        // component: () =>
+        //     import(
+        //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Core/Resources/assets/js/components/Settings.vue'
+        //     ),
+    },
     { path: '*', name: '404', component: NotFound },
-    // { path: '/admin/404', name: '404', component: NotFound },
-    // { path: '*', redirect: '/admin/404' },
 ];
 
 export default new VueRouter({
