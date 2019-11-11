@@ -15,7 +15,6 @@ class ShowMyAlbumsTest extends TestCase
 
     public function test_admin_can_show_his_albums(): void
     {
-        $this->disableExceptionHandling();
         $this->actingAsAdmin();
 
         $response = $this->getMyAlbums();

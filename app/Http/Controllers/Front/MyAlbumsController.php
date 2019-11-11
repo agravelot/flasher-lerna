@@ -13,7 +13,7 @@ class MyAlbumsController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-        $albums = $user->cosplayer->albums()->paginate() ?? collect();
+        $albums = optional(optional($user->cosplayer)->albums())->paginate() ?? collect();
 
         return view('profile.my-albums', compact('albums'));
     }
