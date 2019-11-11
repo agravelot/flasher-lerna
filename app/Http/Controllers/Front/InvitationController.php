@@ -12,11 +12,8 @@ class InvitationController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function show(string $token): View
+    public function show(Invitation $invitation): View
     {
-        /** @var Invitation $invitation */
-        $invitation = Invitation::where('token', $token)->firstOrFail();
-
         $this->authorize('view', $invitation);
 
         $invitation->cosplayer->user()->associate(auth()->user());
