@@ -8,7 +8,7 @@ Je vous invite à rejoindre mon site internet en tant que cosplayer, en créant 
 Assurez-vous de bien valider votre adresse email, sinon certaines fonctionnalités ne seront pas accessibles (tel que le téléchargement).
 
 2. Une fois connecté à votre compte, rendez-vous sur le lien ci-dessous.
-{{ $temporaryInvitationUrl }}
+{!! $temporaryInvitationUrl !!}
 
 Votre compte est maintenant relié au cosplayer : {{ $invitation->cosplayer->name }}.
 
