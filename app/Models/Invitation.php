@@ -10,6 +10,8 @@ class Invitation extends Model
     protected $fillable = ['email', 'cosplayer_id', 'message', 'confirmed_at'];
     protected $dates = ['confirmed_at'];
 
+    protected $with = ['cosplayer'];
+
     public function isExpired(): bool
     {
         return $this->created_at->addDays(14)->lessThan(now());
