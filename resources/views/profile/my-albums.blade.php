@@ -24,12 +24,10 @@
                         </li>
                     @endforeach
                 </ul>
+                {{ $albums->links() }}
             @else
                 <span>{{ __('Nothing to show') }}</span>
             @endif
         </div>
-        @if ($albums->isNotEmpty())
-            {{ $albums->links() }}
-        @endif
     </section>
 @endsection
