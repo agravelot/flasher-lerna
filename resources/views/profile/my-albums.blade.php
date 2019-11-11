@@ -8,24 +8,28 @@
 
     <section class="section container">
         <div class="content">
-            <ul>
-                @forelse($albums as $album)
-                    <li>
-                        {{ $album->title }}
-                        <a class="button" href="{{ route('albums.show', compact('album')) }}">
-                            <span class="icon is-small">@fas('eye')</span>
-                            <span>{{ __('Open') }}</span>
-                        </a>
-                        <a class="button" href="{{ route('download-albums.show', compact('album')) }}">
-                            <span class="icon is-small">@fas('download')</span>
-                            <span>{{ __('Download') }}</span>
-                        </a>
-                    </li>
-                @empty
-                    <span>{{ __('Nothing to show') }}</span>
-                @endforelse
-            </ul>
+            @if ($albums->isNotEmpty())
+                <ul>
+                    @foreach($albums as $album)
+                        <li>
+                            {{ $album->title }}
+                            <a class="button" href="{{ route('albums.show', compact('album')) }}">
+                                <span class="icon is-small">@fas('eye')</span>
+                                <span>{{ __('Open') }}</span>
+                            </a>
+                            <a class="button" href="{{ route('download-albums.show', compact('album')) }}">
+                                <span class="icon is-small">@fas('download')</span>
+                                <span>{{ __('Download') }}</span>
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                <span>{{ __('Nothing to show') }}</span>
+            @endif
         </div>
-        {{ $albums->links() }}
+        @if ($albums->isNotEmpty())
+            {{ $albums->links() }}
+        @endif
     </section>
 @endsection
