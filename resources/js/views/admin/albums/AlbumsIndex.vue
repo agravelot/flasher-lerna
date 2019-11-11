@@ -6,7 +6,7 @@
           <div class="level-item">
             <div class="buttons">
               <b-button
-                :to="{ name: 'admin.cosplayers.create' }"
+                :to="{ name: 'admin.albums.create' }"
                 tag="router-link"
                 type="is-success"
                 icon-left="plus"
@@ -15,7 +15,7 @@
               </b-button>
               <b-button
                 :disabled="!checkedRows.length"
-                @click="confirmDeleteSelectedCosplayers"
+                @click="confirmDeleteSelectedAlbums"
                 type="is-danger"
                 icon-left="trash-alt"
               >
@@ -30,7 +30,7 @@
             <b-input
               :loading="loading"
               v-model="search"
-              @input="fetchCosplayers()"
+              @input="fetchAlbums()"
               placeholder="Search..."
               type="search"
               icon="search"
@@ -40,7 +40,7 @@
       </div>
 
       <b-table
-        :data="cosplayers"
+        :data="albums"
         :loading="loading"
         :total="total"
         :per-page="perPage"
@@ -55,23 +55,56 @@
         paginated
         backend-pagination
         backend-sorting
-        icon-pack="fas"
         checkable
       >
-        <template slot-scope="cosplayer">
+        <template slot-scope="album">
           <b-table-column
-            field="name"
-            label="Name"
+            field="title"
+            label="Title"
             sortable
           >
             <router-link
-              :to="{
-                name: 'admin.cosplayers.edit',
-                params: { slug: cosplayer.row.slug },
-              }"
+              :to="{ name: 'admin.albums.edit', params: { slug: album.row.slug } }"
             >
-              {{ cosplayer.row.name }}
+              {{ album.row.title }}
             </router-link>
+          </b-table-column>
+
+          <b-table-column
+            field="media_count"
+            label="Nb. photos"
+            centered
+            numeric
+          >
+            {{ album.row.media_count }}
+          </b-table-column>
+
+          <b-table-column
+            field="status"
+            label="Status"
+            centered
+          >
+            <span
+              v-if="album.row.private === 1"
+              v-bind:title="'This album is private'"
+              class="tag is-danger"
+            >
+              {{ 'Private' }}
+            </span>
+            <span
+              v-else-if="typeof album.row.published_at === 'string'"
+              v-bind:title="new Date(album.row.published_at).toLocaleDateString()"
+              class="tag is-success"
+            >
+              {{ 'Published' }}
+            </span>
+            <span
+              v-else
+              v-bind:title="'This album is a draft'"
+              class="tag is-dark"
+            >{{
+              'Draft'
+            }}</span>
           </b-table-column>
         </template>
 
@@ -100,11 +133,11 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import Buefy from '../../admin/Buefy.vue';
-import Cosplayer from '../../models/cosplayer';
+import Buefy from '../../../admin/Buefy.vue';
+import Album from '../../../models/album';
 
 @Component({
-    name: 'CosplayersIndex',
+    name: 'AlbumsIndex',
     filters: {
         /**
          * Filter to truncate string, accepts a length parameter
@@ -114,9 +147,9 @@ import Cosplayer from '../../models/cosplayer';
         },
     },
 })
-export default class CosplayersIndex extends Buefy {
-    private cosplayers: Array<Cosplayer> = [];
-    private checkedRows: Array<Cosplayer> = [];
+export default class AlbumsIndex extends Buefy {
+    private albums: Array<Album> = [];
+    private checkedRows: Array<Album> = [];
     private total = 0;
     private page = 1;
     perPage = 10;
@@ -128,40 +161,40 @@ export default class CosplayersIndex extends Buefy {
     private search = '';
 
     created(): void {
-        this.fetchCosplayers();
+        this.fetchAlbums();
     }
 
-    fetchCosplayers(): void {
+    fetchAlbums(): void {
         this.loading = true;
         const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
         this.axios
-            .get('/api/admin/cosplayers', {
+            .get('/api/admin/albums', {
                 params: {
                     page: this.page,
                     sort: sortOrder + this.sortField,
-                    'filter[name]': this.search,
+                    'filter[title]': this.search,
                 },
             })
             .then(res => res.data)
             .then(res => {
                 this.perPage = res.meta.per_page;
                 this.total = res.meta.total;
-                this.cosplayers = res.data;
+                this.albums = res.data;
                 this.loading = false;
             })
             .catch(err => {
-                this.cosplayers = [];
+                this.albums = [];
                 this.total = 0;
                 this.loading = false;
                 this.$buefy.snackbar.open({
-                    message: 'Unable to load cosplayers, maybe you are offline?',
+                    message: 'Unable to load albums, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',
                     actionText: 'Retry',
                     indefinite: true,
                     onAction: () => {
-                        this.fetchCosplayers();
+                        this.fetchAlbums();
                     },
                 });
                 throw err;
@@ -177,7 +210,7 @@ export default class CosplayersIndex extends Buefy {
      */
     onPageChange(page: number): void {
         this.page = page;
-        this.fetchCosplayers();
+        this.fetchAlbums();
     }
 
     /*
@@ -186,36 +219,36 @@ export default class CosplayersIndex extends Buefy {
     onSort(field: string, order: string): void {
         this.sortField = field;
         this.sortOrder = order;
-        this.fetchCosplayers();
+        this.fetchAlbums();
     }
 
-    confirmDeleteSelectedCosplayers(): void {
+    confirmDeleteSelectedAlbums(): void {
         this.$buefy.dialog.confirm({
-            title: 'Deleting Cosplayers',
+            title: 'Deleting Albums',
             message:
-                'Are you sure you want to <b>delete</b> these cosplayers? This action cannot be undone.',
-            confirmText: 'Delete Cosplayers',
+                'Are you sure you want to <b>delete</b> these albums? This action cannot be undone.',
+            confirmText: 'Delete Albums',
             type: 'is-danger',
             hasIcon: true,
             onConfirm: () => {
-                this.deleteSelectedCosplayers();
+                this.deleteSelectedAlbums();
             },
         });
     }
 
     /**
-     * Delete cosplayer from slug
+     * Delete album from slug
      */
-    deleteSelectedCosplayers(): void {
-        this.checkedRows.forEach(cosplayer => {
+    deleteSelectedAlbums(): void {
+        this.checkedRows.forEach(album => {
             this.axios
-                .delete(`/api/admin/cosplayers/${cosplayer.slug}`)
+                .delete(`/api/admin/albums/${album.slug}`)
                 .then(() => {
-                    this.showSuccess('Cosplayers deleted');
-                    this.fetchCosplayers();
+                    this.showSuccess('Albums deleted');
+                    this.fetchAlbums();
                 })
                 .catch(err => {
-                    this.showError(`Unable to delete cosplayer <br> <small>${err.message}</small>`);
+                    this.showError(`Unable to delete album <br> <small>${err.message}</small>`);
                     throw err;
                 });
         });

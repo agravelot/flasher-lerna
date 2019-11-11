@@ -6,8 +6,16 @@
           <div class="level-item">
             <div class="buttons">
               <b-button
+                :to="{ name: 'admin.cosplayers.create' }"
+                tag="router-link"
+                type="is-success"
+                icon-left="plus"
+              >
+                Add
+              </b-button>
+              <b-button
                 :disabled="!checkedRows.length"
-                @click="confirmDeleteSelectedContacts"
+                @click="confirmDeleteSelectedCosplayers"
                 type="is-danger"
                 icon-left="trash-alt"
               >
@@ -22,7 +30,7 @@
             <b-input
               :loading="loading"
               v-model="search"
-              @input="fetchContacts()"
+              @input="fetchCosplayers()"
               placeholder="Search..."
               type="search"
               icon="search"
@@ -32,7 +40,7 @@
       </div>
 
       <b-table
-        :data="contacts"
+        :data="cosplayers"
         :loading="loading"
         :total="total"
         :per-page="perPage"
@@ -40,7 +48,6 @@
         :default-sort-direction="defaultSortOrder"
         :default-sort="[sortField, sortOrder]"
         @sort="onSort"
-        :show-detail-icon="showDetailIcon"
         :checked-rows.sync="checkedRows"
         striped
         hoverable
@@ -48,42 +55,24 @@
         paginated
         backend-pagination
         backend-sorting
+        icon-pack="fas"
         checkable
-        detailed
-        detail-key="id"
       >
-        <template slot-scope="contact">
+        <template slot-scope="cosplayer">
           <b-table-column
             field="name"
             label="Name"
             sortable
           >
-            {{ contact.row.name }}
+            <router-link
+              :to="{
+                name: 'admin.cosplayers.edit',
+                params: { slug: cosplayer.row.slug },
+              }"
+            >
+              {{ cosplayer.row.name }}
+            </router-link>
           </b-table-column>
-
-          <b-table-column
-            field="email"
-            label="Email"
-            sortable
-          >
-            <a
-              :href="`mailto:${contact.row.email}`"
-              target="_blank"
-            >{{
-              contact.row.email
-            }}</a>
-          </b-table-column>
-        </template>
-
-        <template
-          slot="detail"
-          slot-scope="props"
-        >
-          <article>
-            <p>
-              {{ props.row.message }}
-            </p>
-          </article>
         </template>
 
         <template slot="empty">
@@ -111,11 +100,11 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import Buefy from '../../admin/Buefy.vue';
-import Contact from '../../models/contact';
+import Buefy from '../../../admin/Buefy.vue';
+import Cosplayer from '../../../models/cosplayer';
 
 @Component({
-    name: 'ContactsIndex',
+    name: 'CosplayersIndex',
     filters: {
         /**
          * Filter to truncate string, accepts a length parameter
@@ -125,9 +114,9 @@ import Contact from '../../models/contact';
         },
     },
 })
-export default class ContactsIndex extends Buefy {
-    private contacts: Array<Contact> = [];
-    private checkedRows: Array<Contact> = [];
+export default class CosplayersIndex extends Buefy {
+    private cosplayers: Array<Cosplayer> = [];
+    private checkedRows: Array<Cosplayer> = [];
     private total = 0;
     private page = 1;
     perPage = 10;
@@ -139,15 +128,15 @@ export default class ContactsIndex extends Buefy {
     private search = '';
 
     created(): void {
-        this.fetchContacts();
+        this.fetchCosplayers();
     }
 
-    fetchContacts(): void {
+    fetchCosplayers(): void {
         this.loading = true;
         const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
         this.axios
-            .get('/api/admin/contacts', {
+            .get('/api/admin/cosplayers', {
                 params: {
                     page: this.page,
                     sort: sortOrder + this.sortField,
@@ -158,25 +147,29 @@ export default class ContactsIndex extends Buefy {
             .then(res => {
                 this.perPage = res.meta.per_page;
                 this.total = res.meta.total;
-                this.contacts = res.data;
+                this.cosplayers = res.data;
                 this.loading = false;
             })
             .catch(err => {
-                this.contacts = [];
+                this.cosplayers = [];
                 this.total = 0;
                 this.loading = false;
                 this.$buefy.snackbar.open({
-                    message: 'Unable to load contacts, maybe you are offline?',
+                    message: 'Unable to load cosplayers, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',
                     actionText: 'Retry',
                     indefinite: true,
                     onAction: () => {
-                        this.fetchContacts();
+                        this.fetchCosplayers();
                     },
                 });
                 throw err;
             });
+    }
+
+    toggle(row: object): void {
+        this.$refs.table.toggleDetails(row);
     }
 
     /*
@@ -184,7 +177,7 @@ export default class ContactsIndex extends Buefy {
      */
     onPageChange(page: number): void {
         this.page = page;
-        this.fetchContacts();
+        this.fetchCosplayers();
     }
 
     /*
@@ -193,36 +186,36 @@ export default class ContactsIndex extends Buefy {
     onSort(field: string, order: string): void {
         this.sortField = field;
         this.sortOrder = order;
-        this.fetchContacts();
+        this.fetchCosplayers();
     }
 
-    confirmDeleteSelectedContacts(): void {
+    confirmDeleteSelectedCosplayers(): void {
         this.$buefy.dialog.confirm({
-            title: 'Deleting Contacts',
+            title: 'Deleting Cosplayers',
             message:
-                'Are you sure you want to <b>delete</b> these contacts? This action cannot be undone.',
-            confirmText: 'Delete Contacts',
+                'Are you sure you want to <b>delete</b> these cosplayers? This action cannot be undone.',
+            confirmText: 'Delete Cosplayers',
             type: 'is-danger',
             hasIcon: true,
             onConfirm: () => {
-                this.deleteSelectedContacts();
+                this.deleteSelectedCosplayers();
             },
         });
     }
 
     /**
-     * Delete contact from slug
+     * Delete cosplayer from slug
      */
-    deleteSelectedContacts(): void {
-        this.checkedRows.forEach(contact => {
+    deleteSelectedCosplayers(): void {
+        this.checkedRows.forEach(cosplayer => {
             this.axios
-                .delete(`/api/admin/contacts/${contact.id}`)
+                .delete(`/api/admin/cosplayers/${cosplayer.slug}`)
                 .then(() => {
-                    this.showSuccess('Contacts deleted');
-                    this.fetchContacts();
+                    this.showSuccess('Cosplayers deleted');
+                    this.fetchCosplayers();
                 })
                 .catch(err => {
-                    this.showError(`Unable to delete contact <br> <small>${err.message}</small>`);
+                    this.showError(`Unable to delete cosplayer <br> <small>${err.message}</small>`);
                     throw err;
                 });
         });

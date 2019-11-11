@@ -92,8 +92,8 @@
                 <div class="field">
                   <b-switch
                     v-model.numeric="album.private"
-                    :true-value="0"
-                    :false-value="1"
+                    :true-value="false"
+                    :false-value="true"
                   >
                     {{ album.private ? 'No' : 'Yes' }}
                   </b-switch>
@@ -163,8 +163,8 @@ import Component from 'vue-class-component';
 import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 import AlbumDesc from './AlbumDesc.vue';
-import ShareAlbum from './ShareAlbum.vue';
-import Album from '../../models/album';
+import ShareAlbum from '../../../components/admin/ShareAlbum.vue';
+import Album from '../../../models/album';
 
 @Component({
     name: 'AlbumsEdit',

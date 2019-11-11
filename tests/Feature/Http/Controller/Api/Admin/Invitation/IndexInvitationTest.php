@@ -55,7 +55,7 @@ class IndexInvitationTest extends TestCase
             'id' => $invitation->id,
             'email' => $invitation->email,
             'message' => $invitation->message,
-            'cosplayer', // ignore content here
+            //'cosplayer', // ignore content here
         ]);
     }
 }

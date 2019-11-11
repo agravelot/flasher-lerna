@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\Controller\Front\DownloadAlbum;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Invitation;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -74,8 +75,33 @@ class AcceptInvitationTest extends TestCase
             ->assertOk();
     }
 
+    public function test_accepting_invitation_without_valid_signature_return_403_and_is_not_linked(): void
+    {
+        Mail::fake();
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+        $invitation = factory(Invitation::class)->create([
+            'created_at' => now()->addDays(5),
+        ]);
+
+        $response = $this->acceptInvitationWithoutSignature($invitation);
+
+        $this->assertSame(403, $response->status());
+        $this->assertNull($invitation->fresh()->confirmed_at);
+        $this->assertFalse($user->is($invitation->cosplayer->user));
+    }
+
     private function acceptInvitation(Invitation $invitation): TestResponse
     {
-        return $this->get('/invitations/'.$invitation->token);
+        $url = URL::temporarySignedRoute(
+            'invitations.show', now()->addDays(15), compact('invitation')
+        );
+
+        return $this->get($url);
+    }
+
+    private function acceptInvitationWithoutSignature(Invitation $invitation): TestResponse
+    {
+        return $this->get('/invitations/'.$invitation->id);
     }
 }

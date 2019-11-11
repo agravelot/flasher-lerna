@@ -6,7 +6,7 @@
           <div class="level-item">
             <div class="buttons">
               <b-button
-                :to="{ name: 'admin.albums.create' }"
+                :to="{ name: 'admin.categories.create' }"
                 tag="router-link"
                 type="is-success"
                 icon-left="plus"
@@ -15,7 +15,7 @@
               </b-button>
               <b-button
                 :disabled="!checkedRows.length"
-                @click="confirmDeleteSelectedAlbums"
+                @click="confirmDeleteSelectedCategories"
                 type="is-danger"
                 icon-left="trash-alt"
               >
@@ -30,7 +30,7 @@
             <b-input
               :loading="loading"
               v-model="search"
-              @input="fetchAlbums()"
+              @input="fetchCategories()"
               placeholder="Search..."
               type="search"
               icon="search"
@@ -40,7 +40,7 @@
       </div>
 
       <b-table
-        :data="albums"
+        :data="categories"
         :loading="loading"
         :total="total"
         :per-page="perPage"
@@ -57,54 +57,20 @@
         backend-sorting
         checkable
       >
-        <template slot-scope="album">
+        <template slot-scope="category">
           <b-table-column
-            field="title"
-            label="Title"
+            field="name"
+            label="Name"
             sortable
           >
             <router-link
-              :to="{ name: 'admin.albums.edit', params: { slug: album.row.slug } }"
+              :to="{
+                name: 'admin.categories.edit',
+                params: { slug: category.row.slug },
+              }"
             >
-              {{ album.row.title }}
+              {{ category.row.name }}
             </router-link>
-          </b-table-column>
-
-          <b-table-column
-            field="media_count"
-            label="Nb. photos"
-            centered
-            numeric
-          >
-            {{ album.row.media_count }}
-          </b-table-column>
-
-          <b-table-column
-            field="status"
-            label="Status"
-            centered
-          >
-            <span
-              v-if="album.row.private === 1"
-              v-bind:title="'This album is private'"
-              class="tag is-danger"
-            >
-              {{ 'Private' }}
-            </span>
-            <span
-              v-else-if="typeof album.row.published_at === 'string'"
-              v-bind:title="new Date(album.row.published_at).toLocaleDateString()"
-              class="tag is-success"
-            >
-              {{ 'Published' }}
-            </span>
-            <span
-              v-else
-              v-bind:title="'This album is a draft'"
-              class="tag is-dark"
-            >{{
-              'Draft'
-            }}</span>
           </b-table-column>
         </template>
 
@@ -133,11 +99,11 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import Buefy from '../../admin/Buefy.vue';
-import Album from '../../models/album';
+import Buefy from '../../../admin/Buefy.vue';
+import Category from '../../../models/category';
 
 @Component({
-    name: 'AlbumsIndex',
+    name: 'CategoriesIndex',
     filters: {
         /**
          * Filter to truncate string, accepts a length parameter
@@ -147,9 +113,9 @@ import Album from '../../models/album';
         },
     },
 })
-export default class AlbumsIndex extends Buefy {
-    private albums: Array<Album> = [];
-    private checkedRows: Array<Album> = [];
+export default class CategoriesIndex extends Buefy {
+    private categories: Array<Category> = [];
+    private checkedRows: Array<Category> = [];
     private total = 0;
     private page = 1;
     perPage = 10;
@@ -161,48 +127,44 @@ export default class AlbumsIndex extends Buefy {
     private search = '';
 
     created(): void {
-        this.fetchAlbums();
+        this.fetchCategories();
     }
 
-    fetchAlbums(): void {
+    fetchCategories(): void {
         this.loading = true;
         const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
         this.axios
-            .get('/api/admin/albums', {
+            .get('/api/admin/categories', {
                 params: {
                     page: this.page,
                     sort: sortOrder + this.sortField,
-                    'filter[title]': this.search,
+                    'filter[name]': this.search,
                 },
             })
             .then(res => res.data)
             .then(res => {
                 this.perPage = res.meta.per_page;
                 this.total = res.meta.total;
-                this.albums = res.data;
+                this.categories = res.data;
                 this.loading = false;
             })
             .catch(err => {
-                this.albums = [];
+                this.categories = [];
                 this.total = 0;
                 this.loading = false;
                 this.$buefy.snackbar.open({
-                    message: 'Unable to load albums, maybe you are offline?',
+                    message: 'Unable to load categories, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',
                     actionText: 'Retry',
                     indefinite: true,
                     onAction: () => {
-                        this.fetchAlbums();
+                        this.fetchCategories();
                     },
                 });
                 throw err;
             });
-    }
-
-    toggle(row: object): void {
-        this.$refs.table.toggleDetails(row);
     }
 
     /*
@@ -210,7 +172,7 @@ export default class AlbumsIndex extends Buefy {
      */
     onPageChange(page: number): void {
         this.page = page;
-        this.fetchAlbums();
+        this.fetchCategories();
     }
 
     /*
@@ -219,36 +181,36 @@ export default class AlbumsIndex extends Buefy {
     onSort(field: string, order: string): void {
         this.sortField = field;
         this.sortOrder = order;
-        this.fetchAlbums();
+        this.fetchCategories();
     }
 
-    confirmDeleteSelectedAlbums(): void {
+    confirmDeleteSelectedCategories(): void {
         this.$buefy.dialog.confirm({
-            title: 'Deleting Albums',
+            title: 'Deleting Categories',
             message:
-                'Are you sure you want to <b>delete</b> these albums? This action cannot be undone.',
-            confirmText: 'Delete Albums',
+                'Are you sure you want to <b>delete</b> these categories? This action cannot be undone.',
+            confirmText: 'Delete Categories',
             type: 'is-danger',
             hasIcon: true,
             onConfirm: () => {
-                this.deleteSelectedAlbums();
+                this.deleteSelectedCategories();
             },
         });
     }
 
     /**
-     * Delete album from slug
+     * Delete category from slug
      */
-    deleteSelectedAlbums(): void {
-        this.checkedRows.forEach(album => {
+    deleteSelectedCategories(): void {
+        this.checkedRows.forEach(category => {
             this.axios
-                .delete(`/api/admin/albums/${album.slug}`)
+                .delete(`/api/admin/categories/${category.slug}`)
                 .then(() => {
-                    this.showSuccess('Albums deleted');
-                    this.fetchAlbums();
+                    this.showSuccess('Categories deleted');
+                    this.fetchCategories();
                 })
                 .catch(err => {
-                    this.showError(`Unable to delete album <br> <small>${err.message}</small>`);
+                    this.showError(`Unable to delete category <br> <small>${err.message}</small>`);
                     throw err;
                 });
         });

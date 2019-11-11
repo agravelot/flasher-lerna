@@ -1,6 +1,6 @@
 <script lang="ts">
 import Component from 'vue-class-component';
-import BaseAlbumsShowGallery from '../front/AlbumsShowGallery.vue';
+import BaseAlbumsShowGallery from '../../components/front/AlbumsShowGallery.vue';
 
 @Component({
     name: 'AlbumsShowGallery',

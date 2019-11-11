@@ -3,25 +3,23 @@
     <section>
       <div class="buttons">
         <b-button
-          :to="{ name: 'admin.users.create' }"
-          tag="router-link"
-          type="is-success"
-          icon-left="plus"
-        >
-          Add
-        </b-button>
-        <b-button
           :disabled="!checkedRows.length"
-          @click="confirmDeleteSelectedUsers()"
+          @click="confirmDeleteSelectedInvitations()"
           type="is-danger"
           icon-left="trash-alt"
         >
           Delete checked
         </b-button>
+        <b-button
+          :to="{ name: 'admin.invitations.create' }"
+          tag="router-link"
+          type="is-success"
+          icon-left="plus"
+        >Create</b-button>
       </div>
 
       <b-table
-        :data="users"
+        :data="invitations"
         :loading="loading"
         :total="total"
         :per-page="perPage"
@@ -37,52 +35,48 @@
         backend-pagination
         backend-sorting
         checkable
+        detailed
+        show-detail-icon
       >
-        <template slot-scope="user">
-          <b-table-column
-            field="name"
-            label="Name"
-            sortable
-          >
-            <router-link
-              :to="{ name: 'admin.users.edit', params: { id: user.row.id } }"
-            >
-              {{ user.row.name }}
-            </router-link>
-          </b-table-column>
-
+        <template slot-scope="invitation">
           <b-table-column
             field="email"
             label="E-mail"
             sortable
           >
             <router-link
-              :to="{ name: 'admin.users.edit', params: { id: user.row.id } }"
+              :to="{
+                name: 'admin.invitations.edit',
+                params: { id: invitation.row.id },
+              }"
             >
-              {{ user.row.email }}
+              {{ invitation.row.email }}
             </router-link>
           </b-table-column>
 
           <b-table-column
-            field="status"
-            label="Role"
-            centered
+            field="confirmed_at"
+            label="Confirmed"
+            sortable
           >
-            <span
-              v-bind:title="'User role'"
-              class="tag is-dark"
-            >{{
-              user.row.role
-            }}</span>
+            <span v-if="invitation.row.confirmed_at">
+              Yes
+            </span>
+            <span v-else>
+              No
+            </span>
           </b-table-column>
+        </template>
 
-          <!--                    <b-table-column field="actions.impersonate" label="Impersonate" centered>-->
-          <!--                        <a :href="user.row.actions.impersonate">-->
-          <!--                            <span class="icon has-text-info">-->
-          <!--                                <i class="fas fa-sign-in-alt"></i>-->
-          <!--                            </span>-->
-          <!--                        </a>-->
-          <!--                    </b-table-column>-->
+        <template
+          slot="detail"
+          slot-scope="props"
+        >
+          <article>
+            <p>
+              {{ props.row.message }}
+            </p>
+          </article>
         </template>
 
         <template slot="empty">
@@ -110,15 +104,15 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import Buefy from '../../admin/Buefy.vue';
-import User from '../../models/user';
+import Buefy from '../../../admin/Buefy.vue';
+import Invitation from '../../../models/invitation';
 
 @Component({
-    name: 'UsersIndex',
+    name: 'InvitationsIndex',
 })
-export default class UsersIndex extends Buefy {
-    private users: Array<User> = [];
-    private checkedRows: Array<User> = [];
+export default class InvitationsIndex extends Buefy {
+    private invitations: Array<Invitation> = [];
+    private checkedRows: Array<Invitation> = [];
     private total = 0;
     private page = 1;
     perPage = 10;
@@ -129,15 +123,15 @@ export default class UsersIndex extends Buefy {
     defaultSortOrder = 'desc';
 
     created(): void {
-        this.fetchUsers();
+        this.fetchInvitations();
     }
 
-    fetchUsers(): void {
+    fetchInvitations(): void {
         this.loading = true;
         const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
         this.axios
-            .get('/api/admin/users', {
+            .get('/api/admin/invitations', {
                 params: {
                     page: this.page,
                     sort: sortOrder + this.sortField,
@@ -147,29 +141,25 @@ export default class UsersIndex extends Buefy {
             .then(res => {
                 this.perPage = res.meta.per_page;
                 this.total = res.meta.total;
-                this.users = res.data;
+                this.invitations = res.data;
                 this.loading = false;
             })
             .catch(err => {
-                this.users = [];
+                this.invitations = [];
                 this.total = 0;
                 this.loading = false;
                 this.$buefy.snackbar.open({
-                    message: 'Unable to load users, maybe you are offline?',
+                    message: 'Unable to load invitations, maybe you are offline?',
                     type: 'is-danger',
                     position: 'is-top',
                     actionText: 'Retry',
                     indefinite: true,
                     onAction: () => {
-                        this.fetchUsers();
+                        this.fetchInvitations();
                     },
                 });
                 throw err;
             });
-    }
-
-    toggle(row: object): void {
-        this.$refs.table.toggleDetails(row);
     }
 
     /*
@@ -177,7 +167,7 @@ export default class UsersIndex extends Buefy {
      */
     onPageChange(page: number): void {
         this.page = page;
-        this.fetchUsers();
+        this.fetchInvitations();
     }
 
     /*
@@ -186,36 +176,35 @@ export default class UsersIndex extends Buefy {
     onSort(field: string, order: string): void {
         this.sortField = field;
         this.sortOrder = order;
-        this.fetchUsers();
+        this.fetchInvitations();
     }
 
-    confirmDeleteSelectedUsers(): void {
+    confirmDeleteSelectedInvitations(): void {
         this.$buefy.dialog.confirm({
-            title: 'Deleting Users',
+            title: 'Deleting invitations',
             message:
-                'Are you sure you want to <b>delete</b> these users? This action cannot be undone.',
-            confirmText: 'Delete Users',
+                'Are you sure you want to <b>delete</b> these invitations? This action cannot be undone.',
+            confirmText: 'Delete Invitations',
             type: 'is-danger',
             hasIcon: true,
             onConfirm: () => {
-                this.deleteSelectedUsers();
+                this.deleteSelectedInvitations();
             },
         });
     }
 
-    /**
-     * Delete user from slug
-     */
-    deleteSelectedUsers(): void {
-        this.checkedRows.forEach(user => {
+    deleteSelectedInvitations(): void {
+        this.checkedRows.forEach(invitation => {
             this.axios
-                .delete(`/api/admin/users/${user.id}`)
+                .delete(`/api/admin/invitations/${invitation.id}`)
                 .then(() => {
-                    this.showSuccess('Users deleted');
-                    this.fetchUsers();
+                    this.showSuccess('Invitations deleted');
+                    this.fetchInvitations();
                 })
                 .catch(err => {
-                    this.showError(`Unable to delete user <br> <small>${err.message}</small>`);
+                    this.showError(
+                        `Unable to delete invitation <br> <small>${err.message}</small>`
+                    );
                     throw err;
                 });
         });

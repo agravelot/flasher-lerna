@@ -93,8 +93,8 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import Buefy from '../../admin/Buefy.vue';
-import User from '../../models/user';
+import Buefy from '../../../admin/Buefy.vue';
+import User from '../../../models/user';
 
 @Component({
     name: 'UsersEdit',

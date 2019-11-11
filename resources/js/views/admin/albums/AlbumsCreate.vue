@@ -83,8 +83,8 @@
             <div class="field">
               <b-switch
                 v-model="album.private"
-                :false-value="1"
-                :true-value="0"
+                :false-value="true"
+                :true-value="false"
               >
                 {{ album.private ? 'No' : 'Yes' }}
               </b-switch>
