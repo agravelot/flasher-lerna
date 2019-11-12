@@ -1,95 +1,3 @@
-<template>
-  <section>
-    <b-field
-      :type="errors.title ? 'is-danger' : ''"
-      :message="errors.title ? errors.title[0] : null"
-      label="Title"
-    >
-      <b-input
-        v-model="album.title"
-        type="text"
-        maxlength="30"
-      />
-    </b-field>
-
-    <quill-editor
-      ref="myQuillEditor"
-      v-model="album.body"
-      :options="editorOption"
-    />
-
-    <b-field
-      :type="errors.categories ? 'is-danger' : ''"
-      :message="errors.categories ? errors.categories[0] : null"
-      label="Enter some categories"
-    >
-      <b-taginput
-        v-model="album.categories"
-        :data="filteredCategories"
-        :allow-new="false"
-        @typing="getFilteredCategories"
-        autocomplete
-        field="name"
-        placeholder="Add a category"
-        icon="tag"
-      />
-    </b-field>
-
-    <b-field
-      :type="errors.cosplayers ? 'is-danger' : ''"
-      :message="errors.cosplayers ? errors.cosplayers[0] : null"
-      label="Enter some cosplayers"
-    >
-      <b-taginput
-        v-model="album.cosplayers"
-        :data="filteredCosplayers"
-        :allow-new="false"
-        @typing="getFilteredCosplayers"
-        autocomplete
-        field="name"
-        placeholder="Add a cosplayer"
-        icon="user-tag"
-      />
-    </b-field>
-
-    <b-field
-      :type="errors.published_at ? 'is-danger' : ''"
-      :message="errors.published_at ? errors.published_at[0] : null"
-      label="Should this album be published?"
-    >
-      <div class="field">
-        <b-switch
-          v-model="album.published_at"
-          :true-value="album.published_at || new Date()"
-          :false-value="null"
-        >
-          {{ album.published_at ? 'Published' : 'Draft' }}
-        </b-switch>
-      </div>
-    </b-field>
-
-    <b-field
-      :type="errors.private ? 'is-danger' : ''"
-      :message="errors.private ? errors.private[0] : null"
-      label="Should it be accessible publicly?"
-    >
-      <div class="field">
-        <b-switch
-          v-model.numeric="album.private"
-          :true-value="true"
-          :false-value="false"
-        >
-          {{ album.private ? 'Publicly' : 'Private' }}
-        </b-switch>
-      </div>
-    </b-field>
-
-    <button class="button is-primary">
-      Update
-    </button>
-  </section>
-</template>
-
 <script lang="ts">
 import Component from 'vue-class-component';
 import 'quill/dist/quill.core.css';
@@ -120,58 +28,76 @@ export default class AlbumDesc extends Buefy {
         theme: 'snow',
     };
 
+    debounce(callback: any, text: string, time: number): void {
+        (window as any).lastCall = (window as any).lastCall ? (window as any).lastCall : 0;
+
+        if (Date.now() - (window as any).lastCall > time) {
+            (window as any).timeout = setTimeout(() => callback(text), time)
+        } else {
+            clearTimeout(((window as any).timeout as number));
+            (window as any).timeout = setTimeout(() => callback(text), time)
+        }
+        (window as any).lastCall = Date.now()
+    }
+
     getFilteredCategories(text: string): void {
-        this.axios
-            .get('/api/admin/categories', {
-                params: {
-                    'filter[name]': text,
-                },
-            })
-            .then(res => res.data)
-            .then(res => {
-                this.filteredCategories = res.data;
-            })
-            .catch(err => {
-                // this.filteredCosplayers = [];
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load categories, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.getFilteredCategories(text);
+        const callback =  (text: string): void => {
+            this.axios
+                .get('/api/admin/categories', {
+                    params: {
+                        'filter[name]': text,
                     },
+                })
+                .then(res => res.data)
+                .then(res => {
+                    this.filteredCategories = res.data;
+                })
+                .catch(err => {
+                    // this.filteredCosplayers = [];
+                    this.$buefy.snackbar.open({
+                        message: 'Unable to load categories, maybe you are offline?',
+                        type: 'is-danger',
+                        position: 'is-top',
+                        actionText: 'Retry',
+                        indefinite: true,
+                        onAction: () => {
+                            this.getFilteredCategories(text);
+                        },
+                    });
+                    throw err;
                 });
-                throw err;
-            });
+        };
+        this.debounce(callback, text, 200);
     }
 
     getFilteredCosplayers(text: string): void {
-        this.axios
-            .get('/api/admin/cosplayers', {
-                params: {
-                    'filter[name]': text,
-                },
-            })
-            .then(res => res.data)
-            .then(res => {
-                this.filteredCosplayers = res.data;
-            })
-            .catch(err => {
-                // this.filteredCosplayers = [];
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load cosplayers, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.getFilteredCosplayers(text);
+       const callback = (text: string): void {
+            this.axios
+                .get('/api/admin/cosplayers', {
+                    params: {
+                        'filter[name]': text,
                     },
+                })
+                .then(res => res.data)
+                .then(res => {
+                    this.filteredCosplayers = res.data;
+                })
+                .catch(err => {
+                    // this.filteredCosplayers = [];
+                    this.$buefy.snackbar.open({
+                        message: 'Unable to load cosplayers, maybe you are offline?',
+                        type: 'is-danger',
+                        position: 'is-top',
+                        actionText: 'Retry',
+                        indefinite: true,
+                        onAction: () => {
+                            this.getFilteredCosplayers(text);
+                        },
+                    });
+                    throw err;
                 });
-                throw err;
-            });
+        }
+        this.debounce(callback, text, 200);
     }
 }
 </script>
