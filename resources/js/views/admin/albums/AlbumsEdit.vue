@@ -162,7 +162,7 @@
 import Component from 'vue-class-component';
 import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
-import AlbumDesc from './AlbumDesc.vue';
+import AlbumBase from './AlbumBase.vue';
 import ShareAlbum from '../../../components/admin/ShareAlbum.vue';
 import Album from '../../../models/album';
 import { quillEditor } from 'vue-quill-editor';
@@ -172,12 +172,12 @@ import { quillEditor } from 'vue-quill-editor';
     components: {
         vueDropzone: vue2Dropzone,
         quillEditor,
-        AlbumDesc,
+        AlbumBase,
         ShareAlbum,
     },
-    extends: AlbumDesc,
+    extends: AlbumBase,
 })
-export default class AlbumsEdit extends AlbumDesc {
+export default class AlbumsEdit extends AlbumBase {
     protected album: Album;
     protected allowNew = false;
     protected dropzoneOptions: object = {

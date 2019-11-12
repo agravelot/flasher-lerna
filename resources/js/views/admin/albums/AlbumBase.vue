@@ -1,5 +1,5 @@
 <script lang="ts">
-import Component from 'vue-class-component';
+import { Component } from 'vue-property-decorator';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
@@ -9,7 +9,7 @@ import Cosplayer from '../../../models/cosplayer';
 import Buefy from '../../../admin/Buefy.vue';
 
 @Component({})
-export default class AlbumDesc extends Buefy {
+export default class AlbumBase extends Buefy {
     protected errors: object = {};
     protected album: Album = new Album();
     protected allowNew = false;
