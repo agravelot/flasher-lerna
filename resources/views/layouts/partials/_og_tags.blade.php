@@ -7,9 +7,10 @@
     <meta property="og:description" content="{{ $openGraph->description() }}"/>
     <meta property="og:type" content="{{ $openGraph->type() }}"/>
     <meta property="og:url" content="{{ request()->url() }}"/>
-
     <meta property="og:locale" content="{{ app()->getLocale() }}"/>
-    {{--    <meta property="og:locale:alternate" content="{{ app()->getFallbackLocale() }}" />--}}
+    <meta name="twitter:card" content="{{ $openGraph->title() }}" />
+    <meta name="twitter:site" content="@jujunne_kanda" />
+    <meta name="twitter:creator" content="@jujunne_kanda" />
 
     @if ($openGraph instanceof \App\Http\OpenGraphs\Contracts\ProfileOpenGraphable)
         <meta property="profile:username" content="{{ $openGraph->username() }}">
