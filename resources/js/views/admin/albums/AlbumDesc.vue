@@ -6,15 +6,9 @@ import 'quill/dist/quill.bubble.css';
 import Album from '../../../models/album';
 import Category from '../../../models/category';
 import Cosplayer from '../../../models/cosplayer';
-import { quillEditor } from 'vue-quill-editor';
 import Buefy from '../../../admin/Buefy.vue';
 
-@Component({
-    name: 'AlbumDesc',
-    components: {
-        quillEditor,
-    },
-})
+@Component({})
 export default class AlbumDesc extends Buefy {
     protected errors: object = {};
     protected album: Album = new Album();
@@ -71,7 +65,7 @@ export default class AlbumDesc extends Buefy {
     }
 
     getFilteredCosplayers(text: string): void {
-       const callback = (text: string): void {
+       const callback = (text: string): void => {
             this.axios
                 .get('/api/admin/cosplayers', {
                     params: {

@@ -165,13 +165,15 @@ import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 import AlbumDesc from './AlbumDesc.vue';
 import ShareAlbum from '../../../components/admin/ShareAlbum.vue';
 import Album from '../../../models/album';
+import { quillEditor } from 'vue-quill-editor';
 
 @Component({
     name: 'AlbumsEdit',
     components: {
         vueDropzone: vue2Dropzone,
-        'album-desc': AlbumDesc,
-        'share-album': ShareAlbum,
+        quillEditor,
+        AlbumDesc,
+        ShareAlbum,
     },
     extends: AlbumDesc,
 })
