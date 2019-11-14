@@ -102,16 +102,16 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import AlbumDesc from './AlbumDesc.vue';
+import AlbumBase from './AlbumBase.vue';
 
 @Component({
     name: 'AlbumsCreate',
-    extends: AlbumDesc,
+    extends: AlbumBase,
     components: {
-        'album-desc': AlbumDesc,
+        'album-desc': AlbumBase,
     },
 })
-export default class AlbumsCreate extends AlbumDesc {
+export default class AlbumsCreate extends AlbumBase {
     createAlbum(): void {
         this.axios
             .post(`/api/admin/albums/`, this.album)
