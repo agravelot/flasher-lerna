@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Sidebar from '../components/admin/Sidebar.vue';
 import router from './router';
-import './menu.ts';
 import './fontawsome.ts';
 import '../bootstrap';
 import '../bulma';
