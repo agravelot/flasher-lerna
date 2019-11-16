@@ -53,6 +53,9 @@ mix.sass('resources/sass/app.scss', 'public/css')
 
 if (mix.inProduction()) {
     mix.version();
+} else {
+    mix.sourceMaps()
+        .webpackConfig({devtool: 'source-map'})
 }
 
 mix.browserSync('localhost:8000');

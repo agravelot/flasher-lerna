@@ -67,6 +67,12 @@ services:
     expose:
     - 80
     env_file: ./docker/nginx/.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.flasher-${APP_ENV}.rule=Host(`${APP_URL}`)"
+      - "traefik.http.routers.flasher-${APP_ENV}.entrypoints=websecure"
+      - "traefik.http.routers.flasher-${APP_ENV}.tls.certresolver=myhttpchallenge"
+      - "traefik.http.middlewares.test-compress.compress=true"
     volumes:
     - storage:/var/www/html/storage:ro,delegated
     - public_vendor:/var/www/html/public/vendor:ro,delegated
