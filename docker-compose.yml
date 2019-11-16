@@ -94,6 +94,12 @@ services:
       VIRTUAL_HOST: www.${APP_URL}
       LETSENCRYPT_HOST: www.${APP_URL}
       REDIRECT_TARGET: ${APP_URL}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.flasher-${APP_ENV}.rule=Host(`www.${APP_URL}`)"
+      - "traefik.http.routers.flasher-${APP_ENV}.entrypoints=websecure"
+      - "traefik.http.routers.flasher-${APP_ENV}.tls.certresolver=myhttpchallenge"
+      - "traefik.http.middlewares.test-compress.compress=true"
 
   pgbackups3:
     image: itbm/postgresql-backup-s3 # fork of schickling/postgres-backup-s3
