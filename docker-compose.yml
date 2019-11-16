@@ -69,10 +69,12 @@ services:
     env_file: ./docker/nginx/.env
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.flasher-${APP_ENV}.rule=Host(`${APP_URL}`)"
+      - "traefik.http.routers.flasher-${APP_ENV}.rule=Host(`${APP_URL}`) || Host(`www.${APP_URL}`)"
       - "traefik.http.routers.flasher-${APP_ENV}.entrypoints=websecure"
       - "traefik.http.routers.flasher-${APP_ENV}.tls.certresolver=myhttpchallenge"
       - "traefik.http.middlewares.test-compress.compress=true"
+      - "traefik.frontend.redirect.regex=^https://www.${APP_URL}/(.*)"
+      - "traefik.frontend.redirect.replacement=https://${APP_URL}/$${1}"
     volumes:
     - storage:/var/www/html/storage:ro,delegated
     - public_vendor:/var/www/html/public/vendor:ro,delegated
@@ -87,19 +89,19 @@ services:
     volumes:
       - cache_data:/data:rw,delegated
 
-  redirect:
-    image: morbz/docker-web-redirect
-    restart: unless-stopped
-    environment:
-      VIRTUAL_HOST: www.${APP_URL}
-      LETSENCRYPT_HOST: www.${APP_URL}
-      REDIRECT_TARGET: ${APP_URL}
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.flasher-${APP_ENV}.rule=Host(`www.${APP_URL}`)"
-      - "traefik.http.routers.flasher-${APP_ENV}.entrypoints=websecure"
-      - "traefik.http.routers.flasher-${APP_ENV}.tls.certresolver=myhttpchallenge"
-      - "traefik.http.middlewares.test-compress.compress=true"
+#  redirect:
+#    image: morbz/docker-web-redirect
+#    restart: unless-stopped
+#    environment:
+#      VIRTUAL_HOST: www.${APP_URL}
+#      LETSENCRYPT_HOST: www.${APP_URL}
+#      REDIRECT_TARGET: ${APP_URL}
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.flasher-${APP_ENV}.rule=Host(`www.${APP_URL}`)"
+#      - "traefik.http.routers.flasher-${APP_ENV}.entrypoints=websecure"
+#      - "traefik.http.routers.flasher-${APP_ENV}.tls.certresolver=myhttpchallenge"
+#      - "traefik.http.middlewares.test-compress.compress=true"
 
   pgbackups3:
     image: itbm/postgresql-backup-s3 # fork of schickling/postgres-backup-s3
