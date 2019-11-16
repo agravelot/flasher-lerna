@@ -69,7 +69,7 @@ services:
     env_file: ./docker/nginx/.env
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.flasher-${APP_ENV}.rule=Host(`${LETSENCRYPT_HOST}`)"
+      - "traefik.http.routers.flasher-${APP_ENV}.rule=Host(`${APP_URL}`)"
       - "traefik.http.routers.flasher-${APP_ENV}.entrypoints=websecure"
       - "traefik.http.routers.flasher-${APP_ENV}.tls.certresolver=myhttpchallenge"
     volumes:
