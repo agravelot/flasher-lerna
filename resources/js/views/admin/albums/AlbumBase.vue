@@ -90,7 +90,7 @@ export default class AlbumBase extends Buefy {
                     });
                     throw err;
                 });
-        }
+        };
         this.debounce(callback, text, 200);
     }
 }
