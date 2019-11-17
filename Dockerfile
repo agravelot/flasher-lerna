@@ -1,10 +1,3 @@
-FROM nginx:alpine as nginx_config
-COPY docker/nginx/conf /etc/nginx
-RUN apk add --no-cache bash \
-         && cd /etc/nginx/ \
-         && cp nginx.conf nginx.tmp.conf \
-         && bash bin/inline.sh nginx.tmp.conf > /etc/nginx/nginx.inlined.conf
-
 #
 # Frontend
 #
@@ -42,7 +35,7 @@ RUN apk --no-cache add shadow \
         && usermod -u 1000 nginx \
         && apk del shadow
 
-COPY --from=nginx_config /etc/nginx/nginx.inlined.conf /etc/nginx/nginx.inlined.conf
+COPY docker/nginx/conf /etc/nginx
 
 # Importing source code
 COPY --chown=1000:1000 . /var/www/html
@@ -60,7 +53,7 @@ RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
 #COPY --chown=1000:1000 --from=vendor /app/public/vendor/ /var/www/html/public/vendor/
 
-CMD envsubst '\$NGINX_HOST' < /etc/nginx/nginx.inlined.conf > /etc/nginx/nginx.conf \
+CMD cat /etc/nginx/sites-enabled/picblog.conf | envsubst '\$NGINX_HOST' > /etc/nginx/sites-enabled/picblog.conf \
         && exec nginx -g 'daemon off;'
 
 #
