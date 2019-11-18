@@ -19,7 +19,7 @@ mix.ts('resources/js/app.ts', 'public/js/main')
 mix.sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/error-illustrated.scss', 'public/css')
     .copyDirectory('resources/svg', 'public/svg')
-    .copyDirectory('resources/favicon', 'public/img/favicon')
+    .copyDirectory('resources/favicon', 'public/favicon')
     .purgeCss(
         {
             // Your custom globs are merged with the default globs.
