@@ -29,7 +29,7 @@
             />
           </b-field>
 
-          <pick-one-cosplayer :cosplayer-id.sync="invitation.cosplayer_id"/>
+          <pick-one-cosplayer :cosplayer-id.sync="invitation.cosplayer_id" />
 
           <button class="button is-primary">
             Send invitation

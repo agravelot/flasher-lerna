@@ -15,7 +15,9 @@
           tag="router-link"
           type="is-success"
           icon-left="plus"
-        >Create</b-button>
+        >
+          Create
+        </b-button>
       </div>
 
       <b-table
@@ -59,12 +61,16 @@
             label="Confirmed"
             sortable
           >
-            <span v-if="invitation.row.confirmed_at">
-              Yes
-            </span>
-            <span v-else>
-              No
-            </span>
+            <b-icon
+              v-if="invitation.row.confirmed_at"
+              icon="check"
+              type="is-success"
+            />
+            <b-icon
+              v-else
+              icon="clock"
+              type="is-info"
+            />
           </b-table-column>
         </template>
 
