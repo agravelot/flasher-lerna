@@ -9,11 +9,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /** @mixin Invitation */
 class InvitationResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  Request  $request
-     */
     public function toArray($request): array
     {
         return [
@@ -21,6 +16,7 @@ class InvitationResource extends JsonResource
             'email' => $this->email,
             'cosplayer' => new CosplayerResource($this->cosplayer),
             'message' => $this->message,
+            'confirmed_at' => $this->confirmed_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
