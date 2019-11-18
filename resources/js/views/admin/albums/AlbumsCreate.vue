@@ -108,7 +108,7 @@ import AlbumBase from './AlbumBase.vue';
     name: 'AlbumsCreate',
     extends: AlbumBase,
     components: {
-        'album-desc': AlbumBase,
+        AlbumBase,
     },
 })
 export default class AlbumsCreate extends AlbumBase {
