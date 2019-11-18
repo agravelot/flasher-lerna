@@ -50,7 +50,7 @@ class AcceptInvitationTest extends TestCase
         Mail::fake();
         $user = factory(User::class)->create();
         $this->actingAs($user);
-        $invitation = factory(Invitation::class)->create([
+        $invitation = factory(Invitation::class)->state('unconfirmed')->create([
             'created_at' => now()->subDays(20),
         ]);
 
