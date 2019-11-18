@@ -16,7 +16,7 @@
             @endif
 
             @php
-                /** @var \App\Models\Category $category */
+                /** @var App\Models\Category $category */
                 $albums = $category->load('publishedAlbums.media')->publishedAlbums()->paginate();
             @endphp
             @include('albums.partials._index_item', compact('albums'))

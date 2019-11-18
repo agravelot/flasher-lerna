@@ -6,4 +6,5 @@ export default class Invitation {
     created_at: Date;
     updated_at: Date;
     confirmed_at: Date|null;
+    expired: boolean;
 }

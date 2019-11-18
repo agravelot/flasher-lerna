@@ -19,7 +19,7 @@ class AcceptInvitationTest extends TestCase
         Mail::fake();
         $user = factory(User::class)->create();
         $this->actingAs($user);
-        $invitation = factory(Invitation::class)->create([
+        $invitation = factory(Invitation::class)->state('unconfirmed')->create([
             'created_at' => now()->subDays(5),
         ]);
 
@@ -50,7 +50,7 @@ class AcceptInvitationTest extends TestCase
         Mail::fake();
         $user = factory(User::class)->create();
         $this->actingAs($user);
-        $invitation = factory(Invitation::class)->create([
+        $invitation = factory(Invitation::class)->state('unconfirmed')->create([
             'created_at' => now()->subDays(20),
         ]);
 
@@ -64,7 +64,7 @@ class AcceptInvitationTest extends TestCase
     public function test_unauthenticated_can_not_accept_invitation_and_is_redirected_to_login(): void
     {
         Mail::fake();
-        $invitation = factory(Invitation::class)->create([
+        $invitation = factory(Invitation::class)->state('unconfirmed')->create([
             'created_at' => now()->subDay(),
         ]);
 
@@ -80,7 +80,7 @@ class AcceptInvitationTest extends TestCase
         Mail::fake();
         $user = factory(User::class)->create();
         $this->actingAs($user);
-        $invitation = factory(Invitation::class)->create([
+        $invitation = factory(Invitation::class)->state('unconfirmed')->create([
             'created_at' => now()->addDays(5),
         ]);
 

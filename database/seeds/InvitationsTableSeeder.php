@@ -11,7 +11,7 @@ class InvitationsTableSeeder extends Seeder
      */
     public function run(): void
     {
-        Cosplayer::take(5)->get()->each(static function (Cosplayer $cosplayer): void {
+        Cosplayer::take(10)->get()->each(static function (Cosplayer $cosplayer): void {
             factory(Invitation::class)->create([
                 'cosplayer_id' => $cosplayer->id,
             ]);
