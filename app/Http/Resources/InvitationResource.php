@@ -17,6 +17,7 @@ class InvitationResource extends JsonResource
             'cosplayer' => new CosplayerResource($this->cosplayer),
             'message' => $this->message,
             'confirmed_at' => $this->confirmed_at,
+            'expired' => $this->isExpired(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

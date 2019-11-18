@@ -62,7 +62,7 @@
             sortable
           >
             <b-icon
-              v-if="invitation.row.confirmed_at"
+              v-if="invitation.row.confirmed_at && !invitation.row.expired"
               icon="check"
               type="is-success"
             />

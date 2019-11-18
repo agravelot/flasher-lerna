@@ -14,6 +14,7 @@ $factory->define(Invitation::class, static function (Faker $faker) {
         'token' => Str::random(60),
         'cosplayer_id' => factory(Cosplayer::class)->create()->id,
         'message' => $faker->paragraph,
+        'confirmed_at' => $faker->boolean ? $faker->dateTime : null,
     ];
 });
 
