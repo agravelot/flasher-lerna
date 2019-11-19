@@ -44,7 +44,8 @@ services:
       - 80
     networks:
       - nginx-proxy
-    env_file: ./docker/nginx/.env
+    environment:
+      - NGINX_HOST: ${APP_URL}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.flasher-${APP_ENV}.rule=Host(`${APP_URL}`) || Host(`www.${APP_URL}`)"
