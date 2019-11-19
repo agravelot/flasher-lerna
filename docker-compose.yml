@@ -45,7 +45,7 @@ services:
     networks:
       - nginx-proxy
     environment:
-      - NGINX_HOST: ${APP_URL}
+      NGINX_HOST: ${APP_URL}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.flasher-${APP_ENV}.rule=Host(`${APP_URL}`) || Host(`www.${APP_URL}`)"
