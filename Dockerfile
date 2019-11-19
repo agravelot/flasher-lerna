@@ -12,6 +12,8 @@ RUN yarn install && yarn production
 FROM composer:1.9 as vendor
 COPY . .
 
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 RUN composer global require hirak/prestissimo \
         && composer install \
             --ignore-platform-reqs \
