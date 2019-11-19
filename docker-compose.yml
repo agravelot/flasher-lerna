@@ -8,6 +8,8 @@ services:
       dockerfile: Dockerfile
       target: php_app
     restart: unless-stopped
+    networks:
+    - database-network
     env_file:
     - docker/php-fpm/.env
     volumes:
@@ -76,5 +78,7 @@ volumes:
   public_vendor:
 
 networks:
-  external:
-    name: nginx-proxy
+  nginx-proxy:
+    external: true
+  database-network:
+    external: true
