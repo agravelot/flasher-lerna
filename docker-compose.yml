@@ -9,12 +9,12 @@ services:
       target: php_app
     restart: unless-stopped
     networks:
-    - database-network
+      - database-network
     env_file:
-    - docker/php-fpm/.env
+      - docker/php-fpm/.env
     volumes:
-    - storage:/var/www/html/storage:rw,delegated
-    - public_vendor:/var/www/html/public/vendor:rw,delegated
+      - storage:/var/www/html/storage:rw,delegated
+      - public_vendor:/var/www/html/public/vendor:rw,delegated
 
   queue:
     <<: *php_base
@@ -53,7 +53,7 @@ services:
       target: nginx
     restart: unless-stopped
     expose:
-    - 80
+      - 80
     networks:
       - nginx-proxy
     env_file: ./docker/nginx/.env
@@ -66,12 +66,12 @@ services:
       - "traefik.frontend.redirect.regex=^https://www.${APP_URL}/(.*)"
       - "traefik.frontend.redirect.replacement=https://${APP_URL}/$${1}"
     volumes:
-    - storage:/var/www/html/storage:ro,delegated
-    - public_vendor:/var/www/html/public/vendor:ro,delegated
+      - storage:/var/www/html/storage:ro,delegated
+      - public_vendor:/var/www/html/public/vendor:ro,delegated
     depends_on:
-    - php
+      - php
     links:
-    - php
+      - php
 
 volumes:
   storage:
