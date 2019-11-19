@@ -18,29 +18,17 @@ services:
 
   queue:
     <<: *php_base
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: php_queue
     environment:
       CONTAINER_ROLE: "queue"
 
   scheduler:
     <<: *php_base
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: php_scheduler
     user: root
     environment:
       CONTAINER_ROLE: "scheduler"
 
   publisher:
     <<: *php_base
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: php_publisher
     restart: on-failure
     environment:
       CONTAINER_ROLE: "publisher"

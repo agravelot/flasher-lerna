@@ -86,9 +86,3 @@ USER 1000:1000
 CMD /start.sh
 
 FROM php_base AS php_app
-
-FROM php_base AS php_queue
-
-FROM php_base AS php_scheduler
-
-FROM php_base AS php_publisher
