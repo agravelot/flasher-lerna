@@ -66,6 +66,8 @@ services:
     restart: unless-stopped
     expose:
     - 80
+    networks:
+      - nginx-proxy
     env_file: ./docker/nginx/.env
     labels:
       - "traefik.enable=true"
@@ -130,6 +132,5 @@ volumes:
   db-pg-data:
 
 networks:
-  default:
-    external:
-      name: nginx-proxy
+  external:
+    name: nginx-proxy
