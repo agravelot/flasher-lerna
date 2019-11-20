@@ -23,12 +23,13 @@ variables:
   DOCKER_TLS_CERTDIR: "/certs"
 
 before_script:
-- touch docker/db/.env docker/nginx/.env docker/php-fpm/.env
+- touch docker/php-fpm/.env
 - apk add --no-cache bash gettext
 - docker-compose version
 - docker-compose config
 - docker login registry.gitlab.com -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
 - docker network create nginx-proxy
+- docker network create database-network
 
 build:
   stage: build
