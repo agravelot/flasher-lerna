@@ -11,7 +11,7 @@ services:
     volumes:
       - cache_data:/data:rw,delegated
 
-  db_pg:
+  db:
     image: postgres:11-alpine
     restart: unless-stopped
     expose:
@@ -19,7 +19,7 @@ services:
     volumes:
       - db-pg-data:/var/lib/postgresql/data:rw,delegated
     environment:
-      POSTGRES_DB: test_db
+      POSTGRES_DB: flashser
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: ${DB_PASSWORD}
 
@@ -35,7 +35,7 @@ services:
       S3_BUCKET: ${DO_BUCKET}
       S3_PREFIX: ${HOSTNAME}/backups
       S3_ENDPOINT: ${DO_ENDPOINT}
-      POSTGRES_HOST: db_pg
+      POSTGRES_HOST: db
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       SCHEDULE: '@daily'
@@ -45,7 +45,3 @@ volumes:
   cache_data:
   db-pg-data:
 
-networks:
-  default:
-    external:
-      name: database-network
