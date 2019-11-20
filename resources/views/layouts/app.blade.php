@@ -1,7 +1,7 @@
 @section('js')
-    {{--<script src="{{ mix('/js/main/manifest.js') }}"></script>--}}
-    {{--<script src="{{ mix('/js/main/vendor.js') }}"></script>--}}
-    <script src="{{ mix('/js/main/app.js') }}"></script>
+    {{--<script src="{{ mix('/js/manifest.js') }}"></script>--}}
+    {{--<script src="{{ mix('/js/vendor.js') }}"></script>--}}
+    <script src="{{ mix('js/app.js') }}"></script>
 @endsection
 
 <!DOCTYPE html>
