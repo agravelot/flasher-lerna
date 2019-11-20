@@ -7,4 +7,4 @@ set -o errexit   ## set -e : exit the script if any statement returns a non-true
 
 source init_variables.sh $1
 
-envsubst < ../.env.production > ../.env
+envsubst < ../.env.production > php-fpm/.env
