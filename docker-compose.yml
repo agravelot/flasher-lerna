@@ -27,7 +27,7 @@ services:
       DB_DATABASE: picblog
       DB_HOST: db
       DB_PORT: 5432
-      DB_USERNAME: picblog
+      DB_USERNAME: admin
       DB_PASSWORD: ${DB_PASSWORD}
       REDIS_HOST: cache
       BROADCAST_DRIVER: redis
