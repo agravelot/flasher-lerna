@@ -34,8 +34,6 @@ docker-compose stop -t 60 queue || echo "Container is not running"
 docker-compose stop scheduler || echo "Container is not running"
 echo " * PUTTING LARAVEL IN MAINTENANCE MODE"
 docker-compose exec -T php php artisan down --message="We'll be back soon" --retry=60 || echo "Container is not running"
-echo " * SAVING REDIS STATES"
-docker-compose exec -T cache redis-cli SAVE || echo "Container is not running"
 echo " * UPDATING RUNNING CONTAINERS"
 docker-compose up -d --remove-orphans
 echo " * CLEARING CACHE"
