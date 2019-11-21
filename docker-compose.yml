@@ -14,7 +14,7 @@ services:
     volumes:
       - storage:/var/www/html/storage:rw,delegated
       - public_vendor:/var/www/html/public/vendor:rw,delegated
-    environment:
+    environment: &php_environment
       COMMIT_SHORT_SHA: "${CI_COMMIT_SHORT_SHA}"
       APP_NAME: "${APP_NAME}"
       APP_ENV: "${APP_ENV}"
@@ -61,18 +61,21 @@ services:
   queue:
     <<: *php_base
     environment:
+      <<: *php_environment
       CONTAINER_ROLE: "queue"
 
   scheduler:
     <<: *php_base
     user: root
     environment:
+      <<: *php_environment
       CONTAINER_ROLE: "scheduler"
 
   publisher:
     <<: *php_base
     restart: on-failure
     environment:
+      <<: *php_environment
       CONTAINER_ROLE: "publisher"
 
   nginx:
