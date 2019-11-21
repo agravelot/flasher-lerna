@@ -16,7 +16,7 @@ class AlbumsTableSeeder extends Seeder
                     ->push(factory(App\Models\Album::class)->states(['password', 'published'])->make())
                     ->push(factory(App\Models\Album::class)->states(['password', 'unpublished'])->make())
                     ->push(factory(App\Models\Album::class)->states(['passwordLess', 'unpublished'])->make())
-                    ->push(factory(App\Models\PublicAlbum::class)->state('withMedias')->make())
+                    ->push(factory(App\Models\PublicAlbum::class)->make())
             );
         });
     }
