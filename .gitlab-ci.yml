@@ -62,7 +62,7 @@ tests:
   - bash -c 'cd docker/ && ./generate_env.sh staging'
   - docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d
   - docker-compose stop queue scheduler nginx
-  - docker-compose exec -T cache redis-cli config set maxmemory 41943040
+  - docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T cache redis-cli config set maxmemory 41943040
   - docker cp vendor $(docker-compose ps -q php):/var/www/html/
   - docker-compose exec -e APP_ENV=testing -T php php artisan db:wait-connection
   - docker-compose exec -e APP_ENV=testing -T php vendor/bin/phpunit --coverage-text --colors=never
@@ -79,7 +79,7 @@ lint:
   - bash -c 'cd docker/ && ./generate_env.sh staging'
   - docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d
   - docker-compose stop queue scheduler nginx
-  - docker-compose exec -T cache redis-cli config set maxmemory 41943040
+  - docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T cache redis-cli config set maxmemory 41943040
   - docker cp vendor $(docker-compose ps -q php):/var/www/html/
   - docker-compose exec -e APP_ENV=testing -T php php vendor/bin/php-cs-fixer fix --dry-run --diff
   allow_failure: true
