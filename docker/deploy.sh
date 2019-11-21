@@ -15,7 +15,7 @@ socat \
   "EXEC:'ssh -kTax $REMOTE -p $CI_DEPLOY_SSH_PORT socat STDIO UNIX-CONNECT\:/var/run/docker.sock'" \
   &
 export DOCKER_HOST=unix:///tmp/docker.sock
-export COMPOSE_PROJECT_NAME=picblog
+export COMPOSE_PROJECT_NAME=fasher_${APP_ENV}
 export TRUSTED_PROXIES=$(docker network inspect nginx-proxy --format='{{ (index .IPAM.Config 0).Subnet }}')
 echo " * LOGIN WITH GITLAB-CI TOKEN"
   docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
