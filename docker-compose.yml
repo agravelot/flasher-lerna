@@ -94,8 +94,10 @@ services:
       - "traefik.http.routers.flasher-${APP_ENV}.rule=Host(`${APP_URL}`) || Host(`www.${APP_URL}`)"
       - "traefik.http.routers.flasher-${APP_ENV}.entrypoints=websecure"
       - "traefik.http.routers.flasher-${APP_ENV}.tls.certresolver=myhttpchallenge"
-      - "traefik.http.middlewares.test-compress.compress=true"
-      - "traefik.frontend.redirect.regex=^https://www.${APP_URL}/(.*)"
+      - "traefik.http.middlewares.compress.compress=true"
+      - "traefik.http.middlewares.redirectscheme.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.redirectscheme.redirectscheme.permanent=true"
+      - "traefik.frontend.redirect.regex=^https?://www.${APP_URL}/(.*)"
       - "traefik.frontend.redirect.replacement=https://${APP_URL}/$${1}"
     volumes:
       - storage:/var/www/html/storage:ro,delegated
