@@ -23,12 +23,12 @@ variables:
   DOCKER_TLS_CERTDIR: "/certs"
 
 before_script:
-- touch docker/db/.env docker/nginx/.env docker/php-fpm/.env
 - apk add --no-cache bash gettext
 - docker-compose version
-- docker-compose config
+#- docker-compose config
 - docker login registry.gitlab.com -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
 - docker network create nginx-proxy
+- docker network create database-network
 
 build:
   stage: build
@@ -60,12 +60,12 @@ tests:
   - docker-compose pull
   - chmod +x docker/*.sh
   - bash -c 'cd docker/ && ./generate_env.sh staging'
-  - docker-compose up -d
+  - docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d
   - docker-compose stop queue scheduler nginx
-  - docker-compose exec -T cache redis-cli config set maxmemory 41943040
+  - docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T cache redis-cli config set maxmemory 41943040
   - docker cp vendor $(docker-compose ps -q php):/var/www/html/
-  - docker-compose exec -e APP_ENV=testing -T php php artisan db:wait-connection
-  - docker-compose exec -e APP_ENV=testing -T php vendor/bin/phpunit --coverage-text --colors=never
+  - docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -e APP_ENV=testing -T php php artisan db:wait-connection
+  - docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -e APP_ENV=testing -T php vendor/bin/phpunit --coverage-text --colors=never
   allow_failure: true
   dependencies:
     - build_vendor_dev
@@ -77,11 +77,11 @@ lint:
   - docker-compose pull
   - chmod +x docker/*.sh
   - bash -c 'cd docker/ && ./generate_env.sh staging'
-  - docker-compose up -d
+  - docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d
   - docker-compose stop queue scheduler nginx
-  - docker-compose exec -T cache redis-cli config set maxmemory 41943040
+  - docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T cache redis-cli config set maxmemory 41943040
   - docker cp vendor $(docker-compose ps -q php):/var/www/html/
-  - docker-compose exec -e APP_ENV=testing -T php php vendor/bin/php-cs-fixer fix --dry-run --diff
+  - docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -e APP_ENV=testing -T php php vendor/bin/php-cs-fixer fix --dry-run --diff
   allow_failure: true
   dependencies:
     - build_vendor_dev

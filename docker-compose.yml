@@ -1,14 +1,6 @@
 version: '3.7'
 services:
 
-  db_pg:
-    image: postgres:11-alpine
-    restart: unless-stopped
-    volumes:
-      - db-pg-data:/var/lib/postgresql/data:rw,delegated
-    env_file:
-      - docker/db/.env
-
   php: &php_base
     image: registry.gitlab.com/flasher/flasher/picblog_php:${CI_COMMIT_SHORT_SHA:-latest}
     build:
@@ -16,45 +8,74 @@ services:
       dockerfile: Dockerfile
       target: php_app
     restart: unless-stopped
-    env_file:
-    - docker/php-fpm/.env
+    networks:
+      - database-network
+      - internal
     volumes:
-    - storage:/var/www/html/storage:rw,delegated
-    - public_vendor:/var/www/html/public/vendor:rw,delegated
-    links:
-    - db_pg
-    - cache
-    depends_on:
-    - db_pg
-    - cache
+      - storage:/var/www/html/storage:rw,delegated
+      - public_vendor:/var/www/html/public/vendor:rw,delegated
+    environment: &php_environment
+      COMMIT_SHORT_SHA: "${CI_COMMIT_SHORT_SHA}"
+      APP_NAME: "${APP_NAME}"
+      APP_ENV: "${APP_ENV}"
+      APP_KEY: "${APP_KEY}"
+      APP_DEBUG: "false"
+      APP_URL: "https://${APP_URL}"
+      LOG_CHANNEL: "stderr"
+      DB_CONNECTION: "pgsql"
+      DB_DATABASE: "picblog"
+      DB_HOST: "db"
+      DB_PORT: "5432"
+      DB_USERNAME: "admin"
+      DB_PASSWORD: "${DB_PASSWORD}"
+      REDIS_HOST: "cache"
+      BROADCAST_DRIVER: "redis"
+      CACHE_DRIVER: "redis"
+      SESSION_DRIVER: "redis"
+      QUEUE_DRIVER: "redis"
+      SESSION_LIFETIME: "120"
+      SESSION_SECURE_COOKIE: "true"
+      MAIL_DRIVER: "${MAIL_DRIVER}"
+      SES_KEY: "${SES_KEY}"
+      SES_SECRET: "${SES_SECRET}"
+      SES_REGION: "${SES_REGION}"
+      DO_ACCESS_KEY_ID: "${DO_ACCESS_KEY_ID}"
+      DO_SECRET_ACCESS_KEY: "${DO_SECRET_ACCESS_KEY}"
+      DO_DEFAULT_REGION: "${DO_DEFAULT_REGION}"
+      DO_BUCKET: "${DO_BUCKET}"
+      DO_ENDPOINT: "${DO_ENDPOINT}"
+      DO_BUCKET_CDN: "${DO_BUCKET_CDN}"
+      NOCAPTCHA_SECRET: "${NOCAPTCHA_SECRET}"
+      NOCAPTCHA_SITEKEY: "${NOCAPTCHA_SITEKEY}"
+      TELESCOPE_ENABLED: "false"
+      SENTRY_LARAVEL_DSN: "${SENTRY_LARAVEL_DSN}"
+      #TRUSTED_PROXIES: ${TRUSTED_PROXIES}
+      TRUSTED_PROXIES: "*"
+      ANALYTICS_PROVIDER: "GoogleAnalytics"
+      ANALYTICS_TRACKING_ID: "${ANALYTICS_TRACKING_ID_PROD}"
+      SLACK_WEBHOOK_URL: "${SLACK_WEBHOOK_URL}"
+      MIX_SENTRY_DSN_PUBLIC: "${FRONT_SENTRY_DSN_PUBLIC}"
+      MAIL_FROM_ADDRESS: "${MAIL_FROM_ADDRESS}"
+      MAIL_FROM_NAME: "${APP_NAME}"
 
   queue:
     <<: *php_base
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: php_queue
     environment:
+      <<: *php_environment
       CONTAINER_ROLE: "queue"
 
   scheduler:
     <<: *php_base
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: php_scheduler
     user: root
     environment:
+      <<: *php_environment
       CONTAINER_ROLE: "scheduler"
 
   publisher:
     <<: *php_base
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: php_publisher
     restart: on-failure
     environment:
+      <<: *php_environment
       CONTAINER_ROLE: "publisher"
 
   nginx:
@@ -65,71 +86,38 @@ services:
       target: nginx
     restart: unless-stopped
     expose:
-    - 80
-    env_file: ./docker/nginx/.env
+      - 80
+    networks:
+      - nginx-proxy
+      - internal
+    environment:
+      NGINX_HOST: ${APP_URL}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.flasher-${APP_ENV}.rule=Host(`${APP_URL}`) || Host(`www.${APP_URL}`)"
-      - "traefik.http.routers.flasher-${APP_ENV}.entrypoints=websecure"
+      - "traefik.http.routers.flasher-${APP_ENV}.entrypoints=web,websecure"
       - "traefik.http.routers.flasher-${APP_ENV}.tls.certresolver=myhttpchallenge"
-      - "traefik.http.middlewares.test-compress.compress=true"
-      - "traefik.frontend.redirect.regex=^https://www.${APP_URL}/(.*)"
+      - "traefik.http.middlewares.compress.compress=true"
+      - "traefik.http.middlewares.redirectscheme.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.redirectscheme.redirectscheme.permanent=true"
+      - "traefik.frontend.redirect.regex=^https?://www.${APP_URL}/(.*)"
       - "traefik.frontend.redirect.replacement=https://${APP_URL}/$${1}"
     volumes:
-    - storage:/var/www/html/storage:ro,delegated
-    - public_vendor:/var/www/html/public/vendor:ro,delegated
+      - storage:/var/www/html/storage:ro,delegated
+      - public_vendor:/var/www/html/public/vendor:ro,delegated
     depends_on:
-    - php
+      - php
     links:
-    - php
-
-  cache:
-    image: redis:5.0-alpine
-    restart: unless-stopped
-    volumes:
-      - cache_data:/data:rw,delegated
-
-#  redirect:
-#    image: morbz/docker-web-redirect
-#    restart: unless-stopped
-#    environment:
-#      VIRTUAL_HOST: www.${APP_URL}
-#      LETSENCRYPT_HOST: www.${APP_URL}
-#      REDIRECT_TARGET: ${APP_URL}
-#    labels:
-#      - "traefik.enable=true"
-#      - "traefik.http.routers.flasher-${APP_ENV}.rule=Host(`www.${APP_URL}`)"
-#      - "traefik.http.routers.flasher-${APP_ENV}.entrypoints=websecure"
-#      - "traefik.http.routers.flasher-${APP_ENV}.tls.certresolver=myhttpchallenge"
-#      - "traefik.http.middlewares.test-compress.compress=true"
-
-  pgbackups3:
-    image: itbm/postgresql-backup-s3 # fork of schickling/postgres-backup-s3
-    depends_on:
-      - db_pg
-    links:
-      - db_pg
-    environment:
-      S3_ACCESS_KEY_ID: ${DO_ACCESS_KEY_ID}
-      S3_SECRET_ACCESS_KEY: ${DO_SECRET_ACCESS_KEY}
-      S3_BUCKET: ${DO_BUCKET}
-      S3_PREFIX: ${APP_ENV}/backups
-      S3_ENDPOINT: ${DO_ENDPOINT}
-      POSTGRES_HOST: db_pg
-      POSTGRES_DATABASE: picblog
-      POSTGRES_USER: picblog
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      SCHEDULE: '@daily'
-      POSTGRES_EXTRA_OPTS: '--schema=public --blobs'
+      - php
 
 volumes:
-#  db-data:
   storage:
   public_vendor:
-  cache_data:
-  db-pg-data:
 
 networks:
-  default:
-    external:
-      name: nginx-proxy
+  internal:
+    internal: true
+  nginx-proxy:
+    external: true
+  database-network:
+    external: true

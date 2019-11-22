@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+
+  nginx:
+    ports:
+    - "8080:80"
+
+  cache:
+    image: redis:5.0-alpine
+    restart: unless-stopped
+    volumes:
+      - cache_data:/data:rw,delegated
+
+  db:
+    image: postgres:11-alpine
+    restart: unless-stopped
+    expose:
+      - "5432"
+    volumes:
+      - db-pg-data:/var/lib/postgresql/data:rw,delegated
+    environment:
+      POSTGRES_DB: flashser
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+volumes:
+  cache_data:
+  db-pg-data:
+

@@ -12,6 +12,8 @@ RUN yarn install && yarn production
 FROM composer:1.9 as vendor
 COPY . .
 
+ARG COMPOSER_ALLOW_SUPERUSER=1
+
 RUN composer global require hirak/prestissimo \
         && composer install \
             --ignore-platform-reqs \
@@ -86,9 +88,3 @@ USER 1000:1000
 CMD /start.sh
 
 FROM php_base AS php_app
-
-FROM php_base AS php_queue
-
-FROM php_base AS php_scheduler
-
-FROM php_base AS php_publisher
