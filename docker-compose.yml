@@ -94,9 +94,9 @@ services:
       NGINX_HOST: ${APP_URL}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.flasher-${APP_ENV}.rule=Host(`${APP_URL}`) || Host(`www.${APP_URL}`)"
-      - "traefik.http.routers.flasher-${APP_ENV}.entrypoints=web,websecure"
-      - "traefik.http.routers.flasher-${APP_ENV}.tls.certresolver=myhttpchallenge"
+      - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.rule=Host(`${APP_URL}`) || Host(`www.${APP_URL}`)"
+      - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.entrypoints=web,websecure"
+      - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.tls.certresolver=myhttpchallenge"
       - "traefik.http.middlewares.compress.compress=true"
       - "traefik.http.middlewares.redirectscheme.redirectscheme.scheme=https"
       - "traefik.http.middlewares.redirectscheme.redirectscheme.permanent=true"
