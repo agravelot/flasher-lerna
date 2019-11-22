@@ -51,7 +51,6 @@
     "friendsofphp/php-cs-fixer": "^2.13",
     "fruitcake/laravel-telescope-toolbar": "^1.1",
     "fzaninotto/faker": "^1.8",
-    "infection/infection": "^0.14.1",
     "lanin/laravel-api-debugger": "^3.4",
     "laravel/dusk": "^5.5",
     "laravel/telescope": "^2.0",
