@@ -15,7 +15,7 @@ socat \
   "EXEC:'ssh -kTax $REMOTE -p $CI_DEPLOY_SSH_PORT socat STDIO UNIX-CONNECT\:/var/run/docker.sock'" \
   &
 export DOCKER_HOST=unix:///tmp/docker.sock
-export COMPOSE_PROJECT_NAME=picblog
+export COMPOSE_PROJECT_NAME=fasher_${APP_ENV}
 export TRUSTED_PROXIES=$(docker network inspect nginx-proxy --format='{{ (index .IPAM.Config 0).Subnet }}')
 echo " * LOGIN WITH GITLAB-CI TOKEN"
   docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
@@ -34,8 +34,6 @@ docker-compose stop -t 60 queue || echo "Container is not running"
 docker-compose stop scheduler || echo "Container is not running"
 echo " * PUTTING LARAVEL IN MAINTENANCE MODE"
 docker-compose exec -T php php artisan down --message="We'll be back soon" --retry=60 || echo "Container is not running"
-echo " * SAVING REDIS STATES"
-docker-compose exec -T cache redis-cli SAVE || echo "Container is not running"
 echo " * UPDATING RUNNING CONTAINERS"
 docker-compose up -d --remove-orphans
 echo " * CLEARING CACHE"

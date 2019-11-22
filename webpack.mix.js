@@ -1,6 +1,6 @@
 let mix = require('laravel-mix');
 require('laravel-mix-purgecss');
-require('laravel-mix-favicon');
+//require('laravel-mix-favicon');
 
 /*
  |--------------------------------------------------------------------------
@@ -12,8 +12,8 @@ require('laravel-mix-favicon');
  | file for the application as well as bundling up all the JS files.
  |
  */
-mix.ts('resources/js/app.ts', 'public/js/main')
-    .ts('resources/js/admin/admin.ts', 'public/js/main')
+mix.ts('resources/js/app.ts', 'public/js')
+    .ts('resources/js/admin/admin.ts', 'public/js')
 ;
 
 mix.sass('resources/sass/app.scss', 'public/css')
@@ -31,19 +31,6 @@ mix.sass('resources/sass/app.scss', 'public/css')
         }
     )
 //    .favicon()
-// .extract([
-//     'vue',
-//     'buefy',
-//     'axios',
-//     'vue-axios',
-//     '@fortawesome/fontawesome-svg-core',
-//     '@fortawesome/free-brands-svg-icons',
-//     '@fortawesome/free-regular-svg-icons',
-//     '@fortawesome/free-solid-svg-icons',
-//     // 'bulma-modal-fx',
-//     'dropzone',
-//     'vue2-dropzone',
-// ])
 ;
 
 // mix.webpackConfig({
@@ -56,13 +43,12 @@ if (mix.inProduction()) {
     mix.version();
 } else {
     mix.sourceMaps()
-        .webpackConfig({devtool: 'source-map'})
-}
-
-mix.browserSync('localhost:8000');
-
-require('laravel-mix-bundle-analyzer');
-
-if (mix.isWatching()) {
-    mix.bundleAnalyzer();
+        .webpackConfig({devtool: 'source-map'});
+    mix.webpackConfig({
+        devServer: {
+            proxy: {
+                '*': 'http://localhost:8000'
+            }
+        }
+    });
 }

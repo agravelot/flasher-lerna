@@ -19,27 +19,9 @@
             <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
 
-        <testsuite name="Modules-Feature">
-            <directory suffix="Test.php">./modules/**/Tests/Feature</directory>
-        </testsuite>
-        <testsuite name="Modules-Unit">
-            <directory suffix="Test.php">./modules/**/Tests/Unit</directory>
-        </testsuite>
-        <testsuite name="Modules">
-            <directory suffix="Test.php">./modules/**/Tests</directory>
-        </testsuite>
-    </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
-            <directory suffix=".php">./modules</directory>
-            <exclude>
-                <directory suffix="blade.php">./modules</directory>
-                <directory suffix=".php">./modules/**/Routes</directory>
-                <directory suffix=".php">./modules/**/Ressources</directory>
-                <directory suffix=".php">./modules/**/Tests</directory>
-                <directory suffix=".php">./modules/**/Config</directory>
-            </exclude>
         </whitelist>
     </filter>
     <php>
