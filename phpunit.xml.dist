@@ -22,14 +22,6 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
-            <directory suffix=".php">./modules</directory>
-            <exclude>
-                <directory suffix="blade.php">./modules</directory>
-                <directory suffix=".php">./modules/**/Routes</directory>
-                <directory suffix=".php">./modules/**/Ressources</directory>
-                <directory suffix=".php">./modules/**/Tests</directory>
-                <directory suffix=".php">./modules/**/Config</directory>
-            </exclude>
         </whitelist>
     </filter>
     <php>
