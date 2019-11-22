@@ -95,7 +95,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.flasher-${APP_ENV}.rule=Host(`${APP_URL}`) || Host(`www.${APP_URL}`)"
-      - "traefik.http.routers.flasher-${APP_ENV}.entrypoints=websecure"
+      - "traefik.http.routers.flasher-${APP_ENV}.entrypoints=web,websecure"
       - "traefik.http.routers.flasher-${APP_ENV}.tls.certresolver=myhttpchallenge"
       - "traefik.http.middlewares.compress.compress=true"
       - "traefik.http.middlewares.redirectscheme.redirectscheme.scheme=https"
