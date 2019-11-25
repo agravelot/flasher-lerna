@@ -116,7 +116,6 @@ volumes:
 
 networks:
   internal:
-    internal: true
   nginx-proxy:
     external: true
   database-network:
