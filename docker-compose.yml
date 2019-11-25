@@ -92,6 +92,7 @@ services:
       - internal
     environment:
       NGINX_HOST: ${APP_URL}
+      ACCESS_LOG_LEVEL: ${ACCESS_LOG_LEVEL}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.rule=Host(`${APP_URL}`) || Host(`www.${APP_URL}`)"
