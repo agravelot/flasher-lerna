@@ -10,7 +10,7 @@ services:
     restart: unless-stopped
     networks:
       - database-network
-      - internal
+      - backend
     volumes:
       - storage:/var/www/html/storage:rw,delegated
       - public_vendor:/var/www/html/public/vendor:rw,delegated
@@ -89,14 +89,14 @@ services:
       - 80
     networks:
       - nginx-proxy
-      - internal
+      - backend
     environment:
       NGINX_HOST: ${APP_URL}
       ERROR_LOG_LEVEL: ${ERROR_LOG_LEVEL}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.rule=Host(`${APP_URL}`) || Host(`www.${APP_URL}`)"
-      - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.entrypoints=web,websecure"
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.tls.certresolver=myhttpchallenge"
       - "traefik.http.middlewares.compress.compress=true"
       - "traefik.http.middlewares.redirectscheme.redirectscheme.scheme=https"
@@ -116,7 +116,7 @@ volumes:
   public_vendor:
 
 networks:
-  internal:
+  backend:
   nginx-proxy:
     external: true
   database-network:
