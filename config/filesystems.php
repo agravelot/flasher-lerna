@@ -71,11 +71,11 @@ return [
 
         's3' => [
             'driver' => 's3',
-            'key' => env('DO_ACCESS_KEY_ID'),
-            'secret' => env('DO_SECRET_ACCESS_KEY'),
-            'region' => env('DO_DEFAULT_REGION'),
-            'bucket' => env('DO_BUCKET'),
-            'endpoint' => env('DO_ENDPOINT'),
+            'key' => env('S3_ACCESS_KEY_ID'),
+            'secret' => env('S3_SECRET_ACCESS_KEY'),
+            'region' => env('S3_DEFAULT_REGION'),
+            'bucket' => env('S3_BUCKET'),
+            'endpoint' => env('S3_ENDPOINT'),
             'root' => config('app.env'),
         ],
     ],
