@@ -117,7 +117,7 @@ volumes:
 
 networks:
   default:
-    backend:
+    name: backend
   nginx-proxy:
     external: true
   database-network:
