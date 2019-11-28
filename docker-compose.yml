@@ -95,6 +95,7 @@ services:
       ERROR_LOG_LEVEL: ${ERROR_LOG_LEVEL}
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=nginx-proxy"
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.rule=Host(`${APP_URL}`) || Host(`www.${APP_URL}`)"
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.entrypoints=web,websecure"
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.tls.certresolver=myhttpchallenge"
@@ -116,8 +117,7 @@ volumes:
   public_vendor:
 
 networks:
-  default:
-    name: backend
+  backend:
   nginx-proxy:
     external: true
   database-network:
