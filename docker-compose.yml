@@ -116,8 +116,7 @@ volumes:
   public_vendor:
 
 networks:
-  default:
-    name: backend
+  backend:
   nginx-proxy:
     external: true
   database-network:
