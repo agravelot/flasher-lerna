@@ -27,6 +27,7 @@ _ide_helper_models.php
 /public/sitemap\.xml
 /public/svg
 /public/img
+/public/favicon
 
 /storage/medialibrary
 
