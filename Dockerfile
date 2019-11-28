@@ -55,8 +55,10 @@ RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
 #COPY --chown=1000:1000 --from=vendor /app/public/vendor/ /var/www/html/public/vendor/
 
-CMD cat /etc/nginx/nginx.conf | envsubst '\$ERROR_LOG_LEVEL' > /etc/nginx/nginx.conf \
-        && cat /etc/nginx/sites-enabled/picblog.conf | envsubst '\$NGINX_HOST' > /etc/nginx/sites-enabled/picblog.conf \
+CMD : \
+        && envsubst '\$ERROR_LOG_LEVEL' < /etc/nginx/nginx.conf | tee /etc/nginx/nginx.conf \
+        && envsubst '\$NGINX_HOST' < /etc/nginx/sites-enabled/default.conf | tee /etc/nginx/sites-enabled/default.conf \
+        && nginx -t \
         && exec nginx -g 'daemon off;'
 
 #
