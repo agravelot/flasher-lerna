@@ -29,7 +29,7 @@ abstract class TestCase extends BaseTestCase
         $this->hotfixSqlite();
     }
 
-    public function hotfixSqlite()
+    public function hotfixSqlite(): void
     {
         Connection::resolverFor('sqlite', function ($connection, $database, $prefix, $config) {
             return new class($connection, $database, $prefix, $config) extends SQLiteConnection {
@@ -65,27 +65,27 @@ abstract class TestCase extends BaseTestCase
         Resource::$wrap = 'data';
     }
 
-    protected function actingAsAdminNotStored()
+    protected function actingAsAdminNotStored(): void
     {
         $admin = factory(User::class)->state('admin')->make();
         $this->actingAs($admin);
     }
 
-    protected function actingAsAdmin()
+    protected function actingAsAdmin(): void
     {
         $admin = factory(User::class)->state('admin')->create();
         $this->actingAs($admin);
         Passport::actingAs($admin, ['*']);
     }
 
-    protected function actingAsUser()
+    protected function actingAsUser(): void
     {
         $user = factory(User::class)->state('user')->create();
         $this->actingAs($user);
         Passport::actingAs($user, ['*']);
     }
 
-    protected function assertAuthenticationRequired($uri, $method = 'get', $redirect = '/login')
+    protected function assertAuthenticationRequired($uri, $method = 'get', $redirect = '/login'): void
     {
         $method = mb_strtolower($method);
         if (! \in_array($method, ['get', 'post', 'put', 'update', 'delete'], true)) {
@@ -101,7 +101,7 @@ abstract class TestCase extends BaseTestCase
         $response->assertStatus(401);
     }
 
-    protected function disableExceptionHandling()
+    protected function disableExceptionHandling(): void
     {
         $this->app->instance(ExceptionHandler::class, new class() extends Handler {
             public function __construct()

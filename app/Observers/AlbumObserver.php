@@ -10,9 +10,7 @@ class AlbumObserver
 {
     public function creating(Album $album): void
     {
-        if ($album->user_id === null) {
-            $album->user_id = auth()->id();
-        }
+        $album->user_id ??= auth()->id();
     }
 
     public function saved(Album $album): void
