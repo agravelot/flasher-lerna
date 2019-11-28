@@ -9,7 +9,7 @@
          processIsolation="false"
          stopOnFailure="false">
     <listeners>
-        <listener class="NunoMaduro\Collision\Adapters\Phpunit\Listener" />
+        <listener class="NunoMaduro\Collision\Adapters\Phpunit\Listener"/>
     </listeners>
     <testsuites>
         <testsuite name="Unit">
@@ -18,13 +18,13 @@
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
-
+    </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
         </whitelist>
     </filter>
     <php>
-        <env name="TELESCOPE_ENABLED" value="false" />
+        <env name="TELESCOPE_ENABLED" value="false"/>
     </php>
 </phpunit>
