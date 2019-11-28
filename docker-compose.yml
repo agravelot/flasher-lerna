@@ -10,7 +10,7 @@ services:
     restart: unless-stopped
     networks:
       - database-network
-      - internal
+      - backend
     volumes:
       - storage:/var/www/html/storage:rw,delegated
       - public_vendor:/var/www/html/public/vendor:rw,delegated
@@ -39,12 +39,12 @@ services:
       SES_KEY: "${SES_KEY}"
       SES_SECRET: "${SES_SECRET}"
       SES_REGION: "${SES_REGION}"
-      DO_ACCESS_KEY_ID: "${DO_ACCESS_KEY_ID}"
-      DO_SECRET_ACCESS_KEY: "${DO_SECRET_ACCESS_KEY}"
-      DO_DEFAULT_REGION: "${DO_DEFAULT_REGION}"
-      DO_BUCKET: "${DO_BUCKET}"
-      DO_ENDPOINT: "${DO_ENDPOINT}"
-      DO_BUCKET_CDN: "${DO_BUCKET_CDN}"
+      S3_ACCESS_KEY_ID: "${S3_ACCESS_KEY_ID}"
+      S3_SECRET_ACCESS_KEY: "${S3_SECRET_ACCESS_KEY}"
+      S3_DEFAULT_REGION: "${S3_DEFAULT_REGION}"
+      S3_BUCKET: "${S3_BUCKET}"
+      S3_ENDPOINT: "${S3_ENDPOINT}"
+      S3_BUCKET_CDN: "${S3_BUCKET_CDN}"
       NOCAPTCHA_SECRET: "${NOCAPTCHA_SECRET}"
       NOCAPTCHA_SITEKEY: "${NOCAPTCHA_SITEKEY}"
       TELESCOPE_ENABLED: "false"
@@ -89,14 +89,15 @@ services:
       - 80
     networks:
       - nginx-proxy
-      - internal
+      - backend
     environment:
       NGINX_HOST: ${APP_URL}
       ERROR_LOG_LEVEL: ${ERROR_LOG_LEVEL}
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=nginx-proxy"
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.rule=Host(`${APP_URL}`) || Host(`www.${APP_URL}`)"
-      - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.entrypoints=web,websecure"
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.tls.certresolver=myhttpchallenge"
       - "traefik.http.middlewares.compress.compress=true"
       - "traefik.http.middlewares.redirectscheme.redirectscheme.scheme=https"
@@ -116,7 +117,7 @@ volumes:
   public_vendor:
 
 networks:
-  internal:
+  backend:
   nginx-proxy:
     external: true
   database-network:
