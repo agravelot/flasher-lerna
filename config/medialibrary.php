@@ -28,8 +28,8 @@ return [
         /*
          * The domain that should be prepended when generating urls.
          */
-        'domain' => env('DO_BUCKET_CDN',
-            'https://'.env('DO_BUCKET').'.'.env('DO_DEFAULT_REGION').'.digitaloceanspaces.com'),
+        'domain' => env('S3_BUCKET_CDN',
+            'https://'.env('S3_BUCKET').'.'.env('S3_DEFAULT_REGION').'.digitaloceanspaces.com'),
     ],
 
     'remote' => [
