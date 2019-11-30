@@ -8,6 +8,8 @@ services:
   cache:
     image: redis:5.0-alpine
     restart: unless-stopped
+    networks:
+      - database-network
     volumes:
       - cache_data:/data:rw,delegated
 
@@ -16,14 +18,19 @@ services:
     restart: unless-stopped
     expose:
       - "5432"
+    networks:
+      - database-network
     volumes:
-      - db-pg-data:/var/lib/postgresql/data:rw,delegated
+      - db-data:/var/lib/postgresql/data:rw,delegated
     environment:
-      POSTGRES_DB: flashser
+      POSTGRES_DB: flasher
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: ${DB_PASSWORD}
 
 volumes:
   cache_data:
-  db-pg-data:
+  db-data:
 
+networks:
+  database-network:
+    external: true

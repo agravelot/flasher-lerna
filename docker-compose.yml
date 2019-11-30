@@ -23,7 +23,7 @@ services:
       APP_URL: "https://${APP_URL}"
       LOG_CHANNEL: "stderr"
       DB_CONNECTION: "pgsql"
-      DB_DATABASE: "picblog"
+      DB_DATABASE: "flasher"
       DB_HOST: "db"
       DB_PORT: "5432"
       DB_USERNAME: "admin"
@@ -108,8 +108,6 @@ services:
       - storage:/var/www/html/storage:ro,delegated
       - public_vendor:/var/www/html/public/vendor:ro,delegated
     depends_on:
-      - php
-    links:
       - php
 
 volumes:

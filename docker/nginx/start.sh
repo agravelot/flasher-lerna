@@ -11,8 +11,6 @@ mv /etc/nginx/sites-enabled/default.conf /etc/nginx/sites-enabled/default.templa
 envsubst \$ERROR_LOG_LEVEL < /etc/nginx/nginx.template > /etc/nginx/nginx.conf
 envsubst \$NGINX_HOST < /etc/nginx/sites-enabled/default.template > /etc/nginx/sites-enabled/default.conf
 
-cat /etc/nginx/nginx.conf
-cat /etc/nginx/sites-enabled/default.conf
 # Validate nginx configuraition
 nginx -t
 

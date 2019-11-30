@@ -32,7 +32,7 @@ class WaitDatabaseConnection extends Command
         $this->waitConnection();
     }
 
-    public function waitConnection()
+    public function waitConnection(): void
     {
         try {
             DB::connection()->getPdo();
