@@ -23,7 +23,7 @@ services:
       APP_URL: "https://${APP_URL}"
       LOG_CHANNEL: "stderr"
       DB_CONNECTION: "pgsql"
-      DB_DATABASE: "picblog"
+      DB_DATABASE: "flasher"
       DB_HOST: "db"
       DB_PORT: "5432"
       DB_USERNAME: "admin"
