@@ -19,9 +19,9 @@ services:
     volumes:
       - db-pg-data:/var/lib/postgresql/data:rw,delegated
     environment:
-      POSTGRES_DB: flashser
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: flasher_testing
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: secret
 
 volumes:
   cache_data:
