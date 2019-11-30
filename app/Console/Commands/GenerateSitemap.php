@@ -30,7 +30,7 @@ class GenerateSitemap extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $sitemap = SitemapGenerator::create(config('app.url'))
             ->shouldCrawl(static function (UriInterface $uri) {

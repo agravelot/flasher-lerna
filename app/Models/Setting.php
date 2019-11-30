@@ -66,7 +66,9 @@ class Setting extends Model implements HasMedia
     /**
      * Dynamic type casting for value from type.
      *
-     * @param string $key
+     * @param  string  $key
+     *
+     * @return string
      */
     protected function getCastType($key): string
     {
