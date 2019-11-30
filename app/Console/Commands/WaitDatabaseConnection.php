@@ -38,6 +38,7 @@ class WaitDatabaseConnection extends Command
             DB::connection()->getPdo();
         } catch (Exception $exception) {
             Log::error($exception->getTraceAsString());
+            Log::debug(config('database'));
             sleep(1);
             $this->warn('Unable to connect to the database, retrying...');
             $this->waitConnection();
