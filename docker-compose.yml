@@ -109,8 +109,6 @@ services:
       - public_vendor:/var/www/html/public/vendor:ro,delegated
     depends_on:
       - php
-    links:
-      - php
 
 volumes:
   storage:

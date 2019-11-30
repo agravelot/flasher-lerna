@@ -31,7 +31,6 @@ volumes:
   cache_data:
   db-data:
 
-
 networks:
   database-network:
     external: true
