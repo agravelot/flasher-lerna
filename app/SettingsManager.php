@@ -9,8 +9,7 @@ use Spatie\MediaLibrary\Models\Media;
 
 class SettingsManager
 {
-    /** @var Collection $settings */
-    private $settings;
+    private Collection $settings;
 
     public function __construct()
     {

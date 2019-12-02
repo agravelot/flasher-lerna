@@ -25,12 +25,12 @@ class WaitCacheConnectionAndClear extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $this->waitConnectionForClear();
     }
 
-    public function waitConnectionForClear()
+    public function waitConnectionForClear(): void
     {
         try {
             Cache::clear();

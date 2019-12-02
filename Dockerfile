@@ -38,6 +38,7 @@ RUN apk --no-cache add shadow \
         && apk del shadow
 
 COPY docker/nginx/conf /etc/nginx
+COPY docker/nginx/start.sh /start.sh
 
 # Importing source code
 COPY --chown=1000:1000 . /var/www/html
@@ -49,15 +50,14 @@ RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
         && chown -h 1000:1000 /var/www/html/public/sitemap.xml \
         && mkdir /var/www/html/public/vendor \
         && chown -h 1000:1000 /var/www/html/public/vendor \
+        && chmod +x /start.sh \
         ;
 
 # Importing webpack assets
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
 #COPY --chown=1000:1000 --from=vendor /app/public/vendor/ /var/www/html/public/vendor/
 
-CMD cat /etc/nginx/nginx.conf | envsubst '\$ERROR_LOG_LEVEL' > /etc/nginx/nginx.conf \
-        && cat /etc/nginx/sites-enabled/picblog.conf | envsubst '\$NGINX_HOST' > /etc/nginx/sites-enabled/picblog.conf \
-        && exec nginx -g 'daemon off;'
+ENTRYPOINT /start.sh
 
 #
 # PHP Application

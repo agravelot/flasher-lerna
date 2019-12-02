@@ -6,16 +6,16 @@ use Spatie\MediaLibrary\Jobs\PerformConversions as PerformConversionsBase;
 
 class PerformConversions extends PerformConversionsBase
 {
-    public $timeout = 30 * 60; // 30 minutes
+    public int $timeout = 30 * 60; // 30 minutes
 
     /**
      * Delete the job if its models no longer exist.
      *
      * @var bool
      */
-    public $deleteWhenMissingModels = true;
+    public bool $deleteWhenMissingModels = true;
 
-    public function retryAfter()
+    public function retryAfter(): int
     {
         return $this->timeout + 10;
     }

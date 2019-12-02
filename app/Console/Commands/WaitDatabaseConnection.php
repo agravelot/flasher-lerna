@@ -26,13 +26,13 @@ class WaitDatabaseConnection extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $this->info('Waiting database');
         $this->waitConnection();
     }
 
-    public function waitConnection()
+    public function waitConnection(): void
     {
         try {
             DB::connection()->getPdo();
