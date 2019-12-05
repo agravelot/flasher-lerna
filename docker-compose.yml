@@ -99,7 +99,7 @@ services:
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.rule=Host(`${APP_URL}`) || Host(`www.${APP_URL}`)"
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.entrypoints=web,websecure"
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.tls.certresolver=myhttpchallenge"
-      - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.middlewares=https-only,limit,test-ratelimit,retry,error-check,compress"
+      - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.middlewares=redirect-non-www,https-only,limit,test-ratelimit,retry,error-check,compress"
       - "traefik.http.middlewares.compress.compress=true"
       - "traefik.http.middlewares.https-only.redirectscheme.scheme=https"
       - "traefik.http.middlewares.https-only.redirectscheme.permanent=true"
@@ -108,8 +108,8 @@ services:
       - "traefik.http.middlewares.limit.buffering.maxRequestBodyBytes=10000000" # 10 Mb
       - "traefik.http.middlewares.test-ratelimit.ratelimit.average=1000"
       - "traefik.http.middlewares.test-ratelimit.ratelimit.burst=500"
-      - "traefik.frontend.redirect.regex=^https?://www.${APP_URL}/(.*)"
-      - "traefik.frontend.redirect.replacement=https://${APP_URL}/$${1}"
+      - "traefik.http.middlewares.redirect-non-www.redirect.regex=^https?://www.${APP_URL}/(.*)"
+      - "traefik.http.middlewares.redirect-non-www.redirect.replacement=https://${APP_URL}/$${1}"
     volumes:
       - storage:/var/www/html/storage:ro,delegated
       - public_vendor:/var/www/html/public/vendor:ro,delegated
