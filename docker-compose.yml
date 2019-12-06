@@ -108,8 +108,8 @@ services:
       - "traefik.http.middlewares.limit.buffering.maxRequestBodyBytes=10000000" # 10 Mb
       - "traefik.http.middlewares.test-ratelimit.ratelimit.average=1000"
       - "traefik.http.middlewares.test-ratelimit.ratelimit.burst=500"
-      - "traefik.http.middlewares.redirect-non-www.redirect.regex=^https?://www.${APP_URL}/(.*)"
-      - "traefik.http.middlewares.redirect-non-www.redirect.replacement=https://${APP_URL}/$${1}"
+      - "traefik.http.middlewares.redirect-non-www.redirectregex.regex=^https?://www.${APP_URL}/(.*)"
+      - "traefik.http.middlewares.redirect-non-www.redirectregex.replacement=https://${APP_URL}/$${1}"
     volumes:
       - storage:/var/www/html/storage:ro,delegated
       - public_vendor:/var/www/html/public/vendor:ro,delegated
