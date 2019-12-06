@@ -12,7 +12,7 @@ trait CanResetPassword
     /**
      * Send the password reset notification.
      */
-    public function sendPasswordResetNotification($token)
+    public function sendPasswordResetNotification($token): void
     {
         $this->notify((new ResetPassword($token))->onQueue('emails'));
     }

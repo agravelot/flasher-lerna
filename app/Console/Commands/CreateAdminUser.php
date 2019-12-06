@@ -31,7 +31,7 @@ class CreateAdminUser extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): bool
     {
         $role = $this->argument('role');
         $username = $this->argument('name');
@@ -91,7 +91,7 @@ class CreateAdminUser extends Command
         return true;
     }
 
-    private function create($data)
+    private function create($data): void
     {
         $user = User::create($data);
         if ($user->markEmailAsVerified()) {

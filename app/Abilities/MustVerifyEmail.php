@@ -12,7 +12,7 @@ trait MustVerifyEmail
     /**
      * Send the email verification notification.
      */
-    public function sendEmailVerificationNotification()
+    public function sendEmailVerificationNotification(): void
     {
         $this->notify((new VerifyEmail())->onQueue('emails'));
     }

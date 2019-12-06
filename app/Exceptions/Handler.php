@@ -31,7 +31,6 @@ class Handler extends ExceptionHandler
      * Report or log an exception.
      *
      *
-     *
      * @throws Exception
      */
     public function report(Exception $exception)

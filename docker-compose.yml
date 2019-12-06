@@ -23,7 +23,7 @@ services:
       APP_URL: "https://${APP_URL}"
       LOG_CHANNEL: "stderr"
       DB_CONNECTION: "pgsql"
-      DB_DATABASE: "picblog"
+      DB_DATABASE: "flasher"
       DB_HOST: "db"
       DB_PORT: "5432"
       DB_USERNAME: "admin"
@@ -99,17 +99,22 @@ services:
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.rule=Host(`${APP_URL}`) || Host(`www.${APP_URL}`)"
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.entrypoints=web,websecure"
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.tls.certresolver=myhttpchallenge"
+      - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.middlewares=redirect-non-www,https-only,limit,test-ratelimit,retry,error-check,compress"
       - "traefik.http.middlewares.compress.compress=true"
-      - "traefik.http.middlewares.redirectscheme.redirectscheme.scheme=https"
-      - "traefik.http.middlewares.redirectscheme.redirectscheme.permanent=true"
-      - "traefik.frontend.redirect.regex=^https?://www.${APP_URL}/(.*)"
-      - "traefik.frontend.redirect.replacement=https://${APP_URL}/$${1}"
+      - "traefik.http.middlewares.https-only.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.https-only.redirectscheme.permanent=true"
+      - "traefik.http.middlewares.retry.retry.attempts=4"
+      - "traefik.http.middlewares.error-check.circuitbreaker.expression=ResponseCodeRatio(500, 600, 0, 600) > 0.30 || NetworkErrorRatio() > 0.10"
+      - "traefik.http.middlewares.limit.buffering.maxRequestBodyBytes=10000000" # 10 Mb
+      - "traefik.http.middlewares.test-ratelimit.ratelimit.average=1000"
+      - "traefik.http.middlewares.test-ratelimit.ratelimit.burst=500"
+      - "traefik.http.middlewares.redirect-non-www.redirectregex.regex=^https?://www.${APP_URL}/(.*)"
+      - "traefik.http.middlewares.redirect-non-www.redirectregex.replacement=https://${APP_URL}/$${1}"
+      - "traefik.http.middlewares.redirect-non-www.redirectregex.permanent=true"
     volumes:
       - storage:/var/www/html/storage:ro,delegated
       - public_vendor:/var/www/html/public/vendor:ro,delegated
     depends_on:
-      - php
-    links:
       - php
 
 volumes:
