@@ -26,7 +26,7 @@ class CosplayerResource extends Resource
             'updated_at' => $this->updated_at,
             'user' => $this->whenLoaded('user', new UserResource($this->user)),
             'links' => [
-                'related' => route('cosplayers.show', ['cosplayers' => $this]),
+                'related' => route('cosplayers.show', ['cosplayer' => $this]),
             ],
         ];
     }
