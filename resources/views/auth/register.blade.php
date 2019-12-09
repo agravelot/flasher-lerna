@@ -18,7 +18,7 @@
                     <div class="field">
                         <p class="control has-icons-left">
                             <input class="input" id="name" type="name" name="name" value="{{ old('name') }}"
-                                   placeholder="{{ __('Name') }}" required autofocus>
+                                   placeholder="{{ __('Nickname') }}" required autofocus>
                             <span class="icon is-small is-left">
                                 @fas('user')
                             </span>
