@@ -16,7 +16,7 @@ class LoginTest extends TestCase
         session()->setPreviousUrl('/login');
     }
 
-    public function test_guest_can_login()
+    public function test_guest_can_login(): void
     {
         $user = factory(User::class)->create(['password' => 'secret']);
         $data = [

@@ -12,7 +12,7 @@ class CreateAdminUserTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_create_user_without_argument()
+    public function test_create_user_without_argument(): void
     {
         $this->artisan('user:create')
             ->expectsQuestion('Please select a user role', 'admin')
@@ -24,7 +24,7 @@ class CreateAdminUserTest extends TestCase
         $this->assertCount(1, User::all());
     }
 
-    public function test_create_user_with_argument()
+    public function test_create_user_with_argument(): void
     {
         $this->artisan('user:create', [
             'role' => 'admin',
@@ -37,7 +37,7 @@ class CreateAdminUserTest extends TestCase
         $this->assertCount(1, User::all());
     }
 
-    public function test_can_not_create_user_with_malformed_email()
+    public function test_can_not_create_user_with_malformed_email(): void
     {
         $this->artisan('user:create', [
             'role' => 'admin',
@@ -51,7 +51,7 @@ class CreateAdminUserTest extends TestCase
         $this->assertCount(0, User::all());
     }
 
-    public function test_can_not_create_user_with_malformed_username()
+    public function test_can_not_create_user_with_malformed_username(): void
     {
         $this->artisan('user:create', [
             'role' => 'admin',
@@ -65,7 +65,7 @@ class CreateAdminUserTest extends TestCase
         $this->assertCount(0, User::all());
     }
 
-    public function test_create_user_with_argument_is_stores_in_database()
+    public function test_create_user_with_argument_is_stores_in_database(): void
     {
         Artisan::call('user:create', [
             'role' => 'admin',
