@@ -103,17 +103,17 @@ services:
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.entrypoints=websecure"
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.tls.certresolver=myhttpchallenge"
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.middlewares=flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-redirect-non-www,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-https-only,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-limit,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-test-ratelimit,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-retry,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-error-check,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-compress"
-      - "traefik.http.middlewares.compress.compress=true"
-      - "traefik.http.middlewares.https-only.redirectscheme.scheme=https"
-      - "traefik.http.middlewares.https-only.redirectscheme.permanent=true"
-      - "traefik.http.middlewares.retry.retry.attempts=4"
-      - "traefik.http.middlewares.error-check.circuitbreaker.expression=ResponseCodeRatio(500, 600, 0, 600) > 0.30 || NetworkErrorRatio() > 0.10"
-      - "traefik.http.middlewares.limit.buffering.maxRequestBodyBytes=10000000" # 10 Mb
-      - "traefik.http.middlewares.test-ratelimit.ratelimit.average=1000"
-      - "traefik.http.middlewares.test-ratelimit.ratelimit.burst=500"
-      - "traefik.http.middlewares.redirect-non-www.redirectregex.regex=^https?://www.${APP_URL}/(.*)"
-      - "traefik.http.middlewares.redirect-non-www.redirectregex.replacement=https://${APP_URL}/$${1}"
-      - "traefik.http.middlewares.redirect-non-www.redirectregex.permanent=true"
+      - "traefik.http.middlewares.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-compress.compress=true"
+      - "traefik.http.middlewares.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-https-only.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-https-only.redirectscheme.permanent=true"
+      - "traefik.http.middlewares.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-retry.retry.attempts=4"
+      - "traefik.http.middlewares.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-error-check.circuitbreaker.expression=ResponseCodeRatio(500, 600, 0, 600) > 0.30 || NetworkErrorRatio() > 0.10"
+      - "traefik.http.middlewares.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-limit.buffering.maxRequestBodyBytes=10000000" # 10 Mb
+      - "traefik.http.middlewares.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-test-ratelimit.ratelimit.average=1000"
+      - "traefik.http.middlewares.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-test-ratelimit.ratelimit.burst=500"
+      - "traefik.http.middlewares.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-redirect-non-www.redirectregex.regex=^https?://www.${APP_URL}/(.*)"
+      - "traefik.http.middlewares.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-redirect-non-www.redirectregex.replacement=https://${APP_URL}/$${1}"
+      - "traefik.http.middlewares.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-redirect-non-www.redirectregex.permanent=true"
     volumes:
       - storage:/var/www/html/storage:ro,delegated
       - public_vendor:/var/www/html/public/vendor:ro,delegated
