@@ -11,11 +11,52 @@
             navigable: 'is-modal-navigable',
         };
 
-        const onClickEach = function(selector, callback): void {
-            const arr = document.getElementsByClassName(selector);
-            Array.from(arr).forEach(function(el) {
-                el.addEventListener('click', callback);
+        const onClickEach = function(selector: string, callback: any): void {
+            const elements = document.getElementsByClassName(selector);
+            Array.from(elements).forEach((el) => el.addEventListener('click', callback));
+        };
+
+        // Freeze scrollbars
+        const freeze = function(): void {
+            document.getElementsByTagName('html')[0].style.overflow = 'hidden';
+            document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
+        };
+
+        const unFreeze = function(): void {
+            document.getElementsByTagName('html')[0].style.overflow = '';
+            document.getElementsByTagName('body')[0].style.overflowY = '';
+        };
+
+        const closeAll = function(): void {
+            const openModal = document.getElementsByClassName(elements.active);
+            Array.from(openModal).forEach(function(modal) {
+                modal.classList.remove(elements.active);
             });
+            unFreeze();
+        };
+
+        const openModal = function(): void {
+            const targetModal = this.getAttribute(elements.target);
+            freeze();
+            const modal: HTMLElement | null = document.getElementById(targetModal);
+            modal?.classList.add(elements.active);
+
+            const image = modal?.getElementsByTagName('img')[0];
+            image?.sizes = `${Math.ceil(
+                (image.getBoundingClientRect().width / window.innerWidth) * 100
+            )}vw`;
+            image?.classList.add('responsive-media');
+        };
+
+        const closeModal = function(): void {
+            const targetModal = this.parentElement.id;
+            const modal: HTMLElement | null = document.getElementById(targetModal);
+            modal?.classList.remove(elements.active);
+            unFreeze();
+
+            // Remove 'responsive-media' class
+            const image = modal?.getElementsByTagName('img')[0];
+            image?.classList.remove('responsive-media');
         };
 
         const events = function(): void {
@@ -33,52 +74,54 @@
             });
         };
 
-        const closeAll = function(): void {
-            const openModal = document.getElementsByClassName(elements.active);
-            Array.from(openModal).forEach(function(modal) {
-                modal.classList.remove(elements.active);
-            });
-            unFreeze();
-        };
-
-        const openModal = function(): void {
-            const targetModal = this.getAttribute(elements.target);
-            freeze();
-            const modal: Element = document.getElementById(targetModal);
-            modal.classList.add(elements.active);
-
-            const image = modal.getElementsByTagName('img')[0];
-            image.sizes = `${Math.ceil(
-                (image.getBoundingClientRect().width / window.innerWidth) * 100
-            )}vw`;
-            image.classList.add('responsive-media');
-        };
-
-        const closeModal = function(): void {
-            const targetModal = this.parentElement.id;
-            const modal: Element = document.getElementById(targetModal);
-            modal.classList.remove(elements.active);
-            unFreeze();
-
-            // Remove 'responsive-media' class
-            const image = modal.getElementsByTagName('img')[0];
-            image.classList.remove('responsive-media');
-        };
-
-        // Freeze scrollbars
-        const freeze = function(): void {
-            document.getElementsByTagName('html')[0].style.overflow = 'hidden';
-            document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
-        };
-
-        const unFreeze = function(): void {
-            document.getElementsByTagName('html')[0].style.overflow = '';
-            document.getElementsByTagName('body')[0].style.overflowY = '';
-        };
-
         return {
             init: function(): void {
                 events();
+
+                function getCurrentModal(): Element {
+                    return document.getElementsByClassName(
+                        elements.navigable + ' ' + elements.active
+                    )[0];
+                }
+
+                function closeModal(modal: Element): void {
+                    modal.classList.remove(elements.active);
+                    const image = modal.getElementsByTagName('img')[0];
+                    image.classList.remove('responsive-media');
+                }
+
+                function openModal(modal: Element): void {
+                    modal.classList.add(elements.active);
+                    const image = modal.getElementsByTagName('img')[0];
+                    image.sizes = `${Math.ceil(
+                        (image.getBoundingClientRect().width / window.innerWidth) * 100
+                    )}vw`;
+                    image.classList.add('responsive-media');
+                }
+
+                function previousModal(): void {
+                    const currentActiveModal: Element = getCurrentModal();
+                    const previousModal: Element | null = currentActiveModal.previousElementSibling;
+
+                    if (!previousModal || !previousModal.classList.contains(elements.navigable)) {
+                        return;
+                    }
+
+                    closeModal(currentActiveModal);
+                    openModal(previousModal);
+                }
+
+                function nextModal(): void {
+                    const currentActiveModal: Element = getCurrentModal();
+                    const nextModal: Element | null = currentActiveModal.nextElementSibling;
+
+                    if (!nextModal || !nextModal.classList.contains(elements.navigable)) {
+                        return;
+                    }
+
+                    closeModal(currentActiveModal);
+                    openModal(nextModal);
+                }
 
                 window.addEventListener(
                     'keydown',
@@ -109,51 +152,6 @@
                     },
                     true
                 );
-
-                function previousModal(): void {
-                    const currentActiveModal: Element = getCurrentModal();
-                    const previousModal: Element = currentActiveModal.previousElementSibling;
-
-                    if (!previousModal || !previousModal.classList.contains(elements.navigable)) {
-                        return;
-                    }
-
-                    closeModal(currentActiveModal);
-                    openModal(previousModal);
-                }
-
-                function nextModal(): void {
-                    const currentActiveModal: Element = getCurrentModal();
-                    const nextModal: Element = currentActiveModal.nextElementSibling;
-
-                    if (!nextModal || !nextModal.classList.contains(elements.navigable)) {
-                        return;
-                    }
-
-                    closeModal(currentActiveModal);
-                    openModal(nextModal);
-                }
-
-                function getCurrentModal(): Element {
-                    return document.getElementsByClassName(
-                        elements.navigable + ' ' + elements.active
-                    )[0];
-                }
-
-                function closeModal(modal: Element): void {
-                    modal.classList.remove(elements.active);
-                    const image = modal.getElementsByTagName('img')[0];
-                    image.classList.remove('responsive-media');
-                }
-
-                function openModal(modal: Element): void {
-                    modal.classList.add(elements.active);
-                    const image = modal.getElementsByTagName('img')[0];
-                    image.sizes = `${Math.ceil(
-                        (image.getBoundingClientRect().width / window.innerWidth) * 100
-                    )}vw`;
-                    image.classList.add('responsive-media');
-                }
             },
         };
     })();

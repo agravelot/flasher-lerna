@@ -30,20 +30,19 @@ document.addEventListener('DOMContentLoaded', () => {
         el.addEventListener('click', () => {
             // Get the target from the "data-target" attribute
             const dataSetTarget: string | undefined = (el as HTMLCanvasElement).dataset.target;
-            const target: '' | HTMLElement | null | undefined =
-                dataSetTarget && document.getElementById(dataSetTarget);
-
-            // Toggle the class on both the "navbar-burger" and the "navbar-menu"
-            el.classList.toggle('is-active');
-            target && target.classList.toggle('is-active');
+            if (dataSetTarget !== undefined) {
+                const target: HTMLElement | null = document.getElementById(dataSetTarget);
+                // Toggle the class on both the "navbar-burger" and the "navbar-menu"
+                el.classList.toggle('is-active');
+                target?.classList.toggle('is-active');
+            }
         });
     });
 
     // Notificaitons
-    (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
-        const notification = $delete.parentNode;
+    (Array.from(document.getElementsByClassName('.notification .delete'))).forEach(($delete) => {
         $delete.addEventListener('click', () => {
-            notification.parentNode.removeChild(notification);
+            $delete.parentNode?.parentNode?.removeChild($delete?.parentNode);
         });
     });
 });
