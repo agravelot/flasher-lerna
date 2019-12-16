@@ -230,16 +230,15 @@ export default class AlbumsEdit extends AlbumBase {
     }
 
     updateAlbum(): void {
-        if (this.album === undefined) {
-            throw new DOMException('Unable to delete album from undefined.')
-        }
         this.axios
             .patch(`/api/admin/albums/${this.$route.params.slug}`, this.album)
             .then(res => res.data)
             .then(res => {
                 this.album = res.data;
                 this.showSuccess('Album updated');
-                this.$router.push({ name: 'admin.albums.edit', params: { slug: this.album.slug } });
+                if (this.album instanceof Album) {
+                    this.$router.push({name: 'admin.albums.edit', params: {slug: this.album.slug}});
+                }
             })
             .catch(err => {
                 this.showError(

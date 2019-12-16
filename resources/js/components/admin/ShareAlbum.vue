@@ -35,7 +35,7 @@ export default class ShareAlbum extends Buefy {
     protected album!: Album;
 
     addToClipboard(value: any): void {
-        (navigator as any).permissions.query({ name: 'clipboard-write' }).then(result => {
+        (navigator as any).permissions.query({ name: 'clipboard-write' } as PermissionDescriptor).then(result => {
             if (result.state == 'granted' || result.state == 'prompt') {
                 navigator.clipboard.writeText(value).then(
                     () => {
