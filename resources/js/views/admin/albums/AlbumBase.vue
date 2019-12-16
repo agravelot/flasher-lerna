@@ -12,7 +12,7 @@ import FilterableById from "../../../models/interfaces/filterableById";
 @Component({})
 export default class AlbumBase extends Buefy {
     protected errors: object = {};
-    protected album: Album = new Album();
+    protected album: Album | undefined;
     protected allowNew = false;
     protected allCategories: Array<Category> = [];
     protected allCosplayers: Array<Cosplayer> = [];
@@ -36,7 +36,7 @@ export default class AlbumBase extends Buefy {
     }
 
     isCategoryAlreadySelected(filterable: FilterableById): boolean {
-        return this.album.categories.some(c => c.id === filterable.id);
+        return !! this.album?.categories?.some(c => c.id === filterable.id);
     }
 
     isCategoryNotAlreadySelected(filterable: FilterableById): boolean {
@@ -44,7 +44,7 @@ export default class AlbumBase extends Buefy {
     }
 
     isCosplayerAlreadySelected(filterable: FilterableById): boolean {
-        return this.album.cosplayers.some(c => c.id === filterable.id);
+        return !! this.album?.cosplayers?.some(c => c.id === filterable.id);
     }
 
     isCosplayerNotAlreadySelected(filterable: FilterableById): boolean {

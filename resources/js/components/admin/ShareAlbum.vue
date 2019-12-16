@@ -31,8 +31,8 @@ import { Prop } from 'vue-property-decorator';
     name: 'share-album',
 })
 export default class ShareAlbum extends Buefy {
-    @Prop()
-    protected album: Album;
+    @Prop({ required: true })
+    protected album!: Album;
 
     addToClipboard(value: any): void {
         (navigator as any).permissions.query({ name: 'clipboard-write' }).then(result => {

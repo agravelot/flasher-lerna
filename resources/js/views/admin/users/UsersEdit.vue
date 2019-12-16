@@ -100,7 +100,7 @@ import User from '../../../models/user';
     name: 'UsersEdit',
 })
 export default class UsersEdit extends Buefy {
-    private user: User = null;
+    private user: User|null = null;
     private loading = false;
     protected errors: object = {};
 
@@ -181,6 +181,9 @@ export default class UsersEdit extends Buefy {
      * Delete user from slug
      */
     deleteUser(): void {
+        if (this.user === null) {
+            throw new DOMException('Unable to delete album from undefined.')
+        }
         this.axios
             .delete(`/api/admin/users/${this.user.id}`)
             .then(() => {

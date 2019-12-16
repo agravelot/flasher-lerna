@@ -163,11 +163,9 @@ export default class CosplayersCreate extends Buefy {
 
     searchUser(): void {
         this.axios
-            .get('/api/admin/users', { params: { 'filter[name]': this.cosplayer.user.id } })
+            .get('/api/admin/users', { params: { 'filter[name]': this.cosplayer?.user?.id } })
             .then(res => res.data)
-            .then(res => {
-                this.searchUsers = res.data;
-            })
+            .then(res =>this.searchUsers = res.data)
             .catch(err => {
                 this.$buefy.snackbar.open({
                     message: 'Unable to load users, maybe you are offline?',

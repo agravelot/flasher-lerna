@@ -106,8 +106,8 @@
 
       <b-button
         :loading="loading"
-        @click="updateCosplayer()"
         type="is-primary"
+        @click="updateCosplayer()"
       >
         Update
       </b-button>
@@ -237,7 +237,7 @@ export default class CosplayersEdit extends Buefy {
         if (cosplayer.description) {
             formData.append('description', cosplayer.description);
         }
-        if (this.cosplayer.user && cosplayer.user.id) {
+        if (cosplayer.user?.id) {
             formData.append('user_id', String(cosplayer.user.id));
         }
         if (cosplayer.avatar) {

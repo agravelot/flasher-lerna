@@ -57,7 +57,7 @@
         private invitation: Invitation = new Invitation();
         protected errors: object = {};
         private loading = false;
-        private filteredCosplayers: Cosplayer[];
+        private filteredCosplayers: Cosplayer[] = [];
 
         createInvitation(): void {
             this.axios

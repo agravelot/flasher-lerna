@@ -41,10 +41,12 @@
             const modal: HTMLElement | null = document.getElementById(targetModal);
             modal?.classList.add(elements.active);
 
-            const image = modal?.getElementsByTagName('img')[0];
-            image?.sizes = `${Math.ceil(
-                (image.getBoundingClientRect().width / window.innerWidth) * 100
-            )}vw`;
+            const image: HTMLImageElement | undefined = modal?.getElementsByTagName('img')[0];
+            if (image !== undefined) {
+                image.sizes = `${Math.ceil(
+                    (image.getBoundingClientRect().width / window.innerWidth) * 100
+                )}vw`;
+            }
             image?.classList.add('responsive-media');
         };
 

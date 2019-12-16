@@ -92,9 +92,9 @@ import { quillEditor } from 'vue-quill-editor';
 import vue2Dropzone from 'vue2-dropzone';
 
 class Setting {
-    public id: number;
-    public name: string;
-    public value: string;
+    public id!: number;
+    public name!: string;
+    public value!: string;
 }
 
 @Component({
