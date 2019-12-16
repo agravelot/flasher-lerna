@@ -13,7 +13,7 @@ class StoreAlbumTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_store_an_album_without_a_picture()
+    public function test_admin_can_store_an_album_without_a_picture(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->make();
@@ -32,7 +32,7 @@ class StoreAlbumTest extends TestCase
         return $this->json('post', '/api/admin/albums', array_merge($album->toArray(), $optional));
     }
 
-    public function test_admin_can_store_an_album_with_a_picture()
+    public function test_admin_can_store_an_album_with_a_picture(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->make();
@@ -44,7 +44,7 @@ class StoreAlbumTest extends TestCase
         $response->assertCreated();
     }
 
-    public function test_admin_can_store_an_album_with_a_category_and_a_picture()
+    public function test_admin_can_store_an_album_with_a_category_and_a_picture(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->make();
@@ -59,7 +59,7 @@ class StoreAlbumTest extends TestCase
         $response->assertCreated();
     }
 
-    public function test_admin_can_not_store_an_album_with_an_non_existent_category_and_a_picture()
+    public function test_admin_can_not_store_an_album_with_an_non_existent_category_and_a_picture(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->make();
@@ -72,7 +72,7 @@ class StoreAlbumTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function test_admin_can_store_an_album_with_a_cosplayer_and_a_picture()
+    public function test_admin_can_store_an_album_with_a_cosplayer_and_a_picture(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->make();
@@ -87,7 +87,7 @@ class StoreAlbumTest extends TestCase
         $response->assertCreated();
     }
 
-    public function test_admin_can_store_an_album_with_an_non_existent_cosplayer()
+    public function test_admin_can_store_an_album_with_an_non_existent_cosplayer(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->make();
@@ -100,7 +100,7 @@ class StoreAlbumTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function test_admin_can_store_an_album_with_a_multiple_pictures()
+    public function test_admin_can_store_an_album_with_a_multiple_pictures(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->make();
@@ -111,7 +111,7 @@ class StoreAlbumTest extends TestCase
         $response->assertCreated();
     }
 
-    public function test_admin_can_store_an_album_with_published_now()
+    public function test_admin_can_store_an_album_with_published_now(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('published')->make();
@@ -122,7 +122,7 @@ class StoreAlbumTest extends TestCase
         $response->assertCreated();
     }
 
-    public function test_user_cannot_store_an_album()
+    public function test_user_cannot_store_an_album(): void
     {
         $this->actingAsUser();
         $album = factory(Album::class)->make();
@@ -133,7 +133,7 @@ class StoreAlbumTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_guest_cannot_store_an_album()
+    public function test_guest_cannot_store_an_album(): void
     {
         $album = factory(Album::class)->make();
 
@@ -141,5 +141,45 @@ class StoreAlbumTest extends TestCase
 
         $this->assertSame(0, Album::count());
         $response->assertStatus(401);
+    }
+
+    public function test_admin_cannot_add_cosplayer_to_same_album_twice(): void
+    {
+        $this->actingAsAdmin();
+        $cosplayer = factory(Cosplayer::class)->create();
+        /** @var Album $album */
+        $album = factory(Album::class)->make();
+
+        $response = $this->storeAlbum($album, [
+            'cosplayers' => [[
+                'id' => $cosplayer->id,
+            ], [
+                'id' => $cosplayer->id,
+            ]],
+        ]);
+
+        $this->assertSame(1, Album::count());
+        $this->assertSame(1, Album::first()->cosplayers()->count());
+        $response->assertCreated();
+    }
+
+    public function test_admin_send_category_twice_will_be_save_once(): void
+    {
+        $this->actingAsAdmin();
+        $category = factory(Category::class)->create();
+        /** @var Album $album */
+        $album = factory(Album::class)->make();
+
+        $response = $this->storeAlbum($album, [
+            'categories' => [[
+                'id' => $category->id,
+            ], [
+                'id' => $category->id,
+            ]],
+        ]);
+
+        $this->assertSame(1, Album::count());
+        $this->assertSame(1, Album::first()->categories()->count());
+        $response->assertCreated();
     }
 }
