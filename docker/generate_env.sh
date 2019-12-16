@@ -7,7 +7,7 @@ set -o errexit   ## set -e : exit the script if any statement returns a non-true
 
 ENVIRONMENT=$1
 
-if [[ ENVIRONMENT == "production" ]]; then
+if [[ $ENVIRONMENT == "production" ]]; then
     # Production
     export SSH_PRIVATE_KEY=${CI_PRODUCTION_SSH_PRIVATE_KEY}
     export SSH_USER=${CI_PRODUCTION_SSH_USER}
