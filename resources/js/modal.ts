@@ -1,6 +1,6 @@
 // Trigger modals
 (function(): void {
-    const modalFX = (function(): any {
+    const modalFX = (function(): { init: () => void } {
         const elements = {
             target: 'data-target',
             active: 'is-active',
@@ -11,7 +11,7 @@
             navigable: 'is-modal-navigable',
         };
 
-        const onClickEach = function(selector: string, callback: any): void {
+        const onClickEach = function(selector: string, callback: () => void): void {
             const elements = document.getElementsByClassName(selector);
             Array.from(elements).forEach((el) => el.addEventListener('click', callback));
         };
@@ -29,7 +29,7 @@
 
         const closeAll = function(): void {
             const openModal = document.getElementsByClassName(elements.active);
-            Array.from(openModal).forEach(function(modal) {
+            Array.from(openModal).forEach((modal) => {
                 modal.classList.remove(elements.active);
             });
             unFreeze();
@@ -41,13 +41,13 @@
             const modal: HTMLElement | null = document.getElementById(targetModal);
             modal?.classList.add(elements.active);
 
-            const image: HTMLImageElement | undefined = modal?.getElementsByTagName('img')[0];
-            if (image !== undefined) {
-                image.sizes = `${Math.ceil(
-                    (image.getBoundingClientRect().width / window.innerWidth) * 100
+            const images = modal?.getElementsByTagName('img');
+            Array.from(images || []).forEach((el: HTMLImageElement) => {
+                el.sizes = `${Math.ceil(
+                    (el.getBoundingClientRect().width / window.innerWidth) * 100
                 )}vw`;
-            }
-            image?.classList.add('responsive-media');
+                el?.classList.add('responsive-media');
+            });
         };
 
         const closeModal = function(): void {
@@ -57,8 +57,8 @@
             unFreeze();
 
             // Remove 'responsive-media' class
-            const image = modal?.getElementsByTagName('img')[0];
-            image?.classList.remove('responsive-media');
+            const images = modal?.getElementsByTagName('img');
+            Array.from(images || []).forEach((el: HTMLImageElement) => el.classList.remove('responsive-media'));
         };
 
         const events = function(): void {
@@ -88,24 +88,28 @@
 
                 function closeModal(modal: Element): void {
                     modal.classList.remove(elements.active);
-                    const image = modal.getElementsByTagName('img')[0];
-                    image.classList.remove('responsive-media');
+                    const images = modal.getElementsByTagName('img');
+                    Array.from(images || []).forEach((el: HTMLImageElement) => {
+                        el.classList.remove('responsive-media');
+                    });
                 }
 
                 function openModal(modal: Element): void {
                     modal.classList.add(elements.active);
-                    const image = modal.getElementsByTagName('img')[0];
-                    image.sizes = `${Math.ceil(
-                        (image.getBoundingClientRect().width / window.innerWidth) * 100
-                    )}vw`;
-                    image.classList.add('responsive-media');
+                    const images = modal.getElementsByTagName('img');
+                    Array.from(images || []).forEach((el: HTMLImageElement) => {
+                        el.sizes = `${Math.ceil(
+                            (el.getBoundingClientRect().width / window.innerWidth) * 100
+                        )}vw`;
+                        el.classList.add('responsive-media');
+                    });
                 }
 
                 function previousModal(): void {
                     const currentActiveModal: Element = getCurrentModal();
                     const previousModal: Element | null = currentActiveModal.previousElementSibling;
 
-                    if (!previousModal || !previousModal.classList.contains(elements.navigable)) {
+                    if (!previousModal?.classList.contains(elements.navigable)) {
                         return;
                     }
 
@@ -117,7 +121,7 @@
                     const currentActiveModal: Element = getCurrentModal();
                     const nextModal: Element | null = currentActiveModal.nextElementSibling;
 
-                    if (!nextModal || !nextModal.classList.contains(elements.navigable)) {
+                    if (!nextModal?.classList.contains(elements.navigable)) {
                         return;
                     }
 
