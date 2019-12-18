@@ -4,9 +4,9 @@
       <div class="buttons">
         <b-button
           :disabled="!checkedRows.length"
-          @click="confirmDeleteSelectedSocialMedias()"
           type="is-danger"
           icon-left="trash-alt"
+          @click="confirmDeleteSelectedSocialMedias()"
         >
           Delete checked
         </b-button>
@@ -17,10 +17,8 @@
         :loading="loading"
         :total="total"
         :per-page="perPage"
-        @page-change="onPageChange"
         :default-sort-direction="defaultSortOrder"
         :default-sort="[sortField, sortOrder]"
-        @sort="onSort"
         :checked-rows.sync="checkedRows"
         striped
         hoverable
@@ -29,6 +27,8 @@
         backend-pagination
         backend-sorting
         checkable
+        @page-change="onPageChange"
+        @sort="onSort"
       >
         <template slot-scope="socialMedia">
           <b-table-column

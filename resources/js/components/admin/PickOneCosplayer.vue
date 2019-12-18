@@ -3,10 +3,10 @@
     <b-autocomplete
       :data="filteredCosplayers"
       :loading="loading"
-      @typing="getFilteredCosplayers"
-      @select="selected"
       placeholder="Cosplayer name"
       field="name"
+      @typing="getFilteredCosplayers"
+      @select="selected"
     >
       <template slot-scope="props">
         {{ props.option.name }}

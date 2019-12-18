@@ -12,9 +12,9 @@
         </b-button>
         <b-button
           :disabled="!checkedRows.length"
-          @click="confirmDeleteSelectedUsers()"
           type="is-danger"
           icon-left="trash-alt"
+          @click="confirmDeleteSelectedUsers()"
         >
           Delete checked
         </b-button>
@@ -25,10 +25,8 @@
         :loading="loading"
         :total="total"
         :per-page="perPage"
-        @page-change="onPageChange"
         :default-sort-direction="defaultSortOrder"
         :default-sort="[sortField, sortOrder]"
-        @sort="onSort"
         :checked-rows.sync="checkedRows"
         striped
         hoverable
@@ -37,6 +35,8 @@
         backend-pagination
         backend-sorting
         checkable
+        @page-change="onPageChange"
+        @sort="onSort"
       >
         <template slot-scope="user">
           <b-table-column
@@ -69,7 +69,7 @@
             centered
           >
             <span
-              v-bind:title="'User role'"
+              :title="'User role'"
               class="tag is-dark"
             >{{
               user.row.role

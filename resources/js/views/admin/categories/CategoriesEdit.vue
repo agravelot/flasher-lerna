@@ -24,8 +24,8 @@
 
         <b-button
           :loading="loading"
-          @click="updateCategory()"
           type="is-primary"
+          @click="updateCategory()"
         >
           Update
         </b-button>
@@ -45,8 +45,8 @@
               :alt="category.cover.name"
             >
             <a
-              @click="deleteCurrentCategoryCover()"
               class="button has-text-danger"
+              @click="deleteCurrentCategoryCover()"
             >
               Delete
             </a>
@@ -55,9 +55,9 @@
             <vue-dropzone
               ref="myVueDropzone"
               :options="dropzoneOptions"
-              v-on:vdropzone-sending="sendingEvent"
-              v-on:vdropzone-complete="refreshCover"
               class="has-margin-bottom-md"
+              @vdropzone-sending="sendingEvent"
+              @vdropzone-complete="refreshCover"
             />
           </div>
         </div>
