@@ -35,9 +35,9 @@
         backend-pagination
         backend-sorting
         checkable
-        @page-change="onPageChange"
         detailed
         show-detail-icon
+        @page-change="onPageChange"
         @sort="onSort"
       >
         <template slot-scope="invitation">
