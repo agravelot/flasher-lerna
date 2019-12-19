@@ -1,6 +1,6 @@
 import User from './user';
 import Category from './category';
-import Cosplayer from "./cosplayer";
+import Cosplayer from './cosplayer';
 
 interface LinksInterface {
     view: string;

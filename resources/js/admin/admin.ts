@@ -16,12 +16,13 @@ import Buefy from 'buefy';
 
 Vue.use(Buefy, {
   defaultIconComponent: 'vue-fontawesome',
-  defaultIconPack: 'fas',
+  defaultIconPack: 'fas'
   // defaultFieldLabelPosition: 'on-border',
 });
 
+// eslint-disable-next-line no-new
 new Vue({
   el: '#app',
   components: { Sidebar },
-  router,
+  router
 });

@@ -142,7 +142,7 @@ import Buefy from '../../../admin/Buefy.vue';
 import Testimonial from '../../../models/testimonial';
 
 @Component({
-    name: 'TestimonialsIndex',
+  name: 'TestimonialsIndex'
 })
 export default class TestimonialsIndex extends Buefy {
     private testimonials: Array<Testimonial> = [];
@@ -156,137 +156,137 @@ export default class TestimonialsIndex extends Buefy {
     showDetailIcon = true;
     defaultSortOrder = 'desc';
 
-    created(): void {
-        this.fetchTestimonials();
+    created (): void {
+      this.fetchTestimonials();
     }
 
-    fetchTestimonials(): void {
-        this.loading = true;
-        const sortOrder = this.sortOrder === 'asc' ? '' : '-';
+    fetchTestimonials (): void {
+      this.loading = true;
+      const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
-        this.axios
-            .get('/api/admin/testimonials', {
-                params: {
-                    page: this.page,
-                    sort: sortOrder + this.sortField,
-                },
-            })
-            .then(res => res.data)
-            .then(res => {
-                this.perPage = res.meta.per_page;
-                this.total = res.meta.total;
-                this.testimonials = res.data;
-                this.loading = false;
-            })
-            .catch(err => {
-                this.testimonials = [];
-                this.total = 0;
-                this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load testimonials, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchTestimonials();
-                    },
-                });
-                throw err;
-            });
+      this.axios
+        .get('/api/admin/testimonials', {
+          params: {
+            page: this.page,
+            sort: sortOrder + this.sortField
+          }
+        })
+        .then(res => res.data)
+        .then(res => {
+          this.perPage = res.meta.per_page;
+          this.total = res.meta.total;
+          this.testimonials = res.data;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.testimonials = [];
+          this.total = 0;
+          this.loading = false;
+          this.$buefy.snackbar.open({
+            message: 'Unable to load testimonials, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top',
+            actionText: 'Retry',
+            indefinite: true,
+            onAction: () => {
+              this.fetchTestimonials();
+            }
+          });
+          throw err;
+        });
     }
 
-    toggle(row: object): void {
-        this.$refs.table.toggleDetails(row);
+    toggle (row: object): void {
+      this.$refs.table.toggleDetails(row);
     }
 
     /*
      * Handle page-change event
      */
-    onPageChange(page: number): void {
-        this.page = page;
-        this.fetchTestimonials();
+    onPageChange (page: number): void {
+      this.page = page;
+      this.fetchTestimonials();
     }
 
     /*
      * Handle sort event
      */
-    onSort(field: string, order: string): void {
-        this.sortField = field;
-        this.sortOrder = order;
-        this.fetchTestimonials();
+    onSort (field: string, order: string): void {
+      this.sortField = field;
+      this.sortOrder = order;
+      this.fetchTestimonials();
     }
 
-    confirmDeleteSelectedTestimonials(): void {
-        this.$buefy.dialog.confirm({
-            title: 'Deleting Testimonials',
-            message:
+    confirmDeleteSelectedTestimonials (): void {
+      this.$buefy.dialog.confirm({
+        title: 'Deleting Testimonials',
+        message:
                 'Are you sure you want to <b>delete</b> these testimonials? This action cannot be undone.',
-            confirmText: 'Delete Testimonials',
-            type: 'is-danger',
-            hasIcon: true,
-            onConfirm: () => {
-                this.deleteSelectedTestimonials();
-            },
-        });
+        confirmText: 'Delete Testimonials',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.deleteSelectedTestimonials();
+        }
+      });
     }
 
     /**
      * Delete testimonial from slug
      */
-    deleteSelectedTestimonials(): void {
-        this.checkedRows.forEach(testimonial => {
-            this.axios
-                .delete(`/api/admin/testimonials/${testimonial.id}`)
-                .then(() => {
-                    this.showSuccess('Testimonials deleted');
-                    this.fetchTestimonials();
-                })
-                .catch(err => {
-                    this.showError(
-                        `Unable to delete testimonial <br> <small>${err.message}</small>`
-                    );
-                    throw err;
-                });
-        });
-    }
-
-    toggleSelectedArePublishedAndUpdate(): void {
-        this.checkedRows.forEach(testimonial => {
-            this.toggleIsPublishedAndUpdate(testimonial);
-        });
-    }
-
-    toggleIsPublishedAndUpdate(testimonial: Testimonial): void {
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        testimonial.published_at = testimonial.published_at ? null : new Date();
-        this.updateTestimonial(testimonial);
-    }
-
-    updateTestimonial(testimonial: Testimonial): void {
-        console.log('updating testimonial');
-
+    deleteSelectedTestimonials (): void {
+      this.checkedRows.forEach(testimonial => {
         this.axios
-            .patch(`/api/admin/testimonials/${testimonial.id}`, testimonial)
-            .then(res => res.data)
-            .then(res => {
-                // this.testimonials = res.data;
-                this.loading = false;
-            })
-            .catch(err => {
-                this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to update testimonial, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchTestimonials();
-                    },
-                });
-                throw err;
-            });
+          .delete(`/api/admin/testimonials/${testimonial.id}`)
+          .then(() => {
+            this.showSuccess('Testimonials deleted');
+            this.fetchTestimonials();
+          })
+          .catch(err => {
+            this.showError(
+                        `Unable to delete testimonial <br> <small>${err.message}</small>`
+            );
+            throw err;
+          });
+      });
+    }
+
+    toggleSelectedArePublishedAndUpdate (): void {
+      this.checkedRows.forEach(testimonial => {
+        this.toggleIsPublishedAndUpdate(testimonial);
+      });
+    }
+
+    toggleIsPublishedAndUpdate (testimonial: Testimonial): void {
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      testimonial.published_at = testimonial.published_at ? null : new Date();
+      this.updateTestimonial(testimonial);
+    }
+
+    updateTestimonial (testimonial: Testimonial): void {
+      console.log('updating testimonial');
+
+      this.axios
+        .patch(`/api/admin/testimonials/${testimonial.id}`, testimonial)
+        .then(res => res.data)
+        .then(res => {
+          // this.testimonials = res.data;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+          this.$buefy.snackbar.open({
+            message: 'Unable to update testimonial, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top',
+            actionText: 'Retry',
+            indefinite: true,
+            onAction: () => {
+              this.fetchTestimonials();
+            }
+          });
+          throw err;
+        });
     }
 }
 </script>

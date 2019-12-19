@@ -114,7 +114,7 @@ import Buefy from '../../../admin/Buefy.vue';
 import Invitation from '../../../models/invitation';
 
 @Component({
-    name: 'InvitationsIndex',
+  name: 'InvitationsIndex'
 })
 export default class InvitationsIndex extends Buefy {
     private invitations: Array<Invitation> = [];
@@ -128,92 +128,92 @@ export default class InvitationsIndex extends Buefy {
     showDetailIcon = true;
     defaultSortOrder = 'desc';
 
-    created(): void {
-        this.fetchInvitations();
+    created (): void {
+      this.fetchInvitations();
     }
 
-    fetchInvitations(): void {
-        this.loading = true;
-        const sortOrder = this.sortOrder === 'asc' ? '' : '-';
+    fetchInvitations (): void {
+      this.loading = true;
+      const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
-        this.axios
-            .get('/api/admin/invitations', {
-                params: {
-                    page: this.page,
-                    sort: sortOrder + this.sortField,
-                },
-            })
-            .then(res => res.data)
-            .then(res => {
-                this.perPage = res.meta.per_page;
-                this.total = res.meta.total;
-                this.invitations = res.data;
-                this.loading = false;
-            })
-            .catch(err => {
-                this.invitations = [];
-                this.total = 0;
-                this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load invitations, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchInvitations();
-                    },
-                });
-                throw err;
-            });
+      this.axios
+        .get('/api/admin/invitations', {
+          params: {
+            page: this.page,
+            sort: sortOrder + this.sortField
+          }
+        })
+        .then(res => res.data)
+        .then(res => {
+          this.perPage = res.meta.per_page;
+          this.total = res.meta.total;
+          this.invitations = res.data;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.invitations = [];
+          this.total = 0;
+          this.loading = false;
+          this.$buefy.snackbar.open({
+            message: 'Unable to load invitations, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top',
+            actionText: 'Retry',
+            indefinite: true,
+            onAction: () => {
+              this.fetchInvitations();
+            }
+          });
+          throw err;
+        });
     }
 
     /*
      * Handle page-change event
      */
-    onPageChange(page: number): void {
-        this.page = page;
-        this.fetchInvitations();
+    onPageChange (page: number): void {
+      this.page = page;
+      this.fetchInvitations();
     }
 
     /*
      * Handle sort event
      */
-    onSort(field: string, order: string): void {
-        this.sortField = field;
-        this.sortOrder = order;
-        this.fetchInvitations();
+    onSort (field: string, order: string): void {
+      this.sortField = field;
+      this.sortOrder = order;
+      this.fetchInvitations();
     }
 
-    confirmDeleteSelectedInvitations(): void {
-        this.$buefy.dialog.confirm({
-            title: 'Deleting invitations',
-            message:
+    confirmDeleteSelectedInvitations (): void {
+      this.$buefy.dialog.confirm({
+        title: 'Deleting invitations',
+        message:
                 'Are you sure you want to <b>delete</b> these invitations? This action cannot be undone.',
-            confirmText: 'Delete Invitations',
-            type: 'is-danger',
-            hasIcon: true,
-            onConfirm: () => {
-                this.deleteSelectedInvitations();
-            },
-        });
+        confirmText: 'Delete Invitations',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.deleteSelectedInvitations();
+        }
+      });
     }
 
-    deleteSelectedInvitations(): void {
-        this.checkedRows.forEach(invitation => {
-            this.axios
-                .delete(`/api/admin/invitations/${invitation.id}`)
-                .then(() => {
-                    this.showSuccess('Invitations deleted');
-                    this.fetchInvitations();
-                })
-                .catch(err => {
-                    this.showError(
+    deleteSelectedInvitations (): void {
+      this.checkedRows.forEach(invitation => {
+        this.axios
+          .delete(`/api/admin/invitations/${invitation.id}`)
+          .then(() => {
+            this.showSuccess('Invitations deleted');
+            this.fetchInvitations();
+          })
+          .catch(err => {
+            this.showError(
                         `Unable to delete invitation <br> <small>${err.message}</small>`
-                    );
-                    throw err;
-                });
-        });
+            );
+            throw err;
+          });
+      });
     }
 }
 </script>

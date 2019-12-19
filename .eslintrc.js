@@ -4,6 +4,7 @@ module.exports = {
     es6: true,
   },
   extends: [
+      'standard',
       'plugin:vue/recommended',
       'eslint:recommended',
       'plugin:@typescript-eslint/eslint-recommended',
@@ -24,6 +25,7 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
+    'semi': [2, 'always'],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
   },

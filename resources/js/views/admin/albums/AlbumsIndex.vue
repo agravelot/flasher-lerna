@@ -137,15 +137,15 @@ import Buefy from '../../../admin/Buefy.vue';
 import Album from '../../../models/album';
 
 @Component({
-    name: 'AlbumsIndex',
-    filters: {
-        /**
+  name: 'AlbumsIndex',
+  filters: {
+    /**
          * Filter to truncate string, accepts a length parameter
          */
-        truncate(value: string, length: number): string {
-            return value.length > length ? value.substr(0, length) + '...' : value;
-        },
-    },
+    truncate (value: string, length: number): string {
+      return value.length > length ? value.substr(0, length) + '...' : value;
+    }
+  }
 })
 export default class AlbumsIndex extends Buefy {
     private albums: Array<Album> = [];
@@ -160,98 +160,98 @@ export default class AlbumsIndex extends Buefy {
     defaultSortOrder = 'desc';
     private search = '';
 
-    created(): void {
-        this.fetchAlbums();
+    created (): void {
+      this.fetchAlbums();
     }
 
-    fetchAlbums(): void {
-        this.loading = true;
-        const sortOrder = this.sortOrder === 'asc' ? '' : '-';
+    fetchAlbums (): void {
+      this.loading = true;
+      const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
-        this.axios
-            .get('/api/admin/albums', {
-                params: {
-                    page: this.page,
-                    sort: sortOrder + this.sortField,
-                    'filter[title]': this.search,
-                },
-            })
-            .then(res => res.data)
-            .then(res => {
-                this.perPage = res.meta.per_page;
-                this.total = res.meta.total;
-                this.albums = res.data;
-                this.loading = false;
-            })
-            .catch(err => {
-                this.albums = [];
-                this.total = 0;
-                this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load albums, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchAlbums();
-                    },
-                });
-                throw err;
-            });
+      this.axios
+        .get('/api/admin/albums', {
+          params: {
+            page: this.page,
+            sort: sortOrder + this.sortField,
+            'filter[title]': this.search
+          }
+        })
+        .then(res => res.data)
+        .then(res => {
+          this.perPage = res.meta.per_page;
+          this.total = res.meta.total;
+          this.albums = res.data;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.albums = [];
+          this.total = 0;
+          this.loading = false;
+          this.$buefy.snackbar.open({
+            message: 'Unable to load albums, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top',
+            actionText: 'Retry',
+            indefinite: true,
+            onAction: () => {
+              this.fetchAlbums();
+            }
+          });
+          throw err;
+        });
     }
 
-    toggle(row: object): void {
-        this.$refs.table.toggleDetails(row);
+    toggle (row: object): void {
+      this.$refs.table.toggleDetails(row);
     }
 
     /*
      * Handle page-change event
      */
-    onPageChange(page: number): void {
-        this.page = page;
-        this.fetchAlbums();
+    onPageChange (page: number): void {
+      this.page = page;
+      this.fetchAlbums();
     }
 
     /*
      * Handle sort event
      */
-    onSort(field: string, order: string): void {
-        this.sortField = field;
-        this.sortOrder = order;
-        this.fetchAlbums();
+    onSort (field: string, order: string): void {
+      this.sortField = field;
+      this.sortOrder = order;
+      this.fetchAlbums();
     }
 
-    confirmDeleteSelectedAlbums(): void {
-        this.$buefy.dialog.confirm({
-            title: 'Deleting Albums',
-            message:
+    confirmDeleteSelectedAlbums (): void {
+      this.$buefy.dialog.confirm({
+        title: 'Deleting Albums',
+        message:
                 'Are you sure you want to <b>delete</b> these albums? This action cannot be undone.',
-            confirmText: 'Delete Albums',
-            type: 'is-danger',
-            hasIcon: true,
-            onConfirm: () => {
-                this.deleteSelectedAlbums();
-            },
-        });
+        confirmText: 'Delete Albums',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.deleteSelectedAlbums();
+        }
+      });
     }
 
     /**
      * Delete album from slug
      */
-    deleteSelectedAlbums(): void {
-        this.checkedRows.forEach(album => {
-            this.axios
-                .delete(`/api/admin/albums/${album.slug}`)
-                .then(() => {
-                    this.showSuccess('Albums deleted');
-                    this.fetchAlbums();
-                })
-                .catch(err => {
-                    this.showError(`Unable to delete album <br> <small>${err.message}</small>`);
-                    throw err;
-                });
-        });
+    deleteSelectedAlbums (): void {
+      this.checkedRows.forEach(album => {
+        this.axios
+          .delete(`/api/admin/albums/${album.slug}`)
+          .then(() => {
+            this.showSuccess('Albums deleted');
+            this.fetchAlbums();
+          })
+          .catch(err => {
+            this.showError(`Unable to delete album <br> <small>${err.message}</small>`);
+            throw err;
+          });
+      });
     }
 }
 </script>

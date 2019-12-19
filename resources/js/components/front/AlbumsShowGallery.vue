@@ -68,7 +68,7 @@ import VueMasonry from 'vue-masonry-css';
 Vue.use(VueMasonry);
 
 @Component({
-    name: 'AlbumsShowGallery',
+  name: 'AlbumsShowGallery'
 })
 export default class AlbumsShowGallery extends Vue {
     @Prop() readonly data: any;
@@ -77,87 +77,87 @@ export default class AlbumsShowGallery extends Vue {
     protected openedPicture: object = null;
     loading = false;
 
-    updated(): void {
-        this.$nextTick(() => {
-            this.onResize();
-        });
+    updated (): void {
+      this.$nextTick(() => {
+        this.onResize();
+      });
     }
 
-    created(): void {
-        window.addEventListener('resize', this.onResize);
+    created (): void {
+      window.addEventListener('resize', this.onResize);
     }
 
-    beforeDestroy(): void {
-        window.removeEventListener('resize', this.onResize);
+    beforeDestroy (): void {
+      window.removeEventListener('resize', this.onResize);
     }
 
-    mounted(): void {
-        this.album = this.data.data;
+    mounted (): void {
+      this.album = this.data.data;
 
-        if (!this.album) {
-            console.warn('Album is not eager loaded, requesting...');
-            this.fetchAlbum();
-        }
-        this.$nextTick(() => {
-            this.onResize();
-        });
+      if (!this.album) {
+        console.warn('Album is not eager loaded, requesting...');
+        this.fetchAlbum();
+      }
+      this.$nextTick(() => {
+        this.onResize();
+      });
     }
 
-    openPicture(media: object): void {
-        this.openedPicture = media;
+    openPicture (media: object): void {
+      this.openedPicture = media;
     }
 
-    closePicture(): void {
-        this.openedPicture = null;
+    closePicture (): void {
+      this.openedPicture = null;
     }
 
-    onResize(): void {
-        this.refreshSizes();
+    onResize (): void {
+      this.refreshSizes();
     }
 
-    refreshSizes(): void {
-        const responsiveMedias: HTMLCollectionOf<Element> = document.getElementsByClassName(
-            'responsive-media'
-        );
-        Array.from(responsiveMedias).forEach(
-            (el: Element): void => {
-                (el as HTMLImageElement).sizes = `${Math.ceil(
+    refreshSizes (): void {
+      const responsiveMedias: HTMLCollectionOf<Element> = document.getElementsByClassName(
+        'responsive-media'
+      );
+      Array.from(responsiveMedias).forEach(
+        (el: Element): void => {
+          (el as HTMLImageElement).sizes = `${Math.ceil(
                     (el.getBoundingClientRect().width / window.innerWidth) * 100
                 )}vw`;
-            }
-        );
+        }
+      );
     }
 
-    fetchAlbum(): void {
-        let slug = window.location.pathname.split('/')[
-            window.location.pathname.split('/').length - 1
-        ];
-        // Workaround until moved to vue router
-        if (slug === 'edit') {
-            slug = this.$route.params.slug;
-        }
-        this.axios
-            .get(`/api/albums/${slug}`)
-            .then(res => res.data)
-            .then(res => {
-                this.loading = false;
-                this.album = res.data;
-            })
-            .catch(err => {
-                this.album = {};
-                this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load album, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchAlbum();
-                    },
-                });
-                throw err;
-            });
+    fetchAlbum (): void {
+      let slug = window.location.pathname.split('/')[
+        window.location.pathname.split('/').length - 1
+      ];
+      // Workaround until moved to vue router
+      if (slug === 'edit') {
+        slug = this.$route.params.slug;
+      }
+      this.axios
+        .get(`/api/albums/${slug}`)
+        .then(res => res.data)
+        .then(res => {
+          this.loading = false;
+          this.album = res.data;
+        })
+        .catch(err => {
+          this.album = {};
+          this.loading = false;
+          this.$buefy.snackbar.open({
+            message: 'Unable to load album, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top',
+            actionText: 'Retry',
+            indefinite: true,
+            onAction: () => {
+              this.fetchAlbum();
+            }
+          });
+          throw err;
+        });
     }
 }
 </script>

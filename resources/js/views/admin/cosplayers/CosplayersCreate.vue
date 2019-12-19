@@ -119,80 +119,86 @@ import { quillEditor } from 'vue-quill-editor';
 import User from '../../../models/user';
 
 @Component({
-    name: 'CosplayersCreate',
-    components: {
-        quillEditor,
-    },
+  name: 'CosplayersCreate',
+  components: {
+    quillEditor
+  }
 })
 export default class CosplayersCreate extends Buefy {
     private cosplayer: Cosplayer = new Cosplayer();
     private loading = false;
-    private searchUsers: Array<User> = [];
+    private searchUsers: User[] = [];
     protected errors: object = {};
 
     protected editorOption: object = {
-        placeholder: 'Enter your description...',
-        theme: 'snow',
+      placeholder: 'Enter your description...',
+      theme: 'snow'
     };
 
-    created(): void {
-        this.cosplayer.user = new User();
+    created (): void {
+      this.cosplayer.user = new User();
     }
 
-    createCosplayer(): void {
-        this.loading = true;
+    createCosplayer (): void {
+      this.loading = true;
 
-        const formData: FormData = this.cosplayerToFormData(this.cosplayer);
-        this.axios
-            .post(`/api/admin/cosplayers`, formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-            })
-            .then(res => res.data)
-            .then(() => {
-                this.loading = false;
-                this.showSuccess('Cosplayer created');
-                this.$router.push({ name: 'admin.cosplayers.index' });
-            })
-            .catch(err => {
-                this.loading = false;
-                this.showError('Unable to create cosplayer');
-                this.errors = err.response.data.errors;
-                throw err;
-            });
+      const formData: FormData = this.cosplayerToFormData(this.cosplayer);
+      this.axios
+        .post('/api/admin/cosplayers', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        })
+        .then(res => res.data)
+        .then(() => {
+          this.loading = false;
+          this.showSuccess('Cosplayer created');
+          this.$router.push({ name: 'admin.cosplayers.index' });
+        })
+        .catch(err => {
+          this.loading = false;
+          this.showError('Unable to create cosplayer');
+          this.errors = err.response.data.errors;
+          throw err;
+        });
     }
 
-    searchUser(): void {
-        this.axios
-            .get('/api/admin/users', { params: { 'filter[name]': this.cosplayer?.user?.id } })
-            .then(res => res.data)
-            .then(res =>this.searchUsers = res.data)
-            .catch(err => {
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load users, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                });
-                throw err;
-            });
+    searchUser (): void {
+      this.axios
+        .get('/api/admin/users', { params: { 'filter[name]': this.cosplayer?.user?.id } })
+        .then(res => res.data)
+        .then((res: UserInterface) => {
+          this.searchUsers = res.data;
+        })
+        .catch(err => {
+          this.$buefy.snackbar.open({
+            message: 'Unable to load users, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top'
+          });
+          throw err;
+        });
     }
 
-    cosplayerToFormData(cosplayer: Cosplayer): FormData {
-        const formData = new FormData();
-        //TODO Rewrite
-        if (cosplayer.name) {
-            formData.append('name', cosplayer.name);
-        }
-        if (cosplayer.description) {
-            formData.append('description', cosplayer.description);
-        }
-        if (cosplayer.user && cosplayer.user.id) {
-            formData.append('user.id', String(cosplayer.user.id));
-        }
-        if (cosplayer.avatar != null) {
-            formData.append('avatar', cosplayer.avatar);
-        }
+    cosplayerToFormData (cosplayer: Cosplayer): FormData {
+      const formData = new FormData();
+      // TODO Rewrite
+      if (cosplayer.name) {
+        formData.append('name', cosplayer.name);
+      }
+      if (cosplayer.description) {
+        formData.append('description', cosplayer.description);
+      }
+      if (cosplayer.user && cosplayer.user.id) {
+        formData.append('user.id', String(cosplayer.user.id));
+      }
+      if (cosplayer.avatar != null) {
+        formData.append('avatar', cosplayer.avatar);
+      }
 
-        return formData;
+      return formData;
     }
+}
+
+export interface UserInterface {
+    data: User[];
 }
 </script>

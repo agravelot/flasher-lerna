@@ -6,7 +6,10 @@
       </div>
     </div>
     <div class="card-content">
-      <div v-for="setting in settings">
+      <div
+        v-for="setting in settings"
+        :key="setting.id"
+      >
         <b-field :label="setting.title">
           <b-numberinput
             v-if="setting.type === 'numeric'"
@@ -95,107 +98,108 @@ class Setting {
     public id!: number;
     public name!: string;
     public value!: string;
+    public description!: string;
 }
 
 @Component({
-    name: 'Settings',
-    components: {
-        quillEditor,
-        vueDropzone: vue2Dropzone,
-    },
+  name: 'Settings',
+  components: {
+    quillEditor,
+    vueDropzone: vue2Dropzone
+  }
 })
 export default class Settings extends Buefy {
     private loading = false;
     private settings: Array<Setting> = [];
 
-    getDropzoneOptions(setting: Setting): object {
-        return {
-            url: `/api/admin/settings/${setting.id}`,
-            thumbnailWidth: 200,
-            addRemoveLinks: true,
-            parallelUploads: 5,
-            // Setup chunking
-            chunking: true,
-            method: 'POST',
-            maxFilesize: 400000000,
-            chunkSize: 1000000,
-            retryChunks: true,
-            retryChunksLimit: 5,
-            maxThumbnailFilesize: 25,
-            // If true, the individual chunks of a file are being uploaded simultaneously.
-            // parallelChunkUploads: true,
-            acceptedFiles: 'image/*',
-            dictDefaultMessage: "<i class='fas fa-images'></i> Upload",
-            headers: {
-                'X-CSRF-Token': (
+    getDropzoneOptions (setting: Setting): object {
+      return {
+        url: `/api/admin/settings/${setting.id}`,
+        thumbnailWidth: 200,
+        addRemoveLinks: true,
+        parallelUploads: 5,
+        // Setup chunking
+        chunking: true,
+        method: 'POST',
+        maxFilesize: 400000000,
+        chunkSize: 1000000,
+        retryChunks: true,
+        retryChunksLimit: 5,
+        maxThumbnailFilesize: 25,
+        // If true, the individual chunks of a file are being uploaded simultaneously.
+        // parallelChunkUploads: true,
+        acceptedFiles: 'image/*',
+        dictDefaultMessage: "<i class='fas fa-images'></i> Upload",
+        headers: {
+          'X-CSRF-Token': (
                     document.head.querySelector('meta[name="csrf-token"]') as HTMLMetaElement
-                ).content,
-            },
-        };
+          ).content
+        }
+      };
     }
 
-    sendingEvent(file: File, xhr: XMLHttpRequest, formData: FormData): void {
-        formData.append('_method', 'patch');
+    sendingEvent (file: File, xhr: XMLHttpRequest, formData: FormData): void {
+      formData.append('_method', 'patch');
     }
 
-    created(): void {
-        this.fetchSettings();
+    created (): void {
+      this.fetchSettings();
     }
 
-    sendSetting(setting: Setting): void {
-        this.loading = true;
+    sendSetting (setting: Setting): void {
+      this.loading = true;
 
-        this.axios
-            .patch(`/api/admin/settings/${setting.id}`, {
-                value: setting.value,
-                test: 'test',
-            })
-            .then(res => res.data)
-            .then(() => {
-                this.loading = false;
-                this.showSuccess('Setting updated');
-            })
-            .catch(err => {
-                this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to save setting, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: false,
-                    onAction: () => {
-                        this.sendSetting(setting);
-                    },
-                });
-                throw err;
-            });
+      this.axios
+        .patch(`/api/admin/settings/${setting.id}`, {
+          value: setting.value,
+          test: 'test'
+        })
+        .then(res => res.data)
+        .then(() => {
+          this.loading = false;
+          this.showSuccess('Setting updated');
+        })
+        .catch(err => {
+          this.loading = false;
+          this.$buefy.snackbar.open({
+            message: 'Unable to save setting, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top',
+            actionText: 'Retry',
+            indefinite: false,
+            onAction: () => {
+              this.sendSetting(setting);
+            }
+          });
+          throw err;
+        });
     }
 
-    fetchSettings(): void {
-        this.loading = true;
+    fetchSettings (): void {
+      this.loading = true;
 
-        this.axios
-            .get('/api/admin/settings')
-            .then(res => res.data)
-            .then(res => {
-                this.settings = res.data;
-                this.loading = false;
-            })
-            .catch(err => {
-                this.settings = [];
-                this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load settings, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchSettings();
-                    },
-                });
-                throw err;
-            });
+      this.axios
+        .get('/api/admin/settings')
+        .then(res => res.data)
+        .then(res => {
+          this.settings = res.data;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.settings = [];
+          this.loading = false;
+          this.$buefy.snackbar.open({
+            message: 'Unable to load settings, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top',
+            actionText: 'Retry',
+            indefinite: true,
+            onAction: () => {
+              this.fetchSettings();
+            }
+          });
+          throw err;
+        });
     }
 }
 </script>

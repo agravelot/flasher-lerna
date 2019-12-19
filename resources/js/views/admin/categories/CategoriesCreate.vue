@@ -43,10 +43,10 @@ import { quillEditor } from 'vue-quill-editor';
 import User from '../../../models/user';
 
 @Component({
-    name: 'CategoriesEdit',
-    components: {
-        quillEditor,
-    },
+  name: 'CategoriesEdit',
+  components: {
+    quillEditor
+  }
 })
 export default class CategoriesCreate extends Buefy {
     private category: Category = new Category();
@@ -55,37 +55,37 @@ export default class CategoriesCreate extends Buefy {
     protected errors: object = {};
 
     protected editorOption: object = {
-        placeholder: 'Enter your description...',
-        theme: 'snow',
+      placeholder: 'Enter your description...',
+      theme: 'snow'
     };
 
-    createCategory(): void {
-        this.loading = true;
+    createCategory (): void {
+      this.loading = true;
 
-        this.axios
-            .post(`/api/admin/categories`, this.category)
-            .then(res => res.data)
-            .then(res => {
-                this.category = res.data;
-                this.loading = false;
-                this.showSuccess('Category created');
-                this.$router.push({ name: 'admin.categories.index' });
-            })
-            .catch(err => {
-                this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load category, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.createCategory();
-                    },
-                });
-                this.errors = err.response.data.errors;
-                throw err;
-            });
+      this.axios
+        .post('/api/admin/categories', this.category)
+        .then(res => res.data)
+        .then(res => {
+          this.category = res.data;
+          this.loading = false;
+          this.showSuccess('Category created');
+          this.$router.push({ name: 'admin.categories.index' });
+        })
+        .catch(err => {
+          this.loading = false;
+          this.$buefy.snackbar.open({
+            message: 'Unable to load category, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top',
+            actionText: 'Retry',
+            indefinite: true,
+            onAction: () => {
+              this.createCategory();
+            }
+          });
+          this.errors = err.response.data.errors;
+          throw err;
+        });
     }
 }
 </script>

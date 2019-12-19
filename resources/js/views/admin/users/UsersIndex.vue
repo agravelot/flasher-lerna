@@ -114,7 +114,7 @@ import Buefy from '../../../admin/Buefy.vue';
 import User from '../../../models/user';
 
 @Component({
-    name: 'UsersIndex',
+  name: 'UsersIndex'
 })
 export default class UsersIndex extends Buefy {
     private users: Array<User> = [];
@@ -128,97 +128,97 @@ export default class UsersIndex extends Buefy {
     showDetailIcon = true;
     defaultSortOrder = 'desc';
 
-    created(): void {
-        this.fetchUsers();
+    created (): void {
+      this.fetchUsers();
     }
 
-    fetchUsers(): void {
-        this.loading = true;
-        const sortOrder = this.sortOrder === 'asc' ? '' : '-';
+    fetchUsers (): void {
+      this.loading = true;
+      const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
-        this.axios
-            .get('/api/admin/users', {
-                params: {
-                    page: this.page,
-                    sort: sortOrder + this.sortField,
-                },
-            })
-            .then(res => res.data)
-            .then(res => {
-                this.perPage = res.meta.per_page;
-                this.total = res.meta.total;
-                this.users = res.data;
-                this.loading = false;
-            })
-            .catch(err => {
-                this.users = [];
-                this.total = 0;
-                this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load users, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchUsers();
-                    },
-                });
-                throw err;
-            });
+      this.axios
+        .get('/api/admin/users', {
+          params: {
+            page: this.page,
+            sort: sortOrder + this.sortField
+          }
+        })
+        .then(res => res.data)
+        .then(res => {
+          this.perPage = res.meta.per_page;
+          this.total = res.meta.total;
+          this.users = res.data;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.users = [];
+          this.total = 0;
+          this.loading = false;
+          this.$buefy.snackbar.open({
+            message: 'Unable to load users, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top',
+            actionText: 'Retry',
+            indefinite: true,
+            onAction: () => {
+              this.fetchUsers();
+            }
+          });
+          throw err;
+        });
     }
 
-    toggle(row: object): void {
-        this.$refs.table.toggleDetails(row);
+    toggle (row: object): void {
+      this.$refs.table.toggleDetails(row);
     }
 
     /*
      * Handle page-change event
      */
-    onPageChange(page: number): void {
-        this.page = page;
-        this.fetchUsers();
+    onPageChange (page: number): void {
+      this.page = page;
+      this.fetchUsers();
     }
 
     /*
      * Handle sort event
      */
-    onSort(field: string, order: string): void {
-        this.sortField = field;
-        this.sortOrder = order;
-        this.fetchUsers();
+    onSort (field: string, order: string): void {
+      this.sortField = field;
+      this.sortOrder = order;
+      this.fetchUsers();
     }
 
-    confirmDeleteSelectedUsers(): void {
-        this.$buefy.dialog.confirm({
-            title: 'Deleting Users',
-            message:
+    confirmDeleteSelectedUsers (): void {
+      this.$buefy.dialog.confirm({
+        title: 'Deleting Users',
+        message:
                 'Are you sure you want to <b>delete</b> these users? This action cannot be undone.',
-            confirmText: 'Delete Users',
-            type: 'is-danger',
-            hasIcon: true,
-            onConfirm: () => {
-                this.deleteSelectedUsers();
-            },
-        });
+        confirmText: 'Delete Users',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.deleteSelectedUsers();
+        }
+      });
     }
 
     /**
      * Delete user from slug
      */
-    deleteSelectedUsers(): void {
-        this.checkedRows.forEach(user => {
-            this.axios
-                .delete(`/api/admin/users/${user.id}`)
-                .then(() => {
-                    this.showSuccess('Users deleted');
-                    this.fetchUsers();
-                })
-                .catch(err => {
-                    this.showError(`Unable to delete user <br> <small>${err.message}</small>`);
-                    throw err;
-                });
-        });
+    deleteSelectedUsers (): void {
+      this.checkedRows.forEach(user => {
+        this.axios
+          .delete(`/api/admin/users/${user.id}`)
+          .then(() => {
+            this.showSuccess('Users deleted');
+            this.fetchUsers();
+          })
+          .catch(err => {
+            this.showError(`Unable to delete user <br> <small>${err.message}</small>`);
+            throw err;
+          });
+      });
     }
 }
 </script>

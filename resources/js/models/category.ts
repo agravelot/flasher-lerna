@@ -1,4 +1,4 @@
-import FilterableById from "./interfaces/filterableById";
+import FilterableById from './interfaces/filterableById';
 
 export default class Category implements FilterableById {
     public id!: number;

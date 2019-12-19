@@ -99,7 +99,7 @@ import Buefy from '../../../admin/Buefy.vue';
 import SocialMedia from '../../../models/social-media';
 
 @Component({
-    name: 'SocialMediasIndex',
+  name: 'SocialMediasIndex'
 })
 export default class SocialMediasIndex extends Buefy {
     private socialMedias: Array<SocialMedia> = [];
@@ -113,92 +113,92 @@ export default class SocialMediasIndex extends Buefy {
     showDetailIcon = true;
     defaultSortOrder = 'desc';
 
-    created(): void {
-        this.fetchSocialMedias();
+    created (): void {
+      this.fetchSocialMedias();
     }
 
-    fetchSocialMedias(): void {
-        this.loading = true;
-        const sortOrder = this.sortOrder === 'asc' ? '' : '-';
+    fetchSocialMedias (): void {
+      this.loading = true;
+      const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
-        this.axios
-            .get('/api/admin/social-medias', {
-                params: {
-                    page: this.page,
-                    sort: sortOrder + this.sortField,
-                },
-            })
-            .then(res => res.data)
-            .then(res => {
-                this.perPage = res.meta.per_page;
-                this.total = res.meta.total;
-                this.socialMedias = res.data;
-                this.loading = false;
-            })
-            .catch(err => {
-                this.socialMedias = [];
-                this.total = 0;
-                this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load socialMedias, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchSocialMedias();
-                    },
-                });
-                throw err;
-            });
+      this.axios
+        .get('/api/admin/social-medias', {
+          params: {
+            page: this.page,
+            sort: sortOrder + this.sortField
+          }
+        })
+        .then(res => res.data)
+        .then(res => {
+          this.perPage = res.meta.per_page;
+          this.total = res.meta.total;
+          this.socialMedias = res.data;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.socialMedias = [];
+          this.total = 0;
+          this.loading = false;
+          this.$buefy.snackbar.open({
+            message: 'Unable to load socialMedias, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top',
+            actionText: 'Retry',
+            indefinite: true,
+            onAction: () => {
+              this.fetchSocialMedias();
+            }
+          });
+          throw err;
+        });
     }
 
     /*
      * Handle page-change event
      */
-    onPageChange(page: number): void {
-        this.page = page;
-        this.fetchSocialMedias();
+    onPageChange (page: number): void {
+      this.page = page;
+      this.fetchSocialMedias();
     }
 
     /*
      * Handle sort event
      */
-    onSort(field: string, order: string): void {
-        this.sortField = field;
-        this.sortOrder = order;
-        this.fetchSocialMedias();
+    onSort (field: string, order: string): void {
+      this.sortField = field;
+      this.sortOrder = order;
+      this.fetchSocialMedias();
     }
 
-    confirmDeleteSelectedSocialMedias(): void {
-        this.$buefy.dialog.confirm({
-            title: 'Deleting socialMedias',
-            message:
+    confirmDeleteSelectedSocialMedias (): void {
+      this.$buefy.dialog.confirm({
+        title: 'Deleting socialMedias',
+        message:
                 'Are you sure you want to <b>delete</b> these socialMedias? This action cannot be undone.',
-            confirmText: 'Delete SocialMedias',
-            type: 'is-danger',
-            hasIcon: true,
-            onConfirm: () => {
-                this.deleteSelectedSocialMedias();
-            },
-        });
+        confirmText: 'Delete SocialMedias',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.deleteSelectedSocialMedias();
+        }
+      });
     }
 
-    deleteSelectedSocialMedias(): void {
-        this.checkedRows.forEach(socialMedia => {
-            this.axios
-                .delete(`/api/admin/social-medias/${socialMedia.id}`)
-                .then(() => {
-                    this.showSuccess('SocialMedias deleted');
-                    this.fetchSocialMedias();
-                })
-                .catch(err => {
-                    this.showError(
+    deleteSelectedSocialMedias (): void {
+      this.checkedRows.forEach(socialMedia => {
+        this.axios
+          .delete(`/api/admin/social-medias/${socialMedia.id}`)
+          .then(() => {
+            this.showSuccess('SocialMedias deleted');
+            this.fetchSocialMedias();
+          })
+          .catch(err => {
+            this.showError(
                         `Unable to delete socialMedia <br> <small>${err.message}</small>`
-                    );
-                    throw err;
-                });
-        });
+            );
+            throw err;
+          });
+      });
     }
 }
 </script>

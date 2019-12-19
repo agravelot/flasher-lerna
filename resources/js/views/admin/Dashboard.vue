@@ -101,39 +101,39 @@ export default class Dashboard extends Buefy {
     private albumMediasCount = 0;
     private username: string | null = null;
 
-    created(): void {
-        this.fetchDashboard();
+    created (): void {
+      this.fetchDashboard();
     }
 
-    fetchDashboard(): void {
-        this.loading = true;
+    fetchDashboard (): void {
+      this.loading = true;
 
-        this.axios
-            .get('/api/admin/dashboard')
-            .then(res => res.data)
-            .then(res => {
-                this.username = res.user;
-                this.cosplayersCount = res.cosplayersCount;
-                this.usersCount = res.usersCount;
-                this.albumsCount = res.albumsCount;
-                this.contactsCount = res.contactsCount;
-                this.albumMediasCount = res.albumMediasCount;
-                this.loading = false;
-            })
-            .catch(err => {
-                this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load dashboard, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchDashboard();
-                    },
-                });
-                throw err;
-            });
+      this.axios
+        .get('/api/admin/dashboard')
+        .then(res => res.data)
+        .then(res => {
+          this.username = res.user;
+          this.cosplayersCount = res.cosplayersCount;
+          this.usersCount = res.usersCount;
+          this.albumsCount = res.albumsCount;
+          this.contactsCount = res.contactsCount;
+          this.albumMediasCount = res.albumMediasCount;
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+          this.$buefy.snackbar.open({
+            message: 'Unable to load dashboard, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top',
+            actionText: 'Retry',
+            indefinite: true,
+            onAction: () => {
+              this.fetchDashboard();
+            }
+          });
+          throw err;
+        });
     }
 }
 </script>
