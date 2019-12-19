@@ -35,8 +35,11 @@
             unFreeze();
         };
 
-        const openModal = function(): void {
+        const openModal = function(this: Element): void {
             const targetModal = this.getAttribute(elements.target);
+            if (targetModal === null) {
+                return;
+            }
             freeze();
             const modal: HTMLElement | null = document.getElementById(targetModal);
             modal?.classList.add(elements.active);
@@ -50,7 +53,7 @@
             });
         };
 
-        const closeModal = function(): void {
+        const closeModal = function(this: Element): void {
             const targetModal = this.parentElement.id;
             const modal: HTMLElement | null = document.getElementById(targetModal);
             modal?.classList.remove(elements.active);
@@ -109,6 +112,10 @@
                     const currentActiveModal: Element = getCurrentModal();
                     const previousModal: Element | null = currentActiveModal.previousElementSibling;
 
+                    if (previousModal === null) {
+                        return;
+                    }
+
                     if (!previousModal?.classList.contains(elements.navigable)) {
                         return;
                     }
@@ -120,6 +127,10 @@
                 function nextModal(): void {
                     const currentActiveModal: Element = getCurrentModal();
                     const nextModal: Element | null = currentActiveModal.nextElementSibling;
+
+                    if (nextModal === null) {
+                        return;
+                    }
 
                     if (!nextModal?.classList.contains(elements.navigable)) {
                         return;
