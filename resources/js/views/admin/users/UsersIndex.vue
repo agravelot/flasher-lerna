@@ -114,25 +114,34 @@ import Buefy from '../../../admin/Buefy.vue';
 import User from '../../../models/user';
 
 @Component({
-  name: 'UsersIndex'
+  name: 'UsersIndex',
 })
 export default class UsersIndex extends Buefy {
     private users: Array<User> = [];
+
     private checkedRows: Array<User> = [];
+
     private total = 0;
+
     private page = 1;
+
     perPage = 10;
+
     private loading = false;
+
     private sortField = 'id';
+
     private sortOrder = 'desc';
+
     showDetailIcon = true;
+
     defaultSortOrder = 'desc';
 
-    created (): void {
+    created(): void {
       this.fetchUsers();
     }
 
-    fetchUsers (): void {
+    fetchUsers(): void {
       this.loading = true;
       const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
@@ -140,17 +149,17 @@ export default class UsersIndex extends Buefy {
         .get('/api/admin/users', {
           params: {
             page: this.page,
-            sort: sortOrder + this.sortField
-          }
+            sort: sortOrder + this.sortField,
+          },
         })
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           this.perPage = res.meta.per_page;
           this.total = res.meta.total;
           this.users = res.data;
           this.loading = false;
         })
-        .catch(err => {
+        .catch((err) => {
           this.users = [];
           this.total = 0;
           this.loading = false;
@@ -162,20 +171,20 @@ export default class UsersIndex extends Buefy {
             indefinite: true,
             onAction: () => {
               this.fetchUsers();
-            }
+            },
           });
           throw err;
         });
     }
 
-    toggle (row: object): void {
+    toggle(row: object): void {
       this.$refs.table.toggleDetails(row);
     }
 
     /*
      * Handle page-change event
      */
-    onPageChange (page: number): void {
+    onPageChange(page: number): void {
       this.page = page;
       this.fetchUsers();
     }
@@ -183,13 +192,13 @@ export default class UsersIndex extends Buefy {
     /*
      * Handle sort event
      */
-    onSort (field: string, order: string): void {
+    onSort(field: string, order: string): void {
       this.sortField = field;
       this.sortOrder = order;
       this.fetchUsers();
     }
 
-    confirmDeleteSelectedUsers (): void {
+    confirmDeleteSelectedUsers(): void {
       this.$buefy.dialog.confirm({
         title: 'Deleting Users',
         message:
@@ -199,22 +208,22 @@ export default class UsersIndex extends Buefy {
         hasIcon: true,
         onConfirm: () => {
           this.deleteSelectedUsers();
-        }
+        },
       });
     }
 
     /**
      * Delete user from slug
      */
-    deleteSelectedUsers (): void {
-      this.checkedRows.forEach(user => {
+    deleteSelectedUsers(): void {
+      this.checkedRows.forEach((user) => {
         this.axios
           .delete(`/api/admin/users/${user.id}`)
           .then(() => {
             this.showSuccess('Users deleted');
             this.fetchUsers();
           })
-          .catch(err => {
+          .catch((err) => {
             this.showError(`Unable to delete user <br> <small>${err.message}</small>`);
             throw err;
           });

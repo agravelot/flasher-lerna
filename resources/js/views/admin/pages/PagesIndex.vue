@@ -105,31 +105,42 @@ import Page from '../../../models/page';
     /**
          * Filter to truncate string, accepts a length parameter
          */
-    truncate (value: string, length: number): string {
-      return value.length > length ? value.substr(0, length) + '...' : value;
-    }
-  }
+    truncate(value: string, length: number): string {
+      return value.length > length ? `${value.substr(0, length)}...` : value;
+    },
+  },
 })
 export default class PagesIndex extends Buefy {
     private pages: Array<Page> = [];
+
     // TODO Clearer types
     defaultOpenedDetails: Array<any> = [];
+
     private checkedRows: Array<any> = [];
+
     private total = 0;
+
     private page = 1;
+
     perPage = 10;
+
     private loading = false;
+
     private sortField = 'id';
+
     private sortOrder = 'desc';
+
     showDetailIcon = true;
+
     defaultSortOrder = 'desc';
+
     private search = '';
 
-    created (): void {
+    created(): void {
       this.fetchPages();
     }
 
-    fetchPages (): void {
+    fetchPages(): void {
       this.loading = true;
       const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
@@ -138,17 +149,17 @@ export default class PagesIndex extends Buefy {
           params: {
             page: this.page,
             sort: sortOrder + this.sortField,
-            'filter[name]': this.search
-          }
+            'filter[name]': this.search,
+          },
         })
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           this.perPage = res.meta.per_page;
           this.total = res.meta.total;
           this.pages = res.data;
           this.loading = false;
         })
-        .catch(err => {
+        .catch((err) => {
           this.pages = [];
           this.total = 0;
           this.loading = false;
@@ -160,7 +171,7 @@ export default class PagesIndex extends Buefy {
             indefinite: true,
             onAction: () => {
               this.fetchPages();
-            }
+            },
           });
           throw err;
         });
@@ -169,7 +180,7 @@ export default class PagesIndex extends Buefy {
     /*
      * Handle page-change event
      */
-    onPageChange (page: number): void {
+    onPageChange(page: number): void {
       this.page = page;
       this.fetchPages();
     }
@@ -177,13 +188,13 @@ export default class PagesIndex extends Buefy {
     /*
      * Handle sort event
      */
-    onSort (field: string, order: string): void {
+    onSort(field: string, order: string): void {
       this.sortField = field;
       this.sortOrder = order;
       this.fetchPages();
     }
 
-    confirmDeleteSelectedPages (): void {
+    confirmDeleteSelectedPages(): void {
       this.$buefy.dialog.confirm({
         title: 'Deleting Pages',
         message:
@@ -193,22 +204,22 @@ export default class PagesIndex extends Buefy {
         hasIcon: true,
         onConfirm: () => {
           this.deleteSelectedPages();
-        }
+        },
       });
     }
 
     /**
      * Delete page from slug
      */
-    deleteSelectedPages (): void {
-      this.checkedRows.forEach(page => {
+    deleteSelectedPages(): void {
+      this.checkedRows.forEach((page) => {
         this.axios
           .delete(`/api/admin/pages/${page.id}`)
           .then(() => {
             this.showSuccess('Pages deleted');
             this.fetchPages();
           })
-          .catch(err => {
+          .catch((err) => {
             this.showError(`Unable to delete page <br> <small>${err.message}</small>`);
             throw err;
           });

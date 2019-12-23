@@ -99,25 +99,34 @@ import Buefy from '../../../admin/Buefy.vue';
 import SocialMedia from '../../../models/social-media';
 
 @Component({
-  name: 'SocialMediasIndex'
+  name: 'SocialMediasIndex',
 })
 export default class SocialMediasIndex extends Buefy {
     private socialMedias: Array<SocialMedia> = [];
+
     private checkedRows: Array<SocialMedia> = [];
+
     private total = 0;
+
     private page = 1;
+
     perPage = 10;
+
     private loading = false;
+
     private sortField = 'id';
+
     private sortOrder = 'desc';
+
     showDetailIcon = true;
+
     defaultSortOrder = 'desc';
 
-    created (): void {
+    created(): void {
       this.fetchSocialMedias();
     }
 
-    fetchSocialMedias (): void {
+    fetchSocialMedias(): void {
       this.loading = true;
       const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
@@ -125,17 +134,17 @@ export default class SocialMediasIndex extends Buefy {
         .get('/api/admin/social-medias', {
           params: {
             page: this.page,
-            sort: sortOrder + this.sortField
-          }
+            sort: sortOrder + this.sortField,
+          },
         })
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           this.perPage = res.meta.per_page;
           this.total = res.meta.total;
           this.socialMedias = res.data;
           this.loading = false;
         })
-        .catch(err => {
+        .catch((err) => {
           this.socialMedias = [];
           this.total = 0;
           this.loading = false;
@@ -147,7 +156,7 @@ export default class SocialMediasIndex extends Buefy {
             indefinite: true,
             onAction: () => {
               this.fetchSocialMedias();
-            }
+            },
           });
           throw err;
         });
@@ -156,7 +165,7 @@ export default class SocialMediasIndex extends Buefy {
     /*
      * Handle page-change event
      */
-    onPageChange (page: number): void {
+    onPageChange(page: number): void {
       this.page = page;
       this.fetchSocialMedias();
     }
@@ -164,13 +173,13 @@ export default class SocialMediasIndex extends Buefy {
     /*
      * Handle sort event
      */
-    onSort (field: string, order: string): void {
+    onSort(field: string, order: string): void {
       this.sortField = field;
       this.sortOrder = order;
       this.fetchSocialMedias();
     }
 
-    confirmDeleteSelectedSocialMedias (): void {
+    confirmDeleteSelectedSocialMedias(): void {
       this.$buefy.dialog.confirm({
         title: 'Deleting socialMedias',
         message:
@@ -180,21 +189,21 @@ export default class SocialMediasIndex extends Buefy {
         hasIcon: true,
         onConfirm: () => {
           this.deleteSelectedSocialMedias();
-        }
+        },
       });
     }
 
-    deleteSelectedSocialMedias (): void {
-      this.checkedRows.forEach(socialMedia => {
+    deleteSelectedSocialMedias(): void {
+      this.checkedRows.forEach((socialMedia) => {
         this.axios
           .delete(`/api/admin/social-medias/${socialMedia.id}`)
           .then(() => {
             this.showSuccess('SocialMedias deleted');
             this.fetchSocialMedias();
           })
-          .catch(err => {
+          .catch((err) => {
             this.showError(
-                        `Unable to delete socialMedia <br> <small>${err.message}</small>`
+              `Unable to delete socialMedia <br> <small>${err.message}</small>`,
             );
             throw err;
           });

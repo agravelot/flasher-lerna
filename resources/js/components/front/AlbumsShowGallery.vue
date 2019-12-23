@@ -64,35 +64,39 @@ import { Prop } from 'vue-property-decorator';
 import Vue from 'vue';
 import 'bulma-modal-fx/src/_js/modal-fx';
 import VueMasonry from 'vue-masonry-css';
+import Album from '../../models/album';
 
 Vue.use(VueMasonry);
 
 @Component({
-  name: 'AlbumsShowGallery'
+  name: 'AlbumsShowGallery',
 })
 export default class AlbumsShowGallery extends Vue {
-    @Prop() readonly data: any;
+    @Prop({ required: false })
+    readonly data?: { data: Album } | null;
 
-    protected album: object = null;
-    protected openedPicture: object = null;
+    protected album?: Album;
+
+    protected openedPicture?: object;
+
     loading = false;
 
-    updated (): void {
+    updated(): void {
       this.$nextTick(() => {
         this.onResize();
       });
     }
 
-    created (): void {
+    created(): void {
       window.addEventListener('resize', this.onResize);
     }
 
-    beforeDestroy (): void {
+    beforeDestroy(): void {
       window.removeEventListener('resize', this.onResize);
     }
 
-    mounted (): void {
-      this.album = this.data.data;
+    mounted(): void {
+      this.album = this.data?.data;
 
       if (!this.album) {
         console.warn('Album is not eager loaded, requesting...');
@@ -103,32 +107,32 @@ export default class AlbumsShowGallery extends Vue {
       });
     }
 
-    openPicture (media: object): void {
+    openPicture(media: object): void {
       this.openedPicture = media;
     }
 
-    closePicture (): void {
-      this.openedPicture = null;
+    closePicture(): void {
+      this.openedPicture = undefined;
     }
 
-    onResize (): void {
+    onResize(): void {
       this.refreshSizes();
     }
 
-    refreshSizes (): void {
+    refreshSizes(): void {
       const responsiveMedias: HTMLCollectionOf<Element> = document.getElementsByClassName(
-        'responsive-media'
+        'responsive-media',
       );
       Array.from(responsiveMedias).forEach(
         (el: Element): void => {
           (el as HTMLImageElement).sizes = `${Math.ceil(
-                    (el.getBoundingClientRect().width / window.innerWidth) * 100
-                )}vw`;
-        }
+            (el.getBoundingClientRect().width / window.innerWidth) * 100,
+          )}vw`;
+        },
       );
     }
 
-    fetchAlbum (): void {
+    fetchAlbum(): void {
       let slug = window.location.pathname.split('/')[
         window.location.pathname.split('/').length - 1
       ];
@@ -138,13 +142,13 @@ export default class AlbumsShowGallery extends Vue {
       }
       this.axios
         .get(`/api/albums/${slug}`)
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           this.loading = false;
           this.album = res.data;
         })
-        .catch(err => {
-          this.album = {};
+        .catch((err) => {
+          this.album = new Album();
           this.loading = false;
           this.$buefy.snackbar.open({
             message: 'Unable to load album, maybe you are offline?',
@@ -154,7 +158,7 @@ export default class AlbumsShowGallery extends Vue {
             indefinite: true,
             onAction: () => {
               this.fetchAlbum();
-            }
+            },
           });
           throw err;
         });

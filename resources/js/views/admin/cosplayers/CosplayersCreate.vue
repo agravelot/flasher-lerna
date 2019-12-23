@@ -121,39 +121,42 @@ import User from '../../../models/user';
 @Component({
   name: 'CosplayersCreate',
   components: {
-    quillEditor
-  }
+    quillEditor,
+  },
 })
 export default class CosplayersCreate extends Buefy {
     private cosplayer: Cosplayer = new Cosplayer();
+
     private loading = false;
+
     private searchUsers: User[] = [];
+
     protected errors: object = {};
 
     protected editorOption: object = {
       placeholder: 'Enter your description...',
-      theme: 'snow'
+      theme: 'snow',
     };
 
-    created (): void {
+    created(): void {
       this.cosplayer.user = new User();
     }
 
-    createCosplayer (): void {
+    createCosplayer(): void {
       this.loading = true;
 
       const formData: FormData = this.cosplayerToFormData(this.cosplayer);
       this.axios
         .post('/api/admin/cosplayers', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
+          headers: { 'Content-Type': 'multipart/form-data' },
         })
-        .then(res => res.data)
+        .then((res) => res.data)
         .then(() => {
           this.loading = false;
           this.showSuccess('Cosplayer created');
           this.$router.push({ name: 'admin.cosplayers.index' });
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.showError('Unable to create cosplayer');
           this.errors = err.response.data.errors;
@@ -161,24 +164,24 @@ export default class CosplayersCreate extends Buefy {
         });
     }
 
-    searchUser (): void {
+    searchUser(): void {
       this.axios
         .get('/api/admin/users', { params: { 'filter[name]': this.cosplayer?.user?.id } })
-        .then(res => res.data)
+        .then((res) => res.data)
         .then((res: UserInterface) => {
           this.searchUsers = res.data;
         })
-        .catch(err => {
+        .catch((err) => {
           this.$buefy.snackbar.open({
             message: 'Unable to load users, maybe you are offline?',
             type: 'is-danger',
-            position: 'is-top'
+            position: 'is-top',
           });
           throw err;
         });
     }
 
-    cosplayerToFormData (cosplayer: Cosplayer): FormData {
+    cosplayerToFormData(cosplayer: Cosplayer): FormData {
       const formData = new FormData();
       // TODO Rewrite
       if (cosplayer.name) {

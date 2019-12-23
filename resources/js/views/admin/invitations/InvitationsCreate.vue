@@ -49,46 +49,49 @@ import PickOneCosplayer from '../../../components/admin/PickOneCosplayer.vue';
 
     @Component({
       components: {
-        PickOneCosplayer
-      }
+        PickOneCosplayer,
+      },
     })
 export default class InvitationsCreate extends Buefy {
         private invitation: Invitation = new Invitation();
+
         protected errors: object = {};
+
         private loading = false;
+
         private filteredCosplayers: Cosplayer[] = [];
 
-        createInvitation (): void {
+        createInvitation(): void {
           this.axios
             .post('/api/admin/invitations/', this.invitation)
 
-            .then(res => res.data)
-            .then(res => {
+            .then((res) => res.data)
+            .then((res) => {
               this.showSuccess('Invitation successfully created');
               this.$router.push({ name: 'admin.invitations.index' });
             })
-            .catch(err => {
+            .catch((err) => {
               this.showError(
-                        `Unable to create the invitation <br><small>${err.response.data.message}</small>`
+                `Unable to create the invitation <br><small>${err.response.data.message}</small>`,
               );
               this.errors = err.response.data.errors;
             });
         }
 
-        getFilteredCosplayers (text: string): void {
+        getFilteredCosplayers(text: string): void {
           this.loading = true;
           this.axios
             .get('/api/admin/cosplayers', {
               params: {
-                'filter[name]': text
-              }
+                'filter[name]': text,
+              },
             })
-            .then(res => res.data)
-            .then(res => {
+            .then((res) => res.data)
+            .then((res) => {
               this.filteredCosplayers = res.data;
               this.loading = false;
             })
-            .catch(err => {
+            .catch((err) => {
               // this.filteredCosplayers = [];
               this.loading = false;
               this.$buefy.snackbar.open({
@@ -99,7 +102,7 @@ export default class InvitationsCreate extends Buefy {
                 indefinite: true,
                 onAction: () => {
                   this.getFilteredCosplayers(text);
-                }
+                },
               });
               throw err;
             });

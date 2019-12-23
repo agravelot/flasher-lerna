@@ -3,18 +3,18 @@ import Vue from 'vue';
 import './fontawsome';
 
 export default class Buefy extends Vue {
-  public showSuccess (message: string): void {
+  public showSuccess(message: string): void {
     this.$buefy.toast.open({
-      message: message,
-      type: 'is-success'
+      message,
+      type: 'is-success',
     });
   }
 
-  public showError (message: string): void {
+  public showError(message: string): void {
     this.$buefy.toast.open({
-      message: message,
+      message,
       type: 'is-danger',
-      duration: 5000
+      duration: 5000,
     });
   }
 }

@@ -21,7 +21,7 @@ import Buefy from '../../admin/Buefy.vue';
 import Cosplayer from '../../models/cosplayer';
 
     @Component({
-      name: 'pick-one-cosplayer'
+      name: 'pick-one-cosplayer',
     })
 export default class PickOneCosplayer extends Buefy {
         @Prop()
@@ -31,29 +31,30 @@ export default class PickOneCosplayer extends Buefy {
         private cosplayer?: Cosplayer;
 
         private filteredCosplayers: Cosplayer[] = [];
+
         private loading = false;
 
-        selected (option: Cosplayer): void {
+        selected(option: Cosplayer): void {
           // this.cosplayer = option;
           this.$emit('update:cosplayer', option);
           // this.cosplayerId = option.id;
           this.$emit('update:cosplayerId', option.id);
         }
 
-        getFilteredCosplayers (text: string): void {
+        getFilteredCosplayers(text: string): void {
           this.loading = true;
           this.axios
             .get('/api/admin/cosplayers', {
               params: {
-                'filter[name]': text
-              }
+                'filter[name]': text,
+              },
             })
-            .then(res => res.data)
-            .then(res => {
+            .then((res) => res.data)
+            .then((res) => {
               this.filteredCosplayers = res.data;
               this.loading = false;
             })
-            .catch(err => {
+            .catch((err) => {
               // this.filteredCosplayers = [];
               this.loading = false;
               this.$buefy.snackbar.open({
@@ -64,7 +65,7 @@ export default class PickOneCosplayer extends Buefy {
                 indefinite: true,
                 onAction: () => {
                   this.getFilteredCosplayers(text);
-                }
+                },
               });
               throw err;
             });

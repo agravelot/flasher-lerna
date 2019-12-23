@@ -16,7 +16,7 @@ import Buefy from 'buefy';
 
 Vue.use(Buefy, {
   defaultIconComponent: 'vue-fontawesome',
-  defaultIconPack: 'fas'
+  defaultIconPack: 'fas',
   // defaultFieldLabelPosition: 'on-border',
 });
 
@@ -24,5 +24,5 @@ Vue.use(Buefy, {
 new Vue({
   el: '#app',
   components: { Sidebar },
-  router
+  router,
 });

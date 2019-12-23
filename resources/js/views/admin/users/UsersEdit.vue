@@ -97,30 +97,32 @@ import Buefy from '../../../admin/Buefy.vue';
 import User from '../../../models/user';
 
 @Component({
-  name: 'UsersEdit'
+  name: 'UsersEdit',
 })
 export default class UsersEdit extends Buefy {
     private user: User|null = null;
+
     private loading = false;
+
     protected errors: object = {};
 
-    created (): void {
+    created(): void {
       this.fetchUser();
     }
 
-    updateUser (): void {
+    updateUser(): void {
       this.loading = true;
 
       this.axios
         .patch(`/api/admin/users/${this.$route.params.id}`, this.user)
-        .then(res => res.data)
+        .then((res) => res.data)
         .then(() => {
           this.errors = {};
           this.loading = false;
           this.$router.push({ name: 'admin.users.index' });
           this.showSuccess('User updated');
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           // this.$buefy.snackbar.open({
           //     message: 'Unable to update user, maybe you are offline?',
@@ -137,17 +139,17 @@ export default class UsersEdit extends Buefy {
         });
     }
 
-    fetchUser (): void {
+    fetchUser(): void {
       this.loading = true;
 
       this.axios
         .get(`/api/admin/users/${this.$route.params.id}`)
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           this.user = res.data;
           this.loading = false;
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.$buefy.snackbar.open({
             message: 'Unable to load user, maybe you are offline?',
@@ -157,13 +159,13 @@ export default class UsersEdit extends Buefy {
             indefinite: true,
             onAction: () => {
               this.fetchUser();
-            }
+            },
           });
           throw err;
         });
     }
 
-    confirmDeleteUser (): void {
+    confirmDeleteUser(): void {
       this.$buefy.dialog.confirm({
         title: 'Deleting Albums',
         message:
@@ -173,14 +175,14 @@ export default class UsersEdit extends Buefy {
         hasIcon: true,
         onConfirm: () => {
           this.deleteUser();
-        }
+        },
       });
     }
 
     /**
      * Delete user from slug
      */
-    deleteUser (): void {
+    deleteUser(): void {
       if (this.user === null) {
         throw new DOMException('Unable to delete album from undefined.');
       }
@@ -190,7 +192,7 @@ export default class UsersEdit extends Buefy {
           this.$router.push({ name: 'admin.users.index' });
           this.showSuccess('User deleted');
         })
-        .catch(err => {
+        .catch((err) => {
           this.showError(`Unable to delete user <br> <small>${err.message}</small>`);
           throw err;
         });

@@ -12,58 +12,71 @@ import FilterableById from '../../../models/interfaces/filterableById';
 @Component({})
 export default class AlbumBase extends Buefy {
     protected errors: object = {};
+
     protected album: Album | undefined;
+
     protected allowNew = false;
+
     protected allCategories: Array<Category> = [];
+
     protected allCosplayers: Array<Cosplayer> = [];
+
     protected filteredCategories: Array<Category> = [];
+
     protected filteredCosplayers: Array<Cosplayer> = [];
+
     protected editorOption: object = {
       placeholder: 'Enter your description...',
-      theme: 'snow'
+      theme: 'snow',
     };
 
-    debounce (callback: any, text: string, time: number): void {
+    debounce(callback: (text: string) => void, text: string, time: number): void {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).lastCall = (window as any).lastCall ? (window as any).lastCall : 0;
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if (Date.now() - (window as any).lastCall > time) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as any).timeout = setTimeout(() => callback(text), time);
       } else {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         clearTimeout(((window as any).timeout as number));
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as any).timeout = setTimeout(() => callback(text), time);
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).lastCall = Date.now();
     }
 
-    isCategoryAlreadySelected (filterable: FilterableById): boolean {
-      return !!this.album?.categories?.some(c => c.id === filterable.id);
+    isCategoryAlreadySelected(filterable: FilterableById): boolean {
+      return !!this.album?.categories?.some((c) => c.id === filterable.id);
     }
 
-    isCategoryNotAlreadySelected (filterable: FilterableById): boolean {
+    isCategoryNotAlreadySelected(filterable: FilterableById): boolean {
       return !this.isCategoryAlreadySelected(filterable);
     }
 
-    isCosplayerAlreadySelected (filterable: FilterableById): boolean {
-      return !!this.album?.cosplayers?.some(c => c.id === filterable.id);
+    isCosplayerAlreadySelected(filterable: FilterableById): boolean {
+      return !!this.album?.cosplayers?.some((c) => c.id === filterable.id);
     }
 
-    isCosplayerNotAlreadySelected (filterable: FilterableById): boolean {
+    isCosplayerNotAlreadySelected(filterable: FilterableById): boolean {
       return !this.isCategoryAlreadySelected(filterable);
     }
 
-    getFilteredCategories (text: string): void {
+    getFilteredCategories(text: string): void {
       const callback = (text: string): void => {
         this.axios
           .get('/api/admin/categories', {
             params: {
-              'filter[name]': text
-            }
+              'filter[name]': text,
+            },
           })
-          .then(res => res.data)
-          .then(res => {
+          .then((res) => res.data)
+          .then((res) => {
             this.filteredCategories = res.data.filter(this.isCategoryNotAlreadySelected);
           })
-          .catch(err => {
+          .catch((err) => {
             // this.filteredCosplayers = [];
             this.$buefy.snackbar.open({
               message: 'Unable to load categories, maybe you are offline?',
@@ -73,7 +86,7 @@ export default class AlbumBase extends Buefy {
               indefinite: true,
               onAction: () => {
                 this.getFilteredCategories(text);
-              }
+              },
             });
             throw err;
           });
@@ -81,19 +94,19 @@ export default class AlbumBase extends Buefy {
       this.debounce(callback, text, 200);
     }
 
-    getFilteredCosplayers (text: string): void {
+    getFilteredCosplayers(text: string): void {
       const callback = (text: string): void => {
         this.axios
           .get('/api/admin/cosplayers', {
             params: {
-              'filter[name]': text
-            }
+              'filter[name]': text,
+            },
           })
-          .then(res => res.data)
-          .then(res => {
+          .then((res) => res.data)
+          .then((res) => {
             this.filteredCosplayers = res.data.filter(this.isCosplayerNotAlreadySelected);
           })
-          .catch(err => {
+          .catch((err) => {
             // this.filteredCosplayers = [];
             this.$buefy.snackbar.open({
               message: 'Unable to load cosplayers, maybe you are offline?',
@@ -103,7 +116,7 @@ export default class AlbumBase extends Buefy {
               indefinite: true,
               onAction: () => {
                 this.getFilteredCosplayers(text);
-              }
+              },
             });
             throw err;
           });

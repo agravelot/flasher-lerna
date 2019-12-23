@@ -114,25 +114,34 @@ import Buefy from '../../../admin/Buefy.vue';
 import Invitation from '../../../models/invitation';
 
 @Component({
-  name: 'InvitationsIndex'
+  name: 'InvitationsIndex',
 })
 export default class InvitationsIndex extends Buefy {
     private invitations: Array<Invitation> = [];
+
     private checkedRows: Array<Invitation> = [];
+
     private total = 0;
+
     private page = 1;
+
     perPage = 10;
+
     private loading = false;
+
     private sortField = 'id';
+
     private sortOrder = 'desc';
+
     showDetailIcon = true;
+
     defaultSortOrder = 'desc';
 
-    created (): void {
+    created(): void {
       this.fetchInvitations();
     }
 
-    fetchInvitations (): void {
+    fetchInvitations(): void {
       this.loading = true;
       const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
@@ -140,17 +149,17 @@ export default class InvitationsIndex extends Buefy {
         .get('/api/admin/invitations', {
           params: {
             page: this.page,
-            sort: sortOrder + this.sortField
-          }
+            sort: sortOrder + this.sortField,
+          },
         })
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           this.perPage = res.meta.per_page;
           this.total = res.meta.total;
           this.invitations = res.data;
           this.loading = false;
         })
-        .catch(err => {
+        .catch((err) => {
           this.invitations = [];
           this.total = 0;
           this.loading = false;
@@ -162,7 +171,7 @@ export default class InvitationsIndex extends Buefy {
             indefinite: true,
             onAction: () => {
               this.fetchInvitations();
-            }
+            },
           });
           throw err;
         });
@@ -171,7 +180,7 @@ export default class InvitationsIndex extends Buefy {
     /*
      * Handle page-change event
      */
-    onPageChange (page: number): void {
+    onPageChange(page: number): void {
       this.page = page;
       this.fetchInvitations();
     }
@@ -179,13 +188,13 @@ export default class InvitationsIndex extends Buefy {
     /*
      * Handle sort event
      */
-    onSort (field: string, order: string): void {
+    onSort(field: string, order: string): void {
       this.sortField = field;
       this.sortOrder = order;
       this.fetchInvitations();
     }
 
-    confirmDeleteSelectedInvitations (): void {
+    confirmDeleteSelectedInvitations(): void {
       this.$buefy.dialog.confirm({
         title: 'Deleting invitations',
         message:
@@ -195,21 +204,21 @@ export default class InvitationsIndex extends Buefy {
         hasIcon: true,
         onConfirm: () => {
           this.deleteSelectedInvitations();
-        }
+        },
       });
     }
 
-    deleteSelectedInvitations (): void {
-      this.checkedRows.forEach(invitation => {
+    deleteSelectedInvitations(): void {
+      this.checkedRows.forEach((invitation) => {
         this.axios
           .delete(`/api/admin/invitations/${invitation.id}`)
           .then(() => {
             this.showSuccess('Invitations deleted');
             this.fetchInvitations();
           })
-          .catch(err => {
+          .catch((err) => {
             this.showError(
-                        `Unable to delete invitation <br> <small>${err.message}</small>`
+              `Unable to delete invitation <br> <small>${err.message}</small>`,
             );
             throw err;
           });

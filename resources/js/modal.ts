@@ -8,7 +8,7 @@
       close: 'modal-close',
       buttonClose: 'modal-button-close',
       background: 'modal-background',
-      navigable: 'is-modal-navigable'
+      navigable: 'is-modal-navigable',
     };
 
     const onClickEach = function (selector: string, callback: () => void): void {
@@ -42,26 +42,31 @@
       }
       freeze();
       const modal: HTMLElement | null = document.getElementById(targetModal);
+      // eslint-disable-next-line no-unused-expressions
             modal?.classList.add(elements.active);
 
             const images = modal?.getElementsByTagName('img');
             Array.from(images || []).forEach((el: HTMLImageElement) => {
               el.sizes = `${Math.ceil(
-                    (el.getBoundingClientRect().width / window.innerWidth) * 100
-                )}vw`;
+                (el.getBoundingClientRect().width / window.innerWidth) * 100,
+              )}vw`;
+                // eslint-disable-next-line no-unused-expressions
                 el?.classList.add('responsive-media');
             });
     };
 
     const closeModal = function (this: Element): void {
-      const targetModal = this.parentElement.id;
+      const targetModal = this.parentElement?.id;
       const modal: HTMLElement | null = document.getElementById(targetModal);
+      if (modal !== null) {
+            // eslint-disable-next-line no-unused-expressions
             modal?.classList.remove(elements.active);
             unFreeze();
 
             // Remove 'responsive-media' class
             const images = modal?.getElementsByTagName('img');
             Array.from(images || []).forEach((el: HTMLImageElement) => el.classList.remove('responsive-media'));
+      }
     };
 
     const events = function (): void {
@@ -72,7 +77,7 @@
       onClickEach(elements.background, closeModal);
 
       // Close all modals if ESC key is pressed
-      document.addEventListener('keyup', function (event) {
+      document.addEventListener('keyup', (event) => {
         if (event.key === 'Escape') {
           closeAll();
         }
@@ -80,16 +85,16 @@
     };
 
     return {
-      init: function (): void {
+      init(): void {
         events();
 
-        function getCurrentModal (): Element {
+        function getCurrentModal(): Element {
           return document.getElementsByClassName(
-            elements.navigable + ' ' + elements.active
+            `${elements.navigable} ${elements.active}`,
           )[0];
         }
 
-        function closeModal (modal: Element): void {
+        function closeModal(modal: Element): void {
           modal.classList.remove(elements.active);
           const images = modal.getElementsByTagName('img');
           Array.from(images || []).forEach((el: HTMLImageElement) => {
@@ -97,18 +102,18 @@
           });
         }
 
-        function openModal (modal: Element): void {
+        function openModal(modal: Element): void {
           modal.classList.add(elements.active);
           const images = modal.getElementsByTagName('img');
           Array.from(images || []).forEach((el: HTMLImageElement) => {
             el.sizes = `${Math.ceil(
-                            (el.getBoundingClientRect().width / window.innerWidth) * 100
-                        )}vw`;
+              (el.getBoundingClientRect().width / window.innerWidth) * 100,
+            )}vw`;
             el.classList.add('responsive-media');
           });
         }
 
-        function previousModal (): void {
+        function previousModal(): void {
           const currentActiveModal: Element = getCurrentModal();
           const previousModal: Element | null = currentActiveModal.previousElementSibling;
 
@@ -124,7 +129,7 @@
           openModal(previousModal);
         }
 
-        function nextModal (): void {
+        function nextModal(): void {
           const currentActiveModal: Element = getCurrentModal();
           const nextModal: Element | null = currentActiveModal.nextElementSibling;
 
@@ -142,7 +147,7 @@
 
         window.addEventListener(
           'keydown',
-          function (event) {
+          (event) => {
             if (event.defaultPrevented) {
               return; // Do nothing if the event was already processed
             }
@@ -167,11 +172,11 @@
             // Cancel the default action to avoid it being handled twice
             event.preventDefault();
           },
-          true
+          true,
         );
-      }
+      },
     };
-  })();
+  }());
 
   modalFX.init();
-})();
+}());

@@ -108,29 +108,39 @@ import Category from '../../../models/category';
     /**
          * Filter to truncate string, accepts a length parameter
          */
-    truncate (value: string, length: number): string {
-      return value.length > length ? value.substr(0, length) + '...' : value;
-    }
-  }
+    truncate(value: string, length: number): string {
+      return value.length > length ? `${value.substr(0, length)}...` : value;
+    },
+  },
 })
 export default class CategoriesIndex extends Buefy {
     private categories: Array<Category> = [];
+
     private checkedRows: Array<Category> = [];
+
     private total = 0;
+
     private page = 1;
+
     perPage = 10;
+
     private loading = false;
+
     private sortField = 'id';
+
     private sortOrder = 'desc';
+
     showDetailIcon = true;
+
     defaultSortOrder = 'desc';
+
     private search = '';
 
-    created (): void {
+    created(): void {
       this.fetchCategories();
     }
 
-    fetchCategories (): void {
+    fetchCategories(): void {
       this.loading = true;
       const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
@@ -139,17 +149,17 @@ export default class CategoriesIndex extends Buefy {
           params: {
             page: this.page,
             sort: sortOrder + this.sortField,
-            'filter[name]': this.search
-          }
+            'filter[name]': this.search,
+          },
         })
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           this.perPage = res.meta.per_page;
           this.total = res.meta.total;
           this.categories = res.data;
           this.loading = false;
         })
-        .catch(err => {
+        .catch((err) => {
           this.categories = [];
           this.total = 0;
           this.loading = false;
@@ -161,7 +171,7 @@ export default class CategoriesIndex extends Buefy {
             indefinite: true,
             onAction: () => {
               this.fetchCategories();
-            }
+            },
           });
           throw err;
         });
@@ -170,7 +180,7 @@ export default class CategoriesIndex extends Buefy {
     /*
      * Handle page-change event
      */
-    onPageChange (page: number): void {
+    onPageChange(page: number): void {
       this.page = page;
       this.fetchCategories();
     }
@@ -178,13 +188,13 @@ export default class CategoriesIndex extends Buefy {
     /*
      * Handle sort event
      */
-    onSort (field: string, order: string): void {
+    onSort(field: string, order: string): void {
       this.sortField = field;
       this.sortOrder = order;
       this.fetchCategories();
     }
 
-    confirmDeleteSelectedCategories (): void {
+    confirmDeleteSelectedCategories(): void {
       this.$buefy.dialog.confirm({
         title: 'Deleting Categories',
         message:
@@ -194,22 +204,22 @@ export default class CategoriesIndex extends Buefy {
         hasIcon: true,
         onConfirm: () => {
           this.deleteSelectedCategories();
-        }
+        },
       });
     }
 
     /**
      * Delete category from slug
      */
-    deleteSelectedCategories (): void {
-      this.checkedRows.forEach(category => {
+    deleteSelectedCategories(): void {
+      this.checkedRows.forEach((category) => {
         this.axios
           .delete(`/api/admin/categories/${category.slug}`)
           .then(() => {
             this.showSuccess('Categories deleted');
             this.fetchCategories();
           })
-          .catch(err => {
+          .catch((err) => {
             this.showError(`Unable to delete category <br> <small>${err.message}</small>`);
             throw err;
           });

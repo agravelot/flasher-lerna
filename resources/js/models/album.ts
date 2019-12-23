@@ -10,16 +10,28 @@ interface LinksInterface {
 
 export default class Album {
     public id!: number;
+
     public slug!: string;
+
     public title!: string;
+
     public body?: string | null;
+
     public published_at?: Date | null;
+
     public private!: boolean;
+
     public medias: Array<object> = [];
+
     public user!: User;
+
     public cosplayers!: Cosplayer[];
+
     public created_at!: Date;
+
     public updated_at!: Date;
+
     public links!: LinksInterface;
+
     public categories!: Array<Category>;
 }

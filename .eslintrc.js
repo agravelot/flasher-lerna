@@ -4,7 +4,6 @@ module.exports = {
     es6: true,
   },
   extends: [
-      'standard',
       'plugin:vue/recommended',
       'eslint:recommended',
       'plugin:@typescript-eslint/eslint-recommended',
@@ -14,9 +13,9 @@ module.exports = {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
-  'parser': 'vue-eslint-parser',
+  parser: 'vue-eslint-parser',
   parserOptions: {
-    'parser': '@typescript-eslint/parser',
+    parser: '@typescript-eslint/parser',
     project: './tsconfig.json',
     extraFileExtensions: ['.vue'],
   },

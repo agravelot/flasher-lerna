@@ -142,29 +142,39 @@ import Album from '../../../models/album';
     /**
          * Filter to truncate string, accepts a length parameter
          */
-    truncate (value: string, length: number): string {
-      return value.length > length ? value.substr(0, length) + '...' : value;
-    }
-  }
+    truncate(value: string, length: number): string {
+      return value.length > length ? `${value.substr(0, length)}...` : value;
+    },
+  },
 })
 export default class AlbumsIndex extends Buefy {
     private albums: Array<Album> = [];
+
     private checkedRows: Array<Album> = [];
+
     private total = 0;
+
     private page = 1;
+
     perPage = 10;
+
     private loading = false;
+
     private sortField = 'id';
+
     private sortOrder = 'desc';
+
     showDetailIcon = true;
+
     defaultSortOrder = 'desc';
+
     private search = '';
 
-    created (): void {
+    created(): void {
       this.fetchAlbums();
     }
 
-    fetchAlbums (): void {
+    fetchAlbums(): void {
       this.loading = true;
       const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
@@ -173,17 +183,17 @@ export default class AlbumsIndex extends Buefy {
           params: {
             page: this.page,
             sort: sortOrder + this.sortField,
-            'filter[title]': this.search
-          }
+            'filter[title]': this.search,
+          },
         })
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           this.perPage = res.meta.per_page;
           this.total = res.meta.total;
           this.albums = res.data;
           this.loading = false;
         })
-        .catch(err => {
+        .catch((err) => {
           this.albums = [];
           this.total = 0;
           this.loading = false;
@@ -195,20 +205,20 @@ export default class AlbumsIndex extends Buefy {
             indefinite: true,
             onAction: () => {
               this.fetchAlbums();
-            }
+            },
           });
           throw err;
         });
     }
 
-    toggle (row: object): void {
+    toggle(row: object): void {
       this.$refs.table.toggleDetails(row);
     }
 
     /*
      * Handle page-change event
      */
-    onPageChange (page: number): void {
+    onPageChange(page: number): void {
       this.page = page;
       this.fetchAlbums();
     }
@@ -216,13 +226,13 @@ export default class AlbumsIndex extends Buefy {
     /*
      * Handle sort event
      */
-    onSort (field: string, order: string): void {
+    onSort(field: string, order: string): void {
       this.sortField = field;
       this.sortOrder = order;
       this.fetchAlbums();
     }
 
-    confirmDeleteSelectedAlbums (): void {
+    confirmDeleteSelectedAlbums(): void {
       this.$buefy.dialog.confirm({
         title: 'Deleting Albums',
         message:
@@ -232,22 +242,22 @@ export default class AlbumsIndex extends Buefy {
         hasIcon: true,
         onConfirm: () => {
           this.deleteSelectedAlbums();
-        }
+        },
       });
     }
 
     /**
      * Delete album from slug
      */
-    deleteSelectedAlbums (): void {
-      this.checkedRows.forEach(album => {
+    deleteSelectedAlbums(): void {
+      this.checkedRows.forEach((album) => {
         this.axios
           .delete(`/api/admin/albums/${album.slug}`)
           .then(() => {
             this.showSuccess('Albums deleted');
             this.fetchAlbums();
           })
-          .catch(err => {
+          .catch((err) => {
             this.showError(`Unable to delete album <br> <small>${err.message}</small>`);
             throw err;
           });

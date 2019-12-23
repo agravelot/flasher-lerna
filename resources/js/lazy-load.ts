@@ -4,17 +4,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const options: object = {
     root: null,
     rootMargin: '0px',
-    threshold: ratio
+    threshold: ratio,
   };
 
   const handleIntersection: IntersectionObserverCallback = (
     entries: IntersectionObserverEntry[],
-    observer: IntersectionObserver
+    observer: IntersectionObserver,
   ) => {
     entries.forEach((entry: IntersectionObserverEntry) => {
       if (entry.intersectionRatio > ratio) {
         const computedSize: number = Math.ceil(
-          (entry.target.getBoundingClientRect().width / window.innerWidth) * 100
+          (entry.target.getBoundingClientRect().width / window.innerWidth) * 100,
         );
         // Avoid to set 0vw and load full sized image
         if (computedSize !== 0) {

@@ -79,26 +79,28 @@ import Buefy from '../../../admin/Buefy.vue';
 import User from '../../../models/user';
 
 @Component({
-  name: 'UsersCreate'
+  name: 'UsersCreate',
 })
 export default class UsersCreate extends Buefy {
     private user: User = new User();
+
     private loading = false;
+
     protected errors: object = {};
 
-    createUser (): void {
+    createUser(): void {
       this.loading = true;
 
       this.axios
         .post('/api/admin/users', this.user)
-        .then(res => res.data)
+        .then((res) => res.data)
         .then(() => {
           this.errors = {};
           this.loading = false;
           this.$router.push({ name: 'admin.users.index' });
           this.showSuccess('User created');
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           // this.$buefy.snackbar.open({
           //     message: 'Unable to update user, maybe you are offline?',
@@ -115,7 +117,7 @@ export default class UsersCreate extends Buefy {
         });
     }
 
-    confirmDeleteUser (): void {
+    confirmDeleteUser(): void {
       this.$buefy.dialog.confirm({
         title: 'Deleting Albums',
         message:
@@ -125,21 +127,21 @@ export default class UsersCreate extends Buefy {
         hasIcon: true,
         onConfirm: () => {
           this.deleteUser();
-        }
+        },
       });
     }
 
     /**
      * Delete user from slug
      */
-    deleteUser (): void {
+    deleteUser(): void {
       this.axios
         .delete(`/api/admin/users/${this.user.id}`)
         .then(() => {
           this.$router.push({ name: 'admin.users.index' });
           this.showSuccess('User deleted');
         })
-        .catch(err => {
+        .catch((err) => {
           this.showError(`Unable to delete user <br> <small>${err.message}</small>`);
           throw err;
         });

@@ -3,10 +3,10 @@ import Component from 'vue-class-component';
 import BaseAlbumsShowGallery from '../../components/front/AlbumsShowGallery.vue';
 
 @Component({
-  name: 'AlbumsShowGallery'
+  name: 'AlbumsShowGallery',
 })
 export default class AlbumsShowGallery extends BaseAlbumsShowGallery {
-  fetchAlbum (): void {
+  fetchAlbum(): void {
     let slug = window.location.pathname.split('/')[
       window.location.pathname.split('/').length - 1
     ];
@@ -16,12 +16,12 @@ export default class AlbumsShowGallery extends BaseAlbumsShowGallery {
     }
     this.axios
       .get(`/api/admin/albums/${slug}`)
-      .then(res => res.data)
-      .then(res => {
+      .then((res) => res.data)
+      .then((res) => {
         this.loading = false;
         this.album = res.data;
       })
-      .catch(err => {
+      .catch((err) => {
         this.album = {};
         this.loading = false;
         this.$buefy.snackbar.open({
@@ -32,7 +32,7 @@ export default class AlbumsShowGallery extends BaseAlbumsShowGallery {
           indefinite: true,
           onAction: () => {
             this.fetchAlbum();
-          }
+          },
         });
         throw err;
       });

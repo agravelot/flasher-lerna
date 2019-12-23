@@ -18,5 +18,5 @@ Vue.axios.interceptors.response.use(
       location.reload();
     }
     return response;
-  }
+  },
 );

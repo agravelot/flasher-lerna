@@ -109,29 +109,39 @@ import Cosplayer from '../../../models/cosplayer';
     /**
          * Filter to truncate string, accepts a length parameter
          */
-    truncate (value: string, length: number): string {
-      return value.length > length ? value.substr(0, length) + '...' : value;
-    }
-  }
+    truncate(value: string, length: number): string {
+      return value.length > length ? `${value.substr(0, length)}...` : value;
+    },
+  },
 })
 export default class CosplayersIndex extends Buefy {
     private cosplayers: Array<Cosplayer> = [];
+
     private checkedRows: Array<Cosplayer> = [];
+
     private total = 0;
+
     private page = 1;
+
     perPage = 10;
+
     private loading = false;
+
     private sortField = 'id';
+
     private sortOrder = 'desc';
+
     showDetailIcon = true;
+
     defaultSortOrder = 'desc';
+
     private search = '';
 
-    created (): void {
+    created(): void {
       this.fetchCosplayers();
     }
 
-    fetchCosplayers (): void {
+    fetchCosplayers(): void {
       this.loading = true;
       const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
@@ -140,17 +150,17 @@ export default class CosplayersIndex extends Buefy {
           params: {
             page: this.page,
             sort: sortOrder + this.sortField,
-            'filter[name]': this.search
-          }
+            'filter[name]': this.search,
+          },
         })
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           this.perPage = res.meta.per_page;
           this.total = res.meta.total;
           this.cosplayers = res.data;
           this.loading = false;
         })
-        .catch(err => {
+        .catch((err) => {
           this.cosplayers = [];
           this.total = 0;
           this.loading = false;
@@ -162,20 +172,20 @@ export default class CosplayersIndex extends Buefy {
             indefinite: true,
             onAction: () => {
               this.fetchCosplayers();
-            }
+            },
           });
           throw err;
         });
     }
 
-    toggle (row: object): void {
+    toggle(row: object): void {
       this.$refs.table.toggleDetails(row);
     }
 
     /*
      * Handle page-change event
      */
-    onPageChange (page: number): void {
+    onPageChange(page: number): void {
       this.page = page;
       this.fetchCosplayers();
     }
@@ -183,13 +193,13 @@ export default class CosplayersIndex extends Buefy {
     /*
      * Handle sort event
      */
-    onSort (field: string, order: string): void {
+    onSort(field: string, order: string): void {
       this.sortField = field;
       this.sortOrder = order;
       this.fetchCosplayers();
     }
 
-    confirmDeleteSelectedCosplayers (): void {
+    confirmDeleteSelectedCosplayers(): void {
       this.$buefy.dialog.confirm({
         title: 'Deleting Cosplayers',
         message:
@@ -199,22 +209,22 @@ export default class CosplayersIndex extends Buefy {
         hasIcon: true,
         onConfirm: () => {
           this.deleteSelectedCosplayers();
-        }
+        },
       });
     }
 
     /**
      * Delete cosplayer from slug
      */
-    deleteSelectedCosplayers (): void {
-      this.checkedRows.forEach(cosplayer => {
+    deleteSelectedCosplayers(): void {
+      this.checkedRows.forEach((cosplayer) => {
         this.axios
           .delete(`/api/admin/cosplayers/${cosplayer.slug}`)
           .then(() => {
             this.showSuccess('Cosplayers deleted');
             this.fetchCosplayers();
           })
-          .catch(err => {
+          .catch((err) => {
             this.showError(`Unable to delete cosplayer <br> <small>${err.message}</small>`);
             throw err;
           });

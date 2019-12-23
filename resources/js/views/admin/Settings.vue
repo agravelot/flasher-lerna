@@ -17,7 +17,7 @@
           />
           <b-checkbox
             v-else-if="setting.type === 'bool'"
-            v-model.numeric="setting.value"
+            v-model="setting.value"
             true-value="1"
             false-value="0"
           >
@@ -87,17 +87,20 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import Buefy from '../../admin/Buefy.vue';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
 import { quillEditor } from 'vue-quill-editor';
 import vue2Dropzone from 'vue2-dropzone';
+import Buefy from '../../admin/Buefy.vue';
 
 class Setting {
     public id!: number;
+
     public name!: string;
+
     public value!: string;
+
     public description!: string;
 }
 
@@ -105,14 +108,15 @@ class Setting {
   name: 'Settings',
   components: {
     quillEditor,
-    vueDropzone: vue2Dropzone
-  }
+    vueDropzone: vue2Dropzone,
+  },
 })
 export default class Settings extends Buefy {
     private loading = false;
+
     private settings: Array<Setting> = [];
 
-    getDropzoneOptions (setting: Setting): object {
+    getDropzoneOptions(setting: Setting): object {
       return {
         url: `/api/admin/settings/${setting.id}`,
         thumbnailWidth: 200,
@@ -133,33 +137,33 @@ export default class Settings extends Buefy {
         headers: {
           'X-CSRF-Token': (
                     document.head.querySelector('meta[name="csrf-token"]') as HTMLMetaElement
-          ).content
-        }
+          ).content,
+        },
       };
     }
 
-    sendingEvent (file: File, xhr: XMLHttpRequest, formData: FormData): void {
+    sendingEvent(file: File, xhr: XMLHttpRequest, formData: FormData): void {
       formData.append('_method', 'patch');
     }
 
-    created (): void {
+    created(): void {
       this.fetchSettings();
     }
 
-    sendSetting (setting: Setting): void {
+    sendSetting(setting: Setting): void {
       this.loading = true;
 
       this.axios
         .patch(`/api/admin/settings/${setting.id}`, {
           value: setting.value,
-          test: 'test'
+          test: 'test',
         })
-        .then(res => res.data)
+        .then((res) => res.data)
         .then(() => {
           this.loading = false;
           this.showSuccess('Setting updated');
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.$buefy.snackbar.open({
             message: 'Unable to save setting, maybe you are offline?',
@@ -169,23 +173,23 @@ export default class Settings extends Buefy {
             indefinite: false,
             onAction: () => {
               this.sendSetting(setting);
-            }
+            },
           });
           throw err;
         });
     }
 
-    fetchSettings (): void {
+    fetchSettings(): void {
       this.loading = true;
 
       this.axios
         .get('/api/admin/settings')
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           this.settings = res.data;
           this.loading = false;
         })
-        .catch(err => {
+        .catch((err) => {
           this.settings = [];
           this.loading = false;
           this.$buefy.snackbar.open({
@@ -196,7 +200,7 @@ export default class Settings extends Buefy {
             indefinite: true,
             onAction: () => {
               this.fetchSettings();
-            }
+            },
           });
           throw err;
         });

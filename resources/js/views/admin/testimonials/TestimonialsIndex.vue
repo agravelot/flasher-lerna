@@ -142,25 +142,34 @@ import Buefy from '../../../admin/Buefy.vue';
 import Testimonial from '../../../models/testimonial';
 
 @Component({
-  name: 'TestimonialsIndex'
+  name: 'TestimonialsIndex',
 })
 export default class TestimonialsIndex extends Buefy {
     private testimonials: Array<Testimonial> = [];
+
     private checkedRows: Array<Testimonial> = [];
+
     private total = 0;
+
     private page = 1;
+
     perPage = 10;
+
     private loading = false;
+
     private sortField = 'id';
+
     private sortOrder = 'desc';
+
     showDetailIcon = true;
+
     defaultSortOrder = 'desc';
 
-    created (): void {
+    created(): void {
       this.fetchTestimonials();
     }
 
-    fetchTestimonials (): void {
+    fetchTestimonials(): void {
       this.loading = true;
       const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
@@ -168,17 +177,17 @@ export default class TestimonialsIndex extends Buefy {
         .get('/api/admin/testimonials', {
           params: {
             page: this.page,
-            sort: sortOrder + this.sortField
-          }
+            sort: sortOrder + this.sortField,
+          },
         })
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           this.perPage = res.meta.per_page;
           this.total = res.meta.total;
           this.testimonials = res.data;
           this.loading = false;
         })
-        .catch(err => {
+        .catch((err) => {
           this.testimonials = [];
           this.total = 0;
           this.loading = false;
@@ -190,20 +199,20 @@ export default class TestimonialsIndex extends Buefy {
             indefinite: true,
             onAction: () => {
               this.fetchTestimonials();
-            }
+            },
           });
           throw err;
         });
     }
 
-    toggle (row: object): void {
+    toggle(row: object): void {
       this.$refs.table.toggleDetails(row);
     }
 
     /*
      * Handle page-change event
      */
-    onPageChange (page: number): void {
+    onPageChange(page: number): void {
       this.page = page;
       this.fetchTestimonials();
     }
@@ -211,13 +220,13 @@ export default class TestimonialsIndex extends Buefy {
     /*
      * Handle sort event
      */
-    onSort (field: string, order: string): void {
+    onSort(field: string, order: string): void {
       this.sortField = field;
       this.sortOrder = order;
       this.fetchTestimonials();
     }
 
-    confirmDeleteSelectedTestimonials (): void {
+    confirmDeleteSelectedTestimonials(): void {
       this.$buefy.dialog.confirm({
         title: 'Deleting Testimonials',
         message:
@@ -227,53 +236,53 @@ export default class TestimonialsIndex extends Buefy {
         hasIcon: true,
         onConfirm: () => {
           this.deleteSelectedTestimonials();
-        }
+        },
       });
     }
 
     /**
      * Delete testimonial from slug
      */
-    deleteSelectedTestimonials (): void {
-      this.checkedRows.forEach(testimonial => {
+    deleteSelectedTestimonials(): void {
+      this.checkedRows.forEach((testimonial) => {
         this.axios
           .delete(`/api/admin/testimonials/${testimonial.id}`)
           .then(() => {
             this.showSuccess('Testimonials deleted');
             this.fetchTestimonials();
           })
-          .catch(err => {
+          .catch((err) => {
             this.showError(
-                        `Unable to delete testimonial <br> <small>${err.message}</small>`
+              `Unable to delete testimonial <br> <small>${err.message}</small>`,
             );
             throw err;
           });
       });
     }
 
-    toggleSelectedArePublishedAndUpdate (): void {
-      this.checkedRows.forEach(testimonial => {
+    toggleSelectedArePublishedAndUpdate(): void {
+      this.checkedRows.forEach((testimonial) => {
         this.toggleIsPublishedAndUpdate(testimonial);
       });
     }
 
-    toggleIsPublishedAndUpdate (testimonial: Testimonial): void {
+    toggleIsPublishedAndUpdate(testimonial: Testimonial): void {
       // eslint-disable-next-line @typescript-eslint/camelcase
       testimonial.published_at = testimonial.published_at ? null : new Date();
       this.updateTestimonial(testimonial);
     }
 
-    updateTestimonial (testimonial: Testimonial): void {
+    updateTestimonial(testimonial: Testimonial): void {
       console.log('updating testimonial');
 
       this.axios
         .patch(`/api/admin/testimonials/${testimonial.id}`, testimonial)
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           // this.testimonials = res.data;
           this.loading = false;
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.$buefy.snackbar.open({
             message: 'Unable to update testimonial, maybe you are offline?',
@@ -283,7 +292,7 @@ export default class TestimonialsIndex extends Buefy {
             indefinite: true,
             onAction: () => {
               this.fetchTestimonials();
-            }
+            },
           });
           throw err;
         });

@@ -91,7 +91,7 @@
               >
                 <div class="field">
                   <b-switch
-                    v-model.numeric="album.private"
+                    v-model="album.private"
                     :true-value="false"
                     :false-value="true"
                   >
@@ -163,10 +163,10 @@
 import Component from 'vue-class-component';
 import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
+import { quillEditor } from 'vue-quill-editor';
 import AlbumBase from './AlbumBase.vue';
 import ShareAlbum from '../../../components/admin/ShareAlbum.vue';
 import Album from '../../../models/album';
-import { quillEditor } from 'vue-quill-editor';
 
     @Component({
       name: 'AlbumsEdit',
@@ -174,13 +174,15 @@ import { quillEditor } from 'vue-quill-editor';
         vueDropzone: vue2Dropzone,
         quillEditor,
         AlbumBase,
-        ShareAlbum
+        ShareAlbum,
       },
-      extends: AlbumBase
+      extends: AlbumBase,
     })
 export default class AlbumsEdit extends AlbumBase {
     protected album: Album | undefined;
+
     protected allowNew = false;
+
     protected dropzoneOptions: object = {
       url: '/api/admin/album-pictures',
       thumbnailWidth: 200,
@@ -202,71 +204,71 @@ export default class AlbumsEdit extends AlbumBase {
       headers: {
         'X-CSRF-Token': ((
                 document.head.querySelector('meta[name="csrf-token"]') as HTMLMetaElement
-        )).content
-      }
+        )).content,
+      },
     };
 
-    created (): void {
+    created(): void {
       this.fetchAlbum();
     }
 
-    fetchAlbum (): void {
+    fetchAlbum(): void {
       this.axios
         .get(`/api/admin/albums/${this.$route.params.slug}`)
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           this.album = res.data;
         })
-        .catch(err => {
+        .catch((err) => {
           throw err;
         });
     }
 
-    sendingEvent (file: File, xhr: XMLHttpRequest, formData: FormData): void {
+    sendingEvent(file: File, xhr: XMLHttpRequest, formData: FormData): void {
       if (!this.album?.slug) {
         throw new DOMException('album slug is null');
       }
       formData.append('album_slug', this.album.slug as string);
     }
 
-    updateAlbum (): void {
+    updateAlbum(): void {
       this.axios
         .patch(`/api/admin/albums/${this.$route.params.slug}`, this.album)
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           this.album = res.data;
           this.showSuccess('Album updated');
           if (this.album instanceof Album) {
             this.$router.push({ name: 'admin.albums.edit', params: { slug: this.album.slug } });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.showError(
-                    `Unable to update the album <br><small>${err.response.data.message}</small>`
+            `Unable to update the album <br><small>${err.response.data.message}</small>`,
           );
           this.errors = err.response.data.errors;
           throw err;
         });
     }
 
-    refreshMedias (): void {
+    refreshMedias(): void {
       this.axios
         .get(`/api/admin/albums/${this.$route.params.slug}`)
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           if (this.album) {
             this.album.medias = res.data.medias;
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.showError(
-                    `Unable to refresh the album <br><small>${err.response.data.message}</small>`
+            `Unable to refresh the album <br><small>${err.response.data.message}</small>`,
           );
           throw err;
         });
     }
 
-    confirmDeleteAlbum (): void {
+    confirmDeleteAlbum(): void {
       this.$buefy.dialog.confirm({
         title: 'Deleting Album',
         message:
@@ -274,11 +276,11 @@ export default class AlbumsEdit extends AlbumBase {
         confirmText: 'Delete Album',
         type: 'is-danger',
         hasIcon: true,
-        onConfirm: () => this.deleteAlbum()
+        onConfirm: () => this.deleteAlbum(),
       });
     }
 
-    deleteAlbum (): void {
+    deleteAlbum(): void {
       if (!this.album) {
         throw new DOMException('Unable to delete album from undefined.');
       }
@@ -288,25 +290,25 @@ export default class AlbumsEdit extends AlbumBase {
           this.$router.push({ name: 'admin.albums.index' });
           this.showSuccess('Album successfully deleted!');
         })
-        .catch(err => {
+        .catch((err) => {
           this.showError('Unable to delete the picture');
           throw err;
         });
     }
 
-    deleteAlbumPicture (albumSlug: string, mediaId: number): void {
+    deleteAlbumPicture(albumSlug: string, mediaId: number): void {
       this.axios
         .delete(`/api/admin/album-pictures/${albumSlug}`, {
           data: {
             // eslint-disable-next-line @typescript-eslint/camelcase
-            media_id: mediaId
-          }
+            media_id: mediaId,
+          },
         })
         .then(() => {
           this.refreshMedias();
           this.showSuccess('Picture successfully deleted!');
         })
-        .catch(err => {
+        .catch((err) => {
           this.showError('Unable to delete the picture');
           throw err;
         });

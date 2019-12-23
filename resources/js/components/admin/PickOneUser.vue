@@ -21,7 +21,7 @@ import Buefy from '../../admin/Buefy.vue';
 import User from '../../models/user';
 
     @Component({
-      name: 'pick-one-user'
+      name: 'pick-one-user',
     })
 export default class PickOneUser extends Buefy {
         @Prop()
@@ -31,29 +31,30 @@ export default class PickOneUser extends Buefy {
         private user?: User;
 
         private filteredUsers: User[] = [];
+
         private loading = false;
 
-        selected (option: User): void {
+        selected(option: User): void {
           // this.user = option;
           this.$emit('update:user', option);
           // this.userId = option.id;
           this.$emit('update:userId', option.id);
         }
 
-        getFilteredUsers (text: string): void {
+        getFilteredUsers(text: string): void {
           this.loading = true;
           this.axios
             .get('/api/admin/users', {
               params: {
-                'filter[name]': text
-              }
+                'filter[name]': text,
+              },
             })
-            .then(res => res.data)
-            .then(res => {
+            .then((res) => res.data)
+            .then((res) => {
               this.filteredUsers = res.data;
               this.loading = false;
             })
-            .catch(err => {
+            .catch((err) => {
               // this.filteredUsers = [];
               this.loading = false;
               this.$buefy.snackbar.open({
@@ -64,7 +65,7 @@ export default class PickOneUser extends Buefy {
                 indefinite: true,
                 onAction: () => {
                   this.getFilteredUsers(text);
-                }
+                },
               });
               throw err;
             });

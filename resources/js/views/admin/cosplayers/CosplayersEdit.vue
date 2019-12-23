@@ -130,43 +130,46 @@ import PickOneUser from '../../../components/admin/PickOneUser.vue';
   name: 'CosplayersEdit',
   components: {
     quillEditor,
-    PickOneUser
-  }
+    PickOneUser,
+  },
 })
 export default class CosplayersEdit extends Buefy {
     private cosplayer: Cosplayer = new Cosplayer();
+
     private loading = false;
+
     private searchUsers: Array<User> = [];
+
     protected errors: object = {};
 
     protected editorOption: object = {
       placeholder: 'Enter your description...',
-      theme: 'snow'
+      theme: 'snow',
     };
 
-    created (): void {
+    created(): void {
       this.fetchCosplayer();
     }
 
-    updateCosplayer (): void {
+    updateCosplayer(): void {
       this.loading = true;
 
       const formData: FormData = this.cosplayerToFormData(this.cosplayer);
       this.axios
         .post(`/api/admin/cosplayers/${this.$route.params.slug}`, formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
+          headers: { 'Content-Type': 'multipart/form-data' },
         })
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           this.cosplayer = res.data;
           this.loading = false;
           this.showSuccess('Cosplayer updated');
           this.$router.push({
             name: 'admin.cosplayers.edit',
-            params: { slug: this.cosplayer.slug }
+            params: { slug: this.cosplayer.slug },
           });
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.$buefy.snackbar.open({
             message: 'Unable to load cosplayer, maybe you are offline?',
@@ -176,24 +179,24 @@ export default class CosplayersEdit extends Buefy {
             indefinite: true,
             onAction: () => {
               this.updateCosplayer();
-            }
+            },
           });
           this.errors = err.response.data.errors;
           throw err;
         });
     }
 
-    fetchCosplayer (): void {
+    fetchCosplayer(): void {
       this.loading = true;
 
       this.axios
         .get(`/api/admin/cosplayers/${this.$route.params.slug}`)
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           this.cosplayer = res.data;
           this.loading = false;
         })
-        .catch(err => {
+        .catch((err) => {
           this.cosplayer = new Cosplayer();
           this.loading = false;
           this.$buefy.snackbar.open({
@@ -204,30 +207,30 @@ export default class CosplayersEdit extends Buefy {
             indefinite: true,
             onAction: () => {
               this.fetchCosplayer();
-            }
+            },
           });
           throw err;
         });
     }
 
-    searchUser (name: string): void {
+    searchUser(name: string): void {
       this.axios
         .get('/api/admin/users', { params: { 'filter[name]': name } })
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           this.searchUsers = res.data;
         })
-        .catch(err => {
+        .catch((err) => {
           this.$buefy.snackbar.open({
             message: 'Unable to load users, maybe you are offline?',
             type: 'is-danger',
-            position: 'is-top'
+            position: 'is-top',
           });
           throw err;
         });
     }
 
-    cosplayerToFormData (cosplayer: Cosplayer): FormData {
+    cosplayerToFormData(cosplayer: Cosplayer): FormData {
       const formData = new FormData();
       formData.append('_method', 'PATCH');
       // TODO Rewrite

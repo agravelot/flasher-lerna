@@ -58,39 +58,45 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import Buefy from '../../admin/Buefy.vue';
 import { Prop } from 'vue-property-decorator';
 import VueMasonry from 'vue-masonry-css';
+import Buefy from '../../admin/Buefy.vue';
+import Album from '../../models/album';
 
 Buefy.use(VueMasonry);
 
 @Component({
-  name: 'AlbumsMasonry'
+  name: 'AlbumsMasonry',
 })
 export default class AlbumsMasonry extends Buefy {
-    @Prop() readonly data: any;
+    @Prop({ required: false })
+    readonly data: { data: Album[] } | undefined;
 
-    protected albums: Array<object> = [];
+    protected albums: Array<Album> = [];
+
     protected total = 0;
+
     protected perPage = 0;
+
     protected page = 1;
+
     protected loading = false;
 
-    updated (): void {
+    updated(): void {
       this.$nextTick(() => {
         this.onResize();
       });
     }
 
-    created (): void {
+    created(): void {
       window.addEventListener('resize', this.onResize);
     }
 
-    beforeDestroy (): void {
+    beforeDestroy(): void {
       window.removeEventListener('resize', this.onResize);
     }
 
-    mounted (): void {
+    mounted(): void {
       this.albums = this.data.data;
       this.perPage = this.data.meta.per_page;
       this.total = this.data.meta.total;
@@ -104,41 +110,41 @@ export default class AlbumsMasonry extends Buefy {
       });
     }
 
-    onPageChanged (page: number): void {
+    onPageChanged(page: number): void {
       this.page = page;
       this.fetchAlbums();
     }
 
-    onResize (): void {
+    onResize(): void {
       this.refreshSizes();
     }
 
-    refreshSizes (): void {
+    refreshSizes(): void {
       const responsiveMedias: HTMLCollectionOf<Element> = document.getElementsByClassName(
-        'responsive-media'
+        'responsive-media',
       );
       Array.from(responsiveMedias).forEach((el: Element) => {
         (el as HTMLImageElement).sizes = `${Math.ceil(
-                (el.getBoundingClientRect().width / window.innerWidth) * 100
-            )}vw`;
+          (el.getBoundingClientRect().width / window.innerWidth) * 100,
+        )}vw`;
       });
     }
 
-    fetchAlbums (): void {
+    fetchAlbums(): void {
       this.axios
         .get('/api/albums', {
           params: {
-            page: this.page
-          }
+            page: this.page,
+          },
         })
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           this.perPage = res.meta.per_page;
           this.total = res.meta.total;
           this.albums = res.data;
           this.loading = false;
         })
-        .catch(err => {
+        .catch((err) => {
           this.albums = [];
           this.total = 0;
           this.loading = false;
@@ -150,7 +156,7 @@ export default class AlbumsMasonry extends Buefy {
             indefinite: true,
             onAction: () => {
               this.fetchAlbums();
-            }
+            },
           });
           throw err;
         });

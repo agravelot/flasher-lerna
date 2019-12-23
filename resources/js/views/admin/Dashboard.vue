@@ -94,24 +94,30 @@ import Buefy from '../../admin/Buefy.vue';
 @Component
 export default class Dashboard extends Buefy {
     private loading = true;
+
     private cosplayersCount = 0;
+
     private usersCount = 0;
+
     private albumsCount = 0;
+
     private contactsCount = 0;
+
     private albumMediasCount = 0;
+
     private username: string | null = null;
 
-    created (): void {
+    created(): void {
       this.fetchDashboard();
     }
 
-    fetchDashboard (): void {
+    fetchDashboard(): void {
       this.loading = true;
 
       this.axios
         .get('/api/admin/dashboard')
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           this.username = res.user;
           this.cosplayersCount = res.cosplayersCount;
           this.usersCount = res.usersCount;
@@ -120,7 +126,7 @@ export default class Dashboard extends Buefy {
           this.albumMediasCount = res.albumMediasCount;
           this.loading = false;
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.$buefy.snackbar.open({
             message: 'Unable to load dashboard, maybe you are offline?',
@@ -130,7 +136,7 @@ export default class Dashboard extends Buefy {
             indefinite: true,
             onAction: () => {
               this.fetchDashboard();
-            }
+            },
           });
           throw err;
         });

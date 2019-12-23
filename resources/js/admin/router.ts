@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import VueRouter from 'vue-router';
+import VueRouter, { RouteConfig } from 'vue-router';
 import Dashboard from '../views/admin/Dashboard.vue';
 import AlbumsIndex from '../views/admin/albums/AlbumsIndex.vue';
 import AlbumsCreate from '../views/admin/albums/AlbumsCreate.vue';
@@ -23,11 +23,11 @@ import SocialMediasIndex from '../views/admin/social-medias/SocialMediasIndex.vu
 
 Vue.use(VueRouter);
 
-const routes: Array<any> = [
+const routes: RouteConfig[] = [
   {
     path: '/admin',
     name: 'admin.dashboard',
-    component: Dashboard
+    component: Dashboard,
     // component: () =>
     //     import(
     //         /* webpackChunkName: "dashboard" */ '../../../modules/Dashboard/Resources/assets/js/Dashboard.vue'
@@ -37,7 +37,7 @@ const routes: Array<any> = [
   {
     path: '/admin/albums',
     name: 'admin.albums.index',
-    component: AlbumsIndex
+    component: AlbumsIndex,
     // component: () =>
     //     import(
     //         /* webpackChunkName: "albumsIndex" */ '../../../modules/Album/Resources/assets/js/components/admin/AlbumsIndex.vue'
@@ -46,7 +46,7 @@ const routes: Array<any> = [
   {
     path: '/admin/albums/create',
     name: 'admin.albums.create',
-    component: AlbumsCreate
+    component: AlbumsCreate,
     // component: () =>
     //     import(
     //         /* webpackChunkName: "albumsCreate" */ '../../../modules/Album/Resources/assets/js/components/admin/AlbumsCreate.vue'
@@ -64,7 +64,7 @@ const routes: Array<any> = [
   {
     path: '/admin/albums/:slug/edit',
     name: 'admin.albums.edit',
-    component: AlbumsEdit
+    component: AlbumsEdit,
     // component: () =>
     //     import(
     //         /* webpackChunkName: "albumsEdit" */ '../../../modules/Album/Resources/assets/js/components/admin/AlbumsEdit.vue'
@@ -74,7 +74,7 @@ const routes: Array<any> = [
   {
     path: '/admin/categories',
     name: 'admin.categories.index',
-    component: CategoriesIndex
+    component: CategoriesIndex,
     // component: () =>
     //     import(
     //         /* webpackChunkName: "categoriesIndex" */ '../../../modules/Category/Resources/assets/js/components/admin/CategoriesIndex.vue'
@@ -83,7 +83,7 @@ const routes: Array<any> = [
   {
     path: '/admin/categories/create',
     name: 'admin.categories.create',
-    component: CategoriesCreate
+    component: CategoriesCreate,
     // component: () =>
     //     import(
     //         /* webpackChunkName: "categoriesCreate" */ '../../../modules/Category/Resources/assets/js/components/admin/CategoriesCreate.vue'
@@ -92,7 +92,7 @@ const routes: Array<any> = [
   {
     path: '/admin/categories/:slug/edit',
     name: 'admin.categories.edit',
-    component: CategoriesEdit
+    component: CategoriesEdit,
     // component: () =>
     //     import(
     //         /* webpackChunkName: "categoriesEdit" */ '../../../modules/Category/Resources/assets/js/components/admin/CategoriesEdit.vue'
@@ -102,7 +102,7 @@ const routes: Array<any> = [
   {
     path: '/admin/contacts',
     name: 'admin.contacts.index',
-    component: ConstactsIndex
+    component: ConstactsIndex,
     // component: () =>
     //     import(
     //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersIndex.vue'
@@ -112,7 +112,7 @@ const routes: Array<any> = [
   {
     path: '/admin/cosplayers',
     name: 'admin.cosplayers.index',
-    component: CosplayersIndex
+    component: CosplayersIndex,
     // component: () =>
     //     import(
     //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersIndex.vue'
@@ -121,7 +121,7 @@ const routes: Array<any> = [
   {
     path: '/admin/cosplayers/create',
     name: 'admin.cosplayers.create',
-    component: CosplayersCreate
+    component: CosplayersCreate,
     // component: () =>
     //     import(
     //         /* webpackChunkName: "cosplayersCreate" */ '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersCreate.vue'
@@ -130,7 +130,7 @@ const routes: Array<any> = [
   {
     path: '/admin/cosplayers/:slug/edit',
     name: 'admin.cosplayers.edit',
-    component: CosplayersEdit
+    component: CosplayersEdit,
     // component: () =>
     //     import(
     //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersEdit.vue'
@@ -140,7 +140,7 @@ const routes: Array<any> = [
   {
     path: '/admin/users',
     name: 'admin.users.index',
-    component: UsersIndex
+    component: UsersIndex,
     // component: () =>
     //     import(
     //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
@@ -149,7 +149,7 @@ const routes: Array<any> = [
   {
     path: '/admin/users/create',
     name: 'admin.users.create',
-    component: UsersCreate
+    component: UsersCreate,
     // component: () =>
     //     import(
     //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
@@ -158,7 +158,7 @@ const routes: Array<any> = [
   {
     path: '/admin/users/:id/edit',
     name: 'admin.users.edit',
-    component: UsersEdit
+    component: UsersEdit,
     // component: () =>
     //     import(
     //         /* webpackChunkName: "cosplayersEdit" */ '../../../modules/User/Resources/assets/js/UserEdit.vue'
@@ -168,7 +168,7 @@ const routes: Array<any> = [
   {
     path: '/admin/social-medias',
     name: 'admin.social-medias.index',
-    component: SocialMediasIndex
+    component: SocialMediasIndex,
     // component: () =>
     //     import(
     //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
@@ -178,7 +178,7 @@ const routes: Array<any> = [
   {
     path: '/admin/testimonials',
     name: 'admin.testimonials.index',
-    component: TestimonialsIndex
+    component: TestimonialsIndex,
     // component: () =>
     //     import(
     //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
@@ -206,7 +206,7 @@ const routes: Array<any> = [
   {
     path: '/admin/settings',
     name: 'admin.settings.index',
-    component: Settings
+    component: Settings,
     // component: () =>
     //     import(
     //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Core/Resources/assets/js/components/Settings.vue'
@@ -215,7 +215,7 @@ const routes: Array<any> = [
   {
     path: '/admin/invitations',
     name: 'admin.invitations.index',
-    component: InvitationsIndex
+    component: InvitationsIndex,
     // component: () =>
     //     import(
     //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Core/Resources/assets/js/components/Settings.vue'
@@ -224,17 +224,17 @@ const routes: Array<any> = [
   {
     path: '/admin/invitations/create',
     name: 'admin.invitations.create',
-    component: InvitationsCreate
+    component: InvitationsCreate,
     // component: () =>
     //     import(
     //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Core/Resources/assets/js/components/Settings.vue'
     //     ),
   },
-  { path: '*', name: '404', component: NotFound }
+  { path: '*', name: '404', component: NotFound },
 ];
 
 export default new VueRouter({
   mode: 'history',
   routes,
-  linkActiveClass: 'is-active'
+  linkActiveClass: 'is-active',
 });

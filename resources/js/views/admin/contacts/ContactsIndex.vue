@@ -120,29 +120,39 @@ import Contact from '../../../models/contact';
     /**
          * Filter to truncate string, accepts a length parameter
          */
-    truncate (value: string, length: number): string {
-      return value.length > length ? value.substr(0, length) + '...' : value;
-    }
-  }
+    truncate(value: string, length: number): string {
+      return value.length > length ? `${value.substr(0, length)}...` : value;
+    },
+  },
 })
 export default class ContactsIndex extends Buefy {
     private contacts: Array<Contact> = [];
+
     private checkedRows: Array<Contact> = [];
+
     private total = 0;
+
     private page = 1;
+
     perPage = 10;
+
     private loading = false;
+
     private sortField = 'id';
+
     private sortOrder = 'desc';
+
     showDetailIcon = true;
+
     defaultSortOrder = 'desc';
+
     private search = '';
 
-    created (): void {
+    created(): void {
       this.fetchContacts();
     }
 
-    fetchContacts (): void {
+    fetchContacts(): void {
       this.loading = true;
       const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
@@ -151,17 +161,17 @@ export default class ContactsIndex extends Buefy {
           params: {
             page: this.page,
             sort: sortOrder + this.sortField,
-            'filter[name]': this.search
-          }
+            'filter[name]': this.search,
+          },
         })
-        .then(res => res.data)
-        .then(res => {
+        .then((res) => res.data)
+        .then((res) => {
           this.perPage = res.meta.per_page;
           this.total = res.meta.total;
           this.contacts = res.data;
           this.loading = false;
         })
-        .catch(err => {
+        .catch((err) => {
           this.contacts = [];
           this.total = 0;
           this.loading = false;
@@ -173,7 +183,7 @@ export default class ContactsIndex extends Buefy {
             indefinite: true,
             onAction: () => {
               this.fetchContacts();
-            }
+            },
           });
           throw err;
         });
@@ -182,7 +192,7 @@ export default class ContactsIndex extends Buefy {
     /*
      * Handle page-change event
      */
-    onPageChange (page: number): void {
+    onPageChange(page: number): void {
       this.page = page;
       this.fetchContacts();
     }
@@ -190,13 +200,13 @@ export default class ContactsIndex extends Buefy {
     /*
      * Handle sort event
      */
-    onSort (field: string, order: string): void {
+    onSort(field: string, order: string): void {
       this.sortField = field;
       this.sortOrder = order;
       this.fetchContacts();
     }
 
-    confirmDeleteSelectedContacts (): void {
+    confirmDeleteSelectedContacts(): void {
       this.$buefy.dialog.confirm({
         title: 'Deleting Contacts',
         message:
@@ -206,22 +216,22 @@ export default class ContactsIndex extends Buefy {
         hasIcon: true,
         onConfirm: () => {
           this.deleteSelectedContacts();
-        }
+        },
       });
     }
 
     /**
      * Delete contact from slug
      */
-    deleteSelectedContacts (): void {
-      this.checkedRows.forEach(contact => {
+    deleteSelectedContacts(): void {
+      this.checkedRows.forEach((contact) => {
         this.axios
           .delete(`/api/admin/contacts/${contact.id}`)
           .then(() => {
             this.showSuccess('Contacts deleted');
             this.fetchContacts();
           })
-          .catch(err => {
+          .catch((err) => {
             this.showError(`Unable to delete contact <br> <small>${err.message}</small>`);
             throw err;
           });

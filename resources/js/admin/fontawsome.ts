@@ -37,10 +37,10 @@ import {
   faSadTear,
   faUser,
   faShare,
-  faEnvelopeOpenText, faClock
+  faEnvelopeOpenText, faClock,
 } from '@fortawesome/free-solid-svg-icons';
 import {
-  faFacebook, faInstagram, faLinkedin, faTwitter
+  faFacebook, faInstagram, faLinkedin, faTwitter,
 } from '@fortawesome/free-brands-svg-icons';
 
 library.add(
@@ -87,7 +87,7 @@ library.add(
   faLinkedin,
   faEnvelopeOpenText,
   faCheck,
-  faClock
+  faClock,
 );
 
 Vue.component('vue-fontawesome', FontAwesomeIcon);
