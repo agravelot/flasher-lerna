@@ -6,7 +6,10 @@
       </div>
     </div>
     <div class="card-content">
-      <div v-for="setting in settings">
+      <div
+        v-for="setting in settings"
+        :key="setting.id"
+      >
         <b-field :label="setting.title">
           <b-numberinput
             v-if="setting.type === 'numeric'"
@@ -14,26 +17,26 @@
           />
           <b-checkbox
             v-else-if="setting.type === 'bool'"
-            v-model.numeric="setting.value"
+            v-model="setting.value"
             true-value="1"
             false-value="0"
           >
             {{ setting.desciption }}
           </b-checkbox>
           <quill-editor
-            ref="myQuillEditor"
             v-else-if="setting.type === 'textarea'"
+            ref="myQuillEditor"
             v-model="setting.value"
             :options="editorOption"
           />
           <section v-else-if="setting.type === 'media'">
             <vue-dropzone
-              ref="myVueDropzone"
               v-if="setting.value === null"
+              ref="myVueDropzone"
               :options="getDropzoneOptions(setting)"
-              v-on:vdropzone-sending="sendingEvent"
-              v-on:vdropzone-complete="fetchSettings"
               class="has-margin-bottom-md"
+              @vdropzone-sending="sendingEvent"
+              @vdropzone-complete="fetchSettings"
             />
 
             <img
@@ -49,9 +52,9 @@
               <span class="tag is-primary">
                 {{ setting.value.name }}
                 <button
-                  @click="setting.value = null"
                   class="delete is-small"
                   type="button"
+                  @click="setting.value = null"
                 />
               </span>
             </div>
@@ -71,8 +74,8 @@
         <div class="control">
           <button
             v-if="setting.type !== 'media'"
-            @click="sendSetting(setting)"
             class="button is-primary"
+            @click="sendSetting(setting)"
           >
             Update
           </button>
@@ -84,118 +87,123 @@
 
 <script lang="ts">
 import Component from 'vue-class-component';
-import Buefy from '../../admin/Buefy.vue';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
 import { quillEditor } from 'vue-quill-editor';
 import vue2Dropzone from 'vue2-dropzone';
+import Buefy from '../../admin/Buefy.vue';
 
 class Setting {
-    public id: number;
-    public name: string;
-    public value: string;
+    public id!: number;
+
+    public name!: string;
+
+    public value!: string;
+
+    public description!: string;
 }
 
 @Component({
-    name: 'Settings',
-    components: {
-        quillEditor,
-        vueDropzone: vue2Dropzone,
-    },
+  name: 'Settings',
+  components: {
+    quillEditor,
+    vueDropzone: vue2Dropzone,
+  },
 })
 export default class Settings extends Buefy {
     private loading = false;
+
     private settings: Array<Setting> = [];
 
     getDropzoneOptions(setting: Setting): object {
-        return {
-            url: `/api/admin/settings/${setting.id}`,
-            thumbnailWidth: 200,
-            addRemoveLinks: true,
-            parallelUploads: 5,
-            // Setup chunking
-            chunking: true,
-            method: 'POST',
-            maxFilesize: 400000000,
-            chunkSize: 1000000,
-            retryChunks: true,
-            retryChunksLimit: 5,
-            maxThumbnailFilesize: 25,
-            // If true, the individual chunks of a file are being uploaded simultaneously.
-            // parallelChunkUploads: true,
-            acceptedFiles: 'image/*',
-            dictDefaultMessage: "<i class='fas fa-images'></i> Upload",
-            headers: {
-                'X-CSRF-Token': (
+      return {
+        url: `/api/admin/settings/${setting.id}`,
+        thumbnailWidth: 200,
+        addRemoveLinks: true,
+        parallelUploads: 5,
+        // Setup chunking
+        chunking: true,
+        method: 'POST',
+        maxFilesize: 400000000,
+        chunkSize: 1000000,
+        retryChunks: true,
+        retryChunksLimit: 5,
+        maxThumbnailFilesize: 25,
+        // If true, the individual chunks of a file are being uploaded simultaneously.
+        // parallelChunkUploads: true,
+        acceptedFiles: 'image/*',
+        dictDefaultMessage: "<i class='fas fa-images'></i> Upload",
+        headers: {
+          'X-CSRF-Token': (
                     document.head.querySelector('meta[name="csrf-token"]') as HTMLMetaElement
-                ).content,
-            },
-        };
+          ).content,
+        },
+      };
     }
 
     sendingEvent(file: File, xhr: XMLHttpRequest, formData: FormData): void {
-        formData.append('_method', 'patch');
+      formData.append('_method', 'patch');
     }
 
     created(): void {
-        this.fetchSettings();
+      this.fetchSettings();
     }
 
     sendSetting(setting: Setting): void {
-        this.loading = true;
+      this.loading = true;
 
-        this.axios
-            .patch(`/api/admin/settings/${setting.id}`, {
-                value: setting.value,
-                test: 'test',
-            })
-            .then(res => res.data)
-            .then(() => {
-                this.loading = false;
-                this.showSuccess('Setting updated');
-            })
-            .catch(err => {
-                this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to save setting, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: false,
-                    onAction: () => {
-                        this.sendSetting(setting);
-                    },
-                });
-                throw err;
-            });
+      this.axios
+        .patch(`/api/admin/settings/${setting.id}`, {
+          value: setting.value,
+          test: 'test',
+        })
+        .then((res) => res.data)
+        .then(() => {
+          this.loading = false;
+          this.showSuccess('Setting updated');
+        })
+        .catch((err) => {
+          this.loading = false;
+          this.$buefy.snackbar.open({
+            message: 'Unable to save setting, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top',
+            actionText: 'Retry',
+            indefinite: false,
+            onAction: () => {
+              this.sendSetting(setting);
+            },
+          });
+          throw err;
+        });
     }
 
     fetchSettings(): void {
-        this.loading = true;
+      this.loading = true;
 
-        this.axios
-            .get('/api/admin/settings')
-            .then(res => res.data)
-            .then(res => {
-                this.settings = res.data;
-                this.loading = false;
-            })
-            .catch(err => {
-                this.settings = [];
-                this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load settings, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchSettings();
-                    },
-                });
-                throw err;
-            });
+      this.axios
+        .get('/api/admin/settings')
+        .then((res) => res.data)
+        .then((res) => {
+          this.settings = res.data;
+          this.loading = false;
+        })
+        .catch((err) => {
+          this.settings = [];
+          this.loading = false;
+          this.$buefy.snackbar.open({
+            message: 'Unable to load settings, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top',
+            actionText: 'Retry',
+            indefinite: true,
+            onAction: () => {
+              this.fetchSettings();
+            },
+          });
+          throw err;
+        });
     }
 }
 </script>

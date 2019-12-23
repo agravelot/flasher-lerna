@@ -63,8 +63,8 @@
       <div class="buttons">
         <b-button
           :loading="loading"
-          @click="updateUser()"
           type="is-primary"
+          @click="updateUser()"
         >
           Update
         </b-button>
@@ -80,9 +80,9 @@
         </b-button>
         <b-button
           :loading="loading"
-          @click="confirmDeleteUser()"
           type="is-danger"
           icon-right="trash-alt"
+          @click="confirmDeleteUser()"
         >
           Delete
         </b-button>
@@ -97,100 +97,105 @@ import Buefy from '../../../admin/Buefy.vue';
 import User from '../../../models/user';
 
 @Component({
-    name: 'UsersEdit',
+  name: 'UsersEdit',
 })
 export default class UsersEdit extends Buefy {
-    private user: User = null;
+    private user: User|null = null;
+
     private loading = false;
+
     protected errors: object = {};
 
     created(): void {
-        this.fetchUser();
+      this.fetchUser();
     }
 
     updateUser(): void {
-        this.loading = true;
+      this.loading = true;
 
-        this.axios
-            .patch(`/api/admin/users/${this.$route.params.id}`, this.user)
-            .then(res => res.data)
-            .then(() => {
-                this.errors = {};
-                this.loading = false;
-                this.$router.push({ name: 'admin.users.index' });
-                this.showSuccess('User updated');
-            })
-            .catch(err => {
-                this.loading = false;
-                // this.$buefy.snackbar.open({
-                //     message: 'Unable to update user, maybe you are offline?',
-                //     type: 'is-danger',
-                //     position: 'is-top',
-                //     actionText: 'Retry',
-                //     //indefinite: true,
-                //     onAction: () => {
-                //         this.updateUser();
-                //     },
-                // });
-                this.errors = err.response.data.errors;
-                throw err;
-            });
+      this.axios
+        .patch(`/api/admin/users/${this.$route.params.id}`, this.user)
+        .then((res) => res.data)
+        .then(() => {
+          this.errors = {};
+          this.loading = false;
+          this.$router.push({ name: 'admin.users.index' });
+          this.showSuccess('User updated');
+        })
+        .catch((err) => {
+          this.loading = false;
+          // this.$buefy.snackbar.open({
+          //     message: 'Unable to update user, maybe you are offline?',
+          //     type: 'is-danger',
+          //     position: 'is-top',
+          //     actionText: 'Retry',
+          //     //indefinite: true,
+          //     onAction: () => {
+          //         this.updateUser();
+          //     },
+          // });
+          this.errors = err.response.data.errors;
+          throw err;
+        });
     }
 
     fetchUser(): void {
-        this.loading = true;
+      this.loading = true;
 
-        this.axios
-            .get(`/api/admin/users/${this.$route.params.id}`)
-            .then(res => res.data)
-            .then(res => {
-                this.user = res.data;
-                this.loading = false;
-            })
-            .catch(err => {
-                this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load user, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchUser();
-                    },
-                });
-                throw err;
-            });
+      this.axios
+        .get(`/api/admin/users/${this.$route.params.id}`)
+        .then((res) => res.data)
+        .then((res) => {
+          this.user = res.data;
+          this.loading = false;
+        })
+        .catch((err) => {
+          this.loading = false;
+          this.$buefy.snackbar.open({
+            message: 'Unable to load user, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top',
+            actionText: 'Retry',
+            indefinite: true,
+            onAction: () => {
+              this.fetchUser();
+            },
+          });
+          throw err;
+        });
     }
 
     confirmDeleteUser(): void {
-        this.$buefy.dialog.confirm({
-            title: 'Deleting Albums',
-            message:
+      this.$buefy.dialog.confirm({
+        title: 'Deleting Albums',
+        message:
                 'Are you sure you want to <b>delete</b> these users? This action cannot be undone.',
-            confirmText: 'Delete Albums',
-            type: 'is-danger',
-            hasIcon: true,
-            onConfirm: () => {
-                this.deleteUser();
-            },
-        });
+        confirmText: 'Delete Albums',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.deleteUser();
+        },
+      });
     }
 
     /**
      * Delete user from slug
      */
     deleteUser(): void {
-        this.axios
-            .delete(`/api/admin/users/${this.user.id}`)
-            .then(() => {
-                this.$router.push({ name: 'admin.users.index' });
-                this.showSuccess('User deleted');
-            })
-            .catch(err => {
-                this.showError(`Unable to delete user <br> <small>${err.message}</small>`);
-                throw err;
-            });
+      if (this.user === null) {
+        throw new DOMException('Unable to delete album from undefined.');
+      }
+      this.axios
+        .delete(`/api/admin/users/${this.user.id}`)
+        .then(() => {
+          this.$router.push({ name: 'admin.users.index' });
+          this.showSuccess('User deleted');
+        })
+        .catch((err) => {
+          this.showError(`Unable to delete user <br> <small>${err.message}</small>`);
+          throw err;
+        });
     }
 }
 </script>

@@ -30,9 +30,9 @@
               alt=""
             >
             <b-button
-              @click="cosplayer.avatar = null"
               type="is-danger"
               icon-right="trash-alt"
+              @click="cosplayer.avatar = null"
             />
           </div>
 
@@ -92,8 +92,8 @@
               </div>
               <div class="media-right">
                 <button
-                  @click="cosplayer.user = null"
                   class="delete"
+                  @click="cosplayer.user = null"
                 />
               </div>
             </div>
@@ -106,8 +106,8 @@
 
       <b-button
         :loading="loading"
-        @click="updateCosplayer()"
         type="is-primary"
+        @click="updateCosplayer()"
       >
         Update
       </b-button>
@@ -116,135 +116,138 @@
 </template>
 
 <script lang="ts">
-    import {Component} from "vue-property-decorator";
-    import { quillEditor } from 'vue-quill-editor';
-    import Buefy from '../../../admin/Buefy.vue';
-    import Cosplayer from '../../../models/cosplayer';
-    import 'quill/dist/quill.core.css';
-    import 'quill/dist/quill.snow.css';
-    import 'quill/dist/quill.bubble.css';
+import { Component } from 'vue-property-decorator';
+import { quillEditor } from 'vue-quill-editor';
+import Buefy from '../../../admin/Buefy.vue';
+import Cosplayer from '../../../models/cosplayer';
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
 import User from '../../../models/user';
-    import PickOneUser from "../../../components/admin/PickOneUser.vue";
+import PickOneUser from '../../../components/admin/PickOneUser.vue';
 
 @Component({
-    name: 'CosplayersEdit',
-    components: {
-        quillEditor,
-        PickOneUser,
-    },
+  name: 'CosplayersEdit',
+  components: {
+    quillEditor,
+    PickOneUser,
+  },
 })
 export default class CosplayersEdit extends Buefy {
     private cosplayer: Cosplayer = new Cosplayer();
+
     private loading = false;
+
     private searchUsers: Array<User> = [];
+
     protected errors: object = {};
 
     protected editorOption: object = {
-        placeholder: 'Enter your description...',
-        theme: 'snow',
+      placeholder: 'Enter your description...',
+      theme: 'snow',
     };
 
     created(): void {
-        this.fetchCosplayer();
+      this.fetchCosplayer();
     }
 
     updateCosplayer(): void {
-        this.loading = true;
+      this.loading = true;
 
-        const formData: FormData = this.cosplayerToFormData(this.cosplayer);
-        this.axios
-            .post(`/api/admin/cosplayers/${this.$route.params.slug}`, formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-            })
-            .then(res => res.data)
-            .then(res => {
-                this.cosplayer = res.data;
-                this.loading = false;
-                this.showSuccess('Cosplayer updated');
-                this.$router.push({
-                    name: 'admin.cosplayers.edit',
-                    params: { slug: this.cosplayer.slug },
-                });
-            })
-            .catch(err => {
-                this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load cosplayer, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.updateCosplayer();
-                    },
-                });
-                this.errors = err.response.data.errors;
-                throw err;
-            });
+      const formData: FormData = this.cosplayerToFormData(this.cosplayer);
+      this.axios
+        .post(`/api/admin/cosplayers/${this.$route.params.slug}`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        })
+        .then((res) => res.data)
+        .then((res) => {
+          this.cosplayer = res.data;
+          this.loading = false;
+          this.showSuccess('Cosplayer updated');
+          this.$router.push({
+            name: 'admin.cosplayers.edit',
+            params: { slug: this.cosplayer.slug },
+          });
+        })
+        .catch((err) => {
+          this.loading = false;
+          this.$buefy.snackbar.open({
+            message: 'Unable to load cosplayer, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top',
+            actionText: 'Retry',
+            indefinite: true,
+            onAction: () => {
+              this.updateCosplayer();
+            },
+          });
+          this.errors = err.response.data.errors;
+          throw err;
+        });
     }
 
     fetchCosplayer(): void {
-        this.loading = true;
+      this.loading = true;
 
-        this.axios
-            .get(`/api/admin/cosplayers/${this.$route.params.slug}`)
-            .then(res => res.data)
-            .then(res => {
-                this.cosplayer = res.data;
-                this.loading = false;
-            })
-            .catch(err => {
-                this.cosplayer = new Cosplayer();
-                this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load cosplayer, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchCosplayer();
-                    },
-                });
-                throw err;
-            });
+      this.axios
+        .get(`/api/admin/cosplayers/${this.$route.params.slug}`)
+        .then((res) => res.data)
+        .then((res) => {
+          this.cosplayer = res.data;
+          this.loading = false;
+        })
+        .catch((err) => {
+          this.cosplayer = new Cosplayer();
+          this.loading = false;
+          this.$buefy.snackbar.open({
+            message: 'Unable to load cosplayer, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top',
+            actionText: 'Retry',
+            indefinite: true,
+            onAction: () => {
+              this.fetchCosplayer();
+            },
+          });
+          throw err;
+        });
     }
 
     searchUser(name: string): void {
-        this.axios
-            .get('/api/admin/users', { params: { 'filter[name]': name } })
-            .then(res => res.data)
-            .then(res => {
-                this.searchUsers = res.data;
-            })
-            .catch(err => {
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load users, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                });
-                throw err;
-            });
+      this.axios
+        .get('/api/admin/users', { params: { 'filter[name]': name } })
+        .then((res) => res.data)
+        .then((res) => {
+          this.searchUsers = res.data;
+        })
+        .catch((err) => {
+          this.$buefy.snackbar.open({
+            message: 'Unable to load users, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top',
+          });
+          throw err;
+        });
     }
 
     cosplayerToFormData(cosplayer: Cosplayer): FormData {
-        const formData = new FormData();
-        formData.append('_method', 'PATCH');
-        //TODO Rewrite
-        if (cosplayer.name) {
-            formData.append('name', cosplayer.name);
-        }
-        if (cosplayer.description) {
-            formData.append('description', cosplayer.description);
-        }
-        if (this.cosplayer.user && cosplayer.user.id) {
-            formData.append('user_id', String(cosplayer.user.id));
-        }
-        if (cosplayer.avatar) {
-            formData.append('avatar', cosplayer.avatar);
-        }
+      const formData = new FormData();
+      formData.append('_method', 'PATCH');
+      // TODO Rewrite
+      if (cosplayer.name) {
+        formData.append('name', cosplayer.name);
+      }
+      if (cosplayer.description) {
+        formData.append('description', cosplayer.description);
+      }
+      if (cosplayer.user?.id) {
+        formData.append('user_id', String(cosplayer.user.id));
+      }
+      if (cosplayer.avatar) {
+        formData.append('avatar', cosplayer.avatar);
+      }
 
-        return formData;
+      return formData;
     }
 }
 </script>

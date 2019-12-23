@@ -40,70 +40,72 @@
   </section>
 </template>
 
-
 <script lang="ts">
-    import { Component } from "vue-property-decorator";
-    import Buefy from "../../../admin/Buefy.vue";
-    import Invitation from "../../../models/invitation";
-    import Cosplayer from "../../../models/cosplayer";
-    import PickOneCosplayer from "../../../components/admin/PickOneCosplayer.vue";
+import { Component } from 'vue-property-decorator';
+import Buefy from '../../../admin/Buefy.vue';
+import Invitation from '../../../models/invitation';
+import Cosplayer from '../../../models/cosplayer';
+import PickOneCosplayer from '../../../components/admin/PickOneCosplayer.vue';
 
     @Component({
-        components: {
-            PickOneCosplayer
-        }
+      components: {
+        PickOneCosplayer,
+      },
     })
-    export default class InvitationsCreate extends Buefy {
+export default class InvitationsCreate extends Buefy {
         private invitation: Invitation = new Invitation();
+
         protected errors: object = {};
+
         private loading = false;
-        private filteredCosplayers: Cosplayer[];
+
+        private filteredCosplayers: Cosplayer[] = [];
 
         createInvitation(): void {
-            this.axios
-                .post(`/api/admin/invitations/`, this.invitation)
+          this.axios
+            .post('/api/admin/invitations/', this.invitation)
 
-                .then(res => res.data)
-                .then(res => {
-                    this.showSuccess('Invitation successfully created');
-                    this.$router.push({name: 'admin.invitations.index'});
-                })
-                .catch(err => {
-                    this.showError(
-                        `Unable to create the invitation <br><small>${err.response.data.message}</small>`
-                    );
-                    this.errors = err.response.data.errors;
-                });
+            .then((res) => res.data)
+            .then((res) => {
+              this.showSuccess('Invitation successfully created');
+              this.$router.push({ name: 'admin.invitations.index' });
+            })
+            .catch((err) => {
+              this.showError(
+                `Unable to create the invitation <br><small>${err.response.data.message}</small>`,
+              );
+              this.errors = err.response.data.errors;
+            });
         }
 
         getFilteredCosplayers(text: string): void {
-            this.loading = true;
-            this.axios
-                .get('/api/admin/cosplayers', {
-                    params: {
-                        'filter[name]': text,
-                    },
-                })
-                .then(res => res.data)
-                .then(res => {
-                    this.filteredCosplayers = res.data;
-                    this.loading = false;
-                })
-                .catch(err => {
-                    // this.filteredCosplayers = [];
-                    this.loading = false;
-                    this.$buefy.snackbar.open({
-                        message: 'Unable to load cosplayers, maybe you are offline?',
-                        type: 'is-danger',
-                        position: 'is-top',
-                        actionText: 'Retry',
-                        indefinite: true,
-                        onAction: () => {
-                            this.getFilteredCosplayers(text);
-                        },
-                    });
-                    throw err;
-                });
+          this.loading = true;
+          this.axios
+            .get('/api/admin/cosplayers', {
+              params: {
+                'filter[name]': text,
+              },
+            })
+            .then((res) => res.data)
+            .then((res) => {
+              this.filteredCosplayers = res.data;
+              this.loading = false;
+            })
+            .catch((err) => {
+              // this.filteredCosplayers = [];
+              this.loading = false;
+              this.$buefy.snackbar.open({
+                message: 'Unable to load cosplayers, maybe you are offline?',
+                type: 'is-danger',
+                position: 'is-top',
+                actionText: 'Retry',
+                indefinite: true,
+                onAction: () => {
+                  this.getFilteredCosplayers(text);
+                },
+              });
+              throw err;
+            });
         }
-    }
+}
 </script>

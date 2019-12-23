@@ -10,8 +10,8 @@
         <div
           v-for="(media, index) in album.medias"
           :key="index"
-          @click="openPicture(media)"
           class="has-margin-top-sm"
+          @click="openPicture(media)"
         >
           <figure class="image">
             <img
@@ -39,8 +39,8 @@
       class="modal is-active modal-fx-fadeInScale"
     >
       <div
-        @click="closePicture()"
         class="modal-background"
+        @click="closePicture()"
       />
       <div class="modal-content is-huge is-image">
         <img
@@ -50,9 +50,9 @@
         >
       </div>
       <button
-        @click="closePicture()"
         class="modal-close is-large"
         aria-label="close"
+        @click="closePicture()"
       />
     </div>
   </div>
@@ -64,100 +64,104 @@ import { Prop } from 'vue-property-decorator';
 import Vue from 'vue';
 import 'bulma-modal-fx/src/_js/modal-fx';
 import VueMasonry from 'vue-masonry-css';
+import Album from '../../models/album';
 
 Vue.use(VueMasonry);
 
 @Component({
-    name: 'AlbumsShowGallery',
+  name: 'AlbumsShowGallery',
 })
 export default class AlbumsShowGallery extends Vue {
-    @Prop() readonly data: any;
+    @Prop({ required: false })
+    readonly data?: { data: Album } | null;
 
-    protected album: object = null;
-    protected openedPicture: object = null;
+    protected album?: Album;
+
+    protected openedPicture?: object;
+
     loading = false;
 
     updated(): void {
-        this.$nextTick(() => {
-            this.onResize();
-        });
+      this.$nextTick(() => {
+        this.onResize();
+      });
     }
 
     created(): void {
-        window.addEventListener('resize', this.onResize);
+      window.addEventListener('resize', this.onResize);
     }
 
     beforeDestroy(): void {
-        window.removeEventListener('resize', this.onResize);
+      window.removeEventListener('resize', this.onResize);
     }
 
     mounted(): void {
-        this.album = this.data.data;
+      this.album = this.data?.data;
 
-        if (!this.album) {
-            console.warn('Album is not eager loaded, requesting...');
-            this.fetchAlbum();
-        }
-        this.$nextTick(() => {
-            this.onResize();
-        });
+      if (!this.album) {
+        console.warn('Album is not eager loaded, requesting...');
+        this.fetchAlbum();
+      }
+      this.$nextTick(() => {
+        this.onResize();
+      });
     }
 
     openPicture(media: object): void {
-        this.openedPicture = media;
+      this.openedPicture = media;
     }
 
     closePicture(): void {
-        this.openedPicture = null;
+      this.openedPicture = undefined;
     }
 
     onResize(): void {
-        this.refreshSizes();
+      this.refreshSizes();
     }
 
     refreshSizes(): void {
-        const responsiveMedias: HTMLCollectionOf<Element> = document.getElementsByClassName(
-            'responsive-media'
-        );
-        Array.from(responsiveMedias).forEach(
-            (el: Element): void => {
-                (el as HTMLImageElement).sizes = `${Math.ceil(
-                    (el.getBoundingClientRect().width / window.innerWidth) * 100
-                )}vw`;
-            }
-        );
+      const responsiveMedias: HTMLCollectionOf<Element> = document.getElementsByClassName(
+        'responsive-media',
+      );
+      Array.from(responsiveMedias).forEach(
+        (el: Element): void => {
+          (el as HTMLImageElement).sizes = `${Math.ceil(
+            (el.getBoundingClientRect().width / window.innerWidth) * 100,
+          )}vw`;
+        },
+      );
     }
 
     fetchAlbum(): void {
-        let slug = window.location.pathname.split('/')[
-            window.location.pathname.split('/').length - 1
-        ];
-        // Workaround until moved to vue router
-        if (slug === 'edit') {
-            slug = this.$route.params.slug;
-        }
-        this.axios
-            .get(`/api/albums/${slug}`)
-            .then(res => res.data)
-            .then(res => {
-                this.loading = false;
-                this.album = res.data;
-            })
-            .catch(err => {
-                this.album = {};
-                this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load album, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchAlbum();
-                    },
-                });
-                throw err;
-            });
+      let slug = window.location.pathname.split('/')[
+        window.location.pathname.split('/').length - 1
+      ];
+      // Workaround until moved to vue router
+      if (slug === 'edit') {
+        slug = this.$route.params.slug;
+      }
+      this.axios
+        .get(`/api/albums/${slug}`)
+        .then((res) => res.data)
+        .then((res) => {
+          this.loading = false;
+          this.album = res.data;
+        })
+        .catch((err) => {
+          this.album = new Album();
+          this.loading = false;
+          this.$buefy.snackbar.open({
+            message: 'Unable to load album, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top',
+            actionText: 'Retry',
+            indefinite: true,
+            onAction: () => {
+              this.fetchAlbum();
+            },
+          });
+          throw err;
+        });
     }
 }
 </script>

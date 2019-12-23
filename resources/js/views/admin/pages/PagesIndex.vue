@@ -15,9 +15,9 @@
               </b-button>
               <b-button
                 :disabled="!checkedRows.length"
-                @click="confirmDeleteSelectedPages()"
                 type="is-danger"
                 icon-left="trash-alt"
+                @click="confirmDeleteSelectedPages()"
               >
                 Delete checked
               </b-button>
@@ -28,12 +28,12 @@
         <div class="level-right">
           <b-field class="is-pulled-right">
             <b-input
-              :loading="loading"
               v-model="search"
-              @input="fetchPages()"
+              :loading="loading"
               placeholder="Search..."
               type="search"
               icon="search"
+              @input="fetchPages()"
             />
           </b-field>
         </div>
@@ -44,10 +44,8 @@
         :loading="loading"
         :total="total"
         :per-page="perPage"
-        @page-change="onPageChange"
         :default-sort-direction="defaultSortOrder"
         :default-sort="[sortField, sortOrder]"
-        @sort="onSort"
         :checked-rows.sync="checkedRows"
         striped
         hoverable
@@ -56,6 +54,8 @@
         backend-pagination
         backend-sorting
         checkable
+        @page-change="onPageChange"
+        @sort="onSort"
       >
         <template slot-scope="page">
           <b-table-column
@@ -100,119 +100,130 @@ import Buefy from '../../../admin/Buefy.vue';
 import Page from '../../../models/page';
 
 @Component({
-    name: 'Core.Resources.assets.js.components.pages.PagesIndex',
-    filters: {
-        /**
+  name: 'Core.Resources.assets.js.components.pages.PagesIndex',
+  filters: {
+    /**
          * Filter to truncate string, accepts a length parameter
          */
-        truncate(value: string, length: number): string {
-            return value.length > length ? value.substr(0, length) + '...' : value;
-        },
+    truncate(value: string, length: number): string {
+      return value.length > length ? `${value.substr(0, length)}...` : value;
     },
+  },
 })
 export default class PagesIndex extends Buefy {
     private pages: Array<Page> = [];
-    //TODO Clearer types
+
+    // TODO Clearer types
     defaultOpenedDetails: Array<any> = [];
+
     private checkedRows: Array<any> = [];
+
     private total = 0;
+
     private page = 1;
+
     perPage = 10;
+
     private loading = false;
+
     private sortField = 'id';
+
     private sortOrder = 'desc';
+
     showDetailIcon = true;
+
     defaultSortOrder = 'desc';
+
     private search = '';
 
     created(): void {
-        this.fetchPages();
+      this.fetchPages();
     }
 
     fetchPages(): void {
-        this.loading = true;
-        const sortOrder = this.sortOrder === 'asc' ? '' : '-';
+      this.loading = true;
+      const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
-        this.axios
-            .get('/api/admin/pages', {
-                params: {
-                    page: this.page,
-                    sort: sortOrder + this.sortField,
-                    'filter[name]': this.search,
-                },
-            })
-            .then(res => res.data)
-            .then(res => {
-                this.perPage = res.meta.per_page;
-                this.total = res.meta.total;
-                this.pages = res.data;
-                this.loading = false;
-            })
-            .catch(err => {
-                this.pages = [];
-                this.total = 0;
-                this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load pages, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchPages();
-                    },
-                });
-                throw err;
-            });
+      this.axios
+        .get('/api/admin/pages', {
+          params: {
+            page: this.page,
+            sort: sortOrder + this.sortField,
+            'filter[name]': this.search,
+          },
+        })
+        .then((res) => res.data)
+        .then((res) => {
+          this.perPage = res.meta.per_page;
+          this.total = res.meta.total;
+          this.pages = res.data;
+          this.loading = false;
+        })
+        .catch((err) => {
+          this.pages = [];
+          this.total = 0;
+          this.loading = false;
+          this.$buefy.snackbar.open({
+            message: 'Unable to load pages, maybe you are offline?',
+            type: 'is-danger',
+            position: 'is-top',
+            actionText: 'Retry',
+            indefinite: true,
+            onAction: () => {
+              this.fetchPages();
+            },
+          });
+          throw err;
+        });
     }
 
     /*
      * Handle page-change event
      */
     onPageChange(page: number): void {
-        this.page = page;
-        this.fetchPages();
+      this.page = page;
+      this.fetchPages();
     }
 
     /*
      * Handle sort event
      */
     onSort(field: string, order: string): void {
-        this.sortField = field;
-        this.sortOrder = order;
-        this.fetchPages();
+      this.sortField = field;
+      this.sortOrder = order;
+      this.fetchPages();
     }
 
     confirmDeleteSelectedPages(): void {
-        this.$buefy.dialog.confirm({
-            title: 'Deleting Pages',
-            message:
+      this.$buefy.dialog.confirm({
+        title: 'Deleting Pages',
+        message:
                 'Are you sure you want to <b>delete</b> these pages? This action cannot be undone.',
-            confirmText: 'Delete Pages',
-            type: 'is-danger',
-            hasIcon: true,
-            onConfirm: () => {
-                this.deleteSelectedPages();
-            },
-        });
+        confirmText: 'Delete Pages',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.deleteSelectedPages();
+        },
+      });
     }
 
     /**
      * Delete page from slug
      */
     deleteSelectedPages(): void {
-        this.checkedRows.forEach(page => {
-            this.axios
-                .delete(`/api/admin/pages/${page.id}`)
-                .then(() => {
-                    this.showSuccess('Pages deleted');
-                    this.fetchPages();
-                })
-                .catch(err => {
-                    this.showError(`Unable to delete page <br> <small>${err.message}</small>`);
-                    throw err;
-                });
-        });
+      this.checkedRows.forEach((page) => {
+        this.axios
+          .delete(`/api/admin/pages/${page.id}`)
+          .then(() => {
+            this.showSuccess('Pages deleted');
+            this.fetchPages();
+          })
+          .catch((err) => {
+            this.showError(`Unable to delete page <br> <small>${err.message}</small>`);
+            throw err;
+          });
+      });
     }
 }
 </script>
