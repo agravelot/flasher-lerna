@@ -4,9 +4,9 @@
       <div class="buttons">
         <b-button
           :disabled="!checkedRows.length"
+          @click="confirmDeleteSelectedInvitations()"
           type="is-danger"
           icon-left="trash-alt"
-          @click="confirmDeleteSelectedInvitations()"
         >
           Delete checked
         </b-button>
@@ -25,8 +25,10 @@
         :loading="loading"
         :total="total"
         :per-page="perPage"
+        @page-change="onPageChange"
         :default-sort-direction="defaultSortOrder"
         :default-sort="[sortField, sortOrder]"
+        @sort="onSort"
         :checked-rows.sync="checkedRows"
         striped
         hoverable
@@ -37,8 +39,6 @@
         checkable
         detailed
         show-detail-icon
-        @page-change="onPageChange"
-        @sort="onSort"
       >
         <template slot-scope="invitation">
           <b-table-column
@@ -114,115 +114,106 @@ import Buefy from '../../../admin/Buefy.vue';
 import Invitation from '../../../models/invitation';
 
 @Component({
-  name: 'InvitationsIndex',
+    name: 'InvitationsIndex',
 })
 export default class InvitationsIndex extends Buefy {
     private invitations: Array<Invitation> = [];
-
     private checkedRows: Array<Invitation> = [];
-
     private total = 0;
-
     private page = 1;
-
     perPage = 10;
-
     private loading = false;
-
     private sortField = 'id';
-
     private sortOrder = 'desc';
-
     showDetailIcon = true;
-
     defaultSortOrder = 'desc';
 
     created(): void {
-      this.fetchInvitations();
+        this.fetchInvitations();
     }
 
     fetchInvitations(): void {
-      this.loading = true;
-      const sortOrder = this.sortOrder === 'asc' ? '' : '-';
+        this.loading = true;
+        const sortOrder = this.sortOrder === 'asc' ? '' : '-';
 
-      this.axios
-        .get('/api/admin/invitations', {
-          params: {
-            page: this.page,
-            sort: sortOrder + this.sortField,
-          },
-        })
-        .then((res) => res.data)
-        .then((res) => {
-          this.perPage = res.meta.per_page;
-          this.total = res.meta.total;
-          this.invitations = res.data;
-          this.loading = false;
-        })
-        .catch((err) => {
-          this.invitations = [];
-          this.total = 0;
-          this.loading = false;
-          this.$buefy.snackbar.open({
-            message: 'Unable to load invitations, maybe you are offline?',
-            type: 'is-danger',
-            position: 'is-top',
-            actionText: 'Retry',
-            indefinite: true,
-            onAction: () => {
-              this.fetchInvitations();
-            },
-          });
-          throw err;
-        });
+        this.axios
+            .get('/api/admin/invitations', {
+                params: {
+                    page: this.page,
+                    sort: sortOrder + this.sortField,
+                },
+            })
+            .then(res => res.data)
+            .then(res => {
+                this.perPage = res.meta.per_page;
+                this.total = res.meta.total;
+                this.invitations = res.data;
+                this.loading = false;
+            })
+            .catch(err => {
+                this.invitations = [];
+                this.total = 0;
+                this.loading = false;
+                this.$buefy.snackbar.open({
+                    message: 'Unable to load invitations, maybe you are offline?',
+                    type: 'is-danger',
+                    position: 'is-top',
+                    actionText: 'Retry',
+                    indefinite: true,
+                    onAction: () => {
+                        this.fetchInvitations();
+                    },
+                });
+                throw err;
+            });
     }
 
     /*
      * Handle page-change event
      */
     onPageChange(page: number): void {
-      this.page = page;
-      this.fetchInvitations();
+        this.page = page;
+        this.fetchInvitations();
     }
 
     /*
      * Handle sort event
      */
     onSort(field: string, order: string): void {
-      this.sortField = field;
-      this.sortOrder = order;
-      this.fetchInvitations();
+        this.sortField = field;
+        this.sortOrder = order;
+        this.fetchInvitations();
     }
 
     confirmDeleteSelectedInvitations(): void {
-      this.$buefy.dialog.confirm({
-        title: 'Deleting invitations',
-        message:
+        this.$buefy.dialog.confirm({
+            title: 'Deleting invitations',
+            message:
                 'Are you sure you want to <b>delete</b> these invitations? This action cannot be undone.',
-        confirmText: 'Delete Invitations',
-        type: 'is-danger',
-        hasIcon: true,
-        onConfirm: () => {
-          this.deleteSelectedInvitations();
-        },
-      });
+            confirmText: 'Delete Invitations',
+            type: 'is-danger',
+            hasIcon: true,
+            onConfirm: () => {
+                this.deleteSelectedInvitations();
+            },
+        });
     }
 
     deleteSelectedInvitations(): void {
-      this.checkedRows.forEach((invitation) => {
-        this.axios
-          .delete(`/api/admin/invitations/${invitation.id}`)
-          .then(() => {
-            this.showSuccess('Invitations deleted');
-            this.fetchInvitations();
-          })
-          .catch((err) => {
-            this.showError(
-              `Unable to delete invitation <br> <small>${err.message}</small>`,
-            );
-            throw err;
-          });
-      });
+        this.checkedRows.forEach(invitation => {
+            this.axios
+                .delete(`/api/admin/invitations/${invitation.id}`)
+                .then(() => {
+                    this.showSuccess('Invitations deleted');
+                    this.fetchInvitations();
+                })
+                .catch(err => {
+                    this.showError(
+                        `Unable to delete invitation <br> <small>${err.message}</small>`
+                    );
+                    throw err;
+                });
+        });
     }
 }
 </script>

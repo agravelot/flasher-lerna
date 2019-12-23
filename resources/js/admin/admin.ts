@@ -20,7 +20,6 @@ Vue.use(Buefy, {
   // defaultFieldLabelPosition: 'on-border',
 });
 
-// eslint-disable-next-line no-new
 new Vue({
   el: '#app',
   components: { Sidebar },

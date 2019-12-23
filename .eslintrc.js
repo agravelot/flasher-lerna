@@ -13,9 +13,9 @@ module.exports = {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
-  parser: 'vue-eslint-parser',
+  'parser': 'vue-eslint-parser',
   parserOptions: {
-    parser: '@typescript-eslint/parser',
+    'parser': '@typescript-eslint/parser',
     project: './tsconfig.json',
     extraFileExtensions: ['.vue'],
   },
@@ -24,7 +24,6 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
-    'semi': [2, 'always'],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
   },

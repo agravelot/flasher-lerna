@@ -34,11 +34,11 @@
               v-model="album.categories"
               :data="filteredCategories"
               :allow-new="false"
+              @typing="getFilteredCategories"
               autocomplete
               field="name"
               placeholder="Add a category"
               icon="tag"
-              @typing="getFilteredCategories"
             />
           </b-field>
 
@@ -51,11 +51,11 @@
               v-model="album.cosplayers"
               :data="filteredCosplayers"
               :allow-new="false"
+              @typing="getFilteredCosplayers"
               autocomplete
               field="name"
               placeholder="Add a cosplayer"
               icon="user-tag"
-              @typing="getFilteredCosplayers"
             />
           </b-field>
 
@@ -105,27 +105,27 @@ import Component from 'vue-class-component';
 import AlbumBase from './AlbumBase.vue';
 
 @Component({
-  name: 'AlbumsCreate',
-  extends: AlbumBase,
-  components: {
-    AlbumBase,
-  },
+    name: 'AlbumsCreate',
+    extends: AlbumBase,
+    components: {
+        AlbumBase,
+    },
 })
 export default class AlbumsCreate extends AlbumBase {
-  createAlbum(): void {
-    this.axios
-      .post('/api/admin/albums/', this.album)
-      .then((res) => res.data)
-      .then((res) => {
-        this.showSuccess('Album successfully created');
-        this.$router.push({ name: 'admin.albums.edit', params: { slug: res.data.slug } });
-      })
-      .catch((err) => {
-        this.showError(
-          `Unable to create the album <br><small>${err.response.data.message}</small>`,
-        );
-        this.errors = err.response.data.errors;
-      });
-  }
+    createAlbum(): void {
+        this.axios
+            .post(`/api/admin/albums/`, this.album)
+            .then(res => res.data)
+            .then(res => {
+                this.showSuccess('Album successfully created');
+                this.$router.push({ name: 'admin.albums.edit', params: { slug: res.data.slug } });
+            })
+            .catch(err => {
+                this.showError(
+                    `Unable to create the album <br><small>${err.response.data.message}</small>`
+                );
+                this.errors = err.response.data.errors;
+            });
+    }
 }
 </script>
