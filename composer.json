@@ -19,6 +19,7 @@
     "cviebrock/eloquent-sluggable": "^6.0",
     "doctrine/dbal": "^2.9",
     "fideloper/proxy": "^4.0",
+    "inspector-apm/inspector-laravel": "^4.1",
     "intervention/imagecache": "^2.3",
     "ipunkt/laravel-analytics": "^2.0",
     "jerodev/laravel-font-awesome": "^1.0",
@@ -123,11 +124,5 @@
     "optimize-autoloader": true
   },
   "minimum-stability": "dev",
-  "prefer-stable": true,
-  "repositories": [
-      {
-          "type": "vcs",
-          "url": "https://github.com/agravelot/laravel-chunk-upload-patched"
-      }
-  ]
+  "prefer-stable": true
 }
