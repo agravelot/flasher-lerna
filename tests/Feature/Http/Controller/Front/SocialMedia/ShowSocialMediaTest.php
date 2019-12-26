@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Http\Controller\Front\Contact;
 
-use Tests\TestCase;
 use App\Models\SocialMedia;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ShowSocialMediaTest extends TestCase
 {

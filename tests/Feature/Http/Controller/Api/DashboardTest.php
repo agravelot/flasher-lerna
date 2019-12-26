@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Http\Controller\Api;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Album;
 use App\Models\Contact;
 use App\Models\Cosplayer;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Tests\TestCase;
 
 class DashboardTest extends TestCase
 {

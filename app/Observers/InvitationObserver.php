@@ -2,10 +2,10 @@
 
 namespace App\Observers;
 
-use App\Models\Invitation;
-use Illuminate\Support\Str;
 use App\Mail\InvitationMail;
+use App\Models\Invitation;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class InvitationObserver
 {

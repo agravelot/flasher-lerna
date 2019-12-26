@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Http\Controllers\Controller;
 use App\MediaStream;
 use App\Models\Album;
-use App\Http\Controllers\Controller;
 use Illuminate\Auth\Access\AuthorizationException;
 
 class DownloadAlbumController extends Controller

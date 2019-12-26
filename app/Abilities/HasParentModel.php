@@ -2,9 +2,9 @@
 
 namespace App\Abilities;
 
+use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionException;
-use Illuminate\Support\Str;
 
 trait HasParentModel
 {

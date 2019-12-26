@@ -2,10 +2,10 @@
 
 namespace App\Http\OpenGraphs;
 
-use App\Models\Cosplayer;
-use Illuminate\Support\Str;
 use App\Http\OpenGraphs\Contracts\OpenGraphable;
 use App\Http\OpenGraphs\Contracts\ProfileOpenGraphable;
+use App\Models\Cosplayer;
+use Illuminate\Support\Str;
 
 class CosplayerOpenGraph implements OpenGraphable, ProfileOpenGraphable
 {

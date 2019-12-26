@@ -4,8 +4,8 @@ namespace App\Http\Resources;
 
 use App\Models\Album;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Support\Facades\Auth;
 
 /** @mixin Album */
 class AlbumShowResource extends Resource

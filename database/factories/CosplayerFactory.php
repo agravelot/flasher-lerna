@@ -1,10 +1,10 @@
 <?php
 
-use Carbon\Carbon;
 use App\Models\Cosplayer;
+use Carbon\Carbon;
 use Faker\Generator as Faker;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Http\UploadedFile;
 
 /* @var Factory $factory */
 

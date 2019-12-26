@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use Exception;
-use App\Models\SocialMedia;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controller;
-use Spatie\QueryBuilder\QueryBuilder;
 use App\Http\Requests\SocialMediaRequest;
 use App\Http\Resources\SocialMediaResource;
+use App\Models\SocialMedia;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Routing\Controller;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class AdminSocialMediaController extends Controller
 {

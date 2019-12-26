@@ -3,8 +3,8 @@
 namespace App;
 
 use App\Models\Setting;
-use InvalidArgumentException;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 use Spatie\MediaLibrary\Models\Media;
 
 class SettingsManager

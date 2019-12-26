@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Front\Album;
 
-use Tests\TestCase;
 use App\Models\Album;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Tests\TestCase;
 
 class IndexAlbumTest extends TestCase
 {

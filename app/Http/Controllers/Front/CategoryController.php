@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\View\View;
-use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
 {

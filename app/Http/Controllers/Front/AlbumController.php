@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Front;
 
-use Illuminate\View\View;
-use App\Models\PublicAlbum;
 use App\Http\Controllers\Controller;
+use App\Models\PublicAlbum;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\View\View;
 
 class AlbumController extends Controller
 {

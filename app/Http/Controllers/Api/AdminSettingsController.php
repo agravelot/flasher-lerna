@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Setting;
 use App\Enums\SettingType;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controller;
-use App\Http\Resources\SettingResource;
 use App\Http\Requests\UpdateSettingRequest;
-use Illuminate\Http\Resources\Json\Resource;
-use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use App\Http\Resources\CompleteUploadPictureResource;
 use App\Http\Resources\ProcessingUploadPictureResource;
+use App\Http\Resources\SettingResource;
+use App\Models\Setting;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Routing\Controller;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 
 class AdminSettingsController extends Controller
 {

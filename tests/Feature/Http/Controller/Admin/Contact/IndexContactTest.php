@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Http\Controllers\Admin\Contact;
 
-use Tests\TestCase;
 use App\Models\Contact;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Tests\TestCase;
 
 class IndexContactTest extends TestCase
 {

@@ -2,8 +2,8 @@
 
 namespace App\Console;
 
-use App\Jobs\GenerateSitemap;
 use App\Console\Commands\CreateAdminUser;
+use App\Jobs\GenerateSitemap;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 

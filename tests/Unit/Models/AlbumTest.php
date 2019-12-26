@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Models;
 
-use Carbon\Carbon;
 use App\Models\Album;
 use App\Models\Media;
-use Tests\ModelTestCase;
 use App\Scope\PublicScope;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Foundation\Testing\WithFaker;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Tests\ModelTestCase;
 
 class AlbumTest extends ModelTestCase
 {

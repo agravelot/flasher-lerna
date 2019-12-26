@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Setting;
 use App\Enums\SettingType;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\Resource;
 

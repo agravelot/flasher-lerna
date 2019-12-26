@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 
 class MyAlbumsController extends Controller
 {

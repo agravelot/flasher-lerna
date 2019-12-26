@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\User;
 use App\Models\Contact;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class ContactTableSeeder extends Seeder

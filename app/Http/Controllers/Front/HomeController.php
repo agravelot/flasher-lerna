@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Front;
 
-use Illuminate\View\View;
 use App\Models\PublicAlbum;
-use Illuminate\Routing\Controller;
 use App\Models\PublishedTestimonial;
+use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 
 class HomeController extends Controller
 {

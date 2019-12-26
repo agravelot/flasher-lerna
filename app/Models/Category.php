@@ -2,20 +2,20 @@
 
 namespace App\Models;
 
-use Spatie\MediaLibrary\File;
 use App\Abilities\HasNameAsSlug;
-use Illuminate\Http\UploadedFile;
 use App\Abilities\HasSlugRouteKey;
 use App\Traits\ClearsResponseCache;
-use Spatie\MediaLibrary\Models\Media;
-use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Illuminate\Database\Eloquent\Collection;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use Spatie\Image\Exceptions\InvalidManipulation;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Http\UploadedFile;
+use Spatie\Image\Exceptions\InvalidManipulation;
+use Spatie\MediaLibrary\File;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\Models\Media;
 
 class Category extends Model implements HasMedia
 {

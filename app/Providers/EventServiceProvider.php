@@ -3,11 +3,11 @@
 namespace App\Providers;
 
 use App\Models\Album;
-use App\Models\Setting;
 use App\Models\Invitation;
+use App\Models\Setting;
 use App\Observers\AlbumObserver;
-use App\Observers\SettingObserver;
 use App\Observers\InvitationObserver;
+use App\Observers\SettingObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;

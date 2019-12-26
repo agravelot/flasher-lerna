@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Post;
 use App\Models\Album;
 use App\Models\Category;
 use App\Models\Cosplayer;
+use App\Models\Post;
 use Illuminate\Database\Seeder;
 
 class CategoriesSeeder extends Seeder

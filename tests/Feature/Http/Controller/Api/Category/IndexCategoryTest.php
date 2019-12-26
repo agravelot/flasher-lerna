@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Http\Controller\Api\Category;
 
-use Tests\TestCase;
 use App\Models\Category;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Tests\TestCase;
 
 class IndexCategoryTest extends TestCase
 {

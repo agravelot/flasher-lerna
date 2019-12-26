@@ -3,8 +3,8 @@
 use App\Models\Album;
 use App\Models\PublicAlbum;
 use Faker\Generator as Faker;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Carbon;
 
 /* @var Factory $factory */
 

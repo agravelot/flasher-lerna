@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Models;
 
-use Exception;
-use Tests\TestCase;
-use App\Models\Setting;
 use App\Enums\SettingType;
+use App\Models\Setting;
+use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class SettingsTest extends TestCase
 {

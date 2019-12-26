@@ -2,14 +2,14 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\Album;
 use App\Models\Category;
 use App\Models\PublicAlbum;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\App;
-use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ShowAlbumTest extends TestCase
 {

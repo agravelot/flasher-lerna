@@ -2,22 +2,22 @@
 
 namespace Tests;
 
+use App\Exceptions\Handler;
+use App\Http\Middleware\VerifyCsrfToken;
+use App\Models\User;
 use Closure;
 use Exception;
-use App\Models\User;
-use App\Exceptions\Handler;
-use InvalidArgumentException;
-use Illuminate\Support\Fluent;
-use Laravel\Passport\Passport;
-use Illuminate\Database\Connection;
-use Illuminate\Support\Facades\App;
-use App\Http\Middleware\VerifyCsrfToken;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\SQLiteConnection;
-use Illuminate\Http\Resources\Json\Resource;
-use Illuminate\Database\Schema\SQLiteBuilder;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Database\Connection;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\SQLiteBuilder;
+use Illuminate\Database\SQLiteConnection;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Fluent;
+use InvalidArgumentException;
+use Laravel\Passport\Passport;
 
 abstract class TestCase extends BaseTestCase
 {

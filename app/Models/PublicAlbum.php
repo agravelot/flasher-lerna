@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\Scope\PublicScope;
 use App\Abilities\HasParentMedia;
 use App\Abilities\HasParentModel;
+use App\Scope\PublicScope;
 
 class PublicAlbum extends Album
 {

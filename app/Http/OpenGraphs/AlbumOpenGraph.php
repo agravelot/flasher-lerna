@@ -2,12 +2,12 @@
 
 namespace App\Http\OpenGraphs;
 
-use App\Models\Album;
-use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
-use App\Http\OpenGraphs\Contracts\OpenGraphable;
-use App\Http\OpenGraphs\Contracts\ImagesOpenGraphable;
 use App\Http\OpenGraphs\Contracts\ArticleOpenGraphable;
+use App\Http\OpenGraphs\Contracts\ImagesOpenGraphable;
+use App\Http\OpenGraphs\Contracts\OpenGraphable;
+use App\Models\Album;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class AlbumOpenGraph implements OpenGraphable, ArticleOpenGraphable, ImagesOpenGraphable
 {

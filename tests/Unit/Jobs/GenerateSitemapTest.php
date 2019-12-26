@@ -2,11 +2,11 @@
 
 namespace Tests\Jobs;
 
-use Tests\ModelTestCase;
 use App\Jobs\GenerateSitemap;
 use App\Jobs\NotifySitemapUpdate;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
+use Tests\ModelTestCase;
 
 class GenerateSitemapTest extends ModelTestCase
 {

@@ -4,10 +4,10 @@ namespace App\Mail;
 
 use App\Models\Invitation;
 use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Mailable;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\URL;
 
 class InvitationMail extends Mailable implements ShouldQueue
 {

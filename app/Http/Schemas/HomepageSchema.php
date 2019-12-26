@@ -3,8 +3,8 @@
 namespace App\Http\Schemas;
 
 use App\Models\SocialMedia;
-use Spatie\SchemaOrg\Thing;
 use Spatie\SchemaOrg\Schema;
+use Spatie\SchemaOrg\Thing;
 
 class HomepageSchema implements SchemaInterface
 {

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Http\Controllers\Controller;
 use App\Models\Cosplayer;
 use Illuminate\View\View;
-use App\Http\Controllers\Controller;
 
 class CosplayerController extends Controller
 {

@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Models\Album;
-use Illuminate\Validation\Rule;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Validation\Rule;
 
 class DeletePictureAlbumRequest extends Request
 {

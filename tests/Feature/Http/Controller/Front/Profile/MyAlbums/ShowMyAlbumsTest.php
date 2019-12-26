@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Http\Controller\Front\Profile\MyAlbums;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Album;
 use App\Models\Cosplayer;
-use Illuminate\Foundation\Testing\TestResponse;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Tests\TestCase;
 
 class ShowMyAlbumsTest extends TestCase
 {

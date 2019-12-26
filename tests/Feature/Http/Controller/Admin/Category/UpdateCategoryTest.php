@@ -2,11 +2,11 @@
 
 namespace Tests\Features\Http\Controller\Admin\Category;
 
-use Tests\TestCase;
 use App\Models\Category;
-use Illuminate\Support\Str;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Support\Str;
+use Tests\TestCase;
 
 class UpdateCategoryTest extends TestCase
 {

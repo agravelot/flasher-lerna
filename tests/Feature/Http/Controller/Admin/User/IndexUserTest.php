@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Http\Controller\Admin\User;
 
-use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Tests\TestCase;
 
 class IndexUserTest extends TestCase
 {
