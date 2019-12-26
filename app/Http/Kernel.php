@@ -24,6 +24,7 @@ use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Inspector\Laravel\Middleware\WebRequestMonitoring;
 use Laravel\Passport\Http\Middleware\CreateFreshApiToken;
 use Spatie\ResponseCache\Middlewares\DoNotCacheResponse;
 
@@ -60,12 +61,13 @@ class Kernel extends HttpKernel
             SubstituteBindings::class,
             CreateFreshApiToken::class,
             CacheResponse::class,
+            WebRequestMonitoring::class
         ],
 
         'api' => [
-            //TODO restore api throttling
             //'throttle:60,1',
             'bindings',
+            WebRequestMonitoring::class
         ],
     ];
 
@@ -88,5 +90,6 @@ class Kernel extends HttpKernel
         'verified' => EnsureEmailIsVerified::class,
         'admin' => CheckAdmin::class,
         'doNotCacheResponse' => DoNotCacheResponse::class,
+        'inspector' => WebRequestMonitoring::class,
     ];
 }
