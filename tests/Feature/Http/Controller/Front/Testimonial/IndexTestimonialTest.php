@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Http\Controller\Front\Testimonial;
 
-use Tests\TestCase;
 use App\Models\Testimonial;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Tests\TestCase;
 
 class IndexTestimonialTest extends TestCase
 {

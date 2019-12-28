@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Http\Controller\Admin\User;
 
-use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Support\Facades\Hash;
+use Tests\TestCase;
 
 class UpdateUserTest extends TestCase
 {

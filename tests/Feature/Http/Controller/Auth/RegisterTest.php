@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Http\Controller\Auth;
 
-use Tests\TestCase;
-use App\Models\User;
-use Illuminate\Support\Facades\Mail;
 use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
+use Tests\TestCase;
 
 class RegisterTest extends TestCase
 {

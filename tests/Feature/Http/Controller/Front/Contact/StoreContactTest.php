@@ -2,14 +2,14 @@
 
 namespace Tests\Feature\Http\Controller\Front\Contact;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Contact;
-use App\Notifications\ContactSent;
 use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Foundation\Testing\TestResponse;
+use App\Models\Contact;
+use App\Models\User;
+use App\Notifications\ContactSent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Support\Facades\Notification;
+use Tests\TestCase;
 
 class StoreContactTest extends TestCase
 {

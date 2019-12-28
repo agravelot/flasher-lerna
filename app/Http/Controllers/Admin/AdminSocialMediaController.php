@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Exception;
-use Illuminate\View\View;
-use App\Models\SocialMedia;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\SocialMediaRequest;
+use App\Models\SocialMedia;
+use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class AdminSocialMediaController extends Controller
 {

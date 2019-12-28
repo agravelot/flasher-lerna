@@ -1,10 +1,10 @@
 <?php
 
-use Carbon\Carbon;
 use App\Models\User;
-use Illuminate\Support\Str;
+use Carbon\Carbon;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------

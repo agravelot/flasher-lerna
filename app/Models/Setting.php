@@ -2,18 +2,18 @@
 
 namespace App\Models;
 
-use LogicException;
 use App\Enums\SettingType;
-use Spatie\MediaLibrary\File;
-use Illuminate\Support\Collection;
 use App\Traits\ClearsResponseCache;
 use BenSampo\Enum\Traits\CastsEnums;
-use Illuminate\Support\Facades\Cache;
-use Spatie\MediaLibrary\Models\Media;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
+use LogicException;
+use Spatie\Image\Exceptions\InvalidManipulation;
+use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use Spatie\Image\Exceptions\InvalidManipulation;
+use Spatie\MediaLibrary\Models\Media;
 
 class Setting extends Model implements HasMedia
 {
@@ -67,8 +67,6 @@ class Setting extends Model implements HasMedia
      * Dynamic type casting for value from type.
      *
      * @param  string  $key
-     *
-     * @return string
      */
     protected function getCastType($key): string
     {

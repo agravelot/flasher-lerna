@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 
-use Tests\TestCase;
 use App\Models\Cosplayer;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Tests\TestCase;
 
 class DeleteCosplayerTest extends TestCase
 {

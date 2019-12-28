@@ -2,14 +2,14 @@
 
 namespace Tests\Feature\Http\Controller\Api\Admin\Invitation;
 
-use Tests\TestCase;
+use App\Mail\InvitationMail;
 use App\Models\Cosplayer;
 use App\Models\Invitation;
-use App\Mail\InvitationMail;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class StoreInvitationTest extends TestCase
 {

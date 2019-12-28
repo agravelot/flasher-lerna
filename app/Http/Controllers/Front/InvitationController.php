@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Front;
 
-use Illuminate\View\View;
-use App\Models\Invitation;
 use App\Http\Controllers\Controller;
+use App\Models\Invitation;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\View\View;
 
 class InvitationController extends Controller
 {

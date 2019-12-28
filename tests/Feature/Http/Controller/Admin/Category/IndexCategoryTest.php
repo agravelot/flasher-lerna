@@ -2,8 +2,8 @@
 
 namespace Tests\Features\Http\Controller\Admin\Category;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\TestResponse;
+use Tests\TestCase;
 
 class IndexCategoryTest extends TestCase
 {

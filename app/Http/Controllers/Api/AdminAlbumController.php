@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use Exception;
-use App\Models\Album;
-use Illuminate\Http\JsonResponse;
-use App\Http\Requests\AlbumRequest;
 use App\Http\Controllers\Controller;
-use Spatie\QueryBuilder\QueryBuilder;
-use App\Http\Resources\AlbumShowResource;
+use App\Http\Requests\AlbumRequest;
 use App\Http\Resources\AlbumIndexResource;
+use App\Http\Resources\AlbumShowResource;
+use App\Models\Album;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class AdminAlbumController extends Controller
 {

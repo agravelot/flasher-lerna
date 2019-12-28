@@ -2,10 +2,10 @@
 
 namespace App\Http\OpenGraphs;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
-use App\Http\OpenGraphs\Contracts\OpenGraphable;
 use App\Http\OpenGraphs\Contracts\ImagesOpenGraphable;
+use App\Http\OpenGraphs\Contracts\OpenGraphable;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class HomeOpenGraph implements OpenGraphable, ImagesOpenGraphable
 {

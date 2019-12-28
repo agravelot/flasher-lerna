@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Models\User;
-use App\Models\Contact;
-use Illuminate\View\View;
-use App\Notifications\ContactSent;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\ContactStoreRequest;
+use App\Models\Contact;
+use App\Models\User;
+use App\Notifications\ContactSent;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\View\View;
 
 class ContactController extends Controller
 {

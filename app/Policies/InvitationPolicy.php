@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\Invitation;
+use App\Models\User;
 
 class InvitationPolicy extends Policy
 {

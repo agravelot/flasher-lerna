@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use Exception;
+use App\Http\Resources\ContactResource;
 use App\Models\Contact;
+use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
-use App\Http\Resources\ContactResource;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminContactController extends Controller
 {

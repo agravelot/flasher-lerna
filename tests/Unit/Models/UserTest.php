@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
+use App\Models\Album;
 use App\Models\Post;
 use App\Models\User;
-use App\Models\Album;
-use Tests\ModelTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Tests\ModelTestCase;
 
 class UserTest extends ModelTestCase
 {

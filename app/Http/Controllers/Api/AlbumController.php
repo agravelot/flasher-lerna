@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Http\Resources\AlbumIndexResource;
+use App\Http\Resources\AlbumShowResource;
 use App\Models\Album;
 use App\Models\PublicAlbum;
-use App\Http\Controllers\Controller;
-use Spatie\QueryBuilder\QueryBuilder;
-use App\Http\Resources\AlbumShowResource;
-use App\Http\Resources\AlbumIndexResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class AlbumController extends Controller
 {

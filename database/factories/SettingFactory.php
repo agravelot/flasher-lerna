@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\Setting;
 use App\Enums\SettingType;
+use App\Models\Setting;
 use Faker\Generator as Faker;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Http\UploadedFile;
 
 /* @var Factory $factory */
 

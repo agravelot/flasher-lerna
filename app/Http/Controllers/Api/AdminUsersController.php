@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use Exception;
-use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use App\Http\Requests\UserRequest;
-use Illuminate\Routing\Controller;
 use App\Http\Resources\UserResource;
-use Spatie\QueryBuilder\QueryBuilder;
+use App\Models\User;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Routing\Controller;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class AdminUsersController extends Controller
 {

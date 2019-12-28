@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Front;
 
-use Illuminate\View\View;
-use App\Models\Testimonial;
 use App\Http\Controllers\Controller;
-use App\Models\PublishedTestimonial;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\TestimonialRequest;
+use App\Models\PublishedTestimonial;
+use App\Models\Testimonial;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class TestimonialController extends Controller
 {

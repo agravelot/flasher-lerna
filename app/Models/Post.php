@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Abilities\HasTitleAsSlug;
 use App\Abilities\HasSlugRouteKey;
+use App\Abilities\HasTitleAsSlug;
 use App\Traits\ClearsResponseCache;
-use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;

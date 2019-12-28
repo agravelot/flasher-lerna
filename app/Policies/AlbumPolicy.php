@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\Album;
+use App\Models\User;
 
 class AlbumPolicy extends Policy
 {

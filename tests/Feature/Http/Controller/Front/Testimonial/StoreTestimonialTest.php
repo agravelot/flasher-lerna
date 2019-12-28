@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Http\Controller\Front\Testimonial;
 
-use Tests\TestCase;
-use App\Models\Testimonial;
-use App\Models\PublishedTestimonial;
 use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
-use Illuminate\Foundation\Testing\TestResponse;
+use App\Models\PublishedTestimonial;
+use App\Models\Testimonial;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Tests\TestCase;
 
 class StoreTestimonialTest extends TestCase
 {

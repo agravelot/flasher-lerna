@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Http\Controller\Api\AdminAlbum;
 
-use Tests\TestCase;
 use App\Models\Album;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class IndexAlbumTest extends TestCase
 {

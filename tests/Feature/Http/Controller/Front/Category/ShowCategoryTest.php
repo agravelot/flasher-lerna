@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Front\Category;
 
-use Tests\TestCase;
 use App\Models\Album;
 use App\Models\Category;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Tests\TestCase;
 
 class ShowCategoryTest extends TestCase
 {

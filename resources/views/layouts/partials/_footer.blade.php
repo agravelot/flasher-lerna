@@ -16,11 +16,10 @@
                     <div class="has-text-centered">
                         <a class="has-text-white" href="{{ route('categories.index')  }}">{{ __('Categories') }}</a>
                     </div>
-                    <div class="column is-narrow">
-                        <div class="has-text-centered">
-                            <a class="has-text-white"
-                               href="{{ route('testimonials.index')  }}">{{ __('Testimonial') }}</a>
-                        </div>
+                </div>
+                <div class="column is-narrow">
+                    <div class="has-text-centered">
+                        <a class="has-text-white" href="{{ route('testimonials.index')  }}">{{ __('Testimonial') }}</a>
                     </div>
                 </div>
                 <div class="column is-narrow">

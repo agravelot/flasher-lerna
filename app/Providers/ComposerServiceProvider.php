@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use App\Http\ViewComposers\SocialMediaComposer;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use App\Http\ViewComposers\SocialMediaComposer;
 
 class ComposerServiceProvider extends ServiceProvider
 {

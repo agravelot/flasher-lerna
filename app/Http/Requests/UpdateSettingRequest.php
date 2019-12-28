@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Setting;
 use App\Enums\SettingType;
+use App\Models\Setting;
 
 class UpdateSettingRequest extends Request
 {

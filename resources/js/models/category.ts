@@ -1,4 +1,6 @@
-export default class Category {
+import FilterableById from "./interfaces/filterableById";
+
+export default class Category implements FilterableById {
     public id: number;
     public slug: string;
     public name: string;

@@ -2,11 +2,11 @@
 
 namespace Tests\Features\Http\Controller\Admin\Category;
 
-use Tests\TestCase;
 use App\Models\Category;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Http\UploadedFile;
+use Tests\TestCase;
 
 class StoreCoverCategoryTest extends TestCase
 {

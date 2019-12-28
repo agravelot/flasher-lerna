@@ -2,27 +2,27 @@
 
 namespace App\Models;
 
-use Spatie\Feed\Feedable;
-use Illuminate\Support\Str;
-use Spatie\MediaLibrary\File;
 use App\Abilities\AlbumFeedable;
-use App\Abilities\HasTitleAsSlug;
 use App\Abilities\HasSlugRouteKey;
-use Illuminate\Support\HtmlString;
+use App\Abilities\HasTitleAsSlug;
 use App\Traits\ClearsResponseCache;
-use Spatie\MediaLibrary\Models\Media;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
+use Spatie\Feed\Feedable;
+use Spatie\Image\Exceptions\InvalidManipulation;
+use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use Spatie\Image\Exceptions\InvalidManipulation;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Album extends Model implements HasMedia, Feedable
 {

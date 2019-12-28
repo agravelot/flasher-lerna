@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Http\Controller\Front\Cosplayer;
 
-use Tests\TestCase;
 use App\Models\Cosplayer;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Tests\TestCase;
 
 class ShowCosplayerTest extends TestCase
 {

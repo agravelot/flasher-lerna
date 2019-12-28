@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 
-use Tests\TestCase;
-use App\Models\Cosplayer;
-use Illuminate\Http\UploadedFile;
 use App\Http\Resources\MediaResource;
-use Illuminate\Foundation\Testing\TestResponse;
+use App\Models\Cosplayer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Http\UploadedFile;
+use Tests\TestCase;
 
 class StoreCosplayerTest extends TestCase
 {

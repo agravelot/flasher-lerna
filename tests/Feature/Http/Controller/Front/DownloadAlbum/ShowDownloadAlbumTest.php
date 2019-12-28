@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Http\Controller\Front\DownloadAlbum;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Album;
 use App\Models\Cosplayer;
-use Illuminate\Foundation\Testing\TestResponse;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Tests\TestCase;
 
 class ShowDownloadAlbumTest extends TestCase
 {

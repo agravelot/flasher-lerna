@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Models;
 
-use Carbon\Carbon;
-use Tests\ModelTestCase;
 use App\Models\PublicAlbum;
-use Illuminate\Foundation\Testing\WithFaker;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\ModelTestCase;
 
 class PublicAlbumTest extends ModelTestCase
 {

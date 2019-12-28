@@ -3,8 +3,8 @@
 namespace App;
 
 use Illuminate\Support\Collection;
-use Spatie\MediaLibrary\Models\Media;
 use Spatie\MediaLibrary\MediaStream as MediaStreamBase;
+use Spatie\MediaLibrary\Models\Media;
 
 class MediaStream extends MediaStreamBase
 {

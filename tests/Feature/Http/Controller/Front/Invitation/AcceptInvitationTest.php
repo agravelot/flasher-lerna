@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Http\Controller\Front\DownloadAlbum;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Invitation;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Foundation\Testing\TestResponse;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
+use Tests\TestCase;
 
 class AcceptInvitationTest extends TestCase
 {

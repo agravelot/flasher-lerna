@@ -7,6 +7,7 @@ import Album from '../../../models/album';
 import Category from '../../../models/category';
 import Cosplayer from '../../../models/cosplayer';
 import Buefy from '../../../admin/Buefy.vue';
+import FilterableById from "../../../models/interfaces/filterableById";
 
 @Component({})
 export default class AlbumBase extends Buefy {
@@ -15,8 +16,8 @@ export default class AlbumBase extends Buefy {
     protected allowNew = false;
     protected allCategories: Array<Category> = [];
     protected allCosplayers: Array<Cosplayer> = [];
-    protected filteredCategories: Array<object> = [];
-    protected filteredCosplayers: Array<object> = [];
+    protected filteredCategories: Array<Category> = [];
+    protected filteredCosplayers: Array<Cosplayer> = [];
     protected editorOption: object = {
         placeholder: 'Enter your description...',
         theme: 'snow',
@@ -34,8 +35,24 @@ export default class AlbumBase extends Buefy {
         (window as any).lastCall = Date.now()
     }
 
+    isCategoryAlreadySelected(filterable: FilterableById): boolean {
+        return this.album.categories.some(c => c.id === filterable.id);
+    }
+
+    isCategoryNotAlreadySelected(filterable: FilterableById): boolean {
+        return ! this.isCategoryAlreadySelected(filterable);
+    }
+
+    isCosplayerAlreadySelected(filterable: FilterableById): boolean {
+        return this.album.cosplayers.some(c => c.id === filterable.id);
+    }
+
+    isCosplayerNotAlreadySelected(filterable: FilterableById): boolean {
+        return ! this.isCategoryAlreadySelected(filterable);
+    }
+
     getFilteredCategories(text: string): void {
-        const callback =  (text: string): void => {
+        const callback = (text: string): void => {
             this.axios
                 .get('/api/admin/categories', {
                     params: {
@@ -44,7 +61,7 @@ export default class AlbumBase extends Buefy {
                 })
                 .then(res => res.data)
                 .then(res => {
-                    this.filteredCategories = res.data;
+                    this.filteredCategories = res.data.filter(this.isCategoryNotAlreadySelected);
                 })
                 .catch(err => {
                     // this.filteredCosplayers = [];
@@ -74,7 +91,7 @@ export default class AlbumBase extends Buefy {
                 })
                 .then(res => res.data)
                 .then(res => {
-                    this.filteredCosplayers = res.data;
+                    this.filteredCosplayers = res.data.filter(this.isCosplayerNotAlreadySelected);
                 })
                 .catch(err => {
                     // this.filteredCosplayers = [];

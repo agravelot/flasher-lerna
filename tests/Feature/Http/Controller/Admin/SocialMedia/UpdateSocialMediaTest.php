@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Http\Controllers\Admin\SocialMedia;
 
-use Tests\TestCase;
 use App\Models\SocialMedia;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestResponse;
+use Tests\TestCase;
 
 class UpdateSocialMediaTest extends TestCase
 {

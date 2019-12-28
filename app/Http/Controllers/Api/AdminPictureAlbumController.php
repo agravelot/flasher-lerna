@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Album;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\AlbumShowResource;
-use Illuminate\Http\Resources\Json\Resource;
-use App\Http\Requests\StorePictureAlbumRequest;
 use App\Http\Requests\DeletePictureAlbumRequest;
-use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
+use App\Http\Requests\StorePictureAlbumRequest;
+use App\Http\Resources\AlbumShowResource;
 use App\Http\Resources\CompleteUploadPictureResource;
 use App\Http\Resources\ProcessingUploadPictureResource;
+use App\Models\Album;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\Resource;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 
 class AdminPictureAlbumController extends Controller
 {

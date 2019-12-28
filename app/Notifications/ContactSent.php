@@ -4,8 +4,8 @@ namespace App\Notifications;
 
 use App\Models\Contact;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class ContactSent extends Notification
 {

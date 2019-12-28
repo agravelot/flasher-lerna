@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Models;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Album;
 use App\Models\Cosplayer;
-use Illuminate\Support\Collection;
+use App\Models\User;
 use App\Notifications\PublishedAlbum;
-use Illuminate\Support\Facades\Notification;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Notification;
+use Tests\TestCase;
 
 class PublishedAlbumTest extends TestCase
 {
