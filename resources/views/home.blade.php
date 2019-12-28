@@ -13,7 +13,8 @@
                     @if ($profilePicture)
                         <div class="column">
                             <figure class="image is-128x128 is-pulled-right">
-                                {{ $profilePicture('', ['class' => 'is-rounded responsive-media']) }}
+                                <img src="{{ $profilePicture->getUrl('thumb') }}"
+                                     alt="Avatar de {{ $album->user->name }}" class="is-rounded">
                             </figure>
                         </div>
                     @endif

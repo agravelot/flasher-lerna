@@ -25,6 +25,7 @@
         </whitelist>
     </filter>
     <php>
+        <env name="APP_KEY" value="base64:pRJG5YkZlHzwYvnURTuNw7lGuHM/A8J9lrcFUFnrkoA="/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="INSPECTOR_ENABLE" value="false"/>
     </php>
