@@ -14,7 +14,7 @@
                         <div class="column">
                             <figure class="image is-128x128 is-pulled-right">
                                 <img src="{{ $profilePicture->getUrl('thumb') }}"
-                                     alt="Avatar de {{ $album->user->name }}" class="is-rounded">
+                                     alt="Avatar de {{ settings()->get('app_name') }}" class="is-rounded">
                             </figure>
                         </div>
                     @endif
