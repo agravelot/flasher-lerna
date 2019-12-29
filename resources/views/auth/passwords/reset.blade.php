@@ -27,7 +27,7 @@
 
                         <div class="field is-horizontal">
                             <div class="field-label">
-                                <label class="label">{{ __('E-Mail Address') }}</label>
+                                <label class="label">{{ __('Email') }}</label>
                             </div>
 
                             <div class="field-body">
