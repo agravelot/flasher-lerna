@@ -30,9 +30,9 @@
               alt=""
             >
             <b-button
-              @click="cosplayer.avatar = null"
               type="is-danger"
               icon-right="trash-alt"
+              @click="cosplayer.avatar = null"
             />
           </div>
 
@@ -73,14 +73,14 @@
             label="Linked user"
           >
             <b-autocomplete
-              :data="searchUsers"
               v-model="cosplayer.user.id"
-              @typing="searchUser"
-              @select="option => (selected = option)"
+              :data="searchUsers"
               placeholder="e.g. Anne"
               keep-first
               open-on-focus
               field="id"
+              @typing="searchUser"
+              @select="option => (selected = option)"
             >
               <template slot-scope="props">
                 <div>
@@ -99,8 +99,8 @@
 
       <b-button
         :loading="loading"
-        @click="createCosplayer()"
         type="is-primary"
+        @click="createCosplayer()"
       >
         Create
       </b-button>

@@ -43,11 +43,11 @@
                   v-model="album.categories"
                   :data="filteredCategories"
                   :allow-new="false"
-                  @typing="getFilteredCategories"
                   autocomplete
                   field="name"
                   placeholder="Add a category"
                   icon="tag"
+                  @typing="getFilteredCategories"
                 />
               </b-field>
 
@@ -60,11 +60,11 @@
                   v-model="album.cosplayers"
                   :data="filteredCosplayers"
                   :allow-new="false"
-                  @typing="getFilteredCosplayers"
                   autocomplete
                   field="name"
                   placeholder="Add a cosplayer"
                   icon="user-tag"
+                  @typing="getFilteredCosplayers"
                 />
               </b-field>
 
@@ -104,8 +104,8 @@
                   Update
                 </button>
                 <a
-                  @click="confirmDeleteAlbum()"
                   class="button is-bottom-right is-danger"
+                  @click="confirmDeleteAlbum()"
                 >
                   Delete
                 </a>
@@ -120,9 +120,9 @@
               id="dropzone"
               ref="myVueDropzone"
               :options="dropzoneOptions"
-              v-on:vdropzone-sending="sendingEvent"
-              v-on:vdropzone-complete="refreshMedias"
               class="has-margin-bottom-md"
+              @vdropzone-sending="sendingEvent"
+              @vdropzone-complete="refreshMedias"
             />
             <div class="columns is-multiline">
               <div
@@ -134,8 +134,8 @@
                   :alt="picture.name"
                 >
                 <a
-                  @click="deleteAlbumPicture(album.slug, picture.id)"
                   class="button has-text-danger"
+                  @click="deleteAlbumPicture(album.slug, picture.id)"
                 >
                   Delete
                 </a>

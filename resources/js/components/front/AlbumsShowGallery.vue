@@ -10,8 +10,8 @@
         <div
           v-for="(media, index) in album.medias"
           :key="index"
-          @click="openPicture(media)"
           class="has-margin-top-sm"
+          @click="openPicture(media)"
         >
           <figure class="image">
             <img
@@ -39,8 +39,8 @@
       class="modal is-active modal-fx-fadeInScale"
     >
       <div
-        @click="closePicture()"
         class="modal-background"
+        @click="closePicture()"
       />
       <div class="modal-content is-huge is-image">
         <img
@@ -50,9 +50,9 @@
         >
       </div>
       <button
-        @click="closePicture()"
         class="modal-close is-large"
         aria-label="close"
+        @click="closePicture()"
       />
     </div>
   </div>

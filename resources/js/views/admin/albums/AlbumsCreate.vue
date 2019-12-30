@@ -34,11 +34,11 @@
               v-model="album.categories"
               :data="filteredCategories"
               :allow-new="false"
-              @typing="getFilteredCategories"
               autocomplete
               field="name"
               placeholder="Add a category"
               icon="tag"
+              @typing="getFilteredCategories"
             />
           </b-field>
 
@@ -51,11 +51,11 @@
               v-model="album.cosplayers"
               :data="filteredCosplayers"
               :allow-new="false"
-              @typing="getFilteredCosplayers"
               autocomplete
               field="name"
               placeholder="Add a cosplayer"
               icon="user-tag"
+              @typing="getFilteredCosplayers"
             />
           </b-field>
 

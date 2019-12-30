@@ -63,8 +63,8 @@
       <div class="buttons">
         <b-button
           :loading="loading"
-          @click="updateUser()"
           type="is-primary"
+          @click="updateUser()"
         >
           Update
         </b-button>
@@ -80,9 +80,9 @@
         </b-button>
         <b-button
           :loading="loading"
-          @click="confirmDeleteUser()"
           type="is-danger"
           icon-right="trash-alt"
+          @click="confirmDeleteUser()"
         >
           Delete
         </b-button>

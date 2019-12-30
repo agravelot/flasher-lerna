@@ -21,19 +21,19 @@
             {{ setting.desciption }}
           </b-checkbox>
           <quill-editor
-            ref="myQuillEditor"
             v-else-if="setting.type === 'textarea'"
+            ref="myQuillEditor"
             v-model="setting.value"
             :options="editorOption"
           />
           <section v-else-if="setting.type === 'media'">
             <vue-dropzone
-              ref="myVueDropzone"
               v-if="setting.value === null"
+              ref="myVueDropzone"
               :options="getDropzoneOptions(setting)"
-              v-on:vdropzone-sending="sendingEvent"
-              v-on:vdropzone-complete="fetchSettings"
               class="has-margin-bottom-md"
+              @vdropzone-sending="sendingEvent"
+              @vdropzone-complete="fetchSettings"
             />
 
             <img
@@ -49,9 +49,9 @@
               <span class="tag is-primary">
                 {{ setting.value.name }}
                 <button
-                  @click="setting.value = null"
                   class="delete is-small"
                   type="button"
+                  @click="setting.value = null"
                 />
               </span>
             </div>
@@ -71,8 +71,8 @@
         <div class="control">
           <button
             v-if="setting.type !== 'media'"
-            @click="sendSetting(setting)"
             class="button is-primary"
+            @click="sendSetting(setting)"
           >
             Update
           </button>

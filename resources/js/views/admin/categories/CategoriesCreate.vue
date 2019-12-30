@@ -23,8 +23,8 @@
 
       <b-button
         :loading="loading"
-        @click="createCategory()"
         type="is-primary"
+        @click="createCategory()"
       >
         Create
       </b-button>

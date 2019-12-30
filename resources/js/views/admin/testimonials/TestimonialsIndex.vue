@@ -8,17 +8,17 @@
         <!--                    >Publish-->
         <!--                </b-button>-->
         <b-button
-          @click="toggleSelectedArePublishedAndUpdate()"
           type="is-success"
           icon-left="check"
+          @click="toggleSelectedArePublishedAndUpdate()"
         >
           Publish / Un-publish
         </b-button>
         <b-button
           :disabled="!checkedRows.length"
-          @click="confirmDeleteSelectedTestimonials()"
           type="is-danger"
           icon-left="trash-alt"
+          @click="confirmDeleteSelectedTestimonials()"
         >
           Delete checked
         </b-button>
@@ -29,10 +29,8 @@
         :loading="loading"
         :total="total"
         :per-page="perPage"
-        @page-change="onPageChange"
         :default-sort-direction="defaultSortOrder"
         :default-sort="[sortField, sortOrder]"
-        @sort="onSort"
         :checked-rows.sync="checkedRows"
         striped
         hoverable
@@ -41,8 +39,10 @@
         backend-pagination
         backend-sorting
         checkable
+        @page-change="onPageChange"
         detailed
         show-detail-icon
+        @sort="onSort"
       >
         <template slot-scope="testimonial">
           <b-table-column
