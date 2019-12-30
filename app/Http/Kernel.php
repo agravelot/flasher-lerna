@@ -61,13 +61,11 @@ class Kernel extends HttpKernel
             SubstituteBindings::class,
             CreateFreshApiToken::class,
             CacheResponse::class,
-            WebRequestMonitoring::class
         ],
 
         'api' => [
             //'throttle:60,1',
             'bindings',
-            WebRequestMonitoring::class
         ],
     ];
 
@@ -90,6 +88,5 @@ class Kernel extends HttpKernel
         'verified' => EnsureEmailIsVerified::class,
         'admin' => CheckAdmin::class,
         'doNotCacheResponse' => DoNotCacheResponse::class,
-        'inspector' => WebRequestMonitoring::class,
     ];
 }

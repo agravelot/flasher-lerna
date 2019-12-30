@@ -19,7 +19,6 @@
     "cviebrock/eloquent-sluggable": "^6.0",
     "doctrine/dbal": "^2.9",
     "fideloper/proxy": "^4.0",
-    "inspector-apm/inspector-laravel": "^4.1",
     "intervention/imagecache": "^2.3",
     "ipunkt/laravel-analytics": "^2.0",
     "jerodev/laravel-font-awesome": "^1.0",
