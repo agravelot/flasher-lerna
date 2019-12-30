@@ -15,8 +15,8 @@
       icon-right="twitter"
     />
     <b-button
-      @click="addToClipboard(getLink())"
       icon-right="link"
+      @click="addToClipboard(getLink())"
     />
   </div>
 </template>
@@ -34,8 +34,8 @@ export default class ShareAlbum extends Buefy {
     @Prop()
     protected album: Album;
 
-    addToClipboard(value: any): void {
-        (navigator as any).permissions.query({ name: 'clipboard-write' }).then(result => {
+    addToClipboard(value: string): void {
+        navigator.permissions.query({ name: 'clipboard-write' as PermissionName } as PermissionDescriptor).then(result => {
             if (result.state == 'granted' || result.state == 'prompt') {
                 navigator.clipboard.writeText(value).then(
                     () => {
