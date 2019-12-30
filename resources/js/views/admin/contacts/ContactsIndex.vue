@@ -46,11 +46,11 @@
         paginated
         backend-pagination
         backend-sorting
-        @page-change="onPageChange"
         checkable
         detailed
-        @sort="onSort"
         detail-key="id"
+        @page-change="onPageChange"
+        @sort="onSort"
       >
         <template slot-scope="contact">
           <b-table-column

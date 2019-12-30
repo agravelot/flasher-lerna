@@ -54,8 +54,8 @@
         backend-pagination
         backend-sorting
         icon-pack="fas"
-        @page-change="onPageChange"
         checkable
+        @page-change="onPageChange"
         @sort="onSort"
       >
         <template slot-scope="cosplayer">

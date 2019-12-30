@@ -1,3 +1,4 @@
+/*eslint-disable */
 // Trigger modals
 (function(): void {
     const modalFX = (function(): any {

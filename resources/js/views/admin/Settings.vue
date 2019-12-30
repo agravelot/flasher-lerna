@@ -6,7 +6,10 @@
       </div>
     </div>
     <div class="card-content">
-      <div v-for="setting in settings">
+      <div
+        v-for="(setting, index) in settings"
+        :key="index"
+      >
         <b-field :label="setting.title">
           <b-numberinput
             v-if="setting.type === 'numeric'"
@@ -14,7 +17,7 @@
           />
           <b-checkbox
             v-else-if="setting.type === 'bool'"
-            v-model.numeric="setting.value"
+            v-model="setting.value"
             true-value="1"
             false-value="0"
           >

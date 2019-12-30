@@ -39,9 +39,9 @@
         backend-pagination
         backend-sorting
         checkable
-        @page-change="onPageChange"
         detailed
         show-detail-icon
+        @page-change="onPageChange"
         @sort="onSort"
       >
         <template slot-scope="testimonial">
@@ -258,6 +258,7 @@ export default class TestimonialsIndex extends Buefy {
     }
 
     toggleIsPublishedAndUpdate(testimonial: Testimonial): void {
+        // eslint-disable-next-line @typescript-eslint/camelcase
         testimonial.published_at = testimonial.published_at ? null : new Date();
         this.updateTestimonial(testimonial);
     }
@@ -268,7 +269,7 @@ export default class TestimonialsIndex extends Buefy {
         this.axios
             .patch(`/api/admin/testimonials/${testimonial.id}`, testimonial)
             .then(res => res.data)
-            .then(res => {
+            .then((): void => {
                 // this.testimonials = res.data;
                 this.loading = false;
             })
