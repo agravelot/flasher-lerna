@@ -1,20 +1,18 @@
-#
-# Frontend
-#
+# ==== Frontend ==== #
 FROM node:13-alpine as frontend
 WORKDIR /app
 COPY . .
-RUN yarn install && yarn production
+RUN : \
+        && yarn install \
+        && yarn production \
+        ;
 
-#
-# PHP Dependencies
-#
+# ==== PHP Dependencies ==== #
 FROM composer:1.9 as vendor
 COPY . .
 
-ARG COMPOSER_ALLOW_SUPERUSER=1
-
-RUN composer global require hirak/prestissimo \
+RUN : \
+        && composer global require hirak/prestissimo \
         && composer install \
             --ignore-platform-reqs \
             --no-interaction \
@@ -26,25 +24,26 @@ RUN composer global require hirak/prestissimo \
             --no-dev \
             --classmap-authoritative
 
-#
-# Nginx server
-#
+# ==== Nginx ==== #
 FROM nginx:alpine as nginx
 
 WORKDIR /var/www/html
 
-RUN apk --no-cache add shadow \
+RUN : \
+        && apk --no-cache add shadow \
         && usermod -u 1000 nginx \
-        && apk del shadow
+        && apk del shadow \
+        ;
 
 COPY docker/nginx/conf /etc/nginx
 COPY docker/nginx/start.sh /start.sh
 
-# Importing source code
+# importing source code
 COPY --chown=1000:1000 . /var/www/html
 
-# Storrage link
-RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
+# storrage link
+RUN : \
+        && ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
         && chown -h 1000:1000 /var/www/html/public/storage \
         && ln -s /var/www/html/storage/sitemap.xml /var/www/html/public/sitemap.xml \
         && chown -h 1000:1000 /var/www/html/public/sitemap.xml \
@@ -53,39 +52,39 @@ RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
         && chmod +x /start.sh \
         ;
 
-# Importing webpack assets
+# importing webpack assets
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
-#COPY --chown=1000:1000 --from=vendor /app/public/vendor/ /var/www/html/public/vendor/
 
 ENTRYPOINT /start.sh
 
-#
-# PHP Application
-#
+# ==== PHP Application ==== #
 FROM registry.gitlab.com/nevax/docker-php-fpm-alpine-laravel as php_base
 
-# Add configurations
+# import PHP configurations
 COPY docker/php-fpm/custom.ini /usr/local/etc/php/conf.d/
 
-# Importing source code
+# importing source code
 COPY --chown=1000:1000 . /var/www/html
 
-# Importing composer and assets dependencies
+# importing composer and assets dependencies
 COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/vendor/
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
 COPY --chown=1000:1000 --from=composer /usr/bin/composer ./composer
 
-# Link storage
-RUN ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
+# link storage
+RUN : \
+        && ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
         && chown -h 1000:1000 /var/www/html/public/storage \
-        # Check composer reqs
-        && ./composer check-platform-reqs && rm -f ./composer
+        # check composer reqs
+        && ./composer check-platform-reqs \
+        && rm -f ./composer \
+        ;
 
 COPY --chown=1000:1000 docker/php-fpm/start.sh /start.sh
 COPY docker/php-fpm/crontab /etc/crontabs/root
 
 USER 1000:1000
 
-CMD /start.sh
+ENTRYPOINT /start.sh
 
 FROM php_base AS php_app
