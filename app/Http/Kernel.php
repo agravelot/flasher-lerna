@@ -24,7 +24,6 @@ use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Inspector\Laravel\Middleware\WebRequestMonitoring;
 use Laravel\Passport\Http\Middleware\CreateFreshApiToken;
 use Spatie\ResponseCache\Middlewares\DoNotCacheResponse;
 

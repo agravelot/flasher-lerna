@@ -39,7 +39,6 @@
     "spatie/schema-org": "^2.9"
   },
   "require-dev": {
-    "astrotomic/ignition-stackoverflow": "^1.4",
     "barryvdh/laravel-debugbar": "^3.2",
     "barryvdh/laravel-ide-helper": "^2.6",
     "beyondcode/laravel-dump-server": "^1.2",
@@ -47,7 +46,6 @@
     "davidhsianturi/laravel-compass": "^0.4",
     "facade/ignition": "^1.4",
     "facade/ignition-self-diagnosis": "^1.0",
-    "facade/ignition-tinker-tab": "^1.0",
     "friendsofphp/php-cs-fixer": "^2.13",
     "fruitcake/laravel-telescope-toolbar": "^1.1",
     "fzaninotto/faker": "^1.8",
