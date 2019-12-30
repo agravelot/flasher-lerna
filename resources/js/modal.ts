@@ -12,7 +12,7 @@
             navigable: 'is-modal-navigable',
         };
 
-        const onClickEach = function(selector, callback): void {
+        const onClickEach = function(selector: string, callback: EventListenerOrEventListenerObject): void {
             const arr = document.getElementsByClassName(selector);
             Array.from(arr).forEach(function(el) {
                 el.addEventListener('click', callback);
@@ -45,25 +45,30 @@
         const openModal = function(): void {
             const targetModal = this.getAttribute(elements.target);
             freeze();
-            const modal: Element = document.getElementById(targetModal);
-            modal.classList.add(elements.active);
+            const modal: HTMLElement | null = document.getElementById(targetModal);
+            modal?.classList.add(elements.active);
 
-            const image = modal.getElementsByTagName('img')[0];
+            const image = modal?.getElementsByTagName('img')[0];
+
+            if (image === undefined) {
+                throw new DOMException('Unable to resize from undefined image.');
+            }
+
             image.sizes = `${Math.ceil(
                 (image.getBoundingClientRect().width / window.innerWidth) * 100
             )}vw`;
-            image.classList.add('responsive-media');
+            image?.classList.add('responsive-media');
         };
 
         const closeModal = function(): void {
             const targetModal = this.parentElement.id;
-            const modal: Element = document.getElementById(targetModal);
-            modal.classList.remove(elements.active);
+            const modal: HTMLElement | null = document.getElementById(targetModal);
+            modal?.classList.remove(elements.active);
             unFreeze();
 
             // Remove 'responsive-media' class
-            const image = modal.getElementsByTagName('img')[0];
-            image.classList.remove('responsive-media');
+            const image = modal?.getElementsByTagName('img')[0];
+            image?.classList.remove('responsive-media');
         };
 
         // Freeze scrollbars
@@ -113,7 +118,7 @@
 
                 function previousModal(): void {
                     const currentActiveModal: Element = getCurrentModal();
-                    const previousModal: Element = currentActiveModal.previousElementSibling;
+                    const previousModal: Element | null = currentActiveModal.previousElementSibling;
 
                     if (!previousModal || !previousModal.classList.contains(elements.navigable)) {
                         return;
@@ -125,7 +130,7 @@
 
                 function nextModal(): void {
                     const currentActiveModal: Element = getCurrentModal();
-                    const nextModal: Element = currentActiveModal.nextElementSibling;
+                    const nextModal: Element | null = currentActiveModal.nextElementSibling;
 
                     if (!nextModal || !nextModal.classList.contains(elements.navigable)) {
                         return;
