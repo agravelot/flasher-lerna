@@ -73,6 +73,6 @@ class ShowMyAlbumsTest extends TestCase
 
     private function getMyAlbums(): TestResponse
     {
-        return $this->get('/profile/my-albums');
+        return $this->get('/account/my-albums');
     }
 }
