@@ -103,7 +103,7 @@ return [
                 'connection' => 'redis',
                 'queue' => ['images'],
                 'balance' => 'auto',
-                'processes' => 3,
+                'processes' => 1,
                 'tries' => 3,
                 'memory' => 1024,
             ],
