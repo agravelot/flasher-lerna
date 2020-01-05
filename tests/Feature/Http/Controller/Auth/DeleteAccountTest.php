@@ -45,7 +45,6 @@ class DeleteAccountTest extends TestCase
 
     /**
      * @param User|Authenticatable $user
-     * @return TestResponse
      */
     private function deleteUser($user): TestResponse
     {

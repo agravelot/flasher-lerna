@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCoverCategoryRequest;
-use App\Http\Resources\CategoryResource;
 use App\Http\Resources\CompleteUploadPictureResource;
 use App\Http\Resources\ProcessingUploadPictureResource;
 use App\Models\Category;
