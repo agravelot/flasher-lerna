@@ -63,8 +63,8 @@
       <div class="buttons">
         <b-button
           :loading="loading"
-          @click="createUser()"
           type="is-primary"
+          @click="createUser()"
         >
           Create
         </b-button>

@@ -4,9 +4,9 @@
       <div class="buttons">
         <b-button
           :disabled="!checkedRows.length"
-          @click="confirmDeleteSelectedInvitations()"
           type="is-danger"
           icon-left="trash-alt"
+          @click="confirmDeleteSelectedInvitations()"
         >
           Delete checked
         </b-button>
@@ -25,10 +25,8 @@
         :loading="loading"
         :total="total"
         :per-page="perPage"
-        @page-change="onPageChange"
         :default-sort-direction="defaultSortOrder"
         :default-sort="[sortField, sortOrder]"
-        @sort="onSort"
         :checked-rows.sync="checkedRows"
         striped
         hoverable
@@ -39,6 +37,8 @@
         checkable
         detailed
         show-detail-icon
+        @page-change="onPageChange"
+        @sort="onSort"
       >
         <template slot-scope="invitation">
           <b-table-column

@@ -30,9 +30,9 @@
               alt=""
             >
             <b-button
-              @click="cosplayer.avatar = null"
               type="is-danger"
               icon-right="trash-alt"
+              @click="cosplayer.avatar = null"
             />
           </div>
 
@@ -92,8 +92,8 @@
               </div>
               <div class="media-right">
                 <button
-                  @click="cosplayer.user = null"
                   class="delete"
+                  @click="cosplayer.user = null"
                 />
               </div>
             </div>
@@ -106,8 +106,8 @@
 
       <b-button
         :loading="loading"
-        @click="updateCosplayer()"
         type="is-primary"
+        @click="updateCosplayer()"
       >
         Update
       </b-button>

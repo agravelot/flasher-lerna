@@ -51,8 +51,6 @@ class AdminCoverCategoryController extends Controller
     {
         optional($category->cover)->delete();
 
-        return (new CategoryResource(
-            $category->fresh()->load('media')
-        ))->response()->setStatusCode(204);
+        return new JsonResponse(null, 204);
     }
 }

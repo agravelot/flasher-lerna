@@ -15,9 +15,9 @@
               </b-button>
               <b-button
                 :disabled="!checkedRows.length"
-                @click="confirmDeleteSelectedCosplayers"
                 type="is-danger"
                 icon-left="trash-alt"
+                @click="confirmDeleteSelectedCosplayers"
               >
                 Delete checked
               </b-button>
@@ -28,12 +28,12 @@
         <div class="level-right">
           <b-field class="is-pulled-right">
             <b-input
-              :loading="loading"
               v-model="search"
-              @input="fetchCosplayers()"
+              :loading="loading"
               placeholder="Search..."
               type="search"
               icon="search"
+              @input="fetchCosplayers()"
             />
           </b-field>
         </div>
@@ -44,10 +44,8 @@
         :loading="loading"
         :total="total"
         :per-page="perPage"
-        @page-change="onPageChange"
         :default-sort-direction="defaultSortOrder"
         :default-sort="[sortField, sortOrder]"
-        @sort="onSort"
         :checked-rows.sync="checkedRows"
         striped
         hoverable
@@ -57,6 +55,8 @@
         backend-sorting
         icon-pack="fas"
         checkable
+        @page-change="onPageChange"
+        @sort="onSort"
       >
         <template slot-scope="cosplayer">
           <b-table-column

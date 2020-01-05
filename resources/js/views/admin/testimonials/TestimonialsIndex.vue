@@ -8,17 +8,17 @@
         <!--                    >Publish-->
         <!--                </b-button>-->
         <b-button
-          @click="toggleSelectedArePublishedAndUpdate()"
           type="is-success"
           icon-left="check"
+          @click="toggleSelectedArePublishedAndUpdate()"
         >
           Publish / Un-publish
         </b-button>
         <b-button
           :disabled="!checkedRows.length"
-          @click="confirmDeleteSelectedTestimonials()"
           type="is-danger"
           icon-left="trash-alt"
+          @click="confirmDeleteSelectedTestimonials()"
         >
           Delete checked
         </b-button>
@@ -29,10 +29,8 @@
         :loading="loading"
         :total="total"
         :per-page="perPage"
-        @page-change="onPageChange"
         :default-sort-direction="defaultSortOrder"
         :default-sort="[sortField, sortOrder]"
-        @sort="onSort"
         :checked-rows.sync="checkedRows"
         striped
         hoverable
@@ -43,6 +41,8 @@
         checkable
         detailed
         show-detail-icon
+        @page-change="onPageChange"
+        @sort="onSort"
       >
         <template slot-scope="testimonial">
           <b-table-column
@@ -258,6 +258,7 @@ export default class TestimonialsIndex extends Buefy {
     }
 
     toggleIsPublishedAndUpdate(testimonial: Testimonial): void {
+        // eslint-disable-next-line @typescript-eslint/camelcase
         testimonial.published_at = testimonial.published_at ? null : new Date();
         this.updateTestimonial(testimonial);
     }
@@ -268,7 +269,7 @@ export default class TestimonialsIndex extends Buefy {
         this.axios
             .patch(`/api/admin/testimonials/${testimonial.id}`, testimonial)
             .then(res => res.data)
-            .then(res => {
+            .then((): void => {
                 // this.testimonials = res.data;
                 this.loading = false;
             })

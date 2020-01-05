@@ -1,9 +1,9 @@
 export default class Testimonial {
-    id: number;
-    name: string;
-    email: string;
-    body: string;
-    created_at: Date;
-    updated_at: Date;
-    published_at: Date;
+    id!: number;
+    name!: string;
+    email!: string;
+    body?: string|undefined;
+    created_at!: Date;
+    updated_at?: Date|null;
+    published_at!: Date|null;
 }

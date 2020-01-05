@@ -19,6 +19,10 @@ Route::group([
     Route::apiResource('albums', 'AlbumController')->only('index', 'show');
     Route::apiResource('categories', 'CategoryController')
         ->only('index', 'show');
+    Route::resource('/account', 'AccountController')->middleware(['auth'])->only('destroy')
+        ->parameters([
+            'account' => 'user',
+        ]);
 
     // Admin
     Route::group([

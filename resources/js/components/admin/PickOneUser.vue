@@ -3,10 +3,10 @@
     <b-autocomplete
       :data="filteredUsers"
       :loading="loading"
-      @typing="getFilteredUsers"
-      @select="selected"
       placeholder="User name"
       field="name"
+      @typing="getFilteredUsers"
+      @select="selected"
     >
       <template slot-scope="props">
         {{ props.option.name }}

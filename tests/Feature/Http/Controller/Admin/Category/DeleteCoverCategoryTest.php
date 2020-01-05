@@ -21,12 +21,7 @@ class DeleteCoverCategoryTest extends TestCase
 
         $response = $this->deleteCoverCategory($category);
 
-        $response->assertStatus(204)
-            ->assertJson([
-                'data' => [
-                    'cover' => null,
-                ],
-            ]);
+        $response->assertStatus(204);
         $this->assertNull($category->fresh()->cover);
     }
 

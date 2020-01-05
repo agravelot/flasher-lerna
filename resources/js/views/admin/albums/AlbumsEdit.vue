@@ -43,11 +43,11 @@
                   v-model="album.categories"
                   :data="filteredCategories"
                   :allow-new="false"
-                  @typing="getFilteredCategories"
                   autocomplete
                   field="name"
                   placeholder="Add a category"
                   icon="tag"
+                  @typing="getFilteredCategories"
                 />
               </b-field>
 
@@ -60,11 +60,11 @@
                   v-model="album.cosplayers"
                   :data="filteredCosplayers"
                   :allow-new="false"
-                  @typing="getFilteredCosplayers"
                   autocomplete
                   field="name"
                   placeholder="Add a cosplayer"
                   icon="user-tag"
+                  @typing="getFilteredCosplayers"
                 />
               </b-field>
 
@@ -91,7 +91,7 @@
               >
                 <div class="field">
                   <b-switch
-                    v-model.numeric="album.private"
+                    v-model="album.private"
                     :true-value="false"
                     :false-value="true"
                   >
@@ -104,8 +104,8 @@
                   Update
                 </button>
                 <a
-                  @click="confirmDeleteAlbum()"
                   class="button is-bottom-right is-danger"
+                  @click="confirmDeleteAlbum()"
                 >
                   Delete
                 </a>
@@ -120,13 +120,14 @@
               id="dropzone"
               ref="myVueDropzone"
               :options="dropzoneOptions"
-              v-on:vdropzone-sending="sendingEvent"
-              v-on:vdropzone-complete="refreshMedias"
               class="has-margin-bottom-md"
+              @vdropzone-sending="sendingEvent"
+              @vdropzone-complete="refreshMedias"
             />
             <div class="columns is-multiline">
               <div
-                v-for="picture in album.medias"
+                v-for="(picture, index) in album.medias"
+                :key="index"
                 class="column is-two-thirds-tablet is-half-desktop is-one-third-widescreen"
               >
                 <img
@@ -134,8 +135,8 @@
                   :alt="picture.name"
                 >
                 <a
-                  @click="deleteAlbumPicture(album.slug, picture.id)"
                   class="button has-text-danger"
+                  @click="deleteAlbumPicture(album.slug, picture.id)"
                 >
                   Delete
                 </a>
@@ -178,7 +179,7 @@ import { quillEditor } from 'vue-quill-editor';
     extends: AlbumBase,
 })
 export default class AlbumsEdit extends AlbumBase {
-    protected album: Album;
+    protected album: Album | undefined;
     protected allowNew = false;
     protected dropzoneOptions: object = {
         url: '/api/admin/album-pictures',
@@ -222,6 +223,9 @@ export default class AlbumsEdit extends AlbumBase {
     }
 
     sendingEvent(file: File, xhr: XMLHttpRequest, formData: FormData): void {
+        if (this.album === undefined) {
+            throw new DOMException('Unable to send media with undefined album.');
+        }
         if (!this.album.slug) {
             throw new DOMException('album slug is null');
         }
@@ -229,6 +233,9 @@ export default class AlbumsEdit extends AlbumBase {
     }
 
     updateAlbum(): void {
+        if (this.album === undefined) {
+            throw new DOMException('Unable to update undefined album.');
+        }
         this.axios
             .patch(`/api/admin/albums/${this.$route.params.slug}`, this.album)
             .then(res => res.data)
@@ -247,6 +254,9 @@ export default class AlbumsEdit extends AlbumBase {
     }
 
     refreshMedias(): void {
+        if (this.album === undefined) {
+            throw new DOMException('Unable to refresh undefined album.');
+        }
         this.axios
             .get(`/api/admin/albums/${this.$route.params.slug}`)
             .then(res => res.data)
@@ -274,6 +284,9 @@ export default class AlbumsEdit extends AlbumBase {
     }
 
     deleteAlbum(): void {
+        if (this.album === undefined) {
+            throw new DOMException('Unable to delete undefined album.');
+        }
         this.axios
             .delete(`/api/admin/albums/${this.album.slug}`)
             .then(() => {
@@ -286,10 +299,14 @@ export default class AlbumsEdit extends AlbumBase {
             });
     }
 
-    deleteAlbumPicture(albumSlug: string, mediaId: number): void {
+    deleteAlbumPicture(mediaId: number): void {
+        if (this.album === undefined) {
+            throw new DOMException('Unable to delete media from undefined album.');
+        }
         this.axios
-            .delete(`/api/admin/album-pictures/${albumSlug}`, {
+            .delete(`/api/admin/album-pictures/${this.album.slug}`, {
                 data: {
+                    // eslint-disable-next-line @typescript-eslint/camelcase
                     media_id: mediaId,
                 },
             })

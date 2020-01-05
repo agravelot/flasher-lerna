@@ -43,7 +43,7 @@ class UserPolicy extends Policy
      */
     public function delete(User $user, ?User $model = null): bool
     {
-        return false;
+        return $user->id === optional($model)->id;
     }
 
     /**

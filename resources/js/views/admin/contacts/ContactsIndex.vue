@@ -7,9 +7,9 @@
             <div class="buttons">
               <b-button
                 :disabled="!checkedRows.length"
-                @click="confirmDeleteSelectedContacts"
                 type="is-danger"
                 icon-left="trash-alt"
+                @click="confirmDeleteSelectedContacts"
               >
                 Delete checked
               </b-button>
@@ -20,12 +20,12 @@
         <div class="level-right">
           <b-field class="is-pulled-right">
             <b-input
-              :loading="loading"
               v-model="search"
-              @input="fetchContacts()"
+              :loading="loading"
               placeholder="Search..."
               type="search"
               icon="search"
+              @input="fetchContacts()"
             />
           </b-field>
         </div>
@@ -36,10 +36,8 @@
         :loading="loading"
         :total="total"
         :per-page="perPage"
-        @page-change="onPageChange"
         :default-sort-direction="defaultSortOrder"
         :default-sort="[sortField, sortOrder]"
-        @sort="onSort"
         :show-detail-icon="showDetailIcon"
         :checked-rows.sync="checkedRows"
         striped
@@ -51,6 +49,8 @@
         checkable
         detailed
         detail-key="id"
+        @page-change="onPageChange"
+        @sort="onSort"
       >
         <template slot-scope="contact">
           <b-table-column

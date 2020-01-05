@@ -15,9 +15,9 @@
               </b-button>
               <b-button
                 :disabled="!checkedRows.length"
-                @click="confirmDeleteSelectedAlbums"
                 type="is-danger"
                 icon-left="trash-alt"
+                @click="confirmDeleteSelectedAlbums"
               >
                 Delete checked
               </b-button>
@@ -28,12 +28,12 @@
         <div class="level-right">
           <b-field class="is-pulled-right">
             <b-input
-              :loading="loading"
               v-model="search"
-              @input="fetchAlbums()"
+              :loading="loading"
               placeholder="Search..."
               type="search"
               icon="search"
+              @input="fetchAlbums()"
             />
           </b-field>
         </div>
@@ -44,10 +44,8 @@
         :loading="loading"
         :total="total"
         :per-page="perPage"
-        @page-change="onPageChange"
         :default-sort-direction="defaultSortOrder"
         :default-sort="[sortField, sortOrder]"
-        @sort="onSort"
         :checked-rows.sync="checkedRows"
         striped
         hoverable
@@ -56,6 +54,8 @@
         backend-pagination
         backend-sorting
         checkable
+        @page-change="onPageChange"
+        @sort="onSort"
       >
         <template slot-scope="album">
           <b-table-column
@@ -86,21 +86,21 @@
           >
             <span
               v-if="album.row.private === 1"
-              v-bind:title="'This album is private'"
+              :title="'This album is private'"
               class="tag is-danger"
             >
               {{ 'Private' }}
             </span>
             <span
               v-else-if="typeof album.row.published_at === 'string'"
-              v-bind:title="new Date(album.row.published_at).toLocaleDateString()"
+              :title="new Date(album.row.published_at).toLocaleDateString()"
               class="tag is-success"
             >
               {{ 'Published' }}
             </span>
             <span
               v-else
-              v-bind:title="'This album is a draft'"
+              :title="'This album is a draft'"
               class="tag is-dark"
             >{{
               'Draft'

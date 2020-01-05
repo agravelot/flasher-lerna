@@ -46,11 +46,11 @@
 
     <div v-if="total > perPage">
       <b-pagination
-        v-on:change="onPageChanged"
         :total="total"
         :current.sync="page"
         :per-page="perPage"
         order="is-centered"
+        @change="onPageChanged"
       />
     </div>
   </div>
