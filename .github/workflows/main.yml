@@ -27,13 +27,6 @@ jobs:
         username: agravelot
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Login to GitLab repository
-      uses: azure/docker-login@v1
-      with:
-        login-server: docker.pkg.github.com
-        username: ${{ secrets.CI_REGISTRY_USER }}
-        password: ${{ secrets.CI_REGISTRY_PASSWORD }}
-
     - name: Create required docker network
       run: |
         docker network create nginx-proxy
@@ -50,7 +43,12 @@ jobs:
     - name: Build the Docker stack
       run: docker-compose build
 
-    - name: Push image to registry
+  - name: Login to GitLab repository & Push image to registry
+      uses: azure/docker-login@v1
+      with:
+        login-server: docker.pkg.github.com
+        username: ${{ secrets.CI_REGISTRY_USER }}
+        password: ${{ secrets.CI_REGISTRY_PASSWORD }}
       run: docker-compose push php nginx
 
     - name: Fetch php dev dependencies
