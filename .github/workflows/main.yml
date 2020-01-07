@@ -22,14 +22,14 @@ jobs:
 
     - name: Login to Github repository
       uses: azure/docker-login@v1
-      wirh:
+      with:
         login-server: docker.pkg.github.com
         username: agravelot
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Login to GitLab repository
       uses: azure/docker-login@v1
-      env:
+      with:
         login-server: docker.pkg.github.com
         username: ${{ secrets.CI_REGISTRY_USER }}
         password: ${{ secrets.CI_REGISTRY_PASSWORD }}
