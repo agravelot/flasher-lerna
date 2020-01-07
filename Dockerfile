@@ -30,9 +30,9 @@ FROM nginx:alpine as nginx
 WORKDIR /var/www/html
 
 RUN : \
-        && apk --no-cache add shadow \
+        && apk --no-cache --virtual user-add-dep add shadow \
         && usermod -u 1000 nginx \
-        && apk del shadow \
+        && apk del user-add-dep \
         ;
 
 COPY docker/nginx/conf /etc/nginx
@@ -58,7 +58,7 @@ COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
 ENTRYPOINT /start.sh
 
 # ==== PHP Application ==== #
-FROM registry.gitlab.com/nevax/docker-php-fpm-alpine-laravel as php_base
+FROM registry.gitlab.com/nevax/docker-php-fpm-alpine-laravel:7.4 as php_base
 
 # import PHP configurations
 COPY docker/php-fpm/custom.ini /usr/local/etc/php/conf.d/
