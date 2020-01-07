@@ -60,7 +60,7 @@ jobs:
 
     - name: Deploy to staging
       run: |
-        apt install -y openssh-client socat
+        sudo apt install -y openssh-client socat
         eval $(ssh-agent -s)
         mkdir -p ~/.ssh
         'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
