@@ -9,12 +9,25 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+
     - name: Run a one-line script
       run: echo Hello, world!
-    - name: Run a multi-line script
+
+    - name: Set tag var
+        id: vars
+        run: echo ::set-output name=docker_tag::$(echo ${GITHUB_REF} | cut -d'/' -f3)-${GITHUB_SHA}
+
+    - name: Print docjer-compose version
+      run: docker-compose version
+
+    - name: Login to gitlab registry
+      run: docker login registry.gitlab.com -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+
+    - name: Create required docker network
       run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+        docker network create nginx-proxy
+        docker network create database-network
+
     - name: Docker Lint
       uses: luke142367/Docker-Lint-Action@v1.0.0
       env:
@@ -23,3 +36,28 @@ jobs:
       with:
         # Paths to dockerfiles
         target: Dockerfile
+
+
+    - name: Build the Docker stack
+        run: docker-compose build
+
+    - name: Push image to registry
+      run: docker-compose push php nginx
+
+    - name: Fetch php dev dependencies
+      run: |
+        docker build -t vendor_dev -f docker/vendor-dev/Dockerfile .
+        export VENDOR_DOCKER=$(docker run -d -t vendor_dev tail -f /dev/null)
+        docker cp -a $VENDOR_DOCKER:/app/vendor .
+
+    - name: Scan PHP container
+        uses: phonito/phonito-scanner-action@master
+        with:
+          image: myapp:${{ steps.vars.outputs.docker_tag }}
+          phonito-token: ${{ secrets.PHONITO_TOKEN }}
+
+    - name: Scan Nginx container
+        uses: phonito/phonito-scanner-action@master
+        with:
+          image: myapp:${{ steps.vars.outputs.docker_tag }}
+          phonito-token: ${{ secrets.PHONITO_TOKEN }}
