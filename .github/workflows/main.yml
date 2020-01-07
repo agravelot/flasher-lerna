@@ -39,14 +39,13 @@ jobs:
         docker network create nginx-proxy
         docker network create database-network
 
-    - name: Docker Lint
-      uses: luke142367/Docker-Lint-Action@v1.0.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TARGET: Dockerfile
-      with:
-        # Paths to dockerfiles
-        target: Dockerfile
+#    - name: Docker Lint
+#      uses: luke142367/Docker-Lint-Action@v1.0.0
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        TARGET: Dockerfile
+#      with:
+#        target: Dockerfile
 
     - name: Build the Docker stack
       run: docker-compose build
