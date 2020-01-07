@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {
@@ -18,7 +17,6 @@ class AccountController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param User $user
      * @return JsonResponse
      * @throws Exception
      */

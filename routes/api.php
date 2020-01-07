@@ -31,6 +31,8 @@ Route::group([
         'prefix' => 'admin',
     ], static function (): void {
         Route::get('dashboard', 'AdminDashboardController')->name('dashboard');
+        Route::get('clear-cache', 'AdminClearCacheController')->name('clear-cache');
+
         Route::apiResource('albums', 'AdminAlbumController');
         Route::apiResource('album-pictures', 'AdminPictureAlbumController')
             ->only('store', 'destroy')

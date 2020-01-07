@@ -13,6 +13,7 @@
     "ext-imagick": "*",
     "ext-json": "*",
     "ext-redis": "*",
+    "ext-pdo_pgsql": "*",
     "anhskohbo/no-captcha": "^3.1",
     "bensampo/laravel-enum": "^1.20",
     "beyondcode/laravel-self-diagnosis": "^1.0",

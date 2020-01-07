@@ -77,32 +77,6 @@
         />
       </b-menu-list>
     </b-menu>
-
-    <div>
-      <aside class="menu">
-        <ul class="menu-list">
-          <li>
-            <a
-              class="has-text-info has-margin-top-lg"
-              href="/"
-            >
-              <b-icon icon="chevron-circle-left" />
-              Back to the website
-            </a>
-          </li>
-        </ul>
-      </aside>
-    </div>
-
-    <div class="admin-collapse-button">
-      <a
-        id="collapse-admin-menu"
-        class="has-text-info has-margin-top-lg"
-      >
-        <b-icon icon="chevron-circle-left" />
-        Collapse
-      </a>
-    </div>
   </div>
 </template>
 

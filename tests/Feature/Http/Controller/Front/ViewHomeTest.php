@@ -9,7 +9,7 @@ class ViewHomeTest extends TestCase
     /**
      * A basic test example.
      */
-    public function testBasicTest()
+    public function testBasicTest(): void
     {
         $response = $this->get('/');
 
