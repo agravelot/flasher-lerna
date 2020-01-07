@@ -58,14 +58,12 @@ jobs:
         export VENDOR_DOCKER=$(docker run -d -t vendor_dev tail -f /dev/null)
         docker cp -a $VENDOR_DOCKER:/app/vendor .
 
-    - name: Scan PHP container
-      uses: phonito/phonito-scanner-action@master
-      with:
-        image: ${{ env.PHP_IMAGE }}
-        phonito-token: ${{ secrets.PHONITO_TOKEN }}
-
-    - name: Scan Nginx container
-      uses: phonito/phonito-scanner-action@master
-      with:
-        image: ${{ env.NGINX_IMAGE }}
-        phonito-token: ${{ secrets.PHONITO_TOKEN }}
+    - name: Deploy to staging
+      run: |
+        apt install -y openssh-client socat
+        eval $(ssh-agent -s)
+        mkdir -p ~/.ssh
+        'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+        chmod +x docker/*.sh
+        bash -c 'cd docker/ && ./generate_env.sh staging'
+        bash -c 'cd docker/ && ./deploy.sh staging'
