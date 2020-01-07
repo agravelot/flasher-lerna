@@ -63,7 +63,7 @@ jobs:
         sudo apt install -y openssh-client socat
         eval $(ssh-agent -s)
         mkdir -p ~/.ssh
-        'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+        '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
         chmod +x docker/*.sh
         bash -c 'cd docker/ && ./generate_env.sh staging'
         bash -c 'cd docker/ && ./deploy.sh staging'
