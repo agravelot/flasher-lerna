@@ -14,8 +14,8 @@ jobs:
       run: echo Hello, world!
 
     - name: Set tag var
-        id: vars
-        run: echo ::set-output name=docker_tag::$(echo ${GITHUB_REF} | cut -d'/' -f3)-${GITHUB_SHA}
+      id: vars
+      run: echo ::set-output name=docker_tag::$(echo ${GITHUB_REF} | cut -d'/' -f3)-${GITHUB_SHA}
 
     - name: Print docjer-compose version
       run: docker-compose version
