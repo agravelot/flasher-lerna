@@ -22,17 +22,17 @@ jobs:
 
     - name: Login to Github repository
       uses: azure/docker-login@v1
-      env:
-        DOCKER_REGISTRY_URL: docker.pkg.github.com
-        DOCKER_USERNAME: agravelot
-        DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+      wirh:
+        login-server: docker.pkg.github.com
+        username: agravelot
+        password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Login to GitLab repository
       uses: azure/docker-login@v1
       env:
-        DOCKER_REGISTRY_URL: docker.pkg.github.com
-        DOCKER_USERNAME: ${{ secrets.CI_REGISTRY_USER }}
-        DOCKER_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
+        login-server: docker.pkg.github.com
+        username: ${{ secrets.CI_REGISTRY_USER }}
+        password: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
     - name: Create required docker network
       run: |
