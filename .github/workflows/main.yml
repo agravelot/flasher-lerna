@@ -39,7 +39,7 @@ jobs:
 
 
     - name: Build the Docker stack
-        run: docker-compose build
+      run: docker-compose build
 
     - name: Push image to registry
       run: docker-compose push php nginx
@@ -57,7 +57,7 @@ jobs:
           phonito-token: ${{ secrets.PHONITO_TOKEN }}
 
     - name: Scan Nginx container
-        uses: phonito/phonito-scanner-action@master
-        with:
-          image: myapp:${{ steps.vars.outputs.docker_tag }}
-          phonito-token: ${{ secrets.PHONITO_TOKEN }}
+      uses: phonito/phonito-scanner-action@master
+      with:
+        image: myapp:${{ steps.vars.outputs.docker_tag }}
+        phonito-token: ${{ secrets.PHONITO_TOKEN }}
