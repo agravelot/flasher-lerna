@@ -27,7 +27,7 @@ jobs:
         username: agravelot
         password: ${{ secrets.GITHUB_TOKEN }}
 
-  - name: Login to GitLab repository
+    - name: Login to GitLab repository
       uses: azure/docker-login@v1
       with:
         login-server: registry.gitlab.com
