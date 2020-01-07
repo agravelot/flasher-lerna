@@ -7,17 +7,16 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      CI_COMMIT_SHORT_SHA: ${GITHUB_SHA}
+
     steps:
     - uses: actions/checkout@v1
 
     - name: Run a one-line script
       run: echo Hello, world!
 
-    - name: Set tag var
-      id: vars
-      run: echo ::set-output name=docker_tag::$(echo ${GITHUB_REF} | cut -d'/' -f3)-${GITHUB_SHA}
-
-    - name: Print docjer-compose version
+    - name: Print docker-compose version
       run: docker-compose version
 
     - name: Login to Github repository
@@ -62,11 +61,11 @@ jobs:
     - name: Scan PHP container
       uses: phonito/phonito-scanner-action@master
       with:
-        image: myapp:${{ steps.vars.outputs.docker_tag }}
+        image: registry.gitlab.com/flasher/flasher/picblog_php:${{ CI_COMMIT_SHORT_SHA }}
         phonito-token: ${{ secrets.PHONITO_TOKEN }}
 
     - name: Scan Nginx container
       uses: phonito/phonito-scanner-action@master
       with:
-        image: myapp:${{ steps.vars.outputs.docker_tag }}
+        image: registry.gitlab.com/flasher/flasher/picblog_nginx:${{ CI_COMMIT_SHORT_SHA }}
         phonito-token: ${{ secrets.PHONITO_TOKEN }}
