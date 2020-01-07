@@ -51,10 +51,10 @@ jobs:
         docker cp -a $VENDOR_DOCKER:/app/vendor .
 
     - name: Scan PHP container
-        uses: phonito/phonito-scanner-action@master
-        with:
-          image: myapp:${{ steps.vars.outputs.docker_tag }}
-          phonito-token: ${{ secrets.PHONITO_TOKEN }}
+      uses: phonito/phonito-scanner-action@master
+      with:
+        image: myapp:${{ steps.vars.outputs.docker_tag }}
+        phonito-token: ${{ secrets.PHONITO_TOKEN }}
 
     - name: Scan Nginx container
       uses: phonito/phonito-scanner-action@master
