@@ -12,6 +12,7 @@ jobs:
     - uses: actions/checkout@v1
 
     - name: Define env
+      run: echo ''
       env:
         CI_COMMIT_SHORT_SHA: ${GITHUB_SHA}
         PHP_IMAGE: registry.gitlab.com/flasher/flasher/picblog_php:${CI_COMMIT_SHORT_SHA}
