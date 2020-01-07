@@ -64,7 +64,7 @@
                 .post(`/api/admin/invitations/`, this.invitation)
 
                 .then(res => res.data)
-                .then(res => {
+                .then(() => {
                     this.showSuccess('Invitation successfully created');
                     this.$router.push({name: 'admin.invitations.index'});
                 })
