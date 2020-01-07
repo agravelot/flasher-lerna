@@ -7,14 +7,14 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    env:
-      CI_COMMIT_SHORT_SHA: ${GITHUB_SHA}
-
     steps:
     - uses: actions/checkout@v1
 
-    - name: Run a one-line script
-      run: echo Hello, world!
+    - name: Define env
+      run: |
+        echo "::set-env name=CI_COMMIT_SHORT_SHA::${GITHUB_SHA}"
+        echo "::set-env name=PHP_IMAGE::registry.gitlab.com/flasher/flasher/picblog_php:${CI_COMMIT_SHORT_SHA}"
+        echo "::set-env name=NGINX_IMAGE::registry.gitlab.com/flasher/flasher/picblog_nginx:${CI_COMMIT_SHORT_SHA}"
 
     - name: Print docker-compose version
       run: docker-compose version
@@ -61,11 +61,11 @@ jobs:
     - name: Scan PHP container
       uses: phonito/phonito-scanner-action@master
       with:
-        image: registry.gitlab.com/flasher/flasher/picblog_php:${{ CI_COMMIT_SHORT_SHA }}
+        image: ${{ PHP_IMAGE }}
         phonito-token: ${{ secrets.PHONITO_TOKEN }}
 
     - name: Scan Nginx container
       uses: phonito/phonito-scanner-action@master
       with:
-        image: registry.gitlab.com/flasher/flasher/picblog_nginx:${{ CI_COMMIT_SHORT_SHA }}
+        image: ${{ NGINX_IMAGE }}
         phonito-token: ${{ secrets.PHONITO_TOKEN }}
