@@ -62,11 +62,11 @@ jobs:
     - name: Scan PHP container
       uses: phonito/phonito-scanner-action@master
       with:
-        image: ${{ PHP_IMAGE }}
+        image: ${{ env.PHP_IMAGE }}
         phonito-token: ${{ secrets.PHONITO_TOKEN }}
 
     - name: Scan Nginx container
       uses: phonito/phonito-scanner-action@master
       with:
-        image: ${{ NGINX_IMAGE }}
+        image: ${{ env.NGINX_IMAGE }}
         phonito-token: ${{ secrets.PHONITO_TOKEN }}
