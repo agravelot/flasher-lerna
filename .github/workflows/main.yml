@@ -12,11 +12,10 @@ jobs:
     - uses: actions/checkout@v1
 
     - name: Define env
-      run: echo ''
-      env:
-        CI_COMMIT_SHORT_SHA: ${GITHUB_SHA}
-        PHP_IMAGE: registry.gitlab.com/flasher/flasher/picblog_php:${CI_COMMIT_SHORT_SHA}
-        NGINX_IMAGE: registry.gitlab.com/flasher/flasher/picblog_nginx:${CI_COMMIT_SHORT_SHA}
+      run: |
+        echo "::set-env name=CI_COMMIT_SHORT_SHA::${GITHUB_SHA}"
+        echo "::set-env name=PHP_IMAGE::registry.gitlab.com/flasher/flasher/picblog_php:${CI_COMMIT_SHORT_SHA}"
+        echo "::set-env name=NGINX_IMAGE::registry.gitlab.com/flasher/flasher/picblog_nginx:${CI_COMMIT_SHORT_SHA}"
 
     - name: Print docker-compose version
       run: docker-compose version
