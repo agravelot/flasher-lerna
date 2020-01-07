@@ -27,6 +27,13 @@ jobs:
       uses: actions/docker/login@master
       env:
         DOCKER_REGISTRY_URL: docker.pkg.github.com
+        DOCKER_USERNAME: ${{ secrets.CI_REGISTRY_USER }}
+        DOCKER_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
+
+    - name: Login to Github repository
+      uses: actions/docker/login@master
+      env:
+        DOCKER_REGISTRY_URL: docker.pkg.github.com
         DOCKER_USERNAME: ${{ github.actor }}
         DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
