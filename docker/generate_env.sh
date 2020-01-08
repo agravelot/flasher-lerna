@@ -17,7 +17,6 @@ if [[ $ENVIRONMENT == "production" ]]; then
     export APP_NAME=${APP_NAME_PRODUCTION}
     export APP_KEY=${APP_KEY_PRODUCTION}
     export ANALYTICS_TRACKING_ID=${ANALYTICS_TRACKING_ID_PROD}
-    export SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL_PROD}
 else
     # Staging
     export SSH_PRIVATE_KEY=${CI_STAGING_SSH_PRIVATE_KEY}
@@ -27,11 +26,8 @@ else
     export APP_URL=${APP_URL_STAGING}
     export APP_NAME=${APP_NAME_STAGING}
     export APP_KEY=${APP_KEY_STAGING}
-    export SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL_STAGING}
 fi
 
-export APP_ENV=$1
+export APP_ENV=$ENVIRONMENT
 
 REMOTE=$SSH_USER@${CI_DEPLOY_URI}
-PICBLOG_IMAGE_PHP=registry.gitlab.com/flasher/flasher/picblog_php
-PICBLOG_IMAGE_NGINX=registry.gitlab.com/flasher/flasher/picblog_nginx

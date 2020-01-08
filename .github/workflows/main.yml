@@ -60,8 +60,6 @@ jobs:
 
     - name: Run php test suites
       run: |
-        chmod +x docker/*.sh
-#        bash -c 'cd docker/ && ./generate_env.sh staging'
         docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d
         docker-compose stop queue scheduler nginx
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T cache redis-cli config set maxmemory 41943040
@@ -77,17 +75,24 @@ jobs:
         APP_URL: ${{ secrets.APP_URL_STAGING }}
         APP_NAME: ${{ secrets.APP_NAME_STAGING }}
         APP_KEY: ${{ secrets.APP_KEY_STAGING }}
-        APP_ENV: "testing"
+        APP_ENV: "local"
 
     - name: Run php lint
       run: |
-        chmod +x docker/*.sh
-        bash -c 'cd docker/ && ./generate_env.sh staging'
         docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d
         docker-compose stop queue scheduler nginx
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T cache redis-cli config set maxmemory 41943040
         docker cp vendor $(docker-compose ps -q php):/var/www/html/
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -e APP_ENV=testing -T php php vendor/bin/php-cs-fixer fix --dry-run --diff
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.CI_STAGING_SSH_PRIVATE_KEY }}
+        SSH_USER: ${{ secrets.CI_STAGING_SSH_USER }}
+        CI_DEPLOY_SSH_PORT: ${{ secrets.CI_STAGING_DEPLOY_SSH_PORT }}
+        CI_DEPLOY_URI: ${{ secrets.CI_STAGING_DEPLOY_URI }}
+        APP_URL: ${{ secrets.APP_URL_STAGING }}
+        APP_NAME: ${{ secrets.APP_NAME_STAGING }}
+        APP_KEY: ${{ secrets.APP_KEY_STAGING }}
+        APP_ENV: "local"
 
     - name: Deploy to staging
       env:
