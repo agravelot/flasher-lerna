@@ -105,7 +105,7 @@ jobs:
     - name: Deploy to staging
       env:
         REMOTE: ${{ secrets.CI_STAGING_SSH_USER }}@${{ secrets.CI_STAGING_DEPLOY_URI }}
-        CI_COMMIT_REF_NAME: {GITHUB_REF##*/}
+        CI_COMMIT_REF_NAME: ${GITHUB_REF##*/}
         SSH_PRIVATE_KEY: ${{ secrets.CI_STAGING_SSH_PRIVATE_KEY }}
         SSH_USER: ${{ secrets.CI_STAGING_SSH_USER }}
         CI_DEPLOY_SSH_PORT: ${{ secrets.CI_STAGING_DEPLOY_SSH_PORT }}
