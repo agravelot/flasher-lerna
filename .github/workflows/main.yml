@@ -104,6 +104,8 @@ jobs:
 
     - name: Deploy to staging
       env:
+        REMOTE: ${{ secrets.CI_STAGING_SSH_USER }}@${{ secrets.CI_STAGING_DEPLOY_URI }}
+        CI_COMMIT_REF_NAME: {GITHUB_REF##*/}
         SSH_PRIVATE_KEY: ${{ secrets.CI_STAGING_SSH_PRIVATE_KEY }}
         SSH_USER: ${{ secrets.CI_STAGING_SSH_USER }}
         CI_DEPLOY_SSH_PORT: ${{ secrets.CI_STAGING_DEPLOY_SSH_PORT }}
@@ -122,3 +124,15 @@ jobs:
         chmod +x docker/*.sh
         bash -c 'cd docker/ && ./deploy.sh staging'
 
+    - name: Audit URLs using Lighthouse
+      uses: treosh/lighthouse-ci-action@v2
+      with:
+        urls: |
+          https://${{ secrets.APP_URL_STAGING }}
+          hhttps://${{ secrets.APP_URL_STAGING }}/albums
+
+    - name: Save results
+      uses: actions/upload-artifact@v1
+      with:
+        name: lighthouse-results
+        path: '.lighthouseci' # This will save the Lighthouse results as .json files
