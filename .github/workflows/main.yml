@@ -75,7 +75,8 @@ jobs:
         APP_URL: ${{ secrets.APP_URL_STAGING }}
         APP_NAME: ${{ secrets.APP_NAME_STAGING }}
         APP_KEY: ${{ secrets.APP_KEY_STAGING }}
-        APP_ENV: "local"
+        APP_ENV: "testing"
+        DB_PASSWORD: "secretPassword"
 
     - name: Run php lint
       run: |
@@ -93,6 +94,7 @@ jobs:
         APP_NAME: ${{ secrets.APP_NAME_STAGING }}
         APP_KEY: ${{ secrets.APP_KEY_STAGING }}
         APP_ENV: "local"
+        DB_PASSWORD: "secretPassword"
 
     - name: Deploy to staging
       env:
