@@ -107,7 +107,7 @@ jobs:
         CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
         CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
         REMOTE: ${{ secrets.CI_STAGING_SSH_USER }}@${{ secrets.CI_STAGING_DEPLOY_URI }}
-        CI_COMMIT_REF_NAME: ${GITHUB_REF##*/}
+        CI_COMMIT_REF_NAME: ${GITHUB_REF:11}
         SSH_PRIVATE_KEY: ${{ secrets.CI_STAGING_SSH_PRIVATE_KEY }}
         SSH_USER: ${{ secrets.CI_STAGING_SSH_USER }}
         CI_DEPLOY_SSH_PORT: ${{ secrets.CI_STAGING_DEPLOY_SSH_PORT }}
@@ -131,7 +131,7 @@ jobs:
       with:
         urls: |
           https://${{ secrets.APP_URL_STAGING }}
-          hhttps://${{ secrets.APP_URL_STAGING }}/albums
+          https://${{ secrets.APP_URL_STAGING }}/albums
 
     - name: Save results
       uses: actions/upload-artifact@v1
