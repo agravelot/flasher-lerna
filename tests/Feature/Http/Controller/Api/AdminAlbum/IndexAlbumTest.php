@@ -20,7 +20,7 @@ class IndexAlbumTest extends TestCase
         $response->assertOk()
             ->assertJsonPath('data.0.title', $albums->get(0)->title)
             ->assertJsonPath('data.1.title', $albums->get(1)->title)
-            ->assertJsonPath('data.1.title', $albums->get(2)->title);
+            ->assertJsonPath('data.2.title', $albums->get(2)->title);
     }
 
     public function test_admin_can_view_unpublished_albums(): void
@@ -33,7 +33,7 @@ class IndexAlbumTest extends TestCase
         $response->assertOk()
             ->assertJsonPath('data.0.title', $albums->get(0)->title)
             ->assertJsonPath('data.1.title', $albums->get(1)->title)
-            ->assertJsonPath('data.1.title', $albums->get(2)->title);
+            ->assertJsonPath('data.2.title', $albums->get(2)->title);
     }
 
     public function test_admin_can_view_secured_albums(): void
@@ -46,17 +46,20 @@ class IndexAlbumTest extends TestCase
         $response->assertOk()
             ->assertJsonPath('data.0.title', $albums->get(0)->title)
             ->assertJsonPath('data.1.title', $albums->get(1)->title)
-            ->assertJsonPath('data.1.title', $albums->get(2)->title);
+            ->assertJsonPath('data.2.title', $albums->get(2)->title);
     }
 
     public function test_admin_can_view_password_less_albums(): void
     {
         $this->actingAsAdmin();
-        $albums = factory(Album::class, 5)->state('passwordLess')->create();
+        $albums = factory(Album::class, 3)->state('passwordLess')->create();
 
         $response = $this->json('get', '/api/admin/albums');
 
-        $response->assertOk();
+        $response->assertOk()
+            ->assertJsonPath('data.0.title', $albums->get(0)->title)
+            ->assertJsonPath('data.1.title', $albums->get(1)->title)
+            ->assertJsonPath('data.2.title', $albums->get(2)->title);
     }
 
     public function test_user_can_not_view_index(): void
