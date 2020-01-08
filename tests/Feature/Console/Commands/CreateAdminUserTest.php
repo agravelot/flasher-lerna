@@ -47,7 +47,7 @@ class CreateAdminUserTest extends TestCase
         ])
             ->expectsOutput('User not created. See error messages below:')
             ->expectsOutput('The email must be a valid email address.')
-            ->assertExitCode(1);
+            ->assertExitCode(0);
         $this->assertCount(0, User::all());
     }
 
@@ -61,7 +61,7 @@ class CreateAdminUserTest extends TestCase
         ])
             ->expectsOutput('User not created. See error messages below:')
             ->expectsOutput('The email must be a valid email address.')
-            ->assertExitCode(1);
+            ->assertExitCode(0);
         $this->assertCount(0, User::all());
     }
 
