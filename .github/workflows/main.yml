@@ -102,6 +102,10 @@ jobs:
         DB_PASSWORD: "secretPassword"
         ERROR_LOG_LEVEL: "info"
 
+    - name: Remove docker stack
+      run: |
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml down -v
+
     - name: Deploy to staging
       env:
         CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
