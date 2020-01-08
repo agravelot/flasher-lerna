@@ -105,6 +105,7 @@ jobs:
     - name: Deploy to staging
       env:
         CI_STAGING_SSH_PRIVATE_KEY: ${{ secrets.CI_STAGING_SSH_PRIVATE_KEY }}
+        CI_STAGING_SSH_USER: ${{ secrets.CI_STAGING_SSH_USER }}
       run: |
         sudo apt install -y openssh-client socat
         eval $(ssh-agent -s)
