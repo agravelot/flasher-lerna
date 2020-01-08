@@ -58,7 +58,7 @@ COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
 ENTRYPOINT /start.sh
 
 # ==== PHP Application ==== #
-FROM registry.gitlab.com/nevax/docker-php-fpm-alpine-laravel as php_base
+FROM registry.gitlab.com/nevax/docker-php-fpm-alpine-laravel:php7.4 as php_base
 
 # import PHP configurations
 COPY docker/php-fpm/custom.ini /usr/local/etc/php/conf.d/
