@@ -61,7 +61,7 @@ jobs:
     - name: Run php test suites
       run: |
         chmod +x docker/*.sh
-        bash -c 'cd docker/ && ./generate_env.sh staging'
+#        bash -c 'cd docker/ && ./generate_env.sh staging'
         docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d
         docker-compose stop queue scheduler nginx
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T cache redis-cli config set maxmemory 41943040
@@ -69,6 +69,15 @@ jobs:
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan db:wait-connection
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan passport:keys
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php vendor/bin/phpunit --coverage-text --colors=never
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.CI_STAGING_SSH_PRIVATE_KEY }}
+        SSH_USER: ${{ secrets.CI_STAGING_SSH_USER }}
+        CI_DEPLOY_SSH_PORT: ${{ secrets.CI_STAGING_DEPLOY_SSH_PORT }}
+        CI_DEPLOY_URI: ${{ secrets.CI_STAGING_DEPLOY_URI }}
+        APP_URL: ${{ secrets.APP_URL_STAGING }}
+        APP_NAME: ${{ secrets.APP_NAME_STAGING }}
+        APP_KEY: ${{ secrets.APP_KEY_STAGING }}
+        APP_ENV: "testing"
 
     - name: Run php lint
       run: |
