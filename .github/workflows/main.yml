@@ -125,7 +125,7 @@ jobs:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}"
         ERROR_LOG_LEVEL: "debug"
       run: |
-        docker -f docker-compose.yml -f docker-compose.local.yml network prune -f
+        docker prune -f
         sudo apt install -y openssh-client socat
         eval $(ssh-agent -s)
         mkdir -p ~/.ssh
