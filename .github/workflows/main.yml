@@ -18,8 +18,10 @@ jobs:
         echo "::set-env name=PHP_IMAGE::registry.gitlab.com/flasher/flasher/picblog_php:${CI_COMMIT_SHORT_SHA}"
         echo "::set-env name=NGINX_IMAGE::registry.gitlab.com/flasher/flasher/picblog_nginx:${CI_COMMIT_SHORT_SHA}"
 
-    - name: Print docker-compose version
-      run: docker-compose version
+    - name: Print docker & docker-compose version
+      run: |
+        docker-compose version
+        docker -v
 
     - name: Login to Github repository
       uses: azure/docker-login@v1
@@ -123,7 +125,7 @@ jobs:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}"
         ERROR_LOG_LEVEL: "debug"
       run: |
-        docker network prune -f
+        docker -f docker-compose.yml -f docker-compose.local.yml network prune -f
         sudo apt install -y openssh-client socat
         eval $(ssh-agent -s)
         mkdir -p ~/.ssh
