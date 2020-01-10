@@ -69,6 +69,17 @@ jobs:
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T cache redis-cli config set maxmemory 41943040
         docker cp vendor $(docker-compose ps -q php):/var/www/html/
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan db:wait-connection
+      env:
+        SSH_USER: ${{ secrets.CI_STAGING_SSH_USER }}
+        CI_DEPLOY_SSH_PORT: ${{ secrets.CI_STAGING_DEPLOY_SSH_PORT }}
+        CI_DEPLOY_URI: ${{ secrets.CI_STAGING_DEPLOY_URI }}
+        APP_URL: http://localhost
+        APP_URI: localhost
+        APP_NAME: ${{ secrets.APP_NAME_STAGING }}
+        APP_KEY: ${{ secrets.APP_KEY_STAGING }}
+        APP_ENV: "testing"
+        DB_PASSWORD: "secretPassword"
+        ERROR_LOG_LEVEL: "info"
 
     - name: Run php test suites
       run: |
@@ -77,7 +88,6 @@ jobs:
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan passport:keys
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php vendor/bin/phpunit --coverage-text --colors=never
       env:
-        SSH_PRIVATE_KEY: ${{ secrets.CI_STAGING_SSH_PRIVATE_KEY }}
         SSH_USER: ${{ secrets.CI_STAGING_SSH_USER }}
         CI_DEPLOY_SSH_PORT: ${{ secrets.CI_STAGING_DEPLOY_SSH_PORT }}
         CI_DEPLOY_URI: ${{ secrets.CI_STAGING_DEPLOY_URI }}
