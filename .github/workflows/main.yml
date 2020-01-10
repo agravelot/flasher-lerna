@@ -145,15 +145,29 @@ jobs:
         chmod +x docker/*.sh
         bash -c 'cd docker/ && ./deploy.sh staging'
 
-    - name: Audit URLs using Lighthouse
-      uses: treosh/lighthouse-ci-action@v2
+    - run: mkdir /tmp/artifacts
+    - name: Run Lighthouse
+      uses: foo-software/lighthouse-check-action@master
+      id: lighthouseCheck
       with:
-        urls: |
-          ${{ secrets.APP_URL_STAGING }}
-          ${{ secrets.APP_URL_STAGING }}/albums
+        urls: '${{ secrets.APP_URL_STAGING }}, ${{ secrets.APP_URL_STAGING }}/albums'
+        author: ${{ github.actor }}
+        branch: ${{ github.ref }}
+        outputDirectory: /tmp/artifacts
+        sha: ${{ github.sha }}
 
-    - name: Save results
-      uses: actions/upload-artifact@v1
+    - name: Handle Lighthouse Check results
+      uses: foo-software/lighthouse-check-status-action@master
       with:
-        name: lighthouse-results
-        path: '.lighthouseci' # This will save the Lighthouse results as .json files
+        lighthouseCheckResults: ${{ steps.lighthouseCheck.outputs.lighthouseCheckResults }}
+        minAccessibilityScore: "90"
+        minBestPracticesScore: "50"
+        minPerformanceScore: "50"
+        minProgressiveWebAppScore: "50"
+        minSeoScore: "50"
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@master
+      with:
+        name: Lighthouse reports
+        path: /tmp/artifacts
