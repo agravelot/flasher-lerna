@@ -3,7 +3,7 @@ FROM node:13-alpine as frontend
 WORKDIR /app
 COPY . .
 RUN : \
-        && yarn install \
+        && yarn install --production=true \
         && yarn production \
         ;
 
