@@ -62,13 +62,16 @@ jobs:
         export VENDOR_DOCKER=$(docker run -d -t vendor_dev tail -f /dev/null)
         docker cp -a $VENDOR_DOCKER:/app/vendor .
 
-    - name: Run php test suites
+    - name: Start docker stack
       run: |
         docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d
         docker-compose stop queue scheduler nginx
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T cache redis-cli config set maxmemory 41943040
         docker cp vendor $(docker-compose ps -q php):/var/www/html/
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan db:wait-connection
+
+    - name: Run php test suites
+      run: |
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php touch .env
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan key:generate
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan passport:keys
@@ -88,10 +91,6 @@ jobs:
 
     - name: Run php lint
       run: |
-        docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d
-        docker-compose stop queue scheduler nginx
-        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T cache redis-cli config set maxmemory 41943040
-        docker cp vendor $(docker-compose ps -q php):/var/www/html/
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -e APP_ENV=testing -T php php vendor/bin/php-cs-fixer fix --dry-run --diff
       env:
         SSH_PRIVATE_KEY: ${{ secrets.CI_STAGING_SSH_PRIVATE_KEY }}
