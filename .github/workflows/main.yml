@@ -78,7 +78,7 @@ jobs:
         SSH_USER: ${{ secrets.CI_STAGING_SSH_USER }}
         CI_DEPLOY_SSH_PORT: ${{ secrets.CI_STAGING_DEPLOY_SSH_PORT }}
         CI_DEPLOY_URI: ${{ secrets.CI_STAGING_DEPLOY_URI }}
-        APP_URL: https://${{ secrets.APP_URL_STAGING }}
+        APP_URL: http://127.0.0.1:8000
         APP_NAME: ${{ secrets.APP_NAME_STAGING }}
         APP_KEY: ${{ secrets.APP_KEY_STAGING }}
         APP_ENV: "testing"
@@ -97,7 +97,7 @@ jobs:
         SSH_USER: ${{ secrets.CI_STAGING_SSH_USER }}
         CI_DEPLOY_SSH_PORT: ${{ secrets.CI_STAGING_DEPLOY_SSH_PORT }}
         CI_DEPLOY_URI: ${{ secrets.CI_STAGING_DEPLOY_URI }}
-        APP_URL: https://${{ secrets.APP_URL_STAGING }}
+        APP_URL: http://127.0.0.1:8000
         APP_NAME: ${{ secrets.APP_NAME_STAGING }}
         APP_KEY: ${{ secrets.APP_KEY_STAGING }}
         APP_ENV: "local"
