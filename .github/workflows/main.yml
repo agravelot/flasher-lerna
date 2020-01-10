@@ -109,6 +109,7 @@ jobs:
     - name: Remove docker stack
       run: |
         docker-compose -f docker-compose.yml -f docker-compose.local.yml down -v
+        docker system prune -f
 
     - name: Deploy to staging
       env:
@@ -128,7 +129,6 @@ jobs:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}"
         ERROR_LOG_LEVEL: "debug"
       run: |
-        docker system prune -f
         sudo apt install -y openssh-client socat
         eval $(ssh-agent -s)
         mkdir -p ~/.ssh
