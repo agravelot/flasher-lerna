@@ -43,6 +43,8 @@ class IndexAlbumTest extends TestCase
 
         $response = $this->json('get', '/api/admin/albums');
 
+        $response->dump();
+
         $response->assertOk()
             ->assertJsonPath('data.0.title', $albums->get(0)->title)
             ->assertJsonPath('data.1.title', $albums->get(1)->title)
