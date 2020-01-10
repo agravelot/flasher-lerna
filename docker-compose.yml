@@ -20,7 +20,7 @@ services:
       APP_ENV: "${APP_ENV}"
       APP_KEY: "${APP_KEY}"
       APP_DEBUG: "false"
-      APP_URL: "https://${APP_URL}"
+      APP_URL: "${APP_URL}"
       LOG_CHANNEL: "stderr"
       DB_CONNECTION: "pgsql"
       DB_DATABASE: "flasher"
@@ -91,7 +91,7 @@ services:
       - nginx-proxy
       - backend
     environment:
-      NGINX_HOST: ${APP_URL}
+      NGINX_HOST: ${APP_URI}
       ERROR_LOG_LEVEL: ${ERROR_LOG_LEVEL}
     labels:
       - "traefik.enable=true"

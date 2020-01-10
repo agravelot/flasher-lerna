@@ -3,7 +3,7 @@ FROM node:13-alpine as frontend
 WORKDIR /app
 COPY . .
 RUN : \
-        && yarn install \
+        && yarn install --production=true \
         && yarn production \
         ;
 
@@ -30,9 +30,9 @@ FROM nginx:alpine as nginx
 WORKDIR /var/www/html
 
 RUN : \
-        && apk --no-cache add shadow \
+        && apk --no-cache --virtual user-add-dep add shadow \
         && usermod -u 1000 nginx \
-        && apk del shadow \
+        && apk del user-add-dep \
         ;
 
 COPY docker/nginx/conf /etc/nginx
