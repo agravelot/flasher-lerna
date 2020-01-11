@@ -12,6 +12,7 @@ jobs:
 
     - name: Define env
       run: |
+        echo "::set-env name=CI_COMMIT_REF_NAME::$(git symbolic-ref --short HEAD)"
         echo "::set-env name=CI_COMMIT_SHORT_SHA::${GITHUB_SHA}"
         echo "::set-env name=PHP_IMAGE::registry.gitlab.com/flasher/flasher/picblog_php:${CI_COMMIT_SHORT_SHA}"
         echo "::set-env name=NGINX_IMAGE::registry.gitlab.com/flasher/flasher/picblog_nginx:${CI_COMMIT_SHORT_SHA}"
@@ -125,7 +126,7 @@ jobs:
         CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
         CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
         REMOTE: ${{ secrets.CI_STAGING_SSH_USER }}@${{ secrets.CI_STAGING_DEPLOY_URI }}
-        CI_COMMIT_REF_NAME: ${GITHUB_REF:11}
+        CI_COMMIT_REF_NAME: ${CI_COMMIT_REF_NAME}
         SSH_PRIVATE_KEY: ${{ secrets.CI_STAGING_SSH_PRIVATE_KEY }}
         SSH_USER: ${{ secrets.CI_STAGING_SSH_USER }}
         CI_DEPLOY_SSH_PORT: ${{ secrets.CI_STAGING_DEPLOY_SSH_PORT }}
