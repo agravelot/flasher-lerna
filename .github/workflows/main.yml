@@ -12,10 +12,10 @@ jobs:
 
     - name: Define env
       run: |
-        echo "::set-env name=CI_COMMIT_REF_NAME::$(git symbolic-ref --short HEAD)"
+        echo "::set-env name=CI_COMMIT_REF_NAME::$(cat ${GITHUB_REF} | sed -n '/\* /s///p')"
         echo "::set-env name=CI_COMMIT_SHORT_SHA::${GITHUB_SHA}"
-        echo "::set-env name=PHP_IMAGE::registry.gitlab.com/flasher/flasher/picblog_php:${CI_COMMIT_SHORT_SHA}"
-        echo "::set-env name=NGINX_IMAGE::registry.gitlab.com/flasher/flasher/picblog_nginx:${CI_COMMIT_SHORT_SHA}"
+        echo "::set-env name=PHP_IMAGE::registry.gitlab.com/flasher/flasher/picblog_php:${GITHUB_SHA}"
+        echo "::set-env name=NGINX_IMAGE::registry.gitlab.com/flasher/flasher/picblog_nginx:${GITHUB_SHA}"
 
     - name: Print docker & docker-compose version
       run: |
@@ -146,7 +146,8 @@ jobs:
         chmod +x docker/*.sh
         bash -c 'cd docker/ && ./deploy.sh staging'
 
-    - run: mkdir /tmp/artifacts
+    - name: Setup Lighthouse folder
+      run: mkdir /tmp/artifacts
       if: github.ref == 'refs/heads/develop'
 
     - name: Run Lighthouse
