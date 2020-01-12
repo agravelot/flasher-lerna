@@ -163,7 +163,6 @@ jobs:
         MAIL_FROM_ADDRESS:
         ERROR_LOG_LEVEL: "debug"
       run: |
-        sudo apt install -y openssh-client socat
         eval $(ssh-agent -s)
         mkdir -p ~/.ssh
         echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config

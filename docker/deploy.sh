@@ -9,12 +9,6 @@ set -o errexit   ## set -e : exit the script if any statement returns a non-true
 
 echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
 
-#echo " * OPENING DOCKER SOCKET TUNNEL"
-#socat \
-#  "UNIX-LISTEN:/tmp/docker.sock,reuseaddr,fork" \
-#  "EXEC:'ssh -kTax $REMOTE -p $CI_DEPLOY_SSH_PORT socat STDIO UNIX-CONNECT\:/var/run/docker.sock'" \
-#  &
-#export DOCKER_HOST=unix:///tmp/docker.sock
 export DOCKER_HOST=ssh://${REMOTE}:${CI_DEPLOY_SSH_PORT}
 export COMPOSE_PROJECT_NAME=flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}
 export TRUSTED_PROXIES=$(docker network inspect nginx-proxy --format='{{ (index .IPAM.Config 0).Subnet }}')
