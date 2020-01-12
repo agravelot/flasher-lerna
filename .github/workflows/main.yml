@@ -123,10 +123,11 @@ jobs:
     - name: Deploy to staging
       if: github.ref == 'refs/heads/develop'
       env:
+        CI_COMMIT_SHORT_SHA: ${{ env.CI_COMMIT_SHORT_SHA }}
+        CI_COMMIT_REF_NAME: ${{ env.CI_COMMIT_REF_NAME }}
         CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
         CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
         REMOTE: ${{ secrets.CI_STAGING_SSH_USER }}@${{ secrets.CI_STAGING_DEPLOY_URI }}
-        CI_COMMIT_REF_NAME: ${CI_COMMIT_REF_NAME}
         SSH_PRIVATE_KEY: ${{ secrets.CI_STAGING_SSH_PRIVATE_KEY }}
         SSH_USER: ${{ secrets.CI_STAGING_SSH_USER }}
         CI_DEPLOY_SSH_PORT: ${{ secrets.CI_STAGING_DEPLOY_SSH_PORT }}
