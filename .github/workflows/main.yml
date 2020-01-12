@@ -12,10 +12,10 @@ jobs:
 
     - name: Define env
       run: |
-        echo "::set-env name=CI_COMMIT_REF_NAME::$(echo $GITHUB_REF | sed -n '/\* /s///p')"
-        echo ::set-env name=GITHUB_SHA_SHORT::$(echo $GITHUB_SHA | cut -c 1-6)
-        echo "::set-env name=PHP_IMAGE::registry.gitlab.com/flasher/flasher/picblog_php:$GITHUB_SHA_SHORT"
-        echo "::set-env name=NGINX_IMAGE::registry.gitlab.com/flasher/flasher/picblog_nginx:$GITHUB_SHA_SHORT"
+        echo "::set-env name=CI_COMMIT_REF_NAME::$(echo -n $GITHUB_REF | sed -n '/\* /s///p')"
+        echo ::set-env name=GITHUB_SHA_SHORT::$(echo -n $GITHUB_SHA | cut -c 1-6)
+        echo "::set-env name=PHP_IMAGE::registry.gitlab.com/flasher/flasher/picblog_php:$(echo -n $GITHUB_SHA | cut -c 1-6)"
+        echo "::set-env name=NGINX_IMAGE::registry.gitlab.com/flasher/flasher/picblog_nginx:$(echo -n $GITHUB_SHA | cut -c 1-6)"
 
     - name: Print docker & docker-compose version
       run: |
