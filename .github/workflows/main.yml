@@ -142,7 +142,7 @@ jobs:
         APP_NAME: ${{ secrets.APP_NAME_STAGING }}
         APP_KEY: ${{ secrets.APP_KEY_STAGING }}
         APP_ENV: "staging"
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD_STAGING }}"
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD_STAGING }}
         MAIL_DRIVER:
         SES_KEY:
         SES_SECRET:
