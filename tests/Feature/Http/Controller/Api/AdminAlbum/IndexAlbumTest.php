@@ -13,7 +13,7 @@ class IndexAlbumTest extends TestCase
     public function test_admin_can_view_published_albums(): void
     {
         $this->actingAsAdmin();
-        $albums = factory(Album::class, 3)->state('published')->create();
+        $albums = factory(Album::class, 3)->state('published')->create()->sortByDesc('created_at')->values();
 
         $response = $this->json('get', '/api/admin/albums');
 
@@ -23,10 +23,10 @@ class IndexAlbumTest extends TestCase
             ->assertJsonPath('data.2.title', $albums->get(2)->title);
     }
 
-    public function test_admin_can_view_unpublished_albums(): void
+    public function test_admin_can_view_unpublished_albums_ordered_by_created_at(): void
     {
         $this->actingAsAdmin();
-        $albums = factory(Album::class, 3)->state('unpublished')->create();
+        $albums = factory(Album::class, 3)->state('unpublished')->create()->sortByDesc('created_at')->values();
 
         $response = $this->json('get', '/api/admin/albums');
 
@@ -39,7 +39,7 @@ class IndexAlbumTest extends TestCase
     public function test_admin_can_view_secured_albums(): void
     {
         $this->actingAsAdmin();
-        $albums = factory(Album::class, 3)->state('password')->create();
+        $albums = factory(Album::class, 3)->state('password')->create()->sortByDesc('created_at')->values();
 
         $response = $this->json('get', '/api/admin/albums');
 
@@ -54,7 +54,7 @@ class IndexAlbumTest extends TestCase
     public function test_admin_can_view_password_less_albums(): void
     {
         $this->actingAsAdmin();
-        $albums = factory(Album::class, 3)->state('passwordLess')->create();
+        $albums = factory(Album::class, 3)->state('passwordLess')->create()->sortByDesc('created_at')->values();
 
         $response = $this->json('get', '/api/admin/albums');
 
