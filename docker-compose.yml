@@ -96,10 +96,10 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=nginx-proxy"
-      - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-insecure.rule=Host(`${APP_URL}`) || Host(`www.${APP_URL}`)"
+      - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-insecure.rule=Host(`${APP_URI}`) || Host(`www.${APP_URI}`)"
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-insecure.entrypoints=web"
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-insecure.middlewares=flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-redirect-non-www,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-https-only,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-limit,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-test-ratelimit,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-retry,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-error-check,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-compress"
-      - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.rule=Host(`${APP_URL}`) || Host(`www.${APP_URL}`)"
+      - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.rule=Host(`${APP_URI}`) || Host(`www.${APP_URI}`)"
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.entrypoints=websecure"
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.tls.certresolver=myhttpchallenge"
       - "traefik.http.routers.flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}.middlewares=flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-redirect-non-www,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-https-only,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-limit,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-test-ratelimit,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-retry,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-error-check,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-hsts,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-frame,flasher-${APP_ENV}-${CI_COMMIT_REF_NAME}-compress"
