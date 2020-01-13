@@ -196,7 +196,7 @@ export default class AlbumsEdit extends AlbumBase {
         retryChunksLimit: 15,
         maxThumbnailFilesize: 25,
         // If true, the individual chunks of a file are being uploaded simultaneously.
-        // parallelChunkUploads: true,
+        parallelChunkUploads: false,
         acceptedFiles: 'image/*',
         dictDefaultMessage: "<i class='fas fa-images'></i> Upload",
         headers: {
