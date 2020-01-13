@@ -134,24 +134,23 @@ jobs:
         APP_KEY: ${{ secrets.APP_KEY_STAGING }}
         APP_ENV: "staging"
         DB_PASSWORD: ${{ secrets.DB_PASSWORD_STAGING }}
-        MAIL_DRIVER: "ses"
-        SES_KEY:
-        SES_SECRET:
-        SES_REGION:
-        S3_ACCESS_KEY_ID:
-        S3_SECRET_ACCESS_KEY:
-        S3_DEFAULT_REGION:
-        S3_BUCKET:
-        S3_ENDPOINT:
-        S3_BUCKET_CDN:
-        NOCAPTCHA_SECRET:
-        NOCAPTCHA_SITEKEY:
-        SENTRY_LARAVEL_DSN:
-        ANALYTICS_TRACKING_ID_PROD:
-        SLACK_WEBHOOK_URL:
-        FRONT_SENTRY_DSN_PUBLIC:
-        MAIL_FROM_ADDRESS:
-        ERROR_LOG_LEVEL: "debug"
+        MAIL_DRIVER: ${{ secrets.MAIL_DRIVER }}
+        SES_KEY: ${{ secrets.SES_KEY }}
+        SES_SECRET: ${{ secrets.SES_SECRET }}
+        SES_REGION: ${{ secrets.SES_REGION }}
+        S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+        S3_SECRET_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY_ID }}
+        S3_DEFAULT_REGION: ${{ secrets.S3_DEFAULT_REGION }}
+        S3_BUCKET: ${{ secrets.S3_BUCKET }}
+        S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
+        S3_BUCKET_CDN: ${{ secrets.S3_BUCKET_CDN }}
+        NOCAPTCHA_SECRET: ${{ secrets.NOCAPTCHA_SECRET }}
+        NOCAPTCHA_SITEKEY: ${{ secrets.NOCAPTCHA_SITEKEY }}
+        SENTRY_LARAVEL_DSN: ${{ secrets.SENTRY_LARAVEL_DSN }}
+        ANALYTICS_TRACKING_ID_PROD: ${{ secrets.ANALYTICS_TRACKING_ID_PROD }}
+        FRONT_SENTRY_DSN_PUBLIC: ${{ secrets.FRONT_SENTRY_DSN_PUBLIC }}
+        MAIL_FROM_ADDRESS: ${{ secrets.MAIL_FROM_ADDRESS }}
+        ERROR_LOG_LEVEL: ${{ secrets.ERROR_LOG_LEVEL }}
       run: |
         eval $(ssh-agent -s)
         mkdir -p ~/.ssh
