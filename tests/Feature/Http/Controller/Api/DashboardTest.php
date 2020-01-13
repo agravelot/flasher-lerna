@@ -6,11 +6,14 @@ use App\Models\Album;
 use App\Models\Contact;
 use App\Models\Cosplayer;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class DashboardTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testExample()
     {
         $this->actingAsAdmin();
