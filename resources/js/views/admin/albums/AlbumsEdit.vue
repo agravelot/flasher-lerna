@@ -136,7 +136,7 @@
                 >
                 <a
                   class="button has-text-danger"
-                  @click="deleteAlbumPicture(album.slug, picture.id)"
+                  @click="deleteAlbumPicture(picture.id)"
                 >
                   Delete
                 </a>
