@@ -78,5 +78,6 @@
 @endsection
 
 @section('js')
+    @parent
     {!! NoCaptcha::renderJs() !!}
 @endsection

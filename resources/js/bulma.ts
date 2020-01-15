@@ -30,12 +30,22 @@ document.addEventListener('DOMContentLoaded', () => {
         el.addEventListener('click', () => {
             // Get the target from the "data-target" attribute
             const dataSetTarget: string | undefined = (el as HTMLCanvasElement).dataset.target;
-            const target: '' | HTMLElement | null | undefined =
-                dataSetTarget && document.getElementById(dataSetTarget);
+
+            if (dataSetTarget === undefined) {
+                console.error('Unable to find dataSetTarget to open navbar')
+                return;
+            }
+
+            const target: HTMLElement | null = document.getElementById(dataSetTarget);
+
+            if (target === null) {
+                console.error('Unable to find target to open navbar')
+                return;
+            }
 
             // Toggle the class on both the "navbar-burger" and the "navbar-menu"
             el.classList.toggle('is-active');
-            target && target.classList.toggle('is-active');
+            target.classList.toggle('is-active');
         });
     });
 
