@@ -72,8 +72,8 @@
         <b-menu-item
           label="Background tasks"
           icon="tasks"
-          tag="a"
-          to="/horizon"
+          href="a"
+          to="/admin/horizon"
         />
       </b-menu-list>
     </b-menu>
