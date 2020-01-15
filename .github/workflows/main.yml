@@ -244,7 +244,7 @@ jobs:
     - name: Run Lighthouse
       if: github.ref == 'refs/heads/master'
       uses: foo-software/lighthouse-check-action@master
-      id: lighthouseCheck
+      id: lighthouseCheckStaging
       with:
         urls: '${{ secrets.APP_URL_PRODUCTION }}, ${{ secrets.APP_URL_PRODUCTION }}/albums'
         author: ${{ github.actor }}
@@ -256,7 +256,7 @@ jobs:
       if: github.ref == 'refs/heads/master'
       uses: foo-software/lighthouse-check-status-action@master
       with:
-        lighthouseCheckResults: ${{ steps.lighthouseCheck.outputs.lighthouseCheckResults }}
+        lighthouseCheckResults: ${{ steps.lighthouseCheckStaging.outputs.lighthouseCheckResults }}
         minAccessibilityScore: "90"
         minBestPracticesScore: "90"
         minPerformanceScore: "90"
