@@ -35,6 +35,28 @@
         </div>
 
         @include('layouts.partials._share_socials')
+
+        <div class="columns is-mobile is-centered">
+            <div class="column is-narrow field has-addons">
+                @can('download', $album)
+                    <div class="control">
+                        <a class="button is-black" href="{{ route('download-albums.show', compact('album')) }}">
+                            <span class="icon is-small">@fas('download')</span>
+                            <span>{{ __('Download') }}</span>
+                        </a>
+                    </div>
+                @endcan
+
+                @can('update', $album)
+                    <div class="control">
+                        <a class="button is-black" href="{{ "/admin/albums/{$album->slug}/edit" }}">
+                            <span class="icon is-small">@fas('edit')</span>
+                            <span>{{ __('Edit') }}</span>
+                        </a>
+                    </div>
+                @endcan
+            </div>
+        </div>
     @stop
 
     @if ($album->body)
@@ -49,26 +71,6 @@
         </div>
     @endif
 
-    <div class="field has-addons">
-        @can('download', $album)
-            <div class="control">
-                <a class="button" href="{{ route('download-albums.show', compact('album')) }}">
-                    <span class="icon is-small">@fas('download')</span>
-                    <span>{{ __('Download') }}</span>
-                </a>
-            </div>
-        @endcan
-
-        @can('update', $album)
-            <div class="control">
-                <a class="button" href="{{ "/admin/albums/{$album->slug}/edit" }}">
-                    <span class="icon is-small">@fas('edit')</span>
-                    <span>{{ __('Edit') }}</span>
-                </a>
-            </div>
-        @endcan
-    </div>
-
     @php
         /** @var \App\Models\Album $album */
         $medias = $album->getMedia(\App\Models\Album::PICTURES_COLLECTION);
@@ -80,7 +82,6 @@
         $columnsTablet = $medias->groupBy(function (\Spatie\MediaLibrary\Models\Media $item, int $key) {
                 return $key % 2;
             });
-
     @endphp
 
     <section class="is-hidden-touch">

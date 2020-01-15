@@ -4,7 +4,20 @@
         @include('cosplayers.partials._cosplayer_avatar', compact('cosplayer'))
         {{--    <h1 class="has-text-centered title is-2">{{ $cosplayer->name }}</h1>--}}
 
-        @if ($cosplayer->description or $cosplayer->categories)
+        <div class="columns is-mobile is-centered">
+            <div class="column is-narrow field has-addons">
+                @can('update', $cosplayer)
+                    <div class="control">
+                        <a class="button" href="{{ "/admin/cosplayers/{$cosplayer->slug}/edit" }}">
+                            <span class="icon is-small">@fas('edit')</span>
+                            <span>{{ __('Edit') }}</span>
+                        </a>
+                    </div>
+                @endcan
+            </div>
+        </div>
+
+        @if ($cosplayer->description || $cosplayer->categories)
             <div class="card has-margin-top-md">
                 <div class="card-content">
                     @if ($cosplayer->description)
