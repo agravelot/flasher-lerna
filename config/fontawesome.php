@@ -33,21 +33,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Middleware options
+    | Use svg href attribute
     |--------------------------------------------------------------------------
     |
-    | The css injection middleware is required for all pages that have icons
-    | on them. If you do not include the middleware it might break your page's
-    | css.
-    | By default you the middleware is added to the `web` middleware group.
-    | It is also possible to disable this and add the middleware yourself.
+    | The href attribute can be used to link to an already existing svg in the
+    | DOM, this way the svg code only needs to be loaded once if used multiple
+    | times.
+    |
+    | Very old browser might not support this feature:
+    | https://caniuse.com/#feat=mdn-svg_elements_use_href
     |
     */
 
-    'middleware' => [
-
-        'all_requests' => false,
-
-    ],
+    'svg_href' => true,
 
 ];

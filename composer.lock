@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "812895579973bb6d936a5582d63ae021",
+    "content-hash": "af3b68fa5bad3b68e7cdf5c6208bcefd",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -2035,26 +2035,26 @@
         },
         {
             "name": "jerodev/laravel-font-awesome",
-            "version": "v1.0.5",
+            "version": "v2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jerodev/laravel-font-awesome.git",
-                "reference": "55fbce0cd539d02e92a7876ebaead16ab8541454"
+                "reference": "ac26ee9648032b6d30d32b192d026fad1db5f73b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jerodev/laravel-font-awesome/zipball/55fbce0cd539d02e92a7876ebaead16ab8541454",
-                "reference": "55fbce0cd539d02e92a7876ebaead16ab8541454",
+                "url": "https://api.github.com/repos/jerodev/laravel-font-awesome/zipball/ac26ee9648032b6d30d32b192d026fad1db5f73b",
+                "reference": "ac26ee9648032b6d30d32b192d026fad1db5f73b",
                 "shasum": ""
             },
             "require": {
-                "fortawesome/font-awesome": "^5.10",
-                "illuminate/support": "~5.6|^6.0"
+                "fortawesome/font-awesome": "^5.12",
+                "illuminate/support": "6.x"
             },
             "require-dev": {
-                "orchestra/testbench": "^3.5",
-                "phpstan/phpstan": "^0.11.8",
-                "phpunit/phpunit": "^7|^8"
+                "orchestra/testbench": "4.x",
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "^8.0"
             },
             "type": "library",
             "extra": {
@@ -2088,7 +2088,7 @@
                 "laravel",
                 "svg"
             ],
-            "time": "2019-09-03T14:56:32+00:00"
+            "time": "2019-12-24T13:18:08+00:00"
         },
         {
             "name": "lab404/laravel-impersonate",
