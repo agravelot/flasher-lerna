@@ -51,7 +51,7 @@ class ShowMyAlbumsTest extends TestCase
         $cosplayer = factory(Cosplayer::class)->create([
             'user_id' => $user->id,
         ]);
-        $albums = factory(Album::class, 5)->make([
+        $albums = factory(Album::class, 3)->make([
             'user_id' => factory(User::class)->create()->id,
         ]);
         $cosplayer->albums()->saveMany($albums);
@@ -61,7 +61,9 @@ class ShowMyAlbumsTest extends TestCase
 
         $response->assertOk()
             ->assertDontSee('Nothing to show')
-            ->assertSeeInOrder($albums->pluck('title')->toArray());
+            ->assertSee($albums->get(0)->title)
+            ->assertSee($albums->get(1)->title)
+            ->assertSee($albums->get(2)->title);
     }
 
     public function test_guest_can_no_show_his_albums(): void

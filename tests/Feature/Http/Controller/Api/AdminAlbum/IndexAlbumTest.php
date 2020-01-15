@@ -10,50 +10,59 @@ class IndexAlbumTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_view_published_albums()
+    public function test_admin_can_view_published_albums(): void
     {
         $this->actingAsAdmin();
-        $albums = factory(Album::class, 5)->state('published')->create();
+        $albums = factory(Album::class, 3)->state('published')->create()->sortByDesc('created_at')->values();
 
         $response = $this->json('get', '/api/admin/albums');
 
         $response->assertOk()
-            ->assertSeeInOrder($albums->pluck('title')->toArray());
+            ->assertJsonPath('data.0.title', $albums->get(0)->title)
+            ->assertJsonPath('data.1.title', $albums->get(1)->title)
+            ->assertJsonPath('data.2.title', $albums->get(2)->title);
     }
 
-    public function test_admin_can_view_unpublished_albums()
+    public function test_admin_can_view_unpublished_albums_ordered_by_created_at(): void
     {
         $this->actingAsAdmin();
-        $albums = factory(Album::class, 5)->state('unpublished')->create();
+        $albums = factory(Album::class, 3)->state('unpublished')->create()->sortByDesc('created_at')->values();
 
         $response = $this->json('get', '/api/admin/albums');
 
         $response->assertOk()
-            ->assertSeeInOrder($albums->pluck('title')->toArray());
+            ->assertJsonPath('data.0.title', $albums->get(0)->title)
+            ->assertJsonPath('data.1.title', $albums->get(1)->title)
+            ->assertJsonPath('data.2.title', $albums->get(2)->title);
     }
 
-    public function test_admin_can_view_secured_albums()
+    public function test_admin_can_view_secured_albums(): void
     {
         $this->actingAsAdmin();
-        $albums = factory(Album::class, 5)->state('password')->create();
+        $albums = factory(Album::class, 3)->state('password')->create()->sortByDesc('created_at')->values();
 
         $response = $this->json('get', '/api/admin/albums');
 
         $response->assertOk()
-            ->assertSeeInOrder($albums->pluck('title')->toArray());
+            ->assertJsonPath('data.0.title', $albums->get(0)->title)
+            ->assertJsonPath('data.1.title', $albums->get(1)->title)
+            ->assertJsonPath('data.2.title', $albums->get(2)->title);
     }
 
-    public function test_admin_can_view_password_less_albums()
+    public function test_admin_can_view_password_less_albums(): void
     {
         $this->actingAsAdmin();
-        $albums = factory(Album::class, 5)->state('passwordLess')->create();
+        $albums = factory(Album::class, 3)->state('passwordLess')->create()->sortByDesc('created_at')->values();
 
         $response = $this->json('get', '/api/admin/albums');
 
-        $response->assertOk();
+        $response->assertOk()
+            ->assertJsonPath('data.0.title', $albums->get(0)->title)
+            ->assertJsonPath('data.1.title', $albums->get(1)->title)
+            ->assertJsonPath('data.2.title', $albums->get(2)->title);
     }
 
-    public function test_user_can_not_view_index()
+    public function test_user_can_not_view_index(): void
     {
         $this->actingAsUser();
 
@@ -62,7 +71,7 @@ class IndexAlbumTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_guest_can_not_view_index()
+    public function test_guest_can_not_view_index(): void
     {
         $response = $this->json('get', '/api/admin/albums');
 

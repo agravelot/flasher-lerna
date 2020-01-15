@@ -1,0 +1,192 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Define env
+      run: |
+        echo "::set-env name=CI_COMMIT_REF_NAME::$(echo -n $GITHUB_REF | cut -d/ -f3-)"
+        echo "::set-env name=CI_COMMIT_SHORT_SHA::$(echo -n $GITHUB_SHA | cut -c 1-6)"
+        echo "::set-env name=PHP_IMAGE::registry.gitlab.com/flasher/flasher/picblog_php:$(echo -n $GITHUB_SHA | cut -c 1-6)"
+        echo "::set-env name=NGINX_IMAGE::registry.gitlab.com/flasher/flasher/picblog_nginx:$(echo -n $GITHUB_SHA | cut -c 1-6)"
+
+    - name: Update docker-compose version
+      run: |
+        sudo curl -L "https://github.com/docker/compose/releases/download/1.25.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+
+    - name: Print docker & docker-compose version
+      run: |
+        docker-compose version
+        docker -v
+
+    - name: Create required docker network
+      run: |
+        docker network create nginx-proxy
+        docker network create database-network
+
+#    - name: Docker Lint
+#      uses: luke142367/Docker-Lint-Action@v1.0.0
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        TARGET: Dockerfile
+#      with:
+#        target: Dockerfile
+
+    - name: Build the Docker stack
+      run: docker-compose build
+
+    - name: Fetch php dev dependencies
+      run: |
+        docker build -t vendor_dev -f docker/vendor-dev/Dockerfile .
+        export VENDOR_DOCKER=$(docker run -d -t vendor_dev tail -f /dev/null)
+        docker cp -a $VENDOR_DOCKER:/app/vendor .
+
+    - name: Start docker stack
+      run: |
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d
+        docker-compose stop queue scheduler nginx
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T cache redis-cli config set maxmemory 41943040
+        docker cp vendor $(docker-compose ps -q php):/var/www/html/
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan db:wait-connection
+      env:
+        SSH_USER: ${{ secrets.CI_STAGING_SSH_USER }}
+        CI_DEPLOY_SSH_PORT: ${{ secrets.CI_STAGING_DEPLOY_SSH_PORT }}
+        CI_DEPLOY_URI: ${{ secrets.CI_STAGING_DEPLOY_URI }}
+        APP_URL: http://localhost
+        APP_URI: localhost
+        APP_NAME: ${{ secrets.APP_NAME_STAGING }}
+        APP_KEY: ${{ secrets.APP_KEY_STAGING }}
+        APP_ENV: "testing"
+        DB_PASSWORD: "secretPassword"
+        ERROR_LOG_LEVEL: "info"
+
+    - name: Run php test suites
+      run: |
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php touch .env
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan key:generate
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan passport:keys
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php vendor/bin/phpunit --coverage-text --colors=never
+      env:
+        APP_URL: http://localhost
+        APP_URI: localhost
+        APP_NAME: ${{ secrets.APP_NAME_STAGING }}
+        APP_KEY: ${{ secrets.APP_KEY_STAGING }}
+        APP_ENV: "testing"
+        DB_PASSWORD: "secretPassword"
+
+    - name: Run php lint
+      run: |
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -e APP_ENV=testing -T php php vendor/bin/php-cs-fixer fix --dry-run --diff
+      env:
+        APP_URL: http://localhost
+        APP_URI: localhost
+        APP_NAME: ${{ secrets.APP_NAME_STAGING }}
+        APP_KEY: ${{ secrets.APP_KEY_STAGING }}
+        APP_ENV: "local"
+        DB_PASSWORD: "secretPassword"
+
+    - name: Login to Github repository
+      uses: azure/docker-login@v1
+      with:
+        login-server: docker.pkg.github.com
+        username: agravelot
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Login to GitLab repository
+      uses: azure/docker-login@v1
+      with:
+        login-server: registry.gitlab.com
+        username: ${{ secrets.CI_REGISTRY_USER }}
+        password: ${{ secrets.CI_REGISTRY_PASSWORD }}
+
+    - name: Push images to registry
+      run: docker-compose push php nginx
+
+    - name: Remove docker stack
+      if: github.ref == 'refs/heads/develop'
+      run: |
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml down -v
+        docker system prune -f
+
+    - name: Deploy to staging
+      if: github.ref == 'refs/heads/develop'
+      env:
+        CI_COMMIT_SHORT_SHA: ${{ env.CI_COMMIT_SHORT_SHA }}
+        CI_COMMIT_REF_NAME: ${{ env.CI_COMMIT_REF_NAME }}
+        CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
+        CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
+        CI_DEPLOY_SSH_PORT: ${{ secrets.CI_STAGING_DEPLOY_SSH_PORT }}
+        CI_DEPLOY_URI: ${{ secrets.CI_STAGING_DEPLOY_URI }}
+        SSH_PRIVATE_KEY: ${{ secrets.CI_STAGING_SSH_PRIVATE_KEY }}
+        SSH_USER: ${{ secrets.CI_STAGING_SSH_USER }}
+        REMOTE: ${{ secrets.CI_STAGING_SSH_USER }}@${{ secrets.CI_STAGING_DEPLOY_URI }}
+        APP_URL: ${{ secrets.APP_URL_STAGING }}
+        APP_URI: ${{ secrets.APP_URI_STAGING }}
+        APP_NAME: ${{ secrets.APP_NAME_STAGING }}
+        APP_KEY: ${{ secrets.APP_KEY_STAGING }}
+        APP_ENV: "staging"
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD_STAGING }}
+        MAIL_DRIVER: ${{ secrets.MAIL_DRIVER }}
+        SES_KEY: ${{ secrets.SES_KEY }}
+        SES_SECRET: ${{ secrets.SES_SECRET }}
+        SES_REGION: ${{ secrets.SES_REGION }}
+        S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+        S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+        S3_DEFAULT_REGION: ${{ secrets.S3_DEFAULT_REGION }}
+        S3_BUCKET: ${{ secrets.S3_BUCKET }}
+        S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
+        S3_BUCKET_CDN: ${{ secrets.S3_BUCKET_CDN }}
+        NOCAPTCHA_SECRET: ${{ secrets.NOCAPTCHA_SECRET }}
+        NOCAPTCHA_SITEKEY: ${{ secrets.NOCAPTCHA_SITEKEY }}
+        SENTRY_LARAVEL_DSN: ${{ secrets.SENTRY_LARAVEL_DSN }}
+        ANALYTICS_TRACKING_ID_PROD: ${{ secrets.ANALYTICS_TRACKING_ID_PROD }}
+        FRONT_SENTRY_DSN_PUBLIC: ${{ secrets.FRONT_SENTRY_DSN_PUBLIC }}
+        MAIL_FROM_ADDRESS: ${{ secrets.MAIL_FROM_ADDRESS }}
+        ERROR_LOG_LEVEL: ${{ secrets.ERROR_LOG_LEVEL }}
+      run: |
+        eval $(ssh-agent -s)
+        mkdir -p ~/.ssh
+        echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+        chmod +x docker/*.sh
+        bash -c 'cd docker/ && ./deploy.sh staging'
+
+    - name: Setup Lighthouse folder
+      run: mkdir /tmp/artifacts
+      if: github.ref == 'refs/heads/develop'
+
+    - name: Run Lighthouse
+      if: github.ref == 'refs/heads/develop'
+      uses: foo-software/lighthouse-check-action@master
+      id: lighthouseCheck
+      with:
+        urls: '${{ secrets.APP_URL_STAGING }}, ${{ secrets.APP_URL_STAGING }}/albums'
+        author: ${{ github.actor }}
+        branch: ${{ github.ref }}
+        outputDirectory: /tmp/artifacts
+        sha: ${{ github.sha }}
+
+    - name: Handle Lighthouse Check results
+      if: github.ref == 'refs/heads/develop'
+      uses: foo-software/lighthouse-check-status-action@master
+      with:
+        lighthouseCheckResults: ${{ steps.lighthouseCheck.outputs.lighthouseCheckResults }}
+        minAccessibilityScore: "90"
+        minBestPracticesScore: "90"
+        minPerformanceScore: "90"
+        minProgressiveWebAppScore: "50"
+        minSeoScore: "90"
+
+    - name: Upload artifacts
+      if: github.ref == 'refs/heads/develop'
+      uses: actions/upload-artifact@master
+      with:
+        name: Lighthouse reports
+        path: /tmp/artifacts

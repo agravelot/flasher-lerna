@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Album;
+use App\Models\User;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Http\UploadedFile;
@@ -17,6 +18,8 @@ $factory->define(Album::class, static function (Faker $faker) use (&$withMedias)
         'body' => $faker->randomHtml($faker->numberBetween(2, 6)),
         'published_at' => null,
         'private' => $faker->boolean,
+        'created_at' => $faker->dateTime,
+        'updated_at' => $faker->dateTime,
     ];
 });
 
@@ -65,6 +68,6 @@ $factory->state(Album::class, 'passwordLess', static function () {
 
 $factory->state(Album::class, 'withUser', static function () {
     return [
-        'user_id' => factory(\App\Models\User::class)->create()->id,
+        'user_id' => factory(User::class)->create()->id,
     ];
 });
