@@ -1,7 +1,7 @@
 <template>
   <div
     id="admin-menu"
-    class="column is-one-fifth"
+    style="width: 200px;"
   >
     <b-menu>
       <b-menu-list label="Administration">
