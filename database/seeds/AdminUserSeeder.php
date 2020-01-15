@@ -13,7 +13,7 @@ class AdminUserSeeder extends Seeder
     {
         DB::table('users')->insert([
             'name' => 'admin',
-            'email' => 'admin@picblog.com',
+            'email' => 'admin@flasher.com',
             'password' => Hash::make('secret'),
             'role' => 'admin',
             'created_at' => Carbon::now(),
