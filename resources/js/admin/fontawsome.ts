@@ -37,7 +37,9 @@ import {
     faSadTear,
     faUser,
     faShare,
-    faEnvelopeOpenText, faClock,
+    faEnvelopeOpenText,
+    faClock,
+    faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faFacebook, faInstagram, faLinkedin, faTwitter,
@@ -86,8 +88,9 @@ library.add(
   faFacebook,
   faLinkedin,
   faEnvelopeOpenText,
-    faCheck,
-    faClock
+  faCheck,
+  faClock,
+  faTimes
 );
 
 Vue.component('vue-fontawesome', FontAwesomeIcon);

@@ -62,9 +62,14 @@
             sortable
           >
             <b-icon
-              v-if="invitation.row.confirmed_at && !invitation.row.expired"
+              v-if="invitation.row.confirmed_at"
               icon="check"
               type="is-success"
+            />
+            <b-icon
+              v-else-if="invitation.row.expired"
+              icon="times"
+              type="is-danger"
             />
             <b-icon
               v-else
