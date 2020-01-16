@@ -19,6 +19,7 @@ class AlbumIndexResource extends Resource
         return [
             'id' => $this->id,
             'slug' => $this->slug,
+            'meta_description' => $this->meta_description,
             'title' => $this->title,
             'published_at' => $this->published_at,
             'private' => $this->private,

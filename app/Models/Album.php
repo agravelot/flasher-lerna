@@ -67,6 +67,7 @@ class Album extends Model implements HasMedia, Feedable
      */
     protected $fillable = [
         'title',
+        'meta_description',
         'slug',
         'body',
         'published_at',

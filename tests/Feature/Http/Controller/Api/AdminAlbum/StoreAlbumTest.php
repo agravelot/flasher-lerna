@@ -29,7 +29,17 @@ class StoreAlbumTest extends TestCase
     {
         session()->setPreviousUrl('/admin/albums/create');
 
-        return $this->json('post', '/api/admin/albums', array_merge($album->toArray(), $optional));
+        return $this->json('post', '/api/admin/albums', array_merge(
+            [
+                'slug' => null,
+                'title' => $album->title,
+                'body' => $album->body,
+                'published_at' => $album->published_at,
+                'private' => $album->private,
+                'meta_description' => $album->meta_description,
+                'categories' => $album->categories->pluck('id'),
+                'cosplayers' => $album->cosplayers->pluck('id'),
+            ], $optional));
     }
 
     public function test_admin_can_store_an_album_with_a_picture(): void

@@ -15,6 +15,7 @@ $factory->define(Album::class, static function (Faker $faker) use (&$withMedias)
 
     return [
         'title' => $faker->sentence,
+        'meta_description' => $faker->text(254),
         'body' => $faker->randomHtml($faker->numberBetween(2, 6)),
         'published_at' => null,
         'private' => $faker->boolean,

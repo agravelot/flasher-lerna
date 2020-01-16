@@ -48,7 +48,14 @@ class AlbumTest extends ModelTestCase
     public function testModelConfiguration(): void
     {
         $this->runConfigurationAssertions(new Album(), [
-            'title', 'slug', 'body', 'published_at', 'user_id', 'private', 'notify_users_on_published',
+            'title',
+            'meta_description',
+            'slug',
+            'body',
+            'published_at',
+            'user_id',
+            'private',
+            'notify_users_on_published',
         ], [], ['*'], [], ['id' => 'int', 'private' => 'bool'], [
             'published_at',
             'updated_at',
