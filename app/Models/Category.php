@@ -116,7 +116,6 @@ class Category extends Model implements HasMedia
      */
     public function publishedAlbums(): MorphToMany
     {
-        return $this->morphedByMany(PublicAlbum::class, 'categorizable')
-            ->latest();
+        return $this->morphedByMany(PublicAlbum::class, 'categorizable')->latest();
     }
 }
