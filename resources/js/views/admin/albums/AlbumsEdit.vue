@@ -28,6 +28,19 @@
                 />
               </b-field>
 
+              <b-field
+                :type="errors.meta_description ? 'is-danger' : ''"
+                :message="errors.meta_description ? errors.meta_description[0] : null"
+                label="Meta description"
+              >
+                <b-input
+                  v-model="album.meta_description"
+                  maxlength="254"
+                  type="textarea"
+                  placeholder="Helpful description for SEO"
+                />
+              </b-field>
+
               <quill-editor
                 ref="myQuillEditor"
                 v-model="album.body"
