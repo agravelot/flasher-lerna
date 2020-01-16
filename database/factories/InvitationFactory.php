@@ -15,7 +15,7 @@ $factory->define(Invitation::class, static function (Faker $faker) {
         'cosplayer_id' => factory(Cosplayer::class)->create()->id,
         'message' => $faker->paragraph,
         'confirmed_at' => $faker->boolean ? $faker->dateTime : null,
-        'created_at' => $faker->dateTimeBetween('-60 days', 'now')
+        'created_at' => $faker->dateTimeBetween('-60 days', 'now'),
     ];
 });
 
