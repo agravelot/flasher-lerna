@@ -794,10 +794,10 @@
     "@types/serve-static" "*"
     chokidar "^2.1.2"
 
-"@types/dropzone@^5.0.4":
-  version "5.5.1"
-  resolved "https://registry.yarnpkg.com/@types/dropzone/-/dropzone-5.5.1.tgz#23283e7e4170eabe5c3fb8f687ca9d0cb5d5613e"
-  integrity sha512-xiiQP/cF3t2c81GabHYatS7dZz0LK933Ovw1kH0+UC/35JMWwVQ/qv3z3RAFqgh+TkW9j2fc94Y+kJx+S8KCoA==
+"@types/dropzone@^5.5.2":
+  version "5.5.2"
+  resolved "https://registry.yarnpkg.com/@types/dropzone/-/dropzone-5.5.2.tgz#2450ae1adda24d19a8f99bfd47fa400ce5810dc6"
+  integrity sha512-DQnG8uS/6Q30VHQYAhvSui8J2NyCC4OWBE8AGNa9vpK63NOtnlI5XcsnquprVvS0DcQOoEsRy2alzWCRHCo+Vg==
   dependencies:
     "@types/jquery" "*"
 
