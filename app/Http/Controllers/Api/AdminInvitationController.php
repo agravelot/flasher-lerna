@@ -19,7 +19,7 @@ class AdminInvitationController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
-        $invitations = Invitation::paginate();
+        $invitations = Invitation::with('cosplayer.media')->paginate();
 
         return InvitationResource::collection($invitations);
     }

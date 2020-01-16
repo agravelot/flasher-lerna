@@ -1,7 +1,7 @@
 <template>
   <div
     id="admin-menu"
-    class="column is-one-fifth"
+    style="width: 200px;"
   >
     <b-menu>
       <b-menu-list label="Administration">
@@ -72,8 +72,8 @@
         <b-menu-item
           label="Background tasks"
           icon="tasks"
-          tag="a"
-          to="/horizon"
+          href="a"
+          to="/admin/horizon"
         />
       </b-menu-list>
     </b-menu>

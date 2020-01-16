@@ -190,7 +190,7 @@ export default class AlbumsEdit extends AlbumBase {
         chunking: true,
         method: 'POST',
         maxFilesize: 400000000,
-        chunkSize: 1000000,
+        chunkSize: 5000000,
         //autoProcessQueue: false,
         retryChunks: true,
         retryChunksLimit: 15,
