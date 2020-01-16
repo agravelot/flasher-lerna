@@ -29,6 +29,7 @@ class AlbumShowResource extends Resource
             'id' => $this->id,
             'slug' => $this->slug,
             'title' => $this->title,
+            'meta_description' => $this->meta_description,
             'published_at' => $this->published_at,
             'created_at' => $this->created_at,
             'body' => $this->body,

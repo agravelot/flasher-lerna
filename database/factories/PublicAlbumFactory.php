@@ -15,6 +15,7 @@ $factory->define(PublicAlbum::class, static function (Faker $faker) use (&$withM
 
     return [
         'title' => $faker->sentence,
+        'meta_description' => $faker->text(254),
         'body' => $faker->paragraph($faker->numberBetween(42, 420)),
         'published_at' => Carbon::now(),
         'created_at' => Carbon::now(),
