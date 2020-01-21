@@ -39,7 +39,7 @@ class AddMetaDescriptionToAlbums extends Migration
     public function down(): void
     {
         Schema::table('albums', static function (Blueprint $table) {
-            $table->removeColumn('meta_description');
+            $table->dropColumn('meta_description');
         });
     }
 }
