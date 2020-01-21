@@ -1961,10 +1961,10 @@ bs-snippet-injector@^2.0.1:
   resolved "https://registry.yarnpkg.com/bs-snippet-injector/-/bs-snippet-injector-2.0.1.tgz#61b5393f11f52559ed120693100343b6edb04dd5"
   integrity sha1-YbU5PxH1JVntEgaTEANDtu2wTdU=
 
-buefy@^0.8.0:
-  version "0.8.9"
-  resolved "https://registry.yarnpkg.com/buefy/-/buefy-0.8.9.tgz#e671f00d2b4b99fa666169514cb81d7042807c09"
-  integrity sha512-lNMYuXmHFayiiU3faKyDnZO395v1RRWWSlpZx3DkF7xe2RadE/4PMggRXDy67ujVooRzABUnslaYKbstyB7t9A==
+buefy@^0.8.10:
+  version "0.8.10"
+  resolved "https://registry.yarnpkg.com/buefy/-/buefy-0.8.10.tgz#e00a9e9ced4babcf01ada300c451fafced2a2b42"
+  integrity sha512-Lw/UP3Ku7o+oqam9TIoRMG5SrytGQwXWAoxAtqt6Wb9eSsMEqp/5o+jZnz8oteR06YWgjdSIfOv2YeEdjEkQCg==
   dependencies:
     bulma "0.7.5"
 
