@@ -182,7 +182,7 @@ jobs:
         lighthouseCheckResults: ${{ steps.lighthouseCheck.outputs.lighthouseCheckResults }}
         minAccessibilityScore: "90"
         minBestPracticesScore: "90"
-        minPerformanceScore: "90"
+        minPerformanceScore: "60"
         minProgressiveWebAppScore: "50"
         minSeoScore: "90"
 
@@ -259,7 +259,7 @@ jobs:
         lighthouseCheckResults: ${{ steps.lighthouseCheckStaging.outputs.lighthouseCheckResults }}
         minAccessibilityScore: "90"
         minBestPracticesScore: "90"
-        minPerformanceScore: "90"
+        minPerformanceScore: "60"
         minProgressiveWebAppScore: "50"
         minSeoScore: "90"
 
