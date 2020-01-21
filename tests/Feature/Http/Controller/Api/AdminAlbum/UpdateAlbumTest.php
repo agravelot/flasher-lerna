@@ -29,7 +29,16 @@ class UpdateAlbumTest extends TestCase
 
     public function updateAlbum(Album $album, array $optional = []): TestResponse
     {
-        return $this->json('patch', "/api/admin/albums/{$album->slug}", array_merge($album->toArray(), $optional));
+        return $this->json('patch', "/api/admin/albums/{$album->slug}", array_merge([
+            'slug' => null,
+            'title' => $album->title,
+            'body' => $album->body,
+            'published_at' => $album->published_at,
+            'private' => $album->private,
+            'meta_description' => $album->meta_description,
+            'categories' => $album->categories->pluck('id'),
+            'cosplayers' => $album->cosplayers->pluck('id'),
+        ], $optional));
     }
 
     public function test_admin_can_update_an_album_with_a_new_category()
@@ -236,7 +245,7 @@ class UpdateAlbumTest extends TestCase
         $this->assertTrue($album->fresh()->isPublished());
     }
 
-    public function test_admin_can_update_title_and_update_slug()
+    public function test_admin_can_update_title_and_update_slug(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
@@ -250,6 +259,7 @@ class UpdateAlbumTest extends TestCase
                     'id' => $album->id,
                     'slug' => Str::slug($album->title),
                     'title' => $album->title,
+                    'meta_description' => $album->meta_description,
                     'published_at' => optional($album->published_at)->jsonSerialize(),
                     'created_at' => $album->created_at->jsonSerialize(),
 //                    'body' => $album->body,

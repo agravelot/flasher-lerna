@@ -11,6 +11,7 @@ interface LinksInterface {
 export default class Album {
     public id!: number;
     public slug!: string;
+    public meta_description!: string | null;
     public title!: string;
     public body?: string | null;
     public published_at!: Date | null;
