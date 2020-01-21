@@ -20,7 +20,7 @@
         "@types/browser-sync": "^2.26.1",
         "@types/lodash-es": "^4.17.3",
         "@typescript-eslint/eslint-plugin": "^2.16.0",
-        "@typescript-eslint/parser": "^2.16.0",
+        "@typescript-eslint/parser": "^2.17.0",
         "browser-sync": "^2.26.3",
         "browser-sync-webpack-plugin": "^2.2.2",
         "onchange": "^6.0",
