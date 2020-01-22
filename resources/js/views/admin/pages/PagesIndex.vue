@@ -98,6 +98,7 @@
 import Component from 'vue-class-component';
 import Buefy from '../../../admin/Buefy.vue';
 import Page from '../../../models/page';
+import {showError, showSuccess} from "../../../admin/toast";
 
 @Component({
     name: 'Core.Resources.assets.js.components.pages.PagesIndex',
@@ -152,16 +153,7 @@ export default class PagesIndex extends Buefy {
                 this.pages = [];
                 this.total = 0;
                 this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load pages, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchPages();
-                    },
-                });
+                showError('Unable to load pages, maybe you are offline?', this.fetchPages);
                 throw err;
             });
     }
@@ -205,11 +197,11 @@ export default class PagesIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/pages/${page.id}`)
                 .then(() => {
-                    this.showSuccess('Pages deleted');
+                    showSuccess('Pages deleted');
                     this.fetchPages();
                 })
                 .catch(err => {
-                    this.showError(`Unable to delete page <br> <small>${err.message}</small>`);
+                    showError(`Unable to delete page <br> <small>${err.message}</small>`);
                     throw err;
                 });
         });

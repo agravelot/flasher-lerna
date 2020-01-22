@@ -113,6 +113,7 @@
 import Component from 'vue-class-component';
 import Buefy from '../../../admin/Buefy.vue';
 import Contact from '../../../models/contact';
+import {showError, showSuccess} from "../../../admin/toast";
 
 @Component({
     name: 'ContactsIndex',
@@ -165,16 +166,7 @@ export default class ContactsIndex extends Buefy {
                 this.contacts = [];
                 this.total = 0;
                 this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load contacts, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchContacts();
-                    },
-                });
+                showError('Unable to load contacts, maybe you are offline?', this.fetchContacts);
                 throw err;
             });
     }
@@ -199,8 +191,7 @@ export default class ContactsIndex extends Buefy {
     confirmDeleteSelectedContacts(): void {
         this.$buefy.dialog.confirm({
             title: 'Deleting Contacts',
-            message:
-                'Are you sure you want to <b>delete</b> these contacts? This action cannot be undone.',
+            message: 'Are you sure you want to <b>delete</b> these contacts? This action cannot be undone.',
             confirmText: 'Delete Contacts',
             type: 'is-danger',
             hasIcon: true,
@@ -218,11 +209,11 @@ export default class ContactsIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/contacts/${contact.id}`)
                 .then(() => {
-                    this.showSuccess('Contacts deleted');
+                    showSuccess('Contacts deleted');
                     this.fetchContacts();
                 })
                 .catch(err => {
-                    this.showError(`Unable to delete contact <br> <small>${err.message}</small>`);
+                    showError(`Unable to delete contact <br> <small>${err.message}</small>`);
                     throw err;
                 });
         });

@@ -41,6 +41,7 @@ import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
 import { quillEditor } from 'vue-quill-editor';
 import User from '../../../models/user';
+import {showError, showSuccess} from "../../../admin/toast";
 
 @Component({
     name: 'CategoriesEdit',
@@ -66,23 +67,15 @@ export default class CategoriesCreate extends Buefy {
             .post(`/api/admin/categories`, this.category)
             .then(res => res.data)
             .then(res => {
-                this.category = res.data;
+                this.errors = {};
                 this.loading = false;
-                this.showSuccess('Category created');
+                this.category = res.data;
+                showSuccess('Category created');
                 this.$router.push({ name: 'admin.categories.index' });
             })
             .catch(err => {
                 this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load category, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.createCategory();
-                    },
-                });
+                showError('Unable to load category, maybe you are offline?', this.createCategory);
                 this.errors = err.response.data.errors;
                 throw err;
             });

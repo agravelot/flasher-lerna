@@ -117,6 +117,7 @@ import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
 import { quillEditor } from 'vue-quill-editor';
 import User from '../../../models/user';
+import {showError, showSuccess} from "../../../admin/toast";
 
 @Component({
     name: 'CosplayersCreate',
@@ -149,13 +150,14 @@ export default class CosplayersCreate extends Buefy {
             })
             .then(res => res.data)
             .then(() => {
+                this.errors = {};
                 this.loading = false;
-                this.showSuccess('Cosplayer created');
+                showSuccess('Cosplayer created');
                 this.$router.push({ name: 'admin.cosplayers.index' });
             })
             .catch(err => {
                 this.loading = false;
-                this.showError('Unable to create cosplayer');
+                showError('Unable to create cosplayer');
                 this.errors = err.response.data.errors;
                 throw err;
             });
@@ -169,11 +171,7 @@ export default class CosplayersCreate extends Buefy {
                 this.searchUsers = res.data;
             })
             .catch(err => {
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load users, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                });
+                showError('Unable to load users, maybe you are offline?');
                 throw err;
             });
     }
