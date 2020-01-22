@@ -19,6 +19,7 @@
     import {Component, Prop} from "vue-property-decorator";
     import Buefy from "../../admin/Buefy.vue";
     import User from "../../models/user";
+    import {showError} from "../../admin/toast";
 
     @Component({
         name: 'pick-one-user'
@@ -55,16 +56,7 @@
                 .catch(err => {
                     // this.filteredUsers = [];
                     this.loading = false;
-                    this.$buefy.snackbar.open({
-                        message: 'Unable to load users, maybe you are offline?',
-                        type: 'is-danger',
-                        position: 'is-top',
-                        actionText: 'Retry',
-                        indefinite: true,
-                        onAction: () => {
-                            this.getFilteredUsers(text);
-                        },
-                    });
+                    showError('Unable to load users, maybe you are offline?', () => this.getFilteredUsers(text));
                     throw err;
                 });
         }
