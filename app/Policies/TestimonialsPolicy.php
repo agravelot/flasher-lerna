@@ -18,13 +18,13 @@ class TestimonialsPolicy extends Policy
     /**
      * Determine whether the user can view the category.
      */
-    public function view(User $user, ?Testimonial $goldenBookPost = null): bool
+    public function view(User $user, ?Testimonial $testimonialPost = null): bool
     {
         return false;
     }
 
     /**
-     * Determine whether the user can create golden book post.
+     * Determine whether the user can create testimonial post.
      */
     public function create(User $user): bool
     {
@@ -34,7 +34,7 @@ class TestimonialsPolicy extends Policy
     /**
      * Determine whether the user can update the category.
      */
-    public function update(User $user, Testimonial $goldenBookPost): bool
+    public function update(User $user, Testimonial $testimonialPost): bool
     {
         return false;
     }
@@ -42,7 +42,7 @@ class TestimonialsPolicy extends Policy
     /**
      * Determine whether the user can delete the category.
      */
-    public function delete(User $user, ?Testimonial $goldenBookPost = null): bool
+    public function delete(User $user, ?Testimonial $testimonialPost = null): bool
     {
         return false;
     }
@@ -50,7 +50,7 @@ class TestimonialsPolicy extends Policy
     /**
      * Determine whether the user can restore the category.
      */
-    public function restore(User $user, Testimonial $goldenBookPost): bool
+    public function restore(User $user, Testimonial $testimonialPost): bool
     {
         return false;
     }
@@ -58,7 +58,7 @@ class TestimonialsPolicy extends Policy
     /**
      * Determine whether the user can permanently delete the category.
      */
-    public function forceDelete(User $user, Testimonial $goldenBookPost): bool
+    public function forceDelete(User $user, Testimonial $testimonialPost): bool
     {
         return false;
     }

@@ -92,7 +92,7 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     }
 
     /**
-     * Return the golden book posts by this user.
+     * Return the testimonial posts by this user.
      */
     public function testimonials(): HasMany
     {

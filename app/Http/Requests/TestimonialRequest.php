@@ -9,7 +9,7 @@ class TestimonialRequest extends Request
      */
     public function rules(): array
     {
-        $id = $this->route('goldenbook');
+        $id = $this->route('testimonial');
 
         return [
             'name' => 'string|required|min:2|max:255'.$id,

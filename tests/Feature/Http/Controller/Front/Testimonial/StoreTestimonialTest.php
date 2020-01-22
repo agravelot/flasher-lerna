@@ -30,11 +30,11 @@ class StoreTestimonialTest extends TestCase
             ->assertSee('Your message has been added to the testimonials');
     }
 
-    private function storeTestimonial(Testimonial $goldenBookPost, array $data = []): TestResponse
+    private function storeTestimonial(Testimonial $testimonialPost, array $data = []): TestResponse
     {
         session()->setPreviousUrl('/testimonials');
 
-        return $this->post('/testimonials', array_merge($goldenBookPost->toArray(), $data));
+        return $this->post('/testimonials', array_merge($testimonialPost->toArray(), $data));
     }
 
     public function test_guest_can_not_post_to_the_testimonial_without_captcha()
@@ -48,7 +48,7 @@ class StoreTestimonialTest extends TestCase
         $this->assertSame(0, PublishedTestimonial::count());
         $this->followRedirects($response)
             ->assertSee(' The g-recaptcha-response field is required.')
-            ->assertDontSee('Your message has been added to the golden book');
+            ->assertDontSee('Your message has been added to the testimonial');
     }
 
     public function test_admin_can_post_to_the_testimonial()
@@ -82,6 +82,6 @@ class StoreTestimonialTest extends TestCase
         $this->assertSame(0, PublishedTestimonial::count());
         $this->followRedirects($response)
             ->assertSee(' The g-recaptcha-response field is required.')
-            ->assertDontSee('Your message has been added to the golden book');
+            ->assertDontSee('Your message has been added to the testimonial');
     }
 }
