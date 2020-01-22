@@ -113,9 +113,7 @@ import {showError, showSuccess} from "../../../admin/toast";
 })
 export default class PagesIndex extends Buefy {
     private pages: Array<Page> = [];
-    //TODO Clearer types
-    defaultOpenedDetails: Array<any> = [];
-    private checkedRows: Array<any> = [];
+    private checkedRows: Array<Page> = [];
     private total = 0;
     private page = 1;
     perPage = 10;
