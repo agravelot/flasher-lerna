@@ -117,6 +117,7 @@
 import Component from 'vue-class-component';
 import Buefy from '../../../admin/Buefy.vue';
 import Invitation from '../../../models/invitation';
+import {showError, showSuccess} from "../../../admin/toast";
 
 @Component({
     name: 'InvitationsIndex',
@@ -159,16 +160,7 @@ export default class InvitationsIndex extends Buefy {
                 this.invitations = [];
                 this.total = 0;
                 this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load invitations, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchInvitations();
-                    },
-                });
+                showError('Unable to load invitations, maybe you are offline?', this.fetchInvitations);
                 throw err;
             });
     }
@@ -209,11 +201,11 @@ export default class InvitationsIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/invitations/${invitation.id}`)
                 .then(() => {
-                    this.showSuccess('Invitations deleted');
+                    showSuccess('Invitations deleted');
                     this.fetchInvitations();
                 })
                 .catch(err => {
-                    this.showError(
+                    showError(
                         `Unable to delete invitation <br> <small>${err.message}</small>`
                     );
                     throw err;

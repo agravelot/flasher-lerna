@@ -19,6 +19,7 @@
     import {Component, Prop} from "vue-property-decorator";
     import Buefy from "../../admin/Buefy.vue";
     import Cosplayer from "../../models/cosplayer";
+    import {showError} from "../../admin/toast";
 
     @Component({
         name: 'pick-one-cosplayer'
@@ -55,16 +56,7 @@
                 .catch(err => {
                     // this.filteredCosplayers = [];
                     this.loading = false;
-                    this.$buefy.snackbar.open({
-                        message: 'Unable to load cosplayers, maybe you are offline?',
-                        type: 'is-danger',
-                        position: 'is-top',
-                        actionText: 'Retry',
-                        indefinite: true,
-                        onAction: () => {
-                            this.getFilteredCosplayers(text);
-                        },
-                    });
+                    showError('Unable to load cosplayers, maybe you are offline?', () => this.getFilteredCosplayers(text));
                     throw err;
                 });
         }

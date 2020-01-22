@@ -90,6 +90,7 @@
 <script lang="ts">
 import Component from 'vue-class-component';
 import Buefy from '../../admin/Buefy.vue';
+import {showError} from "../../admin/toast";
 
 @Component
 export default class Dashboard extends Buefy {
@@ -122,16 +123,7 @@ export default class Dashboard extends Buefy {
             })
             .catch(err => {
                 this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load dashboard, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchDashboard();
-                    },
-                });
+                showError('Unable to load dashboard, maybe you are offline?', this.fetchDashboard);
                 throw err;
             });
     }

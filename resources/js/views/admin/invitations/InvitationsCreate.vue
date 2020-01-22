@@ -47,6 +47,7 @@
     import Invitation from "../../../models/invitation";
     import Cosplayer from "../../../models/cosplayer";
     import PickOneCosplayer from "../../../components/admin/PickOneCosplayer.vue";
+    import {showError, showSuccess} from "../../../admin/toast";
 
     @Component({
         components: {
@@ -62,14 +63,13 @@
         createInvitation(): void {
             this.axios
                 .post(`/api/admin/invitations/`, this.invitation)
-
                 .then(res => res.data)
                 .then(() => {
-                    this.showSuccess('Invitation successfully created');
+                    showSuccess('Invitation successfully created');
                     this.$router.push({name: 'admin.invitations.index'});
                 })
                 .catch(err => {
-                    this.showError(
+                    showError(
                         `Unable to create the invitation <br><small>${err.response.data.message}</small>`
                     );
                     this.errors = err.response.data.errors;
@@ -92,16 +92,7 @@
                 .catch(err => {
                     // this.filteredCosplayers = [];
                     this.loading = false;
-                    this.$buefy.snackbar.open({
-                        message: 'Unable to load cosplayers, maybe you are offline?',
-                        type: 'is-danger',
-                        position: 'is-top',
-                        actionText: 'Retry',
-                        indefinite: true,
-                        onAction: () => {
-                            this.getFilteredCosplayers(text);
-                        },
-                    });
+                    showError('Unable to load cosplayers, maybe you are offline?', () => this.getFilteredCosplayers(text));
                     throw err;
                 });
         }

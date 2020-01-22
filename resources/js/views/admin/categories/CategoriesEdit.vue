@@ -75,6 +75,7 @@ import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
 import { quillEditor } from 'vue-quill-editor';
+import {showSuccess} from "../../../admin/toast";
 
 @Component({
     name: 'CategoriesEdit',
@@ -129,9 +130,10 @@ export default class CategoriesEdit extends Buefy {
             .patch(`/api/admin/categories/${this.$route.params.slug}`, this.category)
             .then(res => res.data)
             .then(res => {
+                this.errors = {};
                 this.category = res.data;
                 this.loading = false;
-                this.showSuccess('Category updated');
+                showSuccess('Category updated');
                 this.$router.push({ name: 'admin.categories.index' });
             })
             .catch(err => {

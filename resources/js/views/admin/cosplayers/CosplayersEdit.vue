@@ -125,6 +125,7 @@
     import 'quill/dist/quill.bubble.css';
 import User from '../../../models/user';
     import PickOneUser from "../../../components/admin/PickOneUser.vue";
+    import {showError, showSuccess} from "../../../admin/toast";
 
 @Component({
     name: 'CosplayersEdit',
@@ -158,9 +159,10 @@ export default class CosplayersEdit extends Buefy {
             })
             .then(res => res.data)
             .then(res => {
+                showSuccess('Cosplayer updated');
+                this.errors = {};
                 this.cosplayer = res.data;
                 this.loading = false;
-                this.showSuccess('Cosplayer updated');
                 this.$router.push({
                     name: 'admin.cosplayers.edit',
                     params: { slug: this.cosplayer.slug },
@@ -168,16 +170,7 @@ export default class CosplayersEdit extends Buefy {
             })
             .catch(err => {
                 this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load cosplayer, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.updateCosplayer();
-                    },
-                });
+                showError('Unable to load cosplayer, maybe you are offline?', this.updateCosplayer);
                 this.errors = err.response.data.errors;
                 throw err;
             });
@@ -196,16 +189,7 @@ export default class CosplayersEdit extends Buefy {
             .catch(err => {
                 this.cosplayer = new Cosplayer();
                 this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load cosplayer, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchCosplayer();
-                    },
-                });
+                showError('Unable to load cosplayer, maybe you are offline?', this.fetchCosplayer);
                 throw err;
             });
     }
