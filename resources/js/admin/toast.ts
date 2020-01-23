@@ -6,6 +6,7 @@ export function showSuccess(buefy: BuefyNamespace ,message: string): void {
         message: message,
         type: 'is-success',
         position: 'is-bottom-right',
+        queue: false,
     };
     buefy.snackbar.open(snackBarConfig);
 }
@@ -15,6 +16,7 @@ export function showError(buefy: BuefyNamespace ,message: string, onActionCallba
         message: message,
         type: 'is-danger',
         position: 'is-bottom-right',
+        queue: false,
         actionText: onActionCallback ? 'Retry' : 'OK',
         onAction: onActionCallback,
     };
