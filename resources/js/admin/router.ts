@@ -2,8 +2,6 @@ import Vue from 'vue';
 import VueRouter, {RouteConfig} from 'vue-router';
 import Dashboard from '../views/admin/Dashboard.vue';
 import AlbumsIndex from '../views/admin/albums/AlbumsIndex.vue';
-import AlbumsCreate from '../views/admin/albums/AlbumsCreate.vue';
-import AlbumsEdit from '../views/admin/albums/AlbumsEdit.vue';
 import CategoriesIndex from '../views/admin/categories/CategoriesIndex.vue';
 import CategoriesCreate from '../views/admin/categories/CategoriesCreate.vue';
 import CategoriesEdit from '../views/admin/categories/CategoriesEdit.vue';
@@ -20,6 +18,7 @@ import Settings from '../views/admin/Settings.vue';
 import InvitationsIndex from "../views/admin/invitations/InvitationsIndex.vue";
 import InvitationsCreate from "../views/admin/invitations/InvitationsCreate.vue";
 import SocialMediasIndex from "../views/admin/social-medias/SocialMediasIndex.vue";
+import AlbumsForm from "../views/admin/albums/AlbumsForm.vue";
 
 Vue.use(VueRouter);
 
@@ -46,7 +45,8 @@ const routes: RouteConfig[] = [
     {
         path: '/admin/albums/create',
         name: 'admin.albums.create',
-        component: AlbumsCreate,
+        component: AlbumsForm,
+        props: { isCreating: true }
         // component: () =>
         //     import(
         //         /* webpackChunkName: "albumsCreate" */ '../../../modules/Album/Resources/assets/js/components/admin/AlbumsCreate.vue'
@@ -64,10 +64,11 @@ const routes: RouteConfig[] = [
     {
         path: '/admin/albums/:slug/edit',
         name: 'admin.albums.edit',
-        component: AlbumsEdit,
+        component: AlbumsForm,
+        props: { isCreating: false }
         // component: () =>
         //     import(
-        //         /* webpackChunkName: "albumsEdit" */ '../../../modules/Album/Resources/assets/js/components/admin/AlbumsEdit.vue'
+        //         /* webpackChunkName: "albumsEdit" */ '../../../modules/Album/Resources/assets/js/components/admin/AlbumsForm.vue'
         //     ),
     },
     // Categories

@@ -151,7 +151,7 @@ export default class PagesIndex extends Buefy {
                 this.pages = [];
                 this.total = 0;
                 this.loading = false;
-                showError('Unable to load pages, maybe you are offline?', this.fetchPages);
+                showError(this.$buefy,'Unable to load pages, maybe you are offline?', this.fetchPages);
                 throw err;
             });
     }
@@ -195,11 +195,11 @@ export default class PagesIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/pages/${page.id}`)
                 .then(() => {
-                    showSuccess('Pages deleted');
+                    showSuccess(this.$buefy,'Pages deleted');
                     this.fetchPages();
                 })
                 .catch(err => {
-                    showError(`Unable to delete page <br> <small>${err.message}</small>`);
+                    showError(this.$buefy,`Unable to delete page <br> <small>${err.message}</small>`);
                     throw err;
                 });
         });

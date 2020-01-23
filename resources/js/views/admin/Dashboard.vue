@@ -123,7 +123,7 @@ export default class Dashboard extends Buefy {
             })
             .catch(err => {
                 this.loading = false;
-                showError('Unable to load dashboard, maybe you are offline?', this.fetchDashboard);
+                showError(this.$buefy,'Unable to load dashboard, maybe you are offline?', this.fetchDashboard);
                 throw err;
             });
     }

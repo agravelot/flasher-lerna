@@ -159,7 +159,7 @@ export default class CosplayersEdit extends Buefy {
             })
             .then(res => res.data)
             .then(res => {
-                showSuccess('Cosplayer updated');
+                showSuccess(this.$buefy,'Cosplayer updated');
                 this.errors = {};
                 this.cosplayer = res.data;
                 this.loading = false;
@@ -170,7 +170,7 @@ export default class CosplayersEdit extends Buefy {
             })
             .catch(err => {
                 this.loading = false;
-                showError('Unable to load cosplayer, maybe you are offline?', this.updateCosplayer);
+                showError(this.$buefy,'Unable to load cosplayer, maybe you are offline?', this.updateCosplayer);
                 this.errors = err.response.data.errors;
                 throw err;
             });
@@ -189,7 +189,7 @@ export default class CosplayersEdit extends Buefy {
             .catch(err => {
                 this.cosplayer = new Cosplayer();
                 this.loading = false;
-                showError('Unable to load cosplayer, maybe you are offline?', this.fetchCosplayer);
+                showError(this.$buefy,'Unable to load cosplayer, maybe you are offline?', this.fetchCosplayer);
                 throw err;
             });
     }

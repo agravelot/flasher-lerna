@@ -132,6 +132,18 @@ class StoreAlbumTest extends TestCase
         $response->assertCreated();
     }
 
+    public function test_admin_can_store_an_album_with_private_to_null_will_default_true(): void
+    {
+        $this->actingAsAdmin();
+        $album = factory(Album::class)->state('published')->make();
+
+        $response = $this->storeAlbum($album, ['private' => null]);
+
+        $this->assertSame(1, Album::count());
+        $response->assertCreated()
+            ->assertJsonPath('data.private', true);
+    }
+
     public function test_user_cannot_store_an_album(): void
     {
         $this->actingAsUser();
