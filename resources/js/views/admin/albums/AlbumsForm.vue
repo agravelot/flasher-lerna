@@ -160,6 +160,7 @@
                 <transition-group
                   class="columns is-multiline"
                   type="transition"
+                  :name="!drag ? 'flip-list' : null"
                 >
                   <div
                     v-for="picture in album.medias"
@@ -246,6 +247,7 @@ export default class AlbumsForm extends Buefy {
     @Prop({ required: true, type: Boolean })
     protected isCreating: boolean;
 
+    protected drag = false;
     protected errors: AlbumErrorsInterface = {};
     protected album: Album = new Album();
     protected loading = true;
