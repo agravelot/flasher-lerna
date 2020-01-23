@@ -306,7 +306,7 @@ export default class AlbumsForm extends Buefy {
             const { data } = res.data;
             this.album = data;
             showSuccess(this.$buefy,'Album updated');
-            await this.$router.push({name: 'admin.albums.edit', params: {slug: this.album.slug}});
+            this.errors = {};
         } catch (exception) {
             showError(
                 this.$buefy,
@@ -324,7 +324,7 @@ export default class AlbumsForm extends Buefy {
             this.album = data;
             this.errors = {};
             showSuccess(this.$buefy,'Album successfully created');
-            await this.$router.push({name: 'admin.albums.edit', params: {slug: res.data.slug}});
+            await this.$router.push({name: 'admin.albums.edit', params: {slug: this.album.slug}});
         } catch (exception) {
             showError(
                 this.$buefy,
