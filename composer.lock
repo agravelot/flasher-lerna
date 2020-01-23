@@ -5621,16 +5621,16 @@
         },
         {
             "name": "spatie/laravel-query-builder",
-            "version": "2.5.0",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-query-builder.git",
-                "reference": "d0d82095138f961241c81efe0a40147009ad6d4d"
+                "reference": "fc49afca253d240ab1a01a08a057baa84da303d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-query-builder/zipball/d0d82095138f961241c81efe0a40147009ad6d4d",
-                "reference": "d0d82095138f961241c81efe0a40147009ad6d4d",
+                "url": "https://api.github.com/repos/spatie/laravel-query-builder/zipball/fc49afca253d240ab1a01a08a057baa84da303d1",
+                "reference": "fc49afca253d240ab1a01a08a057baa84da303d1",
                 "shasum": ""
             },
             "require": {
@@ -5675,7 +5675,7 @@
                 "laravel-query-builder",
                 "spatie"
             ],
-            "time": "2020-01-09T12:14:11+00:00"
+            "time": "2020-01-22T13:18:54+00:00"
         },
         {
             "name": "spatie/laravel-responsecache",
@@ -5743,16 +5743,16 @@
         },
         {
             "name": "spatie/laravel-sitemap",
-            "version": "5.5.0",
+            "version": "5.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-sitemap.git",
-                "reference": "d234204242ae8c9c9a3a3c6d34b3426d950ae699"
+                "reference": "2351e0757c9d0ee6afc4908bf1bd528fb389a2bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-sitemap/zipball/d234204242ae8c9c9a3a3c6d34b3426d950ae699",
-                "reference": "d234204242ae8c9c9a3a3c6d34b3426d950ae699",
+                "url": "https://api.github.com/repos/spatie/laravel-sitemap/zipball/2351e0757c9d0ee6afc4908bf1bd528fb389a2bb",
+                "reference": "2351e0757c9d0ee6afc4908bf1bd528fb389a2bb",
                 "shasum": ""
             },
             "require": {
@@ -5798,7 +5798,7 @@
                 "laravel-sitemap",
                 "spatie"
             ],
-            "time": "2019-09-24T11:34:59+00:00"
+            "time": "2020-01-20T12:53:10+00:00"
         },
         {
             "name": "spatie/pdf-to-image",
@@ -6252,16 +6252,16 @@
         },
         {
             "name": "symfony/dom-crawler",
-            "version": "v5.0.2",
+            "version": "v5.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dom-crawler.git",
-                "reference": "0a0a73a0836926898b6fcd6817fe697487a73d97"
+                "reference": "439c3c7be4daa569deef0dd1e30cf3562108d062"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/0a0a73a0836926898b6fcd6817fe697487a73d97",
-                "reference": "0a0a73a0836926898b6fcd6817fe697487a73d97",
+                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/439c3c7be4daa569deef0dd1e30cf3562108d062",
+                "reference": "439c3c7be4daa569deef0dd1e30cf3562108d062",
                 "shasum": ""
             },
             "require": {
@@ -6309,7 +6309,7 @@
             ],
             "description": "Symfony DomCrawler Component",
             "homepage": "https://symfony.com",
-            "time": "2019-11-18T17:27:11+00:00"
+            "time": "2020-01-04T14:08:26+00:00"
         },
         {
             "name": "symfony/error-handler",
@@ -7782,7 +7782,7 @@
         },
         {
             "name": "tightenco/collect",
-            "version": "v6.11.0",
+            "version": "v6.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tightenco/collect.git",
