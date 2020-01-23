@@ -381,7 +381,7 @@ export default class AlbumsForm extends Buefy {
         try {
             const res = await this.axios.get(`/api/admin/albums/${this.$route.params.slug}`);
             const { data } = res.data;
-            this.album.medias = data;
+            this.album.medias = data.medias;
         } catch (exception) {
             showError(
                 this.$buefy,
