@@ -1,5 +1,5 @@
-import { SnackbarConfig } from "buefy/types/components";
-import { BuefyNamespace } from "buefy";
+import { SnackbarConfig } from 'buefy/types/components';
+import { BuefyNamespace } from "buefy/types";
 
 export function showSuccess(buefy: BuefyNamespace ,message: string): void {
     buefy.toast.open({
@@ -13,7 +13,7 @@ export function showError(buefy: BuefyNamespace ,message: string, onActionCallba
         message: message,
         type: 'is-danger',
         position: 'is-top',
-        actionText: 'Retry',
+        actionText: onActionCallback ? 'Retry' : 'OK',
         onAction: onActionCallback,
     };
     buefy.snackbar.open(snackBarConfig);
