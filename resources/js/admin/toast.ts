@@ -2,17 +2,19 @@ import { SnackbarConfig } from 'buefy/types/components';
 import { BuefyNamespace } from "buefy/types";
 
 export function showSuccess(buefy: BuefyNamespace ,message: string): void {
-    buefy.toast.open({
+    const snackBarConfig: SnackbarConfig = {
         message: message,
         type: 'is-success',
-    });
+        position: 'is-bottom-right',
+    };
+    buefy.snackbar.open(snackBarConfig);
 }
 
 export function showError(buefy: BuefyNamespace ,message: string, onActionCallback?: () => void): void {
     const snackBarConfig: SnackbarConfig = {
         message: message,
         type: 'is-danger',
-        position: 'is-top',
+        position: 'is-bottom-right',
         actionText: onActionCallback ? 'Retry' : 'OK',
         onAction: onActionCallback,
     };
