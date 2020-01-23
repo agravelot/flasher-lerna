@@ -119,16 +119,22 @@
                 </div>
               </b-field>
               <div class="buttons">
-                <button class="button is-primary">
-                  {{ isCreating ? 'Create' : 'Update' }}
-                </button>
-                <a
+                <b-button
+                  :loading="loading"
+                  tag="input"
+                  native-type="submit"
+                  type="is-primary"
+                  :value="isCreating ? 'Create' : 'Update'"
+                >
+                </b-button>
+                <b-button
                   v-if="!isCreating"
-                  class="button is-bottom-right is-danger"
+                  :loading="loading"
+                  type="is-danger"
                   @click="confirmDeleteAlbum()"
                 >
                   Delete
-                </a>
+                </b-button>
               </div>
             </form>
           </b-tab-item>
@@ -225,6 +231,7 @@ export default class AlbumsForm extends Buefy {
 
     protected errors: AlbumErrorsInterface = {};
     protected album: Album = new Album();
+    protected loading = true;
     protected allowNew = false;
     protected allCategories: Category[] = [];
     protected allCosplayers: Cosplayer[] = [];
@@ -262,27 +269,35 @@ export default class AlbumsForm extends Buefy {
     created(): void {
         if (this.isCreating) {
             this.album = new Album();
+            this.loading = false;
         } else {
             this.fetchAlbum();
         }
     }
 
     sendOrCreateAlbum(): void {
+        this.loading = true;
+
         if (this.isCreating) {
             this.createAlbum();
         } else {
             this.updateAlbum();
         }
+
+        this.loading = false;
     }
 
     async fetchAlbum(): Promise<void> {
+        this.loading = true;
+
         try {
             const res = await this.axios.get(`/api/admin/albums/${this.$route.params.slug}`);
             const { data } = res.data;
             this.album = data;
+            this.loading = false;
         } catch (exception) {
             showError(this.$buefy,'Unable to fetch album');
-            throw exception;
+            console.error(exception);
         }
     }
 
@@ -352,7 +367,7 @@ export default class AlbumsForm extends Buefy {
         }
     }
 
-    confirmDeleteAlbum(): void {
+    async confirmDeleteAlbum(): Promise<void> {
         this.$buefy.dialog.confirm({
             title: 'Deleting Album',
             message:
@@ -369,6 +384,8 @@ export default class AlbumsForm extends Buefy {
             throw new DOMException('Unable to delete undefined album.');
         }
 
+        this.loading = true;
+
         try {
             await this.axios.delete(`/api/admin/albums/${this.album.slug}`);
             showSuccess(this.$buefy,'Album successfully deleted!');
@@ -377,6 +394,8 @@ export default class AlbumsForm extends Buefy {
             showError(this.$buefy,`Unable to delete the picture`);
             throw exception;
         }
+
+        this.loading = false;
     }
 
     async deleteAlbumPicture(mediaId: number): Promise<void> {
@@ -417,8 +436,7 @@ export default class AlbumsForm extends Buefy {
 
     getFilteredCategories(text: string): void {
         const callback = (text: string): void => {
-            this.axios
-                .get('/api/admin/categories', {
+            this.axios.get('/api/admin/categories', {
                     params: {
                         'filter[name]': text,
                     },
@@ -438,8 +456,7 @@ export default class AlbumsForm extends Buefy {
 
     getFilteredCosplayers(text: string): void {
         const callback = (text: string): void => {
-            this.axios
-                .get('/api/admin/cosplayers', {
+            this.axios.get('/api/admin/cosplayers', {
                     params: {
                         'filter[name]': text,
                     },
