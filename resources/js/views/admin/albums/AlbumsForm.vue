@@ -150,23 +150,39 @@
               @vdropzone-sending="sendingEvent"
               @vdropzone-complete="refreshMedias"
             />
-            <div class="columns is-multiline">
-              <div
-                v-for="(picture, index) in album.medias"
-                :key="index"
-                class="column is-two-thirds-tablet is-half-desktop is-one-third-widescreen"
+            <div>
+              <draggable
+                v-model="album.medias"
+                v-bind="dragOptions"
+                @start="drag=true"
+                @end="drag=false"
               >
-                <img
-                  :src="picture.thumb"
-                  :alt="picture.name"
+                <transition-group
+                  class="columns is-multiline"
+                  type="transition"
                 >
-                <a
-                  class="button has-text-danger"
-                  @click="deleteAlbumPicture(picture.id)"
-                >
-                  Delete
-                </a>
-              </div>
+                  <div
+                    v-for="picture in album.medias"
+                    :key="picture.id"
+                    class="column is-two-thirds-tablet is-half-desktop is-one-third-widescreen"
+                  >
+                    <div>
+                      <div class="box">
+                        <img
+                          :src="picture.thumb"
+                          :alt="picture.name"
+                        >
+                        <a
+                          class="button has-text-danger"
+                          @click="deleteAlbumPicture(picture.id)"
+                        >
+                          Delete
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </transition-group>
+              </draggable>
             </div>
           </b-tab-item>
 
@@ -204,6 +220,7 @@ import Buefy from "../../../admin/Buefy.vue";
 import {Prop} from 'vue-property-decorator';
 import {DropzoneOptions} from 'dropzone';
 import {debounce} from "../../../debounce";
+import draggable from 'vuedraggable'
 
 interface AlbumErrorsInterface {
     title?: object;
@@ -221,6 +238,7 @@ interface AlbumErrorsInterface {
         vueDropzone: vue2Dropzone,
         quillEditor,
         ShareAlbum,
+        draggable,
     },
 })
 export default class AlbumsForm extends Buefy {
@@ -263,6 +281,13 @@ export default class AlbumsForm extends Buefy {
                 document.head.querySelector('meta[name="csrf-token"]') as HTMLMetaElement
             )).content,
         },
+    };
+
+    dragOptions = {
+        animation: 200,
+        group: "description",
+        disabled: false,
+        ghostClass: "ghost"
     };
 
     created(): void {
