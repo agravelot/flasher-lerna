@@ -168,19 +168,17 @@
                     :key="picture.id"
                     class="column is-two-thirds-tablet is-half-desktop is-one-third-widescreen"
                   >
-                    <div>
-                      <div class="box">
-                        <img
-                          :src="picture.thumb"
-                          :alt="picture.name"
-                        >
-                        <a
-                          class="button has-text-danger"
-                          @click="deleteAlbumPicture(picture.id)"
-                        >
-                          Delete
-                        </a>
-                      </div>
+                    <div class="box has-grab-cursor">
+                      <img
+                        :src="picture.thumb"
+                        :alt="picture.name"
+                      >
+                      <a
+                        class="button has-text-danger"
+                        @click="deleteAlbumPicture(picture.id)"
+                      >
+                        Delete
+                      </a>
                     </div>
                   </div>
                 </transition-group>
@@ -515,3 +513,9 @@ export default class AlbumsForm extends Buefy {
     }
 }
 </script>
+
+<style scoped>
+    .has-grab-cursor {
+        cursor: grab;
+    }
+</style>
