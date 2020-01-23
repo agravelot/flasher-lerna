@@ -1,6 +1,7 @@
 import User from './user';
 import Category from './category';
 import Cosplayer from "./cosplayer";
+import Media from "./media";
 
 interface LinksInterface {
     view: string;
@@ -16,7 +17,7 @@ export default class Album {
     public body?: string | null;
     public published_at!: Date | null;
     public private!: boolean;
-    public medias: Array<object> = [];
+    public medias: Media[] = [];
     public user!: User;
     public cosplayers?: Cosplayer[];
     public created_at!: Date;
