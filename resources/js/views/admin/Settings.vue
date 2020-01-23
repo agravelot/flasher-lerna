@@ -114,6 +114,7 @@ import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
 import { quillEditor } from 'vue-quill-editor';
 import vue2Dropzone from 'vue2-dropzone';
+import {showError, showSuccess} from "../../admin/toast";
 
 class Setting {
     public id: number;
@@ -178,20 +179,11 @@ export default class Settings extends Buefy {
             .then(res => res.data)
             .then(() => {
                 this.loading = false;
-                this.showSuccess('Setting updated');
+                showSuccess('Setting updated');
             })
             .catch(err => {
                 this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to save setting, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: false,
-                    onAction: () => {
-                        this.sendSetting(setting);
-                    },
-                });
+                showError('Unable to save setting, maybe you are offline?', () => this.sendSetting(setting));
                 throw err;
             });
     }
@@ -209,16 +201,7 @@ export default class Settings extends Buefy {
             .catch(err => {
                 this.settings = [];
                 this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load settings, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchSettings();
-                    },
-                });
+                showError('Unable to load settings, maybe you are offline?', this.fetchSettings);
                 throw err;
             });
     }
@@ -234,12 +217,7 @@ export default class Settings extends Buefy {
             })
             .catch(err => {
               this.loading = false;
-              this.$buefy.snackbar.open({
-                message: 'Unable to clear cache',
-                type: 'is-danger',
-                position: 'is-top',
-                actionText: 'Retry',
-              });
+              showError('Unable to clear cache');
               throw err;
             });
     }

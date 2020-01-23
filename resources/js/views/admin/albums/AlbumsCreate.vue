@@ -116,6 +116,7 @@
 <script lang="ts">
 import Component from 'vue-class-component';
 import AlbumBase from './AlbumBase.vue';
+import {showError, showSuccess} from "../../../admin/toast";
 
 @Component({
     name: 'AlbumsCreate',
@@ -130,11 +131,12 @@ export default class AlbumsCreate extends AlbumBase {
             .post(`/api/admin/albums/`, this.album)
             .then(res => res.data)
             .then(res => {
-                this.showSuccess('Album successfully created');
+                this.errors = {};
+                showSuccess('Album successfully created');
                 this.$router.push({ name: 'admin.albums.edit', params: { slug: res.data.slug } });
             })
             .catch(err => {
-                this.showError(
+                showError(
                     `Unable to create the album <br><small>${err.response.data.message}</small>`
                 );
                 this.errors = err.response.data.errors;

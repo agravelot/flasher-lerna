@@ -77,6 +77,7 @@
 import Component from 'vue-class-component';
 import Buefy from '../../../admin/Buefy.vue';
 import User from '../../../models/user';
+import {showError, showSuccess} from "../../../admin/toast";
 
 @Component({
     name: 'UsersCreate',
@@ -96,20 +97,11 @@ export default class UsersCreate extends Buefy {
                 this.errors = {};
                 this.loading = false;
                 this.$router.push({ name: 'admin.users.index' });
-                this.showSuccess('User created');
+                showSuccess('User created');
             })
             .catch(err => {
                 this.loading = false;
-                // this.$buefy.snackbar.open({
-                //     message: 'Unable to update user, maybe you are offline?',
-                //     type: 'is-danger',
-                //     position: 'is-top',
-                //     actionText: 'Retry',
-                //     //indefinite: true,
-                //     onAction: () => {
-                //         this.updateUser();
-                //     },
-                // });
+                showError('Unable to create user, maybe you are offline?', this.createUser);
                 this.errors = err.response.data.errors;
                 throw err;
             });
@@ -137,10 +129,10 @@ export default class UsersCreate extends Buefy {
             .delete(`/api/admin/users/${this.user.id}`)
             .then(() => {
                 this.$router.push({ name: 'admin.users.index' });
-                this.showSuccess('User deleted');
+                showSuccess('User deleted');
             })
             .catch(err => {
-                this.showError(`Unable to delete user <br> <small>${err.message}</small>`);
+                showError(`Unable to delete user <br> <small>${err.message}</small>`);
                 throw err;
             });
     }

@@ -26,6 +26,7 @@ import Component from 'vue-class-component';
 import Buefy from '../../admin/Buefy.vue';
 import Album from '../../models/album';
 import { Prop } from 'vue-property-decorator';
+import {showError, showSuccess} from "../../admin/toast";
 
 @Component({
     name: 'share-album',
@@ -39,10 +40,10 @@ export default class ShareAlbum extends Buefy {
             if (result.state == 'granted' || result.state == 'prompt') {
                 navigator.clipboard.writeText(value).then(
                     () => {
-                        this.showSuccess('Link copied');
+                        showSuccess('Link copied');
                     },
                     () => {
-                        this.showError('Something went wrong');
+                        showError('Something went wrong');
                     }
                 );
             }

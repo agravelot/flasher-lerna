@@ -140,6 +140,7 @@
 import Component from 'vue-class-component';
 import Buefy from '../../../admin/Buefy.vue';
 import Testimonial from '../../../models/testimonial';
+import {showError, showSuccess} from "../../../admin/toast";
 
 @Component({
     name: 'TestimonialsIndex',
@@ -239,11 +240,11 @@ export default class TestimonialsIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/testimonials/${testimonial.id}`)
                 .then(() => {
-                    this.showSuccess('Testimonials deleted');
+                    showSuccess('Testimonials deleted');
                     this.fetchTestimonials();
                 })
                 .catch(err => {
-                    this.showError(
+                    showError(
                         `Unable to delete testimonial <br> <small>${err.message}</small>`
                     );
                     throw err;
@@ -275,16 +276,7 @@ export default class TestimonialsIndex extends Buefy {
             })
             .catch(err => {
                 this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to update testimonial, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchTestimonials();
-                    },
-                });
+                showError('Unable to update testimonial, maybe you are offline?', this.fetchTestimonials);
                 throw err;
             });
     }

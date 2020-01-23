@@ -102,6 +102,7 @@
 import Component from 'vue-class-component';
 import Buefy from '../../../admin/Buefy.vue';
 import Cosplayer from '../../../models/cosplayer';
+import {showError, showSuccess} from "../../../admin/toast";
 
 @Component({
     name: 'CosplayersIndex',
@@ -154,16 +155,7 @@ export default class CosplayersIndex extends Buefy {
                 this.cosplayers = [];
                 this.total = 0;
                 this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load cosplayers, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchCosplayers();
-                    },
-                });
+                showError('Unable to load cosplayers, maybe you are offline?', this.fetchCosplayers);
                 throw err;
             });
     }
@@ -211,11 +203,11 @@ export default class CosplayersIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/cosplayers/${cosplayer.slug}`)
                 .then(() => {
-                    this.showSuccess('Cosplayers deleted');
+                    showSuccess('Cosplayers deleted');
                     this.fetchCosplayers();
                 })
                 .catch(err => {
-                    this.showError(`Unable to delete cosplayer <br> <small>${err.message}</small>`);
+                    showError(`Unable to delete cosplayer <br> <small>${err.message}</small>`);
                     throw err;
                 });
         });

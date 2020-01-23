@@ -180,6 +180,7 @@ import AlbumBase from './AlbumBase.vue';
 import ShareAlbum from '../../../components/admin/ShareAlbum.vue';
 import Album from '../../../models/album';
 import { quillEditor } from 'vue-quill-editor';
+import {showSuccess, showError} from "../../../admin/toast";
 
 @Component({
     name: 'AlbumsEdit',
@@ -231,6 +232,7 @@ export default class AlbumsEdit extends AlbumBase {
                 this.album = res.data;
             })
             .catch(err => {
+                showError('Unable to fetch album');
                 throw err;
             });
     }
@@ -253,12 +255,13 @@ export default class AlbumsEdit extends AlbumBase {
             .patch(`/api/admin/albums/${this.$route.params.slug}`, this.album)
             .then(res => res.data)
             .then(res => {
+                this.errors = {};
                 this.album = res.data;
-                this.showSuccess('Album updated');
+                showSuccess('Album updated');
                 this.$router.push({ name: 'admin.albums.edit', params: { slug: this.album.slug } });
             })
             .catch(err => {
-                this.showError(
+                showError(
                     `Unable to update the album <br><small>${err.response.data.message}</small>`
                 );
                 this.errors = err.response.data.errors;
@@ -277,7 +280,7 @@ export default class AlbumsEdit extends AlbumBase {
                 this.album.medias = res.data.medias;
             })
             .catch(err => {
-                this.showError(
+                showError(
                     `Unable to refresh the album <br><small>${err.response.data.message}</small>`
                 );
                 throw err;
@@ -304,10 +307,10 @@ export default class AlbumsEdit extends AlbumBase {
             .delete(`/api/admin/albums/${this.album.slug}`)
             .then(() => {
                 this.$router.push({ name: 'admin.albums.index' });
-                this.showSuccess('Album successfully deleted!');
+                showSuccess('Album successfully deleted!');
             })
             .catch(err => {
-                this.showError(`Unable to delete the picture`);
+                showError(`Unable to delete the picture`);
                 throw err;
             });
     }
@@ -325,10 +328,10 @@ export default class AlbumsEdit extends AlbumBase {
             })
             .then(() => {
                 this.refreshMedias();
-                this.showSuccess('Picture successfully deleted!');
+                showSuccess('Picture successfully deleted!');
             })
             .catch(err => {
-                this.showError('Unable to delete the picture');
+                showError('Unable to delete the picture');
                 throw err;
             });
     }

@@ -112,6 +112,7 @@
 import Component from 'vue-class-component';
 import Buefy from '../../../admin/Buefy.vue';
 import User from '../../../models/user';
+import {showError, showSuccess} from "../../../admin/toast";
 
 @Component({
     name: 'UsersIndex',
@@ -154,16 +155,7 @@ export default class UsersIndex extends Buefy {
                 this.users = [];
                 this.total = 0;
                 this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load users, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchUsers();
-                    },
-                });
+                showError('Unable to load users, maybe you are offline?', this.fetchUsers);
                 throw err;
             });
     }
@@ -211,11 +203,11 @@ export default class UsersIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/users/${user.id}`)
                 .then(() => {
-                    this.showSuccess('Users deleted');
+                    showSuccess('Users deleted');
                     this.fetchUsers();
                 })
                 .catch(err => {
-                    this.showError(`Unable to delete user <br> <small>${err.message}</small>`);
+                    showError(`Unable to delete user <br> <small>${err.message}</small>`);
                     throw err;
                 });
         });

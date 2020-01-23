@@ -97,6 +97,7 @@
 import Component from 'vue-class-component';
 import Buefy from '../../../admin/Buefy.vue';
 import SocialMedia from '../../../models/social-media';
+import {showError, showSuccess} from "../../../admin/toast";
 
 @Component({
     name: 'SocialMediasIndex',
@@ -139,16 +140,7 @@ export default class SocialMediasIndex extends Buefy {
                 this.socialMedias = [];
                 this.total = 0;
                 this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load socialMedias, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchSocialMedias();
-                    },
-                });
+                showError('Unable to load socialMedias, maybe you are offline?', this.fetchSocialMedias);
                 throw err;
             });
     }
@@ -189,11 +181,11 @@ export default class SocialMediasIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/social-medias/${socialMedia.id}`)
                 .then(() => {
-                    this.showSuccess('SocialMedias deleted');
+                    showSuccess('SocialMedias deleted');
                     this.fetchSocialMedias();
                 })
                 .catch(err => {
-                    this.showError(
+                    showError(
                         `Unable to delete socialMedia <br> <small>${err.message}</small>`
                     );
                     throw err;

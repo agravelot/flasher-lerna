@@ -101,6 +101,7 @@
 import Component from 'vue-class-component';
 import Buefy from '../../../admin/Buefy.vue';
 import Category from '../../../models/category';
+import {showError, showSuccess} from "../../../admin/toast";
 
 @Component({
     name: 'CategoriesIndex',
@@ -153,16 +154,7 @@ export default class CategoriesIndex extends Buefy {
                 this.categories = [];
                 this.total = 0;
                 this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load categories, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchCategories();
-                    },
-                });
+                showError('Unable to load categories, maybe you are offline?', this.fetchCategories);
                 throw err;
             });
     }
@@ -206,11 +198,11 @@ export default class CategoriesIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/categories/${category.slug}`)
                 .then(() => {
-                    this.showSuccess('Categories deleted');
+                    showSuccess('Categories deleted');
                     this.fetchCategories();
                 })
                 .catch(err => {
-                    this.showError(`Unable to delete category <br> <small>${err.message}</small>`);
+                    showError(`Unable to delete category <br> <small>${err.message}</small>`);
                     throw err;
                 });
         });

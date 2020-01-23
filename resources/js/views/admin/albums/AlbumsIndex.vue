@@ -135,6 +135,7 @@
 import Component from 'vue-class-component';
 import Buefy from '../../../admin/Buefy.vue';
 import Album from '../../../models/album';
+import {showError, showSuccess} from "../../../admin/toast";
 
 @Component({
     name: 'AlbumsIndex',
@@ -187,16 +188,7 @@ export default class AlbumsIndex extends Buefy {
                 this.albums = [];
                 this.total = 0;
                 this.loading = false;
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load albums, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
-                    indefinite: true,
-                    onAction: () => {
-                        this.fetchAlbums();
-                    },
-                });
+                showError('Unable to load albums, maybe you are offline?', this.fetchAlbums);
                 throw err;
             });
     }
@@ -244,11 +236,11 @@ export default class AlbumsIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/albums/${album.slug}`)
                 .then(() => {
-                    this.showSuccess('Albums deleted');
+                    showSuccess('Albums deleted');
                     this.fetchAlbums();
                 })
                 .catch(err => {
-                    this.showError(`Unable to delete album <br> <small>${err.message}</small>`);
+                    showError(`Unable to delete album <br> <small>${err.message}</small>`);
                     throw err;
                 });
         });

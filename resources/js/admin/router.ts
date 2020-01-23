@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import VueRouter from 'vue-router';
+import VueRouter, {RouteConfig} from 'vue-router';
 import Dashboard from '../views/admin/Dashboard.vue';
 import AlbumsIndex from '../views/admin/albums/AlbumsIndex.vue';
 import AlbumsCreate from '../views/admin/albums/AlbumsCreate.vue';
@@ -23,7 +23,7 @@ import SocialMediasIndex from "../views/admin/social-medias/SocialMediasIndex.vu
 
 Vue.use(VueRouter);
 
-const routes: Array<any> = [
+const routes: RouteConfig[] = [
     {
         path: '/admin',
         name: 'admin.dashboard',

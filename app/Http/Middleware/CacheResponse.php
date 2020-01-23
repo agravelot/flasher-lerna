@@ -23,10 +23,8 @@ class CacheResponse extends CacheResponseBase
 
         $flashs = ['errors', 'warning', 'notice', 'success'];
 
-        foreach ($flashs as $flash) {
-            if ($request->session()->has($flash)) {
-                return $next($request);
-            }
+        if ($request->session()->has($flashs)) {
+            return $next($request);
         }
 
         return parent::handle($request, $next, $lifetimeInSeconds);

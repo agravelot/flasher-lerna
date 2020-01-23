@@ -26,33 +26,33 @@ class IndexTestimonialTest extends TestCase
 
     public function test_guest_can_see_active_testimonial_index()
     {
-        $goldenBookPosts = factory(Testimonial::class, 2)->state('published')->create();
+        $testimonialPosts = factory(Testimonial::class, 2)->state('published')->create();
 
         $response = $this->showTestimonials();
 
         $response->assertOk()
             ->assertDontSee('Nothing to show')
-            ->assertSee($goldenBookPosts->get(0)->name)
-            ->assertSee($goldenBookPosts->get(0)->body)
-            ->assertDontSee($goldenBookPosts->get(0)->email)
-            ->assertSee($goldenBookPosts->get(1)->name)
-            ->assertSee($goldenBookPosts->get(1)->body)
-            ->assertDontSee($goldenBookPosts->get(1)->email);
+            ->assertSee($testimonialPosts->get(0)->name)
+            ->assertSee($testimonialPosts->get(0)->body)
+            ->assertDontSee($testimonialPosts->get(0)->email)
+            ->assertSee($testimonialPosts->get(1)->name)
+            ->assertSee($testimonialPosts->get(1)->body)
+            ->assertDontSee($testimonialPosts->get(1)->email);
     }
 
     public function test_guest_can_not_see_unactive_testimonial_index()
     {
-        $goldenBookPosts = factory(Testimonial::class, 2)->state('unpublished')->create();
+        $testimonialPosts = factory(Testimonial::class, 2)->state('unpublished')->create();
 
         $response = $this->showTestimonials();
 
         $response->assertOk()
             ->assertSee('Nothing to show')
-            ->assertDontSee($goldenBookPosts->get(0)->name)
-            ->assertDontSee($goldenBookPosts->get(0)->body)
-            ->assertDontSee($goldenBookPosts->get(0)->email)
-            ->assertDontSee($goldenBookPosts->get(1)->name)
-            ->assertDontSee($goldenBookPosts->get(1)->body)
-            ->assertDontSee($goldenBookPosts->get(1)->email);
+            ->assertDontSee($testimonialPosts->get(0)->name)
+            ->assertDontSee($testimonialPosts->get(0)->body)
+            ->assertDontSee($testimonialPosts->get(0)->email)
+            ->assertDontSee($testimonialPosts->get(1)->name)
+            ->assertDontSee($testimonialPosts->get(1)->body)
+            ->assertDontSee($testimonialPosts->get(1)->email);
     }
 }

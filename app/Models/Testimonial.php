@@ -24,7 +24,7 @@ class Testimonial extends Model
     protected $dates = ['published_at'];
 
     /**
-     * Return if the golden book post is published or not.
+     * Return if the testimonial post is published or not.
      */
     public function isPublished(): bool
     {
@@ -32,7 +32,7 @@ class Testimonial extends Model
     }
 
     /**
-     * Scope for published golden book posts.
+     * Scope for published testimonial posts.
      */
     public function scopePublished(Builder $query): void
     {
