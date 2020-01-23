@@ -140,7 +140,7 @@ export default class SocialMediasIndex extends Buefy {
                 this.socialMedias = [];
                 this.total = 0;
                 this.loading = false;
-                showError('Unable to load socialMedias, maybe you are offline?', this.fetchSocialMedias);
+                showError(this.$buefy,'Unable to load socialMedias, maybe you are offline?', this.fetchSocialMedias);
                 throw err;
             });
     }
@@ -181,11 +181,12 @@ export default class SocialMediasIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/social-medias/${socialMedia.id}`)
                 .then(() => {
-                    showSuccess('SocialMedias deleted');
+                    showSuccess(this.$buefy,'SocialMedias deleted');
                     this.fetchSocialMedias();
                 })
                 .catch(err => {
                     showError(
+                        this.$buefy,
                         `Unable to delete socialMedia <br> <small>${err.message}</small>`
                     );
                     throw err;

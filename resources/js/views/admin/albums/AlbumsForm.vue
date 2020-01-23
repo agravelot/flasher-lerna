@@ -197,6 +197,7 @@ import Cosplayer from "../../../models/cosplayer";
 import FilterableById from "../../../models/interfaces/filterableById";
 import Buefy from "../../../admin/Buefy.vue";
 import {Prop} from "vue-property-decorator";
+import {DropzoneOptions} from "dropzone";
 
 interface AlbumErrorsInterface {
     title?: object;
@@ -216,7 +217,7 @@ interface AlbumErrorsInterface {
         ShareAlbum,
     },
 })
-export default class AlbumsEdit extends Buefy {
+export default class AlbumsForm extends Buefy {
 
     @Prop({ required: true, type: Boolean })
     protected isCreating: boolean;
@@ -224,15 +225,15 @@ export default class AlbumsEdit extends Buefy {
     protected errors: AlbumErrorsInterface = {};
     protected album: Album = new Album();
     protected allowNew = false;
-    protected allCategories: Array<Category> = [];
-    protected allCosplayers: Array<Cosplayer> = [];
-    protected filteredCategories: Array<Category> = [];
-    protected filteredCosplayers: Array<Cosplayer> = [];
+    protected allCategories: Category[] = [];
+    protected allCosplayers: Cosplayer[] = [];
+    protected filteredCategories: Category[] = [];
+    protected filteredCosplayers: Cosplayer[] = [];
     protected editorOption: object = {
         placeholder: 'Enter your description...',
         theme: 'snow',
     };
-    protected dropzoneOptions: object = {
+    protected dropzoneOptions: DropzoneOptions = {
         url: '/api/admin/album-pictures',
         thumbnailWidth: 200,
         addRemoveLinks: true,
@@ -281,7 +282,7 @@ export default class AlbumsEdit extends Buefy {
                 this.album = res.data;
             })
             .catch(err => {
-                showError('Unable to fetch album');
+                showError(this.$buefy,'Unable to fetch album');
                 throw err;
             });
     }
@@ -306,11 +307,12 @@ export default class AlbumsEdit extends Buefy {
             .then(res => {
                 this.errors = {};
                 this.album = res.data;
-                showSuccess('Album updated');
+                showSuccess(this.$buefy,'Album updated');
                 this.$router.push({ name: 'admin.albums.edit', params: { slug: this.album.slug } });
             })
             .catch(err => {
                 showError(
+                    this.$buefy,
                     `Unable to update the album <br><small>${err.response.data.message}</small>`
                 );
                 this.errors = err.response.data.errors;
@@ -324,11 +326,12 @@ export default class AlbumsEdit extends Buefy {
             .then(res => res.data)
             .then(res => {
                 this.errors = {};
-                showSuccess('Album successfully created');
+                showSuccess(this.$buefy,'Album successfully created');
                 this.$router.push({ name: 'admin.albums.edit', params: { slug: res.data.slug } });
             })
             .catch(err => {
                 showError(
+                    this.$buefy,
                     `Unable to create the album <br><small>${err.response.data.message}</small>`
                 );
                 this.errors = err.response.data.errors;
@@ -347,6 +350,7 @@ export default class AlbumsEdit extends Buefy {
             })
             .catch(err => {
                 showError(
+                    this.$buefy,
                     `Unable to refresh the album <br><small>${err.response.data.message}</small>`
                 );
                 throw err;
@@ -373,10 +377,10 @@ export default class AlbumsEdit extends Buefy {
             .delete(`/api/admin/albums/${this.album.slug}`)
             .then(() => {
                 this.$router.push({ name: 'admin.albums.index' });
-                showSuccess('Album successfully deleted!');
+                showSuccess(this.$buefy,'Album successfully deleted!');
             })
             .catch(err => {
-                showError(`Unable to delete the picture`);
+                showError(this.$buefy,`Unable to delete the picture`);
                 throw err;
             });
     }
@@ -394,10 +398,10 @@ export default class AlbumsEdit extends Buefy {
             })
             .then(() => {
                 this.refreshMedias();
-                showSuccess('Picture successfully deleted!');
+                showSuccess(this.$buefy,'Picture successfully deleted!');
             })
             .catch(err => {
-                showError('Unable to delete the picture');
+                showError(this.$buefy,'Unable to delete the picture');
                 throw err;
             });
     }
@@ -444,7 +448,7 @@ export default class AlbumsEdit extends Buefy {
                 })
                 .catch(err => {
                     // this.filteredCosplayers = [];
-                    showError('Unable to load categories, maybe you are offline?', () => this.getFilteredCategories(text));
+                    showError(this.$buefy,'Unable to load categories, maybe you are offline?', () => this.getFilteredCategories(text));
                     throw err;
                 });
         };
@@ -465,7 +469,7 @@ export default class AlbumsEdit extends Buefy {
                 })
                 .catch(err => {
                     // this.filteredCosplayers = [];
-                    showError('Unable to load cosplayers, maybe you are offline?', () => this.getFilteredCosplayers(text))
+                    showError(this.$buefy,'Unable to load cosplayers, maybe you are offline?', () => this.getFilteredCosplayers(text))
                     throw err;
                 });
         };

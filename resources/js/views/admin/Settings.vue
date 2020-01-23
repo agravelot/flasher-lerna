@@ -179,11 +179,11 @@ export default class Settings extends Buefy {
             .then(res => res.data)
             .then(() => {
                 this.loading = false;
-                showSuccess('Setting updated');
+                showSuccess(this.$buefy,'Setting updated');
             })
             .catch(err => {
                 this.loading = false;
-                showError('Unable to save setting, maybe you are offline?', () => this.sendSetting(setting));
+                showError(this.$buefy,'Unable to save setting, maybe you are offline?', () => this.sendSetting(setting));
                 throw err;
             });
     }
@@ -201,7 +201,7 @@ export default class Settings extends Buefy {
             .catch(err => {
                 this.settings = [];
                 this.loading = false;
-                showError('Unable to load settings, maybe you are offline?', this.fetchSettings);
+                showError(this.$buefy,'Unable to load settings, maybe you are offline?', this.fetchSettings);
                 throw err;
             });
     }
@@ -217,7 +217,7 @@ export default class Settings extends Buefy {
             })
             .catch(err => {
               this.loading = false;
-              showError('Unable to clear cache');
+              showError(this.$buefy,'Unable to clear cache');
               throw err;
             });
     }

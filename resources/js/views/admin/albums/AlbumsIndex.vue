@@ -188,7 +188,7 @@ export default class AlbumsIndex extends Buefy {
                 this.albums = [];
                 this.total = 0;
                 this.loading = false;
-                showError('Unable to load albums, maybe you are offline?', this.fetchAlbums);
+                showError(this.$buefy,'Unable to load albums, maybe you are offline?', this.fetchAlbums);
                 throw err;
             });
     }
@@ -236,11 +236,11 @@ export default class AlbumsIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/albums/${album.slug}`)
                 .then(() => {
-                    showSuccess('Albums deleted');
+                    showSuccess(this.$buefy,'Albums deleted');
                     this.fetchAlbums();
                 })
                 .catch(err => {
-                    showError(`Unable to delete album <br> <small>${err.message}</small>`);
+                    showError(this.$buefy,`Unable to delete album <br> <small>${err.message}</small>`);
                     throw err;
                 });
         });

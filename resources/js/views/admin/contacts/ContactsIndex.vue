@@ -166,7 +166,7 @@ export default class ContactsIndex extends Buefy {
                 this.contacts = [];
                 this.total = 0;
                 this.loading = false;
-                showError('Unable to load contacts, maybe you are offline?', this.fetchContacts);
+                showError(this.$buefy,'Unable to load contacts, maybe you are offline?', this.fetchContacts);
                 throw err;
             });
     }
@@ -209,11 +209,11 @@ export default class ContactsIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/contacts/${contact.id}`)
                 .then(() => {
-                    showSuccess('Contacts deleted');
+                    showSuccess(this.$buefy,'Contacts deleted');
                     this.fetchContacts();
                 })
                 .catch(err => {
-                    showError(`Unable to delete contact <br> <small>${err.message}</small>`);
+                    showError(this.$buefy,`Unable to delete contact <br> <small>${err.message}</small>`);
                     throw err;
                 });
         });

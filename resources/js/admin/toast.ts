@@ -1,13 +1,14 @@
-import {SnackbarConfig} from "buefy/types/components";
+import { SnackbarConfig } from "buefy/types/components";
+import { BuefyNamespace } from "buefy";
 
-export function showSuccess(message: string): void {
-    this.$buefy.toast.open({
+export function showSuccess(buefy: BuefyNamespace ,message: string): void {
+    buefy.toast.open({
         message: message,
         type: 'is-success',
     });
 }
 
-export function showError(message: string, onActionCallback?: () => void): void {
+export function showError(buefy: BuefyNamespace ,message: string, onActionCallback?: () => void): void {
     const snackBarConfig: SnackbarConfig = {
         message: message,
         type: 'is-danger',
@@ -15,5 +16,5 @@ export function showError(message: string, onActionCallback?: () => void): void 
         actionText: 'Retry',
         onAction: onActionCallback,
     };
-    this.$buefy.snackbar.open(snackBarConfig);
+    buefy.snackbar.open(snackBarConfig);
 }

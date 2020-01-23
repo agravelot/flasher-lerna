@@ -40,10 +40,10 @@ export default class ShareAlbum extends Buefy {
             if (result.state == 'granted' || result.state == 'prompt') {
                 navigator.clipboard.writeText(value).then(
                     () => {
-                        showSuccess('Link copied');
+                        showSuccess(this.$buefy, 'Link copied');
                     },
                     () => {
-                        showError('Something went wrong');
+                        showError(this.$buefy, 'Something went wrong');
                     }
                 );
             }

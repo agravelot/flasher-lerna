@@ -70,12 +70,12 @@ export default class CategoriesCreate extends Buefy {
                 this.errors = {};
                 this.loading = false;
                 this.category = res.data;
-                showSuccess('Category created');
+                showSuccess(this.$buefy,'Category created');
                 this.$router.push({ name: 'admin.categories.index' });
             })
             .catch(err => {
                 this.loading = false;
-                showError('Unable to load category, maybe you are offline?', this.createCategory);
+                showError(this.$buefy,'Unable to load category, maybe you are offline?', this.createCategory);
                 this.errors = err.response.data.errors;
                 throw err;
             });

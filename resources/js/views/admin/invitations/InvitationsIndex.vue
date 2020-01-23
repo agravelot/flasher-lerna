@@ -160,7 +160,7 @@ export default class InvitationsIndex extends Buefy {
                 this.invitations = [];
                 this.total = 0;
                 this.loading = false;
-                showError('Unable to load invitations, maybe you are offline?', this.fetchInvitations);
+                showError(this.$buefy,'Unable to load invitations, maybe you are offline?', this.fetchInvitations);
                 throw err;
             });
     }
@@ -201,11 +201,12 @@ export default class InvitationsIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/invitations/${invitation.id}`)
                 .then(() => {
-                    showSuccess('Invitations deleted');
+                    showSuccess(this.$buefy,'Invitations deleted');
                     this.fetchInvitations();
                 })
                 .catch(err => {
                     showError(
+                        this.$buefy,
                         `Unable to delete invitation <br> <small>${err.message}</small>`
                     );
                     throw err;

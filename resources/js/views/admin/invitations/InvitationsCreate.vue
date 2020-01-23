@@ -65,11 +65,12 @@
                 .post(`/api/admin/invitations/`, this.invitation)
                 .then(res => res.data)
                 .then(() => {
-                    showSuccess('Invitation successfully created');
+                    showSuccess(this.$buefy,'Invitation successfully created');
                     this.$router.push({name: 'admin.invitations.index'});
                 })
                 .catch(err => {
                     showError(
+                        this.$buefy,
                         `Unable to create the invitation <br><small>${err.response.data.message}</small>`
                     );
                     this.errors = err.response.data.errors;
@@ -92,7 +93,7 @@
                 .catch(err => {
                     // this.filteredCosplayers = [];
                     this.loading = false;
-                    showError('Unable to load cosplayers, maybe you are offline?', () => this.getFilteredCosplayers(text));
+                    showError(this.$buefy,'Unable to load cosplayers, maybe you are offline?', () => this.getFilteredCosplayers(text));
                     throw err;
                 });
         }

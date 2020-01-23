@@ -56,7 +56,7 @@
                 .catch(err => {
                     // this.filteredCosplayers = [];
                     this.loading = false;
-                    showError('Unable to load cosplayers, maybe you are offline?', () => this.getFilteredCosplayers(text));
+                    showError(this.$buefy, 'Unable to load cosplayers, maybe you are offline?', () => this.getFilteredCosplayers(text));
                     throw err;
                 });
         }
