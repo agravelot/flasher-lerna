@@ -189,7 +189,7 @@ export default class AlbumsIndex extends Buefy {
                 this.total = 0;
                 this.loading = false;
                 showError(this.$buefy,'Unable to load albums, maybe you are offline?', this.fetchAlbums);
-                throw err;
+                console.error(err);
             });
     }
 
@@ -239,14 +239,17 @@ export default class AlbumsIndex extends Buefy {
                 this.checkedRows = this.checkedRows.filter(selectedAlbum => {
                     return selectedAlbum.id != album.id;
                 });
+                this.albums = this.albums.filter(albumItem => {
+                    return albumItem.id != album.id;
+                });
             } catch (exception) {
                 showError(this.$buefy, `Unable to delete album <br> <small>${exception.message}</small>`);
                 console.error(exception);
             }
         };
 
-        await this.checkedRows.forEach(async (album) => deleteAlbum(album));
-        this.fetchAlbums();
+        await this.checkedRows.forEach((album) => deleteAlbum(album));
+        await this.fetchAlbums();
     }
 }
 </script>
