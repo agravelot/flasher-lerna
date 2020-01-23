@@ -125,8 +125,7 @@
                   native-type="submit"
                   type="is-primary"
                   :value="isCreating ? 'Create' : 'Update'"
-                >
-                </b-button>
+                />
                 <b-button
                   v-if="!isCreating"
                   :loading="loading"
