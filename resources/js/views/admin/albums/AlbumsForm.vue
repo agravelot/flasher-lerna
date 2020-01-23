@@ -196,8 +196,9 @@ import Category from "../../../models/category";
 import Cosplayer from "../../../models/cosplayer";
 import FilterableById from "../../../models/interfaces/filterableById";
 import Buefy from "../../../admin/Buefy.vue";
-import {Prop} from "vue-property-decorator";
-import {DropzoneOptions} from "dropzone";
+import {Prop} from 'vue-property-decorator';
+import {DropzoneOptions} from 'dropzone';
+import {debounce} from "../../../debounce";
 
 interface AlbumErrorsInterface {
     title?: object;
@@ -398,18 +399,6 @@ export default class AlbumsForm extends Buefy {
         }
     }
 
-    debounce(callback: any, text: string, time: number): void {
-        (window as any).lastCall = (window as any).lastCall ? (window as any).lastCall : 0;
-
-        if (Date.now() - (window as any).lastCall > time) {
-            (window as any).timeout = setTimeout(() => callback(text), time)
-        } else {
-            clearTimeout(((window as any).timeout as number));
-            (window as any).timeout = setTimeout(() => callback(text), time)
-        }
-        (window as any).lastCall = Date.now()
-    }
-
     isCategoryAlreadySelected(filterable: FilterableById): boolean {
         return this.album.categories.some(c => c.id === filterable.id);
     }
@@ -444,7 +433,7 @@ export default class AlbumsForm extends Buefy {
                     throw err;
                 });
         };
-        this.debounce(callback, text, 200);
+        debounce(callback, text, 200);
     }
 
     getFilteredCosplayers(text: string): void {
@@ -465,7 +454,7 @@ export default class AlbumsForm extends Buefy {
                     throw err;
                 });
         };
-        this.debounce(callback, text, 200);
+        debounce(callback, text, 200);
     }
 }
 </script>
