@@ -274,17 +274,15 @@ export default class AlbumsForm extends Buefy {
         }
     }
 
-    fetchAlbum(): void {
-        this.axios
-            .get(`/api/admin/albums/${this.$route.params.slug}`)
-            .then(res => res.data)
-            .then(res => {
-                this.album = res.data;
-            })
-            .catch(err => {
-                showError(this.$buefy,'Unable to fetch album');
-                throw err;
-            });
+    async fetchAlbum(): Promise<void> {
+        try {
+            const res = await this.axios.get(`/api/admin/albums/${this.$route.params.slug}`);
+            const { data } = res.data;
+            this.album = data;
+        } catch (exception) {
+            showError(this.$buefy,'Unable to fetch album');
+            throw exception;
+        }
     }
 
     sendingEvent(file: File, xhr: XMLHttpRequest, formData: FormData): void {
@@ -297,64 +295,60 @@ export default class AlbumsForm extends Buefy {
         formData.append('album_slug', this.album.slug as string);
     }
 
-    updateAlbum(): void {
+    async updateAlbum(): Promise<void> {
         if (this.album === undefined) {
             throw new DOMException('Unable to update undefined album.');
         }
-        this.axios
-            .patch(`/api/admin/albums/${this.$route.params.slug}`, this.album)
-            .then(res => res.data)
-            .then(res => {
-                this.errors = {};
-                this.album = res.data;
-                showSuccess(this.$buefy,'Album updated');
-                this.$router.push({ name: 'admin.albums.edit', params: { slug: this.album.slug } });
-            })
-            .catch(err => {
-                showError(
-                    this.$buefy,
-                    `Unable to update the album <br><small>${err.response.data.message}</small>`
-                );
-                this.errors = err.response.data.errors;
-                throw err;
-            });
+
+        try {
+            const res = await this.axios.patch(`/api/admin/albums/${this.$route.params.slug}`, this.album);
+            const { data } = res.data;
+            this.album = data;
+            showSuccess(this.$buefy,'Album updated');
+            await this.$router.push({name: 'admin.albums.edit', params: {slug: this.album.slug}});
+        } catch (exception) {
+            showError(
+                this.$buefy,
+                `Unable to update the album <br><small>${exception.response.data.message}</small>`
+            );
+            this.errors = exception.response.data.errors;
+            throw exception;
+        }
     }
 
-    createAlbum(): void {
-        this.axios
-            .post(`/api/admin/albums/`, this.album)
-            .then(res => res.data)
-            .then(res => {
-                this.errors = {};
-                showSuccess(this.$buefy,'Album successfully created');
-                this.$router.push({ name: 'admin.albums.edit', params: { slug: res.data.slug } });
-            })
-            .catch(err => {
-                showError(
-                    this.$buefy,
-                    `Unable to create the album <br><small>${err.response.data.message}</small>`
-                );
-                this.errors = err.response.data.errors;
-            });
+    async createAlbum(): Promise<void> {
+        try {
+            const res = await this.axios.post(`/api/admin/albums/`, this.album);
+            const { data } = res.data;
+            this.album = data;
+            this.errors = {};
+            showSuccess(this.$buefy,'Album successfully created');
+            await this.$router.push({name: 'admin.albums.edit', params: {slug: res.data.slug}});
+        } catch (exception) {
+            showError(
+                this.$buefy,
+                `Unable to create the album <br><small>${exception.response.data.message}</small>`
+            );
+            this.errors = exception.response.data.errors;
+            throw exception;
+        }
     }
 
-    refreshMedias(): void {
+    async refreshMedias(): Promise<void> {
         if (this.album === undefined) {
             throw new DOMException('Unable to refresh undefined album.');
         }
-        this.axios
-            .get(`/api/admin/albums/${this.$route.params.slug}`)
-            .then(res => res.data)
-            .then(res => {
-                this.album.medias = res.data.medias;
-            })
-            .catch(err => {
-                showError(
-                    this.$buefy,
-                    `Unable to refresh the album <br><small>${err.response.data.message}</small>`
-                );
-                throw err;
-            });
+        try {
+            const res = await this.axios.get(`/api/admin/albums/${this.$route.params.slug}`);
+            const { data } = res.data;
+            this.album.medias = data;
+        } catch (exception) {
+            showError(
+                this.$buefy,
+                `Unable to refresh the album <br><small>${exception.response.data.message}</small>`
+            );
+            throw exception;
+        }
     }
 
     confirmDeleteAlbum(): void {
@@ -369,41 +363,39 @@ export default class AlbumsForm extends Buefy {
         });
     }
 
-    deleteAlbum(): void {
+    async deleteAlbum(): Promise<void> {
         if (this.album === undefined) {
             throw new DOMException('Unable to delete undefined album.');
         }
-        this.axios
-            .delete(`/api/admin/albums/${this.album.slug}`)
-            .then(() => {
-                this.$router.push({ name: 'admin.albums.index' });
-                showSuccess(this.$buefy,'Album successfully deleted!');
-            })
-            .catch(err => {
-                showError(this.$buefy,`Unable to delete the picture`);
-                throw err;
-            });
+
+        try {
+            await this.axios.delete(`/api/admin/albums/${this.album.slug}`);
+            showSuccess(this.$buefy,'Album successfully deleted!');
+            await this.$router.push({name: 'admin.albums.index'});
+        } catch (exception) {
+            showError(this.$buefy,`Unable to delete the picture`);
+            throw exception;
+        }
     }
 
-    deleteAlbumPicture(mediaId: number): void {
+    async deleteAlbumPicture(mediaId: number): Promise<void> {
         if (this.album === undefined) {
             throw new DOMException('Unable to delete media from undefined album.');
         }
-        this.axios
-            .delete(`/api/admin/album-pictures/${this.album.slug}`, {
+
+        try {
+            await this.axios.delete(`/api/admin/album-pictures/${this.album.slug}`, {
                 data: {
                     // eslint-disable-next-line @typescript-eslint/camelcase
                     media_id: mediaId,
                 },
-            })
-            .then(() => {
-                this.refreshMedias();
-                showSuccess(this.$buefy,'Picture successfully deleted!');
-            })
-            .catch(err => {
-                showError(this.$buefy,'Unable to delete the picture');
-                throw err;
             });
+            this.refreshMedias();
+            showSuccess(this.$buefy, 'Picture successfully deleted!');
+        } catch (exception) {
+            showError(this.$buefy, 'Unable to delete the picture');
+            throw exception;
+        }
     }
 
     debounce(callback: any, text: string, time: number): void {
