@@ -1,7 +1,7 @@
 <template>
   <section>
     <h1 class="title">
-      Update album
+      {{ isCreating ? 'Create album' : 'Update album' }}
     </h1>
 
     <div class="card">
@@ -15,7 +15,7 @@
             label="Album"
             icon="info"
           >
-            <form @submit.prevent="updateAlbum">
+            <form @submit.prevent="sendOrCreateAlbum">
               <b-field
                 :type="errors.title ? 'is-danger' : ''"
                 :message="errors.title ? errors.title[0] : null"
@@ -41,11 +41,17 @@
                 />
               </b-field>
 
-              <quill-editor
-                ref="myQuillEditor"
-                v-model="album.body"
-                :options="editorOption"
-              />
+              <b-field
+                :type="errors.body ? 'is-danger' : ''"
+                :message="errors.body ? errors.body[0] : null"
+                label="Description"
+              >
+                <quill-editor
+                  ref="myQuillEditor"
+                  v-model="album.body"
+                  :options="editorOption"
+                />
+              </b-field>
 
               <b-field
                 :type="errors.categories ? 'is-danger' : ''"
@@ -114,9 +120,10 @@
               </b-field>
               <div class="buttons">
                 <button class="button is-primary">
-                  Update
+                  {{ isCreating ? 'Create' : 'Update' }}
                 </button>
                 <a
+                  v-if="!isCreating"
                   class="button is-bottom-right is-danger"
                   @click="confirmDeleteAlbum()"
                 >
@@ -126,6 +133,7 @@
             </form>
           </b-tab-item>
           <b-tab-item
+            v-if="!isCreating"
             label="Pictures"
             icon="images"
           >
@@ -158,6 +166,7 @@
           </b-tab-item>
 
           <b-tab-item
+            v-if="!isCreating"
             label="Share"
             icon="share"
           >
@@ -173,28 +182,56 @@
 </template>
 
 <script lang="ts">
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
 import Component from 'vue-class-component';
 import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
-import AlbumBase from './AlbumBase.vue';
 import ShareAlbum from '../../../components/admin/ShareAlbum.vue';
 import Album from '../../../models/album';
 import { quillEditor } from 'vue-quill-editor';
 import {showSuccess, showError} from "../../../admin/toast";
+import Category from "../../../models/category";
+import Cosplayer from "../../../models/cosplayer";
+import FilterableById from "../../../models/interfaces/filterableById";
+import Buefy from "../../../admin/Buefy.vue";
+import {Prop} from "vue-property-decorator";
+
+interface AlbumErrorsInterface {
+    title?: object;
+    meta_description?: object;
+    body?: object;
+    cosplayers?: object;
+    categories?: object;
+    published_at?: object;
+    private?: object;
+}
 
 @Component({
-    name: 'AlbumsEdit',
+    name: 'AlbumsForm.vue',
     components: {
         vueDropzone: vue2Dropzone,
         quillEditor,
-        AlbumBase,
         ShareAlbum,
     },
-    extends: AlbumBase,
 })
-export default class AlbumsEdit extends AlbumBase {
-    protected album: Album | undefined;
+export default class AlbumsEdit extends Buefy {
+
+    @Prop({ required: true, type: Boolean })
+    protected isCreating: boolean;
+
+    protected errors: AlbumErrorsInterface = {};
+    protected album: Album = new Album();
     protected allowNew = false;
+    protected allCategories: Array<Category> = [];
+    protected allCosplayers: Array<Cosplayer> = [];
+    protected filteredCategories: Array<Category> = [];
+    protected filteredCosplayers: Array<Cosplayer> = [];
+    protected editorOption: object = {
+        placeholder: 'Enter your description...',
+        theme: 'snow',
+    };
     protected dropzoneOptions: object = {
         url: '/api/admin/album-pictures',
         thumbnailWidth: 200,
@@ -221,7 +258,19 @@ export default class AlbumsEdit extends AlbumBase {
     };
 
     created(): void {
-        this.fetchAlbum();
+        if (this.isCreating) {
+            this.album = new Album();
+        } else {
+            this.fetchAlbum();
+        }
+    }
+
+    sendOrCreateAlbum(): void {
+        if (this.isCreating) {
+            this.createAlbum();
+        } else {
+            this.updateAlbum();
+        }
     }
 
     fetchAlbum(): void {
@@ -266,6 +315,23 @@ export default class AlbumsEdit extends AlbumBase {
                 );
                 this.errors = err.response.data.errors;
                 throw err;
+            });
+    }
+
+    createAlbum(): void {
+        this.axios
+            .post(`/api/admin/albums/`, this.album)
+            .then(res => res.data)
+            .then(res => {
+                this.errors = {};
+                showSuccess('Album successfully created');
+                this.$router.push({ name: 'admin.albums.edit', params: { slug: res.data.slug } });
+            })
+            .catch(err => {
+                showError(
+                    `Unable to create the album <br><small>${err.response.data.message}</small>`
+                );
+                this.errors = err.response.data.errors;
             });
     }
 
@@ -334,6 +400,76 @@ export default class AlbumsEdit extends AlbumBase {
                 showError('Unable to delete the picture');
                 throw err;
             });
+    }
+
+    debounce(callback: any, text: string, time: number): void {
+        (window as any).lastCall = (window as any).lastCall ? (window as any).lastCall : 0;
+
+        if (Date.now() - (window as any).lastCall > time) {
+            (window as any).timeout = setTimeout(() => callback(text), time)
+        } else {
+            clearTimeout(((window as any).timeout as number));
+            (window as any).timeout = setTimeout(() => callback(text), time)
+        }
+        (window as any).lastCall = Date.now()
+    }
+
+    isCategoryAlreadySelected(filterable: FilterableById): boolean {
+        return this.album.categories.some(c => c.id === filterable.id);
+    }
+
+    isCategoryNotAlreadySelected(filterable: FilterableById): boolean {
+        return ! this.isCategoryAlreadySelected(filterable);
+    }
+
+    isCosplayerAlreadySelected(filterable: FilterableById): boolean {
+        return this.album.cosplayers.some(c => c.id === filterable.id);
+    }
+
+    isCosplayerNotAlreadySelected(filterable: FilterableById): boolean {
+        return ! this.isCategoryAlreadySelected(filterable);
+    }
+
+    getFilteredCategories(text: string): void {
+        const callback = (text: string): void => {
+            this.axios
+                .get('/api/admin/categories', {
+                    params: {
+                        'filter[name]': text,
+                    },
+                })
+                .then(res => res.data)
+                .then(res => {
+                    this.filteredCategories = res.data.filter(this.isCategoryNotAlreadySelected);
+                })
+                .catch(err => {
+                    // this.filteredCosplayers = [];
+                    showError('Unable to load categories, maybe you are offline?', () => this.getFilteredCategories(text));
+                    throw err;
+                });
+        };
+        this.debounce(callback, text, 200);
+    }
+
+    getFilteredCosplayers(text: string): void {
+        const callback = (text: string): void => {
+            this.axios
+                .get('/api/admin/cosplayers', {
+                    params: {
+                        'filter[name]': text,
+                    },
+                })
+                .then(res => res.data)
+                .then(res => {
+                    this.filteredCosplayers = res.data.filter(this.isCosplayerNotAlreadySelected);
+                })
+                .catch(err => {
+                    // this.filteredCosplayers = [];
+                    showError('Unable to load cosplayers, maybe you are offline?', () => this.getFilteredCosplayers(text))
+                    throw err;
+                });
+        };
+        this.debounce(callback, text, 200);
     }
 }
 </script>
