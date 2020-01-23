@@ -155,7 +155,7 @@ export default class UsersIndex extends Buefy {
                 this.users = [];
                 this.total = 0;
                 this.loading = false;
-                showError('Unable to load users, maybe you are offline?', this.fetchUsers);
+                showError(this.$buefy,'Unable to load users, maybe you are offline?', this.fetchUsers);
                 throw err;
             });
     }
@@ -203,11 +203,11 @@ export default class UsersIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/users/${user.id}`)
                 .then(() => {
-                    showSuccess('Users deleted');
+                    showSuccess(this.$buefy,'Users deleted');
                     this.fetchUsers();
                 })
                 .catch(err => {
-                    showError(`Unable to delete user <br> <small>${err.message}</small>`);
+                    showError(this.$buefy,`Unable to delete user <br> <small>${err.message}</small>`);
                     throw err;
                 });
         });

@@ -240,11 +240,12 @@ export default class TestimonialsIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/testimonials/${testimonial.id}`)
                 .then(() => {
-                    showSuccess('Testimonials deleted');
+                    showSuccess(this.$buefy,'Testimonials deleted');
                     this.fetchTestimonials();
                 })
                 .catch(err => {
                     showError(
+                        this.$buefy,
                         `Unable to delete testimonial <br> <small>${err.message}</small>`
                     );
                     throw err;
@@ -276,7 +277,7 @@ export default class TestimonialsIndex extends Buefy {
             })
             .catch(err => {
                 this.loading = false;
-                showError('Unable to update testimonial, maybe you are offline?', this.fetchTestimonials);
+                showError(this.$buefy,'Unable to update testimonial, maybe you are offline?', this.fetchTestimonials);
                 throw err;
             });
     }

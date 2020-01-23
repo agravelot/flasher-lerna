@@ -154,7 +154,7 @@ export default class CategoriesIndex extends Buefy {
                 this.categories = [];
                 this.total = 0;
                 this.loading = false;
-                showError('Unable to load categories, maybe you are offline?', this.fetchCategories);
+                showError(this.$buefy,'Unable to load categories, maybe you are offline?', this.fetchCategories);
                 throw err;
             });
     }
@@ -198,11 +198,11 @@ export default class CategoriesIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/categories/${category.slug}`)
                 .then(() => {
-                    showSuccess('Categories deleted');
+                    showSuccess(this.$buefy,'Categories deleted');
                     this.fetchCategories();
                 })
                 .catch(err => {
-                    showError(`Unable to delete category <br> <small>${err.message}</small>`);
+                    showError(this.$buefy,`Unable to delete category <br> <small>${err.message}</small>`);
                     throw err;
                 });
         });

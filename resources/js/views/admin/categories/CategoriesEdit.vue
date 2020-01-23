@@ -133,7 +133,7 @@ export default class CategoriesEdit extends Buefy {
                 this.errors = {};
                 this.category = res.data;
                 this.loading = false;
-                showSuccess('Category updated');
+                showSuccess(this.$buefy,'Category updated');
                 this.$router.push({ name: 'admin.categories.index' });
             })
             .catch(err => {

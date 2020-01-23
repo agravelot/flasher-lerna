@@ -97,11 +97,11 @@ export default class UsersCreate extends Buefy {
                 this.errors = {};
                 this.loading = false;
                 this.$router.push({ name: 'admin.users.index' });
-                showSuccess('User created');
+                showSuccess(this.$buefy,'User created');
             })
             .catch(err => {
                 this.loading = false;
-                showError('Unable to create user, maybe you are offline?', this.createUser);
+                showError(this.$buefy,'Unable to create user, maybe you are offline?', this.createUser);
                 this.errors = err.response.data.errors;
                 throw err;
             });
@@ -129,10 +129,10 @@ export default class UsersCreate extends Buefy {
             .delete(`/api/admin/users/${this.user.id}`)
             .then(() => {
                 this.$router.push({ name: 'admin.users.index' });
-                showSuccess('User deleted');
+                showSuccess(this.$buefy,'User deleted');
             })
             .catch(err => {
-                showError(`Unable to delete user <br> <small>${err.message}</small>`);
+                showError(this.$buefy,`Unable to delete user <br> <small>${err.message}</small>`);
                 throw err;
             });
     }

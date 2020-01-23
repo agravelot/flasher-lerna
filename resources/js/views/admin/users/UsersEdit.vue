@@ -119,11 +119,11 @@ export default class UsersEdit extends Buefy {
                 this.errors = {};
                 this.loading = false;
                 this.$router.push({ name: 'admin.users.index' });
-                showSuccess('User updated');
+                showSuccess(this.$buefy,'User updated');
             })
             .catch(err => {
                 this.loading = false;
-                showError('Unable to update user, maybe you are offline?', this.updateUser);
+                showError(this.$buefy,'Unable to update user, maybe you are offline?', this.updateUser);
                 this.errors = err.response.data.errors;
                 throw err;
             });
@@ -141,7 +141,7 @@ export default class UsersEdit extends Buefy {
             })
             .catch(err => {
                 this.loading = false;
-                showError('Unable to load user, maybe you are offline?', this.fetchUser);
+                showError(this.$buefy,'Unable to load user, maybe you are offline?', this.fetchUser);
                 throw err;
             });
     }
@@ -168,10 +168,10 @@ export default class UsersEdit extends Buefy {
             .delete(`/api/admin/users/${this.user.id}`)
             .then(() => {
                 this.$router.push({ name: 'admin.users.index' });
-                showSuccess('User deleted');
+                showSuccess(this.$buefy,'User deleted');
             })
             .catch(err => {
-                showError(`Unable to delete user <br> <small>${err.message}</small>`);
+                showError(this.$buefy,`Unable to delete user <br> <small>${err.message}</small>`);
                 throw err;
             });
     }

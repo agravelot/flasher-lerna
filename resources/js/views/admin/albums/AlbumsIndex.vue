@@ -188,7 +188,7 @@ export default class AlbumsIndex extends Buefy {
                 this.albums = [];
                 this.total = 0;
                 this.loading = false;
-                showError('Unable to load albums, maybe you are offline?', this.fetchAlbums);
+                showError(this.$buefy,'Unable to load albums, maybe you are offline?', this.fetchAlbums);
                 throw err;
             });
     }
@@ -231,19 +231,22 @@ export default class AlbumsIndex extends Buefy {
     /**
      * Delete album from slug
      */
-    deleteSelectedAlbums(): void {
-        this.checkedRows.forEach(album => {
-            this.axios
-                .delete(`/api/admin/albums/${album.slug}`)
-                .then(() => {
-                    showSuccess('Albums deleted');
-                    this.fetchAlbums();
-                })
-                .catch(err => {
-                    showError(`Unable to delete album <br> <small>${err.message}</small>`);
-                    throw err;
+    async deleteSelectedAlbums(): Promise<void> {
+        const deleteAlbum = async (album: Album): Promise<void> => {
+            try {
+                await this.axios.delete(`/api/admin/albums/${album.slug}`);
+                showSuccess(this.$buefy, 'Albums deleted');
+                this.checkedRows = this.checkedRows.filter(selectedAlbum => {
+                    return selectedAlbum.id != album.id;
                 });
-        });
+            } catch (exception) {
+                showError(this.$buefy, `Unable to delete album <br> <small>${exception.message}</small>`);
+                console.error(exception);
+            }
+        };
+
+        await this.checkedRows.forEach(async (album) => deleteAlbum(album));
+        this.fetchAlbums();
     }
 }
 </script>

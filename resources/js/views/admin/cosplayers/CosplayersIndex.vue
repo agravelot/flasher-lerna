@@ -155,7 +155,7 @@ export default class CosplayersIndex extends Buefy {
                 this.cosplayers = [];
                 this.total = 0;
                 this.loading = false;
-                showError('Unable to load cosplayers, maybe you are offline?', this.fetchCosplayers);
+                showError(this.$buefy,'Unable to load cosplayers, maybe you are offline?', this.fetchCosplayers);
                 throw err;
             });
     }
@@ -203,11 +203,11 @@ export default class CosplayersIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/cosplayers/${cosplayer.slug}`)
                 .then(() => {
-                    showSuccess('Cosplayers deleted');
+                    showSuccess(this.$buefy,'Cosplayers deleted');
                     this.fetchCosplayers();
                 })
                 .catch(err => {
-                    showError(`Unable to delete cosplayer <br> <small>${err.message}</small>`);
+                    showError(this.$buefy,`Unable to delete cosplayer <br> <small>${err.message}</small>`);
                     throw err;
                 });
         });

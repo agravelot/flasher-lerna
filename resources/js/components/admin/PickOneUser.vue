@@ -56,7 +56,7 @@
                 .catch(err => {
                     // this.filteredUsers = [];
                     this.loading = false;
-                    showError('Unable to load users, maybe you are offline?', () => this.getFilteredUsers(text));
+                    showError(this.$buefy, 'Unable to load users, maybe you are offline?', () => this.getFilteredUsers(text));
                     throw err;
                 });
         }
