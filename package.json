@@ -36,7 +36,7 @@
         "@sentry/browser": "^5.11.1",
         "@sentry/integrations": "^5.11.1",
         "@types/dropzone": "^5.5.2",
-        "@types/eslint": "^6.1.5",
+        "@types/eslint": "^6.1.6",
         "@types/lodash": "^4.14.123",
         "@types/node": "^13.1.8",
         "@types/node-sass": "^4.11.0",
