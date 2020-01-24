@@ -214,6 +214,7 @@ export default class Settings extends Buefy {
             .then(res => res.data)
             .then(() => {
               this.loading = false;
+              showSuccess(this.$buefy, 'Cache successfully cleared!')
             })
             .catch(err => {
               this.loading = false;
