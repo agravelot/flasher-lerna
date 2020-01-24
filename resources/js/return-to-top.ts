@@ -1,20 +1,25 @@
 //Get the button:
 const returnToTopButton: HTMLElement = document.getElementById("return-to-top");
+const navbar: HTMLElement = document.getElementById('navMenu');
 
 returnToTopButton.addEventListener('click', () => {
     window.scrollTo({top: 0, behavior: 'smooth'});
 });
 
-async function scrollFunction(): Promise<void> {
-    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-        console.log('show');
-        returnToTopButton.style.visibility = "visible";
-        returnToTopButton.style.opacity = "1";
-    } else {
-        console.log('hide');
-        returnToTopButton.style.visibility = "hidden";
-        returnToTopButton.style.opacity = "0";
-    }
-}
+const handleIntersection: IntersectionObserverCallback = async (
+    entries: IntersectionObserverEntry[],
+): Promise<void> => {
+    entries.forEach((entry: IntersectionObserverEntry) => {
+        returnToTopButton.style.visibility = entry.isIntersecting ? "hidden" : "visible";
+        returnToTopButton.style.opacity = entry.isIntersecting ? "0" : "1";
+    });
+};
 
-window.onscroll = async (): Promise<void> => scrollFunction();
+const options: IntersectionObserverInit = {
+    root: null,
+    rootMargin: '20px',
+    threshold: 1.0
+};
+
+const observer = new IntersectionObserver(handleIntersection, options);
+observer.observe(navbar);
