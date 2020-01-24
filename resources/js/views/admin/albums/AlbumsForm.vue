@@ -445,10 +445,11 @@ export default class AlbumsForm extends Buefy {
 
     async updateMediasOrder(): Promise<void> {
         try {
-            console.log(this.album.medias.map(m => m.id));
-            const res = await this.axios.patch(`/api/admin/albums/${this.$route.params.slug}/media-order`, this.album.medias.map(m => m.id));
-            const { data } = res.data;
-            this.album = data;
+            const data = { 'media_ids': this.album.medias.map(m => m.id)};
+            await this.axios.patch(
+                `/api/admin/albums/${this.$route.params.slug}/media-ordering`,
+                data
+            );
             showSuccess(this.$buefy, 'Pictures successfully re-ordered');
         } catch (exception) {
             showError(this.$buefy, 'Unable to re-ordered the pictures');
