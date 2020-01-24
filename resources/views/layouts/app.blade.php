@@ -54,6 +54,7 @@
     @endif
 
     @yield('content')
+    @include('layouts.partials._return_to_top')
 </main>
 
 <footer>
