@@ -5092,16 +5092,16 @@
         },
         {
             "name": "sentry/sentry",
-            "version": "2.3.0",
+            "version": "2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "335bd24c4a817efdb7c3ec83ca42321a7761df6a"
+                "reference": "6d736f8cefa989f6171e30e1d1bfa214f7f5ab58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/335bd24c4a817efdb7c3ec83ca42321a7761df6a",
-                "reference": "335bd24c4a817efdb7c3ec83ca42321a7761df6a",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/6d736f8cefa989f6171e30e1d1bfa214f7f5ab58",
+                "reference": "6d736f8cefa989f6171e30e1d1bfa214f7f5ab58",
                 "shasum": ""
             },
             "require": {
@@ -5173,26 +5173,26 @@
                 "logging",
                 "sentry"
             ],
-            "time": "2020-01-08T11:27:08+00:00"
+            "time": "2020-01-23T09:40:22+00:00"
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "1.5.0",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "724e86b3f96e2b87856b818a2bf53c80e796c279"
+                "reference": "50eb00e825ce615a57408c7a5e3f2599686c5be9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/724e86b3f96e2b87856b818a2bf53c80e796c279",
-                "reference": "724e86b3f96e2b87856b818a2bf53c80e796c279",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/50eb00e825ce615a57408c7a5e3f2599686c5be9",
+                "reference": "50eb00e825ce615a57408c7a5e3f2599686c5be9",
                 "shasum": ""
             },
             "require": {
                 "illuminate/support": "5.0 - 5.8 | ^6.0",
                 "php": "^7.1",
-                "sentry/sdk": "^2.0"
+                "sentry/sdk": "^2.1"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "2.14.*",
@@ -5242,7 +5242,7 @@
                 "logging",
                 "sentry"
             ],
-            "time": "2019-11-11T11:30:37+00:00"
+            "time": "2020-01-23T09:52:27+00:00"
         },
         {
             "name": "spatie/browsershot",
@@ -5899,16 +5899,16 @@
         },
         {
             "name": "spatie/schema-org",
-            "version": "2.11.1",
+            "version": "2.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/schema-org.git",
-                "reference": "d44026cdf6fa874b64290d8267cb7acd6a613652"
+                "reference": "419f3703015e86f2daccc63649c070e7bb5c52b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/schema-org/zipball/d44026cdf6fa874b64290d8267cb7acd6a613652",
-                "reference": "d44026cdf6fa874b64290d8267cb7acd6a613652",
+                "url": "https://api.github.com/repos/spatie/schema-org/zipball/419f3703015e86f2daccc63649c070e7bb5c52b3",
+                "reference": "419f3703015e86f2daccc63649c070e7bb5c52b3",
                 "shasum": ""
             },
             "require": {
@@ -5955,7 +5955,7 @@
                 "schema-org",
                 "spatie"
             ],
-            "time": "2019-11-18T14:44:13+00:00"
+            "time": "2020-01-23T14:09:05+00:00"
         },
         {
             "name": "spatie/temporary-directory",
@@ -6753,16 +6753,16 @@
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v5.0.2",
+            "version": "v5.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
-                "reference": "1ad3d0ffc00cc1990e5c9c7bb6b81578ec3f5f68"
+                "reference": "b1ab86ce52b0c0abe031367a173005a025e30e04"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/1ad3d0ffc00cc1990e5c9c7bb6b81578ec3f5f68",
-                "reference": "1ad3d0ffc00cc1990e5c9c7bb6b81578ec3f5f68",
+                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/b1ab86ce52b0c0abe031367a173005a025e30e04",
+                "reference": "b1ab86ce52b0c0abe031367a173005a025e30e04",
                 "shasum": ""
             },
             "require": {
@@ -6803,7 +6803,7 @@
                 "configuration",
                 "options"
             ],
-            "time": "2019-11-18T17:27:11+00:00"
+            "time": "2020-01-04T14:08:26+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -12962,16 +12962,16 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v5.0.2",
+            "version": "v5.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "14e77c6591f7c4c2a6ff86c65af72d3919835adc"
+                "reference": "20802daa0c9ad4f78da7d518a924a5666cf3aa4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/14e77c6591f7c4c2a6ff86c65af72d3919835adc",
-                "reference": "14e77c6591f7c4c2a6ff86c65af72d3919835adc",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/20802daa0c9ad4f78da7d518a924a5666cf3aa4e",
+                "reference": "20802daa0c9ad4f78da7d518a924a5666cf3aa4e",
                 "shasum": ""
             },
             "require": {
@@ -13026,7 +13026,7 @@
             ],
             "description": "Symfony HttpClient component",
             "homepage": "https://symfony.com",
-            "time": "2019-12-19T16:01:11+00:00"
+            "time": "2020-01-21T08:40:24+00:00"
         },
         {
             "name": "symfony/http-client-contracts",
