@@ -34,6 +34,8 @@ Route::group([
         Route::get('clear-cache', 'AdminClearCacheController')->name('clear-cache');
 
         Route::apiResource('albums', 'AdminAlbumController');
+        Route::patch('albums/{album}/media-ordering', 'AlbumMediaOrderingController')
+            ->name('albums.media-ordering');
         Route::apiResource('album-pictures', 'AdminPictureAlbumController')
             ->only('store', 'destroy')
             ->parameters(['album-pictures' => 'album']);
