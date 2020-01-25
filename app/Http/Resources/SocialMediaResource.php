@@ -20,6 +20,7 @@ class SocialMediaResource extends Resource
             'id' => $this->id,
             'name' => $this->name,
             'url' => $this->url,
+            'icon' => $this->icon,
             'color' => $this->color,
             'active' => $this->active,
             'created_at' => $this->created_at,

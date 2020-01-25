@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Validation\Rule;
+use LVR\Colour\Hex;
 
 class SocialMediaRequest extends Request
 {
@@ -16,9 +17,16 @@ class SocialMediaRequest extends Request
         return [
             'name' => ['required', 'string', Rule::unique('social_media')->ignore($id)],
             'icon' => 'required|string',
-            'color' => 'required',
+            'color' => ['required', new Hex],
             'url' => 'required',
             'active' => 'required',
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        if ($this->active === null) {
+            $this->merge(['active' => false]);
+        }
     }
 }

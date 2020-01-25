@@ -24,6 +24,21 @@ class StoreSocialMediaTest extends TestCase
         $this->assertSame(1, SocialMedia::count());
     }
 
+    public function test_admin_cannot_store_non_valid_color(): void
+    {
+        $this->actingAsAdmin();
+        /** @var SocialMedia $socialMedia */
+        $socialMedia = factory(SocialMedia::class)->make([
+            'color' => 'non-valid',
+        ]);
+
+        $response = $this->storeSocialMedia($socialMedia);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors('color');
+        $this->assertSame(0, SocialMedia::count());
+    }
+
     public function test_user_cannot_update_social_media(): void
     {
         $this->actingAsUser();
