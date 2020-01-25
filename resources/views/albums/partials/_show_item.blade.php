@@ -34,7 +34,11 @@
             </div>
         </div>
 
-        @include('layouts.partials._share_socials')
+        @include('layouts.partials._share_socials', [
+            'url' => url(route('albums.show', compact('album'))),
+            'title' => $album->title,
+            'text' => $album->meta_description,
+        ])
 
         <div class="columns is-mobile is-centered">
             <div class="column is-narrow field has-addons">
