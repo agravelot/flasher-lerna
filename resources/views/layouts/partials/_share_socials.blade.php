@@ -6,13 +6,3 @@
         </span>
     </a>
 @endforeach
-
-<button class="button is-black is-share-button" aria-label="{{ __('Share') }}"
-        data-title="{{ $title }}"
-        data-text="{{ $text }}"
-        data-url="{{ $url }}">
-    <span>{{ __('Share') }}</span>
-    <span class="icon has-text-white">
-        @fa('share')
-    </span>
-</button>
