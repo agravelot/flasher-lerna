@@ -6,4 +6,4 @@
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="{{ asset('favicon/mstile-144x144.png') }}">
 <meta name="msapplication-config" content="{{ asset('favicon/browserconfig.xml') }}">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#000000">
