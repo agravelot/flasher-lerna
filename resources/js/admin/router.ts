@@ -19,6 +19,7 @@ import InvitationsIndex from "../views/admin/invitations/InvitationsIndex.vue";
 import InvitationsCreate from "../views/admin/invitations/InvitationsCreate.vue";
 import SocialMediasIndex from "../views/admin/social-medias/SocialMediasIndex.vue";
 import AlbumsForm from "../views/admin/albums/AlbumsForm.vue";
+import SocialMediasForm from "../views/admin/social-medias/SocialMediasForm.vue";
 
 Vue.use(VueRouter);
 
@@ -175,7 +176,28 @@ const routes: RouteConfig[] = [
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
         //     ),
     },
-    // Testimonials
+    {
+        path: '/admin/social-medias/create',
+        name: 'admin.social-medias.create',
+        component: SocialMediasForm,
+        props: { isCreating: true }
+        // component: () =>
+        //     import(
+        //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
+        //     ),
+    },
+    {
+        path: '/admin/social-medias/:id/edit',
+        name: 'admin.social-medias.edit',
+        component: SocialMediasForm,
+        props: { isCreating: false }
+        // component: () =>
+        //     import(
+        //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
+        //     ),
+    },
+
+// Testimonials
     {
         path: '/admin/testimonials',
         name: 'admin.testimonials.index',

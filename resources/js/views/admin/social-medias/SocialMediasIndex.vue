@@ -3,6 +3,14 @@
     <section>
       <div class="buttons">
         <b-button
+          :to="{ name: 'admin.social-medias.create' }"
+          tag="router-link"
+          type="is-success"
+          icon-left="plus"
+        >
+          Add
+        </b-button>
+        <b-button
           :disabled="!checkedRows.length"
           type="is-danger"
           icon-left="trash-alt"

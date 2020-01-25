@@ -14,6 +14,7 @@
         </div>
         {!! new \App\Http\Schemas\AlbumSchema($album) !!}
     </section>
+    @include('layouts.partials._return_to_top')
 @endsection
 
 @include('layouts.partials._og_tags', ['openGraph' => new App\Http\OpenGraphs\AlbumOpenGraph($album)])
