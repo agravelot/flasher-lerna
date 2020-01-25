@@ -15,7 +15,7 @@
             label="Album"
             icon="info"
           >
-            <form @submit.prevent="sendOrCreateAlbum">
+            <form @submit.prevent="updateOrCreateAlbum">
               <b-field
                 :type="errors.title ? 'is-danger' : ''"
                 :message="errors.title ? errors.title[0] : null"
@@ -233,7 +233,7 @@ interface AlbumErrorsInterface {
 }
 
 @Component({
-    name: 'AlbumsForm.vue',
+    name: 'AlbumsForm',
     components: {
         vueDropzone: vue2Dropzone,
         quillEditor,
@@ -300,7 +300,7 @@ export default class AlbumsForm extends Buefy {
         }
     }
 
-    sendOrCreateAlbum(): void {
+    updateOrCreateAlbum(): void {
         this.loading = true;
 
         if (this.isCreating) {
