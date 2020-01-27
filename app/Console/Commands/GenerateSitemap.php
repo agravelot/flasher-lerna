@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Cosplayer;
 use App\Models\PublicAlbum;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 use Psr\Http\Message\UriInterface;
 use Spatie\Sitemap\SitemapGenerator;
 use Spatie\Sitemap\Tags\Url;
@@ -37,14 +38,7 @@ class GenerateSitemap extends Command
                 return mb_strpos($uri->getPath(), '/admin') === false;
             })
             ->shouldCrawl(static function (UriInterface $uri) {
-                $excludes = ['/albums/', '/cosplayers/', '/categories/'];
-                foreach ($excludes as $exclude) {
-                    if (mb_strpos($uri->getPath(), $exclude)) {
-                        return false;
-                    }
-                }
-
-                return true;
+                return ! Str::startsWith($uri->getPath(), ['/albums/', '/cosplayers/', '/categories/']);
             })->getSitemap();
 
         PublicAlbum::all()->each(static function (Album $album) use ($sitemap) {
