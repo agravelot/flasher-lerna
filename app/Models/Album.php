@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 use Spatie\Feed\Feedable;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\File;
@@ -32,7 +33,8 @@ class Album extends Model implements HasMedia, Feedable
         HasSlugRouteKey,
         HasTitleAsSlug,
         ClearsResponseCache,
-        AlbumFeedable;
+        AlbumFeedable,
+        Searchable;
 
     public const PICTURES_COLLECTION = 'pictures';
     public const RESPONSIVE_PICTURES_CONVERSION = 'responsive';
@@ -195,5 +197,27 @@ class Album extends Model implements HasMedia, Feedable
             ->width(400)
             ->optimize()
             ->performOnCollections(self::PICTURES_COLLECTION);
+    }
+
+    public function searchableAs(): string
+    {
+        return 'albums';
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     */
+    public function toSearchableArray(): array
+    {
+        $array = $this->toArray();
+
+        unset($array['media'], $array['body'], $array['notify_users_on_published']);
+
+        return $array;
+    }
+
+    public function shouldBeSearchable()
+    {
+        return $this->isPublic();
     }
 }
