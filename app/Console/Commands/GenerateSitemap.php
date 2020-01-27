@@ -49,19 +49,22 @@ class GenerateSitemap extends Command
 
         PublicAlbum::all()->each(static function (Album $album) use ($sitemap) {
             $sitemap->add(Url::create(route('albums.show', compact('album')))
-                ->setPriority(1.0)->setLastModificationDate($album->updated_at)
+                ->setPriority(1.0)
+                ->setLastModificationDate($album->updated_at)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
         });
 
         Cosplayer::all()->each(static function (Cosplayer $cosplayer) use ($sitemap) {
             $sitemap->add(Url::create(route('cosplayers.show', compact('cosplayer')))
-                ->setPriority(0.6)->setLastModificationDate($cosplayer->updated_at)
+                ->setPriority(0.6)
+                ->setLastModificationDate($cosplayer->updated_at)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
         });
 
         Category::all()->each(static function (Category $category) use ($sitemap) {
             $sitemap->add(Url::create(route('categories.show', compact('category')))
-                ->setPriority(0.6)->setLastModificationDate($category->updated_at)
+                ->setPriority(0.6)
+                ->setLastModificationDate($category->updated_at)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY));
         });
 
