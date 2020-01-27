@@ -48,7 +48,7 @@
         "bulma": "^0.8.*",
         "bulma-extensions": "^6.2.1",
         "bulma-modal-fx": "^1.1.1",
-        "cross-env": "^6.0.3",
+        "cross-env": "^7.0.0",
         "dropzone": "^5.5.1",
         "eslint": "^6.5.1",
         "eslint-config-airbnb-base": "^14.0.0",
