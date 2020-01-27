@@ -35,10 +35,7 @@ class GenerateSitemap extends Command
     {
         $sitemap = SitemapGenerator::create(config('app.url'))
             ->shouldCrawl(static function (UriInterface $uri) {
-                return mb_strpos($uri->getPath(), '/admin') === false;
-            })
-            ->shouldCrawl(static function (UriInterface $uri) {
-                return ! Str::startsWith($uri->getPath(), ['/albums/', '/cosplayers/', '/categories/']);
+                return ! Str::startsWith($uri->getPath(), ['/albums/', '/cosplayers/', '/categories/', '/admin']);
             })->getSitemap();
 
         PublicAlbum::all()->each(static function (Album $album) use ($sitemap) {
