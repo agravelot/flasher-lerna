@@ -35,8 +35,8 @@ class InvitationMail extends Mailable implements ShouldQueue
      */
     public function build(): self
     {
-        return $this->view('emails.invitation')
-            ->text('emails.invitation_txt')
+        return $this->markdown('emails.invitations.invitation')
+            ->text('emails.invitations.invitation_txt')
             ->subject("{$this->invitation->cosplayer->name}: Invitation pour récupérer à vos 📸 photos")
             ->with([
                 'temporaryInvitationUrl' => URL::temporarySignedRoute(
