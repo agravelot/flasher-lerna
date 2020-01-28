@@ -222,16 +222,16 @@
         },
         {
             "name": "bensampo/laravel-enum",
-            "version": "v1.29",
+            "version": "v1.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BenSampo/laravel-enum.git",
-                "reference": "85915cbba12c2270d8b3147171dced92c075e282"
+                "reference": "991257b18783f738df98a94e6e11ab8574cc7dea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BenSampo/laravel-enum/zipball/85915cbba12c2270d8b3147171dced92c075e282",
-                "reference": "85915cbba12c2270d8b3147171dced92c075e282",
+                "url": "https://api.github.com/repos/BenSampo/laravel-enum/zipball/991257b18783f738df98a94e6e11ab8574cc7dea",
+                "reference": "991257b18783f738df98a94e6e11ab8574cc7dea",
                 "shasum": ""
             },
             "require": {
@@ -289,7 +289,7 @@
                 "package",
                 "validation"
             ],
-            "time": "2020-01-03T10:34:19+00:00"
+            "time": "2020-01-27T22:10:39+00:00"
         },
         {
             "name": "beyondcode/laravel-self-diagnosis",
@@ -2047,7 +2047,7 @@
             "time": "2018-06-13T13:22:40+00:00"
         },
         {
-            "name": "jeremeamia/SuperClosure",
+            "name": "jeremeamia/superclosure",
             "version": "2.4.0",
             "source": {
                 "type": "git",
@@ -6066,9 +6066,9 @@
             "authors": [
                 {
                     "name": "Brent Roose",
-                    "role": "Developer",
                     "email": "brent@spatie.be",
-                    "homepage": "https://spatie.be"
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
                 }
             ],
             "description": "Determine if a page may be crawled from robots.txt and robots meta tags",
@@ -8356,9 +8356,9 @@
             "authors": [
                 {
                     "name": "Marcel Pociot",
-                    "role": "Developer",
                     "email": "marcel@beyondco.de",
-                    "homepage": "https://beyondco.de"
+                    "homepage": "https://beyondco.de",
+                    "role": "Developer"
                 }
             ],
             "description": "Symfony Var-Dump Server for Laravel",
