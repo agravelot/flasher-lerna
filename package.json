@@ -38,7 +38,7 @@
         "@types/dropzone": "^5.5.2",
         "@types/eslint": "^6.1.7",
         "@types/lodash": "^4.14.123",
-        "@types/node": "^13.5.0",
+        "@types/node": "^13.5.1",
         "@types/node-sass": "^4.11.0",
         "@types/prettier": "^1.18.3",
         "@types/sass": "^1.16.0",
