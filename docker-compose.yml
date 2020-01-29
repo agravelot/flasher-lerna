@@ -57,6 +57,8 @@ services:
       MIX_SENTRY_DSN_PUBLIC: "${FRONT_SENTRY_DSN_PUBLIC}"
       MAIL_FROM_ADDRESS: "${MAIL_FROM_ADDRESS}"
       MAIL_FROM_NAME: "${APP_NAME}"
+      ALGOLIA_APP_ID: "${ALGOLIA_APP_ID}"
+      ALGOLIA_SECRET: "${ALGOLIA_SECRET}"
 
   queue:
     <<: *php_base
