@@ -201,7 +201,7 @@ class Album extends Model implements HasMedia, Feedable
 
     public function searchableAs(): string
     {
-        return 'albums';
+        return 'albums-'.config('app.env');
     }
 
     /**
