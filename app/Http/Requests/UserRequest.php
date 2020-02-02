@@ -13,7 +13,7 @@ class UserRequest extends Request
         return [
             'name' => ['required', 'string', 'min:2', 'max:255', Rule::unique('users')->ignore($id)],
             'email' => ['required', 'string', 'email', 'min:2', 'max:255', Rule::unique('users')->ignore($id)],
-            'password' => ($id === null ? 'required|' : 'nullable|sometimes|').'string|min:6|confirmed',
+            'password' => ($id ? 'nullable|sometimes' : 'required').'|string|min:6|confirmed',
             'role' => 'sometimes|required|string',
             'cosplayer' => 'nullable|sometimes|integer|exists:cosplayers,id',
             'g-recaptcha-response' => optional(auth()->user())->isAdmin() ? 'nullable' : 'required|captcha',
