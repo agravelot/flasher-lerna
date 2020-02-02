@@ -82,7 +82,7 @@
         </div>
     </section>
 
-    <section class="hero is-primary">
+    <section class="hero is-black">
         <div class="hero-body">
             <div class="container has-text-centered">
                 <h2 class="title">Qui suis-je ?</h2>
