@@ -35,7 +35,7 @@
               >
                 <b-input
                   v-model="album.meta_description"
-                  maxlength="254"
+                  maxlength="155"
                   type="textarea"
                   placeholder="Helpful description for SEO"
                 />
