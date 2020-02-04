@@ -37,7 +37,7 @@ class Category extends Model implements HasMedia
      *
      * @var array<string>
      */
-    protected $fillable = ['name', 'slug', 'description'];
+    protected $fillable = ['name', 'slug', 'meta_description', 'description'];
 
     public function getCoverAttribute(): ?Media
     {

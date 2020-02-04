@@ -12,7 +12,7 @@ class ShowCategoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_can_view_a_category()
+    public function test_guest_can_view_a_category(): void
     {
         $category = factory(Category::class)->create();
 
@@ -20,7 +20,7 @@ class ShowCategoryTest extends TestCase
 
         $response->assertOk()
             ->assertSee($category->title)
-            ->assertSee($category->description);
+            ->assertSee($category->meta_description);
     }
 
     private function showCategory(Category $category): TestResponse
@@ -28,7 +28,7 @@ class ShowCategoryTest extends TestCase
         return $this->get('/categories/'.$category->slug);
     }
 
-    public function test_guest_can_view_a_category_with_albums()
+    public function test_guest_can_view_a_category_with_albums(): void
     {
         /** @var Category $category */
         $category = factory(Category::class)->create();
@@ -39,20 +39,20 @@ class ShowCategoryTest extends TestCase
 
         $response->assertOk();
         $response->assertSee($category->name);
-        $response->assertSee($category->description);
+        $response->assertSee($category->meta_description);
         $response->assertDontSee('Nothing to show');
         $response->assertSee($albums->get(0)->title);
         $response->assertSee($albums->get(1)->title);
     }
 
-    public function test_bad_slug_redirect_page_not_found()
+    public function test_bad_slug_redirect_page_not_found(): void
     {
         $response = $this->get('/categories/some-random-slug');
 
         $response->assertStatus(404);
     }
 
-    public function test_guest_cant_see_unpublished_albums_of_a_category()
+    public function test_guest_cant_see_unpublished_albums_of_a_category(): void
     {
         /** @var Category $category */
         $category = factory(Category::class)->create();
@@ -63,7 +63,7 @@ class ShowCategoryTest extends TestCase
 
         $response->assertOk()
             ->assertSee($category->title)
-            ->assertSee($category->description)
+            ->assertSee($category->meta_description)
             ->assertDontSee($album->title);
     }
 }

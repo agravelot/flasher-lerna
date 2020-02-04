@@ -10,6 +10,19 @@
       </b-field>
 
       <b-field
+        :type="errors.meta_description ? 'is-danger' : ''"
+        :message="errors.meta_description ? errors.meta_description[0] : null"
+        label="Meta description"
+      >
+        <b-input
+          v-model="category.meta_description"
+          maxlength="155"
+          type="textarea"
+          placeholder="Helpful description for SEO"
+        />
+      </b-field>
+
+      <b-field
         :type="errors.description ? 'is-danger' : ''"
         :message="errors.description ? errors.description[0] : null"
         label="Description"

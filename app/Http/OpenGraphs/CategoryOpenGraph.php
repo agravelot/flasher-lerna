@@ -10,10 +10,7 @@ use Illuminate\Support\Str;
 
 class CategoryOpenGraph implements OpenGraphable, ImagesOpenGraphable
 {
-    /**
-     * @var Category
-     */
-    private $category;
+    private Category $category;
 
     public function __construct(Category $category)
     {
@@ -46,7 +43,7 @@ class CategoryOpenGraph implements OpenGraphable, ImagesOpenGraphable
 
     public function description(): ?string
     {
-        return Str::limit($this->category->description ?? '', 150);
+        return Str::limit($this->category->meta_description ?? '', 150);
     }
 
     public function type(): string
