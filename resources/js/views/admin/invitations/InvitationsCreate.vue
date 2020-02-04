@@ -29,14 +29,10 @@
             />
           </b-field>
 
-          <b-field
-            :type="errors.cosplayer_id ? 'is-danger' : ''"
-            :message="errors.cosplayer_id ? errors.cosplayer_id[0] : null"
-            label="Cosplayer"
-          >
-            <pick-one-cosplayer :cosplayer-id.sync="invitation.cosplayer_id" />
-          </b-field>
-
+          <pick-one-cosplayer
+            :cosplayer-id.sync="invitation.cosplayer_id"
+            :errors="errors"
+          />
 
           <button class="button is-primary">
             Send invitation

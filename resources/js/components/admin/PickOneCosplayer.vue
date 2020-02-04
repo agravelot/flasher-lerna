@@ -1,5 +1,9 @@
 <template>
-  <b-field label="Select cosplayer">
+  <b-field
+    label="Select cosplayer"
+    :type="errors.cosplayer_id ? 'is-danger' : ''"
+    :message="errors.cosplayer_id ? errors.cosplayer_id[0] : null"
+  >
     <b-autocomplete
       :data="filteredCosplayers"
       :loading="loading"
@@ -30,6 +34,9 @@
         private cosplayerId?: number;
         @Prop()
         private cosplayer?: Cosplayer;
+        @Prop({default: () => ({}), required: false})
+        private errors?: object;
+
         private filteredCosplayers: Cosplayer[] = [];
         private loading = false;
 
@@ -40,25 +47,23 @@
             this.$emit('update:cosplayerId', option.id);
         }
 
-        getFilteredCosplayers(text: string): void {
+        async getFilteredCosplayers(text: string): Promise<void> {
             this.loading = true;
-            this.axios
-                .get('/api/admin/cosplayers', {
+            try {
+                const res = await this.axios.get('/api/admin/cosplayers', {
                     params: {
                         'filter[name]': text,
                     },
-                })
-                .then(res => res.data)
-                .then(res => {
-                    this.filteredCosplayers = res.data;
-                    this.loading = false;
-                })
-                .catch(err => {
-                    // this.filteredCosplayers = [];
-                    this.loading = false;
-                    showError(this.$buefy, 'Unable to load cosplayers, maybe you are offline?', () => this.getFilteredCosplayers(text));
-                    throw err;
                 });
+                const { data } = res.data;
+                console.log(data);
+                this.filteredCosplayers = data;
+                this.loading = false;
+            } catch (exception) {
+                this.loading = false;
+                showError(this.$buefy, 'Unable to load cosplayers, maybe you are offline?', () => this.getFilteredCosplayers(text));
+                throw exception;
+            }
         }
     }
 </script>

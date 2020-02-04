@@ -76,11 +76,6 @@
               v-if="cosplayer && cosplayer.user"
               class="media box"
             >
-              <figure class="media-left">
-                <p class="image is-64x64">
-                  <img src="https://bulma.io/images/placeholders/128x128.png">
-                </p>
-              </figure>
               <div class="media-content">
                 <div class="content">
                   <p>
@@ -98,7 +93,10 @@
               </div>
             </div>
             <div v-else-if="cosplayer && !cosplayer.user">
-              <pick-one-user :user.sync="cosplayer.user" />
+              <pick-one-user
+                :user.sync="cosplayer.user"
+                :errors="errors"
+              />
             </div>
           </b-field>
         </div>
@@ -149,66 +147,54 @@ export default class CosplayersEdit extends Buefy {
         this.fetchCosplayer();
     }
 
-    updateCosplayer(): void {
-        this.loading = true;
-
-        const formData: FormData = this.cosplayerToFormData(this.cosplayer);
-        this.axios
-            .post(`/api/admin/cosplayers/${this.$route.params.slug}`, formData, {
+    async updateCosplayer(): Promise<void> {
+        try {
+            this.loading = true;
+            const formData: FormData = await this.cosplayerToFormData(this.cosplayer);
+            const res = await this.axios.post(`/api/admin/cosplayers/${this.$route.params.slug}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
-            })
-            .then(res => res.data)
-            .then(res => {
-                showSuccess(this.$buefy,'Cosplayer updated');
-                this.errors = {};
-                this.cosplayer = res.data;
-                this.loading = false;
-                this.$router.push({
-                    name: 'admin.cosplayers.edit',
-                    params: { slug: this.cosplayer.slug },
-                });
-            })
-            .catch(err => {
-                this.loading = false;
-                showError(this.$buefy,'Unable to load cosplayer, maybe you are offline?', this.updateCosplayer);
-                this.errors = err.response.data.errors;
-                throw err;
             });
+            const { data } = res.data;
+            showSuccess(this.$buefy,'Cosplayer updated');
+            this.errors = {};
+            this.cosplayer = data;
+            this.loading = false;
+        } catch (exception) {
+            this.loading = false;
+            showError(this.$buefy,'Unable to update cosplayer', this.updateCosplayer);
+            this.errors = exception.response.data.errors;
+            throw exception;
+        }
     }
 
-    fetchCosplayer(): void {
+    async fetchCosplayer(): Promise<void> {
         this.loading = true;
-
-        this.axios
-            .get(`/api/admin/cosplayers/${this.$route.params.slug}`)
-            .then(res => res.data)
-            .then(res => {
-                this.cosplayer = res.data;
-                this.loading = false;
-            })
-            .catch(err => {
-                this.cosplayer = new Cosplayer();
-                this.loading = false;
-                showError(this.$buefy,'Unable to load cosplayer, maybe you are offline?', this.fetchCosplayer);
-                throw err;
-            });
+        try {
+            const res = await this.axios.get(`/api/admin/cosplayers/${this.$route.params.slug}`)
+            const { data } = res.data;
+            this.cosplayer = data;
+            this.loading = false;
+        } catch (exception) {
+            this.cosplayer = new Cosplayer();
+            this.loading = false;
+            showError(this.$buefy,'Unable to load cosplayer, maybe you are offline?', this.fetchCosplayer);
+            throw exception;
+        }
     }
 
-    searchUser(name: string): void {
-        this.axios
-            .get('/api/admin/users', { params: { 'filter[name]': name } })
-            .then(res => res.data)
-            .then(res => {
-                this.searchUsers = res.data;
-            })
-            .catch(err => {
-                this.$buefy.snackbar.open({
-                    message: 'Unable to load users, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                });
-                throw err;
+    async searchUser(name: string): Promise<void> {
+        try {
+            const res = await this.axios.get('/api/admin/users', { params: { 'filter[name]': name } });
+            const { data } = res.data;
+            this.searchUsers = data;
+        } catch (exception) {
+            this.$buefy.snackbar.open({
+                message: 'Unable to load users, maybe you are offline?',
+                type: 'is-danger',
+                position: 'is-top',
             });
+            throw exception;
+        }
     }
 
     cosplayerToFormData(cosplayer: Cosplayer): FormData {

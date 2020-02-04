@@ -1,5 +1,9 @@
 <template>
-  <b-field label="Select user">
+  <b-field
+    label="Select user"
+    :type="errors.user_id ? 'is-danger' : ''"
+    :message="errors.user_id ? errors.user_id[0] : null"
+  >
     <b-autocomplete
       :data="filteredUsers"
       :loading="loading"
@@ -30,6 +34,8 @@
         private userId?: number;
         @Prop()
         private user?: User;
+        @Prop({default: () => ({}), required: false})
+        private errors?: object;
         private filteredUsers: User[] = [];
         private loading = false;
 
