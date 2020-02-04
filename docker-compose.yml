@@ -114,6 +114,7 @@ services:
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.contentSecurityPolicy=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.referrerPolicy=same-origin"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.frameDeny=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.browserXssFilter=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-compress.compress=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-only.redirectscheme.scheme=https"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-only.redirectscheme.permanent=true"
