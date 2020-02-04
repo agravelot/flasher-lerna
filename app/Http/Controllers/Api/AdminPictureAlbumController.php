@@ -8,6 +8,7 @@ use App\Http\Requests\StorePictureAlbumRequest;
 use App\Http\Resources\AlbumShowResource;
 use App\Http\Resources\CompleteUploadPictureResource;
 use App\Http\Resources\ProcessingUploadPictureResource;
+use App\Jobs\DeleteAlbumMedia;
 use App\Models\Album;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\Resource;
@@ -57,7 +58,7 @@ class AdminPictureAlbumController extends Controller
     {
         Resource::withoutWrapping();
 
-        $album->media->firstWhere('id', $request->get('media_id'))->delete();
+        DeleteAlbumMedia::dispatch($album->media->firstWhere('id', $request->get('media_id')));
 
         return (new AlbumShowResource($album))->response()->setStatusCode(204);
     }

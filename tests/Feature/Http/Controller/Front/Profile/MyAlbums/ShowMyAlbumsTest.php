@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Http\Controller\Front\Profile\MyAlbums;
 
-use App\Models\Album;
 use App\Models\Cosplayer;
 use App\Models\PublicAlbum;
 use App\Models\User;
