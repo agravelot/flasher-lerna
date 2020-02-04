@@ -209,14 +209,16 @@ class Album extends Model implements HasMedia, Feedable
      */
     public function toSearchableArray(): array
     {
-        $array = $this->toArray();
-
-        unset($array['media'], $array['body'], $array['notify_users_on_published']);
-
-        return $array;
+        return [
+            'id' => $this->id,
+            'slug' => $this->slug,
+            'title' => $this->title,
+            'meta_description' => $this->meta_description,
+            'thumb' => optional($this->cover)->getUrl('thumb'),
+        ];
     }
 
-    public function shouldBeSearchable()
+    public function shouldBeSearchable(): bool
     {
         return $this->isPublic();
     }
