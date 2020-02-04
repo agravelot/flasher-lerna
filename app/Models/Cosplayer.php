@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
@@ -26,7 +27,8 @@ class Cosplayer extends Model implements HasMedia
         HasMediaTrait,
         HasSlugRouteKey,
         HasNameAsSlug,
-        ClearsResponseCache;
+        ClearsResponseCache,
+        Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -122,5 +124,29 @@ class Cosplayer extends Model implements HasMedia
         $this->addMediaConversion('thumb')
             ->crop('crop-center', 96, 96)
             ->performOnCollections('avatar');
+    }
+
+    public function searchableAs(): string
+    {
+        return 'cosplayers-'.config('app.env');
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'slug' => $this->slug,
+            'name' => $this->name,
+            'description' => $this->description,
+            'thumb' => optional($this->avatar)->getUrl('thumb'),
+        ];
+    }
+
+    public function shouldBeSearchable(): bool
+    {
+        return true;
     }
 }
