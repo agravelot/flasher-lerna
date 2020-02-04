@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Http\Controller\Api\AdminPictureAlbum;
 
+use App\Jobs\DeleteAlbumMedia;
 use App\Models\Album;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
 class DeleteAdminPictureAlbumTest extends TestCase
@@ -13,17 +15,20 @@ class DeleteAdminPictureAlbumTest extends TestCase
 
     public function test_admin_can_destroy_a_picture_of_an_album(): void
     {
+        Queue::fake();
         $this->actingAsAdmin();
         /* @var Album $album */
         $album = factory(Album::class)->state('withMedias')->create();
         $this->assertSame(15,
             $album->getMedia(Album::PICTURES_COLLECTION)->count()
         );
+        Queue::assertNotPushed(DeleteAlbumMedia::class);
 
         $response = $this->deleteAlbumPicture($album->slug,
             $album->getFirstMedia(Album::PICTURES_COLLECTION)->id
         );
 
+        Queue::assertPushed(DeleteAlbumMedia::class);
         $this->assertSame(14,
             $album->fresh()->getMedia(Album::PICTURES_COLLECTION)->count()
         );
