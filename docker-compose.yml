@@ -109,7 +109,7 @@ services:
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.stsIncludeSubdomains=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.stsPreload=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.forceSTSHeader=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.contentTypeNosniff=default-src 'self' 'unsafe-inline'"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.contentTypeNosniff=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.sslRedirect=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.contentSecurityPolicy=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.referrerPolicy=same-origin"
