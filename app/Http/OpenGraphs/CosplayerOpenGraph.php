@@ -9,10 +9,7 @@ use Illuminate\Support\Str;
 
 class CosplayerOpenGraph implements OpenGraphable, ProfileOpenGraphable
 {
-    /**
-     * @var Cosplayer
-     */
-    private $cosplayer;
+    private Cosplayer $cosplayer;
 
     public function __construct(Cosplayer $cosplayer)
     {
