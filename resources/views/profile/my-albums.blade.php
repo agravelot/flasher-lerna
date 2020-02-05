@@ -7,27 +7,40 @@
     @include('layouts.partials._messages')
 
     <section class="section container">
-        <div class="content">
-            @if ($albums->isNotEmpty())
-                <ul>
-                    @foreach($albums as $album)
-                        <li>
-                            {{ $album->title }}
-                            <a class="button" href="{{ route('albums.show', compact('album')) }}">
-                                <span class="icon is-small">@fas('eye')</span>
-                                <span>{{ __('Open') }}</span>
-                            </a>
-                            <a class="button" href="{{ route('download-albums.show', compact('album')) }}">
-                                <span class="icon is-small">@fas('download')</span>
-                                <span>{{ __('Download') }}</span>
-                            </a>
-                        </li>
-                    @endforeach
-                </ul>
-                {{ $albums->links() }}
-            @else
-                <span>{{ __('Nothing to show') }}</span>
-            @endif
+        <div class="card">
+            <div class="card-content">
+                @if ($albums->isNotEmpty())
+                    <div class="">
+                        @foreach($albums as $album)
+                            <article class="media">
+                                <div class="media-left">
+                                    <figure class="image is-64x64">
+                                        {{ $album->cover }}
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <div class="content">
+                                        <a href="{{ route('albums.show', compact('album')) }}">
+                                            {{ $album->title }}
+                                        </a>
+                                        <br>
+                                        <span>{{ $album->media->count() }} {{ __('photos') }} - {{ round($album->media->pluck('size')->sum() / 100000, 2) }} Mo</span>
+                                    </div>
+                                </div>
+                                <div class="media-right">
+                                    <a class="button" href="{{ route('download-albums.show', compact('album')) }}">
+                                        <span class="icon is-small">@fas('download')</span>
+                                        <span>{{ __('Download') }}</span>
+                                    </a>
+                                </div>
+                            </article>
+                        @endforeach
+                    </div>
+                    {{ $albums->links() }}
+                @else
+                    <span>{{ __('Nothing to show') }}</span>
+                @endif
+            </div>
         </div>
     </section>
 @endsection

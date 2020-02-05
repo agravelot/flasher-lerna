@@ -20,6 +20,7 @@ class CategoryResource extends Resource
             'id' => $this->id,
             'slug' => $this->slug,
             'name' => $this->name,
+            'meta_description' => $this->meta_description,
             'description' => $this->description,
             'cover' => $this->whenLoaded('media', new MediaResource($this->cover)),
             'links' => [

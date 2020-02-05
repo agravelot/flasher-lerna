@@ -15,7 +15,8 @@ $factory->define(Category::class, static function (Faker $faker) use (&$withCove
 
     return [
         'name' => $faker->unique()->word,
-        'description' => $faker->paragraph,
+        'meta_description' => $faker->text(150),
+        'description' => $faker->randomHtml(3),
         'created_at' => $faker->dateTime(),
         'updated_at' => Carbon::now(),
     ];

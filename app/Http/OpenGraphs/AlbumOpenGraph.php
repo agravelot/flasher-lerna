@@ -11,10 +11,7 @@ use Illuminate\Support\Str;
 
 class AlbumOpenGraph implements OpenGraphable, ArticleOpenGraphable, ImagesOpenGraphable
 {
-    /**
-     * @var Album
-     */
-    private $album;
+    private Album $album;
 
     public function __construct(Album $album)
     {

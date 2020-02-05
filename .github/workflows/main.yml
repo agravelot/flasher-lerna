@@ -68,6 +68,10 @@ jobs:
         APP_ENV: "testing"
         DB_PASSWORD: "secretPassword"
         ERROR_LOG_LEVEL: "info"
+        QUEUE_DRIVER: "sync"
+        SESSION_DRIVER: "array"
+        CACHE_DRIVER: "array"
+        BROADCAST_DRIVER: "log"
 
     - name: Run php test suites
       run: |

@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Http\Controller\Front\Profile\MyAlbums;
 
-use App\Models\Album;
 use App\Models\Cosplayer;
+use App\Models\PublicAlbum;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
@@ -44,14 +44,14 @@ class ShowMyAlbumsTest extends TestCase
         $response->assertOk()->assertSee('Nothing to show');
     }
 
-    public function test_user_can_show_his_albums_with_linked_cosplayer_and_albums(): void
+    public function test_user_can_show_his_published_albums_with_linked_cosplayer_and_albums(): void
     {
         $user = factory(User::class)->create();
         /** @var Cosplayer $cosplayer */
         $cosplayer = factory(Cosplayer::class)->create([
             'user_id' => $user->id,
         ]);
-        $albums = factory(Album::class, 3)->make([
+        $albums = factory(PublicAlbum::class, 3)->make([
             'user_id' => factory(User::class)->create()->id,
         ]);
         $cosplayer->albums()->saveMany($albums);

@@ -435,7 +435,9 @@ export default class AlbumsForm extends Buefy {
                     media_id: mediaId,
                 },
             });
-            this.refreshMedias();
+            // Do not refresh here because this process is run async in the backend.
+            // this.refreshMedias();
+            this.album.medias = this.album.medias.filter(m => m.id !== mediaId);
             showSuccess(this.$buefy, 'Picture successfully deleted!');
         } catch (exception) {
             showError(this.$buefy, 'Unable to delete the picture');

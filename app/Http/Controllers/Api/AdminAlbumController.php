@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AlbumRequest;
 use App\Http\Resources\AlbumIndexResource;
 use App\Http\Resources\AlbumShowResource;
+use App\Jobs\DeleteAlbum;
 use App\Models\Album;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -90,12 +90,10 @@ class AdminAlbumController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @throws Exception
      */
     public function destroy(Album $album): JsonResponse
     {
-        $album->delete();
+        DeleteAlbum::dispatch($album);
 
         return response()->json(null, 204);
     }

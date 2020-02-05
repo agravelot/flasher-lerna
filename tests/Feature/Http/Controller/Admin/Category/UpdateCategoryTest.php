@@ -30,6 +30,7 @@ class UpdateCategoryTest extends TestCase
         return $this->json('put', "/api/admin/categories/{$category->slug}", [
             'name' => $category->name,
             'description' => $category->description,
+            'meta_description' => $category->meta_description,
         ]);
     }
 
@@ -42,13 +43,9 @@ class UpdateCategoryTest extends TestCase
         $response = $this->updateCategory($category);
 
         $response->assertOk()
-            ->assertJson([
-                'data' => [
-                    'id' => $category->id,
-                    'name' => $category->name,
-                    'description' => $category->description,
-                ],
-            ]);
+            ->assertJsonPath('data.id', $category->id)
+            ->assertJsonPath('data.name', $category->name)
+            ->assertJsonPath('data.meta_description', $category->meta_description);
         $this->assertSame($title, $category->fresh()->name);
         $this->assertSame(Str::slug($title), $category->fresh()->slug);
     }

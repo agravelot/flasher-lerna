@@ -49,6 +49,7 @@ class StoreCategoryTest extends TestCase
     {
         return $this->json('post', '/api/admin/categories', [
             'name' => $category->name,
+            'meta_description' => $category->meta_description,
             'description' => $category->description,
         ]);
     }

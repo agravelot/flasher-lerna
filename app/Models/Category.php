@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\UploadedFile;
+use Laravel\Scout\Searchable;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\File;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
@@ -24,7 +25,8 @@ class Category extends Model implements HasMedia
         SluggableScopeHelpers,
         HasSlugRouteKey,
         HasNameAsSlug,
-        ClearsResponseCache;
+        ClearsResponseCache,
+        Searchable;
 
     public const COVER_COLLECTION = 'cover';
     public const RESPONSIVE_CONVERSION = 'responsive';
@@ -35,7 +37,7 @@ class Category extends Model implements HasMedia
      *
      * @var array<string>
      */
-    protected $fillable = ['name', 'slug', 'description'];
+    protected $fillable = ['name', 'slug', 'meta_description', 'description'];
 
     public function getCoverAttribute(): ?Media
     {
@@ -117,5 +119,29 @@ class Category extends Model implements HasMedia
     public function publishedAlbums(): MorphToMany
     {
         return $this->morphedByMany(PublicAlbum::class, 'categorizable')->latest();
+    }
+
+    public function searchableAs(): string
+    {
+        return 'categories-'.config('app.env');
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'slug' => $this->slug,
+            'name' => $this->name,
+            'meta_description' => $this->meta_description,
+            'thumb' => optional($this->cover)->getUrl('thumb'),
+        ];
+    }
+
+    public function shouldBeSearchable(): bool
+    {
+        return true;
     }
 }

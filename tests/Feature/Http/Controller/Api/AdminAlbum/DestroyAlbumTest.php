@@ -12,10 +12,9 @@ class DestroyAlbumTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_destroy_a_album()
+    public function test_admin_can_destroy_a_album(): void
     {
         $this->actingAsAdmin();
-
         /** @var Album $album */
         $album = factory(Album::class)->create();
 
@@ -30,7 +29,7 @@ class DestroyAlbumTest extends TestCase
         return $this->json('delete', '/api/admin/albums/'.$slug);
     }
 
-    public function test_user_can_not_destroy_a_album()
+    public function test_user_can_not_destroy_a_album(): void
     {
         $this->actingAsUser();
         /** @var Album $album */
@@ -42,7 +41,7 @@ class DestroyAlbumTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_guest_can_not_destroy_a_album_and_is_redirected_to_login()
+    public function test_guest_can_not_destroy_a_album_and_is_redirected_to_login(): void
     {
         /** @var Album $album */
         $album = factory(Album::class)->state('withUser')->create();
