@@ -24,7 +24,7 @@
                                             {{ $album->title }}
                                         </a>
                                         <br>
-                                        <span>{{ $album->media->count() }} {{ __('photos') }} - {{ round($album->media->pluck('size')->sum() / 100000, 2) }} Mo</span>
+                                        <span>{{ $album->media->count() }} {{ __('photos') }} - {{ Spatie\MediaLibrary\Helpers\File::getHumanReadableSize($album->media->pluck('size')->sum()) }}</span>
                                     </div>
                                 </div>
                                 <div class="media-right">
