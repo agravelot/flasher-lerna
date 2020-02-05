@@ -28,12 +28,8 @@ class DeleteAdminPictureAlbumTest extends TestCase
             $album->getFirstMedia(Album::PICTURES_COLLECTION)->id
         );
 
-        dump(config('queue.default'));
 
         Queue::assertPushed(DeleteAlbumMedia::class);
-        $this->assertSame(14,
-            $album->fresh()->getMedia(Album::PICTURES_COLLECTION)->count()
-        );
         $response->assertStatus(204);
     }
 
