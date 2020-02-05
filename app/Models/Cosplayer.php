@@ -142,6 +142,7 @@ class Cosplayer extends Model implements HasMedia
             'name' => $this->name,
             'description' => $this->description,
             'thumb' => optional($this->avatar)->getUrl('thumb'),
+            'url' => route('cosplayers.show', ['cosplayer' => $this]),
         ];
     }
 
