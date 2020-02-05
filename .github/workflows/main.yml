@@ -157,6 +157,7 @@ jobs:
         FRONT_SENTRY_DSN_PUBLIC: ${{ secrets.FRONT_SENTRY_DSN_PUBLIC }}
         MAIL_FROM_ADDRESS: ${{ secrets.MAIL_FROM_ADDRESS }}
         ERROR_LOG_LEVEL: ${{ secrets.ERROR_LOG_LEVEL }}
+        SCOUT_QUEUE: "true"
         ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
         ALGOLIA_SECRET: ${{ secrets.ALGOLIA_SECRET }}
       run: |
@@ -236,6 +237,7 @@ jobs:
         FRONT_SENTRY_DSN_PUBLIC: ${{ secrets.FRONT_SENTRY_DSN_PUBLIC }}
         MAIL_FROM_ADDRESS: ${{ secrets.MAIL_FROM_ADDRESS }}
         ERROR_LOG_LEVEL: ${{ secrets.ERROR_LOG_LEVEL }}
+        SCOUT_QUEUE: "true"
         ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
         ALGOLIA_SECRET: ${{ secrets.ALGOLIA_SECRET }}
       run: |

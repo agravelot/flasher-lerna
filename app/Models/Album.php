@@ -215,6 +215,7 @@ class Album extends Model implements HasMedia, Feedable
             'title' => $this->title,
             'meta_description' => $this->meta_description,
             'thumb' => optional($this->cover)->getUrl('thumb'),
+            'url' => route('albums.show', ['album' => $this]),
         ];
     }
 

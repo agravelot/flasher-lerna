@@ -13,11 +13,13 @@
                     <div class="">
                         @foreach($albums as $album)
                             <article class="media">
-                                <div class="media-left">
-                                    <figure class="image is-64x64">
-                                        {{ $album->cover }}
-                                    </figure>
-                                </div>
+                                @if ($album->cover)
+                                    <div class="media-left">
+                                        <figure class="image is-64x64">
+                                            <img src="{{ $album->cover->getUrl('thumb') }}" alt="{{ __('Cover of album') }} {{ $album->title }}">
+                                        </figure>
+                                    </div>
+                                @endif
                                 <div class="media-content">
                                     <div class="content">
                                         <a href="{{ route('albums.show', compact('album')) }}">
