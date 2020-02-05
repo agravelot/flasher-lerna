@@ -1,25 +1,28 @@
 //Get the button:
-const returnToTopButton: HTMLElement = document.getElementById("return-to-top");
-const navbar: HTMLElement = document.getElementById('navMenu');
+const returnToTopButton: HTMLElement|null = document.getElementById("return-to-top");
+const navbar: HTMLElement|null = document.getElementById('navMenu');
 
-returnToTopButton.addEventListener('click', () => {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-});
+if (returnToTopButton && navbar) {
 
-const handleIntersection: IntersectionObserverCallback = async (
-    entries: IntersectionObserverEntry[],
-): Promise<void> => {
-    entries.forEach((entry: IntersectionObserverEntry) => {
-        returnToTopButton.style.visibility = entry.isIntersecting ? "hidden" : "visible";
-        returnToTopButton.style.opacity = entry.isIntersecting ? "0" : "1";
+    returnToTopButton.addEventListener('click', () => {
+        window.scrollTo({top: 0, behavior: 'smooth'});
     });
-};
 
-const options: IntersectionObserverInit = {
-    root: null,
-    rootMargin: '20px',
-    threshold: 1.0
-};
+    const handleIntersection: IntersectionObserverCallback = async (
+        entries: IntersectionObserverEntry[],
+    ): Promise<void> => {
+        entries.forEach((entry: IntersectionObserverEntry) => {
+            returnToTopButton.style.visibility = entry.isIntersecting ? "hidden" : "visible";
+            returnToTopButton.style.opacity = entry.isIntersecting ? "0" : "1";
+        });
+    };
 
-const observer = new IntersectionObserver(handleIntersection, options);
-observer.observe(navbar);
+    const options: IntersectionObserverInit = {
+        root: null,
+        rootMargin: '20px',
+        threshold: 1.0
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, options);
+    observer.observe(navbar);
+}
