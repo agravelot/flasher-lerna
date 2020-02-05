@@ -235,21 +235,18 @@ export default class AlbumsIndex extends Buefy {
         const deleteAlbum = async (album: Album): Promise<void> => {
             try {
                 await this.axios.delete(`/api/admin/albums/${album.slug}`);
+                this.checkedRows = this.checkedRows.filter(selectedAlbum => selectedAlbum.id !== album.id);
+                this.albums = this.albums.filter(albumItem => albumItem.id !== album.id);
                 showSuccess(this.$buefy, 'Albums deleted');
-                this.checkedRows = this.checkedRows.filter(selectedAlbum => {
-                    return selectedAlbum.id != album.id;
-                });
-                this.albums = this.albums.filter(albumItem => {
-                    return albumItem.id != album.id;
-                });
             } catch (exception) {
                 showError(this.$buefy, `Unable to delete album <br> <small>${exception.message}</small>`);
                 console.error(exception);
             }
         };
 
-        await this.checkedRows.forEach((album) => deleteAlbum(album));
-        await this.fetchAlbums();
+        await this.checkedRows.forEach(album => deleteAlbum(album));
+        // Do not refresh since this process is run in async mode in backend.
+        // await this.fetchAlbums();
     }
 }
 </script>
