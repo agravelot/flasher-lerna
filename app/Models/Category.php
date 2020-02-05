@@ -135,7 +135,7 @@ class Category extends Model implements HasMedia
             'id' => $this->id,
             'slug' => $this->slug,
             'name' => $this->name,
-            'description' => $this->description,
+            'meta_description' => $this->meta_description,
             'thumb' => optional($this->cover)->getUrl('thumb'),
         ];
     }
