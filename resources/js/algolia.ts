@@ -6,20 +6,25 @@ const albums = client.initIndex('albums-production');
 const cosplayers = client.initIndex('cosplayers-production');
 const categories = client.initIndex('categories-production');
 
-const suggestion = (suggestion) => {
-    return '<span>' + suggestion._highlightResult.title.value + '</span>';
-    //+ '<span><br>' + suggestion._highlightResult.meta_description.value + '</span>';
+const suggestion = (suggestion): string => {
+    const thumb = suggestion.thumb ? `<img src="${suggestion.thumb}" alt="${suggestion.title}"/>` : '';
+    return `${thumb}<span>${suggestion._highlightResult.title ?? suggestion._highlightResult.name ?? ''}</span>`;
 };
-const empty = (query) => {
-    return 'Aucun résultat pour "' + query.query +'"';
-}
+const empty = (query): string => {
+    return '<span class="aa-empty">Aucun résultat pour "' + query.query +'"</span>';
+};
 
-autocomplete('#aa-search-input', {}, [
+const getHeader = (name: string): string => `<div class="aa-suggestions-category">${name}</div>`;
+
+autocomplete('#aa-search-input', {
+    keyboardShortcuts: ['s', '/'],
+    debug: true,
+}, [
     {
         source: autocomplete.sources.hits(albums, { hitsPerPage: 3 }),
         displayKey: 'title',
         templates: {
-            header: '<div class="aa-suggestions-category">Albums</div>',
+            header: getHeader('Albums'),
             suggestion,
             empty
         }
@@ -28,7 +33,7 @@ autocomplete('#aa-search-input', {}, [
         source: autocomplete.sources.hits(cosplayers, { hitsPerPage: 3 }),
         displayKey: 'name',
         templates: {
-            header: '<div class="aa-suggestions-category">Cosplayers</div>',
+            header: getHeader('Cosplayers'),
             suggestion,
             empty
         }
@@ -37,7 +42,7 @@ autocomplete('#aa-search-input', {}, [
         source: autocomplete.sources.hits(categories, { hitsPerPage: 3 }),
         displayKey: 'name',
         templates: {
-            header: '<div class="aa-suggestions-category">Catégories</div>',
+            header: getHeader('Catégories'),
             suggestion,
             empty
         }
