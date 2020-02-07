@@ -32,11 +32,14 @@
                             <span class="icon">
                                 @fas('user')
                             </span>
-                            <span>{{ Auth::user()->name }}</span>
                         </a>
 
                         <div class="navbar-dropdown is-boxed is-right">
 
+                            <span class="navbar-item has-text-weight-bold">
+                                {{ Auth::user()->name }}
+                            </span>
+                            <hr class="navbar-divider">
                             @can('dashboard')
                                 <a class="navbar-item {{ Request::is('admin*') ? 'is-active' : '' }}"
                                    href="{{ route('admin.dashboard') }}">
