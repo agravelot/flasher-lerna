@@ -8,7 +8,7 @@ const categories = client.initIndex('categories-production');
 
 const suggestion = (suggestion): string => {
     const thumb = suggestion.thumb ? `<img src="${suggestion.thumb}" alt="${suggestion.title}"/>` : '';
-    return `${thumb}<span>${suggestion._highlightResult.title ?? suggestion._highlightResult.name ?? ''}</span>`;
+    return `${thumb}<span>${suggestion._highlightResult.title?.value ?? suggestion._highlightResult.name?.value ?? ''}</span>`;
 };
 const empty = (query): string => {
     return '<span class="aa-empty">Aucun résultat pour "' + query.query +'"</span>';
