@@ -1,10 +1,7 @@
 //Variables
 $search-icon-size: 16px;
 $search-component-width: 300px;
-$font-stack: 'Montserrat',
-sans-serif;
-$font-size: 11px;
-$highlight-color: #3a96cf;
+$highlight-color: #000000;
 $light-grey: #f1f1f1;
 $grey: #e4e4e4;
 $dark-grey: #333;
@@ -20,9 +17,7 @@ $dark-grey: #333;
         border: 3px solid $grey;
         border-radius: 4px;
         transition: .2s;
-        font-family: $font-stack;
         box-shadow: 4px 4px 0 rgba($light-grey, .35);
-        font-size: $font-size;
         box-sizing: border-box;
         color: $dark-grey;
         -webkit-appearance: none;
@@ -62,11 +57,9 @@ $dark-grey: #333;
     background-color: #fff;
     border: 3px solid rgba($grey, .6);
     border-top-width: 0;
-    font-family: $font-stack;
     width: $search-component-width;
     margin-top: 10px;
     box-shadow: 4px 4px 0 rgba($light-grey, .35);
-    font-size: $font-size;
     border-radius: 4px;
     box-sizing: border-box;
 }
