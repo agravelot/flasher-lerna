@@ -1,75 +1,63 @@
-<nav class="navbar is-black" role="navigation" aria-label="dropdown navigation">
+<nav class="has-background-black" id="return-to-top-helper">
     <div class="container">
-        <div class="navbar-brand">
 
-            <a class="navbar-item" href="/">
-                <img src="{{ asset('/svg/logo.svg') }}"
-                     alt="{{ __('Logo of') }} {{ settings()->get('app_name', config('app.name', 'Flasher')) }}">
-            </a>
+        @include('layouts.partials._topbar')
 
-            @include('layouts.partials._navbar_socials', ['class' => 'navbar-item'])
-
-            <a role="button" class="navbar-burger burger" aria-label="menu" data-target="navMenu"
-               aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </a>
+        <div class="level">
+            <div class="level-item">
+                <figure class="image is-128x128">
+                    <a class="" href="/">
+                        <img src="{{ asset('/svg/logo.svg') }}"
+                             alt="{{ __('Logo of') }} {{ settings()->get('app_name', config('app.name', 'Flasher')) }}">
+                    </a>
+                    <div class="has-text-centered has-margin-top-sm">
+                        <span class="has-text-white">Jkanda</span>
+                    </div>
+                </figure>
+            </div>
         </div>
-        <div id="navMenu" class="navbar-menu">
-            <div class="navbar-end">
-                <a class="navbar-item {{ Request::is('/') ? 'is-active' : '' }}"
+
+        <div class="level">
+            <div class="level-item has-margin-bottom-lg">
+                <a class="button is-black {{ Request::is('/') ? 'is-active' : '' }}"
                    href="{{ url('/') }}">{{ __('Home') }}</a>
-                @include('layouts.partials._navbar_albums')
-                <a class="navbar-item {{ Request::is('testimonials*') ? 'is-active' : '' }}"
-                   href="{{ route('testimonials.index') }}">{{ __('Testimonial') }}</a>
-                {{--<a class="navbar-item {{ Request::is('about') ? 'is-active' : '' }}" href="#">{{ __('About') }}</a>--}}
-                <a class="navbar-item {{ Request::is('contact*') ? 'is-active' : '' }}"
-                   href="{{ route('contact.index') }}">{{ __('Contact') }}</a>
-                @auth()
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link" @can('dashboard') href="{{ route('admin.dashboard') }}" @endcan>
-                            <span class="icon">
-                                @fas('user')
+
+                <div class="dropdown is-hoverable">
+                    <div class="dropdown-trigger">
+                        <a class="button is-black {{ Request::is('albums*') ? 'is-active' : '' }}"
+                           href="{{ route('albums.index') }}"
+                           aria-haspopup="true"
+                           aria-controls="dropdown-menu4">
+                            <span>{{ __('Galery') }}</span>
+                            <span class="icon is-small">
+                                @fa('angle-down')
                             </span>
                         </a>
 
-                        <div class="navbar-dropdown is-boxed is-right">
-
-                            <span class="navbar-item has-text-weight-bold">
-                                {{ Auth::user()->name }}
-                            </span>
-                            <hr class="navbar-divider">
-                            @can('dashboard')
-                                <a class="navbar-item {{ Request::is('admin*') ? 'is-active' : '' }}"
-                                   href="{{ route('admin.dashboard') }}">
-                                    {{ __('Admin') }}
-                                </a>
-                            @endcan
-                            <a class="navbar-item {{ Request::is('profile/my-albums*') ? 'is-active' : '' }}"
-                               href="{{ route('profile.my-albums') }}">
-                                {{ __('My albums') }}
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                        <div class="dropdown-content">
+                            <a class="dropdown-item {{ Request::is('albums*') ? 'is-active' : '' }}"
+                               href="{{ route('albums.index') }}">
+                                {{ __('Albums') }}
                             </a>
-                            <hr class="navbar-divider">
-                            <a class="navbar-item has-text-danger"
-                               onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
+                            <a class="dropdown-item {{ Request::is('categories*') ? 'is-active' : '' }}"
+                               href="{{ route('categories.index') }}">
+                                {{ __('Categories') }}
                             </a>
-
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                  style="display: none;">
-                                @csrf
-                            </form>
+                            <a class="dropdown-item {{ Request::is('cosplayers*') ? 'is-active' : '' }}"
+                               href="{{ route('cosplayers.index') }}">
+                                {{ __('Cosplayer') }}
+                            </a>
                         </div>
                     </div>
-                @else
-                    <a class="navbar-item" href="{{ route('login') }}">
-                        <span class="icon">
-                            @fas('sign-in-alt')
-                        </span>
-                        <span>{{ __('Login') }}</span>
-                    </a>
-                @endauth
+                </div>
+
+                <a class="button is-black {{ Request::is('testimonials*') ? 'is-active' : '' }}"
+                   href="{{ route('testimonials.index') }}">{{ __('Testimonial') }}</a>
+                {{--<a class="navbar-item {{ Request::is('about') ? 'is-active' : '' }}" href="#">{{ __('About') }}</a>--}}
+                <a class="button is-black {{ Request::is('contact*') ? 'is-active' : '' }}"
+                   href="{{ route('contact.index') }}">{{ __('Contact') }}</a>
             </div>
         </div>
     </div>

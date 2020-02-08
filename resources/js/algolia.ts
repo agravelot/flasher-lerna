@@ -8,7 +8,9 @@ const categories = client.initIndex('categories-production');
 
 const suggestion = (suggestion): string => {
     const thumb = suggestion.thumb ? `<img src="${suggestion.thumb}" alt="${suggestion.title}"/>` : '';
-    return `${thumb}<span>${suggestion._highlightResult.title?.value ?? suggestion._highlightResult.name?.value ?? ''}</span>`;
+    return `<figure class="image">
+                ${thumb}
+            </figure><span>${suggestion._highlightResult.title?.value ?? suggestion._highlightResult.name?.value ?? ''}</span>`;
 };
 const empty = (query): string => {
     return '<span class="aa-empty">Aucun résultat pour "' + query.query +'"</span>';
@@ -18,6 +20,7 @@ const getHeader = (name: string): string => `<div class="aa-suggestions-category
 
 autocomplete('#aa-search-input', {
     keyboardShortcuts: ['s', '/'],
+    autoselect: true,
     debug: true,
 }, [
     {
