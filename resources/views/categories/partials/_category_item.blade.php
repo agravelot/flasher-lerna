@@ -18,9 +18,11 @@
 
             <div class="card-content">
                 <h5 class="subtitle is-5">{{ $category->name }}</h5>
-                <div class="content">
-                    {{ $category->description }}
-                </div>
+                @if ($category->meta_description)
+                    <div class="content">
+                        {{ $category->meta_description }}
+                    </div>
+                @endif
             </div>
         </div>
     </a>
