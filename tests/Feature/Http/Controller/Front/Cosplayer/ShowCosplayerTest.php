@@ -19,7 +19,7 @@ class ShowCosplayerTest extends TestCase
 
         $response->assertOk();
         $response->assertSee($cosplayer->name);
-        $response->assertSee($cosplayer->description);
+        $response->assertSee($cosplayer->meta_description);
     }
 
     private function showCosplayers(string $slug): TestResponse
