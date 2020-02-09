@@ -17,11 +17,11 @@
             </div>
         </div>
 
-        @if ($cosplayer->meta_description || $cosplayer->categories)
+        @if ($cosplayer->description || $cosplayer->categories)
             <div class="card has-margin-top-md">
                 <div class="card-content">
-                    @if ($cosplayer->meta_description)
-                        <p class="has-text-justified has-margin-bottom-sm">{{ $cosplayer->meta_description }}</p>
+                    @if ($cosplayer->description)
+                        <p class="has-text-justified has-margin-bottom-sm">{!! $cosplayer->description  !!}</p>
                     @endif
                     @if ($cosplayer->categories)
                         <div class="tags">
