@@ -1,6 +1,6 @@
 //Get the button:
 const returnToTopButton: HTMLElement|null = document.getElementById("return-to-top");
-const navbar: HTMLElement|null = document.getElementById('navMenu');
+const navbar: HTMLElement|null = document.getElementById('navbar');
 
 if (returnToTopButton && navbar) {
 

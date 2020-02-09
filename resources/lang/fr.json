@@ -48,13 +48,13 @@
     "Cancel": "Annuler",
     "Are you sure?": "Êtes-vous sûr ?",
     "Discover my last albums": "Découvrez mes derniers albums",
-    "Sign Up": "S'enregistrer",
+    "Sign Up": "Inscription",
     "Forgot Password": "Mot de passe oublié",
-    "Login": "Se connecter",
+    "Login": "Connexion",
     "Please login to proceed.": "Veuillez vous connecter pour continuer.",
     "Your Password": "Votre mot de passe",
     "Remember me": "Se souvenir de moi",
-    "Register": "S'enregistrer",
+    "Register": "Inscription",
     "Please register to proceed.": "Veuillez vous enregistrer pour continuer.",
     "Confirm Password": "Confirmation mot de passe",
     "Reset Password": "Reinitialisation du mot de passe",
@@ -100,5 +100,6 @@
     "Edit": "Modifier",
     "Back to top": "Retourner en haut",
     "Open": "Ouvrir",
-    "Cover of album": "Couverture de l'album"
+    "Cover of album": "Couverture de l'album",
+    "Gallery": "Gallerie"
 }

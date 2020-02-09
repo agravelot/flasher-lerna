@@ -10,7 +10,6 @@
                     </span>
                 @endforeach
             </div>
-
         @endif
 
         <div class="columns is-mobile is-vcentered has-margin-top-md has-margin-bottom-md">
@@ -36,31 +35,33 @@
 
         @include('layouts.partials._share_socials')
 
-        <div class="columns is-mobile is-centered">
-            <div class="column is-narrow field has-addons">
-                @can('download', $album)
-                    <div class="control">
-                        <a class="button is-black" href="{{ route('download-albums.show', compact('album')) }}">
-                            <span class="icon is-small">@fas('download')</span>
-                            <span>{{ __('Download') }}</span>
-                        </a>
-                    </div>
-                @endcan
+            @if(Gate::check('download', $album) || Gate::check('update', $album))
+                <div class="columns is-mobile is-centered">
+                    <div class="column is-narrow field has-addons">
+                        @can('download', $album)
+                            <div class="control">
+                                <a class="button is-black" href="{{ route('download-albums.show', compact('album')) }}">
+                                    <span class="icon is-small">@fas('download')</span>
+                                    <span>{{ __('Download') }}</span>
+                                </a>
+                            </div>
+                        @endcan
 
-                @can('update', $album)
-                    <div class="control">
-                        <a class="button is-black" href="{{ "/admin/albums/{$album->slug}/edit" }}">
-                            <span class="icon is-small">@fas('edit')</span>
-                            <span>{{ __('Edit') }}</span>
-                        </a>
+                        @can('update', $album)
+                            <div class="control">
+                                <a class="button is-black" href="{{ "/admin/albums/{$album->slug}/edit" }}">
+                                    <span class="icon is-small">@fas('edit')</span>
+                                    <span>{{ __('Edit') }}</span>
+                                </a>
+                            </div>
+                        @endcan
                     </div>
-                @endcan
-            </div>
-        </div>
+                </div>
+            @endif
     @stop
 
     @if ($album->body)
-        <div class="card has-margin-bottom-md" style="margin-top: -120px;">
+        <div class="card has-margin-bottom-md" style="margin-top: -170px;">
             <div class="card-content">
                 @if ($album->body)
                     <div class="content has-text-justified">
