@@ -68,10 +68,10 @@ $text-color: white;
     box-shadow: 4px 4px 0 rgba($light-grey, .35);
     border-radius: 4px;
     box-sizing: border-box;
-    width: $search-component-width;
+    //width: $search-component-width;
 
     @media only screen and (max-width: 550px) {
-        width: 100vw;
+        width: 50vw;
         position: fixed;
         top: 44px;
     }

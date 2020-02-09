@@ -24,7 +24,7 @@
                 </button>
 
                 @auth()
-                    <div class="dropdown is-right is-boxed is-hoverable">
+                    <div class="dropdown is-right is-boxed is-hoverable is-hidden-on-search">
                         <div class="dropdown-trigger">
                             <button class="button is-black" aria-haspopup="true" aria-controls="dropdown-menu4">
                                 <span class="is-hidden-touch">{{ Auth::user()->name }}</span>
@@ -63,11 +63,11 @@
                         </div>
                     </div>
                 @else
-                    <a class="button is-black" href="{{ route('login') }}">
+                    <a class="button is-black is-hidden-on-search" href="{{ route('login') }}">
                         <span class="icon">
                             @fas('sign-in-alt')
                         </span>
-                        <span class="is-uppercase has-text-grey-light has-text-weight-light">{{ __('Login') }}</span>
+                        <span class="is-uppercase has-text-grey-light has-text-weight-light is-hidden-touch">{{ __('Login') }}</span>
                     </a>
                 @endauth
             </div>
@@ -76,7 +76,7 @@
         <div class="level">
             <div class="level-item">
                 <a class="" href="/">
-                    <div class="image is-96x96">
+                    <div class="image is-navbar-logo">
                         <img src="{{ asset('/svg/logo.svg') }}"
                              alt="{{ __('Logo of') }} {{ settings()->get('app_name', config('app.name', 'Flasher')) }}">
                     </div>

@@ -6,11 +6,19 @@ const albums = client.initIndex('albums-production');
 const cosplayers = client.initIndex('cosplayers-production');
 const categories = client.initIndex('categories-production');
 
+const loadThumb = window.screen.width > 600;
+
 const suggestion = (suggestion): string => {
+    const result = `<span>${suggestion._highlightResult.title?.value ?? suggestion._highlightResult.name?.value ?? ''}</span>`;
+
+    if (!loadThumb) {
+        return result;
+    }
+
     const thumb = suggestion.thumb ? `<img src="${suggestion.thumb}" alt="${suggestion.title}"/>` : '';
-    return `<figure class="image">
+    return `<figure class="image is-hidden-mobile">
                 ${thumb}
-            </figure><span>${suggestion._highlightResult.title?.value ?? suggestion._highlightResult.name?.value ?? ''}</span>`;
+            </figure>${result}`;
 };
 const empty = (query): string => {
     return '<span class="aa-empty">Aucun résultat pour "' + query.query +'"</span>';
