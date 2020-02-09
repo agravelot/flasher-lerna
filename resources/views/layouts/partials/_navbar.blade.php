@@ -1,64 +1,133 @@
-<nav class="has-background-black" id="return-to-top-helper">
+<div class="has-background-black">
     <div class="container">
 
-        @include('layouts.partials._topbar')
+        <div class="level is-mobile">
+            <div class="level-left">
+                @include('layouts.partials._navbar_socials', ['class' => 'button is-black is-hidden-mobile'])
+                <a role="button"
+                   class="navbar-burger is-hidden-tablet has-text-white"
+                   aria-label="menu"
+                   aria-expanded="false"
+                   data-target="navbar">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div class="level-right">
+                @include('layouts.partials._search')
+                @auth()
+                    <div class="dropdown is-right is-boxed is-hoverable">
+                        <div class="dropdown-trigger">
+                            <a class="button is-black" aria-haspopup="true" aria-controls="dropdown-menu4"
+                               @can('dashboard') href="{{ route('admin.dashboard') }}" @endcan>
+                                <span class="is-hidden-touch">{{ Auth::user()->name }}</span>
+                                <span class="icon is-small">
+                                    @fas('user')
+                                </span>
+                            </a>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                            <div class="dropdown-content">
+                                <div class="dropdown-item">
+                                    <span class="has-text-weight-bold">{{ Auth::user()->name }}</span>
+                                </div>
+                                <hr class="dropdown-divider">
+                                @can('dashboard')
+                                    <a class="dropdown-item {{ Request::is('admin*') ? 'is-active' : '' }}"
+                                       href="{{ route('admin.dashboard') }}">
+                                        {{ __('Admin') }}
+                                    </a>
+                                @endcan
+                                <a class="dropdown-item {{ Request::is('profile/my-albums*') ? 'is-active' : '' }}"
+                                   href="{{ route('profile.my-albums') }}">
+                                    {{ __('My albums') }}
+                                </a>
+                                <hr class="dropdown-divider">
+                                <a class="dropdown-item has-text-danger"
+                                   onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                      style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <a class="button is-black" href="{{ route('login') }}">
+                        <span class="icon">
+                            @fas('sign-in-alt')
+                        </span>
+                        <span class="is-uppercase has-text-grey-light has-text-weight-light">{{ __('Login') }}</span>
+                    </a>
+                @endauth
+            </div>
+        </div>
 
         <div class="level">
             <div class="level-item">
-                <figure class="image is-128x128">
+                <figure class="image is-96x96">
                     <a class="" href="/">
                         <img src="{{ asset('/svg/logo.svg') }}"
                              alt="{{ __('Logo of') }} {{ settings()->get('app_name', config('app.name', 'Flasher')) }}">
                     </a>
                     <div class="has-text-centered has-margin-top-sm">
-                        <span class="has-text-white">Jkanda</span>
+                        <span class="has-text-white is-size-3">{{ settings()->get('app_name') }}</span>
                     </div>
                 </figure>
             </div>
         </div>
+    </div>
 
-        <div class="level">
-            <div class="level-item has-margin-bottom-lg">
-                <a class="button is-black {{ Request::is('/') ? 'is-active' : '' }}"
+    <nav class="content has-text-centered is-hidden-mobile has-margin-top-md" id="navbar">
+        <div class="columns is-centered">
+            <div class="column is-narrow">
+                <a class="button is-black is-uppercase {{ Request::is('/') ? 'is-active' : '' }}"
                    href="{{ url('/') }}">{{ __('Home') }}</a>
-
+            </div>
+            <div class="column is-narrow">
                 <div class="dropdown is-hoverable">
                     <div class="dropdown-trigger">
-                        <a class="button is-black {{ Request::is('albums*') ? 'is-active' : '' }}"
-                           href="{{ route('albums.index') }}"
-                           aria-haspopup="true"
-                           aria-controls="dropdown-menu4">
-                            <span>{{ __('Galery') }}</span>
+                        <button class="button is-black {{ Request::is('albums*') ? 'is-active' : '' }}"
+                                aria-haspopup="true"
+                                aria-controls="dropdown-menu4">
+                            <span class="is-uppercase">{{ __('Gallery') }}</span>
                             <span class="icon is-small">
                                 @fa('angle-down')
                             </span>
-                        </a>
-
+                        </button>
                     </div>
                     <div class="dropdown-menu" id="dropdown-menu4" role="menu">
                         <div class="dropdown-content">
-                            <a class="dropdown-item {{ Request::is('albums*') ? 'is-active' : '' }}"
+                            <a class="dropdown-item is-uppercase {{ Request::is('albums*') ? 'is-active' : '' }}"
                                href="{{ route('albums.index') }}">
                                 {{ __('Albums') }}
                             </a>
-                            <a class="dropdown-item {{ Request::is('categories*') ? 'is-active' : '' }}"
+                            <a class="dropdown-item is-uppercase {{ Request::is('categories*') ? 'is-active' : '' }}"
                                href="{{ route('categories.index') }}">
                                 {{ __('Categories') }}
                             </a>
-                            <a class="dropdown-item {{ Request::is('cosplayers*') ? 'is-active' : '' }}"
+                            <a class="dropdown-item is-uppercase {{ Request::is('cosplayers*') ? 'is-active' : '' }}"
                                href="{{ route('cosplayers.index') }}">
                                 {{ __('Cosplayer') }}
                             </a>
                         </div>
                     </div>
                 </div>
-
-                <a class="button is-black {{ Request::is('testimonials*') ? 'is-active' : '' }}"
+            </div>
+            <div class="column is-narrow">
+                <a class="button is-black is-uppercase {{ Request::is('testimonials*') ? 'is-active' : '' }}"
                    href="{{ route('testimonials.index') }}">{{ __('Testimonial') }}</a>
+            </div>
+            <div class="column is-narrow">
                 {{--<a class="navbar-item {{ Request::is('about') ? 'is-active' : '' }}" href="#">{{ __('About') }}</a>--}}
-                <a class="button is-black {{ Request::is('contact*') ? 'is-active' : '' }}"
+                <a class="button is-black is-uppercase {{ Request::is('contact*') ? 'is-active' : '' }}"
                    href="{{ route('contact.index') }}">{{ __('Contact') }}</a>
             </div>
         </div>
-    </div>
-</nav>
+    </nav>
+</div>
