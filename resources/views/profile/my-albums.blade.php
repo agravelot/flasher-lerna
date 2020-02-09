@@ -30,7 +30,7 @@
                                     </div>
                                 </div>
                                 <div class="media-right">
-                                    <a class="button" href="{{ route('download-albums.show', compact('album')) }}">
+                                    <a class="button is-loading-on-click" href="{{ route('download-albums.show', compact('album')) }}">
                                         <span class="icon is-small">@fas('download')</span>
                                         <span>{{ __('Download') }}</span>
                                     </a>

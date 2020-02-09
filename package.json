@@ -43,6 +43,8 @@
         "@types/prettier": "^1.18.3",
         "@types/sass": "^1.16.0",
         "@types/svgo": "^1.0.1",
+        "algoliasearch": "3.35.1",
+        "autocomplete.js": "^0.37.1",
         "axios": "^0.19.2",
         "buefy": "^0.8.10",
         "bulma": "^0.8.*",

@@ -8,3 +8,5 @@ import './bulma';
 import './modal';
 import './lazy-load';
 import './return-to-top'
+import './is-loading-on-click';
+import './algolia';

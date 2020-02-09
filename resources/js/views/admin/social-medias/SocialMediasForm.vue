@@ -22,7 +22,7 @@
           <b-field
             :type="errors.url ? 'is-danger' : ''"
             :message="errors.url ? errors.url[0] : null"
-            label="Name"
+            label="Url"
           >
             <b-input
               v-model="socialMedia.url"

@@ -86,6 +86,17 @@
                 </div>
               </div>
               <div class="media-right">
+                <b-button
+                  :to="{
+                    name: 'admin.users.edit',
+                    params: { id: cosplayer.user.id },
+                  }"
+                  tag="router-link"
+                  type="is-text"
+                  size="is-small"
+                >
+                  Update
+                </b-button>
                 <button
                   class="delete"
                   @click="cosplayer.user = null"
