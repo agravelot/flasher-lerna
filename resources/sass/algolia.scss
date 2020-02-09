@@ -30,10 +30,16 @@ $text-color: white;
         &::-webkit-search-results-decoration {
             display: none;
         }
+
+        @media only screen and (max-width: 450px) {
+            width: 0;
+        }
+
         &:focus {
             outline: 0;
-            //border-color: $highlight-color;
-            //box-shadow: 4px 4px 0 rgba($highlight-color, .1);
+            @media only screen and (max-width: 450px) {
+                width: 70vw;
+            }
         }
     }
     &-icon {
@@ -58,11 +64,17 @@ $text-color: white;
     background-color: #fff;
     //border: 3px solid rgba($grey, .6);
     //border-top-width: 0;
-    width: $search-component-width;
     margin-top: 10px;
     box-shadow: 4px 4px 0 rgba($light-grey, .35);
     border-radius: 4px;
     box-sizing: border-box;
+    width: $search-component-width;
+
+    @media only screen and (max-width: 550px) {
+        width: 100vw;
+        position: fixed;
+        top: 44px;
+    }
 }
 
 //Individual results
@@ -134,10 +146,4 @@ $text-color: white;
 
 .aa-empty {
     padding: 6px 12px;
-}
-
-.aa-wrapper {
-    @media only screen and (max-width: 450px) {
-        display: none;
-    }
 }

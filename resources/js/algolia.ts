@@ -58,3 +58,20 @@ autocomplete('#aa-search-input', {
     // Change the page, for example, on other events
     window.location.assign(suggestion.url);
 });
+
+const searchInput = document.getElementsByClassName('aa-input-search');
+const elementsToHideOnSearch = document.getElementsByClassName('is-hidden-on-search');
+
+Array.from(searchInput || []).forEach((input: HTMLElement) => {
+    input.addEventListener('focus', () => {
+        Array.from(elementsToHideOnSearch || []).forEach((el: HTMLElement) => {
+            el.style.display = "none";
+        });
+    });
+    input.addEventListener('blur', () => {
+        Array.from(elementsToHideOnSearch || []).forEach((el: HTMLElement) => {
+            el.style.display = "block";
+        });
+    });
+});
+

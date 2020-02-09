@@ -3,8 +3,7 @@
 
         <div class="level is-mobile">
             <div class="level-left">
-                @include('layouts.partials._navbar_socials', ['class' => 'button is-black is-hidden-mobile'])
-                <a role="button"
+                <button role="button"
                    class="navbar-burger is-hidden-tablet has-text-white"
                    aria-label="menu"
                    aria-expanded="false"
@@ -12,21 +11,27 @@
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
-                </a>
+                </button>
+                @include('layouts.partials._navbar_socials', ['class' => 'button is-black is-hidden-on-search'])
+                @include('layouts.partials._search')
             </div>
 
             <div class="level-right">
-                @include('layouts.partials._search')
+                <button class="button is-black">
+                    <span class="icon has-text-white" onclick="document.getElementById('aa-search-input').select()">
+                        @fa('search')
+                    </span>
+                </button>
+
                 @auth()
                     <div class="dropdown is-right is-boxed is-hoverable">
                         <div class="dropdown-trigger">
-                            <a class="button is-black" aria-haspopup="true" aria-controls="dropdown-menu4"
-                               @can('dashboard') href="{{ route('admin.dashboard') }}" @endcan>
+                            <button class="button is-black" aria-haspopup="true" aria-controls="dropdown-menu4">
                                 <span class="is-hidden-touch">{{ Auth::user()->name }}</span>
                                 <span class="icon is-small">
                                     @fas('user')
                                 </span>
-                            </a>
+                            </button>
                         </div>
                         <div class="dropdown-menu" id="dropdown-menu4" role="menu">
                             <div class="dropdown-content">
@@ -70,15 +75,13 @@
 
         <div class="level">
             <div class="level-item">
-                <figure class="image is-96x96">
-                    <a class="" href="/">
+                <a class="" href="/">
+                    <div class="image is-96x96">
                         <img src="{{ asset('/svg/logo.svg') }}"
                              alt="{{ __('Logo of') }} {{ settings()->get('app_name', config('app.name', 'Flasher')) }}">
-                    </a>
-                    <div class="has-text-centered has-margin-top-sm">
-                        <span class="has-text-white is-size-3">{{ settings()->get('app_name') }}</span>
                     </div>
-                </figure>
+                </a>
+
             </div>
         </div>
     </div>
