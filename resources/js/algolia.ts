@@ -29,7 +29,7 @@ const getHeader = (name: string): string => `<div class="aa-suggestions-category
 autocomplete('#aa-search-input', {
     keyboardShortcuts: ['s', '/'],
     autoselect: true,
-    debug: true,
+    debug: false,
 }, [
     {
         source: autocomplete.sources.hits(albums, { hitsPerPage: 3 }),
