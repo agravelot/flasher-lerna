@@ -30,6 +30,12 @@ autocomplete('#aa-search-input', {
     keyboardShortcuts: ['s', '/'],
     autoselect: true,
     debug: false,
+    templates: {
+        footer: '<div class="is-pulled-right has-padding-right-sm"><img ' +
+                    'class="image is-16x16" ' +
+                    'src="https://www.algolia.com/gatsby-images/shared/algolia_logo/algolia-blue-mark.svg" ' +
+                    'alt="Algolia logo"/></div>'
+    }
 }, [
     {
         source: autocomplete.sources.hits(albums, { hitsPerPage: 3 }),
