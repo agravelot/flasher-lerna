@@ -54,14 +54,18 @@
       >
         <template slot-scope="contact">
           <b-table-column
-field="name"
-label="Name" sortable>
+            field="name"
+            label="Name"
+            sortable
+          >
             {{ contact.row.name }}
           </b-table-column>
 
           <b-table-column
-field="email"
-label="Email" sortable>
+            field="email"
+            label="Email"
+            sortable
+          >
             <a
               :href="`mailto:${contact.row.email}`"
               target="_blank"
@@ -70,8 +74,9 @@ label="Email" sortable>
         </template>
 
         <template
-slot="detail"
-slot-scope="props">
+          slot="detail"
+          slot-scope="props"
+        >
           <article>
             <p>
               {{ props.row.message }}
@@ -84,8 +89,9 @@ slot-scope="props">
             <div class="content has-text-grey has-text-centered">
               <p>
                 <b-icon
-icon="sad-tear"
-size="is-large" />
+                  icon="sad-tear"
+                  size="is-large"
+                />
               </p>
               <p>Nothing here.</p>
             </div>

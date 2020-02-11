@@ -15,8 +15,10 @@
         label="Email"
       >
         <b-input
-v-model="user.email"
-type="email" maxlength="30" />
+          v-model="user.email"
+          type="email"
+          maxlength="30"
+        />
       </b-field>
 
       <b-field label="Role">

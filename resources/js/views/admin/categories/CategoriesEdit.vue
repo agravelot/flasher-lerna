@@ -60,7 +60,7 @@
             <img
               :src="category.cover.thumb"
               :alt="category.cover.name"
-            />
+            >
             <a
               class="button has-text-danger"
               @click="deleteCurrentCategoryCover()"

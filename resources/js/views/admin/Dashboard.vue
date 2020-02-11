@@ -1,15 +1,16 @@
 <template>
   <div>
     <b-loading
-:is-full-page="false"
-:active="loading" />
+      :is-full-page="false"
+      :active="loading"
+    />
     <div v-if="!loading">
       <section class="hero is-info welcome is-small has-margin-bottom-sm">
         <div class="hero-body">
           <div class="container">
             <h1 class="title is-1">
-Hello, {{ username }}.
-</h1>
+              Hello, {{ username }}.
+            </h1>
             <h2 class="subtitle">
               I hope you are having a great day!
             </h2>

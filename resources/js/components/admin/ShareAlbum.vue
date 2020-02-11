@@ -15,8 +15,9 @@
       icon-right="twitter"
     />
     <b-button
-icon-right="link"
-@click="addToClipboard(getLink())" />
+      icon-right="link"
+      @click="addToClipboard(getLink())"
+    />
   </div>
 </template>
 

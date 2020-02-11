@@ -46,8 +46,10 @@
       >
         <template slot-scope="testimonial">
           <b-table-column
-field="name"
-label="Name" sortable>
+            field="name"
+            label="Name"
+            sortable
+          >
             <router-link
               :to="{
                 name: 'admin.testimonials.edit',
@@ -59,8 +61,10 @@ label="Name" sortable>
           </b-table-column>
 
           <b-table-column
-field="email"
-label="E-mail" sortable>
+            field="email"
+            label="E-mail"
+            sortable
+          >
             <router-link
               :to="{
                 name: 'admin.testimonials.edit',
@@ -99,8 +103,9 @@ label="E-mail" sortable>
         </template>
 
         <template
-slot="detail"
-slot-scope="props">
+          slot="detail"
+          slot-scope="props"
+        >
           <article>
             <p>
               {{ props.row.body }}
@@ -113,8 +118,9 @@ slot-scope="props">
             <div class="content has-text-grey has-text-centered">
               <p>
                 <b-icon
-icon="sad-tear"
-size="is-large" />
+                  icon="sad-tear"
+                  size="is-large"
+                />
               </p>
               <p>Nothing here.</p>
             </div>

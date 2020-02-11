@@ -1,7 +1,8 @@
 <template>
   <div
-id="admin-menu"
-style="width: 200px;">
+    id="admin-menu"
+    style="width: 200px;"
+  >
     <b-menu>
       <b-menu-list label="Administration">
         <b-menu-item
