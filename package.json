@@ -23,6 +23,8 @@
         "@typescript-eslint/parser": "^2.18.0",
         "browser-sync": "^2.26.3",
         "browser-sync-webpack-plugin": "^2.2.2",
+        "eslint-config-prettier": "^6.10.0",
+        "eslint-plugin-prettier": "^3.1.2",
         "onchange": "^6.0",
         "types-installer": "^1.6.1",
         "vue-eslint-parser": "^7.0.0"
@@ -37,6 +39,7 @@
         "@sentry/integrations": "^5.11.1",
         "@types/dropzone": "^5.5.2",
         "@types/eslint": "^6.1.7",
+        "@types/google.analytics": "^0.0.40",
         "@types/lodash": "^4.14.123",
         "@types/node": "^13.5.3",
         "@types/node-sass": "^4.11.0",
