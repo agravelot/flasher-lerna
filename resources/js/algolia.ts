@@ -64,14 +64,28 @@ autocomplete('#aa-search-input', {
             empty
         }
     }
-]).on('autocomplete:selected', function(event, suggestion, dataset, context) {
-    // Do nothing on click, as the browser will already do it
-    // if (context.selectionMethod === 'click') {
-    //     return;
-    // }
-    // Change the page, for example, on other events
-    window.location.assign(suggestion.url);
-});
+]).on('autocomplete:opened', () => {
+        ga('send', {
+            hitType: 'event',
+            eventCategory: 'Search',
+            eventAction: 'Opened',
+        });
+    }).on('autocomplete:selected', (event, suggestion) => {
+        ga('send', {
+            hitType: 'event',
+            eventCategory: 'Search',
+            eventAction: 'Clicked',
+            eventLabel: suggestion.url,
+        });
+
+        // Do nothing on click, as the browser will already do it
+        // if (context.selectionMethod === 'click') {
+        //     return;
+        // }
+        // Change the page, for example, on other events
+        window.location.assign(suggestion.url);
+    }
+);
 
 const searchInput = document.getElementsByClassName('aa-input-search');
 const elementsToHideOnSearch = document.getElementsByClassName('is-hidden-on-search');
