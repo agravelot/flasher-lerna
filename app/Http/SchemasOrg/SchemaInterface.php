@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Schemas;
+namespace App\Http\SchemasOrg;
 
 interface SchemaInterface
 {
