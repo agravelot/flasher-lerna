@@ -8,8 +8,6 @@ module.exports = {
       'eslint:recommended',
       'plugin:@typescript-eslint/eslint-recommended',
       'plugin:@typescript-eslint/recommended',
-      'prettier',
-      'plugin:prettier/recommended',
   ],
   globals: {
     Atomics: 'readonly',
@@ -24,10 +22,8 @@ module.exports = {
   plugins: [
     'vue',
     '@typescript-eslint',
-    'prettier',
   ],
   rules: {
-    'prettier/prettier': 'error',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
   },
