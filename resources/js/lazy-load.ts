@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const ratio = 0.01;
 
     const options: object = {
-        root: null,
         rootMargin: '0px',
         threshold: ratio,
     };

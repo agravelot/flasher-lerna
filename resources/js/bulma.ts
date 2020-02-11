@@ -32,14 +32,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const dataSetTarget: string | undefined = (el as HTMLCanvasElement).dataset.target;
 
             if (dataSetTarget === undefined) {
-                console.error('Unable to find dataSetTarget to open navbar')
+                console.error('Unable to find dataSetTarget to open navbar');
                 return;
             }
 
             const target: HTMLElement | null = document.getElementById(dataSetTarget);
 
             if (target === null) {
-                console.error('Unable to find target to open navbar')
+                console.error('Unable to find target to open navbar');
                 return;
             }
 
