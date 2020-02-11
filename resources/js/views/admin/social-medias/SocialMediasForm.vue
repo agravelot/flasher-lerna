@@ -1,7 +1,7 @@
 <template>
   <section>
     <h1 class="title">
-      {{ isCreating ? 'Create SocialMedia' : 'Update SocialMedia' }}
+      {{ isCreating ? "Create SocialMedia" : "Update SocialMedia" }}
     </h1>
 
     <div class="card">
@@ -25,9 +25,8 @@
             label="Url"
           >
             <b-input
-              v-model="socialMedia.url"
-              type="text"
-            />
+v-model="socialMedia.url"
+type="text" />
           </b-field>
 
           <b-field
@@ -36,9 +35,8 @@
             label="Icon"
           >
             <b-input
-              v-model="socialMedia.icon"
-              type="text"
-            />
+v-model="socialMedia.icon"
+type="text" />
           </b-field>
 
           <b-field
@@ -47,9 +45,8 @@
             label="Color"
           >
             <b-input
-              v-model="socialMedia.color"
-              type="text"
-            />
+v-model="socialMedia.color"
+type="text" />
           </b-field>
 
           <b-field
@@ -63,7 +60,7 @@
                 :true-value="true"
                 :false-value="false"
               >
-                {{ socialMedia.active ? 'Yes' : 'No' }}
+                {{ socialMedia.active ? "Yes" : "No" }}
               </b-switch>
             </div>
           </b-field>
@@ -92,13 +89,13 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import {showSuccess, showError} from "../../../admin/toast";
+import Component from "vue-class-component";
+import { showSuccess, showError } from "../../../admin/toast";
 import Buefy from "../../../admin/Buefy.vue";
-import {Prop} from 'vue-property-decorator';
+import { Prop } from "vue-property-decorator";
 import SocialMedia from "../../../models/social-media";
-import {RawLocation} from "vue-router";
-import {Dictionary} from "vue-router/types/router";
+import { RawLocation } from "vue-router";
+import { Dictionary } from "vue-router/types/router";
 
 interface SocialMediaErrorsInterface {
     name?: object;
@@ -109,10 +106,9 @@ interface SocialMediaErrorsInterface {
 }
 
 @Component({
-    name: 'SocialMediasForm',
+    name: "SocialMediasForm"
 })
 export default class SocialMediasForm extends Buefy {
-
     @Prop({ required: true, type: Boolean })
     protected isCreating: boolean;
 
@@ -146,26 +142,31 @@ export default class SocialMediasForm extends Buefy {
         this.loading = true;
 
         try {
-            const res = await this.axios.get(`/api/admin/social-medias/${this.$route.params.id}`);
+            const res = await this.axios.get(
+                `/api/admin/social-medias/${this.$route.params.id}`
+            );
             const { data } = res.data;
             this.socialMedia = data;
             this.loading = false;
         } catch (exception) {
-            showError(this.$buefy,'Unable to fetch SocialMedia');
+            showError(this.$buefy, "Unable to fetch SocialMedia");
             console.error(exception);
         }
     }
 
     async updateSocialMedia(): Promise<void> {
         if (this.socialMedia === undefined) {
-            throw new DOMException('Unable to update undefined SocialMedia.');
+            throw new DOMException("Unable to update undefined SocialMedia.");
         }
 
         try {
-            const res = await this.axios.patch(`/api/admin/social-medias/${this.$route.params.id}`, this.socialMedia);
+            const res = await this.axios.patch(
+                `/api/admin/social-medias/${this.$route.params.id}`,
+                this.socialMedia
+            );
             const { data } = res.data;
             this.socialMedia = data;
-            showSuccess(this.$buefy,'SocialMedia updated');
+            showSuccess(this.$buefy, "SocialMedia updated");
             this.errors = {};
         } catch (exception) {
             showError(
@@ -179,12 +180,18 @@ export default class SocialMediasForm extends Buefy {
 
     async createSocialMedia(): Promise<void> {
         try {
-            const res = await this.axios.post(`/api/admin/social-medias/`, this.socialMedia);
+            const res = await this.axios.post(
+                `/api/admin/social-medias/`,
+                this.socialMedia
+            );
             const { data } = res.data;
             this.socialMedia = data;
             this.errors = {};
-            showSuccess(this.$buefy,'SocialMedia successfully created');
-            await this.$router.push({ name: 'admin.social-medias.edit', params: { id: this.socialMedia.id.toString() }});
+            showSuccess(this.$buefy, "SocialMedia successfully created");
+            await this.$router.push({
+                name: "admin.social-medias.edit",
+                params: { id: this.socialMedia.id.toString() }
+            });
         } catch (exception) {
             showError(
                 this.$buefy,
@@ -197,29 +204,31 @@ export default class SocialMediasForm extends Buefy {
 
     async confirmDeleteSocialMedia(): Promise<void> {
         this.$buefy.dialog.confirm({
-            title: 'Deleting social media',
+            title: "Deleting social media",
             message:
-                'Are you sure you want to <b>delete</b> this SocialMedia? This action cannot be undone.',
-            confirmText: 'Delete social media',
-            type: 'is-danger',
+                "Are you sure you want to <b>delete</b> this SocialMedia? This action cannot be undone.",
+            confirmText: "Delete social media",
+            type: "is-danger",
             hasIcon: true,
-            onConfirm: () => this.deleteSocialMedia(),
+            onConfirm: () => this.deleteSocialMedia()
         });
     }
 
     async deleteSocialMedia(): Promise<void> {
         if (this.socialMedia === undefined) {
-            throw new DOMException('Unable to delete undefined SocialMedia.');
+            throw new DOMException("Unable to delete undefined SocialMedia.");
         }
 
         this.loading = true;
 
         try {
-            await this.axios.delete(`/api/admin/social-medias/${this.socialMedia.id}`);
-            showSuccess(this.$buefy,'SocialMedia successfully deleted!');
-            await this.$router.push({name: 'admin.SocialMedias.index'});
+            await this.axios.delete(
+                `/api/admin/social-medias/${this.socialMedia.id}`
+            );
+            showSuccess(this.$buefy, "SocialMedia successfully deleted!");
+            await this.$router.push({ name: "admin.SocialMedias.index" });
         } catch (exception) {
-            showError(this.$buefy,`Unable to delete the picture`);
+            showError(this.$buefy, `Unable to delete the picture`);
             throw exception;
         }
 

@@ -1,5 +1,5 @@
-import User from './user';
-import Category from './category';
+import User from "./user";
+import Category from "./category";
 import Cosplayer from "./cosplayer";
 import Media from "./media";
 

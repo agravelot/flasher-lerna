@@ -1,6 +1,6 @@
-import Vue from 'vue';
-import axios from 'axios';
-import VueAxios from 'vue-axios';
+import Vue from "vue";
+import axios from "axios";
+import VueAxios from "vue-axios";
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -9,15 +9,15 @@ import VueAxios from 'vue-axios';
  */
 Vue.use(VueAxios, axios);
 
-Vue.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+Vue.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 Vue.axios.interceptors.response.use(
-    (response) => response,
-    (error) => {
+    response => response,
+    error => {
         if (error.status === 401) {
             location.reload();
         }
 
-        return Promise.reject(error)
+        return Promise.reject(error);
     }
 );

@@ -1,6 +1,6 @@
 <script lang="ts">
-import Vue from 'vue';
-import './fontawsome';
+import Vue from "vue";
+import "./fontawsome";
 
 export default class Buefy extends Vue {
     public $dialog: any;
@@ -13,6 +13,6 @@ export default class Buefy extends Vue {
 </script>
 
 <style lang="scss">
-@import '../../../resources/sass/app';
-@import '~buefy/src/scss/buefy';
+@import "../../../resources/sass/app";
+@import "~buefy/src/scss/buefy";
 </style>

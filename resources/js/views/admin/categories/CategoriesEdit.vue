@@ -12,7 +12,11 @@
 
         <b-field
           :type="errors.meta_description ? 'is-danger' : ''"
-          :message="errors.meta_description ? errors.meta_description[0] : null"
+          :message="
+            errors.meta_description
+              ? errors.meta_description[0]
+              : null
+          "
           label="Meta description"
         >
           <b-input
@@ -56,7 +60,7 @@
             <img
               :src="category.cover.thumb"
               :alt="category.cover.name"
-            >
+            />
             <a
               class="button has-text-danger"
               @click="deleteCurrentCategoryCover()"
@@ -80,22 +84,22 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import vue2Dropzone from 'vue2-dropzone';
-import Buefy from '../../../admin/Buefy.vue';
-import Category from '../../../models/category';
-import 'quill/dist/quill.core.css';
-import 'quill/dist/quill.snow.css';
-import 'quill/dist/quill.bubble.css';
-import { quillEditor } from 'vue-quill-editor';
-import {showSuccess} from "../../../admin/toast";
+import Component from "vue-class-component";
+import vue2Dropzone from "vue2-dropzone";
+import Buefy from "../../../admin/Buefy.vue";
+import Category from "../../../models/category";
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+import { quillEditor } from "vue-quill-editor";
+import { showSuccess } from "../../../admin/toast";
 
 @Component({
-    name: 'CategoriesEdit',
+    name: "CategoriesEdit",
     components: {
         vueDropzone: vue2Dropzone,
-        quillEditor,
-    },
+        quillEditor
+    }
 })
 export default class CategoriesEdit extends Buefy {
     private category: Category = new Category();
@@ -110,7 +114,7 @@ export default class CategoriesEdit extends Buefy {
         parallelUploads: 5,
         // Setup chunking
         chunking: true,
-        method: 'POST',
+        method: "POST",
         maxFilesize: 400000000,
         chunkSize: 1000000,
         retryChunks: true,
@@ -118,18 +122,18 @@ export default class CategoriesEdit extends Buefy {
         maxThumbnailFilesize: 25,
         // If true, the individual chunks of a file are being uploaded simultaneously.
         // parallelChunkUploads: true,
-        acceptedFiles: 'image/*',
+        acceptedFiles: "image/*",
         dictDefaultMessage: "<i class='fas fa-images'></i> Upload",
         headers: {
-            'X-CSRF-Token': (
-                document.head.querySelector('meta[name="csrf-token"]') as HTMLMetaElement
-            ).content,
-        },
+            "X-CSRF-Token": (document.head.querySelector(
+                'meta[name="csrf-token"]'
+            ) as HTMLMetaElement).content
+        }
     };
 
     protected editorOption: object = {
-        placeholder: 'Enter your description...',
-        theme: 'snow',
+        placeholder: "Enter your description...",
+        theme: "snow"
     };
 
     created(): void {
@@ -140,26 +144,29 @@ export default class CategoriesEdit extends Buefy {
         this.loading = true;
 
         this.axios
-            .patch(`/api/admin/categories/${this.$route.params.slug}`, this.category)
+            .patch(
+                `/api/admin/categories/${this.$route.params.slug}`,
+                this.category
+            )
             .then(res => res.data)
             .then(res => {
                 this.errors = {};
                 this.category = res.data;
                 this.loading = false;
-                showSuccess(this.$buefy,'Category updated');
-                this.$router.push({ name: 'admin.categories.index' });
+                showSuccess(this.$buefy, "Category updated");
+                this.$router.push({ name: "admin.categories.index" });
             })
             .catch(err => {
                 this.loading = false;
                 this.$buefy.snackbar.open({
-                    message: 'Unable to load category, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
+                    message: "Unable to load category, maybe you are offline?",
+                    type: "is-danger",
+                    position: "is-top",
+                    actionText: "Retry",
                     indefinite: true,
                     onAction: () => {
                         this.updateCategory();
-                    },
+                    }
                 });
                 this.errors = err.response.data.errors;
                 throw err;
@@ -180,14 +187,14 @@ export default class CategoriesEdit extends Buefy {
                 this.category = new Category();
                 this.loading = false;
                 this.$buefy.snackbar.open({
-                    message: 'Unable to load category, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
+                    message: "Unable to load category, maybe you are offline?",
+                    type: "is-danger",
+                    position: "is-top",
+                    actionText: "Retry",
                     indefinite: true,
                     onAction: () => {
                         this.fetchCategory();
-                    },
+                    }
                 });
                 throw err;
             });
@@ -195,9 +202,9 @@ export default class CategoriesEdit extends Buefy {
 
     sendingEvent(file: File, xhr: XMLHttpRequest, formData: FormData): void {
         if (!this.category.slug) {
-            throw new DOMException('category slug is null');
+            throw new DOMException("category slug is null");
         }
-        formData.append('category_slug', this.category.slug as string);
+        formData.append("category_slug", this.category.slug as string);
     }
 
     refreshCover(): void {
@@ -214,14 +221,14 @@ export default class CategoriesEdit extends Buefy {
                 this.category.cover = null;
                 this.loading = false;
                 this.$buefy.snackbar.open({
-                    message: 'Unable to load category, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
+                    message: "Unable to load category, maybe you are offline?",
+                    type: "is-danger",
+                    position: "is-top",
+                    actionText: "Retry",
                     indefinite: true,
                     onAction: () => {
                         this.fetchCategory();
-                    },
+                    }
                 });
                 throw err;
             });
@@ -240,14 +247,15 @@ export default class CategoriesEdit extends Buefy {
             .catch(err => {
                 this.loading = false;
                 this.$buefy.snackbar.open({
-                    message: 'Unable to delete cover category, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
+                    message:
+                        "Unable to delete cover category, maybe you are offline?",
+                    type: "is-danger",
+                    position: "is-top",
+                    actionText: "Retry",
                     indefinite: true,
                     onAction: () => {
                         this.deleteCurrentCategoryCover();
-                    },
+                    }
                 });
                 throw err;
             });

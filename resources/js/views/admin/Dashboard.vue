@@ -1,16 +1,15 @@
 <template>
   <div>
     <b-loading
-      :is-full-page="false"
-      :active="loading"
-    />
+:is-full-page="false"
+:active="loading" />
     <div v-if="!loading">
       <section class="hero is-info welcome is-small has-margin-bottom-sm">
         <div class="hero-body">
           <div class="container">
             <h1 class="title is-1">
-              Hello, {{ username }}.
-            </h1>
+Hello, {{ username }}.
+</h1>
             <h2 class="subtitle">
               I hope you are having a great day!
             </h2>
@@ -88,9 +87,9 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import Buefy from '../../admin/Buefy.vue';
-import {showError} from "../../admin/toast";
+import Component from "vue-class-component";
+import Buefy from "../../admin/Buefy.vue";
+import { showError } from "../../admin/toast";
 
 @Component
 export default class Dashboard extends Buefy {
@@ -110,7 +109,7 @@ export default class Dashboard extends Buefy {
         this.loading = true;
 
         this.axios
-            .get('/api/admin/dashboard')
+            .get("/api/admin/dashboard")
             .then(res => res.data)
             .then(res => {
                 this.username = res.user;
@@ -123,7 +122,11 @@ export default class Dashboard extends Buefy {
             })
             .catch(err => {
                 this.loading = false;
-                showError(this.$buefy,'Unable to load dashboard, maybe you are offline?', this.fetchDashboard);
+                showError(
+                    this.$buefy,
+                    "Unable to load dashboard, maybe you are offline?",
+                    this.fetchDashboard
+                );
                 throw err;
             });
     }

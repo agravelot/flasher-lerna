@@ -40,38 +40,37 @@
       >
         <template slot-scope="user">
           <b-table-column
-            field="name"
-            label="Name"
-            sortable
-          >
+field="name"
+label="Name" sortable>
             <router-link
-              :to="{ name: 'admin.users.edit', params: { id: user.row.id } }"
+              :to="{
+                name: 'admin.users.edit',
+                params: { id: user.row.id }
+              }"
             >
               {{ user.row.name }}
             </router-link>
           </b-table-column>
 
           <b-table-column
-            field="email"
-            label="E-mail"
-            sortable
-          >
+field="email"
+label="E-mail" sortable>
             <router-link
-              :to="{ name: 'admin.users.edit', params: { id: user.row.id } }"
+              :to="{
+                name: 'admin.users.edit',
+                params: { id: user.row.id }
+              }"
             >
               {{ user.row.email }}
             </router-link>
           </b-table-column>
 
           <b-table-column
-            field="status"
-            label="Role"
-            centered
-          >
+field="status"
+label="Role" centered>
             <span
-              :title="'User role'"
-              class="tag is-dark"
-            >{{
+:title="'User role'"
+class="tag is-dark">{{
               user.row.role
             }}</span>
           </b-table-column>
@@ -90,9 +89,8 @@
             <div class="content has-text-grey has-text-centered">
               <p>
                 <b-icon
-                  icon="sad-tear"
-                  size="is-large"
-                />
+icon="sad-tear"
+size="is-large" />
               </p>
               <p>Nothing here.</p>
             </div>
@@ -109,13 +107,13 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import Buefy from '../../../admin/Buefy.vue';
-import User from '../../../models/user';
-import {showError, showSuccess} from "../../../admin/toast";
+import Component from "vue-class-component";
+import Buefy from "../../../admin/Buefy.vue";
+import User from "../../../models/user";
+import { showError, showSuccess } from "../../../admin/toast";
 
 @Component({
-    name: 'UsersIndex',
+    name: "UsersIndex"
 })
 export default class UsersIndex extends Buefy {
     private users: Array<User> = [];
@@ -124,10 +122,10 @@ export default class UsersIndex extends Buefy {
     private page = 1;
     perPage = 10;
     private loading = false;
-    private sortField = 'id';
-    private sortOrder = 'desc';
+    private sortField = "id";
+    private sortOrder = "desc";
     showDetailIcon = true;
-    defaultSortOrder = 'desc';
+    defaultSortOrder = "desc";
 
     created(): void {
         this.fetchUsers();
@@ -135,14 +133,14 @@ export default class UsersIndex extends Buefy {
 
     fetchUsers(): void {
         this.loading = true;
-        const sortOrder = this.sortOrder === 'asc' ? '' : '-';
+        const sortOrder = this.sortOrder === "asc" ? "" : "-";
 
         this.axios
-            .get('/api/admin/users', {
+            .get("/api/admin/users", {
                 params: {
                     page: this.page,
-                    sort: sortOrder + this.sortField,
-                },
+                    sort: sortOrder + this.sortField
+                }
             })
             .then(res => res.data)
             .then(res => {
@@ -155,7 +153,11 @@ export default class UsersIndex extends Buefy {
                 this.users = [];
                 this.total = 0;
                 this.loading = false;
-                showError(this.$buefy,'Unable to load users, maybe you are offline?', this.fetchUsers);
+                showError(
+                    this.$buefy,
+                    "Unable to load users, maybe you are offline?",
+                    this.fetchUsers
+                );
                 throw err;
             });
     }
@@ -183,15 +185,15 @@ export default class UsersIndex extends Buefy {
 
     confirmDeleteSelectedUsers(): void {
         this.$buefy.dialog.confirm({
-            title: 'Deleting Users',
+            title: "Deleting Users",
             message:
-                'Are you sure you want to <b>delete</b> these users? This action cannot be undone.',
-            confirmText: 'Delete Users',
-            type: 'is-danger',
+                "Are you sure you want to <b>delete</b> these users? This action cannot be undone.",
+            confirmText: "Delete Users",
+            type: "is-danger",
             hasIcon: true,
             onConfirm: () => {
                 this.deleteSelectedUsers();
-            },
+            }
         });
     }
 
@@ -203,11 +205,14 @@ export default class UsersIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/users/${user.id}`)
                 .then(() => {
-                    showSuccess(this.$buefy,'Users deleted');
+                    showSuccess(this.$buefy, "Users deleted");
                     this.fetchUsers();
                 })
                 .catch(err => {
-                    showError(this.$buefy,`Unable to delete user <br> <small>${err.message}</small>`);
+                    showError(
+                        this.$buefy,
+                        `Unable to delete user <br> <small>${err.message}</small>`
+                    );
                     throw err;
                 });
         });

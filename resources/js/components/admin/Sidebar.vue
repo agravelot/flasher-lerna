@@ -1,8 +1,7 @@
 <template>
   <div
-    id="admin-menu"
-    style="width: 200px;"
-  >
+id="admin-menu"
+style="width: 200px;">
     <b-menu>
       <b-menu-list label="Administration">
         <b-menu-item
@@ -80,8 +79,8 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import Buefy from '../../admin/Buefy.vue';
+import Component from "vue-class-component";
+import Buefy from "../../admin/Buefy.vue";
 
 @Component
 export default class Sidebar extends Buefy {}

@@ -13,9 +13,8 @@
       >
         <div class="card album">
           <div
-            v-if="album.media"
-            class="card-image"
-          >
+v-if="album.media"
+class="card-image">
             <figure class="image">
               <img
                 v-if="album.media.src_set"
@@ -24,13 +23,13 @@
                 class="responsive-media"
                 sizes="1px"
                 loading="auto"
-              >
+              />
               <img
                 v-else
                 :src="album.media.thumb"
                 :alt="album.media.name"
                 loading="auto"
-              >
+              />
             </figure>
           </div>
           <div class="card-content">
@@ -57,15 +56,15 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import Buefy from '../../admin/Buefy.vue';
-import { Prop } from 'vue-property-decorator';
-import VueMasonry from 'vue-masonry-css';
+import Component from "vue-class-component";
+import Buefy from "../../admin/Buefy.vue";
+import { Prop } from "vue-property-decorator";
+import VueMasonry from "vue-masonry-css";
 
 Buefy.use(VueMasonry);
 
 @Component({
-    name: 'AlbumsMasonry',
+    name: "AlbumsMasonry"
 })
 export default class AlbumsMasonry extends Buefy {
     @Prop() readonly data: any;
@@ -83,11 +82,11 @@ export default class AlbumsMasonry extends Buefy {
     }
 
     created(): void {
-        window.addEventListener('resize', this.onResize);
+        window.addEventListener("resize", this.onResize);
     }
 
     beforeDestroy(): void {
-        window.removeEventListener('resize', this.onResize);
+        window.removeEventListener("resize", this.onResize);
     }
 
     mounted(): void {
@@ -96,7 +95,7 @@ export default class AlbumsMasonry extends Buefy {
         this.total = this.data.meta.total;
         this.loading = false;
         if (!this.albums) {
-            console.warn('Albums not eager loaded, requesting server...');
+            console.warn("Albums not eager loaded, requesting server...");
             this.fetchAlbums();
         }
         this.$nextTick(() => {
@@ -115,7 +114,7 @@ export default class AlbumsMasonry extends Buefy {
 
     refreshSizes(): void {
         const responsiveMedias: HTMLCollectionOf<Element> = document.getElementsByClassName(
-            'responsive-media'
+            "responsive-media"
         );
         Array.from(responsiveMedias).forEach((el: Element) => {
             (el as HTMLImageElement).sizes = `${Math.ceil(
@@ -126,10 +125,10 @@ export default class AlbumsMasonry extends Buefy {
 
     fetchAlbums(): void {
         this.axios
-            .get('/api/albums', {
+            .get("/api/albums", {
                 params: {
-                    page: this.page,
-                },
+                    page: this.page
+                }
             })
             .then(res => res.data)
             .then(res => {
@@ -143,14 +142,14 @@ export default class AlbumsMasonry extends Buefy {
                 this.total = 0;
                 this.loading = false;
                 this.$buefy.snackbar.open({
-                    message: 'Unable to load albums, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
+                    message: "Unable to load albums, maybe you are offline?",
+                    type: "is-danger",
+                    position: "is-top",
+                    actionText: "Retry",
                     indefinite: true,
                     onAction: () => {
                         this.fetchAlbums();
-                    },
+                    }
                 });
                 throw err;
             });

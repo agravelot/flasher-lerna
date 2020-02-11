@@ -5,6 +5,6 @@ export default class Invitation {
     cosplayer_id: number;
     created_at: Date;
     updated_at: Date;
-    confirmed_at: Date|null;
+    confirmed_at: Date | null;
     expired: boolean;
 }

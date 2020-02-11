@@ -59,14 +59,12 @@
       >
         <template slot-scope="category">
           <b-table-column
-            field="name"
-            label="Name"
-            sortable
-          >
+field="name"
+label="Name" sortable>
             <router-link
               :to="{
                 name: 'admin.categories.edit',
-                params: { slug: category.row.slug },
+                params: { slug: category.row.slug }
               }"
             >
               {{ category.row.name }}
@@ -79,9 +77,8 @@
             <div class="content has-text-grey has-text-centered">
               <p>
                 <b-icon
-                  icon="sad-tear"
-                  size="is-large"
-                />
+icon="sad-tear"
+size="is-large" />
               </p>
               <p>Nothing here.</p>
             </div>
@@ -98,21 +95,23 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import Buefy from '../../../admin/Buefy.vue';
-import Category from '../../../models/category';
-import {showError, showSuccess} from "../../../admin/toast";
+import Component from "vue-class-component";
+import Buefy from "../../../admin/Buefy.vue";
+import Category from "../../../models/category";
+import { showError, showSuccess } from "../../../admin/toast";
 
 @Component({
-    name: 'CategoriesIndex',
+    name: "CategoriesIndex",
     filters: {
         /**
          * Filter to truncate string, accepts a length parameter
          */
         truncate(value: string, length: number): string {
-            return value.length > length ? value.substr(0, length) + '...' : value;
-        },
-    },
+            return value.length > length
+                ? value.substr(0, length) + "..."
+                : value;
+        }
+    }
 })
 export default class CategoriesIndex extends Buefy {
     private categories: Array<Category> = [];
@@ -121,11 +120,11 @@ export default class CategoriesIndex extends Buefy {
     private page = 1;
     perPage = 10;
     private loading = false;
-    private sortField = 'id';
-    private sortOrder = 'desc';
+    private sortField = "id";
+    private sortOrder = "desc";
     showDetailIcon = true;
-    defaultSortOrder = 'desc';
-    private search = '';
+    defaultSortOrder = "desc";
+    private search = "";
 
     created(): void {
         this.fetchCategories();
@@ -133,15 +132,15 @@ export default class CategoriesIndex extends Buefy {
 
     fetchCategories(): void {
         this.loading = true;
-        const sortOrder = this.sortOrder === 'asc' ? '' : '-';
+        const sortOrder = this.sortOrder === "asc" ? "" : "-";
 
         this.axios
-            .get('/api/admin/categories', {
+            .get("/api/admin/categories", {
                 params: {
                     page: this.page,
                     sort: sortOrder + this.sortField,
-                    'filter[name]': this.search,
-                },
+                    "filter[name]": this.search
+                }
             })
             .then(res => res.data)
             .then(res => {
@@ -154,7 +153,11 @@ export default class CategoriesIndex extends Buefy {
                 this.categories = [];
                 this.total = 0;
                 this.loading = false;
-                showError(this.$buefy,'Unable to load categories, maybe you are offline?', this.fetchCategories);
+                showError(
+                    this.$buefy,
+                    "Unable to load categories, maybe you are offline?",
+                    this.fetchCategories
+                );
                 throw err;
             });
     }
@@ -178,15 +181,15 @@ export default class CategoriesIndex extends Buefy {
 
     confirmDeleteSelectedCategories(): void {
         this.$buefy.dialog.confirm({
-            title: 'Deleting Categories',
+            title: "Deleting Categories",
             message:
-                'Are you sure you want to <b>delete</b> these categories? This action cannot be undone.',
-            confirmText: 'Delete Categories',
-            type: 'is-danger',
+                "Are you sure you want to <b>delete</b> these categories? This action cannot be undone.",
+            confirmText: "Delete Categories",
+            type: "is-danger",
             hasIcon: true,
             onConfirm: () => {
                 this.deleteSelectedCategories();
-            },
+            }
         });
     }
 
@@ -198,11 +201,14 @@ export default class CategoriesIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/categories/${category.slug}`)
                 .then(() => {
-                    showSuccess(this.$buefy,'Categories deleted');
+                    showSuccess(this.$buefy, "Categories deleted");
                     this.fetchCategories();
                 })
                 .catch(err => {
-                    showError(this.$buefy,`Unable to delete category <br> <small>${err.message}</small>`);
+                    showError(
+                        this.$buefy,
+                        `Unable to delete category <br> <small>${err.message}</small>`
+                    );
                     throw err;
                 });
         });

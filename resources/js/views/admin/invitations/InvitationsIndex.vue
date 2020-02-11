@@ -42,14 +42,12 @@
       >
         <template slot-scope="invitation">
           <b-table-column
-            field="email"
-            label="E-mail"
-            sortable
-          >
+field="email"
+label="E-mail" sortable>
             <router-link
               :to="{
                 name: 'admin.invitations.edit',
-                params: { id: invitation.row.id },
+                params: { id: invitation.row.id }
               }"
             >
               {{ invitation.row.email }}
@@ -72,17 +70,14 @@
               type="is-danger"
             />
             <b-icon
-              v-else
-              icon="clock"
-              type="is-info"
-            />
+v-else
+icon="clock" type="is-info" />
           </b-table-column>
         </template>
 
         <template
-          slot="detail"
-          slot-scope="props"
-        >
+slot="detail"
+slot-scope="props">
           <article>
             <p>
               {{ props.row.message }}
@@ -95,9 +90,8 @@
             <div class="content has-text-grey has-text-centered">
               <p>
                 <b-icon
-                  icon="sad-tear"
-                  size="is-large"
-                />
+icon="sad-tear"
+size="is-large" />
               </p>
               <p>Nothing here.</p>
             </div>
@@ -114,13 +108,13 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import Buefy from '../../../admin/Buefy.vue';
-import Invitation from '../../../models/invitation';
-import {showError, showSuccess} from "../../../admin/toast";
+import Component from "vue-class-component";
+import Buefy from "../../../admin/Buefy.vue";
+import Invitation from "../../../models/invitation";
+import { showError, showSuccess } from "../../../admin/toast";
 
 @Component({
-    name: 'InvitationsIndex',
+    name: "InvitationsIndex"
 })
 export default class InvitationsIndex extends Buefy {
     private invitations: Array<Invitation> = [];
@@ -129,10 +123,10 @@ export default class InvitationsIndex extends Buefy {
     private page = 1;
     perPage = 10;
     private loading = false;
-    private sortField = 'id';
-    private sortOrder = 'desc';
+    private sortField = "id";
+    private sortOrder = "desc";
     showDetailIcon = true;
-    defaultSortOrder = 'desc';
+    defaultSortOrder = "desc";
 
     created(): void {
         this.fetchInvitations();
@@ -140,14 +134,14 @@ export default class InvitationsIndex extends Buefy {
 
     fetchInvitations(): void {
         this.loading = true;
-        const sortOrder = this.sortOrder === 'asc' ? '' : '-';
+        const sortOrder = this.sortOrder === "asc" ? "" : "-";
 
         this.axios
-            .get('/api/admin/invitations', {
+            .get("/api/admin/invitations", {
                 params: {
                     page: this.page,
-                    sort: sortOrder + this.sortField,
-                },
+                    sort: sortOrder + this.sortField
+                }
             })
             .then(res => res.data)
             .then(res => {
@@ -160,7 +154,11 @@ export default class InvitationsIndex extends Buefy {
                 this.invitations = [];
                 this.total = 0;
                 this.loading = false;
-                showError(this.$buefy,'Unable to load invitations, maybe you are offline?', this.fetchInvitations);
+                showError(
+                    this.$buefy,
+                    "Unable to load invitations, maybe you are offline?",
+                    this.fetchInvitations
+                );
                 throw err;
             });
     }
@@ -184,15 +182,15 @@ export default class InvitationsIndex extends Buefy {
 
     confirmDeleteSelectedInvitations(): void {
         this.$buefy.dialog.confirm({
-            title: 'Deleting invitations',
+            title: "Deleting invitations",
             message:
-                'Are you sure you want to <b>delete</b> these invitations? This action cannot be undone.',
-            confirmText: 'Delete Invitations',
-            type: 'is-danger',
+                "Are you sure you want to <b>delete</b> these invitations? This action cannot be undone.",
+            confirmText: "Delete Invitations",
+            type: "is-danger",
             hasIcon: true,
             onConfirm: () => {
                 this.deleteSelectedInvitations();
-            },
+            }
         });
     }
 
@@ -201,7 +199,7 @@ export default class InvitationsIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/invitations/${invitation.id}`)
                 .then(() => {
-                    showSuccess(this.$buefy,'Invitations deleted');
+                    showSuccess(this.$buefy, "Invitations deleted");
                     this.fetchInvitations();
                 })
                 .catch(err => {
