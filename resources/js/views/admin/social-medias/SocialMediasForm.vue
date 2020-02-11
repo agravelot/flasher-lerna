@@ -25,8 +25,9 @@
             label="Url"
           >
             <b-input
-v-model="socialMedia.url"
-type="text" />
+              v-model="socialMedia.url"
+              type="text"
+            />
           </b-field>
 
           <b-field
@@ -35,8 +36,9 @@ type="text" />
             label="Icon"
           >
             <b-input
-v-model="socialMedia.icon"
-type="text" />
+              v-model="socialMedia.icon"
+              type="text"
+            />
           </b-field>
 
           <b-field
@@ -45,8 +47,9 @@ type="text" />
             label="Color"
           >
             <b-input
-v-model="socialMedia.color"
-type="text" />
+              v-model="socialMedia.color"
+              type="text"
+            />
           </b-field>
 
           <b-field

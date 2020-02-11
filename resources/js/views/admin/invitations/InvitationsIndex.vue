@@ -42,8 +42,10 @@
       >
         <template slot-scope="invitation">
           <b-table-column
-field="email"
-label="E-mail" sortable>
+            field="email"
+            label="E-mail"
+            sortable
+          >
             <router-link
               :to="{
                 name: 'admin.invitations.edit',
@@ -70,14 +72,17 @@ label="E-mail" sortable>
               type="is-danger"
             />
             <b-icon
-v-else
-icon="clock" type="is-info" />
+              v-else
+              icon="clock"
+              type="is-info"
+            />
           </b-table-column>
         </template>
 
         <template
-slot="detail"
-slot-scope="props">
+          slot="detail"
+          slot-scope="props"
+        >
           <article>
             <p>
               {{ props.row.message }}
@@ -90,8 +95,9 @@ slot-scope="props">
             <div class="content has-text-grey has-text-centered">
               <p>
                 <b-icon
-icon="sad-tear"
-size="is-large" />
+                  icon="sad-tear"
+                  size="is-large"
+                />
               </p>
               <p>Nothing here.</p>
             </div>

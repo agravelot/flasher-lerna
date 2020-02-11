@@ -40,8 +40,10 @@
       >
         <template slot-scope="user">
           <b-table-column
-field="name"
-label="Name" sortable>
+            field="name"
+            label="Name"
+            sortable
+          >
             <router-link
               :to="{
                 name: 'admin.users.edit',
@@ -53,8 +55,10 @@ label="Name" sortable>
           </b-table-column>
 
           <b-table-column
-field="email"
-label="E-mail" sortable>
+            field="email"
+            label="E-mail"
+            sortable
+          >
             <router-link
               :to="{
                 name: 'admin.users.edit',
@@ -66,11 +70,14 @@ label="E-mail" sortable>
           </b-table-column>
 
           <b-table-column
-field="status"
-label="Role" centered>
+            field="status"
+            label="Role"
+            centered
+          >
             <span
-:title="'User role'"
-class="tag is-dark">{{
+              :title="'User role'"
+              class="tag is-dark"
+            >{{
               user.row.role
             }}</span>
           </b-table-column>
@@ -89,8 +96,9 @@ class="tag is-dark">{{
             <div class="content has-text-grey has-text-centered">
               <p>
                 <b-icon
-icon="sad-tear"
-size="is-large" />
+                  icon="sad-tear"
+                  size="is-large"
+                />
               </p>
               <p>Nothing here.</p>
             </div>

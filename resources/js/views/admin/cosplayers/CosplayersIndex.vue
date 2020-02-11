@@ -60,8 +60,10 @@
       >
         <template slot-scope="cosplayer">
           <b-table-column
-field="name"
-label="Name" sortable>
+            field="name"
+            label="Name"
+            sortable
+          >
             <router-link
               :to="{
                 name: 'admin.cosplayers.edit',
@@ -78,8 +80,9 @@ label="Name" sortable>
             <div class="content has-text-grey has-text-centered">
               <p>
                 <b-icon
-icon="sad-tear"
-size="is-large" />
+                  icon="sad-tear"
+                  size="is-large"
+                />
               </p>
               <p>Nothing here.</p>
             </div>

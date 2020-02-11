@@ -40,8 +40,10 @@
       >
         <template slot-scope="socialMedia">
           <b-table-column
-field="name"
-label="Name" sortable>
+            field="name"
+            label="Name"
+            sortable
+          >
             <router-link
               :to="{
                 name: 'admin.social-medias.edit',
@@ -53,8 +55,10 @@ label="Name" sortable>
           </b-table-column>
 
           <b-table-column
-field="url"
-label="Url" sortable>
+            field="url"
+            label="Url"
+            sortable
+          >
             <router-link
               :to="{
                 name: 'admin.social-medias.edit',
@@ -66,8 +70,10 @@ label="Url" sortable>
           </b-table-column>
 
           <b-table-column
-field="active"
-label="Active" sortable>
+            field="active"
+            label="Active"
+            sortable
+          >
             {{ socialMedia.row.active }}
           </b-table-column>
         </template>
@@ -77,8 +83,9 @@ label="Active" sortable>
             <div class="content has-text-grey has-text-centered">
               <p>
                 <b-icon
-icon="sad-tear"
-size="is-large" />
+                  icon="sad-tear"
+                  size="is-large"
+                />
               </p>
               <p>Nothing here.</p>
             </div>

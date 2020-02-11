@@ -7,11 +7,14 @@
     <div class="card">
       <div class="card-content">
         <b-tabs
-type="is-boxed"
-size="is-medium" class="block">
+          type="is-boxed"
+          size="is-medium"
+          class="block"
+        >
           <b-tab-item
-label="Album"
-icon="info">
+            label="Album"
+            icon="info"
+          >
             <form @submit.prevent="sendOrCreateAlbum">
               <b-field
                 :type="errors.title ? 'is-danger' : ''"
@@ -192,7 +195,7 @@ icon="info">
                       <img
                         :src="picture.thumb"
                         :alt="picture.name"
-                      />
+                      >
                       <a
                         class="button has-text-danger"
                         @click="
@@ -211,8 +214,10 @@ icon="info">
           </b-tab-item>
 
           <b-tab-item
-v-if="!isCreating"
-label="Share" icon="share">
+            v-if="!isCreating"
+            label="Share"
+            icon="share"
+          >
             <h3 class="title is-3">
               Share
             </h3>

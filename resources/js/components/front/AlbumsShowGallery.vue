@@ -22,30 +22,32 @@
               class="responsive-media"
               sizes="1px"
               loading="auto"
-            />
+            >
             <img
               v-else
               :src="media.thumb"
               :alt="media.name"
               loading="auto"
-            />
+            >
           </figure>
         </div>
       </masonry>
     </div>
 
     <div
-v-if="openedPicture"
-class="modal is-active modal-fx-fadeInScale">
+      v-if="openedPicture"
+      class="modal is-active modal-fx-fadeInScale"
+    >
       <div
-class="modal-background"
-@click="closePicture()" />
+        class="modal-background"
+        @click="closePicture()"
+      />
       <div class="modal-content is-huge is-image">
         <img
           :srcset="openedPicture.src_set"
           :src="openedPicture.thumb"
           :alt="openedPicture.name"
-        />
+        >
       </div>
       <button
         class="modal-close is-large"

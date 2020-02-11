@@ -13,8 +13,9 @@
       >
         <div class="card album">
           <div
-v-if="album.media"
-class="card-image">
+            v-if="album.media"
+            class="card-image"
+          >
             <figure class="image">
               <img
                 v-if="album.media.src_set"
@@ -23,13 +24,13 @@ class="card-image">
                 class="responsive-media"
                 sizes="1px"
                 loading="auto"
-              />
+              >
               <img
                 v-else
                 :src="album.media.thumb"
                 :alt="album.media.name"
                 loading="auto"
-              />
+              >
             </figure>
           </div>
           <div class="card-content">

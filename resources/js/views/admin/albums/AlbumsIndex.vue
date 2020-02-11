@@ -59,8 +59,10 @@
       >
         <template slot-scope="album">
           <b-table-column
-field="title"
-label="Title" sortable>
+            field="title"
+            label="Title"
+            sortable
+          >
             <router-link
               :to="{
                 name: 'admin.albums.edit',
@@ -81,8 +83,10 @@ label="Title" sortable>
           </b-table-column>
 
           <b-table-column
-field="status"
-label="Status" centered>
+            field="status"
+            label="Status"
+            centered
+          >
             <span
               v-if="album.row.private === 1"
               :title="'This album is private'"
@@ -116,8 +120,9 @@ label="Status" centered>
             <div class="content has-text-grey has-text-centered">
               <p>
                 <b-icon
-icon="sad-tear"
-size="is-large" />
+                  icon="sad-tear"
+                  size="is-large"
+                />
               </p>
               <p>Nothing here.</p>
             </div>

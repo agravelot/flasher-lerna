@@ -9,8 +9,9 @@
         </div>
         <div class="card-content">
           <b-button
-type="is-danger"
-@click="clearCache">
+            type="is-danger"
+            @click="clearCache"
+          >
             Clear cache
           </b-button>
         </div>
@@ -25,8 +26,9 @@ type="is-danger"
         </div>
         <div class="card-content">
           <div
-v-for="(setting, index) in settings"
-:key="index">
+            v-for="(setting, index) in settings"
+            :key="index"
+          >
             <b-field :label="setting.title">
               <b-numberinput
                 v-if="setting.type === 'numeric'"
@@ -60,11 +62,12 @@ v-for="(setting, index) in settings"
                   v-if="setting.value"
                   :src="setting.value.url"
                   :alt="setting.value.name"
-                />
+                >
 
                 <div
-v-if="setting.value"
-class="tags">
+                  v-if="setting.value"
+                  class="tags"
+                >
                   <span class="tag is-primary">
                     {{ setting.value.name }}
                     <button
@@ -82,8 +85,10 @@ class="tags">
                 maxlength="30"
               />
               <b-input
-v-else
-v-model="setting.value" expanded />
+                v-else
+                v-model="setting.value"
+                expanded
+              />
             </b-field>
             <div class="control">
               <button

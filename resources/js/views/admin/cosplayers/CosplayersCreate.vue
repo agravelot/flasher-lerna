@@ -25,8 +25,10 @@
         <div class="column">
           <div v-if="cosplayer.avatar">
             <label class="label">Current avatar</label>
-            <img :src="cosplayer.avatar.thumb"
-alt="" >
+            <img
+              :src="cosplayer.avatar.thumb"
+              alt=""
+            >
             <b-button
               type="is-danger"
               icon-right="trash-alt"
@@ -41,14 +43,16 @@ alt="" >
             label="Upload avatar"
           >
             <b-upload
-v-model="cosplayer.avatar"
-drag-drop>
+              v-model="cosplayer.avatar"
+              drag-drop
+            >
               <section class="section">
                 <div class="content has-text-centered">
                   <p>
                     <b-icon
-icon="upload"
-size="is-large" />
+                      icon="upload"
+                      size="is-large"
+                    />
                   </p>
                   <p>
                     Drop your files here or click to upload
@@ -83,7 +87,7 @@ size="is-large" />
               <template slot-scope="props">
                 <div>
                   {{ props.option.name }}
-                  <br >
+                  <br>
                   <small>
                     Email: {{ props.option.email }}, role
                     <b>{{ props.option.role }}</b>

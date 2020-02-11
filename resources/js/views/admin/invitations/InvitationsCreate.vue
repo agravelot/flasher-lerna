@@ -13,8 +13,9 @@
             label="Email"
           >
             <b-input
-v-model="invitation.email"
-type="email" />
+              v-model="invitation.email"
+              type="email"
+            />
           </b-field>
 
           <b-field
@@ -23,8 +24,9 @@ type="email" />
             label="Message"
           >
             <b-input
-v-model="invitation.message"
-type="textarea" />
+              v-model="invitation.message"
+              type="textarea"
+            />
           </b-field>
 
           <pick-one-cosplayer
