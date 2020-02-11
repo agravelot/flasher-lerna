@@ -379,24 +379,22 @@ export default class AlbumsForm extends Buefy {
         if (this.album === undefined) {
             throw new DOMException('Unable to refresh undefined album.');
         }
-        try {
-            const res = await this.axios.get(`/api/admin/albums/${this.$route.params.slug}`);
-            const { data } = res.data;
+        const data = await this.axios.get(`/api/admin/albums/${this.$route.params.slug}`)
+            .then(res => res.data)
+            .catch((exception) => {
+                showError(
+                    this.$buefy,
+                    `Unable to refresh the album <br><small>${exception.response.data.message}</small>`
+                );
+                throw exception;
+            });
             this.album.medias = data.medias;
-        } catch (exception) {
-            showError(
-                this.$buefy,
-                `Unable to refresh the album <br><small>${exception.response.data.message}</small>`
-            );
-            throw exception;
-        }
     }
 
     async confirmDeleteAlbum(): Promise<void> {
         this.$buefy.dialog.confirm({
             title: 'Deleting Album',
-            message:
-                'Are you sure you want to <b>delete</b> this album? This action cannot be undone.',
+            message: 'Are you sure you want to <b>delete</b> this album? This action cannot be undone.',
             confirmText: 'Delete Album',
             type: 'is-danger',
             hasIcon: true,
