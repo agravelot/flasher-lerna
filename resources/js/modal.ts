@@ -159,6 +159,12 @@
                         (image.getBoundingClientRect().width / window.innerWidth) * 100
                     )}vw`;
                     image.classList.add('responsive-media');
+                    ga('send', {
+                        hitType: 'event',
+                        eventCategory: 'Albums',
+                        eventAction: 'ShowAlbumPicture',
+                        eventLabel: image.alt ?? 'Unable to get image alt',
+                    });
                 }
             },
         };

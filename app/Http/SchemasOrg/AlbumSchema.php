@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Schemas;
+namespace App\Http\SchemasOrg;
 
 use App\Models\Album;
 use Spatie\SchemaOrg\Person;
@@ -8,10 +8,7 @@ use Spatie\SchemaOrg\Schema;
 
 class AlbumSchema implements SchemaInterface
 {
-    /**
-     * @var Album
-     */
-    private $album;
+    private Album $album;
 
     public function __construct(Album $album)
     {

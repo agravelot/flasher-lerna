@@ -11,7 +11,9 @@
 
       <b-field
         :type="errors.meta_description ? 'is-danger' : ''"
-        :message="errors.meta_description ? errors.meta_description[0] : null"
+        :message="
+          errors.meta_description ? errors.meta_description[0] : null
+        "
         label="Meta description"
       >
         <b-input
@@ -46,21 +48,21 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import Buefy from '../../../admin/Buefy.vue';
-import Category from '../../../models/category';
-import 'quill/dist/quill.core.css';
-import 'quill/dist/quill.snow.css';
-import 'quill/dist/quill.bubble.css';
-import { quillEditor } from 'vue-quill-editor';
-import User from '../../../models/user';
-import {showError, showSuccess} from "../../../admin/toast";
+import Component from "vue-class-component";
+import Buefy from "../../../admin/Buefy.vue";
+import Category from "../../../models/category";
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+import { quillEditor } from "vue-quill-editor";
+import User from "../../../models/user";
+import { showError, showSuccess } from "../../../admin/toast";
 
 @Component({
-    name: 'CategoriesEdit',
+    name: "CategoriesEdit",
     components: {
-        quillEditor,
-    },
+        quillEditor
+    }
 })
 export default class CategoriesCreate extends Buefy {
     private category: Category = new Category();
@@ -69,8 +71,8 @@ export default class CategoriesCreate extends Buefy {
     protected errors: object = {};
 
     protected editorOption: object = {
-        placeholder: 'Enter your description...',
-        theme: 'snow',
+        placeholder: "Enter your description...",
+        theme: "snow"
     };
 
     createCategory(): void {
@@ -83,12 +85,16 @@ export default class CategoriesCreate extends Buefy {
                 this.errors = {};
                 this.loading = false;
                 this.category = res.data;
-                showSuccess(this.$buefy,'Category created');
-                this.$router.push({ name: 'admin.categories.index' });
+                showSuccess(this.$buefy, "Category created");
+                this.$router.push({ name: "admin.categories.index" });
             })
             .catch(err => {
                 this.loading = false;
-                showError(this.$buefy,'Unable to load category, maybe you are offline?', this.createCategory);
+                showError(
+                    this.$buefy,
+                    "Unable to load category, maybe you are offline?",
+                    this.createCategory
+                );
                 this.errors = err.response.data.errors;
                 throw err;
             });

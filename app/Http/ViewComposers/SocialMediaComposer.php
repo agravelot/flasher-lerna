@@ -8,20 +8,13 @@ use Illuminate\Database\Eloquent\Collection;
 
 class SocialMediaComposer
 {
-    /**
-     * @var Collection
-     */
-    private $socialMedias;
+    private Collection $socialMedias;
 
     /**
      * Bind data to the view.
      */
     public function create(View $view): void
     {
-        if (! $this->socialMedias) {
-            $this->socialMedias = SocialMedia::active()->get();
-        }
-
-        $view->with('socialMedias', $this->socialMedias);
+        $view->with('socialMedias', $this->socialMedias ??= SocialMedia::active()->get());
     }
 }

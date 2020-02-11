@@ -1,10 +1,20 @@
-const elements = document.getElementsByClassName('is-loading-on-click');
+const elements = document.getElementsByClassName("download-album");
 
-Array.from(elements || []).forEach(e => {
-    e.addEventListener('click', () => {
-        e.classList.add('is-loading');
-        e.addEventListener('blur', () => {
-            e.classList.contains('is-loading') && e.classList.remove('is-loading');
+Array.from(elements || []).forEach((e: HTMLElement) => {
+    e.addEventListener("click", async event => {
+        e.classList.add("is-loading");
+        ga("send", {
+            hitType: "event",
+            eventCategory: "Albums",
+            eventAction: "Download",
+            eventLabel:
+                event.target instanceof HTMLAnchorElement
+                    ? event.target.href
+                    : "Unable to get link"
+        });
+        e.addEventListener("blur", () => {
+            e.classList.contains("is-loading") &&
+                e.classList.remove("is-loading");
         });
     });
 });

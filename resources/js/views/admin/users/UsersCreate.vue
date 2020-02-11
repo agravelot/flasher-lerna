@@ -15,10 +15,8 @@
         label="Email"
       >
         <b-input
-          v-model="user.email"
-          type="email"
-          maxlength="30"
-        />
+v-model="user.email"
+type="email" maxlength="30" />
       </b-field>
 
       <b-field label="Role">
@@ -50,7 +48,11 @@
 
       <b-field
         :type="errors.password_confirmation ? 'is-danger' : ''"
-        :message="errors.password_confirmation ? errors.password_confirmation[0] : null"
+        :message="
+          errors.password_confirmation
+            ? errors.password_confirmation[0]
+            : null
+        "
         label="Password confirmation"
       >
         <b-input
@@ -74,13 +76,13 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import Buefy from '../../../admin/Buefy.vue';
-import User from '../../../models/user';
-import {showError, showSuccess} from "../../../admin/toast";
+import Component from "vue-class-component";
+import Buefy from "../../../admin/Buefy.vue";
+import User from "../../../models/user";
+import { showError, showSuccess } from "../../../admin/toast";
 
 @Component({
-    name: 'UsersCreate',
+    name: "UsersCreate"
 })
 export default class UsersCreate extends Buefy {
     private user: User = new User();
@@ -91,17 +93,21 @@ export default class UsersCreate extends Buefy {
         this.loading = true;
 
         this.axios
-            .post('/api/admin/users', this.user)
+            .post("/api/admin/users", this.user)
             .then(res => res.data)
             .then(() => {
                 this.errors = {};
                 this.loading = false;
-                this.$router.push({ name: 'admin.users.index' });
-                showSuccess(this.$buefy,'User created');
+                this.$router.push({ name: "admin.users.index" });
+                showSuccess(this.$buefy, "User created");
             })
             .catch(err => {
                 this.loading = false;
-                showError(this.$buefy,'Unable to create user, maybe you are offline?', this.createUser);
+                showError(
+                    this.$buefy,
+                    "Unable to create user, maybe you are offline?",
+                    this.createUser
+                );
                 this.errors = err.response.data.errors;
                 throw err;
             });
@@ -109,15 +115,15 @@ export default class UsersCreate extends Buefy {
 
     confirmDeleteUser(): void {
         this.$buefy.dialog.confirm({
-            title: 'Deleting Albums',
+            title: "Deleting Albums",
             message:
-                'Are you sure you want to <b>delete</b> these users? This action cannot be undone.',
-            confirmText: 'Delete Albums',
-            type: 'is-danger',
+                "Are you sure you want to <b>delete</b> these users? This action cannot be undone.",
+            confirmText: "Delete Albums",
+            type: "is-danger",
             hasIcon: true,
             onConfirm: () => {
                 this.deleteUser();
-            },
+            }
         });
     }
 
@@ -128,11 +134,14 @@ export default class UsersCreate extends Buefy {
         this.axios
             .delete(`/api/admin/users/${this.user.id}`)
             .then(() => {
-                this.$router.push({ name: 'admin.users.index' });
-                showSuccess(this.$buefy,'User deleted');
+                this.$router.push({ name: "admin.users.index" });
+                showSuccess(this.$buefy, "User deleted");
             })
             .catch(err => {
-                showError(this.$buefy,`Unable to delete user <br> <small>${err.message}</small>`);
+                showError(
+                    this.$buefy,
+                    `Unable to delete user <br> <small>${err.message}</small>`
+                );
                 throw err;
             });
     }

@@ -32,7 +32,7 @@
     @yield('head')
     {!! Analytics::render() !!}
 
-    {!! new \App\Http\Schemas\HomepageSchema() !!}
+    {!! new \App\Http\SchemasOrg\HomepageSchema() !!}
 </head>
 
 <body>

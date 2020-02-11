@@ -1,21 +1,18 @@
 <template>
   <section>
     <h1 class="title">
-      {{ isCreating ? 'Create album' : 'Update album' }}
+      {{ isCreating ? "Create album" : "Update album" }}
     </h1>
 
     <div class="card">
       <div class="card-content">
         <b-tabs
-          type="is-boxed"
-          size="is-medium"
-          class="block"
-        >
+type="is-boxed"
+size="is-medium" class="block">
           <b-tab-item
-            label="Album"
-            icon="info"
-          >
-            <form @submit.prevent="updateOrCreateAlbum">
+label="Album"
+icon="info">
+            <form @submit.prevent="sendOrCreateAlbum">
               <b-field
                 :type="errors.title ? 'is-danger' : ''"
                 :message="errors.title ? errors.title[0] : null"
@@ -29,8 +26,14 @@
               </b-field>
 
               <b-field
-                :type="errors.meta_description ? 'is-danger' : ''"
-                :message="errors.meta_description ? errors.meta_description[0] : null"
+                :type="
+                  errors.meta_description ? 'is-danger' : ''
+                "
+                :message="
+                  errors.meta_description
+                    ? errors.meta_description[0]
+                    : null
+                "
                 label="Meta description"
               >
                 <b-input
@@ -55,7 +58,11 @@
 
               <b-field
                 :type="errors.categories ? 'is-danger' : ''"
-                :message="errors.categories ? errors.categories[0] : null"
+                :message="
+                  errors.categories
+                    ? errors.categories[0]
+                    : null
+                "
                 label="Enter some categories"
               >
                 <b-taginput
@@ -72,7 +79,11 @@
 
               <b-field
                 :type="errors.cosplayers ? 'is-danger' : ''"
-                :message="errors.cosplayers ? errors.cosplayers[0] : null"
+                :message="
+                  errors.cosplayers
+                    ? errors.cosplayers[0]
+                    : null
+                "
                 label="Enter some cosplayers"
               >
                 <b-taginput
@@ -89,23 +100,32 @@
 
               <b-field
                 :type="errors.published_at ? 'is-danger' : ''"
-                :message="errors.published_at ? errors.published_at[0] : null"
+                :message="
+                  errors.published_at
+                    ? errors.published_at[0]
+                    : null
+                "
                 label="Should this album be published?"
               >
                 <div class="field">
                   <b-switch
                     v-model="album.published_at"
-                    :true-value="album.published_at || new Date().toISOString()"
+                    :true-value="
+                      album.published_at ||
+                        new Date().toISOString()
+                    "
                     :false-value="null"
                   >
-                    {{ album.published_at ? 'Yes' : 'No' }}
+                    {{ album.published_at ? "Yes" : "No" }}
                   </b-switch>
                 </div>
               </b-field>
 
               <b-field
                 :type="errors.private ? 'is-danger' : ''"
-                :message="errors.private ? errors.private[0] : null"
+                :message="
+                  errors.private ? errors.private[0] : null
+                "
                 label="Should it be accessible publicly?"
               >
                 <div class="field">
@@ -114,7 +134,7 @@
                     :true-value="false"
                     :false-value="true"
                   >
-                    {{ album.private ? 'No' : 'Yes' }}
+                    {{ album.private ? "No" : "Yes" }}
                   </b-switch>
                 </div>
               </b-field>
@@ -155,8 +175,8 @@
                 v-model="album.medias"
                 v-bind="dragOptions"
                 @change="updateMediasOrder"
-                @start="drag=true"
-                @end="drag=false"
+                @start="drag = true"
+                @end="drag = false"
               >
                 <transition-group
                   class="columns is-multiline"
@@ -172,10 +192,14 @@
                       <img
                         :src="picture.thumb"
                         :alt="picture.name"
-                      >
+                      />
                       <a
                         class="button has-text-danger"
-                        @click="deleteAlbumPicture(picture.id)"
+                        @click="
+                          deleteAlbumPicture(
+                            picture.id
+                          )
+                        "
                       >
                         Delete
                       </a>
@@ -187,10 +211,8 @@
           </b-tab-item>
 
           <b-tab-item
-            v-if="!isCreating"
-            label="Share"
-            icon="share"
-          >
+v-if="!isCreating"
+label="Share" icon="share">
             <h3 class="title is-3">
               Share
             </h3>
@@ -203,24 +225,24 @@
 </template>
 
 <script lang="ts">
-import 'quill/dist/quill.core.css';
-import 'quill/dist/quill.snow.css';
-import 'quill/dist/quill.bubble.css';
-import Component from 'vue-class-component';
-import vue2Dropzone from 'vue2-dropzone';
-import 'vue2-dropzone/dist/vue2Dropzone.min.css';
-import ShareAlbum from '../../../components/admin/ShareAlbum.vue';
-import Album from '../../../models/album';
-import { quillEditor } from 'vue-quill-editor';
-import {showSuccess, showError} from "../../../admin/toast";
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+import Component from "vue-class-component";
+import vue2Dropzone from "vue2-dropzone";
+import "vue2-dropzone/dist/vue2Dropzone.min.css";
+import ShareAlbum from "../../../components/admin/ShareAlbum.vue";
+import Album from "../../../models/album";
+import { quillEditor } from "vue-quill-editor";
+import { showSuccess, showError } from "../../../admin/toast";
 import Category from "../../../models/category";
 import Cosplayer from "../../../models/cosplayer";
 import FilterableById from "../../../models/interfaces/filterableById";
 import Buefy from "../../../admin/Buefy.vue";
-import {Prop} from 'vue-property-decorator';
-import {DropzoneOptions} from 'dropzone';
-import {debounce} from "../../../debounce";
-import draggable from 'vuedraggable'
+import { Prop } from "vue-property-decorator";
+import { DropzoneOptions } from "dropzone";
+import { debounce } from "../../../debounce";
+import draggable from "vuedraggable";
 
 interface AlbumErrorsInterface {
     title?: object;
@@ -233,16 +255,15 @@ interface AlbumErrorsInterface {
 }
 
 @Component({
-    name: 'AlbumsForm',
+    name: 'AlbumsForm.vue',
     components: {
         vueDropzone: vue2Dropzone,
         quillEditor,
         ShareAlbum,
-        draggable,
-    },
+        draggable
+    }
 })
 export default class AlbumsForm extends Buefy {
-
     @Prop({ required: true, type: Boolean })
     protected isCreating: boolean;
 
@@ -256,17 +277,17 @@ export default class AlbumsForm extends Buefy {
     protected filteredCategories: Category[] = [];
     protected filteredCosplayers: Cosplayer[] = [];
     protected editorOption: object = {
-        placeholder: 'Enter your description...',
-        theme: 'snow',
+        placeholder: "Enter your description...",
+        theme: "snow"
     };
     protected dropzoneOptions: DropzoneOptions = {
-        url: '/api/admin/album-pictures',
+        url: "/api/admin/album-pictures",
         thumbnailWidth: 200,
         addRemoveLinks: true,
         parallelUploads: 5,
         // Setup chunking
         chunking: true,
-        method: 'POST',
+        method: "POST",
         maxFilesize: 400000000,
         chunkSize: 5000000,
         //autoProcessQueue: false,
@@ -275,13 +296,13 @@ export default class AlbumsForm extends Buefy {
         maxThumbnailFilesize: 25,
         // If true, the individual chunks of a file are being uploaded simultaneously.
         parallelChunkUploads: false,
-        acceptedFiles: 'image/*',
+        acceptedFiles: "image/*",
         dictDefaultMessage: "<i class='fas fa-images'></i> Upload",
         headers: {
-            'X-CSRF-Token': ((
-                document.head.querySelector('meta[name="csrf-token"]') as HTMLMetaElement
-            )).content,
-        },
+            "X-CSRF-Token": (document.head.querySelector(
+                'meta[name="csrf-token"]'
+            ) as HTMLMetaElement).content
+        }
     };
 
     dragOptions = {
@@ -316,36 +337,43 @@ export default class AlbumsForm extends Buefy {
         this.loading = true;
 
         try {
-            const res = await this.axios.get(`/api/admin/albums/${this.$route.params.slug}`);
+            const res = await this.axios.get(
+                `/api/admin/albums/${this.$route.params.slug}`
+            );
             const { data } = res.data;
             this.album = data;
             this.loading = false;
         } catch (exception) {
-            showError(this.$buefy,'Unable to fetch album');
+            showError(this.$buefy, "Unable to fetch album");
             console.error(exception);
         }
     }
 
     sendingEvent(file: File, xhr: XMLHttpRequest, formData: FormData): void {
         if (this.album === undefined) {
-            throw new DOMException('Unable to send media with undefined album.');
+            throw new DOMException(
+                "Unable to send media with undefined album."
+            );
         }
         if (!this.album.slug) {
-            throw new DOMException('album slug is null');
+            throw new DOMException("album slug is null");
         }
-        formData.append('album_slug', this.album.slug as string);
+        formData.append("album_slug", this.album.slug as string);
     }
 
     async updateAlbum(): Promise<void> {
         if (this.album === undefined) {
-            throw new DOMException('Unable to update undefined album.');
+            throw new DOMException("Unable to update undefined album.");
         }
 
         try {
-            const res = await this.axios.patch(`/api/admin/albums/${this.$route.params.slug}`, this.album);
+            const res = await this.axios.patch(
+                `/api/admin/albums/${this.$route.params.slug}`,
+                this.album
+            );
             const { data } = res.data;
             this.album = data;
-            showSuccess(this.$buefy,'Album updated');
+            showSuccess(this.$buefy, "Album updated");
             this.errors = {};
         } catch (exception) {
             showError(
@@ -363,8 +391,11 @@ export default class AlbumsForm extends Buefy {
             const { data } = res.data;
             this.album = data;
             this.errors = {};
-            showSuccess(this.$buefy,'Album successfully created');
-            await this.$router.push({name: 'admin.albums.edit', params: {slug: this.album.slug}});
+            showSuccess(this.$buefy, "Album successfully created");
+            await this.$router.push({
+                name: "admin.albums.edit",
+                params: { slug: this.album.slug }
+            });
         } catch (exception) {
             showError(
                 this.$buefy,
@@ -377,46 +408,46 @@ export default class AlbumsForm extends Buefy {
 
     async refreshMedias(): Promise<void> {
         if (this.album === undefined) {
-            throw new DOMException('Unable to refresh undefined album.');
+            throw new DOMException("Unable to refresh undefined album.");
         }
-        try {
-            const res = await this.axios.get(`/api/admin/albums/${this.$route.params.slug}`);
-            const { data } = res.data;
-            this.album.medias = data.medias;
-        } catch (exception) {
-            showError(
-                this.$buefy,
-                `Unable to refresh the album <br><small>${exception.response.data.message}</small>`
-            );
-            throw exception;
-        }
+        const data = await this.axios
+            .get(`/api/admin/albums/${this.$route.params.slug}`)
+            .then(res => res.data)
+            .catch(exception => {
+                showError(
+                    this.$buefy,
+                    `Unable to refresh the album <br><small>${exception.response.data.message}</small>`
+                );
+                throw exception;
+            });
+        this.album.medias = data.medias;
     }
 
     async confirmDeleteAlbum(): Promise<void> {
         this.$buefy.dialog.confirm({
-            title: 'Deleting Album',
+            title: "Deleting Album",
             message:
-                'Are you sure you want to <b>delete</b> this album? This action cannot be undone.',
-            confirmText: 'Delete Album',
-            type: 'is-danger',
+                "Are you sure you want to <b>delete</b> this album? This action cannot be undone.",
+            confirmText: "Delete Album",
+            type: "is-danger",
             hasIcon: true,
-            onConfirm: () => this.deleteAlbum(),
+            onConfirm: () => this.deleteAlbum()
         });
     }
 
     async deleteAlbum(): Promise<void> {
         if (this.album === undefined) {
-            throw new DOMException('Unable to delete undefined album.');
+            throw new DOMException("Unable to delete undefined album.");
         }
 
         this.loading = true;
 
         try {
             await this.axios.delete(`/api/admin/albums/${this.album.slug}`);
-            showSuccess(this.$buefy,'Album successfully deleted!');
-            await this.$router.push({name: 'admin.albums.index'});
+            showSuccess(this.$buefy, "Album successfully deleted!");
+            await this.$router.push({ name: "admin.albums.index" });
         } catch (exception) {
-            showError(this.$buefy,`Unable to delete the picture`);
+            showError(this.$buefy, `Unable to delete the picture`);
             throw exception;
         }
 
@@ -425,36 +456,41 @@ export default class AlbumsForm extends Buefy {
 
     async deleteAlbumPicture(mediaId: number): Promise<void> {
         if (this.album === undefined) {
-            throw new DOMException('Unable to delete media from undefined album.');
+            throw new DOMException(
+                "Unable to delete media from undefined album."
+            );
         }
 
         try {
-            await this.axios.delete(`/api/admin/album-pictures/${this.album.slug}`, {
-                data: {
-                    // eslint-disable-next-line @typescript-eslint/camelcase
-                    media_id: mediaId,
-                },
-            });
+            await this.axios.delete(
+                `/api/admin/album-pictures/${this.album.slug}`,
+                {
+                    data: {
+                        // eslint-disable-next-line @typescript-eslint/camelcase
+                        media_id: mediaId
+                    }
+                }
+            );
             // Do not refresh here because this process is run async in the backend.
             // this.refreshMedias();
             this.album.medias = this.album.medias.filter(m => m.id !== mediaId);
-            showSuccess(this.$buefy, 'Picture successfully deleted!');
+            showSuccess(this.$buefy, "Picture successfully deleted!");
         } catch (exception) {
-            showError(this.$buefy, 'Unable to delete the picture');
+            showError(this.$buefy, "Unable to delete the picture");
             throw exception;
         }
     }
 
     async updateMediasOrder(): Promise<void> {
         try {
-            const data = { 'media_ids': this.album.medias.map(m => m.id)};
+            const data = { media_ids: this.album.medias.map(m => m.id) };
             await this.axios.patch(
                 `/api/admin/albums/${this.$route.params.slug}/media-ordering`,
                 data
             );
-            showSuccess(this.$buefy, 'Pictures successfully re-ordered');
+            showSuccess(this.$buefy, "Pictures successfully re-ordered");
         } catch (exception) {
-            showError(this.$buefy, 'Unable to re-ordered the pictures');
+            showError(this.$buefy, "Unable to re-ordered the pictures");
             throw exception;
         }
     }
@@ -464,7 +500,7 @@ export default class AlbumsForm extends Buefy {
     }
 
     isCategoryNotAlreadySelected(filterable: FilterableById): boolean {
-        return ! this.isCategoryAlreadySelected(filterable);
+        return !this.isCategoryAlreadySelected(filterable);
     }
 
     isCosplayerAlreadySelected(filterable: FilterableById): boolean {
@@ -472,23 +508,30 @@ export default class AlbumsForm extends Buefy {
     }
 
     isCosplayerNotAlreadySelected(filterable: FilterableById): boolean {
-        return ! this.isCategoryAlreadySelected(filterable);
+        return !this.isCategoryAlreadySelected(filterable);
     }
 
     getFilteredCategories(text: string): void {
         const callback = (text: string): void => {
-            this.axios.get('/api/admin/categories', {
+            this.axios
+                .get("/api/admin/categories", {
                     params: {
-                        'filter[name]': text,
-                    },
+                        "filter[name]": text
+                    }
                 })
                 .then(res => res.data)
                 .then(res => {
-                    this.filteredCategories = res.data.filter(this.isCategoryNotAlreadySelected);
+                    this.filteredCategories = res.data.filter(
+                        this.isCategoryNotAlreadySelected
+                    );
                 })
                 .catch(err => {
                     // this.filteredCosplayers = [];
-                    showError(this.$buefy,'Unable to load categories, maybe you are offline?', () => this.getFilteredCategories(text));
+                    showError(
+                        this.$buefy,
+                        "Unable to load categories, maybe you are offline?",
+                        () => this.getFilteredCategories(text)
+                    );
                     throw err;
                 });
         };
@@ -497,18 +540,25 @@ export default class AlbumsForm extends Buefy {
 
     getFilteredCosplayers(text: string): void {
         const callback = (text: string): void => {
-            this.axios.get('/api/admin/cosplayers', {
+            this.axios
+                .get("/api/admin/cosplayers", {
                     params: {
-                        'filter[name]': text,
-                    },
+                        "filter[name]": text
+                    }
                 })
                 .then(res => res.data)
                 .then(res => {
-                    this.filteredCosplayers = res.data.filter(this.isCosplayerNotAlreadySelected);
+                    this.filteredCosplayers = res.data.filter(
+                        this.isCosplayerNotAlreadySelected
+                    );
                 })
                 .catch(err => {
                     // this.filteredCosplayers = [];
-                    showError(this.$buefy,'Unable to load cosplayers, maybe you are offline?', () => this.getFilteredCosplayers(text))
+                    showError(
+                        this.$buefy,
+                        "Unable to load cosplayers, maybe you are offline?",
+                        () => this.getFilteredCosplayers(text)
+                    );
                     throw err;
                 });
         };
@@ -518,7 +568,7 @@ export default class AlbumsForm extends Buefy {
 </script>
 
 <style scoped>
-    .has-grab-cursor {
-        cursor: grab;
-    }
+.has-grab-cursor {
+    cursor: grab;
+}
 </style>

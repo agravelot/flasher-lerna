@@ -22,32 +22,30 @@
               class="responsive-media"
               sizes="1px"
               loading="auto"
-            >
+            />
             <img
               v-else
               :src="media.thumb"
               :alt="media.name"
               loading="auto"
-            >
+            />
           </figure>
         </div>
       </masonry>
     </div>
 
     <div
-      v-if="openedPicture"
-      class="modal is-active modal-fx-fadeInScale"
-    >
+v-if="openedPicture"
+class="modal is-active modal-fx-fadeInScale">
       <div
-        class="modal-background"
-        @click="closePicture()"
-      />
+class="modal-background"
+@click="closePicture()" />
       <div class="modal-content is-huge is-image">
         <img
           :srcset="openedPicture.src_set"
           :src="openedPicture.thumb"
           :alt="openedPicture.name"
-        >
+        />
       </div>
       <button
         class="modal-close is-large"
@@ -59,16 +57,16 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import { Prop } from 'vue-property-decorator';
-import Vue from 'vue';
-import 'bulma-modal-fx/src/_js/modal-fx';
-import VueMasonry from 'vue-masonry-css';
+import Component from "vue-class-component";
+import { Prop } from "vue-property-decorator";
+import Vue from "vue";
+import "bulma-modal-fx/src/_js/modal-fx";
+import VueMasonry from "vue-masonry-css";
 
 Vue.use(VueMasonry);
 
 @Component({
-    name: 'AlbumsShowGallery',
+    name: "AlbumsShowGallery"
 })
 export default class AlbumsShowGallery extends Vue {
     @Prop() readonly data: any;
@@ -84,18 +82,18 @@ export default class AlbumsShowGallery extends Vue {
     }
 
     created(): void {
-        window.addEventListener('resize', this.onResize);
+        window.addEventListener("resize", this.onResize);
     }
 
     beforeDestroy(): void {
-        window.removeEventListener('resize', this.onResize);
+        window.removeEventListener("resize", this.onResize);
     }
 
     mounted(): void {
         this.album = this.data.data;
 
         if (!this.album) {
-            console.warn('Album is not eager loaded, requesting...');
+            console.warn("Album is not eager loaded, requesting...");
             this.fetchAlbum();
         }
         this.$nextTick(() => {
@@ -117,23 +115,21 @@ export default class AlbumsShowGallery extends Vue {
 
     refreshSizes(): void {
         const responsiveMedias: HTMLCollectionOf<Element> = document.getElementsByClassName(
-            'responsive-media'
+            "responsive-media"
         );
-        Array.from(responsiveMedias).forEach(
-            (el: Element): void => {
-                (el as HTMLImageElement).sizes = `${Math.ceil(
-                    (el.getBoundingClientRect().width / window.innerWidth) * 100
-                )}vw`;
-            }
-        );
+        Array.from(responsiveMedias).forEach((el: Element): void => {
+            (el as HTMLImageElement).sizes = `${Math.ceil(
+                (el.getBoundingClientRect().width / window.innerWidth) * 100
+            )}vw`;
+        });
     }
 
     fetchAlbum(): void {
-        let slug = window.location.pathname.split('/')[
-            window.location.pathname.split('/').length - 1
+        let slug = window.location.pathname.split("/")[
+            window.location.pathname.split("/").length - 1
         ];
         // Workaround until moved to vue router
-        if (slug === 'edit') {
+        if (slug === "edit") {
             slug = this.$route.params.slug;
         }
         this.axios
@@ -147,14 +143,14 @@ export default class AlbumsShowGallery extends Vue {
                 this.album = {};
                 this.loading = false;
                 this.$buefy.snackbar.open({
-                    message: 'Unable to load album, maybe you are offline?',
-                    type: 'is-danger',
-                    position: 'is-top',
-                    actionText: 'Retry',
+                    message: "Unable to load album, maybe you are offline?",
+                    type: "is-danger",
+                    position: "is-top",
+                    actionText: "Retry",
                     indefinite: true,
                     onAction: () => {
                         this.fetchAlbum();
-                    },
+                    }
                 });
                 throw err;
             });

@@ -12,7 +12,7 @@
         <div class="container">
             @include('albums.partials._show_item', compact('album'))
         </div>
-        {!! new \App\Http\Schemas\AlbumSchema($album) !!}
+        {!! new \App\Http\SchemasOrg\AlbumSchema($album) !!}
     </section>
     @include('layouts.partials._return_to_top')
 @endsection

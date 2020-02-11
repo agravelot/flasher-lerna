@@ -1,20 +1,20 @@
-import Vue from 'vue';
-import VueRouter, {RouteConfig} from 'vue-router';
-import Dashboard from '../views/admin/Dashboard.vue';
-import AlbumsIndex from '../views/admin/albums/AlbumsIndex.vue';
-import CategoriesIndex from '../views/admin/categories/CategoriesIndex.vue';
-import CategoriesCreate from '../views/admin/categories/CategoriesCreate.vue';
-import CategoriesEdit from '../views/admin/categories/CategoriesEdit.vue';
-import ConstactsIndex from '../views/admin/contacts/ContactsIndex.vue';
-import CosplayersIndex from '../views/admin/cosplayers/CosplayersIndex.vue';
-import CosplayersCreate from '../views/admin/cosplayers/CosplayersCreate.vue';
-import CosplayersEdit from '../views/admin/cosplayers/CosplayersEdit.vue';
-import UsersIndex from '../views/admin/users/UsersIndex.vue';
-import UsersCreate from '../views/admin/users/UsersCreate.vue';
-import UsersEdit from '../views/admin/users/UsersEdit.vue';
-import TestimonialsIndex from '../views/admin/testimonials/TestimonialsIndex.vue';
-import NotFound from '../views/admin/NotFound.vue';
-import Settings from '../views/admin/Settings.vue';
+import Vue from "vue";
+import VueRouter, { RouteConfig } from "vue-router";
+import Dashboard from "../views/admin/Dashboard.vue";
+import AlbumsIndex from "../views/admin/albums/AlbumsIndex.vue";
+import CategoriesIndex from "../views/admin/categories/CategoriesIndex.vue";
+import CategoriesCreate from "../views/admin/categories/CategoriesCreate.vue";
+import CategoriesEdit from "../views/admin/categories/CategoriesEdit.vue";
+import ConstactsIndex from "../views/admin/contacts/ContactsIndex.vue";
+import CosplayersIndex from "../views/admin/cosplayers/CosplayersIndex.vue";
+import CosplayersCreate from "../views/admin/cosplayers/CosplayersCreate.vue";
+import CosplayersEdit from "../views/admin/cosplayers/CosplayersEdit.vue";
+import UsersIndex from "../views/admin/users/UsersIndex.vue";
+import UsersCreate from "../views/admin/users/UsersCreate.vue";
+import UsersEdit from "../views/admin/users/UsersEdit.vue";
+import TestimonialsIndex from "../views/admin/testimonials/TestimonialsIndex.vue";
+import NotFound from "../views/admin/NotFound.vue";
+import Settings from "../views/admin/Settings.vue";
 import InvitationsIndex from "../views/admin/invitations/InvitationsIndex.vue";
 import InvitationsCreate from "../views/admin/invitations/InvitationsCreate.vue";
 import SocialMediasIndex from "../views/admin/social-medias/SocialMediasIndex.vue";
@@ -25,9 +25,9 @@ Vue.use(VueRouter);
 
 const routes: RouteConfig[] = [
     {
-        path: '/admin',
-        name: 'admin.dashboard',
-        component: Dashboard,
+        path: "/admin",
+        name: "admin.dashboard",
+        component: Dashboard
         // component: () =>
         //     import(
         //         /* webpackChunkName: "dashboard" */ '../../../modules/Dashboard/Resources/assets/js/Dashboard.vue'
@@ -35,17 +35,17 @@ const routes: RouteConfig[] = [
     },
     // Albums
     {
-        path: '/admin/albums',
-        name: 'admin.albums.index',
-        component: AlbumsIndex,
+        path: "/admin/albums",
+        name: "admin.albums.index",
+        component: AlbumsIndex
         // component: () =>
         //     import(
         //         /* webpackChunkName: "albumsIndex" */ '../../../modules/Album/Resources/assets/js/components/admin/AlbumsIndex.vue'
         //     ),
     },
     {
-        path: '/admin/albums/create',
-        name: 'admin.albums.create',
+        path: "/admin/albums/create",
+        name: "admin.albums.create",
         component: AlbumsForm,
         props: { isCreating: true }
         // component: () =>
@@ -63,8 +63,8 @@ const routes: RouteConfig[] = [
     //     //     ),
     // },
     {
-        path: '/admin/albums/:slug/edit',
-        name: 'admin.albums.edit',
+        path: "/admin/albums/:slug/edit",
+        name: "admin.albums.edit",
         component: AlbumsForm,
         props: { isCreating: false }
         // component: () =>
@@ -74,27 +74,27 @@ const routes: RouteConfig[] = [
     },
     // Categories
     {
-        path: '/admin/categories',
-        name: 'admin.categories.index',
-        component: CategoriesIndex,
+        path: "/admin/categories",
+        name: "admin.categories.index",
+        component: CategoriesIndex
         // component: () =>
         //     import(
         //         /* webpackChunkName: "categoriesIndex" */ '../../../modules/Category/Resources/assets/js/components/admin/CategoriesIndex.vue'
         //     ),
     },
     {
-        path: '/admin/categories/create',
-        name: 'admin.categories.create',
-        component: CategoriesCreate,
+        path: "/admin/categories/create",
+        name: "admin.categories.create",
+        component: CategoriesCreate
         // component: () =>
         //     import(
         //         /* webpackChunkName: "categoriesCreate" */ '../../../modules/Category/Resources/assets/js/components/admin/CategoriesCreate.vue'
         //     ),
     },
     {
-        path: '/admin/categories/:slug/edit',
-        name: 'admin.categories.edit',
-        component: CategoriesEdit,
+        path: "/admin/categories/:slug/edit",
+        name: "admin.categories.edit",
+        component: CategoriesEdit
         // component: () =>
         //     import(
         //         /* webpackChunkName: "categoriesEdit" */ '../../../modules/Category/Resources/assets/js/components/admin/CategoriesEdit.vue'
@@ -102,9 +102,9 @@ const routes: RouteConfig[] = [
     },
     // Contacts
     {
-        path: '/admin/contacts',
-        name: 'admin.contacts.index',
-        component: ConstactsIndex,
+        path: "/admin/contacts",
+        name: "admin.contacts.index",
+        component: ConstactsIndex
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersIndex.vue'
@@ -112,27 +112,27 @@ const routes: RouteConfig[] = [
     },
     //Cosplayers
     {
-        path: '/admin/cosplayers',
-        name: 'admin.cosplayers.index',
-        component: CosplayersIndex,
+        path: "/admin/cosplayers",
+        name: "admin.cosplayers.index",
+        component: CosplayersIndex
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersIndex.vue'
         //     ),
     },
     {
-        path: '/admin/cosplayers/create',
-        name: 'admin.cosplayers.create',
-        component: CosplayersCreate,
+        path: "/admin/cosplayers/create",
+        name: "admin.cosplayers.create",
+        component: CosplayersCreate
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersCreate" */ '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersCreate.vue'
         //         ),
     },
     {
-        path: '/admin/cosplayers/:slug/edit',
-        name: 'admin.cosplayers.edit',
-        component: CosplayersEdit,
+        path: "/admin/cosplayers/:slug/edit",
+        name: "admin.cosplayers.edit",
+        component: CosplayersEdit
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Cosplayer/Resources/assets/js/components/admin/CosplayersEdit.vue'
@@ -140,27 +140,27 @@ const routes: RouteConfig[] = [
     },
     // Users
     {
-        path: '/admin/users',
-        name: 'admin.users.index',
-        component: UsersIndex,
+        path: "/admin/users",
+        name: "admin.users.index",
+        component: UsersIndex
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
         //     ),
     },
     {
-        path: '/admin/users/create',
-        name: 'admin.users.create',
-        component: UsersCreate,
+        path: "/admin/users/create",
+        name: "admin.users.create",
+        component: UsersCreate
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
         //     ),
     },
     {
-        path: '/admin/users/:id/edit',
-        name: 'admin.users.edit',
-        component: UsersEdit,
+        path: "/admin/users/:id/edit",
+        name: "admin.users.edit",
+        component: UsersEdit
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersEdit" */ '../../../modules/User/Resources/assets/js/UserEdit.vue'
@@ -168,17 +168,17 @@ const routes: RouteConfig[] = [
     },
     // Social medias
     {
-        path: '/admin/social-medias',
-        name: 'admin.social-medias.index',
-        component: SocialMediasIndex,
+        path: "/admin/social-medias",
+        name: "admin.social-medias.index",
+        component: SocialMediasIndex
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
         //     ),
     },
     {
-        path: '/admin/social-medias/create',
-        name: 'admin.social-medias.create',
+        path: "/admin/social-medias/create",
+        name: "admin.social-medias.create",
         component: SocialMediasForm,
         props: { isCreating: true }
         // component: () =>
@@ -187,8 +187,8 @@ const routes: RouteConfig[] = [
         //     ),
     },
     {
-        path: '/admin/social-medias/:id/edit',
-        name: 'admin.social-medias.edit',
+        path: "/admin/social-medias/:id/edit",
+        name: "admin.social-medias.edit",
         component: SocialMediasForm,
         props: { isCreating: false }
         // component: () =>
@@ -197,11 +197,11 @@ const routes: RouteConfig[] = [
         //     ),
     },
 
-// Testimonials
+    // Testimonials
     {
-        path: '/admin/testimonials',
-        name: 'admin.testimonials.index',
-        component: TestimonialsIndex,
+        path: "/admin/testimonials",
+        name: "admin.testimonials.index",
+        component: TestimonialsIndex
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/User/Resources/assets/js/UsersIndex.vue'
@@ -227,37 +227,37 @@ const routes: RouteConfig[] = [
     // },
     // Settings
     {
-        path: '/admin/settings',
-        name: 'admin.settings.index',
-        component: Settings,
+        path: "/admin/settings",
+        name: "admin.settings.index",
+        component: Settings
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Core/Resources/assets/js/components/Settings.vue'
         //     ),
     },
     {
-        path: '/admin/invitations',
-        name: 'admin.invitations.index',
-        component: InvitationsIndex,
+        path: "/admin/invitations",
+        name: "admin.invitations.index",
+        component: InvitationsIndex
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Core/Resources/assets/js/components/Settings.vue'
         //     ),
     },
     {
-        path: '/admin/invitations/create',
-        name: 'admin.invitations.create',
-        component: InvitationsCreate,
+        path: "/admin/invitations/create",
+        name: "admin.invitations.create",
+        component: InvitationsCreate
         // component: () =>
         //     import(
         //         /* webpackChunkName: "cosplayersIndex" */ '../../../modules/Core/Resources/assets/js/components/Settings.vue'
         //     ),
     },
-    { path: '*', name: '404', component: NotFound },
+    { path: "*", name: "404", component: NotFound }
 ];
 
 export default new VueRouter({
-    mode: 'history',
+    mode: "history",
     routes,
-    linkActiveClass: 'is-active',
+    linkActiveClass: "is-active"
 });

@@ -1,12 +1,12 @@
-import Vue from 'vue';
-import Sidebar from '../components/admin/Sidebar.vue';
-import router from './router';
-import './fontawsome.ts';
-import '../bootstrap';
-import '../bulma';
-import 'bulma-modal-fx/src/_js/modal-fx';
-import '../sentry-vue';
-import Buefy from 'buefy';
+import Vue from "vue";
+import Sidebar from "../components/admin/Sidebar.vue";
+import router from "./router";
+import "./fontawsome.ts";
+import "../bootstrap";
+import "../bulma";
+import "bulma-modal-fx/src/_js/modal-fx";
+import "../sentry-vue";
+import Buefy from "buefy";
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -15,13 +15,13 @@ import Buefy from 'buefy';
  */
 
 Vue.use(Buefy, {
-  defaultIconComponent: 'vue-fontawesome',
-  defaultIconPack: 'fas',
-  // defaultFieldLabelPosition: 'on-border',
+    defaultIconComponent: "vue-fontawesome",
+    defaultIconPack: "fas"
+    // defaultFieldLabelPosition: 'on-border',
 });
 
 new Vue({
-  el: '#app',
-  components: { Sidebar },
-  router,
+    el: "#app",
+    components: { Sidebar },
+    router
 });

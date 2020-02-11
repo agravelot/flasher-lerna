@@ -60,14 +60,12 @@
       >
         <template slot-scope="cosplayer">
           <b-table-column
-            field="name"
-            label="Name"
-            sortable
-          >
+field="name"
+label="Name" sortable>
             <router-link
               :to="{
                 name: 'admin.cosplayers.edit',
-                params: { slug: cosplayer.row.slug },
+                params: { slug: cosplayer.row.slug }
               }"
             >
               {{ cosplayer.row.name }}
@@ -80,9 +78,8 @@
             <div class="content has-text-grey has-text-centered">
               <p>
                 <b-icon
-                  icon="sad-tear"
-                  size="is-large"
-                />
+icon="sad-tear"
+size="is-large" />
               </p>
               <p>Nothing here.</p>
             </div>
@@ -99,21 +96,23 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import Buefy from '../../../admin/Buefy.vue';
-import Cosplayer from '../../../models/cosplayer';
-import {showError, showSuccess} from "../../../admin/toast";
+import Component from "vue-class-component";
+import Buefy from "../../../admin/Buefy.vue";
+import Cosplayer from "../../../models/cosplayer";
+import { showError, showSuccess } from "../../../admin/toast";
 
 @Component({
-    name: 'CosplayersIndex',
+    name: "CosplayersIndex",
     filters: {
         /**
          * Filter to truncate string, accepts a length parameter
          */
         truncate(value: string, length: number): string {
-            return value.length > length ? value.substr(0, length) + '...' : value;
-        },
-    },
+            return value.length > length
+                ? value.substr(0, length) + "..."
+                : value;
+        }
+    }
 })
 export default class CosplayersIndex extends Buefy {
     private cosplayers: Array<Cosplayer> = [];
@@ -122,11 +121,11 @@ export default class CosplayersIndex extends Buefy {
     private page = 1;
     perPage = 10;
     private loading = false;
-    private sortField = 'id';
-    private sortOrder = 'desc';
+    private sortField = "id";
+    private sortOrder = "desc";
     showDetailIcon = true;
-    defaultSortOrder = 'desc';
-    private search = '';
+    defaultSortOrder = "desc";
+    private search = "";
 
     created(): void {
         this.fetchCosplayers();
@@ -134,15 +133,15 @@ export default class CosplayersIndex extends Buefy {
 
     fetchCosplayers(): void {
         this.loading = true;
-        const sortOrder = this.sortOrder === 'asc' ? '' : '-';
+        const sortOrder = this.sortOrder === "asc" ? "" : "-";
 
         this.axios
-            .get('/api/admin/cosplayers', {
+            .get("/api/admin/cosplayers", {
                 params: {
                     page: this.page,
                     sort: sortOrder + this.sortField,
-                    'filter[name]': this.search,
-                },
+                    "filter[name]": this.search
+                }
             })
             .then(res => res.data)
             .then(res => {
@@ -155,7 +154,11 @@ export default class CosplayersIndex extends Buefy {
                 this.cosplayers = [];
                 this.total = 0;
                 this.loading = false;
-                showError(this.$buefy,'Unable to load cosplayers, maybe you are offline?', this.fetchCosplayers);
+                showError(
+                    this.$buefy,
+                    "Unable to load cosplayers, maybe you are offline?",
+                    this.fetchCosplayers
+                );
                 throw err;
             });
     }
@@ -183,15 +186,15 @@ export default class CosplayersIndex extends Buefy {
 
     confirmDeleteSelectedCosplayers(): void {
         this.$buefy.dialog.confirm({
-            title: 'Deleting Cosplayers',
+            title: "Deleting Cosplayers",
             message:
-                'Are you sure you want to <b>delete</b> these cosplayers? This action cannot be undone.',
-            confirmText: 'Delete Cosplayers',
-            type: 'is-danger',
+                "Are you sure you want to <b>delete</b> these cosplayers? This action cannot be undone.",
+            confirmText: "Delete Cosplayers",
+            type: "is-danger",
             hasIcon: true,
             onConfirm: () => {
                 this.deleteSelectedCosplayers();
-            },
+            }
         });
     }
 
@@ -203,11 +206,14 @@ export default class CosplayersIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/cosplayers/${cosplayer.slug}`)
                 .then(() => {
-                    showSuccess(this.$buefy,'Cosplayers deleted');
+                    showSuccess(this.$buefy, "Cosplayers deleted");
                     this.fetchCosplayers();
                 })
                 .catch(err => {
-                    showError(this.$buefy,`Unable to delete cosplayer <br> <small>${err.message}</small>`);
+                    showError(
+                        this.$buefy,
+                        `Unable to delete cosplayer <br> <small>${err.message}</small>`
+                    );
                     throw err;
                 });
         });

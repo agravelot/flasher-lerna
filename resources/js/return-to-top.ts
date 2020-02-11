@@ -1,25 +1,28 @@
 //Get the button:
-const returnToTopButton: HTMLElement|null = document.getElementById("return-to-top");
-const navbar: HTMLElement|null = document.getElementById('navbar');
+const returnToTopButton: HTMLElement | null = document.getElementById(
+    "return-to-top"
+);
+const navbar: HTMLElement | null = document.getElementById("navbar");
 
 if (returnToTopButton && navbar) {
-
-    returnToTopButton.addEventListener('click', () => {
-        window.scrollTo({top: 0, behavior: 'smooth'});
+    returnToTopButton.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
     const handleIntersection: IntersectionObserverCallback = async (
-        entries: IntersectionObserverEntry[],
+        entries: IntersectionObserverEntry[]
     ): Promise<void> => {
         entries.forEach((entry: IntersectionObserverEntry) => {
-            returnToTopButton.style.visibility = entry.isIntersecting ? "hidden" : "visible";
+            returnToTopButton.style.visibility = entry.isIntersecting
+                ? "hidden"
+                : "visible";
             returnToTopButton.style.opacity = entry.isIntersecting ? "0" : "1";
         });
     };
 
     const options: IntersectionObserverInit = {
         root: null,
-        rootMargin: '20px',
+        rootMargin: "20px",
         threshold: 1.0
     };
 

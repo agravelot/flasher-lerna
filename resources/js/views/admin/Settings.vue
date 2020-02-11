@@ -9,9 +9,8 @@
         </div>
         <div class="card-content">
           <b-button
-            type="is-danger"
-            @click="clearCache"
-          >
+type="is-danger"
+@click="clearCache">
             Clear cache
           </b-button>
         </div>
@@ -26,9 +25,8 @@
         </div>
         <div class="card-content">
           <div
-            v-for="(setting, index) in settings"
-            :key="index"
-          >
+v-for="(setting, index) in settings"
+:key="index">
             <b-field :label="setting.title">
               <b-numberinput
                 v-if="setting.type === 'numeric'"
@@ -62,12 +60,11 @@
                   v-if="setting.value"
                   :src="setting.value.url"
                   :alt="setting.value.name"
-                >
+                />
 
                 <div
-                  v-if="setting.value"
-                  class="tags"
-                >
+v-if="setting.value"
+class="tags">
                   <span class="tag is-primary">
                     {{ setting.value.name }}
                     <button
@@ -85,10 +82,8 @@
                 maxlength="30"
               />
               <b-input
-                v-else
-                v-model="setting.value"
-                expanded
-              />
+v-else
+v-model="setting.value" expanded />
             </b-field>
             <div class="control">
               <button
@@ -107,14 +102,14 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import Buefy from '../../admin/Buefy.vue';
-import 'quill/dist/quill.core.css';
-import 'quill/dist/quill.snow.css';
-import 'quill/dist/quill.bubble.css';
-import { quillEditor } from 'vue-quill-editor';
-import vue2Dropzone from 'vue2-dropzone';
-import {showError, showSuccess} from "../../admin/toast";
+import Component from "vue-class-component";
+import Buefy from "../../admin/Buefy.vue";
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+import { quillEditor } from "vue-quill-editor";
+import vue2Dropzone from "vue2-dropzone";
+import { showError, showSuccess } from "../../admin/toast";
 
 class Setting {
     public id: number;
@@ -124,11 +119,11 @@ class Setting {
 }
 
 @Component({
-    name: 'Settings',
+    name: "Settings",
     components: {
         quillEditor,
-        vueDropzone: vue2Dropzone,
-    },
+        vueDropzone: vue2Dropzone
+    }
 })
 export default class Settings extends Buefy {
     private loading = false;
@@ -142,7 +137,7 @@ export default class Settings extends Buefy {
             parallelUploads: 5,
             // Setup chunking
             chunking: true,
-            method: 'POST',
+            method: "POST",
             maxFilesize: 400000000,
             chunkSize: 1000000,
             retryChunks: true,
@@ -150,18 +145,18 @@ export default class Settings extends Buefy {
             maxThumbnailFilesize: 25,
             // If true, the individual chunks of a file are being uploaded simultaneously.
             // parallelChunkUploads: true,
-            acceptedFiles: 'image/*',
+            acceptedFiles: "image/*",
             dictDefaultMessage: "<i class='fas fa-images'></i> Upload",
             headers: {
-                'X-CSRF-Token': (
-                    document.head.querySelector('meta[name="csrf-token"]') as HTMLMetaElement
-                ).content,
-            },
+                "X-CSRF-Token": (document.head.querySelector(
+                    'meta[name="csrf-token"]'
+                ) as HTMLMetaElement).content
+            }
         };
     }
 
     sendingEvent(file: File, xhr: XMLHttpRequest, formData: FormData): void {
-        formData.append('_method', 'patch');
+        formData.append("_method", "patch");
     }
 
     created(): void {
@@ -174,16 +169,20 @@ export default class Settings extends Buefy {
         this.axios
             .patch(`/api/admin/settings/${setting.id}`, {
                 value: setting.value,
-                test: 'test',
+                test: "test"
             })
             .then(res => res.data)
             .then(() => {
                 this.loading = false;
-                showSuccess(this.$buefy,'Setting updated');
+                showSuccess(this.$buefy, "Setting updated");
             })
             .catch(err => {
                 this.loading = false;
-                showError(this.$buefy,'Unable to save setting, maybe you are offline?', () => this.sendSetting(setting));
+                showError(
+                    this.$buefy,
+                    "Unable to save setting, maybe you are offline?",
+                    () => this.sendSetting(setting)
+                );
                 throw err;
             });
     }
@@ -192,7 +191,7 @@ export default class Settings extends Buefy {
         this.loading = true;
 
         this.axios
-            .get('/api/admin/settings')
+            .get("/api/admin/settings")
             .then(res => res.data)
             .then(res => {
                 this.settings = res.data;
@@ -201,7 +200,11 @@ export default class Settings extends Buefy {
             .catch(err => {
                 this.settings = [];
                 this.loading = false;
-                showError(this.$buefy,'Unable to load settings, maybe you are offline?', this.fetchSettings);
+                showError(
+                    this.$buefy,
+                    "Unable to load settings, maybe you are offline?",
+                    this.fetchSettings
+                );
                 throw err;
             });
     }
@@ -210,16 +213,16 @@ export default class Settings extends Buefy {
         this.loading = true;
 
         this.axios
-            .get('/api/admin/clear-cache')
+            .get("/api/admin/clear-cache")
             .then(res => res.data)
             .then(() => {
-              this.loading = false;
-              showSuccess(this.$buefy, 'Cache successfully cleared!')
+                this.loading = false;
+                showSuccess(this.$buefy, "Cache successfully cleared!");
             })
             .catch(err => {
-              this.loading = false;
-              showError(this.$buefy,'Unable to clear cache');
-              throw err;
+                this.loading = false;
+                showError(this.$buefy, "Unable to clear cache");
+                throw err;
             });
     }
 }

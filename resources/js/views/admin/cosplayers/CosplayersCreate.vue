@@ -25,10 +25,8 @@
         <div class="column">
           <div v-if="cosplayer.avatar">
             <label class="label">Current avatar</label>
-            <img
-              :src="cosplayer.avatar.thumb"
-              alt=""
-            >
+            <img :src="cosplayer.avatar.thumb"
+alt="" >
             <b-button
               type="is-danger"
               icon-right="trash-alt"
@@ -43,18 +41,18 @@
             label="Upload avatar"
           >
             <b-upload
-              v-model="cosplayer.avatar"
-              drag-drop
-            >
+v-model="cosplayer.avatar"
+drag-drop>
               <section class="section">
                 <div class="content has-text-centered">
                   <p>
                     <b-icon
-                      icon="upload"
-                      size="is-large"
-                    />
+icon="upload"
+size="is-large" />
                   </p>
-                  <p>Drop your files here or click to upload</p>
+                  <p>
+                    Drop your files here or click to upload
+                  </p>
                   <span
                     v-if="cosplayer.avatar"
                     class="file-name"
@@ -85,7 +83,7 @@
               <template slot-scope="props">
                 <div>
                   {{ props.option.name }}
-                  <br>
+                  <br >
                   <small>
                     Email: {{ props.option.email }}, role
                     <b>{{ props.option.role }}</b>
@@ -109,21 +107,21 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import Buefy from '../../../admin/Buefy.vue';
-import Cosplayer from '../../../models/cosplayer';
-import 'quill/dist/quill.core.css';
-import 'quill/dist/quill.snow.css';
-import 'quill/dist/quill.bubble.css';
-import { quillEditor } from 'vue-quill-editor';
-import User from '../../../models/user';
-import {showError, showSuccess} from "../../../admin/toast";
+import Component from "vue-class-component";
+import Buefy from "../../../admin/Buefy.vue";
+import Cosplayer from "../../../models/cosplayer";
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+import { quillEditor } from "vue-quill-editor";
+import User from "../../../models/user";
+import { showError, showSuccess } from "../../../admin/toast";
 
 @Component({
-    name: 'CosplayersCreate',
+    name: "CosplayersCreate",
     components: {
-        quillEditor,
-    },
+        quillEditor
+    }
 })
 export default class CosplayersCreate extends Buefy {
     private cosplayer: Cosplayer = new Cosplayer();
@@ -132,8 +130,8 @@ export default class CosplayersCreate extends Buefy {
     protected errors: object = {};
 
     protected editorOption: object = {
-        placeholder: 'Enter your description...',
-        theme: 'snow',
+        placeholder: "Enter your description...",
+        theme: "snow"
     };
 
     created(): void {
@@ -146,18 +144,18 @@ export default class CosplayersCreate extends Buefy {
         const formData: FormData = this.cosplayerToFormData(this.cosplayer);
         this.axios
             .post(`/api/admin/cosplayers`, formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
+                headers: { "Content-Type": "multipart/form-data" }
             })
             .then(res => res.data)
             .then(() => {
                 this.errors = {};
                 this.loading = false;
-                showSuccess(this.$buefy,'Cosplayer created');
-                this.$router.push({ name: 'admin.cosplayers.index' });
+                showSuccess(this.$buefy, "Cosplayer created");
+                this.$router.push({ name: "admin.cosplayers.index" });
             })
             .catch(err => {
                 this.loading = false;
-                showError(this.$buefy,'Unable to create cosplayer');
+                showError(this.$buefy, "Unable to create cosplayer");
                 this.errors = err.response.data.errors;
                 throw err;
             });
@@ -165,13 +163,18 @@ export default class CosplayersCreate extends Buefy {
 
     searchUser(): void {
         this.axios
-            .get('/api/admin/users', { params: { 'filter[name]': this.cosplayer.user.id } })
+            .get("/api/admin/users", {
+                params: { "filter[name]": this.cosplayer.user.id }
+            })
             .then(res => res.data)
             .then(res => {
                 this.searchUsers = res.data;
             })
             .catch(err => {
-                showError(this.$buefy,'Unable to load users, maybe you are offline?');
+                showError(
+                    this.$buefy,
+                    "Unable to load users, maybe you are offline?"
+                );
                 throw err;
             });
     }
@@ -180,16 +183,16 @@ export default class CosplayersCreate extends Buefy {
         const formData = new FormData();
         //TODO Rewrite
         if (cosplayer.name) {
-            formData.append('name', cosplayer.name);
+            formData.append("name", cosplayer.name);
         }
         if (cosplayer.description) {
-            formData.append('description', cosplayer.description);
+            formData.append("description", cosplayer.description);
         }
         if (cosplayer.user && cosplayer.user.id) {
-            formData.append('user.id', String(cosplayer.user.id));
+            formData.append("user.id", String(cosplayer.user.id));
         }
         if (cosplayer.avatar != null) {
-            formData.append('avatar', cosplayer.avatar);
+            formData.append("avatar", cosplayer.avatar);
         }
 
         return formData;

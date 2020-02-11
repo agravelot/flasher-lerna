@@ -1,1 +1,1 @@
-declare module 'vuedraggable';
+declare module "vuedraggable";

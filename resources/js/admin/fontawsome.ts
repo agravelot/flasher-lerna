@@ -1,7 +1,11 @@
-import Vue from 'vue';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faBell, faEdit, faStickyNote } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import Vue from "vue";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+    faBell,
+    faEdit,
+    faStickyNote
+} from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
     faAngleDown,
     faAngleLeft,
@@ -39,58 +43,61 @@ import {
     faShare,
     faEnvelopeOpenText,
     faClock,
-    faTimes,
-} from '@fortawesome/free-solid-svg-icons';
+    faTimes
+} from "@fortawesome/free-solid-svg-icons";
 import {
-  faFacebook, faInstagram, faLinkedin, faTwitter,
-} from '@fortawesome/free-brands-svg-icons';
+    faFacebook,
+    faInstagram,
+    faLinkedin,
+    faTwitter
+} from "@fortawesome/free-brands-svg-icons";
 
 library.add(
-  faImages,
-  faTags,
-  faUserTag,
-  faPenFancy,
-  faBook,
-  faTachometerAlt,
-  faTasks,
-  faChevronCircleLeft,
-  faAngleDown,
-  faCheck,
-  faSearch,
-  faPlus,
-  faLock,
-  faTrashAlt,
-  faExternalLinkAlt,
-  faUpload,
-  faSignInAlt,
-  faAngleRight,
-  faAngleLeft,
-  faArrowUp,
-  faTag,
-  faInfo,
-  faCog,
-  faExclamationCircle,
-  faBell,
-  faStickyNote,
-  faEdit,
-  faLink,
-  faEye,
-  faDownload,
-  faEnvelope,
-  faHeart,
-  faHome,
-  faKey,
-  faSadTear,
-  faUser,
-  faShare,
-  faInstagram,
-  faTwitter,
-  faFacebook,
-  faLinkedin,
-  faEnvelopeOpenText,
-  faCheck,
-  faClock,
-  faTimes
+    faImages,
+    faTags,
+    faUserTag,
+    faPenFancy,
+    faBook,
+    faTachometerAlt,
+    faTasks,
+    faChevronCircleLeft,
+    faAngleDown,
+    faCheck,
+    faSearch,
+    faPlus,
+    faLock,
+    faTrashAlt,
+    faExternalLinkAlt,
+    faUpload,
+    faSignInAlt,
+    faAngleRight,
+    faAngleLeft,
+    faArrowUp,
+    faTag,
+    faInfo,
+    faCog,
+    faExclamationCircle,
+    faBell,
+    faStickyNote,
+    faEdit,
+    faLink,
+    faEye,
+    faDownload,
+    faEnvelope,
+    faHeart,
+    faHome,
+    faKey,
+    faSadTear,
+    faUser,
+    faShare,
+    faInstagram,
+    faTwitter,
+    faFacebook,
+    faLinkedin,
+    faEnvelopeOpenText,
+    faCheck,
+    faClock,
+    faTimes
 );
 
-Vue.component('vue-fontawesome', FontAwesomeIcon);
+Vue.component("vue-fontawesome", FontAwesomeIcon);

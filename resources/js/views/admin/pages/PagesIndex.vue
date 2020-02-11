@@ -59,12 +59,13 @@
       >
         <template slot-scope="page">
           <b-table-column
-            field="name"
-            label="Name"
-            sortable
-          >
+field="name"
+label="Name" sortable>
             <router-link
-              :to="{ name: 'admin.pages.edit', params: { slug: page.row.slug } }"
+              :to="{
+                name: 'admin.pages.edit',
+                params: { slug: page.row.slug }
+              }"
             >
               {{ page.row.name }}
             </router-link>
@@ -76,9 +77,8 @@
             <div class="content has-text-grey has-text-centered">
               <p>
                 <b-icon
-                  icon="sad-tear"
-                  size="is-large"
-                />
+icon="sad-tear"
+size="is-large" />
               </p>
               <p>Nothing here.</p>
             </div>
@@ -95,21 +95,23 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import Buefy from '../../../admin/Buefy.vue';
-import Page from '../../../models/page';
-import {showError, showSuccess} from "../../../admin/toast";
+import Component from "vue-class-component";
+import Buefy from "../../../admin/Buefy.vue";
+import Page from "../../../models/page";
+import { showError, showSuccess } from "../../../admin/toast";
 
 @Component({
-    name: 'Core.Resources.assets.js.components.pages.PagesIndex',
+    name: "Core.Resources.assets.js.components.pages.PagesIndex",
     filters: {
         /**
          * Filter to truncate string, accepts a length parameter
          */
         truncate(value: string, length: number): string {
-            return value.length > length ? value.substr(0, length) + '...' : value;
-        },
-    },
+            return value.length > length
+                ? value.substr(0, length) + "..."
+                : value;
+        }
+    }
 })
 export default class PagesIndex extends Buefy {
     private pages: Array<Page> = [];
@@ -118,11 +120,11 @@ export default class PagesIndex extends Buefy {
     private page = 1;
     perPage = 10;
     private loading = false;
-    private sortField = 'id';
-    private sortOrder = 'desc';
+    private sortField = "id";
+    private sortOrder = "desc";
     showDetailIcon = true;
-    defaultSortOrder = 'desc';
-    private search = '';
+    defaultSortOrder = "desc";
+    private search = "";
 
     created(): void {
         this.fetchPages();
@@ -130,15 +132,15 @@ export default class PagesIndex extends Buefy {
 
     fetchPages(): void {
         this.loading = true;
-        const sortOrder = this.sortOrder === 'asc' ? '' : '-';
+        const sortOrder = this.sortOrder === "asc" ? "" : "-";
 
         this.axios
-            .get('/api/admin/pages', {
+            .get("/api/admin/pages", {
                 params: {
                     page: this.page,
                     sort: sortOrder + this.sortField,
-                    'filter[name]': this.search,
-                },
+                    "filter[name]": this.search
+                }
             })
             .then(res => res.data)
             .then(res => {
@@ -151,7 +153,11 @@ export default class PagesIndex extends Buefy {
                 this.pages = [];
                 this.total = 0;
                 this.loading = false;
-                showError(this.$buefy,'Unable to load pages, maybe you are offline?', this.fetchPages);
+                showError(
+                    this.$buefy,
+                    "Unable to load pages, maybe you are offline?",
+                    this.fetchPages
+                );
                 throw err;
             });
     }
@@ -175,15 +181,15 @@ export default class PagesIndex extends Buefy {
 
     confirmDeleteSelectedPages(): void {
         this.$buefy.dialog.confirm({
-            title: 'Deleting Pages',
+            title: "Deleting Pages",
             message:
-                'Are you sure you want to <b>delete</b> these pages? This action cannot be undone.',
-            confirmText: 'Delete Pages',
-            type: 'is-danger',
+                "Are you sure you want to <b>delete</b> these pages? This action cannot be undone.",
+            confirmText: "Delete Pages",
+            type: "is-danger",
             hasIcon: true,
             onConfirm: () => {
                 this.deleteSelectedPages();
-            },
+            }
         });
     }
 
@@ -195,11 +201,14 @@ export default class PagesIndex extends Buefy {
             this.axios
                 .delete(`/api/admin/pages/${page.id}`)
                 .then(() => {
-                    showSuccess(this.$buefy,'Pages deleted');
+                    showSuccess(this.$buefy, "Pages deleted");
                     this.fetchPages();
                 })
                 .catch(err => {
-                    showError(this.$buefy,`Unable to delete page <br> <small>${err.message}</small>`);
+                    showError(
+                        this.$buefy,
+                        `Unable to delete page <br> <small>${err.message}</small>`
+                    );
                     throw err;
                 });
         });

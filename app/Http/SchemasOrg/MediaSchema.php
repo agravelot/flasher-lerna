@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Schemas;
+namespace App\Http\SchemasOrg;
 
 use App\Models\Media;
 use Spatie\SchemaOrg\Person;
@@ -8,10 +8,7 @@ use Spatie\SchemaOrg\Schema;
 
 class MediaSchema implements SchemaInterface
 {
-    /**
-     * @var Media
-     */
-    private $media;
+    private Media $media;
 
     public function __construct(Media $media)
     {
