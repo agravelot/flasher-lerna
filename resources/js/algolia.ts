@@ -18,7 +18,7 @@ const suggestion = (suggestion): string => {
     }
 
     const thumb = suggestion.thumb
-        ? `<img src="${suggestion.thumb}" alt="${suggestion.title}"/>`
+        ? `<img loading="lazy" src="${suggestion.thumb}" alt="${suggestion.title}"/>`
         : "";
     return `<figure class="image is-hidden-mobile">
                 ${thumb}
@@ -43,8 +43,9 @@ autocomplete(
         debug: false,
         templates: {
             footer:
-                '<div class="is-pulled-right has-padding-right-sm"><img ' +
-                'class="image is-16x16" ' +
+                '<div class="is-pulled-right has-padding-right-sm">' +
+                '<img class="image is-16x16" ' +
+                'loading="lazy"' +
                 'src="https://www.algolia.com/gatsby-images/shared/algolia_logo/algolia-blue-mark.svg" ' +
                 'alt="Algolia logo"/></div>'
         }
