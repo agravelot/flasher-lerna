@@ -37,7 +37,7 @@
             <meta property="og:image:type" content="{{ $image->mime_type }}"/>
             <meta property="og:image:width" content="{{ $image->width }}"/>
             <meta property="og:image:height" content="{{ $image->height }}"/>
-            <meta property="og:image:alt" content="{{ $image->name }}"/>
+            <meta property="og:image:alt" content="{{ $openGraph->title() }}"/>
         @endforeach
     @endif
 @stop

@@ -18,7 +18,7 @@ class AlbumSchema implements SchemaInterface
     public function __toString(): string
     {
         $schema = Schema::imageGallery()
-            ->name($this->album->name)
+            ->name($this->album->title)
             ->keywords($this->album->categories->pluck('name')->toArray())
             ->isAccessibleForFree(true)
             ->primaryImageOfPage(optional($this->album->cover)->getUrl())
