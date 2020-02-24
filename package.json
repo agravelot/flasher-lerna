@@ -47,7 +47,7 @@
         "algoliasearch": "3.35.1",
         "autocomplete.js": "^0.37.1",
         "axios": "^0.19.2",
-        "buefy": "^0.8.10",
+        "buefy": "^0.8.12",
         "bulma": "^0.8.*",
         "bulma-extensions": "^6.2.1",
         "bulma-modal-fx": "^1.1.1",
