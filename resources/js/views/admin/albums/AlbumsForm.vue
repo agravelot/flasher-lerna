@@ -260,7 +260,7 @@ interface AlbumErrorsInterface {
 }
 
 @Component({
-    name: "AlbumsForm.vue",
+    name: 'AlbumsForm.vue',
     components: {
         vueDropzone: vue2Dropzone,
         quillEditor,
@@ -326,7 +326,7 @@ export default class AlbumsForm extends Buefy {
         }
     }
 
-    sendOrCreateAlbum(): void {
+    updateOrCreateAlbum(): void {
         this.loading = true;
 
         if (this.isCreating) {
