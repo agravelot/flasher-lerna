@@ -2,9 +2,14 @@
 
 namespace App\Models;
 
+use App\RegisteredResponsiveImages;
 use Spatie\MediaLibrary\Models\Media as MediaBase;
+use Spatie\MediaLibrary\ResponsiveImages\RegisteredResponsiveImages as RegisteredResponsiveImagesBase;
 
 class Media extends MediaBase
 {
-    //use ClearsResponseCache;
+    public function responsiveImages(string $conversionName = ''): RegisteredResponsiveImagesBase
+    {
+        return new RegisteredResponsiveImages($this, $conversionName);
+    }
 }
