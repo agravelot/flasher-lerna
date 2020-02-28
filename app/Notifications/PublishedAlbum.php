@@ -43,10 +43,9 @@ class PublishedAlbum extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line(__('A new album in which you appear has been published.'))
-                    ->action(__('Show album'), url(route('albums.show', $this->album)))
-                    ->line(__('If this album is not accessible, make sure to authenticate to your account.'))
-                    ->action(__('Login'), url(route('login')));
+                    ->line(__('New photos of you have just been published.'))
+                    ->action(__('Show my pictures'), url(route('albums.show', ['album', $this->album])))
+                    ->line(__('If this album is not accessible, make sure to authenticate to your account.'));
     }
 
     /**

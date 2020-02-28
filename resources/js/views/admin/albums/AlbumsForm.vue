@@ -15,7 +15,7 @@
             label="Album"
             icon="info"
           >
-            <form @submit.prevent="sendOrCreateAlbum">
+            <form @submit.prevent="updateOrCreateAlbum">
               <b-field
                 :type="errors.title ? 'is-danger' : ''"
                 :message="errors.title ? errors.title[0] : null"
