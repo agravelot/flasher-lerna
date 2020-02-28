@@ -16,6 +16,9 @@ class ResponsiveImageGenerator extends ResponsiveImageGeneratorBase
         int $targetWidth,
         BaseTemporaryDirectory $temporaryDirectory
     ) {
-        ResponsiveImage::register($media, $media->file_name, $conversionName);
+        $responsiveImagePath = $this->appendToFileName($media->file_name, "___{$conversionName}_{$targetWidth}");
+        $finalImageFileName = $this->appendToFileName($responsiveImagePath, '_NONE');
+
+        ResponsiveImage::register($media, $finalImageFileName, $conversionName);
     }
 }
