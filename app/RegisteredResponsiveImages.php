@@ -1,15 +1,12 @@
 <?php
 
-
 namespace App;
-
 
 use Spatie\MediaLibrary\ResponsiveImages\RegisteredResponsiveImages as RegisteredResponsiveImagesBase;
 use Spatie\MediaLibrary\ResponsiveImages\ResponsiveImage;
 
 class RegisteredResponsiveImages extends RegisteredResponsiveImagesBase
 {
-
     public function getSrcset(): string
     {
         $url = config('medialibrary.s3.domain');
