@@ -10,7 +10,6 @@ class RegisteredResponsiveImages extends RegisteredResponsiveImagesBase
     public function getSrcset(): string
     {
         $url = config('medialibrary.s3.domain');
-        //$url = '';
 
         $filesSrcset = $this->files
             ->map(function (ResponsiveImage $responsiveImage) use ($url) {
