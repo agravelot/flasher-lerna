@@ -1,5 +1,5 @@
 @if ($cosplayer->avatar)
-    <figure class="is-centered image">
+    <figure class="is-centered image is-64x64">
         {{ $cosplayer->getFirstMedia('avatar')('thumb', ['class' => 'is-rounded']) }}
     </figure>
 @else
