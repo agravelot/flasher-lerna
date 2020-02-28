@@ -75,7 +75,7 @@ return [
             'secret' => env('S3_SECRET_ACCESS_KEY'),
             'region' => env('S3_DEFAULT_REGION'),
             'bucket' => env('S3_BUCKET'),
-            'endpoint' => env('S3_ENDPOINT'),
+            //'endpoint' => env('S3_ENDPOINT'),
             'root' => config('app.env'),
         ],
     ],
