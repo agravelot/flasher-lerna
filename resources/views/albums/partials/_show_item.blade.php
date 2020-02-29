@@ -33,7 +33,9 @@
             </div>
         </div>
 
-        @include('layouts.partials._share_socials')
+        <div class="has-text-right">
+            @include('layouts.partials._share_socials')
+        </div>
 
             @if(Gate::check('download', $album) || Gate::check('update', $album))
                 <div class="columns is-mobile is-centered">

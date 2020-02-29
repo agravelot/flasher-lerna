@@ -1,6 +1,6 @@
 //Variables
 $search-icon-size: 16px;
-$search-component-width: 200px;
+$search-component-width: 300px;
 $highlight-color: #CCCCCC;
 $light-grey: #f1f1f1;
 $grey: #e4e4e4;
@@ -35,7 +35,12 @@ $text-color: white;
             width: 0;
         }
 
+        &:not(:focus) {
+            display: none;
+        }
+
         &:focus {
+            display: block;
             outline: 0;
             @media only screen and (max-width: 450px) {
                 width: 70vw;
