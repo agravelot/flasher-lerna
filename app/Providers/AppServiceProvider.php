@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\ResponsiveImageGenerator as CustomResponsiveImageGenerator;
 use App\SettingsManager;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
+use Spatie\MediaLibrary\ResponsiveImages\ResponsiveImageGenerator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('App\SettingManager', static function () {
             return new SettingsManager();
         });
+
+        if (config('app.new_conversions', false)) {
+            $this->app->bind(ResponsiveImageGenerator::class, CustomResponsiveImageGenerator::class);
+        }
     }
 
     /**
