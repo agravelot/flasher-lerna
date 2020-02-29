@@ -1,5 +1,5 @@
 <div class="has-background-black">
-    <div class="container">
+    <div class="container has-padding-top-sm">
 
         <div class="columns is-mobile is-gapless">
             <div class="column is-narrow">
@@ -13,13 +13,13 @@
                     <span aria-hidden="true"></span>
                 </button>
             </div>
-            <div class="column is-narrow">
+            <div class="column is-narrow has-margin-md">
                 @include('layouts.partials._navbar_socials', ['class' => 'button is-black'])
             </div>
 
             <div class="column">
                 <nav class="content has-text-centered is-hidden-mobile" id="navbar">
-                    <div class="columns is-centered">
+                    <div class="columns is-centered is-variable is-2-tablet">
                         <div class="column is-narrow is-hidden-on-search">
                             <a class="button is-black is-uppercase {{ Request::is('/') ? 'is-active' : '' }}"
                                href="{{ url('/') }}">
