@@ -12,7 +12,7 @@
             </div>
         @endif
 
-        <div class="columns is-mobile is-vcentered has-margin-top-md has-margin-bottom-md is-gapless">
+        <div class="columns is-mobile is-vcentered has-margin-top-md has-margin-bottom-md">
             @php
                 $profilePicture = settings()->get('profile_picture_homepage');
             @endphp
@@ -33,7 +33,9 @@
             </div>
         </div>
 
-        @include('layouts.partials._share_socials')
+        <div class="has-text-right">
+            @include('layouts.partials._share_socials')
+        </div>
 
             @if(Gate::check('download', $album) || Gate::check('update', $album))
                 <div class="columns is-mobile is-centered">
