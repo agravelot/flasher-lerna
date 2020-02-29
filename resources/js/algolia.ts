@@ -115,6 +115,7 @@ Array.from(searchInput || []).forEach((input: HTMLElement) => {
         });
     });
     input.addEventListener("blur", () => {
+        input.style.display = 'none'; // Hack to override inline css added by autocomplete.js
         Array.from(elementsToHideOnSearch || []).forEach((el: HTMLElement) => {
             el.style.display = "block";
         });
