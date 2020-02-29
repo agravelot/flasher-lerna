@@ -111,13 +111,14 @@ const elementsToHideOnSearch = document.getElementsByClassName(
 Array.from(searchInput || []).forEach((input: HTMLElement) => {
     input.addEventListener("focus", () => {
         Array.from(elementsToHideOnSearch || []).forEach((el: HTMLElement) => {
-            el.style.display = "none";
+            el.classList.add("is-hidden")
+
         });
     });
     input.addEventListener("blur", () => {
         input.style.display = 'none'; // Hack to override inline css added by autocomplete.js
         Array.from(elementsToHideOnSearch || []).forEach((el: HTMLElement) => {
-            el.style.display = "block";
+            el.classList.remove("is-hidden")
         });
     });
 });
