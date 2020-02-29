@@ -5,9 +5,11 @@
 @section('seo_description', (new App\Http\OpenGraphs\AlbumOpenGraph($album))->description())
 
 @section('content')
-    <div class="hero is-black is-radiusless">
-        <div class="hero-body"></div>
-    </div>
+    @if ($album->body)
+        <div class="hero is-black is-radiusless">
+            <div class="hero-body"></div>
+        </div>
+    @endif
     <section class="section">
         <div class="container">
             @include('albums.partials._show_item', compact('album'))
