@@ -12,7 +12,7 @@
             </div>
         @endif
 
-        <div class="columns is-mobile is-vcentered has-margin-top-md has-margin-bottom-md">
+        <div class="columns is-mobile is-vcentered has-margin-top-md has-margin-bottom-md is-gapless">
             @php
                 $profilePicture = settings()->get('profile_picture_homepage');
             @endphp

@@ -1,8 +1,8 @@
 <div class="has-background-black">
     <div class="container">
 
-        <div class="level is-mobile">
-            <div class="level-left">
+        <div class="columns is-mobile is-gapless">
+            <div class="column is-narrow">
                 <button role="button"
                         class="navbar-burger is-hidden-tablet has-text-white"
                         aria-label="menu"
@@ -12,10 +12,12 @@
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                 </button>
+            </div>
+            <div class="column is-narrow">
                 @include('layouts.partials._navbar_socials', ['class' => 'button is-black'])
             </div>
 
-            <div class="level-item">
+            <div class="column">
                 <nav class="content has-text-centered is-hidden-mobile" id="navbar">
                     <div class="columns is-centered">
                         <div class="column is-narrow is-hidden-on-search">
@@ -65,19 +67,27 @@
                                href="{{ route('contact.index') }}">{{ __('Contact') }}</a>
                         </div>
                         <div class="column is-narrow">
-                            @include('layouts.partials._search')
-                            <button class="button is-black">
-                            <span class="icon has-text-white"
-                                  onclick="document.getElementById('aa-search-input').style.display = 'block';document.getElementById('aa-search-input').select()">
-                                @fa('search')
-                            </span>
-                            </button>
+                            <div class="columns is-mobile is-vcentered is-centered is-gapless"
+                                 onclick="document.getElementById('aa-search-input').style.display = 'block';document.getElementById('aa-search-input').select()">
+                                <div class="column is-narrow">
+                                    @include('layouts.partials._search')
+                                </div>
+                                <div class="column is-narrow">
+                                    <button class="button is-black">
+                                        <span class="is-uppercase is-hidden-tablet is-hidden-on-search  ">{{ __('Search') }}</span>
+                                        <span class="icon has-text-white">
+                                            @fa('search')
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </nav>
             </div>
 
-            <div class="level-right">
+            <div class="column is-narrow has-margin-sm">
                 @auth()
                     <div class="dropdown is-right is-boxed is-hoverable">
                         <div class="dropdown-trigger">
