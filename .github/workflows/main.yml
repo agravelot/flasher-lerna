@@ -9,7 +9,7 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - name: Define env
       run: |
@@ -167,38 +167,38 @@ jobs:
         chmod +x docker/*.sh
         bash -c 'cd docker/ && ./deploy.sh staging'
 
-    - name: Setup Lighthouse folder
-      run: mkdir /tmp/artifacts
-      if: github.ref == 'refs/heads/develop'
-
-    - name: Run Lighthouse
-      if: github.ref == 'refs/heads/develop'
-      uses: foo-software/lighthouse-check-action@master
-      id: lighthouseCheck
-      with:
-        urls: '${{ secrets.APP_URL_STAGING }}, ${{ secrets.APP_URL_STAGING }}/albums'
-        author: ${{ github.actor }}
-        branch: ${{ github.ref }}
-        outputDirectory: /tmp/artifacts
-        sha: ${{ github.sha }}
-
-    - name: Handle Lighthouse Check results
-      if: github.ref == 'refs/heads/develop'
-      uses: foo-software/lighthouse-check-status-action@master
-      with:
-        lighthouseCheckResults: ${{ steps.lighthouseCheck.outputs.lighthouseCheckResults }}
-        minAccessibilityScore: "90"
-        minBestPracticesScore: "90"
-        minPerformanceScore: "60"
-        minProgressiveWebAppScore: "50"
-        minSeoScore: "90"
-
-    - name: Upload artifacts
-      if: github.ref == 'refs/heads/develop'
-      uses: actions/upload-artifact@master
-      with:
-        name: Lighthouse reports
-        path: /tmp/artifacts
+#    - name: Setup Lighthouse folder
+#      run: mkdir /tmp/artifacts
+#      if: github.ref == 'refs/heads/develop'
+#
+#    - name: Run Lighthouse
+#      if: github.ref == 'refs/heads/develop'
+#      uses: foo-software/lighthouse-check-action@master
+#      id: lighthouseCheck
+#      with:
+#        urls: '${{ secrets.APP_URL_STAGING }}, ${{ secrets.APP_URL_STAGING }}/albums'
+#        author: ${{ github.actor }}
+#        branch: ${{ github.ref }}
+#        outputDirectory: /tmp/artifacts
+#        sha: ${{ github.sha }}
+#
+#    - name: Handle Lighthouse Check results
+#      if: github.ref == 'refs/heads/develop'
+#      uses: foo-software/lighthouse-check-status-action@master
+#      with:
+#        lighthouseCheckResults: ${{ steps.lighthouseCheck.outputs.lighthouseCheckResults }}
+#        minAccessibilityScore: "90"
+#        minBestPracticesScore: "90"
+#        minPerformanceScore: "60"
+#        minProgressiveWebAppScore: "50"
+#        minSeoScore: "90"
+#
+#    - name: Upload artifacts
+#      if: github.ref == 'refs/heads/develop'
+#      uses: actions/upload-artifact@master
+#      with:
+#        name: Lighthouse reports
+#        path: /tmp/artifacts
 
     # PRODUCTION
 
@@ -247,35 +247,35 @@ jobs:
         chmod +x docker/*.sh
         bash -c 'cd docker/ && ./deploy.sh production'
 
-    - name: Setup Lighthouse folder
-      run: mkdir /tmp/artifacts
-      if: github.ref == 'refs/heads/master'
-
-    - name: Run Lighthouse
-      if: github.ref == 'refs/heads/master'
-      uses: foo-software/lighthouse-check-action@master
-      id: lighthouseCheckStaging
-      with:
-        urls: '${{ secrets.APP_URL_PRODUCTION }}, ${{ secrets.APP_URL_PRODUCTION }}/albums'
-        author: ${{ github.actor }}
-        branch: ${{ github.ref }}
-        outputDirectory: /tmp/artifacts
-        sha: ${{ github.sha }}
-
-    - name: Handle Lighthouse Check results
-      if: github.ref == 'refs/heads/master'
-      uses: foo-software/lighthouse-check-status-action@master
-      with:
-        lighthouseCheckResults: ${{ steps.lighthouseCheckStaging.outputs.lighthouseCheckResults }}
-        minAccessibilityScore: "90"
-        minBestPracticesScore: "90"
-        minPerformanceScore: "60"
-        minProgressiveWebAppScore: "50"
-        minSeoScore: "90"
-
-    - name: Upload artifacts
-      if: github.ref == 'refs/heads/master'
-      uses: actions/upload-artifact@master
-      with:
-        name: Lighthouse reports
-        path: /tmp/artifacts
+#    - name: Setup Lighthouse folder
+#      run: mkdir /tmp/artifacts
+#      if: github.ref == 'refs/heads/master'
+#
+#    - name: Run Lighthouse
+#      if: github.ref == 'refs/heads/master'
+#      uses: foo-software/lighthouse-check-action@master
+#      id: lighthouseCheckStaging
+#      with:
+#        urls: '${{ secrets.APP_URL_PRODUCTION }}, ${{ secrets.APP_URL_PRODUCTION }}/albums'
+#        author: ${{ github.actor }}
+#        branch: ${{ github.ref }}
+#        outputDirectory: /tmp/artifacts
+#        sha: ${{ github.sha }}
+#
+#    - name: Handle Lighthouse Check results
+#      if: github.ref == 'refs/heads/master'
+#      uses: foo-software/lighthouse-check-status-action@master
+#      with:
+#        lighthouseCheckResults: ${{ steps.lighthouseCheckStaging.outputs.lighthouseCheckResults }}
+#        minAccessibilityScore: "90"
+#        minBestPracticesScore: "90"
+#        minPerformanceScore: "60"
+#        minProgressiveWebAppScore: "50"
+#        minSeoScore: "90"
+#
+#    - name: Upload artifacts
+#      if: github.ref == 'refs/heads/master'
+#      uses: actions/upload-artifact@master
+#      with:
+#        name: Lighthouse reports
+#        path: /tmp/artifacts
