@@ -21,7 +21,9 @@ class AppServiceProvider extends ServiceProvider
             return new SettingsManager();
         });
 
-        $this->app->bind(ResponsiveImageGenerator::class, CustomResponsiveImageGenerator::class);
+        if (config('app.new_conversions', false)) {
+            $this->app->bind(ResponsiveImageGenerator::class, CustomResponsiveImageGenerator::class);
+        }
     }
 
     /**

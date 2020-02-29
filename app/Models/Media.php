@@ -10,6 +10,10 @@ class Media extends MediaBase
 {
     public function responsiveImages(string $conversionName = ''): RegisteredResponsiveImagesBase
     {
-        return new RegisteredResponsiveImages($this, $conversionName);
+        if (config('app.new_conversions', false)) {
+            return new RegisteredResponsiveImages($this, $conversionName);
+        }
+
+        return parent::responsiveImages($conversionName);
     }
 }
