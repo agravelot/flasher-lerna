@@ -9,11 +9,19 @@ class SignedCloudFrontUrlGenerator extends S3UrlGenerator
 {
     public function getUrl(): string
     {
+        if (!config('app.signed_medias_urls', false)) {
+            return parent::getUrl();
+        }
+
         return CloudFrontUrlSigner::sign(parent::getUrl(), 30);
     }
 
     public function getResponsiveImagesDirectoryUrl(): string
     {
+        if (!config('app.signed_medias_urls', false)) {
+            return parent::getResponsiveImagesDirectoryUrl();
+        }
+
         return CloudFrontUrlSigner::sign(parent::getResponsiveImagesDirectoryUrl(), 30);
     }
 }

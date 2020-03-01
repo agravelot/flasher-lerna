@@ -2,7 +2,7 @@
 
 return [
     'new_conversions' => true,
-    'signed_medias_urls' => true,
+    'signed_medias_urls' => env('ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL', true),
 
     /*
     |--------------------------------------------------------------------------
