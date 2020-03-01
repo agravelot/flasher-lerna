@@ -160,6 +160,7 @@ jobs:
         SCOUT_QUEUE: "true"
         ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
         ALGOLIA_SECRET: ${{ secrets.ALGOLIA_SECRET }}
+        ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL: ${{ secrets.ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL }}
         CLOUDFRONT_KEY_PAIR_ID: ${{ secrets.CLOUDFRONT_KEY_PAIR_ID }}
         CLOUDFRONT_PRIVATE_KEY: ${{ secrets.CLOUDFRONT_PRIVATE_KEY }}
       run: |
@@ -242,6 +243,7 @@ jobs:
         SCOUT_QUEUE: "true"
         ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
         ALGOLIA_SECRET: ${{ secrets.ALGOLIA_SECRET }}
+        ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL: ${{ secrets.ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL }}
         CLOUDFRONT_KEY_PAIR_ID: ${{ secrets.CLOUDFRONT_KEY_PAIR_ID }}
         CLOUDFRONT_PRIVATE_KEY: ${{ secrets.CLOUDFRONT_PRIVATE_KEY }}
       run: |
