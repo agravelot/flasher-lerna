@@ -104,9 +104,8 @@ autocomplete(
     });
 
 const searchInput = document.getElementsByClassName("aa-input-search");
-const elementsToHideOnSearch = document.getElementsByClassName(
-    "is-hidden-on-search"
-);
+const elementsToHideOnSearch = document.getElementsByClassName("is-hidden-on-search");
+const elementsToHideOnSearchOnTablet = document.getElementsByClassName("is-hidden-tablet-on-search");
 
 Array.from(searchInput || []).forEach((input: HTMLElement) => {
     input.addEventListener("focus", () => {
@@ -114,11 +113,17 @@ Array.from(searchInput || []).forEach((input: HTMLElement) => {
             el.classList.add("is-hidden")
 
         });
+        Array.from(elementsToHideOnSearchOnTablet || []).forEach((el: HTMLElement) => {
+            el.classList.add("is-hidden-touch")
+        });
     });
     input.addEventListener("blur", () => {
         input.style.display = 'none'; // Hack to override inline css added by autocomplete.js
         Array.from(elementsToHideOnSearch || []).forEach((el: HTMLElement) => {
             el.classList.remove("is-hidden")
+        });
+        Array.from(elementsToHideOnSearchOnTablet || []).forEach((el: HTMLElement) => {
+            el.classList.remove("is-hidden-touch")
         });
     });
 });

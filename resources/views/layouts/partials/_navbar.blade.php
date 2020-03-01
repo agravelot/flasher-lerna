@@ -2,18 +2,7 @@
     <div class="container has-padding-top-sm">
 
         <div class="columns is-mobile is-gapless">
-            <div class="column is-narrow">
-                <button role="button"
-                        class="navbar-burger is-hidden-tablet has-text-white"
-                        aria-label="menu"
-                        aria-expanded="false"
-                        data-target="navbar">
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                </button>
-            </div>
-            <div class="column is-narrow has-margin-md">
+            <div class="column is-narrow has-margin-md is-hidden-tablet-on-search">
                 @include('layouts.partials._navbar_socials', ['class' => 'button is-black'])
             </div>
 
@@ -138,6 +127,17 @@
                         </span>
                     </a>
                 @endauth
+            </div>
+            <div class="column is-narrow">
+                <button role="button"
+                        class="navbar-burger is-hidden-tablet has-text-white"
+                        aria-label="menu"
+                        aria-expanded="false"
+                        data-target="navbar">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </button>
             </div>
         </div>
     </div>
