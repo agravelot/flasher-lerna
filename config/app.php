@@ -1,7 +1,8 @@
 <?php
 
 return [
-    'new_conversions' => false,
+    'new_conversions' => true,
+    'signed_medias_urls' => true,
 
     /*
     |--------------------------------------------------------------------------

@@ -42,6 +42,8 @@ elif [[ "$role" == "publisher" ]]; then
   # php artisan telescope:publish
   php artisan horizon:assets
 
+  echo $CLOUDFRONT_PRIVATE_KEY > storage/trusted-signer.pem
+
 else
   echo "Could not match the container role \"$role\""
   exit 1
