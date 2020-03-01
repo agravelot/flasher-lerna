@@ -41,8 +41,7 @@ elif [[ "$role" == "publisher" ]]; then
   rm -rvf public/vendor/*
   # php artisan telescope:publish
   php artisan horizon:assets
-
-  echo $CLOUDFRONT_PRIVATE_KEY > storage/trusted-signer.pem
+  echo "$CLOUDFRONT_PRIVATE_KEY" | tr -d '\r' > storage/trusted-signer.pem
 
 else
   echo "Could not match the container role \"$role\""
