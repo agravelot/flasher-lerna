@@ -9,7 +9,7 @@ class SignedCloudFrontUrlGenerator extends S3UrlGenerator
 {
     public function getUrl(): string
     {
-        if (!config('app.signed_medias_urls', false)) {
+        if (! config('app.signed_medias_urls', false)) {
             return parent::getUrl();
         }
 
@@ -18,7 +18,7 @@ class SignedCloudFrontUrlGenerator extends S3UrlGenerator
 
     public function getResponsiveImagesDirectoryUrl(): string
     {
-        if (!config('app.signed_medias_urls', false)) {
+        if (! config('app.signed_medias_urls', false)) {
             return parent::getResponsiveImagesDirectoryUrl();
         }
 
