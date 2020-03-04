@@ -91,5 +91,6 @@ class Kernel extends HttpKernel
         'verified' => EnsureEmailIsVerified::class,
         'admin' => CheckAdmin::class,
         'doNotCacheResponse' => DoNotCacheResponse::class,
+        'cors' => Cors::class,
     ];
 }

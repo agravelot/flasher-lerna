@@ -20,6 +20,7 @@ use App\Policies\TestimonialsPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
@@ -49,6 +50,8 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('dashboard', 'App\Policies\AdminPolicy@dashboard');
 
-        Passport::routes();
+        Route::group(['middleware' => 'cors'], static function () {
+            Passport::routes();
+        });
     }
 }
