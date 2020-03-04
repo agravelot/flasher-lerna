@@ -92,6 +92,7 @@
   "extra": {
     "laravel": {
       "dont-discover": [
+          "Laravel\\Passport\\PassportServiceProvider"
       ]
     }
   },

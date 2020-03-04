@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\CustomAuthGrant;
 use App\Models\Album;
 use App\Models\Category;
 use App\Models\Contact;
@@ -22,7 +21,6 @@ use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Passport\Passport;
-use League\OAuth2\Server\Grant\AuthCodeGrant;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -52,9 +50,5 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('dashboard', 'App\Policies\AdminPolicy@dashboard');
 
         Passport::routes();
-
-        $this->app->extend(AuthCodeGrant::class, static function($service) {
-            return new CustomAuthGrant($service);
-        });
     }
 }
