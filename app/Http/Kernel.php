@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Http\Middleware\CacheResponse;
 use App\Http\Middleware\CheckAdmin;
 use App\Http\Middleware\CheckForMaintenanceMode;
+use App\Http\Middleware\Cors;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\TrimStrings;
@@ -67,6 +68,7 @@ class Kernel extends HttpKernel
         'api' => [
             //'throttle:60,1',
             'bindings',
+            Cors::class,
         ],
     ];
 
