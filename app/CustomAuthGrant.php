@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App;
-
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -14,7 +12,6 @@ class CustomAuthGrant extends AuthCodeGrant
     /**
      * Validate the client.
      *
-     * @param ServerRequestInterface $request
      *
      * @throws OAuthServerException
      *
