@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'new_conversions' => true,
-    'signed_medias_urls' => env('ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL', true),
+    'new_conversions' => false,
+    'signed_medias_urls' => env('ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL', false),
 
     /*
     |--------------------------------------------------------------------------
