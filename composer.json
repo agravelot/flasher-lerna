@@ -20,7 +20,9 @@
     "beyondcode/laravel-self-diagnosis": "^1.0",
     "cviebrock/eloquent-sluggable": "^6.0",
     "doctrine/dbal": "^2.9",
+    "dreamonkey/laravel-cloudfront-url-signer": "^2.2",
     "fideloper/proxy": "^4.0",
+    "fruitcake/laravel-cors": "^1.0",
     "intervention/imagecache": "^2.3",
     "ipunkt/laravel-analytics": "^2.0",
     "jerodev/laravel-font-awesome": "^2.0",
@@ -121,7 +123,10 @@
   "config": {
     "preferred-install": "dist",
     "sort-packages": true,
-    "optimize-autoloader": true
+    "optimize-autoloader": true,
+    "platform": {
+      "php": "7.4"
+    }
   },
   "minimum-stability": "dev",
   "prefer-stable": true

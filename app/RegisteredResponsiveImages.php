@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Dreamonkey\CloudFrontUrlSigner\Facades\CloudFrontUrlSigner;
 use Spatie\MediaLibrary\ResponsiveImages\RegisteredResponsiveImages as RegisteredResponsiveImagesBase;
 use Spatie\MediaLibrary\ResponsiveImages\ResponsiveImage;
 
@@ -19,7 +20,7 @@ class RegisteredResponsiveImages extends RegisteredResponsiveImagesBase
                 }
 
                 $encodedData = base64_encode(json_encode(
-                    $data = [
+                    [
                         'bucket' => 'assets.jkanda.fr',
                         'key' => $path,
                         'edits' => [
@@ -31,7 +32,13 @@ class RegisteredResponsiveImages extends RegisteredResponsiveImagesBase
                         ],
                     ]));
 
-                return "${url}/${encodedData} {$responsiveImage->width()}w";
+                $url = "${url}/${encodedData}";
+
+                if (config('app.signed_medias_urls', false)) {
+                    $url = CloudFrontUrlSigner::sign($url, 30);
+                }
+
+                return "${url} {$responsiveImage->width()}w";
             })
             ->implode(', ');
 

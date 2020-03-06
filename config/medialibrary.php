@@ -73,7 +73,7 @@ return [
      * When urls to files get generated, this class will be called. Leave empty
      * if your files are stored locally above the site root or on s3.
      */
-    'url_generator' => null,
+    'url_generator' => \App\SignedCloudFrontUrlGenerator::class,
 
     /*
      * Whether to activate versioning when urls to files get generated.

@@ -2,6 +2,14 @@
 
 return [
     'new_conversions' => false,
+    'signed_medias_urls' => env('ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL', false),
+
+    /*
+     |--------------------------------------------------------------------------
+     | Administration url to redirect the client.
+     |--------------------------------------------------------------------------
+     */
+    'admin_url' => env('ADMIN_URL'),
 
     /*
     |--------------------------------------------------------------------------
