@@ -13,7 +13,7 @@ require('laravel-mix-purgecss');
  |
  */
 mix.ts('resources/js/app.ts', 'public/js')
-    .ts('resources/js/admin/admin.ts', 'public/js')
+//    .ts('resources/js/admin/admin.ts', 'public/js')
 ;
 
 mix.sass('resources/sass/app.scss', 'public/css')
