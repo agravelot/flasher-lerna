@@ -163,6 +163,7 @@ jobs:
         ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL: ${{ secrets.ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL }}
         CLOUDFRONT_KEY_PAIR_ID: ${{ secrets.CLOUDFRONT_KEY_PAIR_ID }}
         CLOUDFRONT_PRIVATE_KEY: ${{ secrets.CLOUDFRONT_PRIVATE_KEY }}
+        ADMIN_URL: ${{ secrets.ADMIN_URL_STAGING }}
       run: |
         eval $(ssh-agent -s)
         mkdir -p ~/.ssh
@@ -246,6 +247,7 @@ jobs:
         ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL: ${{ secrets.ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL }}
         CLOUDFRONT_KEY_PAIR_ID: ${{ secrets.CLOUDFRONT_KEY_PAIR_ID }}
         CLOUDFRONT_PRIVATE_KEY: ${{ secrets.CLOUDFRONT_PRIVATE_KEY }}
+        ADMIN_URL: ${{ secrets.ADMIN_URL_PRODUCTION }}
       run: |
         eval $(ssh-agent -s)
         mkdir -p ~/.ssh
