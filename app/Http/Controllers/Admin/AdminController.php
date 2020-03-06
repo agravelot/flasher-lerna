@@ -16,6 +16,6 @@ class AdminController extends Controller
     {
         $this->authorize('dashboard');
 
-        return redirect(config('app.admin_url'));
+        return redirect()->away(config('app.admin_url'));
     }
 }
