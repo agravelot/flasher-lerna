@@ -13,7 +13,7 @@ class AdminController extends Controller
      *
      * @throws AuthorizationException
      */
-    public function __invoke(): RedirectResponse
+    public function __invoke()
     {
         $this->authorize('dashboard');
 
