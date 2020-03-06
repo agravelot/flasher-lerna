@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class AdminController extends Controller
 {
@@ -13,10 +13,10 @@ class AdminController extends Controller
      *
      * @throws AuthorizationException
      */
-    public function __invoke(): View
+    public function __invoke(): RedirectResponse
     {
         $this->authorize('dashboard');
 
-        return view('admin.admin');
+        return redirect(config('app.admin_url'));
     }
 }
