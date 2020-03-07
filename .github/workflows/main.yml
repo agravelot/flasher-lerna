@@ -118,7 +118,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    # STAGING
+    - uses: actions/checkout@v2
+
+      # STAGING
     - name: Deploy to staging
       if: github.ref == 'refs/heads/develop'
       env:
