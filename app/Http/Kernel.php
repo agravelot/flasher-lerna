@@ -2,7 +2,6 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\CacheResponse;
 use App\Http\Middleware\CheckAdmin;
 use App\Http\Middleware\CheckForMaintenanceMode;
 use App\Http\Middleware\EncryptCookies;
@@ -27,6 +26,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jerodev\LaraFontAwesome\Middleware\InjectStyleSheet;
 use Laravel\Passport\Http\Middleware\CreateFreshApiToken;
+use Spatie\ResponseCache\Middlewares\CacheResponse;
 use Spatie\ResponseCache\Middlewares\DoNotCacheResponse;
 
 class Kernel extends HttpKernel
