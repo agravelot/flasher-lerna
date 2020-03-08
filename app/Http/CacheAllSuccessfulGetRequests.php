@@ -9,16 +9,32 @@ class CacheAllSuccessfulGetRequests extends CacheAllSuccessfulGetRequestsBase
 {
     public function shouldCacheRequest(Request $request): bool
     {
-        if ($request->session()->hasOldInput()) {
+        if ($this->isRequestWithFlash($request)) {
             return false;
+        }
+
+        if ($this->isPassportRequest($request)) {
+            return false;
+        }
+
+        return parent::shouldCacheRequest($request);
+    }
+
+    public function isRequestWithFlash(Request $request): bool
+    {
+        if ($request->session()->hasOldInput()) {
+            return true;
         }
 
         $flashs = ['errors', 'warning', 'notice', 'success'];
 
         if ($request->session()->has($flashs)) {
-            return false;
+            return true;
         }
+    }
 
-        return parent::shouldCacheRequest($request);
+    public function isPassportRequest(Request $request): bool
+    {
+        return $request->is('oauth/*');
     }
 }
