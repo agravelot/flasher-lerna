@@ -31,6 +31,8 @@ class CacheAllSuccessfulGetRequests extends CacheAllSuccessfulGetRequestsBase
         if ($request->session()->has($flashs)) {
             return true;
         }
+
+        return false;
     }
 
     public function isPassportRequest(Request $request): bool
