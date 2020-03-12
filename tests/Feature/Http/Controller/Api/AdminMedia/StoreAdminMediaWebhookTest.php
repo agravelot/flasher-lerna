@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Tests\Feature\Http\Controller\Api\AdminMedia;
-
 
 use App\Jobs\MediaAddedWebhook;
 use Illuminate\Foundation\Testing\RefreshDatabase;
