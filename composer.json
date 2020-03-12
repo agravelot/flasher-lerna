@@ -27,7 +27,7 @@
     "ipunkt/laravel-analytics": "^2.0",
     "jerodev/laravel-font-awesome": "^2.0",
     "lab404/laravel-impersonate": "^1.2",
-    "laravel-validation-rules/colour": "^1.1",
+    "laravel-validation-rules/colour": "^1.2",
     "laravel/framework": "^6.3",
     "laravel/horizon": "^3.0",
     "laravel/passport": "^8.0",
