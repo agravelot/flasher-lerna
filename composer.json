@@ -49,7 +49,6 @@
     "barryvdh/laravel-ide-helper": "^2.6",
     "beyondcode/laravel-dump-server": "^1.2",
     "beyondcode/laravel-query-detector": "^1.0",
-    "davidhsianturi/laravel-compass": "^0.4",
     "facade/ignition": "^1.4",
     "facade/ignition-self-diagnosis": "^1.0",
     "friendsofphp/php-cs-fixer": "^2.13",
