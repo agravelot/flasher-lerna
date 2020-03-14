@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\DeletePictureAlbumRequest;
 use App\Http\Requests\StorePictureAlbumRequest;
 use App\Http\Resources\AlbumShowResource;
-use App\Http\Resources\CompleteUploadPictureResource;
-use App\Http\Resources\ProcessingUploadPictureResource;
+use App\Http\Resources\UploadMediaCompletedResource;
+use App\Http\Resources\UploadMediaProcessingResource;
 use App\Jobs\DeleteAlbumMedia;
 use App\Models\Album;
 use Illuminate\Http\JsonResponse;
@@ -25,7 +25,7 @@ class AdminPictureAlbumController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @return JsonResponse|ProcessingUploadPictureResource
+     * @return JsonResponse|UploadMediaProcessingResource
      * @throws UploadMissingFileException
      */
     public function store(StorePictureAlbumRequest $request, FileReceiver $receiver)
@@ -42,12 +42,12 @@ class AdminPictureAlbumController extends Controller
         // check if the upload has not finished (in chunk mode it will send smaller files)
         if (! $save->isFinished()) {
             // we are in chunk mode, lets send the current progress
-            return new ProcessingUploadPictureResource($save);
+            return new UploadMediaProcessingResource($save);
         }
 
         $media = $album->addPicture($save->getFile());
 
-        return (new CompleteUploadPictureResource($media))
+        return (new UploadMediaCompletedResource($media))
             ->response()->setStatusCode(201);
     }
 

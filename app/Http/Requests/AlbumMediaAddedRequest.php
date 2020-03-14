@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\FileExist;
 use Illuminate\Validation\Rule;
 
 class AlbumMediaAddedRequest extends Request
@@ -12,8 +13,8 @@ class AlbumMediaAddedRequest extends Request
     public function rules(): array
     {
         return [
-            'album_slug' => ['required', Rule::exists('albums', 'slug')],
-            'media_url' => 'required|string|url',
+            'album_id' => ['required', 'integer', Rule::exists('albums', 'id')],
+            'media_name' => ['required', 'string', new FileExist('s3', "albums/$this->album_id")],
         ];
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Pion\Laravel\ChunkUpload\Save\AbstractSave;
 
 /** @mixin AbstractSave */
-class ProcessingUploadPictureResource extends JsonResource
+class UploadMediaProcessingResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

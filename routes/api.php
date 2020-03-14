@@ -33,7 +33,7 @@ Route::group([
         Route::get('dashboard', 'AdminDashboardController')->name('dashboard');
         Route::get('clear-cache', 'AdminClearCacheController')->name('clear-cache');
 
-        Route::apiResource('media-added', 'AdminMediaWebhook')->only(['store']);
+        Route::apiResource('album-media-added', 'AdminAlbumMediaWebhook')->only(['store']);
         Route::apiResource('albums', 'AdminAlbumController');
         Route::patch('albums/{album}/media-ordering', 'AlbumMediaOrderingController')
             ->name('albums.media-ordering');

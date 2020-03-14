@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\SettingType;
 use App\Http\Requests\UpdateSettingRequest;
-use App\Http\Resources\CompleteUploadPictureResource;
-use App\Http\Resources\ProcessingUploadPictureResource;
 use App\Http\Resources\SettingResource;
+use App\Http\Resources\UploadMediaCompletedResource;
+use App\Http\Resources\UploadMediaProcessingResource;
 use App\Models\Setting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -36,7 +36,7 @@ class AdminSettingsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @return JsonResponse|ProcessingUploadPictureResource|SettingResource
+     * @return JsonResponse|UploadMediaProcessingResource|SettingResource
      *
      * @throws UploadMissingFileException
      */
@@ -54,12 +54,12 @@ class AdminSettingsController extends Controller
             // check if the upload has not finished (in chunk mode it will send smaller files)
             if (! $save->isFinished()) {
                 // we are in chunk mode, lets send the current progress
-                return new ProcessingUploadPictureResource($save);
+                return new UploadMediaProcessingResource($save);
             }
 
             $setting->value = $save->getFile();
 
-            return (new CompleteUploadPictureResource($setting->value))->response()->setStatusCode(201);
+            return (new UploadMediaCompletedResource($setting->value))->response()->setStatusCode(201);
         }
 
         $setting->update($request->only('value'));
