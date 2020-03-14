@@ -15,6 +15,7 @@ use Illuminate\Database\SQLiteConnection;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Fluent;
 use InvalidArgumentException;
 use Laravel\Passport\Passport;
@@ -63,6 +64,7 @@ abstract class TestCase extends BaseTestCase
         // Workaround for resource wrapping issue during tests
         // https://github.com/laravel/framework/issues/26021
         Resource::$wrap = 'data';
+        Storage::fake('s3');
     }
 
     protected function actingAsAdminNotStored(): void
