@@ -64,6 +64,7 @@ abstract class TestCase extends BaseTestCase
         // Workaround for resource wrapping issue during tests
         // https://github.com/laravel/framework/issues/26021
         Resource::$wrap = 'data';
+        Storage::fake();
         Storage::fake('s3');
     }
 
