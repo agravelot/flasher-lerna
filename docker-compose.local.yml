@@ -26,12 +26,17 @@ services:
     networks:
       - nginx-proxy
 
+
+  tusd:
+    labels:
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.isDevelopment=true"
+
   nginx:
     environment:
       NGINX_HOST: ${APP_URI}
       ERROR_LOG_LEVEL: ${ERROR_LOG_LEVEL}
-    ports:
-    - "8090:80"
+#    ports:
+#    - "8090:80"
     labels:
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.isDevelopment=true"
 
