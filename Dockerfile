@@ -8,7 +8,7 @@ RUN : \
         ;
 
 # ==== PHP Dependencies ==== #
-FROM composer:1.9 as vendor
+FROM composer:1.10.1 as vendor
 COPY . .
 
 RUN : \
