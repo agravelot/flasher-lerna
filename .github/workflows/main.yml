@@ -22,9 +22,6 @@ jobs:
       run: |
         sudo curl -L "https://github.com/docker/compose/releases/download/1.25.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
         sudo chmod +x /usr/local/bin/docker-compose
-
-    - name: Print docker & docker-compose version
-      run: |
         docker-compose version
         docker -v
 
@@ -98,13 +95,6 @@ jobs:
         APP_ENV: "local"
         DB_PASSWORD: "secretPassword"
 
-    - name: Login to Github repository
-      uses: azure/docker-login@v1
-      with:
-        login-server: docker.pkg.github.com
-        username: agravelot
-        password: ${{ secrets.GITHUB_TOKEN }}
-
     - name: Login to GitLab repository
       uses: azure/docker-login@v1
       with:
@@ -115,13 +105,33 @@ jobs:
     - name: Push images to registry
       run: docker-compose push php nginx
 
-    - name: Remove docker stack
+#    - name: Remove docker stack
+#      run: |
+#        docker-compose -f docker-compose.yml -f docker-compose.local.yml down -v
+#        docker system prune -f
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Define env
       run: |
-        docker-compose -f docker-compose.yml -f docker-compose.local.yml down -v
-        docker system prune -f
+        echo "::set-env name=CI_COMMIT_REF_NAME::$(echo -n $GITHUB_REF | cut -d/ -f3-)"
+        echo "::set-env name=CI_COMMIT_SHORT_SHA::$(echo -n $GITHUB_SHA | cut -c 1-6)"
+        echo "::set-env name=PHP_IMAGE::registry.gitlab.com/flasher/flasher/picblog_php:$(echo -n $GITHUB_SHA | cut -c 1-6)"
+        echo "::set-env name=NGINX_IMAGE::registry.gitlab.com/flasher/flasher/picblog_nginx:$(echo -n $GITHUB_SHA | cut -c 1-6)"
 
-    # STAGING
+    - name: Update docker-compose version
+      run: |
+        sudo curl -L "https://github.com/docker/compose/releases/download/1.25.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+        docker-compose version
+        docker -v
 
+      # STAGING
     - name: Deploy to staging
       if: github.ref == 'refs/heads/develop'
       env:
@@ -163,6 +173,7 @@ jobs:
         ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL: ${{ secrets.ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL }}
         CLOUDFRONT_KEY_PAIR_ID: ${{ secrets.CLOUDFRONT_KEY_PAIR_ID }}
         CLOUDFRONT_PRIVATE_KEY: ${{ secrets.CLOUDFRONT_PRIVATE_KEY }}
+        ADMIN_URL: ${{ secrets.ADMIN_URL_STAGING }}
       run: |
         eval $(ssh-agent -s)
         mkdir -p ~/.ssh
@@ -170,41 +181,7 @@ jobs:
         chmod +x docker/*.sh
         bash -c 'cd docker/ && ./deploy.sh staging'
 
-#    - name: Setup Lighthouse folder
-#      run: mkdir /tmp/artifacts
-#      if: github.ref == 'refs/heads/develop'
-#
-#    - name: Run Lighthouse
-#      if: github.ref == 'refs/heads/develop'
-#      uses: foo-software/lighthouse-check-action@master
-#      id: lighthouseCheck
-#      with:
-#        urls: '${{ secrets.APP_URL_STAGING }}, ${{ secrets.APP_URL_STAGING }}/albums'
-#        author: ${{ github.actor }}
-#        branch: ${{ github.ref }}
-#        outputDirectory: /tmp/artifacts
-#        sha: ${{ github.sha }}
-#
-#    - name: Handle Lighthouse Check results
-#      if: github.ref == 'refs/heads/develop'
-#      uses: foo-software/lighthouse-check-status-action@master
-#      with:
-#        lighthouseCheckResults: ${{ steps.lighthouseCheck.outputs.lighthouseCheckResults }}
-#        minAccessibilityScore: "90"
-#        minBestPracticesScore: "90"
-#        minPerformanceScore: "60"
-#        minProgressiveWebAppScore: "50"
-#        minSeoScore: "90"
-#
-#    - name: Upload artifacts
-#      if: github.ref == 'refs/heads/develop'
-#      uses: actions/upload-artifact@master
-#      with:
-#        name: Lighthouse reports
-#        path: /tmp/artifacts
-
     # PRODUCTION
-
     - name: Deploy to production
       if: github.ref == 'refs/heads/master'
       env:
@@ -246,42 +223,10 @@ jobs:
         ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL: ${{ secrets.ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL }}
         CLOUDFRONT_KEY_PAIR_ID: ${{ secrets.CLOUDFRONT_KEY_PAIR_ID }}
         CLOUDFRONT_PRIVATE_KEY: ${{ secrets.CLOUDFRONT_PRIVATE_KEY }}
+        ADMIN_URL: ${{ secrets.ADMIN_URL_PRODUCTION }}
       run: |
         eval $(ssh-agent -s)
         mkdir -p ~/.ssh
         echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
         chmod +x docker/*.sh
         bash -c 'cd docker/ && ./deploy.sh production'
-
-#    - name: Setup Lighthouse folder
-#      run: mkdir /tmp/artifacts
-#      if: github.ref == 'refs/heads/master'
-#
-#    - name: Run Lighthouse
-#      if: github.ref == 'refs/heads/master'
-#      uses: foo-software/lighthouse-check-action@master
-#      id: lighthouseCheckStaging
-#      with:
-#        urls: '${{ secrets.APP_URL_PRODUCTION }}, ${{ secrets.APP_URL_PRODUCTION }}/albums'
-#        author: ${{ github.actor }}
-#        branch: ${{ github.ref }}
-#        outputDirectory: /tmp/artifacts
-#        sha: ${{ github.sha }}
-#
-#    - name: Handle Lighthouse Check results
-#      if: github.ref == 'refs/heads/master'
-#      uses: foo-software/lighthouse-check-status-action@master
-#      with:
-#        lighthouseCheckResults: ${{ steps.lighthouseCheckStaging.outputs.lighthouseCheckResults }}
-#        minAccessibilityScore: "90"
-#        minBestPracticesScore: "90"
-#        minPerformanceScore: "60"
-#        minProgressiveWebAppScore: "50"
-#        minSeoScore: "90"
-#
-#    - name: Upload artifacts
-#      if: github.ref == 'refs/heads/master'
-#      uses: actions/upload-artifact@master
-#      with:
-#        name: Lighthouse reports
-#        path: /tmp/artifacts
