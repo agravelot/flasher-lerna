@@ -1,9 +1,61 @@
 version: '3.7'
 services:
 
-  nginx:
+  traefik:
+    image: "traefik:v2.2"
+    restart: unless-stopped
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge=true"
+      - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.myhttpchallenge.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.myhttpchallenge.acme.email=antoine.gravelot@hotmail.fr"
+      - "--certificatesresolvers.myhttpchallenge.acme.storage=/letsencrypt/acme.json"
+      - "--providers.docker.network=nginx-proxy"
     ports:
-    - "8080:80"
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - nginx-proxy
+
+
+  tusd:
+    labels:
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.isDevelopment=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.sslRedirect=false"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.accessControlMaxAge=1"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-https-only.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-https-only.redirectscheme.permanent=true"
+
+  nginx:
+    environment:
+      NGINX_HOST: ${APP_URI}
+      ERROR_LOG_LEVEL: ${ERROR_LOG_LEVEL}
+#    ports:
+#    - "8090:80"
+    labels:
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.isDevelopment=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.sslRedirect=false"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.accessControlMaxAge=1"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-only.redirectscheme.scheme=http"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-only.redirectscheme.permanent=false"
+
+  php:
+    environment:
+      APP_DEBUG: "true"
+      DB_PASSWORD: "123"
+      SESSION_SECURE_COOKIE: "false"
+      TELESCOPE_ENABLED: "true"
+    volumes:
+      - .:/var/www/html:rw,delegated
 
   cache:
     image: redis:5.0-alpine
@@ -25,12 +77,14 @@ services:
     environment:
       POSTGRES_DB: flasher
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      DB_PASSWORD: "123"
 
 volumes:
   cache_data:
   db-data:
 
 networks:
+  nginx-proxy:
+    external: true
   database-network:
     external: true

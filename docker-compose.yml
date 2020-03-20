@@ -1,6 +1,51 @@
 version: '3.7'
 services:
 
+  tusd:
+    image: tusproject/tusd
+    networks:
+      - backend
+      - nginx-proxy
+    command: -base-path /tus/ -behind-proxy -hooks-http http://nginx/api/admin/album-media-added -hooks-http-retry 5 -hooks-http-backoff 2 -hooks-enabled-events post-finish,pre-create
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=nginx-proxy"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd-insecure.rule=(Host(`${APP_URI}`) && PathPrefix(`/tus`)) || (Host(`www.${APP_URI}`) && PathPrefix(`/tus`))"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd-insecure.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd-insecure.middlewares=${COMPOSE_PROJECT_NAME}-tusd-https-only,${COMPOSE_PROJECT_NAME}-tusd-headers,${COMPOSE_PROJECT_NAME}-tusd-compress"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd.rule=(Host(`${APP_URI}`) && PathPrefix(`/tus`)) || (Host(`www.${APP_URI}`) && PathPrefix(`/tus`))"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd.tls.certresolver=myhttpchallenge"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd.middlewares=${COMPOSE_PROJECT_NAME}-tusd-https-only,${COMPOSE_PROJECT_NAME}-tusd-retry,${COMPOSE_PROJECT_NAME}-tusd-error-check,${COMPOSE_PROJECT_NAME}-tusd-headers,${COMPOSE_PROJECT_NAME}-tusd-compress"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.stsSeconds=63072000"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.stsPreload=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.forceSTSHeader=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.contentTypeNosniff=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.sslRedirect=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.referrerPolicy=same-origin"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.frameDeny=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.browserXssFilter=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.accessControlAllowMethods=GET,OPTIONS,POST,PUT,PATCH,DELETE"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.accessControlAllowOrigin=*"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.accessControlMaxAge=63072000"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.accessControlAllowHeaders=Authorization,Origin,Content-Type,Accept,tus-resumable,upload-length,upload-metadata,upload-offset"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.addVaryHeader=true"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.sslProxyHeaders=https"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-compress.compress=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-https-only.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-https-only.redirectscheme.permanent=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-retry.retry.attempts=4"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-error-check.circuitbreaker.expression=ResponseCodeRatio(500, 600, 0, 600) > 0.30 || NetworkErrorRatio() > 0.10"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-limit.buffering.maxRequestBodyBytes=20000000" # 20 Mb
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-limit.buffering.memResponseBodyBytes=20000000" # 20 Mb
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-ratelimit.ratelimit.average=1000"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-ratelimit.ratelimit.burst=500"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-redirect-non-www.redirectregex.regex=^https?://www.${APP_URL}/(.*)"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-redirect-non-www.redirectregex.replacement=https://${APP_URL}/$${1}"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-redirect-non-www.redirectregex.permanent=true"
+
   php: &php_base
     image: registry.gitlab.com/flasher/flasher/picblog_php:${CI_COMMIT_SHORT_SHA:-latest}
     build:
@@ -105,11 +150,11 @@ services:
       - "traefik.docker.network=nginx-proxy"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-insecure.rule=Host(`${APP_URI}`) || Host(`www.${APP_URI}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-insecure.entrypoints=web"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-insecure.middlewares=${COMPOSE_PROJECT_NAME}-redirect-non-www,${COMPOSE_PROJECT_NAME}-https-only,${COMPOSE_PROJECT_NAME}-ratelimit,${COMPOSE_PROJECT_NAME}-compress"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-insecure.middlewares=${COMPOSE_PROJECT_NAME}-https-only,${COMPOSE_PROJECT_NAME}-ratelimit,${COMPOSE_PROJECT_NAME}-headers,${COMPOSE_PROJECT_NAME}-compress"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${APP_URI}`) || Host(`www.${APP_URI}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=myhttpchallenge"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.middlewares=${COMPOSE_PROJECT_NAME}-redirect-non-www,${COMPOSE_PROJECT_NAME}-https-only,${COMPOSE_PROJECT_NAME}-ratelimit,${COMPOSE_PROJECT_NAME}-retry,${COMPOSE_PROJECT_NAME}-error-check,${COMPOSE_PROJECT_NAME}-headers,${COMPOSE_PROJECT_NAME}-compress"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.middlewares=${COMPOSE_PROJECT_NAME}-https-only,${COMPOSE_PROJECT_NAME}-ratelimit,${COMPOSE_PROJECT_NAME}-retry,${COMPOSE_PROJECT_NAME}-error-check,${COMPOSE_PROJECT_NAME}-headers,${COMPOSE_PROJECT_NAME}-compress"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.stsSeconds=63072000"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.stsIncludeSubdomains=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.stsPreload=true"
@@ -119,18 +164,25 @@ services:
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.referrerPolicy=same-origin"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.frameDeny=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.browserXssFilter=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.accessControlAllowMethods=GET,OPTIONS,POST,PUT,PATCH,DELETE"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.accessControlAllowOrigin=*"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.accessControlMaxAge=63072000"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.accessControlAllowHeaders=Authorization,Origin,Content-Type,Accept"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.addVaryHeader=true"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.sslProxyHeaders=https"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-compress.compress=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-only.redirectscheme.scheme=https"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-only.redirectscheme.permanent=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-retry.retry.attempts=4"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-error-check.circuitbreaker.expression=ResponseCodeRatio(500, 600, 0, 600) > 0.30 || NetworkErrorRatio() > 0.10"
-#      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-limit.buffering.maxRequestBodyBytes=20000000" # 20 Mb
-#      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-limit.buffering.memResponseBodyBytes=20000000" # 20 Mb
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-limit.buffering.maxRequestBodyBytes=20000000" # 20 Mb
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-limit.buffering.memResponseBodyBytes=20000000" # 20 Mb
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-ratelimit.ratelimit.average=1000"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-ratelimit.ratelimit.burst=500"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-redirect-non-www.redirectregex.regex=^https?://www.${APP_URL}/(.*)"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-redirect-non-www.redirectregex.replacement=https://${APP_URL}/$${1}"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-redirect-non-www.redirectregex.permanent=true"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-redirect-non-www.redirectregex.regex=^https?://www.${APP_URL}/(.*)"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-redirect-non-www.redirectregex.replacement=https://${APP_URL}/$${1}"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-redirect-non-www.redirectregex.permanent=true"
     volumes:
       - storage:/var/www/html/storage:ro,delegated
       - public_vendor:/var/www/html/public/vendor:ro,delegated

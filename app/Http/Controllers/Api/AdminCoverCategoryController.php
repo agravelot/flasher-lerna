@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCoverCategoryRequest;
-use App\Http\Resources\CompleteUploadPictureResource;
-use App\Http\Resources\ProcessingUploadPictureResource;
+use App\Http\Resources\UploadMediaCompletedResource;
+use App\Http\Resources\UploadMediaProcessingResource;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\Resource;
@@ -18,7 +18,7 @@ class AdminCoverCategoryController extends Controller
      * Update the specified resource in storage.
      *
      *
-     * @return CompleteUploadPictureResource|ProcessingUploadPictureResource|JsonResponse
+     * @return UploadMediaCompletedResource|UploadMediaProcessingResource|JsonResponse
      * @throws UploadMissingFileException
      */
     public function store(StoreCoverCategoryRequest $request, FileReceiver $receiver)
@@ -33,14 +33,14 @@ class AdminCoverCategoryController extends Controller
         // check if the upload has not finished (in chunk mode it will send smaller files)
         if (! $save->isFinished()) {
             // we are in chunk mode, lets send the current progress
-            return new ProcessingUploadPictureResource($save);
+            return new UploadMediaProcessingResource($save);
         }
 
         $category = Category::findBySlugOrFail($request->get('category_slug'));
 
         $media = $category->setCover($save->getFile());
 
-        return new CompleteUploadPictureResource($media);
+        return new UploadMediaCompletedResource($media);
     }
 
     /**

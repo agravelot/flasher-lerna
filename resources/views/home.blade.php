@@ -43,7 +43,7 @@
             <section>
                 <div class="columns is-vcentered is-multiline">
                     @foreach($albums as $key => $album)
-                        <div class="column {{ $key === 0 ? 'is-full-touch' : null }}">
+                        <div class="column">
                             <a href="{{ route('albums.show', compact('album')) }}"
                                class="has-margin-right-md" aria-label="{{ $album->title }}">
                                 <article class="card has-hover-zoom is-clipped">
