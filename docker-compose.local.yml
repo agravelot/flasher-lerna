@@ -26,7 +26,6 @@ services:
     networks:
       - nginx-proxy
 
-
   tusd:
     labels:
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.isDevelopment=true"
@@ -54,8 +53,8 @@ services:
       DB_PASSWORD: "123"
       SESSION_SECURE_COOKIE: "false"
       TELESCOPE_ENABLED: "true"
-    volumes:
-      - .:/var/www/html:rw,delegated
+#    volumes:
+#      - .:/var/www/html:rw,delegated
 
   cache:
     image: redis:5.0-alpine
