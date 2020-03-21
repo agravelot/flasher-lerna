@@ -50,7 +50,7 @@ services:
   php:
     environment:
       APP_DEBUG: "true"
-      DB_PASSWORD: "123"
+      DB_PASSWORD: ${DB_PASSWORD}
       SESSION_SECURE_COOKIE: "false"
       TELESCOPE_ENABLED: "true"
 #    volumes:
@@ -76,7 +76,7 @@ services:
     environment:
       POSTGRES_DB: flasher
       POSTGRES_USER: admin
-      DB_PASSWORD: "123"
+      DB_PASSWORD: ${DB_PASSWORD}
 
 volumes:
   cache_data:
