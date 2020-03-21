@@ -42,9 +42,6 @@ services:
       #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-limit.buffering.memResponseBodyBytes=20000000" # 20 Mb
       #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-ratelimit.ratelimit.average=1000"
       #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-ratelimit.ratelimit.burst=500"
-      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-redirect-non-www.redirectregex.regex=^https?://www.${APP_URL}/(.*)"
-      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-redirect-non-www.redirectregex.replacement=https://${APP_URL}/$${1}"
-      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-redirect-non-www.redirectregex.permanent=true"
 
   php: &php_base
     image: registry.gitlab.com/flasher/flasher/picblog_php:${CI_COMMIT_SHORT_SHA:-latest}
@@ -180,9 +177,6 @@ services:
       #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-limit.buffering.memResponseBodyBytes=20000000" # 20 Mb
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-ratelimit.ratelimit.average=1000"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-ratelimit.ratelimit.burst=500"
-      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-redirect-non-www.redirectregex.regex=^https?://www.${APP_URL}/(.*)"
-      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-redirect-non-www.redirectregex.replacement=https://${APP_URL}/$${1}"
-      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-redirect-non-www.redirectregex.permanent=true"
     volumes:
       - storage:/var/www/html/storage:ro,delegated
       - public_vendor:/var/www/html/public/vendor:ro,delegated
