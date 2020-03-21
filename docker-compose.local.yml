@@ -76,7 +76,7 @@ services:
     environment:
       POSTGRES_DB: flasher
       POSTGRES_USER: admin
-      DB_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
 
 volumes:
   cache_data:
