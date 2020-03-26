@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Jobs;
+namespace Tests\Unit\Jobs;
 
 use App\Jobs\GenerateSitemap;
 use App\Jobs\NotifySitemapUpdate;

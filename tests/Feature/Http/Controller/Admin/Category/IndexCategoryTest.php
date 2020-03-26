@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Features\Http\Controller\Admin\Category;
+namespace Tests\Feature\Http\Controller\Admin\Category;
 
 use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;

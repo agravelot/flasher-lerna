@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Front\Album;
+namespace Tests\Feature\Http\Controller\Front\Album;
 
 use App\Models\Album;
 use Illuminate\Foundation\Testing\RefreshDatabase;

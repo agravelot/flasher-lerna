@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers\Admin\SocialMedia;
+namespace Tests\Feature\Http\Controller\Admin\SocialMedia;
 
 use App\Models\SocialMedia;
 use Illuminate\Database\Eloquent\Collection;

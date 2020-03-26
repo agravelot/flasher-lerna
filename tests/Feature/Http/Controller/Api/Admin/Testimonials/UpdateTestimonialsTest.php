@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Http\Controller\Api\Admin\Invitation;
+namespace Tests\Feature\Http\Controller\Api\Admin\Testimonials;
 
 use App\Models\Testimonial;
 use Illuminate\Foundation\Testing\RefreshDatabase;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Http\Controller\Front\Contact;
+namespace Tests\Feature\Http\Controller\Front\SocialMedia;
 
 use App\Models\SocialMedia;
 use Illuminate\Foundation\Testing\RefreshDatabase;
