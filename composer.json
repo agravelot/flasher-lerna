@@ -24,7 +24,7 @@
     "fideloper/proxy": "^4.0",
     "fruitcake/laravel-cors": "^1.0",
     "intervention/imagecache": "^2.3",
-    "ipunkt/laravel-analytics": "^2.0",
+    "ipunkt/laravel-analytics": "^3.0",
     "jerodev/laravel-font-awesome": "^2.0",
     "lab404/laravel-impersonate": "^1.2",
     "laravel-validation-rules/colour": "^1.2",
