@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ba107e437f9488995f14e2ce21d76b31",
+    "content-hash": "f9d3adbbb7f460b03cb961dba49559a1",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -2036,26 +2036,26 @@
         },
         {
             "name": "ipunkt/laravel-analytics",
-            "version": "2.0.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ipunkt/laravel-analytics.git",
-                "reference": "9e7ec193cb3e903754f3906a7c403feb5ea5ffa8"
+                "reference": "0937acbfeb4a9b8781341e087e7c014a44e3798d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ipunkt/laravel-analytics/zipball/9e7ec193cb3e903754f3906a7c403feb5ea5ffa8",
-                "reference": "9e7ec193cb3e903754f3906a7c403feb5ea5ffa8",
+                "url": "https://api.github.com/repos/ipunkt/laravel-analytics/zipball/0937acbfeb4a9b8781341e087e7c014a44e3798d",
+                "reference": "0937acbfeb4a9b8781341e087e7c014a44e3798d",
                 "shasum": ""
             },
             "require": {
-                "illuminate/config": "~5.0 || ^6.0",
-                "illuminate/session": "~5.0 || ^6.0",
-                "illuminate/support": "~5.0 || ^6.0",
+                "illuminate/config": "~5.0 || ^6.0 || ^7.0",
+                "illuminate/session": "~5.0 || ^6.0 || ^7.0",
+                "illuminate/support": "~5.0 || ^6.0 || ^7.0",
                 "php": "^7.2"
             },
             "require-dev": {
-                "laravel/framework": "~5.0 || ^6.0"
+                "laravel/framework": "~5.0 || ^6.0 || ^7.0"
             },
             "suggest": {
                 "martijnc/php-csp": "For handling Content Security Policy matters"
@@ -2095,7 +2095,7 @@
                 "php",
                 "statistics"
             ],
-            "time": "2019-09-05T06:46:03+00:00"
+            "time": "2020-03-17T06:49:57+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
