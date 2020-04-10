@@ -33,10 +33,6 @@
             </div>
         </div>
 
-        <div class="has-text-right">
-            @include('layouts.partials._share_socials')
-        </div>
-
             @if(Gate::check('download', $album) || Gate::check('update', $album))
                 <div class="columns is-mobile is-centered">
                     <div class="column is-narrow field has-addons">
@@ -60,6 +56,10 @@
                     </div>
                 </div>
             @endif
+        
+            <div class="has-text-right">
+                @include('layouts.partials._share_socials')
+            </div>
     @stop
 
     @if ($album->body)
