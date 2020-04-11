@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Http\Controller\Front;
+namespace Tests\Feature\Http\Controller\Front\Cosplayer;
 
 use App\Models\Cosplayer;
 use Illuminate\Foundation\Testing\RefreshDatabase;

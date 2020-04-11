@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
+namespace Tests\Feature\Http\Controller\Admin\Invitation;
 
 use App\Models\Invitation;
 use Illuminate\Database\Eloquent\Collection;

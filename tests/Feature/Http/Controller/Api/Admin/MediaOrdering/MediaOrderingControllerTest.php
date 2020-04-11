@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Http\Controller\Api\Admin;
+namespace Tests\Feature\Http\Controller\Api\Admin\MediaOrdering;
 
 use App\Models\Album;
 use App\Models\User;

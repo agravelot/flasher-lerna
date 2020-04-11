@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers\Admin\Contact;
+namespace Tests\Feature\Http\Controller\Admin\Contact;
 
 use App\Models\Contact;
 use Illuminate\Foundation\Testing\RefreshDatabase;
