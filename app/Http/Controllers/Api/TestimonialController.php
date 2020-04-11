@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\AdminUpdateTestimonialRequest;
 use App\Http\Resources\TestimonialResource;
 use App\Models\Testimonial;
-use Exception;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
 
