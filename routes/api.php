@@ -17,6 +17,7 @@ Route::group([
 ], static function (): void {
     // Front
     Route::apiResource('albums', 'AlbumController')->only('index', 'show');
+    Route::apiResource('testimonials', 'TestimonialController')->only('index');
     Route::apiResource('categories', 'CategoryController')
         ->only('index', 'show');
     Route::resource('/account', 'AccountController')->middleware(['auth'])->only('destroy')
