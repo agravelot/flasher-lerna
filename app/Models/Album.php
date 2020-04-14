@@ -19,17 +19,15 @@ use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 use Spatie\Feed\Feedable;
 use Spatie\Image\Exceptions\InvalidManipulation;
-use Spatie\MediaLibrary\File;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use Spatie\MediaLibrary\Models\Media;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Album extends Model implements HasMedia, Feedable
 {
     use Sluggable,
         SluggableScopeHelpers,
-        HasMediaTrait,
+        InteractsWithMedia,
         HasSlugRouteKey,
         HasTitleAsSlug,
         ClearsResponseCache,
@@ -175,7 +173,7 @@ class Album extends Model implements HasMedia, Feedable
     /**
      * Register the collections of this album.
      */
-    public function registerMediaCollections()
+    public function registerMediaCollections(): void
     {
         $this->addMediaCollection(self::PICTURES_COLLECTION)
             ->acceptsFile(static function (File $file) {

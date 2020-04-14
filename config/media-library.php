@@ -82,6 +82,23 @@ return [
     'version_urls' => false,
 
     /*
+     * When converting Media instances to response the medialibrary will add
+     * a `loading` attribute to the `img` tag. Here you can set the default
+     * value of that attribute.
+     *
+     * Possible values: 'auto', 'lazy' and 'eager,
+     *
+     * More info: https://css-tricks.com/native-lazy-loading/
+     */
+    'default_loading_attribute_value' => 'auto',
+
+    /*
+     * This is the class that is responsible for naming conversion files. By default,
+     * it will use the filename of the original and concatenate the conversion name to it.
+     */
+    'conversion_file_namer' => \Spatie\MediaLibrary\Conversions\DefaultConversionFileNamer::class,
+
+    /*
      * The class that contains the strategy for determining a media file's path.
      */
     'path_generator' => \App\Generators\PathGenerator::class,
@@ -118,11 +135,11 @@ return [
      * These generators will be used to create an image of media files.
      */
     'image_generators' => [
-        Spatie\MediaLibrary\ImageGenerators\FileTypes\Image::class,
-        Spatie\MediaLibrary\ImageGenerators\FileTypes\Webp::class,
-        Spatie\MediaLibrary\ImageGenerators\FileTypes\Pdf::class,
-        Spatie\MediaLibrary\ImageGenerators\FileTypes\Svg::class,
-        Spatie\MediaLibrary\ImageGenerators\FileTypes\Video::class,
+        Spatie\MediaLibrary\Conversions\ImageGenerators\Image::class,
+        Spatie\MediaLibrary\Conversions\ImageGenerators\Webp::class,
+        Spatie\MediaLibrary\Conversions\ImageGenerators\Pdf::class,
+        Spatie\MediaLibrary\Conversions\ImageGenerators\Svg::class,
+        Spatie\MediaLibrary\Conversions\ImageGenerators\Video::class,
     ],
 
     /*
