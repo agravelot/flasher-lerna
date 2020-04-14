@@ -2,9 +2,9 @@
 
 namespace App\Jobs;
 
-use Spatie\MediaLibrary\Jobs\PerformConversions as PerformConversionsBase;
+use Spatie\MediaLibrary\Conversions\Jobs\PerformConversionsJob;
 
-class PerformConversions extends PerformConversionsBase
+class PerformConversions extends PerformConversionsJob
 {
     public int $timeout = 30 * 60; // 30 minutes
 

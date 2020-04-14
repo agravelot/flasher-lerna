@@ -14,7 +14,7 @@ class AddMediaUuid extends Migration
     public function up()
     {
         Media::cursor()->each(
-            fn (Media $media) => $media->update(['uuid' => Str::uuid()])
+            static fn (Media $media) => $media->update(['uuid' => Str::uuid()])
         );
     }
 

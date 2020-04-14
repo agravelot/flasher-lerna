@@ -21,6 +21,7 @@ use Spatie\Feed\Feedable;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Album extends Model implements HasMedia, Feedable
@@ -184,7 +185,7 @@ class Album extends Model implements HasMedia, Feedable
     /**
      * @throws InvalidManipulation
      */
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
     {
         $this->addMediaConversion(self::RESPONSIVE_PICTURES_CONVERSION)
             ->optimize()

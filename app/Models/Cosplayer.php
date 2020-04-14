@@ -118,7 +118,7 @@ class Cosplayer extends Model implements HasMedia
      *
      * @throws InvalidManipulation
      */
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
     {
         $this->addMediaConversion('thumb')
             ->crop('crop-center', 96, 96)
