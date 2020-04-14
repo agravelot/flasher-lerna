@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 use Spatie\Feed\Feedable;
@@ -22,6 +21,7 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\File;
+use Spatie\MediaLibrary\MediaCollections\HtmlableMedia;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Album extends Model implements HasMedia, Feedable
@@ -87,7 +87,7 @@ class Album extends Model implements HasMedia, Feedable
         return $this->getFirstMedia(self::PICTURES_COLLECTION);
     }
 
-    public function getCoverResponsiveAttribute(): ?HtmlString
+    public function getCoverResponsiveAttribute(): ?HtmlableMedia
     {
         return optional($this->cover, static function (Media $media) {
             return $media(self::RESPONSIVE_PICTURES_CONVERSION);
