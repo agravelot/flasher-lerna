@@ -24,13 +24,6 @@ return [
      */
     'media_model' => \App\Models\Media::class,
 
-    's3' => [
-        /*
-         * The domain that should be prepended when generating urls.
-         */
-        'domain' => env('S3_BUCKET_CDN', null),
-    ],
-
     'remote' => [
         /*
          * Any extra headers that should be included when uploading media to
