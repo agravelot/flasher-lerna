@@ -165,7 +165,7 @@ services:
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.accessControlAllowOriginList=*"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.accessControlMaxAge=63072000"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.accessControlAllowCredentials=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.accessControlAllowHeaders=Authorization,Origin,Content-Type,Accept"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.accessControlAllowHeaders=Authorization,Origin,Content-Type,Accept,Cache-Control"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.addVaryHeader=true"
       #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.sslProxyHeaders=https"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-compress.compress=true"
