@@ -11,7 +11,7 @@ class SetMediaConversionsDisk extends Migration
     public function up(): void
     {
         Media::cursor()->each(
-            fn (Media $media) => $media->update(['conversions_disk' => $media->disk])
+            static fn (Media $media) => $media->update(['conversions_disk' => $media->disk])
         );
     }
 }
