@@ -10,8 +10,6 @@ class PerformConversions extends PerformConversionsBase
 
     /**
      * Delete the job if its models no longer exist.
-     *
-     * @var bool
      */
     public bool $deleteWhenMissingModels = true;
 
