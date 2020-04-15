@@ -103,15 +103,15 @@ class ShowAlbumTest extends TestCase
         $response = $this->get("/albums/{$album->slug}");
         $locale = App::getLocale();
 
-        $response->assertSee("<meta property=\"og:title\" content=\"{$album->title}\"/>")
-            ->assertSee("<meta property=\"article:author\" content=\"{$album->user->name}\"/>")
-            ->assertSee('<meta property="article:section" content="Photography"/>')
-            ->assertSee("<meta property=\"article:modified_time\" content=\"{$album->updated_at->toIso8601String()}\"/>")
-            ->assertSee("<meta property=\"article:published_time\" content=\"{$album->published_at->toIso8601String()}\"/>")
-            ->assertSee("<meta property=\"og:locale\" content=\"{$locale}\"/>");
+        $response->assertSee("<meta property=\"og:title\" content=\"{$album->title}\"/>", false)
+            ->assertSee("<meta property=\"article:author\" content=\"{$album->user->name}\"/>", false)
+            ->assertSee('<meta property="article:section" content="Photography"/>', false)
+            ->assertSee("<meta property=\"article:modified_time\" content=\"{$album->updated_at->toIso8601String()}\"/>", false)
+            ->assertSee("<meta property=\"article:published_time\" content=\"{$album->published_at->toIso8601String()}\"/>", false)
+            ->assertSee("<meta property=\"og:locale\" content=\"{$locale}\"/>", false);
 
         foreach ($album->categories()->pluck('name') as $categoryName) {
-            $response->assertSee("<meta property=\"article:tag\" content=\"{{ $categoryName }}\"/>");
+            $response->assertSee("<meta property=\"article:tag\" content=\"{{ $categoryName }}\"/>", false);
         }
 
         $response->assertDontSee('<meta property="og:image" content=');
@@ -125,17 +125,17 @@ class ShowAlbumTest extends TestCase
         $response = $this->get("/albums/{$album->slug}");
         $locale = App::getLocale();
 
-        $response->assertSee("<meta property=\"og:title\" content=\"{$album->title}\"/>")
-            ->assertSee("<meta property=\"article:author\" content=\"{$album->user->name}\"/>")
-            ->assertSee('<meta property="article:section" content="Photography"/>')
-            ->assertSee("<meta property=\"article:modified_time\" content=\"{$album->updated_at->toIso8601String()}\"/>")
-            ->assertSee("<meta property=\"article:published_time\" content=\"{$album->published_at->toIso8601String()}\"/>")
-            ->assertSee("<meta property=\"og:locale\" content=\"{$locale}\"/>")
-            ->assertSee("<meta property=\"og:image\" content=\"{$album->cover->getUrl('thumb')}\"/>")
-            ->assertSee("<meta property=\"og:image:secure_url\" content=\"{$album->cover->getUrl('thumb')}\"/>");
+        $response->assertSee("<meta property=\"og:title\" content=\"{$album->title}\"/>", false)
+            ->assertSee("<meta property=\"article:author\" content=\"{$album->user->name}\"/>", false)
+            ->assertSee('<meta property="article:section" content="Photography"/>', false)
+            ->assertSee("<meta property=\"article:modified_time\" content=\"{$album->updated_at->toIso8601String()}\"/>", false)
+            ->assertSee("<meta property=\"article:published_time\" content=\"{$album->published_at->toIso8601String()}\"/>", false)
+            ->assertSee("<meta property=\"og:locale\" content=\"{$locale}\"/>", false)
+            ->assertSee("<meta property=\"og:image\" content=\"{$album->cover->getUrl('thumb')}\"/>", false)
+            ->assertSee("<meta property=\"og:image:secure_url\" content=\"{$album->cover->getUrl('thumb')}\"/>", false);
 
         foreach ($album->categories()->pluck('name') as $categoryName) {
-            $response->assertSee("<meta property=\"article:tag\" content=\"{{ $categoryName }}\"/>");
+            $response->assertSee("<meta property=\"article:tag\" content=\"{{ $categoryName }}\"/>", false);
         }
     }
 }
