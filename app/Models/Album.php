@@ -14,22 +14,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 use Spatie\Feed\Feedable;
 use Spatie\Image\Exceptions\InvalidManipulation;
-use Spatie\MediaLibrary\File;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use Spatie\MediaLibrary\Models\Media;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\File;
+use Spatie\MediaLibrary\MediaCollections\HtmlableMedia;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Album extends Model implements HasMedia, Feedable
 {
     use Sluggable,
         SluggableScopeHelpers,
-        HasMediaTrait,
+        InteractsWithMedia,
         HasSlugRouteKey,
         HasTitleAsSlug,
         ClearsResponseCache,
@@ -88,7 +87,7 @@ class Album extends Model implements HasMedia, Feedable
         return $this->getFirstMedia(self::PICTURES_COLLECTION);
     }
 
-    public function getCoverResponsiveAttribute(): ?HtmlString
+    public function getCoverResponsiveAttribute(): ?HtmlableMedia
     {
         return optional($this->cover, static function (Media $media) {
             return $media(self::RESPONSIVE_PICTURES_CONVERSION);
@@ -175,7 +174,7 @@ class Album extends Model implements HasMedia, Feedable
     /**
      * Register the collections of this album.
      */
-    public function registerMediaCollections()
+    public function registerMediaCollections(): void
     {
         $this->addMediaCollection(self::PICTURES_COLLECTION)
             ->acceptsFile(static function (File $file) {
@@ -186,7 +185,7 @@ class Album extends Model implements HasMedia, Feedable
     /**
      * @throws InvalidManipulation
      */
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
     {
         $this->addMediaConversion(self::RESPONSIVE_PICTURES_CONVERSION)
             ->optimize()

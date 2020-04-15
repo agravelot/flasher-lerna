@@ -15,16 +15,15 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 use Spatie\Image\Exceptions\InvalidManipulation;
-use Spatie\MediaLibrary\File;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use Spatie\MediaLibrary\Models\Media;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\File;
 
 class Cosplayer extends Model implements HasMedia
 {
     use Sluggable,
         SluggableScopeHelpers,
-        HasMediaTrait,
+        InteractsWithMedia,
         HasSlugRouteKey,
         HasNameAsSlug,
         ClearsResponseCache,
@@ -119,7 +118,7 @@ class Cosplayer extends Model implements HasMedia
      *
      * @throws InvalidManipulation
      */
-    public function registerMediaConversions(Media $media = null)
+    public function registerMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
     {
         $this->addMediaConversion('thumb')
             ->crop('crop-center', 96, 96)

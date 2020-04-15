@@ -56,7 +56,7 @@
                     </div>
                 </div>
             @endif
-        
+
             <div class="has-text-right">
                 @include('layouts.partials._share_socials')
             </div>
@@ -78,11 +78,11 @@
         /** @var \App\Models\Album $album */
         $medias = $album->getMedia(\App\Models\Album::PICTURES_COLLECTION);
 
-        $columnsDesktop = $medias->groupBy(function (\Spatie\MediaLibrary\Models\Media $item, int $key) {
+        $columnsDesktop = $medias->groupBy(function (\Spatie\MediaLibrary\MediaCollections\Models\Media $item, int $key) {
                 return $key % 3;
             });
 
-        $columnsTablet = $medias->groupBy(function (\Spatie\MediaLibrary\Models\Media $item, int $key) {
+        $columnsTablet = $medias->groupBy(function (\Spatie\MediaLibrary\MediaCollections\Models\Media $item, int $key) {
                 return $key % 2;
             });
     @endphp
