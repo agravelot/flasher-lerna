@@ -11,7 +11,7 @@ use App\Http\Resources\UploadMediaProcessingResource;
 use App\Jobs\DeleteAlbumMedia;
 use App\Models\Album;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class AdminPictureAlbumController extends Controller
 {
@@ -27,11 +27,11 @@ class AdminPictureAlbumController extends Controller
      */
     public function store(StorePictureAlbumRequest $request)
     {
-        Resource::withoutWrapping();
+        JsonResource::withoutWrapping();
         /** @var Album $album */
         $album = Album::whereSlug($request->get('album_slug'))->firstOrFail();
 
-        $media = $album->addPicture($request->file());
+        $media = $album->addPicture($request->file('file'));
 
         return (new UploadMediaCompletedResource($media))
             ->response()->setStatusCode(201);
@@ -42,7 +42,7 @@ class AdminPictureAlbumController extends Controller
      */
     public function destroy(Album $album, DeletePictureAlbumRequest $request): JsonResponse
     {
-        Resource::withoutWrapping();
+        JsonResource::withoutWrapping();
 
         DeleteAlbumMedia::dispatch($album->media->firstWhere('id', $request->get('media_id')));
 
