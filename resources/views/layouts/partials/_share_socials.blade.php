@@ -2,7 +2,7 @@
     <a class="button is-black" href="{{ $social['url'] . urlencode(request()->url()) }}"
        target="_blank" rel="noreferrer" aria-label="{{ __('Share on') }} {{ $name }}">
         <span class="icon has-text-white">
-            @fa($social['icon'])
+            <x-fa :name="$social['icon']"/>
         </span>
     </a>
 @endforeach

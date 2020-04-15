@@ -8,7 +8,9 @@
                 @can('update', $cosplayer)
                     <div class="control">
                         <a class="button" href="{{ "/admin/cosplayers/{$cosplayer->slug}/edit" }}">
-                            <span class="icon is-small">@fas('edit')</span>
+                            <span class="icon is-small">
+                                <x-fa name="edit" library="solid"/>
+                            </span>
                             <span>{{ __('Edit') }}</span>
                         </a>
                     </div>

@@ -39,7 +39,9 @@
                         @can('download', $album)
                             <div class="control">
                                 <a class="button is-black" href="{{ route('download-albums.show', compact('album')) }}">
-                                    <span class="icon is-small">@fas('download')</span>
+                                    <span class="icon is-small">
+                                        <x-fa name="download" library="solid"/>
+                                    </span>
                                     <span>{{ __('Download') }}</span>
                                 </a>
                             </div>
@@ -48,7 +50,9 @@
                         @can('update', $album)
                             <div class="control">
                                 <a class="button is-black" href="{{ config('app.admin_url')."/admin/albums/{$album->slug}" }}">
-                                    <span class="icon is-small">@fas('edit')</span>
+                                    <span class="icon is-small">
+                                        <x-fa name="edit" library="solid"/>
+                                    </span>
                                     <span>{{ __('Edit') }}</span>
                                 </a>
                             </div>
@@ -104,8 +108,8 @@
                                )
                            }}
                             <span class="icon has-text-white has-text-hover-image-bottom-left">
-                            @fa('search')
-                        </span>
+                                <x-fa name="search"/>
+                            </span>
                         </a>
                     @endforeach
                 </div>
@@ -130,8 +134,8 @@
                                )
                            }}
                             <span class="icon has-text-white has-text-hover-image-bottom-left">
-                            @fa('search')
-                        </span>
+                                <x-fa name="search"/>
+                            </span>
                         </a>
                     @endforeach
                 </div>
@@ -154,8 +158,8 @@
                            )
                        }}
                         <span class="icon has-text-white has-text-hover-image-bottom-left">
-                        @fa('search')
-                    </span>
+                            <x-fa name="search"/>
+                        </span>
                     </a>
                 </div>
             @endforeach

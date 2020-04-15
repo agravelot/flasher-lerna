@@ -4,7 +4,7 @@ namespace Tests\Feature\Http\Controller\Api\Admin\Testimonials;
 
 use App\Models\Testimonial;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Support\Carbon;
 use Tests\TestCase;
 

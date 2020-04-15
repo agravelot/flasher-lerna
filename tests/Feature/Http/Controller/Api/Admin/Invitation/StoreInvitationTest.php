@@ -6,7 +6,7 @@ use App\Mail\InvitationMail;
 use App\Models\Cosplayer;
 use App\Models\Invitation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;

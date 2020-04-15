@@ -5,7 +5,7 @@ namespace Tests\Feature\Http\Controller\Api\Album;
 use App\Models\Album;
 use App\Models\PublicAlbum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class ShowAlbumTest extends TestCase

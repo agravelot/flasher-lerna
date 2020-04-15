@@ -4,7 +4,7 @@ namespace Tests\Feature\Http\Controller\Front\Album;
 
 use App\Models\Album;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class IndexAlbumTest extends TestCase

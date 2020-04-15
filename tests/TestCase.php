@@ -13,6 +13,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\SQLiteBuilder;
 use Illuminate\Database\SQLiteConnection;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
@@ -63,7 +64,7 @@ abstract class TestCase extends BaseTestCase
         $this->withoutMiddleware(VerifyCsrfToken::class);
         // Workaround for resource wrapping issue during tests
         // https://github.com/laravel/framework/issues/26021
-        Resource::$wrap = 'data';
+        JsonResource::$wrap = 'data';
         Storage::fake();
         Storage::fake('s3');
     }

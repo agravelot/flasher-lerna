@@ -2,7 +2,7 @@
     <div class="level">
         <div class="level-item has-text-centered has-margin-lg">
             <div class="icon is-large has-margin-sm">
-                @fas('sad-tear')
+                <x-fa name="sad-tear" library="solid"/>
             </div>
             <div class="is-6">{{ __('Nothing to show') }}</div>
         </div>

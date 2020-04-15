@@ -2,11 +2,11 @@
     <div class="media-content">
         <div class="is-italic has-text-centered is-family-secondary">
             <span class="icon is-inline-flex">
-                @fas('quote-left')
+                <x-fa name="quote-left" library="solid"/>
             </span>
             <blockquote>{{ $testimonial->body }}</blockquote>
             <span class="icon is-inline-flex">
-                @fas('quote-right')
+                <x-fa name="quote-right" library="solid"/>
             </span>
         </div>
 

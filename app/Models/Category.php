@@ -46,9 +46,9 @@ class Category extends Model implements HasMedia
     /**
      * Add media to Category::COVER_COLLECTION collection.
      *
-     * @param  UploadedFile|null  $media
+     * @param  File|UploadedFile|null  $media
      */
-    public function setCover($media): ?Media
+    public function setCover($media): ?\Spatie\MediaLibrary\MediaCollections\Models\Media
     {
         if ($media === null && $this->cover) {
             $this->cover->delete();

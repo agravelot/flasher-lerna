@@ -4,7 +4,7 @@ namespace Tests\Feature\Http\Controller\Api\Admin\Invitation;
 
 use App\Models\Invitation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;

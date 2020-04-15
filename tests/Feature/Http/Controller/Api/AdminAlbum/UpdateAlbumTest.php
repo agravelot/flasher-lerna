@@ -7,7 +7,7 @@ use App\Models\Category;
 use App\Models\Cosplayer;
 use DateTime;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Tests\TestCase;
