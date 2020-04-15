@@ -57,7 +57,7 @@
     "fzaninotto/faker": "^1.8",
     "lanin/laravel-api-debugger": "^3.4",
     "laravel/dusk": "^5.5",
-    "laravel/telescope": "^3.1",
+    "laravel/telescope": "^3.2",
     "matt-allan/laravel-code-style": "^0.5.0",
     "mockery/mockery": "^1.0",
     "nunomaduro/collision": "^3.0",
