@@ -31,7 +31,9 @@
                                 </div>
                                 <div class="media-right">
                                     <a class="button download-album" href="{{ route('download-albums.show', compact('album')) }}">
-                                        <span class="icon is-small">@fas('download')</span>
+                                        <span class="icon is-small">
+                                            <x-fa name="download" library="solid"/>
+                                        </span>
                                         <span>{{ __('Download') }}</span>
                                     </a>
                                 </div>

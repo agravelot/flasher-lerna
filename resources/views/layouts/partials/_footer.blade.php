@@ -39,12 +39,12 @@
                 <p>{!! settings()->get('footer_content') !!}</p>
                 <div class="has-text-centered">
                 <span class="icon" style="color: dodgerblue;">
-                    @fas('code')
+                    <x-fa name="code" library="solid"/>
                 </span>
                     {{ __('with') }}
                     <span class="icon" style="color: red;">
-                @fas('heart')
-            </span>
+                        <x-fa name="heart" library="solid"/>
+                    </span>
                     {{ __('by') }} <a class="has-text-white" href="https://gitlab.com/Nevax">Antoine Gravelot</a>
                 </div>
             </div>
