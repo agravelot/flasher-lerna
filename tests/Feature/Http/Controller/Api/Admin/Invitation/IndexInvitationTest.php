@@ -4,9 +4,9 @@ namespace Tests\Feature\Http\Controller\Api\Admin\Invitation;
 
 use App\Models\Invitation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Testing\TestResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class IndexInvitationTest extends TestCase

@@ -4,8 +4,8 @@ namespace Tests\Feature\Http\Controller\Admin\Category;
 
 use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Testing\TestResponse;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class ShowCategoryTest extends TestCase

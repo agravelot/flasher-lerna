@@ -12,8 +12,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Routing\Controller;
-use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
-use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 
 class AdminSettingsController extends Controller
 {
@@ -41,7 +39,6 @@ class AdminSettingsController extends Controller
     public function update(Setting $setting, UpdateSettingRequest $request)
     {
         if ($setting->type->value === SettingType::Media) {
-
             JsonResponse::withoutWrapping();
 
             $setting->value = $request->file();

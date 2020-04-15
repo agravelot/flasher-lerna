@@ -4,8 +4,8 @@ namespace Tests\Feature\Http\Controller\Admin\User;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Testing\TestResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class UpdateUserTest extends TestCase
