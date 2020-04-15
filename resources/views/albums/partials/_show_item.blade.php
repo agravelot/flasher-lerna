@@ -47,7 +47,7 @@
 
                         @can('update', $album)
                             <div class="control">
-                                <a class="button is-black" href="{{ "/admin/albums/{$album->slug}/edit" }}">
+                                <a class="button is-black" href="{{ config('app.admin_url')."/admin/albums/{$album->slug}" }}">
                                     <span class="icon is-small">@fas('edit')</span>
                                     <span>{{ __('Edit') }}</span>
                                 </a>
