@@ -4,7 +4,7 @@ namespace Tests\Feature\Http\Controller\Admin\User;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 

@@ -7,7 +7,7 @@ use App\Models\Contact;
 use App\Models\User;
 use App\Notifications\ContactSent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 

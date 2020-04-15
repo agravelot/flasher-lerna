@@ -4,7 +4,7 @@ namespace Tests\Feature\Http\Controller\Admin\Contact;
 
 use App\Models\Contact;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class DeleteContactTest extends TestCase

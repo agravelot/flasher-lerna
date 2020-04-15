@@ -6,7 +6,7 @@ use App\Models\Album;
 use App\Models\Category;
 use App\Models\Cosplayer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class StoreAlbumTest extends TestCase

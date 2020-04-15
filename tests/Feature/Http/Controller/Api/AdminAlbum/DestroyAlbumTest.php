@@ -5,7 +5,7 @@ namespace Tests\Feature\Http\Controller\Api\AdminAlbum;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Album;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class DestroyAlbumTest extends TestCase

@@ -5,7 +5,7 @@ namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 use App\Http\Resources\MediaResource;
 use App\Models\Cosplayer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
