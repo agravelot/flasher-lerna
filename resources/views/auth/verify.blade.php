@@ -28,9 +28,6 @@
                                 {{ __('click here to request another') }}
                             </button>.
                         </form>
-
-                         <a href="{{ route('verification.resend') }}">{{ __('click here to request another') }}</a>.
-
                     </div>
                 </nav>
             </div>
