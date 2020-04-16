@@ -11,7 +11,7 @@ class StorePictureAlbumRequest extends Request
     {
         return [
             'album_slug' => 'required|exists:albums,slug',
-            'file' => 'required|file|size:50000',
+            'file' => 'required|file|max:50000',
         ];
     }
 }
