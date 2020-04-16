@@ -31,6 +31,5 @@
         <server name="TELESCOPE_ENABLED" value="false"/>
         <server name="QUEUE_DRIVER" value="sync"/>
         <server name="QUEUE_CONNECTION" value="sync"/>
-        <server name="INSPECTOR_ENABLE" value="false"/>
     </php>
 </phpunit>
