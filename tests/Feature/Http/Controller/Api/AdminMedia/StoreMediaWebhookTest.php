@@ -4,10 +4,10 @@ namespace Tests\Feature\Http\Controller\Api\AdminMedia;
 
 use App\Models\Album;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class StoreMediaWebhookTest extends TestCase

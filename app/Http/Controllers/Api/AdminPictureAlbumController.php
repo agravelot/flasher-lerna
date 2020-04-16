@@ -11,9 +11,7 @@ use App\Http\Resources\UploadMediaProcessingResource;
 use App\Jobs\DeleteAlbumMedia;
 use App\Models\Album;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\Resource;
-use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
-use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class AdminPictureAlbumController extends Controller
 {
@@ -26,26 +24,14 @@ class AdminPictureAlbumController extends Controller
      * Store a newly created resource in storage.
      *
      * @return JsonResponse|UploadMediaProcessingResource
-     * @throws UploadMissingFileException
      */
-    public function store(StorePictureAlbumRequest $request, FileReceiver $receiver)
+    public function store(StorePictureAlbumRequest $request)
     {
-        if ($receiver->isUploaded() === false) {
-            throw new UploadMissingFileException();
-        }
-
-        Resource::withoutWrapping();
+        JsonResource::withoutWrapping();
         /** @var Album $album */
         $album = Album::whereSlug($request->get('album_slug'))->firstOrFail();
-        $save = $receiver->receive();
 
-        // check if the upload has not finished (in chunk mode it will send smaller files)
-        if (! $save->isFinished()) {
-            // we are in chunk mode, lets send the current progress
-            return new UploadMediaProcessingResource($save);
-        }
-
-        $media = $album->addPicture($save->getFile());
+        $media = $album->addPicture($request->file('file'));
 
         return (new UploadMediaCompletedResource($media))
             ->response()->setStatusCode(201);
@@ -56,7 +42,7 @@ class AdminPictureAlbumController extends Controller
      */
     public function destroy(Album $album, DeletePictureAlbumRequest $request): JsonResponse
     {
-        Resource::withoutWrapping();
+        JsonResource::withoutWrapping();
 
         DeleteAlbumMedia::dispatch($album->media->firstWhere('id', $request->get('media_id')));
 

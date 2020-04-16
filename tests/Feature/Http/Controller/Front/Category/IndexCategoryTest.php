@@ -4,7 +4,7 @@ namespace Tests\Feature\Http\Controller\Front\Category;
 
 use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class IndexCategoryTest extends TestCase

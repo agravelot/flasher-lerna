@@ -16,7 +16,7 @@
                             <input class="input" id="email" type="email" name="email"
                                    placeholder="{{ __('Email') }}" autofocus="" value="{{ old('email') }}">
                             <span class="icon is-small is-left">
-                                @fas('envelope')
+                                <x-fa name="envelope" library="solid"/>
                             </span>
                         </div>
                         @include('layouts.partials._form_errors', ['data' => 'email'])
@@ -27,7 +27,7 @@
                             <input class="input" id="password" type="password" name="password"
                                    placeholder="{{ __('Your Password') }}">
                             <span class="icon is-small is-left">
-                                @fas('key')
+-                                <x-fa name="key" library="solid"/>
                             </span>
                         </div>
                         @include('layouts.partials._form_errors', ['data' => 'password'])

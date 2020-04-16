@@ -5,8 +5,8 @@ namespace Tests\Feature\Http\Controller\Admin\AdminSettings;
 use App\Enums\SettingType;
 use App\Models\Setting;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Testing\TestResponse;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Tests\TestCase;
 

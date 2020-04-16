@@ -4,7 +4,7 @@ namespace Tests\Feature\Http\Controller\Admin\Category;
 
 use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class StoreCategoryTest extends TestCase

@@ -5,9 +5,9 @@ namespace Tests\Feature\Http\Controller\Api\AdminPictureAlbum;
 use App\Jobs\PerformConversions;
 use App\Models\Album;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class StoreAdminPictureAlbumTest extends TestCase

@@ -4,10 +4,11 @@ namespace App\Http\Resources;
 
 use App\Models\Page;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\Resource;
 
 /** @mixin Page */
-class PageResource extends Resource
+class PageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

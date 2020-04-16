@@ -12,8 +12,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Routing\Controller;
-use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
-use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 
 class AdminSettingsController extends Controller
 {
@@ -37,27 +35,13 @@ class AdminSettingsController extends Controller
      * Update the specified resource in storage.
      *
      * @return JsonResponse|UploadMediaProcessingResource|SettingResource
-     *
-     * @throws UploadMissingFileException
      */
-    public function update(Setting $setting, UpdateSettingRequest $request, FileReceiver $receiver)
+    public function update(Setting $setting, UpdateSettingRequest $request)
     {
         if ($setting->type->value === SettingType::Media) {
-            // We are handling file upload
-            if ($receiver->isUploaded() === false) {
-                throw new UploadMissingFileException();
-            }
+            JsonResponse::withoutWrapping();
 
-            Resource::withoutWrapping();
-            $save = $receiver->receive();
-
-            // check if the upload has not finished (in chunk mode it will send smaller files)
-            if (! $save->isFinished()) {
-                // we are in chunk mode, lets send the current progress
-                return new UploadMediaProcessingResource($save);
-            }
-
-            $setting->value = $save->getFile();
+            $setting->value = $request->file();
 
             return (new UploadMediaCompletedResource($setting->value))->response()->setStatusCode(201);
         }
