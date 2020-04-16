@@ -24,7 +24,7 @@
                                         aria-controls="dropdown-menu4">
                                         <span class="is-uppercase">{{ __('Gallery') }}</span>
                                         <span class="icon is-small">
-                                            @fa('angle-down')
+                                            <x-fa name="angle-down"/>
                                         </span>
                                     </button>
                                 </div>
@@ -65,7 +65,7 @@
                                     <button class="button is-black">
                                         <span class="is-uppercase is-hidden-tablet is-hidden-on-search  ">{{ __('Search') }}</span>
                                         <span class="icon has-text-white">
-                                            @fa('search')
+                                            <x-fa name="search"/>
                                         </span>
                                     </button>
                                 </div>
@@ -83,7 +83,7 @@
                             <button class="button is-black" aria-haspopup="true" aria-controls="dropdown-menu4">
                                 <span class="is-hidden-touch">{{ Auth::user()->name }}</span>
                                 <span class="icon is-small">
-                                    @fas('user')
+                                    <x-fa name="user" library="solid" />
                                 </span>
                             </button>
                         </div>
@@ -119,7 +119,7 @@
                 @else
                     <a class="button is-black" href="{{ route('login') }}">
                         <span class="icon">
-                            @fas('sign-in-alt')
+                            <x-fa name="sign-in-alt" library="solid"/>
                         </span>
                         <span
                             class="is-uppercase has-text-grey-light has-text-weight-light is-hidden-touch">

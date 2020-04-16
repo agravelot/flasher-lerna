@@ -4,10 +4,11 @@ namespace App\Http\Resources;
 
 use App\Models\SocialMedia;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\Resource;
 
 /** @mixin SocialMedia */
-class SocialMediaResource extends Resource
+class SocialMediaResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

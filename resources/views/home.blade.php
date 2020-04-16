@@ -43,7 +43,7 @@
             <section>
                 <div class="columns is-vcentered is-multiline">
                     @foreach($albums as $key => $album)
-                        <div class="column {{ $key === 0 ? 'is-full-touch' : null }}">
+                        <div class="column">
                             <a href="{{ route('albums.show', compact('album')) }}"
                                class="has-margin-right-md" aria-label="{{ $album->title }}">
                                 <article class="card has-hover-zoom is-clipped">
@@ -73,8 +73,8 @@
                     <a class="button is-medium is-white has-hover-zoom" href="{{ route('albums.index') }}">
                         <span>{{ __('Discover more') }}</span>
                         <span class="icon is-medium">
-                        @fa('chevron-right')
-                    </span>
+                            <x-fa name="chevron-right"/>
+                        </span>
                     </a>
                 </div>
             </section>

@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Album;
 use App\Models\Contact;
 use App\Models\Cosplayer;
+use App\Models\Media;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Spatie\MediaLibrary\Models\Media;
 
 class AdminDashboardController extends Controller
 {

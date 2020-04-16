@@ -27,7 +27,7 @@
                                 <input class="input" id="email" type="email" name="email"
                                        value="{{ old('email') }}" placeholder="{{ __('Email') }}" required autofocus>
                                 <span class="icon is-small is-left">
-                                    @fas('envelope')
+                                    <x-fa name="envelope" library="solid"/>
                                 </span>
                             </p>
                             @include('layouts.partials._form_errors', ['data' => 'email'])

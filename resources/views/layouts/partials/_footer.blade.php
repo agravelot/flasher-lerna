@@ -19,6 +19,11 @@
                 </div>
                 <div class="column is-narrow">
                     <div class="has-text-centered">
+                        <a class="has-text-white" href="{{ route('cosplayers.index')  }}">{{ __('Cosplayers') }}</a>
+                    </div>
+                </div>
+                <div class="column is-narrow">
+                    <div class="has-text-centered">
                         <a class="has-text-white" href="{{ route('testimonials.index')  }}">{{ __('Testimonial') }}</a>
                     </div>
                 </div>
@@ -34,12 +39,12 @@
                 <p>{!! settings()->get('footer_content') !!}</p>
                 <div class="has-text-centered">
                 <span class="icon" style="color: dodgerblue;">
-                    @fas('code')
+                    <x-fa name="code" library="solid"/>
                 </span>
                     {{ __('with') }}
                     <span class="icon" style="color: red;">
-                @fas('heart')
-            </span>
+                        <x-fa name="heart" library="solid"/>
+                    </span>
                     {{ __('by') }} <a class="has-text-white" href="https://gitlab.com/Nevax">Antoine Gravelot</a>
                 </div>
             </div>

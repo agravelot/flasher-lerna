@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Models;
+namespace Tests\Unit\Notifications;
 
 use App\Models\Album;
 use App\Models\Cosplayer;

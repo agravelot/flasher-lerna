@@ -1,4 +1,4 @@
-FROM composer:1.9 as vendor-dev
+FROM composer:1.10.5 as vendor-dev
 COPY . .
 
 RUN composer global require hirak/prestissimo \

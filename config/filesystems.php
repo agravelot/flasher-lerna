@@ -76,7 +76,13 @@ return [
             'region' => env('S3_DEFAULT_REGION'),
             'bucket' => env('S3_BUCKET'),
             //'endpoint' => env('S3_ENDPOINT'),
+            'url' => env('S3_BUCKET_CDN', null),
             'root' => config('app.env'),
+            'cache' => [
+                'store' => 'redis',
+                'expire' => 600,
+                'prefix' => 's3-cache',
+            ],
         ],
     ],
 ];

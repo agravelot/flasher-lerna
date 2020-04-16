@@ -4,11 +4,12 @@ namespace App\Http\Resources;
 
 use App\Models\Album;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\Facades\Auth;
 
 /** @mixin Album */
-class AlbumShowResource extends Resource
+class AlbumShowResource extends JsonResource
 {
     /**
      * @var Request

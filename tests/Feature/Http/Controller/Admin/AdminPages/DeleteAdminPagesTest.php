@@ -4,7 +4,7 @@ namespace Tests\Feature\Http\Controller\Admin\AdminPages;
 
 use App\Models\Page;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class DeleteAdminPagesTest extends TestCase

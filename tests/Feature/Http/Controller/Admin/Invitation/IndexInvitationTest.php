@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
+namespace Tests\Feature\Http\Controller\Admin\Invitation;
 
 use App\Models\Invitation;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class IndexInvitationTest extends TestCase

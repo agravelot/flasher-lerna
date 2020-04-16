@@ -4,10 +4,11 @@ namespace App\Http\Resources;
 
 use App\Models\Album;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\Resource;
 
 /** @mixin Album */
-class AlbumIndexResource extends Resource
+class AlbumIndexResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

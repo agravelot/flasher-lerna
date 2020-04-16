@@ -4,16 +4,15 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\SettingType;
 use App\Http\Requests\UpdateSettingRequest;
-use App\Http\Resources\CompleteUploadPictureResource;
-use App\Http\Resources\ProcessingUploadPictureResource;
 use App\Http\Resources\SettingResource;
+use App\Http\Resources\UploadMediaCompletedResource;
+use App\Http\Resources\UploadMediaProcessingResource;
 use App\Models\Setting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Routing\Controller;
-use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
-use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 
 class AdminSettingsController extends Controller
 {
@@ -36,30 +35,16 @@ class AdminSettingsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @return JsonResponse|ProcessingUploadPictureResource|SettingResource
-     *
-     * @throws UploadMissingFileException
+     * @return JsonResponse|UploadMediaProcessingResource|SettingResource
      */
-    public function update(Setting $setting, UpdateSettingRequest $request, FileReceiver $receiver)
+    public function update(Setting $setting, UpdateSettingRequest $request)
     {
         if ($setting->type->value === SettingType::Media) {
-            // We are handling file upload
-            if ($receiver->isUploaded() === false) {
-                throw new UploadMissingFileException();
-            }
+            JsonResource::withoutWrapping();
 
-            Resource::withoutWrapping();
-            $save = $receiver->receive();
+            $setting->value = $request->file();
 
-            // check if the upload has not finished (in chunk mode it will send smaller files)
-            if (! $save->isFinished()) {
-                // we are in chunk mode, lets send the current progress
-                return new ProcessingUploadPictureResource($save);
-            }
-
-            $setting->value = $save->getFile();
-
-            return (new CompleteUploadPictureResource($setting->value))->response()->setStatusCode(201);
+            return (new UploadMediaCompletedResource($setting->value))->response()->setStatusCode(201);
         }
 
         $setting->update($request->only('value'));

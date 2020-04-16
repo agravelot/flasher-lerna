@@ -4,13 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCoverCategoryRequest;
-use App\Http\Resources\CompleteUploadPictureResource;
-use App\Http\Resources\ProcessingUploadPictureResource;
+use App\Http\Resources\UploadMediaCompletedResource;
+use App\Http\Resources\UploadMediaProcessingResource;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\Resource;
-use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
-use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 
 class AdminCoverCategoryController extends Controller
 {
@@ -18,29 +17,17 @@ class AdminCoverCategoryController extends Controller
      * Update the specified resource in storage.
      *
      *
-     * @return CompleteUploadPictureResource|ProcessingUploadPictureResource|JsonResponse
-     * @throws UploadMissingFileException
+     * @return UploadMediaCompletedResource|UploadMediaProcessingResource|JsonResponse
      */
-    public function store(StoreCoverCategoryRequest $request, FileReceiver $receiver)
+    public function store(StoreCoverCategoryRequest $request)
     {
-        if ($receiver->isUploaded() === false) {
-            throw new UploadMissingFileException();
-        }
-
-        Resource::withoutWrapping();
-        $save = $receiver->receive();
-
-        // check if the upload has not finished (in chunk mode it will send smaller files)
-        if (! $save->isFinished()) {
-            // we are in chunk mode, lets send the current progress
-            return new ProcessingUploadPictureResource($save);
-        }
+        JsonResource::withoutWrapping();
 
         $category = Category::findBySlugOrFail($request->get('category_slug'));
 
-        $media = $category->setCover($save->getFile());
+        $media = $category->setCover($request->file('file'));
 
-        return new CompleteUploadPictureResource($media);
+        return new UploadMediaCompletedResource($media);
     }
 
     /**

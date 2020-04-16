@@ -9,10 +9,8 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnFailure="false">
-    <listeners>
-        <listener class="NunoMaduro\Collision\Adapters\Phpunit\Listener"/>
-    </listeners>
+         stopOnFailure="false"
+         printerClass="NunoMaduro\Collision\Adapters\Phpunit\Printer">
     <testsuites>
         <testsuite name="Unit">
             <directory suffix="Test.php">./tests/Unit</directory>
@@ -33,6 +31,5 @@
         <server name="TELESCOPE_ENABLED" value="false"/>
         <server name="QUEUE_DRIVER" value="sync"/>
         <server name="QUEUE_CONNECTION" value="sync"/>
-        <server name="INSPECTOR_ENABLE" value="false"/>
     </php>
 </phpunit>
