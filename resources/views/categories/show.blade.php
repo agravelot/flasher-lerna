@@ -11,7 +11,7 @@
                 <div class="column is-narrow field has-addons">
                     @can('update', $category)
                         <div class="control">
-                            <a class="button is-black" href="{{ config('app.admin_url')."/admin/categories/{$category->slug}" }}">
+                            <a class="button is-black" href="{{ config('app.admin_url')."/categories/{$category->slug}" }}">
                                 <span class="icon is-small">
                                     <x-fa name="edit" library="solid"/>
                                 </span>
