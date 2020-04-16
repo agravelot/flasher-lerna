@@ -173,8 +173,8 @@ services:
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-only.redirectscheme.permanent=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-retry.retry.attempts=4"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-error-check.circuitbreaker.expression=ResponseCodeRatio(500, 600, 0, 600) > 0.30 || NetworkErrorRatio() > 0.10"
-      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-limit.buffering.maxRequestBodyBytes=20000000" # 20 Mb
-      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-limit.buffering.memResponseBodyBytes=20000000" # 20 Mb
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-limit.buffering.maxRequestBodyBytes=50000000" # 50 Mb
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-limit.buffering.memResponseBodyBytes=50000000" # 50 Mb
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-ratelimit.ratelimit.average=1000"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-ratelimit.ratelimit.burst=500"
     volumes:
