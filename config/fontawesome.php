@@ -69,6 +69,6 @@ return [
     |
     */
 
-    'font_awesome_css' => false,
+    'font_awesome_css' => true,
 
 ];
