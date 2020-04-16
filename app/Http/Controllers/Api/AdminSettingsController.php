@@ -10,6 +10,7 @@ use App\Http\Resources\UploadMediaProcessingResource;
 use App\Models\Setting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Routing\Controller;
 
@@ -39,7 +40,7 @@ class AdminSettingsController extends Controller
     public function update(Setting $setting, UpdateSettingRequest $request)
     {
         if ($setting->type->value === SettingType::Media) {
-            JsonResponse::withoutWrapping();
+            JsonResource::withoutWrapping();
 
             $setting->value = $request->file();
 
