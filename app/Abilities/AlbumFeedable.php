@@ -13,7 +13,7 @@ trait AlbumFeedable
             ->title($this->title)
             ->summary($this->meta_description)
             ->updated($this->updated_at)
-            ->link(route('albums.show', ['slug' => $this->slug]))
+            ->link(route('albums.show', ['album' => $this]))
             ->author($this->user->name);
     }
 }
