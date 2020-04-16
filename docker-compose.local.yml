@@ -107,14 +107,14 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.entrypoints=websecure"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.tls.certresolver=myhttpchallenge"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.middlewares=${COMPOSE_PROJECT_NAME}-keycloak-headers,${COMPOSE_PROJECT_NAME}-keycloak-https-only,${COMPOSE_PROJECT_NAME}-keycloak-ratelimit,${COMPOSE_PROJECT_NAME}-keycloak-retry,${COMPOSE_PROJECT_NAME}-keycloak-error-check,${COMPOSE_PROJECT_NAME}-keycloak-compress"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.stsSeconds=63072000"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.stsIncludeSubdomains=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.stsPreload=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.forceSTSHeader=true"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.stsSeconds=63072000"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.stsIncludeSubdomains=true"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.stsPreload=true"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.forceSTSHeader=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.contentTypeNosniff=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.sslRedirect=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.referrerPolicy=same-origin"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.frameDeny=true"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.frameDeny=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.browserXssFilter=true"
       #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.sslProxyHeaders=https"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-compress.compress=true"
@@ -151,9 +151,3 @@ volumes:
   cache_data:
   db-data:
   db-kc-data:
-
-networks:
-  nginx-proxy:
-    external: true
-  database-network:
-    external: true
