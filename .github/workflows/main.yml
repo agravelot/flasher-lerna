@@ -53,6 +53,7 @@ jobs:
         docker-compose -f docker-compose.yml -f docker-compose.local.yml kill queue scheduler nginx traefik
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T cache redis-cli config set maxmemory 41943040
         docker cp vendor $(docker-compose ps -q php):/var/www/html/
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan cache:clear-wait-connection
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan db:wait-connection
       env:
         SSH_USER: ${{ secrets.CI_STAGING_SSH_USER }}
@@ -160,8 +161,8 @@ jobs:
         S3_BUCKET: ${{ secrets.S3_BUCKET }}
         S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
         S3_BUCKET_CDN: ${{ secrets.S3_BUCKET_CDN }}
-        NOCAPTCHA_SECRET: ${{ secrets.NOCAPTCHA_SECRET }}
-        NOCAPTCHA_SITEKEY: ${{ secrets.NOCAPTCHA_SITEKEY }}
+        NOCAPTCHA_SECRET: ${{ secrets.NOCAPTCHA_SECRET_STAGING }}
+        NOCAPTCHA_SITEKEY: ${{ secrets.NOCAPTCHA_SITEKEY_STAGING }}
         SENTRY_LARAVEL_DSN: ${{ secrets.SENTRY_LARAVEL_DSN }}
         ANALYTICS_TRACKING_ID_PROD: ${{ secrets.ANALYTICS_TRACKING_ID_PROD }}
         FRONT_SENTRY_DSN_PUBLIC: ${{ secrets.FRONT_SENTRY_DSN_PUBLIC }}
