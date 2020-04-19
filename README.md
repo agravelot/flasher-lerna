@@ -25,11 +25,10 @@ Administration panel is accessible in separate project `flasher-admin`.
 Begin by cloning this repository to your machine, and copy the `.env` configuration template.
 
 ```bash 
-git clone git@github.com:agravelot/flasher.git
+git clone git@github.com:FlasherProject/flasher.git
 cd flasher
 cp .env.docker .env
 ```
-
 
 ### Step 3
 Next, install the required php dependencies, generate the required keys and add storage symbolic link.
