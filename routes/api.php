@@ -17,6 +17,7 @@ Route::group([
 ], static function (): void {
     // Front
     Route::apiResource('albums', 'AlbumController')->only('index', 'show');
+    Route::apiResource('testimonials', 'TestimonialController')->only('index');
     Route::apiResource('categories', 'CategoryController')
         ->only('index', 'show');
     Route::resource('/account', 'AccountController')->middleware(['auth'])->only('destroy')
@@ -33,6 +34,7 @@ Route::group([
         Route::get('dashboard', 'AdminDashboardController')->name('dashboard');
         Route::get('clear-cache', 'AdminClearCacheController')->name('clear-cache');
 
+        Route::apiResource('album-media-added', 'AdminMediaWebhook')->only(['store']);
         Route::apiResource('albums', 'AdminAlbumController');
         Route::patch('albums/{album}/media-ordering', 'AlbumMediaOrderingController')
             ->name('albums.media-ordering');

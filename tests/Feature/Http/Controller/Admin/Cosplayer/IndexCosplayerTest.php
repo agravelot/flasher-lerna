@@ -5,7 +5,7 @@ namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 use App\Models\Cosplayer;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class IndexCosplayerTest extends TestCase

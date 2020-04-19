@@ -4,7 +4,7 @@ namespace Tests\Feature\Http\Controller\Admin\AdminSettings;
 
 use App\Models\Setting;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class IndexAdminSettingsTest extends TestCase

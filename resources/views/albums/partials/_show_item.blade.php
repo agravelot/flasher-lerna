@@ -33,17 +33,15 @@
             </div>
         </div>
 
-        <div class="has-text-right">
-            @include('layouts.partials._share_socials')
-        </div>
-
             @if(Gate::check('download', $album) || Gate::check('update', $album))
                 <div class="columns is-mobile is-centered">
                     <div class="column is-narrow field has-addons">
                         @can('download', $album)
                             <div class="control">
                                 <a class="button is-black" href="{{ route('download-albums.show', compact('album')) }}">
-                                    <span class="icon is-small">@fas('download')</span>
+                                    <span class="icon is-small">
+                                        <x-fa name="download" library="solid"/>
+                                    </span>
                                     <span>{{ __('Download') }}</span>
                                 </a>
                             </div>
@@ -51,8 +49,10 @@
 
                         @can('update', $album)
                             <div class="control">
-                                <a class="button is-black" href="{{ "/admin/albums/{$album->slug}/edit" }}">
-                                    <span class="icon is-small">@fas('edit')</span>
+                                <a class="button is-black" href="{{ config('app.admin_url')."/albums/{$album->slug}" }}">
+                                    <span class="icon is-small">
+                                        <x-fa name="edit" library="solid"/>
+                                    </span>
                                     <span>{{ __('Edit') }}</span>
                                 </a>
                             </div>
@@ -60,6 +60,10 @@
                     </div>
                 </div>
             @endif
+
+            <div class="has-text-right">
+                @include('layouts.partials._share_socials')
+            </div>
     @stop
 
     @if ($album->body)
@@ -78,11 +82,11 @@
         /** @var \App\Models\Album $album */
         $medias = $album->getMedia(\App\Models\Album::PICTURES_COLLECTION);
 
-        $columnsDesktop = $medias->groupBy(function (\Spatie\MediaLibrary\Models\Media $item, int $key) {
+        $columnsDesktop = $medias->groupBy(function (\Spatie\MediaLibrary\MediaCollections\Models\Media $item, int $key) {
                 return $key % 3;
             });
 
-        $columnsTablet = $medias->groupBy(function (\Spatie\MediaLibrary\Models\Media $item, int $key) {
+        $columnsTablet = $medias->groupBy(function (\Spatie\MediaLibrary\MediaCollections\Models\Media $item, int $key) {
                 return $key % 2;
             });
     @endphp
@@ -104,8 +108,8 @@
                                )
                            }}
                             <span class="icon has-text-white has-text-hover-image-bottom-left">
-                            @fa('search')
-                        </span>
+                                <x-fa name="search"/>
+                            </span>
                         </a>
                     @endforeach
                 </div>
@@ -130,8 +134,8 @@
                                )
                            }}
                             <span class="icon has-text-white has-text-hover-image-bottom-left">
-                            @fa('search')
-                        </span>
+                                <x-fa name="search"/>
+                            </span>
                         </a>
                     @endforeach
                 </div>
@@ -154,8 +158,8 @@
                            )
                        }}
                         <span class="icon has-text-white has-text-hover-image-bottom-left">
-                        @fa('search')
-                    </span>
+                            <x-fa name="search"/>
+                        </span>
                     </a>
                 </div>
             @endforeach

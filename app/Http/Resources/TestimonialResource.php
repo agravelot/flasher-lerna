@@ -4,10 +4,11 @@ namespace App\Http\Resources;
 
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\Resource;
 
 /** @mixin Testimonial */
-class TestimonialResource extends Resource
+class TestimonialResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

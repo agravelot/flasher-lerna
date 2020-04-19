@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers\Admin\SocialMedia;
+namespace Tests\Feature\Http\Controller\Admin\SocialMedia;
 
 use App\Models\SocialMedia;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class IndexSocialMediaTest extends TestCase

@@ -27,9 +27,9 @@ Required PHP extensions :
 Begin by cloning this repository to your machine, and copy the `.env` configuration template.
 
 ```bash 
-git clone git@gitlab.com:flasher/flasher.git
+git clone git@github.com:agravelot/flasher.git
 cd flasher
-cp .env.production .env
+cp .env.example .env
 ```
 
 ### Step 2
@@ -44,7 +44,7 @@ DB_USERNAME=homestead
 DB_PASSWORD=secret
 ```
 
-You can also fill up S3, mailing, analytics
+If you want, you can also fill up S3, mailing, analytics
 
 ### Step 3
 Next, install the required php dependencies, generate the required keys and add storage symbolic link.
@@ -54,6 +54,7 @@ composer install
 php artisan key:generate
 php artisan passport:keys
 php artisan storage:link
+php artisan migrate
 ```
 
 To enable laravel telescope debugging panel, run `php artisan telescope:install`.
@@ -83,7 +84,7 @@ php artisan db:seed --class=AdminUserSeeder
 ```
 
 Default credentails :
-- Email `admin@picblog.com`
+- Email `admin@flasher.com`
 - Password `secret`
 
 ### Step 6

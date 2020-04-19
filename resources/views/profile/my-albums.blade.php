@@ -26,12 +26,14 @@
                                             {{ $album->title }}
                                         </a>
                                         <br>
-                                        <span>{{ $album->media->count() }} {{ __('photos') }} - {{ Spatie\MediaLibrary\Helpers\File::getHumanReadableSize($album->media->pluck('size')->sum()) }}</span>
+                                        <span>{{ $album->media->count() }} {{ __('photos') }} - {{ \Spatie\MediaLibrary\Support\File::getHumanReadableSize($album->media->pluck('size')->sum()) }}</span>
                                     </div>
                                 </div>
                                 <div class="media-right">
                                     <a class="button download-album" href="{{ route('download-albums.show', compact('album')) }}">
-                                        <span class="icon is-small">@fas('download')</span>
+                                        <span class="icon is-small">
+                                            <x-fa name="download" library="solid"/>
+                                        </span>
                                         <span>{{ __('Download') }}</span>
                                     </a>
                                 </div>

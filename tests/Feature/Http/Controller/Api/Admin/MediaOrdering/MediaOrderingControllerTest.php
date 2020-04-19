@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Feature\Http\Controller\Api\Admin;
+namespace Tests\Feature\Http\Controller\Api\Admin\MediaOrdering;
 
 use App\Models\Album;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class MediaOrderingControllerTest extends TestCase

@@ -5,7 +5,7 @@ namespace Tests\Feature\Http\Controller\Auth;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class DeleteAccountTest extends TestCase

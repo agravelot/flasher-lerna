@@ -3,9 +3,9 @@
 namespace App;
 
 use Dreamonkey\CloudFrontUrlSigner\Facades\CloudFrontUrlSigner;
-use Spatie\MediaLibrary\UrlGenerator\S3UrlGenerator;
+use Spatie\MediaLibrary\Support\UrlGenerator\DefaultUrlGenerator;
 
-class SignedCloudFrontUrlGenerator extends S3UrlGenerator
+class SignedCloudFrontUrlGenerator extends DefaultUrlGenerator
 {
     public function getUrl(): string
     {

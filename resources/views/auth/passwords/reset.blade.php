@@ -36,7 +36,7 @@
                                         <input class="input" id="email" type="email" name="email"
                                                value="{{ old('email') }}" required autofocus>
                                         <span class="icon is-small is-left">
-                                            @fas('envelope')
+                                            <x-fa name="envelope" library="solid"/>
                                         </span>
                                     </p>
                                     @include('layouts.partials._form_errors', ['data' => 'email'])
@@ -54,7 +54,7 @@
                                     <p class="control has-icons-left">
                                         <input class="input" id="password" type="password" name="password" required>
                                         <span class="icon is-small is-left">
-                                            @fas('key')
+                                            <x-fa name="key" library="solid"/>
                                         </span>
                                     </p>
                                     @include('layouts.partials._form_errors', ['data' => 'password'])
@@ -74,7 +74,7 @@
                                         <input class="input" id="password-confirm" type="password"
                                                name="password_confirmation" required>
                                         <span class="icon is-small is-left">
-                                            @fas('key')
+                                            <x-fa name="key" library="solid"/>
                                         </span>
                                     </p>
                                     @include('layouts.partials._form_errors', ['data' => 'password_confirmation'])

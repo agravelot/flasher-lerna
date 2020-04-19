@@ -10,14 +10,13 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use LogicException;
 use Spatie\Image\Exceptions\InvalidManipulation;
-use Spatie\MediaLibrary\File;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use Spatie\MediaLibrary\Models\Media;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\File;
 
 class Setting extends Model implements HasMedia
 {
-    use CastsEnums, HasMediaTrait, ClearsResponseCache;
+    use CastsEnums, InteractsWithMedia, ClearsResponseCache;
 
     private const SETTING_COLLECTION = 'setting_media';
     public const SETTINGS_CACHE_KEY = 'settings';
@@ -115,7 +114,7 @@ class Setting extends Model implements HasMedia
     /**
      * @throws InvalidManipulation
      */
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
     {
         $this->addMediaConversion('thumb')
             ->width(400)
