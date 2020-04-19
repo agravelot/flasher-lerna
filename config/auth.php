@@ -41,7 +41,7 @@ return [
         ],
 
         'api' => [
-            'driver' => 'passport',
+            'driver' => 'keycloak',
             'provider' => 'users',
         ],
     ],
