@@ -53,8 +53,6 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       SESSION_SECURE_COOKIE: "false"
       TELESCOPE_ENABLED: "true"
-#    volumes:
-#      - .:/var/www/html:rw,delegated
 
   cache:
     image: redis:5.0-alpine
