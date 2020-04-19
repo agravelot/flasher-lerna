@@ -8,3 +8,15 @@ services:
   php:
     volumes:
       - .:/var/www/html:rw
+
+  publisher:
+    volumes:
+      - .:/var/www/html:rw
+
+  queue:
+    volumes:
+      - .:/var/www/html:rw
+
+  scheduler:
+    volumes:
+      - .:/var/www/html:rw
