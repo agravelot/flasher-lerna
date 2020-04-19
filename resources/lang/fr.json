@@ -89,7 +89,7 @@
     "Sorry, you are forbidden from accessing this page.": "Désolé, il vous est interdit d'accéder à cette page.",
     "Page Not Found": "Page introuvable",
     "Page Expired": "Page expirée",
-    "Sorry, your session has expired. Please refresh and try again.": "Désolé, votre session a expiré. Veuillez vous rafraîchir et réessayer.",
+    "Sorry, your session has expired. Please refresh and try again.": "Désolé, votre session a expirée. Veuillez vous rafraîchir et réessayer.",
     "Too Many Requests": "Trop de demandes",
     "Error": "Erreur",
     "Whoops, something went wrong on our servers.": "Oups, quelque chose a mal tourné sur nos serveurs.",
@@ -105,5 +105,9 @@
     "New photos of you have just been published.": "De nouvelles photos de vous viennent d'être publiées.",
     "Show my pictures": "Découvrir mes photos",
     "If this album is not accessible, make sure to authenticate to your account.": "Si cet album n'est pas accessible, assurez-vous de bien vous authentifier.",
-    "Search": "Rechercher"
+    "Search": "Rechercher",
+    "Before proceeding, please check your email for a verification link.": "Avant de continuer, veuillez vérifier votre adresse email.",
+    "If you did not receive the email": "Si vous n'avez pas reçu de mail",
+    "click here to request another": "cliquez ici pour renvoyer le mail",
+    "Verify Your Email Address": "Vérifiez votre adresse email"
 }
