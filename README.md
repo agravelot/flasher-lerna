@@ -60,6 +60,8 @@ docker network create nginx-proxy
 docker-compose -f docker-compose.yml -f docker-compose.local.yml -f docker-compose.local-dev.yml up -d
 ```
 
+You can now open your browser `http://flasher.localhost`.
+
 ### Step 6
 
 Create administrator user from command line tool, and follow instructions.
