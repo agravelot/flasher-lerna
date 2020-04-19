@@ -39,9 +39,13 @@ elif [[ "$role" == "publisher" ]]; then
   php artisan passport:keys
 
   rm -rvf public/vendor/*
-  # php artisan telescope:publish
   php artisan horizon:publish
   echo "$CLOUDFRONT_PRIVATE_KEY" | tr -d '\r' > storage/trusted-signer.pem
+
+  if [ "$TELESCOPE_ENABLED" == true ]; then
+      echo "Publishing telescope assets"
+      php artisan telescope:publish
+  fi
 
 else
   echo "Could not match the container role \"$role\""
