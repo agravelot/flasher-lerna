@@ -13,7 +13,7 @@ class DeleteAlbum implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private Album $album;
+    public Album $album;
 
     public function __construct(Album $album)
     {
