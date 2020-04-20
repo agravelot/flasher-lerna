@@ -51,7 +51,7 @@ services:
     environment:
       APP_DEBUG: "true"
       DB_PASSWORD: ${DB_PASSWORD}
-      SESSION_SECURE_COOKIE: "null"
+      SESSION_SECURE_COOKIE: null
       TELESCOPE_ENABLED: "true"
 
   cache:
