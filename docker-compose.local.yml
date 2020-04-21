@@ -5,18 +5,21 @@ services:
     image: "traefik:v2.2"
     restart: unless-stopped
     command:
-      #- "--log.level=DEBUG"
+      - "--log.level=DEBUG"
       - "--api.insecure=true"
       - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
+      - "--providers.docker.network=nginx-proxy"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.foo.http.redirections.entryPoint.scheme=https"
+      - "--entrypoints.foo.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.foo.http.redirections.entrypoint.permanent=false"
       - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge=true"
       - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.myhttpchallenge.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-      - "--certificatesresolvers.myhttpchallenge.acme.email=antoine.gravelot@hotmail.fr"
       - "--certificatesresolvers.myhttpchallenge.acme.storage=/letsencrypt/acme.json"
-      - "--providers.docker.network=nginx-proxy"
+      - "--certificatesresolvers.myhttpchallenge.acme.email=antoine.gravelot@hotmail.fr"
+      - "--certificatesresolvers.myhttpchallenge.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
     ports:
       - "80:80"
       - "443:443"
@@ -28,11 +31,9 @@ services:
 
   tusd:
     labels:
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd.tls=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.isDevelopment=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.sslRedirect=false"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.accessControlMaxAge=1"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-https-only.redirectscheme.scheme=http"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-https-only.redirectscheme.permanent=false"
 
   nginx:
     environment:
@@ -41,11 +42,9 @@ services:
 #    ports:
 #    - "8090:80"
     labels:
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.isDevelopment=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.sslRedirect=false"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.accessControlMaxAge=1"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-only.redirectscheme.scheme=http"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-only.redirectscheme.permanent=false"
 
   php:
     environment:
@@ -99,26 +98,11 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=nginx-proxy"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak-insecure.rule=Host(`${KEYCLOAK_URI}`) || Host(`www.${KEYCLOAK_URI}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak-insecure.entrypoints=web"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak-insecure.middlewares=${COMPOSE_PROJECT_NAME}-keycloak-headers,${COMPOSE_PROJECT_NAME}-keycloak-https-only,${COMPOSE_PROJECT_NAME}-keycloak-ratelimit,${COMPOSE_PROJECT_NAME}-keycloak-compress"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.rule=Host(`${KEYCLOAK_URI}`) || Host(`www.${KEYCLOAK_URI}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.entrypoints=websecure"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.tls.certresolver=myhttpchallenge"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.middlewares=${COMPOSE_PROJECT_NAME}-keycloak-headers,${COMPOSE_PROJECT_NAME}-keycloak-https-only,${COMPOSE_PROJECT_NAME}-keycloak-ratelimit,${COMPOSE_PROJECT_NAME}-keycloak-retry,${COMPOSE_PROJECT_NAME}-keycloak-error-check,${COMPOSE_PROJECT_NAME}-keycloak-compress"
-      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.stsSeconds=63072000"
-      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.stsIncludeSubdomains=true"
-      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.stsPreload=true"
-      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.forceSTSHeader=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.contentTypeNosniff=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.sslRedirect=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.referrerPolicy=same-origin"
-      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.frameDeny=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.browserXssFilter=true"
-      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.sslProxyHeaders=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.middlewares=${COMPOSE_PROJECT_NAME}-keycloak-headers,${COMPOSE_PROJECT_NAME}-keycloak-ratelimit,${COMPOSE_PROJECT_NAME}-keycloak-retry,${COMPOSE_PROJECT_NAME}-keycloak-error-check,${COMPOSE_PROJECT_NAME}-keycloak-compress"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-compress.compress=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-https-only.redirectscheme.scheme=https"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-https-only.redirectscheme.permanent=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-retry.retry.attempts=4"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-error-check.circuitbreaker.expression=ResponseCodeRatio(500, 600, 0, 600) > 0.30 || NetworkErrorRatio() > 0.10"
       #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-limit.buffering.maxRequestBodyBytes=50000000" # 50 Mb
@@ -127,10 +111,7 @@ services:
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-ratelimit.ratelimit.burst=500"
       # Local
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.isDevelopment=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.sslRedirect=false"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlMaxAge=1"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-https-only.redirectscheme.scheme=http"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-https-only.redirectscheme.permanent=false"
+    command: "-b 0.0.0.0 --debug"
 
   db-kc:
     image: postgres:11-alpine
