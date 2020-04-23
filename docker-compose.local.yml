@@ -72,7 +72,9 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
 
   keycloak:
-    image: quay.io/keycloak/keycloak:latest
+    build:
+      context: docker/keycloak
+      dockerfile: Dockerfile
     restart: unless-stopped
     environment:
       DB_VENDOR: POSTGRES
@@ -112,7 +114,6 @@ services:
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlMaxAge=1"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlAllowCredentials=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlAllowHeaders=*"
-    command: "-b 0.0.0.0 --debug"
 
   db-kc:
     image: postgres:11-alpine
