@@ -6,9 +6,14 @@ role=${CONTAINER_ROLE:-app}
 env=${APP_ENV:-production}
 cd /var/www/html
 
-if [[ "$env" != "local" ]]; then
-  php artisan db:wait-connection
-  php artisan cache:clear-wait-connection
+php artisan db:wait-connection
+php artisan cache:clear-wait-connection
+
+if [[ "$env" == "local" ]]; then
+  rm -rvf /usr/local/etc/php/conf.d/opcache.ini /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+  php artisan cache:clear
+  php artisan config:clear
+else
   # Optimizing for production
   # https://laravel.com/docs/6.0/deployment#optimization
   echo "Caching configuration..."
