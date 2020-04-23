@@ -13,6 +13,7 @@ if [[ "$env" == "local" ]]; then
   rm -rvf /usr/local/etc/php/conf.d/opcache.ini /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
   php artisan cache:clear
   php artisan config:clear
+  php artisan route:clear
 else
   # Optimizing for production
   # https://laravel.com/docs/6.0/deployment#optimization
