@@ -45,6 +45,7 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.isDevelopment=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.accessControlMaxAge=1"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-error-check.circuitbreaker.expression=NetworkErrorRatio() > 0.10"
 
   php:
     environment:
