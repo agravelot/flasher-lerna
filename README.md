@@ -4,7 +4,7 @@
 [![coverage report](https://gitlab.com/flasher/flasher/badges/master/coverage.svg)](https://gitlab.com/flasher/flasher/commits/master)
 
 Flasher is a website specialized for photographer.
-Administration panel is accessible from `/admin` path.
+Administration panel is accessible in separate project `flasher-admin`.
 
 ## Features
 - Show albums collections
@@ -15,36 +15,20 @@ Administration panel is accessible from `/admin` path.
 
 ## Prerequisite
 
-Required PHP extensions :
-- gd
-- redis
-- imagick
+- docker
+- docker-compose
 
-## Testing in local
+## Dev in local with docker
 
 ### Step 1
 
 Begin by cloning this repository to your machine, and copy the `.env` configuration template.
 
 ```bash 
-git clone git@github.com:agravelot/flasher.git
+git clone git@github.com:FlasherProject/flasher.git
 cd flasher
-cp .env.example .env
+cp .env.docker .env
 ```
-
-### Step 2
-Next, create a new databases and reference its name and username/password within the project's `.env`.
-
-```dotenv
-DB_CONNECTION=pgqsl
-DB_HOST=127.0.0.1
-DB_PORT=5432
-DB_DATABASE=flasher
-DB_USERNAME=homestead
-DB_PASSWORD=secret
-```
-
-If you want, you can also fill up S3, mailing, analytics
 
 ### Step 3
 Next, install the required php dependencies, generate the required keys and add storage symbolic link.
@@ -52,9 +36,6 @@ Next, install the required php dependencies, generate the required keys and add 
 ```bash
 composer install
 php artisan key:generate
-php artisan passport:keys
-php artisan storage:link
-php artisan migrate
 ```
 
 To enable laravel telescope debugging panel, run `php artisan telescope:install`.
@@ -70,9 +51,22 @@ yarn dev # or watch, or prod
 
 ### Step 5
 
+You can now fire up our stack !
+
+```bash
+docker network create database-network
+docker network create nginx-proxy
+docker-compose -f docker-compose.yml -f docker-compose.local.yml -f docker-compose.local-dev.yml up -d
+```
+
+You can now open your browser `http://flasher.localhost`.
+
+### Step 6
+
 Create administrator user from command line tool, and follow instructions.
 
 ```bash
+docker-compose exec php sh
 php artisan user:create
 ```
 
@@ -86,14 +80,6 @@ php artisan db:seed --class=AdminUserSeeder
 Default credentails :
 - Email `admin@flasher.com`
 - Password `secret`
-
-### Step 6
-
-You can now fire up our application !
-
-```bash
-php artisan serve
-```
 
 ## Deploying in production
 

@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Http\Controller\Api\AdminAlbum;
 
-use App\Http\Middleware\VerifyCsrfToken;
+use App\Jobs\DeleteAlbum;
 use App\Models\Album;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
@@ -14,14 +15,17 @@ class DestroyAlbumTest extends TestCase
 
     public function test_admin_can_destroy_a_album(): void
     {
+        Queue::fake();
         $this->actingAsAdmin();
         /** @var Album $album */
         $album = factory(Album::class)->create();
 
         $response = $this->deleteAlbum($album->slug);
 
-        $this->assertSame(0, Album::count());
         $response->assertStatus(204);
+        Queue::assertPushed(DeleteAlbum::class, static function (DeleteAlbum $job) use ($album) {
+            return $job->album->id === $album->id;
+        });
     }
 
     private function deleteAlbum(string $slug): TestResponse
@@ -50,11 +54,5 @@ class DestroyAlbumTest extends TestCase
 
         $this->assertSame(1, Album::count());
         $response->assertStatus(401);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->withoutMiddleware(VerifyCsrfToken::class);
     }
 }

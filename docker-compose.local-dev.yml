@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+
+  nginx:
+    volumes:
+      - .:/var/www/html:rw
+
+  php:
+    volumes:
+      - .:/var/www/html:rw
+
+  publisher:
+    volumes:
+      - .:/var/www/html:rw
+
+  queue:
+    volumes:
+      - .:/var/www/html:rw
+
+  scheduler:
+    volumes:
+      - .:/var/www/html:rw
