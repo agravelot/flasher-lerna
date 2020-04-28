@@ -10,6 +10,7 @@ php artisan db:wait-connection
 php artisan cache:clear-wait-connection
 
 if [[ "$env" == "local" ]]; then
+  echo "Disabling opcache for local"
   rm -rvf /usr/local/etc/php/conf.d/opcache.ini /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
   php artisan cache:clear
   php artisan config:clear
