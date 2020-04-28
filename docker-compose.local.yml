@@ -99,10 +99,10 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.rule=Host(`${KEYCLOAK_URI}`) || Host(`www.${KEYCLOAK_URI}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.entrypoints=websecure"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.tls=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.middlewares=${COMPOSE_PROJECT_NAME}-keycloak-headers,${COMPOSE_PROJECT_NAME}-keycloak-ratelimit,${COMPOSE_PROJECT_NAME}-keycloak-retry,${COMPOSE_PROJECT_NAME}-keycloak-error-check,${COMPOSE_PROJECT_NAME}-keycloak-compress"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.middlewares=${COMPOSE_PROJECT_NAME}-keycloak-headers,${COMPOSE_PROJECT_NAME}-keycloak-retry,${COMPOSE_PROJECT_NAME}-keycloak-compress"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-compress.compress=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-retry.retry.attempts=4"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-error-check.circuitbreaker.expression=ResponseCodeRatio(500, 600, 0, 600) > 0.30 || NetworkErrorRatio() > 0.10"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-error-check.circuitbreaker.expression=ResponseCodeRatio(500, 600, 0, 600) > 0.30 || NetworkErrorRatio() > 0.10"
       #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-limit.buffering.maxRequestBodyBytes=50000000" # 50 Mb
       #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-limit.buffering.memResponseBodyBytes=50000000" # 50 Mb
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-ratelimit.ratelimit.average=1000"
