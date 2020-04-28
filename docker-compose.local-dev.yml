@@ -24,3 +24,7 @@ services:
   db:
     ports:
     - "5432:5432"
+
+  cache:
+    ports:
+      - "6379:6379"
