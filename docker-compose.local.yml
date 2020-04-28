@@ -126,10 +126,12 @@ services:
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-ratelimit.ratelimit.burst=500"
       # Local
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.isDevelopment=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.sslRedirect=false"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlAllowMethods=GET,OPTIONS,POST,PUT,PATCH,DELETE"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlAllowOriginList=*"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlMaxAge=1"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-https-only.redirectscheme.scheme=http"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-https-only.redirectscheme.permanent=false"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlAllowHeaders=*"
+    command: "-b 0.0.0.0 --debug"
 
   db-kc:
     image: postgres:11-alpine
