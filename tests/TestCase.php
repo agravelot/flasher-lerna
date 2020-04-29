@@ -35,6 +35,7 @@ abstract class TestCase extends BaseTestCase
         JsonResource::$wrap = 'data';
         Storage::fake();
         Storage::fake('s3');
+        config(['keycloak.realm_public_key' => 'random']);
     }
 
     protected function actingAsAdminNotStored(): void
