@@ -25,38 +25,6 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-    public function __construct(?string $name = null, array $data = [], string $dataName = '')
-    {
-        parent::__construct($name, $data, $dataName);
-        $this->hotfixSqlite();
-    }
-
-    public function hotfixSqlite(): void
-    {
-        Connection::resolverFor('sqlite', function ($connection, $database, $prefix, $config) {
-            return new class($connection, $database, $prefix, $config) extends SQLiteConnection {
-                public function getSchemaBuilder()
-                {
-                    if ($this->schemaGrammar === null) {
-                        $this->useDefaultSchemaGrammar();
-                    }
-
-                    return new class($this) extends SQLiteBuilder {
-                        protected function createBlueprint($table, Closure $callback = null)
-                        {
-                            return new class($table, $callback) extends Blueprint {
-                                public function dropForeign($index)
-                                {
-                                    return new Fluent();
-                                }
-                            };
-                        }
-                    };
-                }
-            };
-        });
-    }
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -87,39 +55,5 @@ abstract class TestCase extends BaseTestCase
         $user = factory(User::class)->state('user')->create();
         $this->actingAs($user);
         Passport::actingAs($user, ['*']);
-    }
-
-    protected function assertAuthenticationRequired($uri, $method = 'get', $redirect = '/login'): void
-    {
-        $method = mb_strtolower($method);
-        if (! \in_array($method, ['get', 'post', 'put', 'update', 'delete'], true)) {
-            throw new InvalidArgumentException('Invalid method: '.$method);
-        }
-        // Html check
-        $response = $this->$method($uri);
-        $response->assertStatus(302);
-        $response->assertRedirect($redirect);
-        // Json check
-        $method .= 'Json';
-        $response = $this->$method($uri);
-        $response->assertStatus(401);
-    }
-
-    protected function disableExceptionHandling(): void
-    {
-        $this->app->instance(ExceptionHandler::class, new class() extends Handler {
-            public function __construct()
-            {
-            }
-
-            public function report(Exception $e)
-            {
-            }
-
-            public function render($request, Exception $e)
-            {
-                throw $e;
-            }
-        });
     }
 }
