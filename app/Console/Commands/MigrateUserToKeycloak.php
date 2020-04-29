@@ -23,21 +23,11 @@ class MigrateUserToKeycloak extends Command
     protected $description = 'Command description';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      */
     public function handle(): void
     {
-        $this->info('Start');
+        $this->info('Start migration');
 
         $baseUrl = 'https://keycloak.localhost/auth';
         $username = 'admin';
@@ -93,16 +83,6 @@ class MigrateUserToKeycloak extends Command
                     $this->info('❌ Unable to create user : '.$response->status());
                 }
             });
-    }
-}
-
-class UserConsent {
-    public string $clientId = 'flasher';
-    public array $grantedClientScopes;
-
-    public function __construct(array $grantedClientScopes = [])
-    {
-        $this->grantedClientScopes = $grantedClientScopes;
     }
 }
 
