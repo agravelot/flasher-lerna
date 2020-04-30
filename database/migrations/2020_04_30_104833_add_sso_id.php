@@ -50,9 +50,12 @@ class AddSsoId extends Migration
             $table->uuid('sso_id');
         });
 
-        CleanAllKeycloakUsers::dispatchNow();
-        AddKeycloakUsers::dispatchNow(User::all());
-        Schema::dropIfExists('users');
+        if (!App::environment('testing')) {
+            CleanAllKeycloakUsers::dispatchNow();
+            AddKeycloakUsers::dispatchNow(User::all());
+        }
+
+        Schema::rename('users', 'users_bak');
     }
 
     /**
