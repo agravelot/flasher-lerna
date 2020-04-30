@@ -1,9 +1,7 @@
 <?php
 
 return [
-  'uri' => env('KEYCLOAK_URI'),
-
-  'ssl' => env('KEYCLOAK_SSL', true),
+  'url' => env('KEYCLOAK_URL'),
 
   'verify_ssl' => env('KEYCLOAK_VERIFY_SSL', true),
 

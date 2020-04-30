@@ -17,8 +17,7 @@ class Keycloak
 
     public function __construct()
     {
-        $protocol = config('keycloak.ssl') ? 'https' : 'http';
-        $this->baseUrl = "$protocol://".config('keycloak.uri').'/auth';
+        $this->baseUrl = config('keycloak.url').'/auth';
         $this->username = 'admin';
         $this->password = 'admin';
         $this->grantType = 'password';
