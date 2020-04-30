@@ -33,9 +33,9 @@ class AddKeycloakUsers implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(): void
     {
-        foreach (Keycloak::users()->all() as $user) {
+        foreach ($this->users as $user) {
             Keycloak::users()->create($user);
         }
     }
