@@ -7,7 +7,7 @@ class TestimonialTableSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run()
+    public function run(): void
     {
         factory(\App\Models\Testimonial::class, 20)
             ->state('published')

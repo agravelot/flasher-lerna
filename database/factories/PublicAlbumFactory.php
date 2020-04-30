@@ -5,6 +5,7 @@ use App\Models\PublicAlbum;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 /* @var Factory $factory */
 
@@ -17,6 +18,7 @@ $factory->define(PublicAlbum::class, static function (Faker $faker) use (&$withM
         'title' => $faker->sentence,
         'meta_description' => $faker->text(254),
         'body' => $faker->paragraph($faker->numberBetween(42, 420)),
+        'sso_id' => Str::uuid(),
         'published_at' => Carbon::now(),
         'created_at' => Carbon::now(),
         'private' => false,
@@ -64,6 +66,6 @@ $factory->state(PublicAlbum::class, 'passwordLess', static function () {
 
 $factory->state(PublicAlbum::class, 'withUser', static function () {
     return [
-        'user_id' => factory(\App\Models\User::class)->create()->id,
+        'sso_id' => Str::uuid(),
     ];
 });
