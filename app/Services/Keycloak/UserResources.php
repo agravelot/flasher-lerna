@@ -16,6 +16,7 @@ class UserResources
     public function all(): array
     {
         $realm = $this->keycloak->realm;
+
         return $this->keycloak->getClient()
             ->withToken($this->keycloak->getAccessToken())
             ->get("/admin/realms/$realm/users")
@@ -25,6 +26,7 @@ class UserResources
     public function find(string $ssoId): array
     {
         $realm = $this->keycloak->realm;
+
         return $this->keycloak->getClient()
             ->withToken($this->keycloak->getAccessToken())
             ->get("/admin/realms/$realm/users/$ssoId")
@@ -70,6 +72,7 @@ class UserResources
     public function count(): int
     {
         $realm = $this->keycloak->realm;
+
         return  (int) $this->keycloak->getClient()
             ->withToken($this->keycloak->getAccessToken())
             ->get("/admin/realms/$realm/users/count")

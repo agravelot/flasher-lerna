@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Facades\Keycloak;
 use App\Models\User;
-use App\Services\Keycloak\Credential;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -30,8 +29,6 @@ class AddKeycloakUsers implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
     public function handle(): void
     {
