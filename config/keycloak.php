@@ -5,7 +5,9 @@ return [
 
   'ssl' => env('KEYCLOAK_SSL', true),
 
-  'realm' => env('KEYCLOAK_REALM', 'master'),
+  'verify_ssl' => env('KEYCLOAK_VERIFY_SSL', true),
+
+  'realm' => env('KEYCLOAK_REALM', 'jkanda'),
 
   'realm_public_key' => env('KEYCLOAK_REALM_PUBLIC_KEY', null),
 

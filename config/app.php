@@ -178,7 +178,7 @@ return [
         // App\Providers\TelescopeServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
-        // App\Providers\KeycloakServiceProvider::class,
+        App\Providers\KeycloakServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -235,5 +235,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'Keycloak' => App\Facades\Keycloak::class,
     ],
 ];
