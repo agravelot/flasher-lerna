@@ -23,7 +23,6 @@ class DashboardTest extends TestCase
         $response->assertJson([
             'user' => Auth::user()->token()->preferred_username,
             'cosplayersCount' => Cosplayer::count(),
-            'usersCount' => User::count(),
             'albumsCount' => Album::count(),
             'contactsCount' => Contact::count(),
         ]);
