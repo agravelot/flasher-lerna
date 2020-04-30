@@ -48,7 +48,6 @@ class UserResources
                     'notifyOnAlbumPublished' => $user->notify_on_album_published,
                 ],
             ]);
-            dump($response->status());
     }
 
     public function update(array $data)
@@ -65,6 +64,15 @@ class UserResources
         $this->keycloak->getClient()
             ->withToken($this->keycloak->getAccessToken())
             ->delete("/admin/realms/$realm/users/$ssoId")
+            ->json();
+    }
+
+    public function count(): int
+    {
+        $realm = $this->keycloak->realm;
+        return  (int) $this->keycloak->getClient()
+            ->withToken($this->keycloak->getAccessToken())
+            ->get("/admin/realms/$realm/users/count")
             ->json();
     }
 }

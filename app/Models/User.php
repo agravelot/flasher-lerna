@@ -40,12 +40,23 @@ class User extends Authenticatable implements MustVerifyEmailInterface
         'password', 'remember_token',
     ];
 
+    protected $appends = ['name'];
+
     /**
      * @var array<string>
      */
     protected $dates = [
         'email_verified_at', 'updated_at', 'created_at',
     ];
+
+    public function getNameAttribute(): string
+    {
+        if ($this->token) {
+            return $this->token->preferred_username;
+        }
+
+        return $this->attributes['name'];
+    }
 
     /**
      * Hash the password.

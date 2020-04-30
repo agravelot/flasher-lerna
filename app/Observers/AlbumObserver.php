@@ -12,14 +12,13 @@ class AlbumObserver
     public function creating(Album $album): void
     {
         $album->user_id = 1;
-        $album->sso_id ??= auth()->id();
+        $album->sso_id ??= auth()->user()->token->sub;
     }
 
     public function saved(Album $album): void
     {
         if ($this->shouldBeNotified($album) && $this->hasBeenPublished($album)) {
             $ssoIds = $album->cosplayers()->whereNotNull('sso_id')->get(['sso_id']);
-            //->pluck('user')->where('notify_on_album_published', true);
             $users = [];
             foreach ($ssoIds as $ssoId) {
                 $users[] = Keycloak::users()->find($ssoId);

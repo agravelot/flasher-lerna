@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Http\Controller\Api;
 
+use App\Facades\Keycloak;
 use App\Models\Album;
 use App\Models\Contact;
 use App\Models\Cosplayer;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
@@ -16,14 +16,16 @@ class DashboardTest extends TestCase
 
     public function test_api_return_valid_dashboard(): void
     {
+        Keycloak::shouldReceive('users->count')
+            ->andReturn(10);
         $this->actingAsAdmin();
 
         $response = $this->json('get', '/api/admin/dashboard');
 
         $response->assertJson([
-            'user' => Auth::user()->token()->preferred_username,
+            'user' => Auth::user()->name,
             'cosplayersCount' => Cosplayer::count(),
-            'usersCount' => User::count(),
+            'usersCount' => 10,
             'albumsCount' => Album::count(),
             'contactsCount' => Contact::count(),
         ]);
