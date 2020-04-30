@@ -21,6 +21,7 @@ class AdminDashboardController extends Controller
         return response()->json([
             'user' => $request->user()->token->preferred_username,
             'cosplayersCount' => Cosplayer::count(),
+            'usersCount' => User::count(),
             'albumsCount' => Album::count(),
             'contactsCount' => Contact::count(),
             'albumMediasCount' => Media::count(),
