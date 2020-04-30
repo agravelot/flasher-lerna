@@ -59,18 +59,6 @@ class User extends Authenticatable implements MustVerifyEmailInterface
     }
 
     /**
-     * Hash the password.
-     *
-     * @param string $value Non hashed password
-     */
-    public function setPasswordAttribute($value): void
-    {
-        if ($value !== null) {
-            $this->attributes['password'] = Hash::make($value);
-        }
-    }
-
-    /**
      * Return the albums posted by this user.
      */
     public function albums(): HasMany
