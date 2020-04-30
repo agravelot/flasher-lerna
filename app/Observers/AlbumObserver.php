@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Facades\Keycloak;
 use App\Models\Album;
 use App\Notifications\PublishedAlbum;
 use Illuminate\Support\Facades\Notification;
@@ -10,14 +11,19 @@ class AlbumObserver
 {
     public function creating(Album $album): void
     {
-        $album->user_id ??= auth()->id();
+        $album->user_id = 1;
+        $album->sso_id ??= auth()->id();
     }
 
     public function saved(Album $album): void
     {
         if ($this->shouldBeNotified($album) && $this->hasBeenPublished($album)) {
-            $users = $album->cosplayers()->whereHas('user')->get()
-                ->pluck('user')->where('notify_on_album_published', true);
+            $ssoIds = $album->cosplayers()->whereNotNull('sso_id')->get(['sso_id']);
+            //->pluck('user')->where('notify_on_album_published', true);
+            $users = [];
+            foreach ($ssoIds as $ssoId) {
+                $users[] = Keycloak::users()->find($ssoId);
+            }
             Notification::send($users, new PublishedAlbum($album));
         }
     }

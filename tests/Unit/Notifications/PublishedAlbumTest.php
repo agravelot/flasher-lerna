@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Notifications;
 
+use App\Jobs\AddKeycloakUsers;
 use App\Models\Album;
 use App\Models\Cosplayer;
 use App\Models\User;
@@ -63,7 +64,8 @@ class PublishedAlbumTest extends TestCase
     {
         Notification::fake();
         /** @var User $user */
-        $user = factory(User::class)->create(['notify_on_album_published' => false]);
+        $user = factory(User::class)->make(['notify_on_album_published' => false]);
+        AddKeycloakUsers::dispatchNow(collect([$user]));
         /** @var Cosplayer $cosplayer */
         $cosplayer = factory(Cosplayer::class)->create();
         $user->cosplayer()->save($cosplayer);
@@ -81,7 +83,8 @@ class PublishedAlbumTest extends TestCase
     {
         Notification::fake();
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->make();
+        AddKeycloakUsers::dispatchNow(collect([$user]));
         /** @var Cosplayer $cosplayer */
         $cosplayer = factory(Cosplayer::class)->create();
         $user->cosplayer()->save($cosplayer);

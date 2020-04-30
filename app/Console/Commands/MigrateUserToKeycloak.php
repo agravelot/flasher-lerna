@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\Credential;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
@@ -83,19 +84,5 @@ class MigrateUserToKeycloak extends Command
                     $this->info('❌ Unable to create user : '.$response->status());
                 }
             });
-    }
-}
-
-class Credential {
-    public string $algorithm = 'bcrypt';
-    public string $hashedSaltedValue;
-    public int $hashIterations;
-    public string $type = 'password';
-    public bool $temporary = true;
-
-    public function __construct(string $hashedSaltedValue)
-    {
-        $this->hashedSaltedValue = $hashedSaltedValue;
-        $this->hashIterations = config('hashing.bcrypt.rounds');
     }
 }
