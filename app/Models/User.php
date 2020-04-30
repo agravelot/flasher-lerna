@@ -112,6 +112,6 @@ class User extends Authenticatable implements MustVerifyEmailInterface
      */
     public function isAdmin(): bool
     {
-        return $this->role === 'admin';
+        return $this->role === 'admin' || in_array('admin', $this->token->realm_access->roles, true);
     }
 }
