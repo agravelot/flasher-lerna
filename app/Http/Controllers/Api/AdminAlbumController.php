@@ -28,7 +28,6 @@ class AdminAlbumController extends Controller
             QueryBuilder::for(Album::class)->allowedFilters('title')
                 ->withCount('media')
                 ->latest()
-                ->with('cosplayers.user')
                 ->paginate(15)
         );
     }
