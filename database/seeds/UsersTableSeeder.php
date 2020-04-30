@@ -10,6 +10,8 @@ class UsersTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = factory(User::class, 10)->create();
+        foreach (factory(User::class, 10)->make() as $user) {
+            Keycloak::users()->create($user);
+        }
     }
 }

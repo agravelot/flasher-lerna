@@ -1,8 +1,8 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -13,7 +13,7 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
+        Keycloak::users()->create(factory(User::class)->make([
             'name' => 'admin',
             'email' => 'admin@flasher.com',
             'password' => Hash::make('secret'),
@@ -22,6 +22,6 @@ class AdminUserSeeder extends Seeder
             'updated_at' => Carbon::now(),
             'email_verified_at' => Carbon::now(),
             'remember_token' => Str::random(10),
-        ]);
+        ]));
     }
 }
