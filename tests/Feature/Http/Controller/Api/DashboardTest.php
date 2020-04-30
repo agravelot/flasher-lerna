@@ -14,14 +14,14 @@ class DashboardTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testExample()
+    public function test_api_return_valid_dashboard(): void
     {
         $this->actingAsAdmin();
 
         $response = $this->json('get', '/api/admin/dashboard');
 
         $response->assertJson([
-            'user' => Auth::user()->name,
+            'user' => Auth::user()->token()->preferred_username,
             'cosplayersCount' => Cosplayer::count(),
             'usersCount' => User::count(),
             'albumsCount' => Album::count(),
