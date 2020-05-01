@@ -12,7 +12,7 @@ class RegisterTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_can_register()
+    public function test_guest_can_register(): void
     {
         Mail::fake();
         NoCaptcha::shouldReceive('verifyResponse')
