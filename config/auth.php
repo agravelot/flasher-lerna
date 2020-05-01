@@ -80,7 +80,7 @@ return [
         // ],
         'users' => [
             'driver' => 'keycloak-users',
-            'model' => Vizir\KeycloakWebGuard\Models\KeycloakUser::class,
+            'model' => \App\Models\User::class,
         ],
     ],
 
