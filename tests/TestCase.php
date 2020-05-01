@@ -2,8 +2,10 @@
 
 namespace Tests;
 
+use App\Facades\Keycloak;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\User;
+use App\Services\Keycloak\UserRepresentation;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\Resource;
@@ -25,7 +27,10 @@ abstract class TestCase extends BaseTestCase
         JsonResource::$wrap = 'data';
         Storage::fake();
         Storage::fake('s3');
-        config(['keycloak.realm_public_key' => 'random']);
+        foreach (Keycloak::users()->all() as $user) {
+            /** @var UserRepresentation $user */
+            Keycloak::users()->delete($user->id);
+        }
     }
 
     protected function actingAsAdminNotStored(): void
