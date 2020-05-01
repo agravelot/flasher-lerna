@@ -49,7 +49,7 @@ class UserResources
             ->get("/admin/realms/$realm/users/$ssoId");
 
         if (!$response->ok()) {
-            throw new \LogicException('User not found');
+            $response->throw();
         }
 
         return $this->createUser($response->json());
@@ -74,7 +74,7 @@ class UserResources
             ]);
 
         if ($response->status() !== 201) {
-            throw new \LogicException('Unable to create new user');
+            $response->throw();
         }
     }
 
@@ -86,7 +86,7 @@ class UserResources
             ->put("/admin/realms/$realm/users", $data);
 
         if (!$response->ok()) {
-            throw new \LogicException('Unable to update user');
+            $response->throw();
         }
     }
 
@@ -98,7 +98,7 @@ class UserResources
             ->delete("/admin/realms/$realm/users/$ssoId");
 
         if ($response->status() !== 204) {
-            throw new \LogicException('Unable to delete user');
+            $response->throw();
         }
     }
 
