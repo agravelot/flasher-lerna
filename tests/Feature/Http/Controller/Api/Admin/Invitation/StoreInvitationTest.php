@@ -120,15 +120,36 @@ class StoreInvitationTest extends TestCase
     {
         Mail::fake();
         $this->actingAsAdmin();
+        $cosplayer = factory(Cosplayer::class)->create();
         $invitation = factory(Invitation::class)->make([
             'message' => '',
+            'cosplayer_id' => $cosplayer->id,
         ]);
 
         $response = $this->storeInvitation($invitation);
-
-        $response->assertStatus(422)
-            ->assertJsonValidationErrors('message');
-        Mail::assertNothingSent();
+        $response->dump();
+        $response->assertCreated()
+            ->assertJson([
+                'data' => [
+                    'email' => $invitation->email,
+                    'cosplayer' => [
+                        'id' => $invitation->cosplayer->id,
+                        //..
+                    ],
+                    'message' => $invitation->message,
+                ],
+            ]);
+        $this->assertCount(1, Invitation::all());
+        Mail::assertQueued(InvitationMail::class,
+            static function (Mailable $mail) use ($cosplayer) {
+                return $mail->invitation->cosplayer->is($cosplayer);
+            });
+        // Assert a message was sent to the given users...
+        Mail::assertQueued(InvitationMail::class,
+            static function (Mailable $mail) use ($invitation) {
+                return $mail->hasTo($invitation->email);
+            });
+        Mail::assertQueued(InvitationMail::class, 1);
     }
 
     public function test_if_cosplayer_not_found_return_error_and_email_not_send(): void
