@@ -17,23 +17,45 @@ class UserResources
     {
         $realm = $this->keycloak->realm;
 
-        return $this->keycloak->getClient()
+        $response = $this->keycloak->getClient()
             ->withToken($this->keycloak->getAccessToken())
-            ->get("/admin/realms/$realm/users")
-            ->json();
+            ->get("/admin/realms/$realm/users");
+
+        $users = [];
+        foreach ($response->json() as $user) {
+            $users[] = $this->createUser($user);
+        }
+
+        return $users;
     }
 
-    public function find(string $ssoId): array
+    private function createUser(array $data): UserRepresentation
+    {
+        $user = new UserRepresentation();
+        $user->id = $data['id'];
+        $user->username = $data['username'];
+        $user->email = $data['email'];
+        $user->emailVerified = (bool) $data['emailVerified'];
+
+        return $user;
+    }
+
+    public function find(string $ssoId): UserRepresentation
     {
         $realm = $this->keycloak->realm;
 
-        return $this->keycloak->getClient()
+        $response = $this->keycloak->getClient()
             ->withToken($this->keycloak->getAccessToken())
-            ->get("/admin/realms/$realm/users/$ssoId")
-            ->json();
+            ->get("/admin/realms/$realm/users/$ssoId");
+
+        if (!$response->ok()) {
+            throw new \LogicException('User not found');
+        }
+
+        return $this->createUser($response->json());
     }
 
-    public function create(User $user)
+    public function create(User $user): void
     {
         $realm = $this->keycloak->realm;
         $response = $this->keycloak->getClient()
@@ -50,6 +72,10 @@ class UserResources
                     'notifyOnAlbumPublished' => $user->notify_on_album_published,
                 ],
             ]);
+
+        if ($response->status() !== 201) {
+            throw new \LogicException('Unable to create new user');
+        }
     }
 
     public function update(array $data)
@@ -58,15 +84,22 @@ class UserResources
         $response = $this->keycloak->getClient()
             ->withToken($this->keycloak->getAccessToken())
             ->put("/admin/realms/$realm/users", $data);
+
+        if (!$response->ok()) {
+            throw new \LogicException('Unable to update user');
+        }
     }
 
     public function delete(string $ssoId): void
     {
         $realm = $this->keycloak->realm;
-        $this->keycloak->getClient()
+        $response = $this->keycloak->getClient()
             ->withToken($this->keycloak->getAccessToken())
-            ->delete("/admin/realms/$realm/users/$ssoId")
-            ->json();
+            ->delete("/admin/realms/$realm/users/$ssoId");
+
+        if (!$response->ok()) {
+            throw new \LogicException('Unable to delete user');
+        }
     }
 
     public function count(): int

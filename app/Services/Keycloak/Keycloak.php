@@ -32,7 +32,7 @@ class Keycloak
 
     public function getAccessToken(): string
     {
-        if (!empty($this->accessToken)) {
+        if (! empty($this->accessToken)) {
             return $this->accessToken;
         }
 

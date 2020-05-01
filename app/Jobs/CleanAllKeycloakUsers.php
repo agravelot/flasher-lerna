@@ -29,7 +29,7 @@ class CleanAllKeycloakUsers implements ShouldQueue
     public function handle(): void
     {
         foreach (Keycloak::users()->all() as $user) {
-            Keycloak::users()->delete($user['id']);
+            Keycloak::users()->delete($user->id);
         }
     }
 }
