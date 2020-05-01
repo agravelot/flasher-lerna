@@ -48,14 +48,6 @@ class CosplayerTest extends ModelTestCase
         ]);
     }
 
-    public function testHasOneUserRelationship()
-    {
-        $cosplayer = new Cosplayer();
-        $relation = $cosplayer->user();
-
-        $this->assertBelongsToRelation($relation, $cosplayer, new User(), 'user_id');
-    }
-
     public function test_cosplayer_with_a_Tom_as_name_will_have_uppercase_t_as_initial()
     {
         $cosplayer = new Cosplayer();
