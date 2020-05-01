@@ -9,6 +9,12 @@ class User extends KeycloakUser
 {
     use Notifiable;
 
+    // Set profile as empty array to work with api.
+    public function __construct(array $profile = [])
+    {
+        parent::__construct($profile);
+    }
+
     /**
      * The attributes that are mass assignable.
      *
