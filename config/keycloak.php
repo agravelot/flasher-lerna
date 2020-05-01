@@ -5,7 +5,7 @@ return [
 
   'verify_ssl' => env('KEYCLOAK_VERIFY_SSL', true),
 
-  'realm' => env('KEYCLOAK_REALM', null),
+  'realm' => env('KEYCLOAK_REALM', 'master'),
 
   'realm_public_key' => env('KEYCLOAK_REALM_PUBLIC_KEY', null),
 
