@@ -97,7 +97,7 @@ class UserResources
             ->withToken($this->keycloak->getAccessToken())
             ->delete("/admin/realms/$realm/users/$ssoId");
 
-        if (!$response->ok()) {
+        if ($response->status() !== 204) {
             throw new \LogicException('Unable to delete user');
         }
     }
