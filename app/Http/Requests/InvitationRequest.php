@@ -9,7 +9,7 @@ class InvitationRequest extends Request
         return [
             'email' => 'required|email',
             'cosplayer_id' => 'required|int|min:0|exists:cosplayers,id',
-            'message' => 'required|string',
+            'message' => 'string|nullable',
         ];
     }
 }
