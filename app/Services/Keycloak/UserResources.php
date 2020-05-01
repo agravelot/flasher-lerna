@@ -34,7 +34,7 @@ class UserResources
         $user = new UserRepresentation();
         $user->id = $data['id'];
         $user->username = $data['username'];
-        $user->email = $data['email'];
+        $user->email = $data['email'] ?? null;
         $user->emailVerified = (bool) $data['emailVerified'];
 
         return $user;

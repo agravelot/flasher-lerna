@@ -11,7 +11,7 @@ class UserRepresentation
     public array $clientConsents;
     public int $createdTimestamp;
     public array $credentials;
-    public string $email;
+    public ?string $email;
     public bool $emailVerified;
     public bool $enabled;
     public string $firstName;
