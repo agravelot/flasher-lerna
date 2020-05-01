@@ -104,15 +104,19 @@
                                     {{ __('My albums') }}
                                 </a>
                                 <hr class="dropdown-divider">
-                                <a class="dropdown-item has-text-danger"
-                                   onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                <a class="dropdown-item has-text-danger" href="{{ route('keycloak.logout') }}">
                                     {{ __('Logout') }}
                                 </a>
 
-                                <form id="logout-form" action="{{ route('keycloak.logout') }}" method="POST"
-                                      style="display: none;">
-                                    @csrf
-                                </form>
+{{--                                <a class="dropdown-item has-text-danger"--}}
+{{--                                   onclick="event.preventDefault();document.getElementById('logout-form').submit();">--}}
+{{--                                    {{ __('Logout') }}--}}
+{{--                                </a>--}}
+
+{{--                                <form id="logout-form" action="{{ route('keycloak.logout') }}" method="POST"--}}
+{{--                                      style="display: none;">--}}
+{{--                                    @csrf--}}
+{{--                                </form>--}}
                             </div>
                         </div>
                     </div>
