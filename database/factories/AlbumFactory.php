@@ -19,7 +19,7 @@ $factory->define(Album::class, static function (Faker $faker) use (&$withMedias)
         'body' => $faker->randomHtml($faker->numberBetween(2, 6)),
         'published_at' => null,
         'private' => $faker->boolean,
-        'sso_id' => Str::uuid(),
+        'sso_id' => \App\Facades\Keycloak::users()->all()[0]->id,
         'created_at' => $faker->dateTime,
         'updated_at' => $faker->dateTime,
     ];

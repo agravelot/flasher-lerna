@@ -18,7 +18,7 @@ $factory->define(PublicAlbum::class, static function (Faker $faker) use (&$withM
         'title' => $faker->sentence,
         'meta_description' => $faker->text(254),
         'body' => $faker->paragraph($faker->numberBetween(42, 420)),
-        'sso_id' => Str::uuid(),
+        'sso_id' => \App\Facades\Keycloak::users()->all()[0]->id,
         'published_at' => Carbon::now(),
         'created_at' => Carbon::now(),
         'private' => false,
