@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Facades\Keycloak;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
@@ -15,10 +16,10 @@ class CreateAdminUser extends Command
      *
      * @var string
      */
-    protected $signature = 'user:create 
-                            {role? : Role} 
-                            {name? : Username} 
-                            {email? : Email-address} 
+    protected $signature = 'user:create
+                            {role? : Role}
+                            {name? : Username}
+                            {email? : Email-address}
                             {password? : Password}';
 
     /**
@@ -54,49 +55,15 @@ class CreateAdminUser extends Command
             $password = $this->secret('Enter your user password');
         }
 
-        $data = [
-            'name' => $username,
-            'email' => $email,
-            'password' => $password,
-            'role' => $role,
-        ];
+        $user = new User([]);
+        $user->name = $username;
+        $user->email = $email;
+        $user->password = $password;
+        $user->role = $role;
 
-        // Only get filtered keys for name and email
-        $filter = array_fill_keys(['name', 'email'], '');
-        $rules = array_intersect_key((new UserRequest())->rules(), $filter);
-
-        if (! $this->validate($data, $rules)) {
-            return 1;
-        }
-
-        $this->create($data);
+        Keycloak::users()->create($user);
+        $this->info('User created successfully');
 
         return 0;
-    }
-
-    private function validate(array $data, array $rules): bool
-    {
-        $validator = Validator::make($data, $rules);
-
-        if ($validator->fails()) {
-            $this->error('User not created. See error messages below:');
-
-            foreach ($validator->errors()->all() as $error) {
-                $this->warn($error);
-            }
-
-            return false;
-        }
-
-        return true;
-    }
-
-    private function create($data): void
-    {
-        $user = User::create($data);
-        if ($user->markEmailAsVerified()) {
-            event(new Verified($user));
-        }
-        $this->info('User created successfully');
     }
 }
