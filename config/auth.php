@@ -69,17 +69,8 @@ return [
     */
 
     'providers' => [
-//        'users' => [
-//            'driver' => 'eloquent',
-//            'model' => App\Models\User::class,
-//        ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
         'users' => [
-            'driver' => 'keycloak-users',
+            'driver' => 'custom-keycloak-users',
             'model' => \App\Models\User::class,
         ],
     ],
