@@ -55,23 +55,12 @@ class UserResources
         return $this->createUser($response->json());
     }
 
-    public function create(User $user): void
+    public function create(UserRepresentation $user): void
     {
         $realm = $this->keycloak->realm;
         $response = $this->keycloak->getClient()
             ->withToken($this->keycloak->getAccessToken())
-            ->post("/admin/realms/$realm/users", [
-                'email' => $user->email,
-                'username' => $user->name,
-                'emailVerified' => (bool) $user->email_verified_at,
-                'enabled' => true,
-                'totp' => false,
-                'credentials' => [new Credential($user->password)],
-                'groups' => $user->role === 'admin' ? ['admin'] : [],
-                'attributes' => [
-                    'notifyOnAlbumPublished' => $user->notify_on_album_published,
-                ],
-            ]);
+            ->post("/admin/realms/$realm/users", $user->toArray());
 
         if ($response->status() !== 201) {
             $response->throw();
