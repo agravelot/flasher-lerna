@@ -7,7 +7,6 @@ use App\Models\Album;
 use App\Models\Contact;
 use App\Models\Cosplayer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class DashboardTest extends TestCase
@@ -23,7 +22,6 @@ class DashboardTest extends TestCase
         $response = $this->json('get', '/api/admin/dashboard');
 
         $response->assertJson([
-            'user' => Auth::user()->name,
             'cosplayersCount' => Cosplayer::count(),
             'usersCount' => 10,
             'albumsCount' => Album::count(),

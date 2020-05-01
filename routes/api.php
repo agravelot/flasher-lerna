@@ -20,10 +20,10 @@ Route::group([
     Route::apiResource('testimonials', 'TestimonialController')->only('index');
     Route::apiResource('categories', 'CategoryController')
         ->only('index', 'show');
-    Route::resource('/account', 'AccountController')->middleware(['auth'])->only('destroy')
-        ->parameters([
-            'account' => 'user',
-        ]);
+//    Route::resource('/account', 'AccountController')->middleware(['auth'])->only('destroy')
+//        ->parameters([
+//            'account' => 'user',
+//        ]);
 
     // Admin
     Route::group([

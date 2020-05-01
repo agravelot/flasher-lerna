@@ -22,7 +22,10 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
-      - nginx-proxy
+      nginx-proxy:
+      keycloak-backend:
+          aliases:
+            - keycloak.localhost
 
   tusd:
     labels:
@@ -48,6 +51,8 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       SESSION_SECURE_COOKIE: null
       TELESCOPE_ENABLED: "true"
+    networks:
+      keycloak-backend:
 
   cache:
     image: redis:5.0-alpine
@@ -133,3 +138,6 @@ volumes:
   cache_data:
   db-data:
   db-kc-data:
+
+networks:
+  keycloak-backend:
