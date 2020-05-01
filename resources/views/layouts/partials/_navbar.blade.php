@@ -109,7 +109,7 @@
                                     {{ __('Logout') }}
                                 </a>
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                <form id="logout-form" action="{{ route('keycloak.logout') }}" method="POST"
                                       style="display: none;">
                                     @csrf
                                 </form>
@@ -117,7 +117,7 @@
                         </div>
                     </div>
                 @else
-                    <a class="button is-black" href="{{ route('login') }}">
+                    <a class="button is-black" href="{{ route('keycloak.login') }}">
                         <span class="icon">
                             <x-fa name="sign-in-alt" library="solid"/>
                         </span>
