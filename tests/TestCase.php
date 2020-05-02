@@ -36,20 +36,21 @@ abstract class TestCase extends BaseTestCase
     protected function actingAsAdminNotStored(): void
     {
         $admin = factory(User::class)->state('admin')->make();
-        $this->actingAs($admin);
+        $this->actingAs($admin, 'api');
+        $this->actingAs($admin, 'web');
     }
 
     protected function actingAsAdmin(): void
     {
         $admin = factory(User::class)->state('admin')->make();
-        $this->actingAs($admin);
-        Passport::actingAs($admin, ['*']);
+        $this->actingAs($admin, 'api');
+        $this->actingAs($admin, 'web');
     }
 
     protected function actingAsUser(): void
     {
         $user = factory(User::class)->state('user')->make();
-        $this->actingAs($user);
-        Passport::actingAs($user, ['*']);
+        $this->actingAs($user, 'api');
+        $this->actingAs($user, 'web');
     }
 }
