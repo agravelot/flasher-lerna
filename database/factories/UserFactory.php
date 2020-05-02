@@ -21,10 +21,10 @@ use Illuminate\Support\Str;
 
 $factory->define(User::class, static function (Faker $faker) {
     return [
-        'name' => $faker->unique()->userName,
+        'preferred_username' => $faker->unique()->userName,
         'email' => $faker->unique()->email,
         'password' => Hash::make('secret'),
-        'role' => 'user',
+        'groups' => ['user'],
         'email_verified_at' => Carbon::now(),
         'remember_token' => Str::random(10),
         'created_at' => $faker->dateTimeThisDecade,
@@ -34,12 +34,12 @@ $factory->define(User::class, static function (Faker $faker) {
 
 $factory->state(User::class, 'admin', static function () {
     return [
-        'role' => 'admin',
+        'groups' => ['admin'],
     ];
 });
 
 $factory->state(User::class, 'user', static function () {
     return [
-        'role' => 'user',
+        'groups' => ['user'],
     ];
 });
