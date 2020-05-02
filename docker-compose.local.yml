@@ -44,7 +44,6 @@ services:
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.isDevelopment=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.sslRedirect=false"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.accessControlMaxAge=1"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-error-check.circuitbreaker.expression=NetworkErrorRatio() > 0.10"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-only.redirectscheme.scheme=http"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-only.redirectscheme.permanent=false"
 

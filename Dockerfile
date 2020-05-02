@@ -29,14 +29,20 @@ FROM nginx:alpine as nginx
 
 WORKDIR /var/www/html
 
-COPY docker/nginx/conf /etc/nginx
-COPY docker/nginx/start.sh /start.sh
-COPY --chown=1000:1000 . /var/www/html
-
 RUN : \
         && apk --no-cache --virtual user-add-dep add shadow \
         && usermod -u 1000 nginx \
         && apk del user-add-dep \
+        ;
+
+COPY docker/nginx/conf /etc/nginx
+COPY docker/nginx/start.sh /start.sh
+
+# importing source code
+COPY --chown=1000:1000 . /var/www/html
+
+# storrage link
+RUN : \
         && ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
         && chown -h 1000:1000 /var/www/html/public/storage \
         && ln -s /var/www/html/storage/sitemap.xml /var/www/html/public/sitemap.xml \
@@ -55,8 +61,7 @@ ENTRYPOINT /start.sh
 FROM registry.gitlab.com/nevax/docker-php-fpm-alpine-laravel:php7.4 as php_base
 
 # import PHP configurations
-COPY --chown=1000:1000 docker/php-fpm/custom.ini /usr/local/etc/php/conf.d/
-COPY --chown=1000:1000 docker/php-fpm/opcache.ini /usr/local/etc/php/conf.d/
+COPY docker/php-fpm/custom.ini /usr/local/etc/php/conf.d/
 
 # importing source code
 COPY --chown=1000:1000 . /var/www/html
@@ -66,8 +71,8 @@ COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/vendor/
 COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
 COPY --chown=1000:1000 --from=composer /usr/bin/composer ./composer
 
+# link storage
 RUN : \
-        && chown 1000:1000 -R /usr/local/etc/php/conf.d \
         && ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
         && chown -h 1000:1000 /var/www/html/public/storage \
         # check composer reqs
