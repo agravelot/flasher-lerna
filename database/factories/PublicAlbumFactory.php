@@ -2,6 +2,7 @@
 
 use App\Models\Album;
 use App\Models\PublicAlbum;
+use App\Services\Keycloak\UserRepresentation;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Carbon;
@@ -18,7 +19,7 @@ $factory->define(PublicAlbum::class, static function (Faker $faker) use (&$withM
         'title' => $faker->sentence,
         'meta_description' => $faker->text(254),
         'body' => $faker->paragraph($faker->numberBetween(42, 420)),
-        'sso_id' => \App\Facades\Keycloak::users()->all()[0]->id,
+        'sso_id' => Str::uuid(),
         'published_at' => Carbon::now(),
         'created_at' => Carbon::now(),
         'private' => false,
@@ -64,8 +65,15 @@ $factory->state(PublicAlbum::class, 'passwordLess', static function () {
     ];
 });
 
-$factory->state(PublicAlbum::class, 'withUser', static function () {
+$factory->state(PublicAlbum::class, 'withUser', static function (Faker $faker) {
+    // TODO Use custom factory ?
+    $user = new UserRepresentation();
+    $user->email = $faker->email;
+    $user->username = $faker->userName;
+    $user->emailVerified = true;
+    Keycloak::users()->create($user);
     return [
-        'sso_id' => Str::uuid(),
+        'sso_id' =>  \App\Facades\Keycloak::users()->all()[0]->id,
     ];
 });
+

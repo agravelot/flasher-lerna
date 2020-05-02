@@ -18,11 +18,12 @@ class AlbumObserver
     public function saved(Album $album): void
     {
         if ($this->shouldBeNotified($album) && $this->hasBeenPublished($album)) {
-            $ssoIds = $album->cosplayers()->whereNotNull('sso_id')->get(['sso_id']);
+            $cosplayers = $album->cosplayers()->whereNotNull('sso_id')->get(['sso_id']);
             $users = [];
-            foreach ($ssoIds as $ssoId) {
-                $users[] = Keycloak::users()->find($ssoId);
+            foreach ($cosplayers as $cosplayer) {
+                $users[] = Keycloak::users()->find($cosplayer->sso_id);
             }
+            // TODO UserRepresentation is not notifiable
             Notification::send($users, new PublishedAlbum($album));
         }
     }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Album;
+use App\Services\Keycloak\UserRepresentation;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Http\UploadedFile;
@@ -10,6 +11,7 @@ use Illuminate\Support\Str;
 $withMedias = false;
 
 /* @var Factory $factory */
+
 $factory->define(Album::class, static function (Faker $faker) use (&$withMedias) {
     $withMedias = false;
 
@@ -19,7 +21,7 @@ $factory->define(Album::class, static function (Faker $faker) use (&$withMedias)
         'body' => $faker->randomHtml($faker->numberBetween(2, 6)),
         'published_at' => null,
         'private' => $faker->boolean,
-        'sso_id' => \App\Facades\Keycloak::users()->all()[0]->id,
+        'sso_id' => Str::uuid(),
         'created_at' => $faker->dateTime,
         'updated_at' => $faker->dateTime,
     ];
@@ -68,8 +70,14 @@ $factory->state(Album::class, 'passwordLess', static function () {
     ];
 });
 
-$factory->state(Album::class, 'withUser', static function () {
+$factory->state(Album::class, 'withUser', static function (Faker $faker) {
+    // TODO Use custom factory ?
+    $user = new UserRepresentation();
+    $user->email = $faker->email;
+    $user->username = $faker->userName;
+    $user->emailVerified = true;
+    Keycloak::users()->create($user);
     return [
-        'sso_id' => Str::uuid(),
+        'sso_id' =>  \App\Facades\Keycloak::users()->all()[0]->id,
     ];
 });

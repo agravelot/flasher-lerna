@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Notifications;
 
+use App\Facades\Keycloak;
 use App\Jobs\AddKeycloakUsers;
 use App\Models\Album;
 use App\Models\Cosplayer;
@@ -29,7 +30,7 @@ class PublishedAlbumTest extends TestCase
         $album->cosplayers()->sync($cosplayers);
         $album->update(['published_at' => Carbon::now()]);
 
-        $users = $album->cosplayers->pluck('user');
+        $users = $album->cosplayers->pluck('sso_id')->map(fn(string $ssoId) => Keycloak::users()->find($ssoId));
         Notification::assertTimesSent(5, PublishedAlbum::class);
         Notification::assertSentTo($users, PublishedAlbum::class);
     }
@@ -46,7 +47,7 @@ class PublishedAlbumTest extends TestCase
         $album->cosplayers()->sync(Cosplayer::all());
         $album->update(['published_at' => Carbon::now()]);
 
-        $user = $cosplayerToNotify->user;
+        $user = Keycloak::users()->find($cosplayerToNotify->sso_id);
         Notification::assertTimesSent(1, PublishedAlbum::class);
         Notification::assertSentTo($user, PublishedAlbum::class);
     }

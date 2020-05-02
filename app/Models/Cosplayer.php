@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Abilities\HasNameAsSlug;
 use App\Abilities\HasSlugRouteKey;
+use App\Facades\Keycloak;
+use App\Services\Keycloak\UserRepresentation;
 use App\Traits\ClearsResponseCache;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
@@ -72,9 +74,9 @@ class Cosplayer extends Model implements HasMedia
     /**
      * Return the linked user.
      */
-    public function user(): BelongsTo
+    public function user(): ?UserRepresentation
     {
-        return $this->belongsTo(User::class);
+        return $this->sso_id !== null ? Keycloak::users()->find($this->sso_id) : null;
     }
 
     /**

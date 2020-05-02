@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Cosplayer;
+use App\Services\Keycloak\UserRepresentation;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
@@ -25,8 +26,14 @@ $factory->state(Cosplayer::class, 'avatar', static function () {
     ];
 });
 
-$factory->state(Cosplayer::class, 'withUser', static function () {
+$factory->state(Cosplayer::class, 'withUser', static function (Faker $faker) {
+    // TODO Use custom factory ?
+    $user = new UserRepresentation();
+    $user->email = $faker->email;
+    $user->username = $faker->userName;
+    $user->emailVerified = true;
+    Keycloak::users()->create($user);
     return [
-        'sso_id' => Str::uuid(),
+        'sso_id' =>  \App\Facades\Keycloak::users()->all()[0]->id,
     ];
 });

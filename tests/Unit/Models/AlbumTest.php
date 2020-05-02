@@ -73,7 +73,7 @@ class AlbumTest extends ModelTestCase
 
     public function test_album_is_public(): void
     {
-        $album = factory(Album::class)->states(['published', 'passwordLess'])->make();
+        $album = factory(Album::class)->states(['published', 'passwordLess', 'withUser'])->make();
 
         $this->assertTrue($album->isPublic());
     }
