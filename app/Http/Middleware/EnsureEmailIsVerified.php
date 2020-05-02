@@ -24,6 +24,10 @@ class EnsureEmailIsVerified extends EnsureEmailIsVerifiedBase
             return $next($request);
         }
 
+        if ($request->user()->email_verified) {
+            return $next($request);
+        }
+
         return parent::handle($request, $next, $redirectToRoute);
     }
 }
