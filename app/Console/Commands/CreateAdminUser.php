@@ -5,8 +5,11 @@ namespace App\Console\Commands;
 use App\Facades\Keycloak;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use App\Services\Keycloak\Credential;
+use App\Services\Keycloak\UserRepresentation;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class CreateAdminUser extends Command
@@ -55,11 +58,12 @@ class CreateAdminUser extends Command
             $password = $this->secret('Enter your user password');
         }
 
-        $user = new User([]);
-        $user->name = $username;
+        $user = new UserRepresentation();
+        $user->username = $username;
         $user->email = $email;
-        $user->password = $password;
-        $user->role = $role;
+        $user->emailVerified = true;
+        $user->addCredential(new Credential(Hash::make($password)));
+        $user->groups = [$role];
 
         Keycloak::users()->create($user);
         $this->info('User created successfully');
