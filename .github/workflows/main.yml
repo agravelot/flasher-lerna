@@ -151,7 +151,7 @@ jobs:
         APP_KEY: ${{ secrets.APP_KEY_STAGING }}
         APP_ENV: "staging"
         DB_PASSWORD: ${{ secrets.DB_PASSWORD_STAGING }}
-        MAIL_DRIVER: ${{ secrets.MAIL_DRIVER }}
+        MAIL_MAILER: ${{ secrets.MAIL_MAILER }}
         SES_KEY: ${{ secrets.SES_KEY }}
         SES_SECRET: ${{ secrets.SES_SECRET }}
         SES_REGION: ${{ secrets.SES_REGION }}
@@ -201,7 +201,7 @@ jobs:
         APP_KEY: ${{ secrets.APP_KEY_PRODUCTION }}
         APP_ENV: "production"
         DB_PASSWORD: ${{ secrets.DB_PASSWORD_PRODUCTION }}
-        MAIL_DRIVER: ${{ secrets.MAIL_DRIVER }}
+        MAIL_MAILER: ${{ secrets.MAIL_MAILER }}
         SES_KEY: ${{ secrets.SES_KEY }}
         SES_SECRET: ${{ secrets.SES_SECRET }}
         SES_REGION: ${{ secrets.SES_REGION }}
