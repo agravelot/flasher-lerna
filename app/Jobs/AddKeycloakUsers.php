@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Facades\Keycloak;
 use App\Models\User;
+use App\Services\Keycloak\UserRepresentation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -20,7 +21,7 @@ class AddKeycloakUsers implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  Collection<User> $users
+     * @param  Collection<UserRepresentation> $users
      */
     public function __construct(Collection $users)
     {
