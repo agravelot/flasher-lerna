@@ -20,3 +20,7 @@ services:
   scheduler:
     volumes:
       - .:/var/www/html:rw
+
+  db:
+    ports:
+    - "5432:5432"
