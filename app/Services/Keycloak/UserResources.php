@@ -23,7 +23,7 @@ class UserResources
     /**
      * @param  UserQuery  $query
      *
-     * @return array
+     * @return array<UserRepresentation>
      */
     public function all(?UserQuery $query = null): array
     {
