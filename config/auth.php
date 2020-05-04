@@ -35,11 +35,6 @@ return [
     */
 
     'guards' => [
-//        'web' => [
-//            'driver' => 'session',
-//            'provider' => 'users',
-//        ],
-
         'web' => [
             'driver' => 'keycloak-web',
             'provider' => 'users',
@@ -71,7 +66,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'custom-keycloak-users',
-            'model' => \App\Models\User::class,
+            'model' => App\Models\User::class,
         ],
     ],
 
