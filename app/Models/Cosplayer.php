@@ -76,7 +76,7 @@ class Cosplayer extends Model implements HasMedia
      */
     public function user(): ?UserRepresentation
     {
-        return $this->sso_id !== null ? Keycloak::users()->find($this->sso_id) : null;
+        return $this->sso_id ? Keycloak::users()->find($this->sso_id) : null;
     }
 
     /**
