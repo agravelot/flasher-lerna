@@ -36,7 +36,8 @@ class Keycloak
             return $this->accessToken;
         }
 
-        $response = $this->getClient()
+        $response = Http::withOptions(['verify' => config('keycloak.verify_ssl')])
+            ->baseUrl($this->baseUrl)
             ->asForm()->post(
                 '/realms/master/protocol/openid-connect/token',
                 [
@@ -52,8 +53,8 @@ class Keycloak
 
     public function getClient(): PendingRequest
     {
-        return Http::withOptions([
-            'verify' => config('keycloak.verify_ssl'),
-        ])->baseUrl($this->baseUrl);
+        return Http::withOptions(['verify' => config('keycloak.verify_ssl')])
+            ->baseUrl($this->baseUrl)
+            ->withToken($this->getAccessToken());
     }
 }

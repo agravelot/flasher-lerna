@@ -18,7 +18,6 @@ class UserResources
         $realm = $this->keycloak->realm;
 
         $response = $this->keycloak->getClient()
-            ->withToken($this->keycloak->getAccessToken())
             ->get("/admin/realms/$realm/users");
 
         $users = [];
@@ -45,7 +44,6 @@ class UserResources
         $realm = $this->keycloak->realm;
 
         $response = $this->keycloak->getClient()
-            ->withToken($this->keycloak->getAccessToken())
             ->get("/admin/realms/$realm/users/$ssoId");
 
         if (!$response->ok()) {
@@ -59,7 +57,6 @@ class UserResources
     {
         $realm = $this->keycloak->realm;
         $response = $this->keycloak->getClient()
-            ->withToken($this->keycloak->getAccessToken())
             ->post("/admin/realms/$realm/users", $user->toArray());
 
         if ($response->status() !== 201) {
@@ -71,7 +68,6 @@ class UserResources
     {
         $realm = $this->keycloak->realm;
         $response = $this->keycloak->getClient()
-            ->withToken($this->keycloak->getAccessToken())
             ->put("/admin/realms/$realm/users", $data);
 
         if (!$response->ok()) {
@@ -83,7 +79,6 @@ class UserResources
     {
         $realm = $this->keycloak->realm;
         $response = $this->keycloak->getClient()
-            ->withToken($this->keycloak->getAccessToken())
             ->delete("/admin/realms/$realm/users/$ssoId");
 
         if ($response->status() !== 204) {
@@ -96,7 +91,6 @@ class UserResources
         $realm = $this->keycloak->realm;
 
         return  (int) $this->keycloak->getClient()
-            ->withToken($this->keycloak->getAccessToken())
             ->get("/admin/realms/$realm/users/count")
             ->json();
     }
