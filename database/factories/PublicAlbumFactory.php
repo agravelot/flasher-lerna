@@ -17,7 +17,7 @@ $factory->define(PublicAlbum::class, static function (Faker $faker) use (&$withM
 
     return [
         'title' => $faker->sentence,
-        'meta_description' => $faker->text(254),
+        'meta_description' => $faker->text(154),
         'body' => $faker->paragraph($faker->numberBetween(42, 420)),
         'sso_id' => Str::uuid(),
         'published_at' => Carbon::now(),
