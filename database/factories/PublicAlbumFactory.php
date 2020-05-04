@@ -73,7 +73,7 @@ $factory->state(PublicAlbum::class, 'withUser', static function (Faker $faker) {
     $user->emailVerified = true;
     Keycloak::users()->create($user);
     return [
-        'sso_id' =>  \App\Facades\Keycloak::users()->all()[0]->id,
+        'sso_id' => Keycloak::users()->first()->id,
     ];
 });
 

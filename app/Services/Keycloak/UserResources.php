@@ -13,12 +13,24 @@ class UserResources
         $this->keycloak = $keycloak;
     }
 
-    public function all(): array
+    public function first(?UserQuery $query = null): ?UserRepresentation
+    {
+        $query ??= new $query;
+        $query->max = 1;
+        return $this->all($query)[0] ?? null;
+    }
+
+    /**
+     * @param  UserQuery  $query
+     *
+     * @return array
+     */
+    public function all(?UserQuery $query = null): array
     {
         $realm = $this->keycloak->realm;
 
         $response = $this->keycloak->getClient()
-            ->get("/admin/realms/$realm/users");
+            ->get("/admin/realms/$realm/users".http_build_query((array) $query));
 
         $users = [];
         foreach ($response->json() as $user) {
@@ -59,7 +71,7 @@ class UserResources
         $response = $this->keycloak->getClient()
             ->post("/admin/realms/$realm/users", $user->toArray());
 
-        if ($response->status() !== 201) {
+        if (!$response->successful()) {
             $response->throw();
         }
     }
