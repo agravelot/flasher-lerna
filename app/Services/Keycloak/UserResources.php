@@ -23,13 +23,13 @@ class UserResources
 
         $users = [];
         foreach ($response->json() as $user) {
-            $users[] = $this->createUser($user);
+            $users[] = $this->makeUser($user);
         }
 
         return $users;
     }
 
-    private function createUser(array $data): UserRepresentation
+    private function makeUser(array $data): UserRepresentation
     {
         $user = new UserRepresentation();
         $user->id = $data['id'];
@@ -52,7 +52,7 @@ class UserResources
             $response->throw();
         }
 
-        return $this->createUser($response->json());
+        return $this->makeUser($response->json());
     }
 
     public function create(UserRepresentation $user): void
