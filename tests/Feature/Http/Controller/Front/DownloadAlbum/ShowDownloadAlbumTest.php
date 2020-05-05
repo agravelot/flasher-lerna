@@ -38,10 +38,10 @@ class ShowDownloadAlbumTest extends TestCase
 
     public function test_user_present_as_a_cosplayer_in_a_album_can_download_it()
     {
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
+        $this->withoutExceptionHandling();
+        $this->actingAsUser();
         /** @var Cosplayer $cosplayer */
-        $cosplayer = factory(Cosplayer::class)->create(['user_id' => $user->id]);
+        $cosplayer = factory(Cosplayer::class)->create(['sso_id' => auth()->user()->sub]);
         /** @var Album $album */
         $album = factory(Album::class)->states(['published', 'passwordLess'])->create();
         $album->cosplayers()->attach($cosplayer);
@@ -56,9 +56,9 @@ class ShowDownloadAlbumTest extends TestCase
 
     public function test_user_present_as_a_cosplayer_in_a_album_can_not_download_it_if_not_published()
     {
-        $user = factory(User::class)->create();
-        $cosplayer = factory(Cosplayer::class)->create(['user_id' => $user->id]);
+        $user = factory(User::class)->make();
         $this->actingAs($user);
+        $cosplayer = factory(Cosplayer::class)->create(['sso_id' => $user->id]);
         $album = factory(Album::class)->states(['unpublished'])->create();
         $album->cosplayers()->attach($cosplayer);
 

@@ -18,16 +18,17 @@ class StoreContactTest extends TestCase
     public function test_guest_can_store_a_contact_and_admins_are_notified(): void
     {
         Notification::fake();
-        $admins = factory(User::class, 5)->state('admin')->create();
+        $admin1 = factory(User::class)->state('admin')->make();
+        $admin2 = factory(User::class)->state('admin')->make();
         $contact = factory(Contact::class)->make();
         $this->assertCount(0, Contact::all());
-        Notification::assertNotSentTo($admins, ContactSent::class);
+        Notification::assertNotSentTo([$admin1, $admin2], ContactSent::class);
 
         $response = $this->storeContact($contact);
 
         $this->followRedirects($response)->assertOk();
         $this->assertCount(1, Contact::all());
-        Notification::assertSentTo($admins, ContactSent::class);
+        Notification::assertSentTo([$admin1, $admin2], ContactSent::class);
     }
 
     private function storeContact(Contact $contact): TestResponse

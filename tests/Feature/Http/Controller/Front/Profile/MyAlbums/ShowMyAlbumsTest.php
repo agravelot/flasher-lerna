@@ -33,9 +33,9 @@ class ShowMyAlbumsTest extends TestCase
 
     public function test_user_can_show_his_albums_with_linked_cosplayer_and_no_albums(): void
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->make();
         $cosplayer = factory(Cosplayer::class)->create([
-            'user_id' => $user->id,
+            'sso_id' => $user->id,
         ]);
         $this->actingAs($user);
 
@@ -46,13 +46,13 @@ class ShowMyAlbumsTest extends TestCase
 
     public function test_user_can_show_his_published_albums_with_linked_cosplayer_and_albums(): void
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->make();
         /** @var Cosplayer $cosplayer */
         $cosplayer = factory(Cosplayer::class)->create([
-            'user_id' => $user->id,
+            'sso_id' => $user->id,
         ]);
         $albums = factory(PublicAlbum::class, 3)->make([
-            'user_id' => factory(User::class)->create()->id,
+            'sso_id' => factory(User::class)->make()->id,
         ]);
         $cosplayer->albums()->saveMany($albums);
         $this->actingAs($user);
