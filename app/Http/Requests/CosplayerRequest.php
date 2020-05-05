@@ -18,7 +18,7 @@ class CosplayerRequest extends Request
             ],
             'description' => 'nullable|string|max:65000',
             'avatar' => 'sometimes|nullable|file|image|mimetypes:image/*|max:20000',
-            'user_id' => 'nullable|integer|min:1|exists:users,id',
+            'sso_id' => 'nullable|uuid',
         ];
     }
 }

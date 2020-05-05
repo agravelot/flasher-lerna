@@ -4,6 +4,7 @@ namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 
 use App\Models\Cosplayer;
 use App\Models\User;
+use App\Services\Keycloak\UserRepresentation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
@@ -14,17 +15,17 @@ class UpdateCosplayerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_update_cosplayer_with_new_related_user()
+    public function test_admin_can_update_cosplayer_with_new_related_user(): void
     {
         $this->actingAsAdmin();
         $cosplayer = factory(Cosplayer::class)->create();
-        $this->assertNull($cosplayer->user);
+        $this->assertNull($cosplayer->sso_id);
 
-        $cosplayer->user = factory(User::class)->create();
+        $cosplayer->sso_id = factory(Cosplayer::class)->state('withUser')->make()->sso_id;
         $response = $this->update($cosplayer);
 
         $response->assertOk();
-        $this->assertNotNull($cosplayer->fresh()->user);
+        $this->assertNotNull($cosplayer->fresh()->sso_id);
         $response->assertJson($this->getCosplayerJson($cosplayer->fresh()));
     }
 
@@ -33,7 +34,7 @@ class UpdateCosplayerTest extends TestCase
         $params = [
             'name' => $cosplayer->name,
             'description' => $cosplayer->description,
-            'user_id' => optional($cosplayer->user)->id,
+            'sso_id' => $cosplayer->sso_id
         ];
 
         if ($withAvatar) {

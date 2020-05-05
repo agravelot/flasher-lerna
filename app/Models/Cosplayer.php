@@ -36,7 +36,7 @@ class Cosplayer extends Model implements HasMedia
      *
      * @var array<string>
      */
-    protected $fillable = ['name', 'description', 'slug', 'user_id'];
+    protected $fillable = ['name', 'description', 'slug', 'user_id', 'sso_id'];
 
     /**
      * Return the initials of the cosplayer.
