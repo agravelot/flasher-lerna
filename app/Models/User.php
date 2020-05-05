@@ -47,4 +47,9 @@ class User extends KeycloakUser
     {
         return $this->sub;
     }
+
+    public function getIdAttribute(): ?string
+    {
+        return $this->sub;
+    }
 }

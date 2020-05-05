@@ -17,8 +17,7 @@ class AlbumPolicy extends Policy
             return true;
         }
 
-        // TODO user auth()->id()
-        if ($album->isPublic() && $album->cosplayers->contains(Cosplayer::where('sso_id', auth()->user()->sub)->first())) {
+        if ($album->isPublic() && $album->cosplayers->contains(Cosplayer::where('sso_id', auth()->id())->first())) {
             return true;
         }
 
