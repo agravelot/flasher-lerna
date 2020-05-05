@@ -30,6 +30,11 @@ class Keycloak
         return new UserResources($this);
     }
 
+    public function groups(): GroupResources
+    {
+        return new GroupResources($this);
+    }
+
     public function getAccessToken(): string
     {
         if (! empty($this->accessToken)) {

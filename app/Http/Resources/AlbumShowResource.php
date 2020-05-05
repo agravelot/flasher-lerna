@@ -60,7 +60,7 @@ class AlbumShowResource extends JsonResource
         // Because we are using this resource directly in your views.
         // We need need to check the request is an ajax request.
         // In order to use the auth with the proper guard.
-        $guard = Auth::guard($this->request->ajax() ? 'api' : 'web');
+        $guard = Auth::guard($this->request->wantsJson() ? 'api' : 'web');
 
         return $guard->check() && $guard->user()->can($permission, $album);
     }

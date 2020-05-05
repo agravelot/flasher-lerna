@@ -12,7 +12,7 @@ class AlbumObserver
     public function creating(Album $album): void
     {
         $album->user_id = 1;
-        $album->sso_id ??= auth()->user()->token->sub;
+        $album->sso_id ??= auth()->user()->sub ?? auth()->user()->token->sub;
     }
 
     public function saved(Album $album): void

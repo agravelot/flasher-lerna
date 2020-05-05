@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Album;
+use App\Models\Cosplayer;
 use App\Models\User;
 
 class AlbumPolicy extends Policy
@@ -16,7 +17,8 @@ class AlbumPolicy extends Policy
             return true;
         }
 
-        if ($album->isPublic() && $album->cosplayers->contains($user->cosplayer)) {
+        // TODO user auth()->id()
+        if ($album->isPublic() && $album->cosplayers->contains(Cosplayer::where('sso_id', auth()->user()->sub)->first())) {
             return true;
         }
 

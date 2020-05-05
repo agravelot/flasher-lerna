@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Facades\Keycloak;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContactStoreRequest;
 use App\Models\Contact;
 use App\Models\User;
 use App\Notifications\ContactSent;
+use App\Services\Keycloak\UserQuery;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\View\View;
@@ -28,7 +30,7 @@ class ContactController extends Controller
     {
         $contact = Contact::create($request->validated());
 
-        $admins = User::where('role', 'admin')->get();
+        $admins = Keycloak::groups()->members('admin');
         Notification::send($admins, new ContactSent($contact));
 
         return redirect(route('contact.index'))

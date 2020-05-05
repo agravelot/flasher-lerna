@@ -16,7 +16,8 @@ class InvitationController extends Controller
     {
         $this->authorize('view', $invitation);
 
-        $invitation->cosplayer->user()->associate(auth()->user());
+        // TODO Use auth()->id
+        $invitation->cosplayer->sso_id = auth()->user()->sub;
         $invitation->cosplayer->save();
         $invitation->update(['confirmed_at' => now()]);
 
