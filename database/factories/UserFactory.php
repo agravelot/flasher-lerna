@@ -1,10 +1,8 @@
 <?php
 
 use App\Models\User;
-use Carbon\Carbon;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
-use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +42,7 @@ $factory->state(User::class, 'admin', static function () {
     return [
         'realm_access' => [
             'roles' => [
-                'admin'
+                'admin',
             ],
         ],
     ];

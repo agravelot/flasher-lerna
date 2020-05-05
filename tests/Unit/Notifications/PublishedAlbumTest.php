@@ -30,7 +30,7 @@ class PublishedAlbumTest extends TestCase
         $album->cosplayers()->sync($cosplayers);
         $album->update(['published_at' => Carbon::now()]);
 
-        $users = $album->cosplayers->pluck('sso_id')->map(fn(string $ssoId) => Keycloak::users()->find($ssoId));
+        $users = $album->cosplayers->pluck('sso_id')->map(static fn (string $ssoId) => Keycloak::users()->find($ssoId));
         Notification::assertTimesSent(5, PublishedAlbum::class);
         Notification::assertSentTo($users, PublishedAlbum::class);
     }

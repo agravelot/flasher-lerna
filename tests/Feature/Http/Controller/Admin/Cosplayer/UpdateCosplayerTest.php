@@ -3,8 +3,6 @@
 namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 
 use App\Models\Cosplayer;
-use App\Models\User;
-use App\Services\Keycloak\UserRepresentation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
@@ -34,7 +32,7 @@ class UpdateCosplayerTest extends TestCase
         $params = [
             'name' => $cosplayer->name,
             'description' => $cosplayer->description,
-            'sso_id' => $cosplayer->sso_id
+            'sso_id' => $cosplayer->sso_id,
         ];
 
         if ($withAvatar) {

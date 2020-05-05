@@ -2,8 +2,6 @@
 
 namespace App\Services\Keycloak;
 
-use App\Models\User;
-
 class GroupResources
 {
     private Keycloak $keycloak;
@@ -19,11 +17,6 @@ class GroupResources
     }
 
     /**
-     *
-     * @param  string  $group
-     * @param  int|null  $first
-     * @param  int|null  $max
-     *
      * @return array<UserRepresentation>
      */
     public function members(string $group, ?int $first = null, ?int $max = null): array
@@ -59,7 +52,7 @@ class GroupResources
         $response = $this->keycloak->getClient()
             ->get("/admin/realms/$realm/users/$ssoId");
 
-        if (!$response->ok()) {
+        if (! $response->ok()) {
             $response->throw();
         }
 
@@ -72,7 +65,7 @@ class GroupResources
         $response = $this->keycloak->getClient()
             ->post("/admin/realms/$realm/users", $user->toArray());
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             $response->throw();
         }
     }
@@ -83,7 +76,7 @@ class GroupResources
         $response = $this->keycloak->getClient()
             ->put("/admin/realms/$realm/users", $data);
 
-        if (!$response->ok()) {
+        if (! $response->ok()) {
             $response->throw();
         }
     }

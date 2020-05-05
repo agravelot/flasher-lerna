@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Facades\Keycloak;
-use App\Models\User;
 use App\Services\Keycloak\UserRepresentation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

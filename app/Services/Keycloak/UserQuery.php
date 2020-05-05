@@ -1,13 +1,11 @@
 <?php
 
-
 namespace App\Services\Keycloak;
 
 /**
- * Class UserQuery
+ * Class UserQuery.
  *
  * @see https://www.keycloak.org/docs-api/10.0/rest-api/index.html#_users_resource
- * @package App\Services\Keycloak
  */
 class UserQuery
 {

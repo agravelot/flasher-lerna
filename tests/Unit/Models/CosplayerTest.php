@@ -3,7 +3,6 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Cosplayer;
-use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\ModelTestCase;
 

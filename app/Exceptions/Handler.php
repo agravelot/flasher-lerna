@@ -50,7 +50,6 @@ class Handler extends ExceptionHandler
      *
      * @param  Request  $request
      *
-     * @param  Throwable  $exception
      *
      * @return Response
      * @throws Throwable
@@ -64,7 +63,6 @@ class Handler extends ExceptionHandler
      * Override default to redirect to keycloak login route instead of default laravel login route.
      *
      * @param  Request  $request
-     * @param  AuthenticationException  $exception
      *
      * @return JsonResponse|RedirectResponse|SymfonyResponse
      */

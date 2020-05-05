@@ -11,7 +11,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
-use Laravel\Passport\Passport;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -28,7 +27,7 @@ abstract class TestCase extends BaseTestCase
         Storage::fake();
         Storage::fake('s3');
         foreach (Keycloak::users()->all() as $user) {
-            /** @var UserRepresentation $user */
+            /* @var UserRepresentation $user */
             Keycloak::users()->delete($user->id);
         }
     }

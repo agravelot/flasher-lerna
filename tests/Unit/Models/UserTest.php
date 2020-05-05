@@ -2,8 +2,6 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\Album;
-use App\Models\Post;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\ModelTestCase;

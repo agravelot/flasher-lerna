@@ -1,13 +1,11 @@
 <?php
 
-
 namespace App\Services\Keycloak;
 
 /**
  * Class UserRepresentation according keycloak api.
  *
  * @see https://www.keycloak.org/docs-api/10.0/rest-api/index.html#_userrepresentation
- * @package App\Services\Keycloak
  */
 class UserRepresentation
 {

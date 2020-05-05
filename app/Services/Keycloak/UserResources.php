@@ -2,8 +2,6 @@
 
 namespace App\Services\Keycloak;
 
-use App\Models\User;
-
 class UserResources
 {
     private Keycloak $keycloak;
@@ -17,6 +15,7 @@ class UserResources
     {
         $query ??= new UserQuery();
         $query->max = 1;
+
         return $this->all($query)[0] ?? null;
     }
 
@@ -58,7 +57,7 @@ class UserResources
         $response = $this->keycloak->getClient()
             ->get("/admin/realms/$realm/users/$ssoId");
 
-        if (!$response->ok()) {
+        if (! $response->ok()) {
             $response->throw();
         }
 
@@ -71,7 +70,7 @@ class UserResources
         $response = $this->keycloak->getClient()
             ->post("/admin/realms/$realm/users", $user->toArray());
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             $response->throw();
         }
     }
@@ -82,7 +81,7 @@ class UserResources
         $response = $this->keycloak->getClient()
             ->put("/admin/realms/$realm/users", $data);
 
-        if (!$response->ok()) {
+        if (! $response->ok()) {
             $response->throw();
         }
     }

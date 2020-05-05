@@ -1,12 +1,9 @@
 <?php
 
-use App\Models\User;
 use App\Services\Keycloak\Credential;
 use App\Services\Keycloak\UserRepresentation;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class AdminUserSeeder extends Seeder
 {
