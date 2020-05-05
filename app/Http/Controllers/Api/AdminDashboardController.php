@@ -19,7 +19,6 @@ class AdminDashboardController extends Controller
     public function __invoke(Request $request): JsonResponse
     {
         return response()->json([
-            'user' => $request->user()->name,
             'cosplayersCount' => Cosplayer::count(),
             'usersCount' => Keycloak::users()->count(),
             'albumsCount' => Album::count(),
