@@ -33,21 +33,10 @@ class UserResources
 
         $users = [];
         foreach ($response->json() as $user) {
-            $users[] = $this->makeUser($user);
+            $users[] = UserRepresentation::fromArray($user);
         }
 
         return $users;
-    }
-
-    private function makeUser(array $data): UserRepresentation
-    {
-        $user = new UserRepresentation();
-        $user->id = $data['id'];
-        $user->username = $data['username'];
-        $user->email = $data['email'] ?? null;
-        $user->emailVerified = (bool) $data['emailVerified'];
-
-        return $user;
     }
 
     public function find(string $ssoId): UserRepresentation
@@ -61,7 +50,7 @@ class UserResources
             $response->throw();
         }
 
-        return $this->makeUser($response->json());
+        return UserRepresentation::fromArray($response->json());
     }
 
     public function create(UserRepresentation $user): void

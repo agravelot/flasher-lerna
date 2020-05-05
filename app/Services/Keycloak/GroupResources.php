@@ -28,20 +28,9 @@ class GroupResources
 
         $users = [];
         foreach ($response->json() as $user) {
-            $users[] = $this->makeUser($user);
+            $users[] = UserRepresentation::fromArray($user);
         }
 
         return $users;
-    }
-
-    private function makeUser(array $data): UserRepresentation
-    {
-        $user = new UserRepresentation();
-        $user->id = $data['id'];
-        $user->username = $data['username'];
-        $user->email = $data['email'] ?? null;
-        $user->emailVerified = (bool) $data['emailVerified'];
-
-        return $user;
     }
 }

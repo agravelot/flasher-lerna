@@ -35,6 +35,20 @@ class UserRepresentation
         $this->groups[] = $group;
     }
 
+    public static function fromArray(array $data): self {
+        $user = new self();
+        $user->id = $data['id'];
+        $user->username = $data['username'];
+        $user->email = $data['email'] ?? null;
+        $user->emailVerified = $data['emailVerified'];
+        $user->groups = $data['groups'] ?? [];
+        $user->enabled = $data['enabled'];
+        $user->firstName = $data['firstName'];
+        $user->lastName = $data['lastName'];
+
+        return $user;
+    }
+
     public function toArray(): array
     {
         $credentials = [];
