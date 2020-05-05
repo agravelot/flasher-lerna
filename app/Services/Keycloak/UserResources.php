@@ -15,7 +15,7 @@ class UserResources
 
     public function first(?UserQuery $query = null): ?UserRepresentation
     {
-        $query ??= new $query;
+        $query ??= new UserQuery();
         $query->max = 1;
         return $this->all($query)[0] ?? null;
     }
