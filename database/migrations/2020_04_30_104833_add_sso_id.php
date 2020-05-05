@@ -49,12 +49,7 @@ class AddSsoId extends Migration
             $table->uuid('sso_id');
         });
 
-        if (! App::environment('testing')) {
-            CleanAllKeycloakUsers::dispatchNow();
-            AddKeycloakUsers::dispatchNow(DB::table('users')->get());
-        }
-
-        Schema::rename('users', 'users_bak');
+        Schema::rename('users', 'users_save');
     }
 
     /**
@@ -62,12 +57,54 @@ class AddSsoId extends Migration
      */
     public function down(): void
     {
+        Schema::rename('users_save', 'users');
+
         Schema::table('albums', static function (Blueprint $table) {
+            $table->dropColumn('sso_id');
+            $table->unsignedBigInteger('user_id')->nullable(false)->change();
             $table->foreign('user_id')->references('id')->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+        });
+
+        Schema::table('cosplayers', static function (Blueprint $table) {
             $table->dropColumn('sso_id');
             $table->unsignedBigInteger('user_id')->nullable(false)->change();
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+        });
+
+        Schema::table('posts', static function (Blueprint $table) {
+            $table->dropColumn('sso_id');
+            $table->unsignedBigInteger('user_id')->nullable(false)->change();
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+        });
+
+        Schema::table('testimonials', static function (Blueprint $table) {
+            $table->dropColumn('sso_id');
+            $table->unsignedBigInteger('user_id')->nullable(false)->change();
+            $table->foreign('user_id', 'golden_book_posts_user_id_foreign')->references('id')->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+        });
+
+        Schema::table('contacts', static function (Blueprint $table) {
+            $table->dropColumn('sso_id');
+            $table->unsignedBigInteger('user_id')->nullable(false)->change();
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+        });
+
+        Schema::table('comments', static function (Blueprint $table) {
+            $table->dropColumn('sso_id');
+            $table->unsignedBigInteger('user_id')->nullable(false)->change();
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 }
