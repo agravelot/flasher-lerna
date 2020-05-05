@@ -21,7 +21,7 @@ class User extends KeycloakUser
      * @var array<string>
      */
     protected $fillable = [
-       'sub', 'preferred_username', 'email', 'emailVerified', 'groups', 'attributes',
+       'sub', 'preferred_username', 'email', 'emailVerified', 'realm_access', 'resource_access', 'attributes',
     ];
 
     /**
@@ -29,7 +29,13 @@ class User extends KeycloakUser
      */
     public function isAdmin(): bool
     {
-        return $this->role === 'admin' || ($this->token && in_array('admin', $this->token->realm_access->roles, true));
+        // Web
+        if ($this->realm_access) {
+            return in_array('admin', $this->realm_access['roles'], true);
+        }
+
+        // Api
+        return $this->token && in_array('admin', $this->token->realm_access->roles, true);
     }
 
     /**

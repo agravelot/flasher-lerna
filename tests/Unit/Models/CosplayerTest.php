@@ -44,7 +44,7 @@ class CosplayerTest extends ModelTestCase
     public function testModelConfiguration()
     {
         $this->runConfigurationAssertions(new Cosplayer(), [
-            'name', 'description', 'slug', 'user_id',
+            'name', 'description', 'slug', 'user_id', 'sso_id',
         ]);
     }
 

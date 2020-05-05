@@ -21,25 +21,39 @@ use Illuminate\Support\Str;
 
 $factory->define(User::class, static function (Faker $faker) {
     return [
+        'sub' => $faker->uuid,
         'preferred_username' => $faker->unique()->userName,
         'email' => $faker->unique()->email,
         'password' => Hash::make('secret'),
-        'groups' => ['user'],
-        'email_verified_at' => Carbon::now(),
-        'remember_token' => Str::random(10),
-        'created_at' => $faker->dateTimeThisDecade,
-        'updated_at' => Carbon::now(),
+        'realm_access' => [
+            'roles' => [],
+        ],
+        'resource_access' => [
+            'account' => [
+                'roles' => [
+                    'manage-account',
+                    'manage-account-links',
+                    'view-profile',
+                ],
+            ],
+        ],
     ];
 });
 
 $factory->state(User::class, 'admin', static function () {
     return [
-        'groups' => ['admin'],
+        'realm_access' => [
+            'roles' => [
+                'admin'
+            ],
+        ],
     ];
 });
 
 $factory->state(User::class, 'user', static function () {
     return [
-        'groups' => ['user'],
+        'realm_access' => [
+            'roles' => [],
+        ],
     ];
 });

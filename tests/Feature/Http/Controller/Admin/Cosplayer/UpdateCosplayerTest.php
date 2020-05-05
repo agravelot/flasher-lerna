@@ -58,17 +58,17 @@ class UpdateCosplayerTest extends TestCase
         ];
     }
 
-    public function test_admin_can_update_cosplayer_with_updated_related_user()
+    public function test_admin_can_update_cosplayer_with_updated_related_user(): void
     {
         $this->actingAsAdmin();
-        $cosplayer = factory(Cosplayer::class)->create(['user_id' => factory(User::class)->create()->id]);
-        $this->assertNotNull($cosplayer->user);
+        $cosplayer = factory(Cosplayer::class)->state('withUser')->create();
+        $this->assertNotNull($cosplayer->user());
 
-        $cosplayer->user = factory(User::class)->create();
+        $cosplayer->sso_id = factory(Cosplayer::class)->state('withUser')->make()->sso_id;
         $response = $this->update($cosplayer);
 
         $response->assertOk();
-        $this->assertNotNull($cosplayer->fresh()->user);
+        $this->assertNotNull($cosplayer->fresh()->user());
         $response->assertJson($this->getCosplayerJson($cosplayer->fresh()));
     }
 
@@ -86,7 +86,7 @@ class UpdateCosplayerTest extends TestCase
         $response->assertJson($this->getCosplayerJson($cosplayer->fresh()));
     }
 
-    public function test_admin_can_update_cosplayer_and_remove_avatar()
+    public function test_admin_can_update_cosplayer_and_remove_avatar(): void
     {
         $this->actingAsAdmin();
         $cosplayer = factory(Cosplayer::class)->state('avatar')->create();
@@ -99,7 +99,7 @@ class UpdateCosplayerTest extends TestCase
         $this->assertNull($cosplayer->fresh()->avatar);
     }
 
-    public function testAdminCanUpdateCosplayerWithSameName()
+    public function testAdminCanUpdateCosplayerWithSameName(): void
     {
         $this->actingAsAdmin();
         $cosplayer = factory(Cosplayer::class)->create();
@@ -112,7 +112,7 @@ class UpdateCosplayerTest extends TestCase
         $response->assertJson($this->getCosplayerJson($cosplayer));
     }
 
-    public function test_admin_can_update_cosplayer_name_and_update_slug()
+    public function test_admin_can_update_cosplayer_name_and_update_slug(): void
     {
         $this->actingAsAdmin();
         $cosplayer = factory(Cosplayer::class)->create();
@@ -125,7 +125,7 @@ class UpdateCosplayerTest extends TestCase
             ->assertJson($this->getCosplayerJson($cosplayer->fresh()));
     }
 
-    public function testUserCannotUpdateCosplayers()
+    public function testUserCannotUpdateCosplayers(): void
     {
         $this->actingAsUser();
         $cosplayer = factory(Cosplayer::class)->create();
@@ -137,7 +137,7 @@ class UpdateCosplayerTest extends TestCase
         $this->assertNotSame($cosplayer->description, $cosplayer->fresh()->description);
     }
 
-    public function testGuestCannotUpdateCosplayers()
+    public function testGuestCannotUpdateCosplayers(): void
     {
         $cosplayer = factory(Cosplayer::class)->create();
         $cosplayer->description = '42';

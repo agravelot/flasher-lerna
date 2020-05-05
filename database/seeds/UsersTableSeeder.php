@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\User;
 use App\Services\Keycloak\Credential;
 use App\Services\Keycloak\UserRepresentation;
 use Faker\Factory;
