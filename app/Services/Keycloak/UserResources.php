@@ -30,7 +30,7 @@ class UserResources
         $realm = $this->keycloak->realm;
 
         $response = $this->keycloak->getClient()
-            ->get("/admin/realms/$realm/users".http_build_query((array) $query));
+            ->get("/admin/realms/$realm/users?".http_build_query((array) $query));
 
         $users = [];
         foreach ($response->json() as $user) {
