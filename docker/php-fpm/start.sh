@@ -43,7 +43,6 @@ elif [[ "$role" == "scheduler" ]]; then
 elif [[ "$role" == "publisher" ]]; then
 
   php artisan migrate --force
-  php artisan passport:keys
 
   rm -rvf public/vendor/*
   php artisan horizon:publish

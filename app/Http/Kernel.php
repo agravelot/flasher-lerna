@@ -24,7 +24,6 @@ use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jerodev\LaraFontAwesome\Middleware\InjectStyleSheet;
-use Laravel\Passport\Http\Middleware\CreateFreshApiToken;
 use Spatie\ResponseCache\Middlewares\CacheResponse;
 use Spatie\ResponseCache\Middlewares\DoNotCacheResponse;
 
@@ -59,7 +58,6 @@ class Kernel extends HttpKernel
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
             SubstituteBindings::class,
-            CreateFreshApiToken::class,
             InjectStyleSheet::class,
             CacheResponse::class,
         ],
