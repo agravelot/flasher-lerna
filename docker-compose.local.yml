@@ -23,6 +23,9 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
       nginx-proxy:
+      keycloak-backend:
+          aliases:
+            - keycloak.localhost
 
   tusd:
     labels:
@@ -74,7 +77,6 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
 
   keycloak:
-    hostname: ${KEYCLOAK_URI}
     build:
       context: docker/keycloak
       dockerfile: Dockerfile
