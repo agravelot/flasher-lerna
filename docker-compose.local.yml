@@ -25,7 +25,7 @@ services:
       nginx-proxy:
       keycloak-backend:
           aliases:
-            - keycloak.localhost
+            - ${KEYCLOAK_URI}
 
   tusd:
     labels:
