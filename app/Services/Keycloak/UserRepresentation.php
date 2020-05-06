@@ -18,9 +18,9 @@ class UserRepresentation
     public bool $emailVerified;
     public bool $enabled;
     public bool $totp;
-    public string $firstName;
+    public ?string $firstName;
     public string $id;
-    public string $lastName;
+    public ?string $lastName;
     public array $realmRoles = [];
     public array $groups = [];
     public string $username;
@@ -43,8 +43,8 @@ class UserRepresentation
         $user->emailVerified = $data['emailVerified'];
         $user->groups = $data['groups'] ?? [];
         $user->enabled = $data['enabled'];
-        $user->firstName = $data['firstName'];
-        $user->lastName = $data['lastName'];
+        $user->firstName = $data['firstName'] ?? null;
+        $user->lastName = $data['lastName'] ?? null;
 
         return $user;
     }
