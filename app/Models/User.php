@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Vizir\KeycloakWebGuard\Models\KeycloakUser;
 
 class User extends KeycloakUser
 {
-    use Notifiable;
+    use Notifiable, Authorizable;
 
     // Set profile as empty array to work with api.
     public function __construct(array $profile = [])
