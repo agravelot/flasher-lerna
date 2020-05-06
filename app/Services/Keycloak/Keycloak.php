@@ -53,6 +53,10 @@ class Keycloak
                 ]
             );
 
+        if (! $response->ok()) {
+            $response->throw();
+        }
+
         return $this->accessToken = $response->json()['access_token'];
     }
 
