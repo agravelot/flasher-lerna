@@ -78,7 +78,9 @@ $factory->state(Album::class, 'withUser', static function (Faker $faker) {
     $query = new UserQuery();
     $query->email = $user->email;
 
+    $user = Keycloak::users()->first($query);
+
     return [
-        'sso_id' => Keycloak::users()->first($query)->id,
+        'sso_id' => $user->id,
     ];
 });

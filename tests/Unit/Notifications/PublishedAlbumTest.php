@@ -67,16 +67,17 @@ class PublishedAlbumTest extends TestCase
         Notification::fake();
         /** @var User $user */
         $user = factory(User::class)->make(['notify_on_album_published' => false]);
-        dump($user);
         Keycloak::shouldReceive('users->create')->withAnyArgs()->once();
         Keycloak::shouldReceive('users->find->toUser')
             ->withAnyArgs()
             ->once()
             ->andReturn($user);
-        Keycloak::shouldReceive('users->first->id')
+        $userRepresentation = new UserRepresentation();
+        $userRepresentation->id = $user->id;
+        Keycloak::shouldReceive('users->first')
             ->withAnyArgs()
             ->once()
-            ->andReturn($user->id);
+            ->andReturn($userRepresentation);
 
         /** @var Cosplayer $cosplayer */
         $cosplayer = factory(Cosplayer::class)->create(['sso_id' => $user->id]);
