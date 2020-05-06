@@ -19,10 +19,11 @@ use Illuminate\Database\Eloquent\Factory;
 
 $factory->define(User::class, static function (Faker $faker) {
     return [
-        'sub' => $faker->uuid,
+        'id' => $faker->uuid,
         'preferred_username' => $faker->unique()->userName,
         'email' => $faker->unique()->email,
         'password' => Hash::make('secret'),
+        'notify_on_album_published' => true,
         'realm_access' => [
             'roles' => [],
         ],

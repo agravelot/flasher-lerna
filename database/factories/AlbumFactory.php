@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Album;
+use App\Services\Keycloak\UserQuery;
 use App\Services\Keycloak\UserRepresentation;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
@@ -71,14 +72,13 @@ $factory->state(Album::class, 'passwordLess', static function () {
 });
 
 $factory->state(Album::class, 'withUser', static function (Faker $faker) {
-    // TODO Use custom factory ?
-    $user = new UserRepresentation();
-    $user->email = $faker->email;
-    $user->username = $faker->userName;
-    $user->emailVerified = true;
+    $user = UserRepresentation::factory();
     Keycloak::users()->create($user);
 
+    $query = new UserQuery();
+    $query->email = $user->email;
+
     return [
-        'sso_id' => Keycloak::users()->first()->id,
+        'sso_id' => Keycloak::users()->first($query)->id,
     ];
 });

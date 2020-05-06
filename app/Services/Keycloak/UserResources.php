@@ -64,7 +64,7 @@ class UserResources
         }
     }
 
-    public function update(array $data)
+    public function update(array $data): void
     {
         $realm = $this->keycloak->realm;
         $response = $this->keycloak->getClient()

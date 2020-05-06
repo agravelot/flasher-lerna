@@ -21,7 +21,7 @@ class User extends KeycloakUser
      * @var array<string>
      */
     protected $fillable = [
-       'sub', 'preferred_username', 'email', 'emailVerified', 'realm_access', 'resource_access', 'attributes',
+       'id', 'username', 'email', 'emailVerified', 'realm_access', 'resource_access', 'attributes', 'notify_on_album_published',
     ];
 
     /**
@@ -45,11 +45,6 @@ class User extends KeycloakUser
      */
     public function getKey(): ?string
     {
-        return $this->sub;
-    }
-
-    public function getIdAttribute(): ?string
-    {
-        return $this->sub;
+        return $this->id;
     }
 }

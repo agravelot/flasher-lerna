@@ -12,16 +12,8 @@ class UsersTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $faker = Factory::create();
-
         foreach (range(0, 20) as $i) {
-            $user = new UserRepresentation();
-            $user->email = $faker->email;
-            $user->username = $faker->userName;
-            $user->addCredential(new Credential(Hash::make('secret')));
-            $user->emailVerified = true;
-
-            Keycloak::users()->create($user);
+            Keycloak::users()->create(UserRepresentation::factory());
         }
     }
 }

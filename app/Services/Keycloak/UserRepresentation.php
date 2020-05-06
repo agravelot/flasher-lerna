@@ -2,6 +2,10 @@
 
 namespace App\Services\Keycloak;
 
+use App\Models\User;
+use Faker\Factory;
+use Illuminate\Support\Str;
+
 /**
  * Class UserRepresentation according keycloak api.
  *
@@ -16,14 +20,15 @@ class UserRepresentation
     public array $credentials = [];
     public ?string $email;
     public bool $emailVerified;
-    public bool $enabled;
-    public bool $totp;
+    public bool $enabled = true;
+    public bool $totp = false;
     public ?string $firstName;
-    public string $id;
+    public ?string $id;
     public ?string $lastName;
     public array $realmRoles = [];
     public array $groups = [];
     public string $username;
+    public array $requiredActions = [];
 
     public function addCredential(Credential $credential): void
     {
@@ -37,7 +42,7 @@ class UserRepresentation
 
     public static function fromArray(array $data): self {
         $user = new self();
-        $user->id = $data['id'];
+        $user->id = $data['sub'] ?? $data['id'] ?? null;
         $user->username = $data['username'];
         $user->email = $data['email'] ?? null;
         $user->emailVerified = $data['emailVerified'];
@@ -45,8 +50,31 @@ class UserRepresentation
         $user->enabled = $data['enabled'];
         $user->firstName = $data['firstName'] ?? null;
         $user->lastName = $data['lastName'] ?? null;
+        $user->attributes = $data['attributes'] ?? [];
 
         return $user;
+    }
+
+    public function toUser(): User
+    {
+        $user = new User($this->toArray());
+        $user->notify_on_album_published = $this->attributes['notify_on_album_published'] ?? false;
+        return $user;
+    }
+
+    public static function factory(array $data = []): UserRepresentation
+    {
+        $faker = Factory::create();
+        //$data['id'] ??= $faker->uuid;
+        $data['username'] ??= $faker->userName;
+        $data['email'] ??= $faker->email;
+        $data['emailVerified'] ??= true;
+        $data['groups'] ??= [];
+        $data['enabled'] ??= true;
+        $data['firstName'] = null;
+        $data['lastName'] = null;
+        $data['attributes'] ??= ['notify_on_album_published' => true];
+        return self::fromArray($data);
     }
 
     public function toArray(): array
@@ -60,11 +88,12 @@ class UserRepresentation
             'email' => $this->email,
             'username' => $this->username,
             'emailVerified' => $this->emailVerified,
-            'enabled' => true,
-            'totp' => false,
+            'enabled' => $this->enabled,
+            'totp' => $this->totp,
             'credentials' => $credentials,
             'groups' => $this->groups,
             'attributes' => $this->attributes,
+            'requiredActions' => $this->requiredActions,
         ];
     }
 }

@@ -21,9 +21,11 @@ class AlbumObserver
             $cosplayers = $album->cosplayers()->whereNotNull('sso_id')->get(['sso_id']);
             $users = [];
             foreach ($cosplayers as $cosplayer) {
-                $users[] = Keycloak::users()->find($cosplayer->sso_id);
+                $user = Keycloak::users()->find($cosplayer->sso_id)->toUser();
+                if ($user->notify_on_album_published) {
+                    $users[] = $user;
+                }
             }
-            // TODO UserRepresentation is not notifiable
             Notification::send($users, new PublishedAlbum($album));
         }
     }
