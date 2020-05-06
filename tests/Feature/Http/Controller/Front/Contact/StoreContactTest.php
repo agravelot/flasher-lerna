@@ -3,11 +3,15 @@
 namespace Tests\Feature\Http\Controller\Front\Contact;
 
 use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
+use App\Facades\Keycloak;
 use App\Models\Contact;
 use App\Models\User;
 use App\Notifications\ContactSent;
+use App\Services\Keycloak\GroupRepresentation;
+use App\Services\Keycloak\UserRepresentation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
@@ -17,18 +21,24 @@ class StoreContactTest extends TestCase
 
     public function test_guest_can_store_a_contact_and_admins_are_notified(): void
     {
+        //TODO Mock
+        $this->withoutExceptionHandling();
         Notification::fake();
-        $admin1 = factory(User::class)->state('admin')->make();
-        $admin2 = factory(User::class)->state('admin')->make();
+        $admin1 = UserRepresentation::factory(['groups' => ['admin']]);
+        $admin2 = UserRepresentation::factory(['groups' => ['admin']]);
+        $mockGroup = new GroupRepresentation();
+        $mockGroup->id = '';
+        Keycloak::shouldReceive('groups->first')->andReturn($mockGroup);
+        Keycloak::shouldReceive('groups->members')->once()->andReturn([$admin1->toUser(), $admin2->toUser()]);
         $contact = factory(Contact::class)->make();
         $this->assertCount(0, Contact::all());
-        Notification::assertNotSentTo([$admin1, $admin2], ContactSent::class);
+        Notification::assertNotSentTo([$admin1->toUser(), $admin2->toUser()], ContactSent::class);
 
         $response = $this->storeContact($contact);
 
         $this->followRedirects($response)->assertOk();
         $this->assertCount(1, Contact::all());
-        Notification::assertSentTo([$admin1, $admin2], ContactSent::class);
+        Notification::assertSentTo([$admin1->toUser(), $admin2->toUser()], ContactSent::class);
     }
 
     private function storeContact(Contact $contact): TestResponse
