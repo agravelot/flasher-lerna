@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use App\Services\Keycloak\Keycloak;
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use Illuminate\Support\ServiceProvider;
+use Vizir\KeycloakWebGuard\Services\KeycloakService;
 
 class KeycloakServiceProvider extends ServiceProvider
 {
@@ -15,5 +18,9 @@ class KeycloakServiceProvider extends ServiceProvider
         $this->app->bind('keycloak', static function () {
             return new Keycloak();
         });
+
+        $this->app->when(KeycloakService::class)
+            ->needs(ClientInterface::class)
+            ->give(fn($app) => new Client(['verify' => config('keycloak.verify_ssl', true)]));
     }
 }
