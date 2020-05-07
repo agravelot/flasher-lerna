@@ -90,7 +90,7 @@
                         <div class="dropdown-menu" id="dropdown-menu4" role="menu">
                             <div class="dropdown-content">
                                 <div class="dropdown-item">
-                                    <span class="has-text-weight-bold">{{ Auth::user()->name }}</span>
+                                    <span class="has-text-weight-bold">{{ Auth::user()->username }}</span>
                                 </div>
                                 <hr class="dropdown-divider">
                                 @can('dashboard')
