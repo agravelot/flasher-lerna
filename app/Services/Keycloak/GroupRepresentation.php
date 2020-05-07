@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Keycloak;
-
 
 class GroupRepresentation
 {
@@ -15,7 +13,8 @@ class GroupRepresentation
     public array $realmRoles;
     public array $subGroups;
 
-    public static function fromArray(array $data): self {
+    public static function fromArray(array $data): self
+    {
         $group = new self();
         $group->id = $data['id'] ?? null;
         $group->attributes = $data['attributes'] ?? [];

@@ -5,13 +5,11 @@ namespace Tests\Feature\Http\Controller\Front\Contact;
 use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
 use App\Facades\Keycloak;
 use App\Models\Contact;
-use App\Models\User;
 use App\Notifications\ContactSent;
 use App\Services\Keycloak\GroupRepresentation;
 use App\Services\Keycloak\UserRepresentation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 

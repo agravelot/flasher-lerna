@@ -4,7 +4,6 @@ namespace App\Services\Keycloak;
 
 use App\Models\User;
 use Faker\Factory;
-use Illuminate\Support\Str;
 
 /**
  * Class UserRepresentation according keycloak api.
@@ -40,7 +39,8 @@ class UserRepresentation
         $this->groups[] = $group;
     }
 
-    public static function fromArray(array $data): self {
+    public static function fromArray(array $data): self
+    {
         $user = new self();
         $user->id = $data['sub'] ?? $data['id'] ?? null;
         $user->username = $data['username'];
@@ -59,10 +59,11 @@ class UserRepresentation
     {
         $user = new User($this->toArray());
         $user->notify_on_album_published = $this->attributes['notify_on_album_published'] ?? false;
+
         return $user;
     }
 
-    public static function factory(array $data = []): UserRepresentation
+    public static function factory(array $data = []): self
     {
         $faker = Factory::create();
         //$data['id'] ??= $faker->uuid;
@@ -74,6 +75,7 @@ class UserRepresentation
         $data['firstName'] = null;
         $data['lastName'] = null;
         $data['attributes'] ??= ['notify_on_album_published' => true];
+
         return self::fromArray($data);
     }
 

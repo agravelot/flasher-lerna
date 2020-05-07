@@ -6,7 +6,6 @@ use App\Facades\Keycloak;
 use App\Services\Keycloak\UserRepresentation;
 use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Comment extends Model

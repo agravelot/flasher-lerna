@@ -21,6 +21,6 @@ class KeycloakServiceProvider extends ServiceProvider
 
         $this->app->when(KeycloakService::class)
             ->needs(ClientInterface::class)
-            ->give(fn($app) => new Client(['verify' => config('keycloak.verify_ssl', true)]));
+            ->give(static fn ($app) => new Client(['verify' => config('keycloak.verify_ssl', true)]));
     }
 }

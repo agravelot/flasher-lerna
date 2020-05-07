@@ -3,7 +3,6 @@
 namespace Tests\Unit\Notifications;
 
 use App\Facades\Keycloak;
-use App\Jobs\AddKeycloakUsers;
 use App\Models\Album;
 use App\Models\Cosplayer;
 use App\Models\User;

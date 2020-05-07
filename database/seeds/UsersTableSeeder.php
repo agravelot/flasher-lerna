@@ -1,8 +1,6 @@
 <?php
 
-use App\Services\Keycloak\Credential;
 use App\Services\Keycloak\UserRepresentation;
-use Faker\Factory;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
