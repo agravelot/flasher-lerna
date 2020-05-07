@@ -1,7 +1,7 @@
 FROM maven:3.3-jdk-8 as builder
 WORKDIR /build
 COPY . /build/
-RUN mvn -B clean package
+RUN mvn -q -B clean package
 
 FROM jboss/keycloak:9.0.3
 RUN mkdir -p /opt/jboss/keycloak/modules/at/favre/lib/jbcrypt/main/
