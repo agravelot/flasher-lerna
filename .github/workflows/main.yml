@@ -54,7 +54,6 @@ jobs:
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T cache redis-cli config set maxmemory 41943040
         docker cp vendor $(docker-compose ps -q php):/var/www/html/
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan keycloak:wait
-        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan keycloak:wait
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan cache:clear-wait-connection
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan db:wait-connection
       env:
