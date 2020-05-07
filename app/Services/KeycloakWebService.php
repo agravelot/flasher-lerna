@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Services;
 
 use Vizir\KeycloakWebGuard\Services\KeycloakService;
@@ -19,5 +18,4 @@ class KeycloakWebService extends KeycloakService
 
         return $user;
     }
-
 }

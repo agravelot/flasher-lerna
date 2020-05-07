@@ -7,7 +7,6 @@ use App\Services\KeycloakWebService;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use Illuminate\Support\ServiceProvider;
-use Vizir\KeycloakWebGuard\Services\KeycloakService;
 
 class KeycloakServiceProvider extends ServiceProvider
 {
@@ -20,7 +19,7 @@ class KeycloakServiceProvider extends ServiceProvider
             return new Keycloak();
         });
 
-        $this->app->bind('keycloak-web', function($app) {
+        $this->app->bind('keycloak-web', static function ($app) {
             return $app->make(KeycloakWebService::class);
         });
 
