@@ -184,6 +184,7 @@ jobs:
         CLOUDFRONT_KEY_PAIR_ID: ${{ secrets.CLOUDFRONT_KEY_PAIR_ID }}
         CLOUDFRONT_PRIVATE_KEY: ${{ secrets.CLOUDFRONT_PRIVATE_KEY }}
         ADMIN_URL: ${{ secrets.ADMIN_URL_STAGING }}
+        CRISP_WEBSITE_ID: ${{ secrets.CRISP_WEBSITE_ID }}
       run: |
         eval $(ssh-agent -s)
         mkdir -p ~/.ssh
@@ -234,6 +235,7 @@ jobs:
         CLOUDFRONT_KEY_PAIR_ID: ${{ secrets.CLOUDFRONT_KEY_PAIR_ID }}
         CLOUDFRONT_PRIVATE_KEY: ${{ secrets.CLOUDFRONT_PRIVATE_KEY }}
         ADMIN_URL: ${{ secrets.ADMIN_URL_PRODUCTION }}
+        CRISP_WEBSITE_ID: ${{ secrets.CRISP_WEBSITE_ID }}
       run: |
         eval $(ssh-agent -s)
         mkdir -p ~/.ssh

@@ -62,6 +62,7 @@
 
 <!-- Scripts -->
 @yield('js')
+@include('layouts.partials._crisp')
 <!-- END Scripts -->
 
 </body>
