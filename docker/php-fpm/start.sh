@@ -6,6 +6,8 @@ role=${CONTAINER_ROLE:-app}
 env=${APP_ENV:-production}
 cd /var/www/html
 
+
+php artisan keycloak:wait
 php artisan db:wait-connection
 php artisan cache:clear-wait-connection
 
