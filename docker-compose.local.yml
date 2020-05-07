@@ -5,7 +5,7 @@ services:
     image: "traefik:v2.2"
     restart: unless-stopped
     command:
-      - "--log.level=DEBUG"
+      - "--log.level=WARN"
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--entrypoints.web.address=:80"
