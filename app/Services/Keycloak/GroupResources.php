@@ -26,6 +26,10 @@ class GroupResources
         $response = $this->keycloak->getClient()
             ->get("/admin/realms/$realm/groups/$id/members?".http_build_query(compact('first', 'max')));
 
+        if (! $response->ok()) {
+            $response->throw();
+        }
+
         $users = [];
         foreach ($response->json() as $user) {
             $users[] = UserRepresentation::fromArray($user);
@@ -53,6 +57,10 @@ class GroupResources
 
         $response = $this->keycloak->getClient()
             ->get("/admin/realms/$realm/groups?".http_build_query((array) $query));
+
+        if (! $response->ok()) {
+            $response->throw();
+        }
 
         $groups = [];
         foreach ($response->json() as $user) {

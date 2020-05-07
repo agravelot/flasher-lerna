@@ -31,6 +31,10 @@ class UserResources
         $response = $this->keycloak->getClient()
             ->get("/admin/realms/$realm/users?".http_build_query((array) $query));
 
+        if (! $response->ok()) {
+            $response->throw();
+        }
+
         $users = [];
         foreach ($response->json() as $user) {
             $users[] = UserRepresentation::fromArray($user);
@@ -90,8 +94,13 @@ class UserResources
     {
         $realm = $this->keycloak->realm;
 
-        return  (int) $this->keycloak->getClient()
-            ->get("/admin/realms/$realm/users/count")
-            ->json();
+        $response = $this->keycloak->getClient()
+            ->get("/admin/realms/$realm/users/count");
+
+        if (! $response->ok()) {
+            $response->throw();
+        }
+
+        return (int) $response->json();
     }
 }
