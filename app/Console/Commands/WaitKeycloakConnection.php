@@ -28,7 +28,7 @@ class WaitKeycloakConnection extends Command
     {
         $this->info('Waiting keycloak : '.config('keycloak-web.base_url'));
         $response = Http::withOptions(['verify' => false])
-            ->retry(10, 1000)
+            ->retry(30, 1000)
             ->timeout(2)
             ->get(config('keycloak-web.base_url'));
 
