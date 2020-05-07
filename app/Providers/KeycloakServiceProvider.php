@@ -15,7 +15,7 @@ class KeycloakServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind('keycloak', static function () {
+        $this->app->singleton('keycloak', static function () {
             return new Keycloak();
         });
 
