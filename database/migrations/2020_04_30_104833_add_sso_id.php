@@ -14,7 +14,7 @@ class AddSsoId extends Migration
         Schema::table('albums', static function (Blueprint $table) {
             $table->dropForeign(['user_id']);
             $table->unsignedBigInteger('user_id')->nullable(true)->change();
-            $table->uuid('sso_id');
+            $table->uuid('sso_id')->nullable();
         });
 
         Schema::table('cosplayers', static function (Blueprint $table) {
