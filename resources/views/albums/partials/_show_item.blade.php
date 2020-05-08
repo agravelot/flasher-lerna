@@ -97,7 +97,7 @@
                 <div class="column is-one-third">
                     @foreach($column as $mediaKey => $media)
                         @php($key = $mediaKey * 3 + $columnKey)
-                        <a class="modal-button is-inline-block has-hover-zoom is-shadowless has-text-hover-image"
+                        <div class="modal-button is-inline-block has-hover-zoom is-shadowless has-text-hover-image is-clickable"
                            data-target="{{ "media-{$key}" }}">
                             {{
                                $media(
@@ -110,7 +110,7 @@
                             <span class="icon has-text-white has-text-hover-image-bottom-left">
                                 <x-fa name="search"/>
                             </span>
-                        </a>
+                        </div>
                     @endforeach
                 </div>
             @endforeach
@@ -123,7 +123,7 @@
                 <div class="column is-half">
                     @foreach($column as $mediaKey => $media)
                         @php($key = $mediaKey * 2 + $columnKey)
-                        <a class="modal-button is-inline-block has-hover-zoom is-shadowless has-text-hover-image"
+                        <div class="modal-button is-inline-block has-hover-zoom is-shadowless has-text-hover-image is-clickable"
                            data-target="{{ "media-{$key}" }}">
                             {{
                                $media(
@@ -136,7 +136,7 @@
                             <span class="icon has-text-white has-text-hover-image-bottom-left">
                                 <x-fa name="search"/>
                             </span>
-                        </a>
+                        </div>
                     @endforeach
                 </div>
             @endforeach
@@ -147,7 +147,7 @@
         <div class="columns is-variable is-1">
             @foreach($medias as $key => $media)
                 <div class="column">
-                    <a class="modal-button is-inline-block has-hover-zoom is-shadowless has-text-hover-image"
+                    <div class="modal-button is-inline-block has-hover-zoom is-shadowless has-text-hover-image is-clickable"
                        data-target="{{ "media-{$key}" }}">
                         {{
                            $media(
@@ -160,7 +160,7 @@
                         <span class="icon has-text-white has-text-hover-image-bottom-left">
                             <x-fa name="search"/>
                         </span>
-                    </a>
+                    </div>
                 </div>
             @endforeach
         </div>
