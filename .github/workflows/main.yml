@@ -29,6 +29,7 @@ jobs:
       run: |
         docker network create nginx-proxy
         docker network create database-network
+        docker network create keycloak-network
 
 #    - name: Docker Lint
 #      uses: luke142367/Docker-Lint-Action@v1.0.0

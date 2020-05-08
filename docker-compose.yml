@@ -46,6 +46,7 @@ services:
       target: php_app
     restart: unless-stopped
     networks:
+      - keycloak-network
       - database-network
       - backend
     volumes:
@@ -186,4 +187,6 @@ networks:
   nginx-proxy:
     external: true
   database-network:
+    external: true
+  keycloak-network:
     external: true
