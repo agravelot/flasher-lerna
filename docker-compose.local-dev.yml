@@ -6,6 +6,8 @@ services:
       - .:/var/www/html:rw
 
   php:
+    environment:
+      CRISP_ENABLED: 'false'
     volumes:
       - .:/var/www/html:rw
 
