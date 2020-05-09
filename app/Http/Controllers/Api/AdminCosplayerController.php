@@ -19,7 +19,8 @@ class AdminCosplayerController extends Controller
     public function index(): AnonymousResourceCollection
     {
         return CosplayerResource::collection(
-            QueryBuilder::for(Cosplayer::class)->allowedFilters('name')
+            QueryBuilder::for(Cosplayer::class)
+                ->allowedFilters('name')
                 ->with('media')
                 ->withCount('media')
                 ->paginate(15)
@@ -45,8 +46,6 @@ class AdminCosplayerController extends Controller
      */
     public function show(Cosplayer $cosplayer): CosplayerResource
     {
-        $cosplayer->load('user');
-
         return new CosplayerResource($cosplayer);
     }
 
