@@ -57,8 +57,17 @@ class UserRepresentation
 
     public function toUser(): User
     {
-        $user = new User($this->toArray());
+        $user = new User();
+        $user->id = $this->id;
+        $user->email = $this->email;
+        $user->email_verified = $this->emailVerified;
         $user->notify_on_album_published = $this->attributes['notify_on_album_published'] ?? false;
+        $user->groups = $this->groups;
+        $user->realm_roles = $this->realmRoles;
+        //$user->realm_access = $this->realmAccess;
+        $user->enabled = $this->enabled;
+        $user->lastName = $this->lastName;
+        $user->firstName = $this->firstName;
 
         return $user;
     }
