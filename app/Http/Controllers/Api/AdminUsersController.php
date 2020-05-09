@@ -12,8 +12,6 @@ class AdminUsersController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
@@ -24,7 +22,6 @@ class AdminUsersController extends Controller
 
         return new JsonResponse(['data' => $users]);
     }
-
 
     public function show(string $user): JsonResponse
     {
