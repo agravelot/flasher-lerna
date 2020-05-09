@@ -22,5 +22,5 @@ return [
   'master' => [
       'username' => env('KEYCLOAK_MASTER_USERNAME'),
       'password' => env('KEYCLOAK_MASTER_PASSWORD'),
-  ]
+  ],
 ];
