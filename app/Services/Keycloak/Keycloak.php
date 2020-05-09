@@ -18,8 +18,8 @@ class Keycloak
     public function __construct()
     {
         $this->baseUrl = config('keycloak.url').'/auth';
-        $this->username = 'admin';
-        $this->password = 'admin';
+        $this->username = config('keycloak.master.username', 'admin');
+        $this->password = config('keycloak.master.password', 'admin');
         $this->grantType = 'password';
         $this->clientId = 'admin-cli';
         $this->realm = config('keycloak.realm');
