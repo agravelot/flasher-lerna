@@ -99,6 +99,10 @@
                                         {{ __('Admin') }}
                                     </a>
                                 @endcan
+                                <a class="dropdown-item" target="_blank"
+                                   href="{{ config('keycloak.url').'/auth/realms/'.config('keycloak.realm').'/account?referrer='.config('keycloak-web.client_id') }}">
+                                    {{ __('My profile') }}
+                                </a>
                                 <a class="dropdown-item {{ Request::is('profile/my-albums*') ? 'is-active' : '' }}"
                                    href="{{ route('profile.my-albums') }}">
                                     {{ __('My albums') }}
