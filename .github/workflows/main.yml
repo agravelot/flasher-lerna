@@ -186,6 +186,14 @@ jobs:
         CLOUDFRONT_PRIVATE_KEY: ${{ secrets.CLOUDFRONT_PRIVATE_KEY }}
         ADMIN_URL: ${{ secrets.ADMIN_URL_STAGING }}
         CRISP_WEBSITE_ID: ${{ secrets.CRISP_WEBSITE_ID }}
+        KEYCLOAK_URI: ${{ secrets.KEYCLOAK_URI }}
+        KEYCLOAK_URL: ${{ secrets.KEYCLOAK_URL }}
+        KEYCLOAK_BASE_URL: ${{ secrets.KEYCLOAK_BASE_URL }}
+        KEYCLOAK_REALM_PUBLIC_KEY: ${{ secrets.KEYCLOAK_REALM_PUBLIC_KEY }}
+        KEYCLOAK_VERIFY_SSL: true
+        KEYCLOAK_SSL: true
+        KEYCLOAK_REALM: jkanda
+        KEYCLOAK_CLIENT_ID: flasher
       run: |
         eval $(ssh-agent -s)
         mkdir -p ~/.ssh
