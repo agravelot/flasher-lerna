@@ -22,7 +22,7 @@ class User extends KeycloakUser
      * @var array<string>
      */
     protected $fillable = [
-       'id', 'username', 'email', 'email_verified', 'realm_access', 'realm_roles', 'resource_access', 'notify_on_album_published', 'enabled'
+       'id', 'username', 'email', 'email_verified', 'realm_access', 'realm_roles', 'resource_access', 'notify_on_album_published', 'enabled',
     ];
 
     /**
