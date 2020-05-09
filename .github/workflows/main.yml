@@ -81,6 +81,8 @@ jobs:
         KEYCLOAK_PORT: 8080
         KEYCLOAK_REALM: jkanda
         KEYCLOAK_CLIENT_ID: flasher
+        KEYCLOAK_MASTER_USERNAME: admin
+        KEYCLOAK_MASTER_PASSWORD: admin
 
     - name: Run php test suites
       run: |
