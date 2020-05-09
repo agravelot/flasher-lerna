@@ -40,7 +40,6 @@ class ContactSent extends Notification
             ->replyTo($this->contact->email)
             ->line("From : {$this->contact->name} <{$this->contact->email}>")
             ->line('Message :')
-            ->line($this->contact->message)
-            ->action(__('Read more'), url('/admin/contacts'));
+            ->line($this->contact->message);
     }
 }
