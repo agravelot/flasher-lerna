@@ -16,8 +16,9 @@ class AcceptInvitationTest extends TestCase
 
     public function test_invited_user_can_accept_invitation_and_cosplayer_is_linked_to_user(): void
     {
+        $this->withoutExceptionHandling();
         Mail::fake();
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->make();
         $this->actingAs($user);
         $invitation = factory(Invitation::class)->state('unconfirmed')->create([
             'created_at' => now()->subDays(5),
@@ -27,13 +28,13 @@ class AcceptInvitationTest extends TestCase
 
         $response->assertOk();
         $this->assertNotNull($invitation->fresh()->confirmed_at);
-        $this->assertTrue($user->is($invitation->cosplayer->user));
+        $this->assertSame($user->id, ($invitation->cosplayer->sso_id));
     }
 
     public function test_invited_user_can_not_accept_invitation_twice(): void
     {
         Mail::fake();
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->make();
         $this->actingAs($user);
         $invitation = factory(Invitation::class)->state('confirmed')->create([
             'created_at' => now()->subDay(),
@@ -48,7 +49,7 @@ class AcceptInvitationTest extends TestCase
     public function test_invited_user_can_not_accept_an_expired_invitation()
     {
         Mail::fake();
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->make();
         $this->actingAs($user);
         $invitation = factory(Invitation::class)->state('unconfirmed')->create([
             'created_at' => now()->subDays(20),
@@ -58,7 +59,7 @@ class AcceptInvitationTest extends TestCase
 
         $this->assertSame(403, $response->status());
         $this->assertNull($invitation->fresh()->confirmed_at);
-        $this->assertFalse($user->is($invitation->cosplayer->user));
+        $this->assertSame($user->sso_id, ($invitation->cosplayer->sso_id));
     }
 
     public function test_unauthenticated_can_not_accept_invitation_and_is_redirected_to_login(): void
@@ -71,14 +72,12 @@ class AcceptInvitationTest extends TestCase
         $response = $this->acceptInvitation($invitation);
 
         $response->assertRedirect('/login');
-        $this->followRedirects($response)
-            ->assertOk();
     }
 
     public function test_accepting_invitation_without_valid_signature_return_403_and_is_not_linked(): void
     {
         Mail::fake();
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->make();
         $this->actingAs($user);
         $invitation = factory(Invitation::class)->state('unconfirmed')->create([
             'created_at' => now()->addDays(5),
@@ -88,7 +87,7 @@ class AcceptInvitationTest extends TestCase
 
         $this->assertSame(403, $response->status());
         $this->assertNull($invitation->fresh()->confirmed_at);
-        $this->assertFalse($user->is($invitation->cosplayer->user));
+        $this->assertNull($invitation->fresh()->cosplayer->sso_id);
     }
 
     private function acceptInvitation(Invitation $invitation): TestResponse

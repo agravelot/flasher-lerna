@@ -5,12 +5,13 @@ namespace App\Models;
 use App\Abilities\AlbumFeedable;
 use App\Abilities\HasSlugRouteKey;
 use App\Abilities\HasTitleAsSlug;
+use App\Facades\Keycloak;
+use App\Services\Keycloak\UserRepresentation;
 use App\Traits\ClearsResponseCache;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -129,9 +130,9 @@ class Album extends Model implements HasMedia, Feedable
     /**
      * Return the related user to this album.
      */
-    public function user(): BelongsTo
+    public function user(): UserRepresentation
     {
-        return $this->belongsTo(User::class);
+        return Keycloak::users()->find($this->sso_id);
     }
 
     /**

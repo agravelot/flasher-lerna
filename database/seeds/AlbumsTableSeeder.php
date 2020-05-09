@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class AlbumsTableSeeder extends Seeder
@@ -10,14 +9,9 @@ class AlbumsTableSeeder extends Seeder
      */
     public function run(): void
     {
-        User::all()->each(static function (User $user): void {
-            $user->albums()->saveMany(
-                collect()
-                    ->push(factory(App\Models\Album::class)->states(['password', 'published'])->make())
-                    ->push(factory(App\Models\Album::class)->states(['password', 'unpublished'])->make())
-                    ->push(factory(App\Models\Album::class)->states(['passwordLess', 'unpublished'])->make())
-                    ->push(factory(App\Models\PublicAlbum::class)->make())
-            );
-        });
+        factory(App\Models\Album::class, 10)->states(['password', 'published'])->create();
+        factory(App\Models\Album::class, 10)->states(['password', 'unpublished'])->create();
+        factory(App\Models\Album::class, 10)->states(['passwordLess', 'unpublished'])->create();
+        factory(App\Models\PublicAlbum::class, 10)->create();
     }
 }

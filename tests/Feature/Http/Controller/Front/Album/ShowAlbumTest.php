@@ -15,7 +15,7 @@ class ShowAlbumTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_can_view_a_published_album()
+    public function test_guest_can_view_a_published_album(): void
     {
         $album = factory(PublicAlbum::class)->states(['withUser'])->create([
             'title' => 'Test title',
@@ -34,7 +34,7 @@ class ShowAlbumTest extends TestCase
         return $this->json('get', '/api/albums/'.$album->slug);
     }
 
-    public function test_guest_can_view_a_published_album_with_category()
+    public function test_guest_can_view_a_published_album_with_category(): void
     {
         $category = factory(Category::class)->create([
             'name' => 'Category name',
@@ -54,7 +54,7 @@ class ShowAlbumTest extends TestCase
             ->assertSee('Category name');
     }
 
-    public function test_guest_can_view_a_published_album_with_two_categories()
+    public function test_guest_can_view_a_published_album_with_two_categories(): void
     {
         $categoryA = factory(Category::class)->create([
             'name' => 'Category name',
@@ -80,7 +80,7 @@ class ShowAlbumTest extends TestCase
             ->assertSee('Category name two');
     }
 
-    public function test_guest_cannot_view_unpublished_album_listing()
+    public function test_guest_cannot_view_unpublished_album_listing(): void
     {
         $album = factory(Album::class)->states(['unpublished', 'passwordLess', 'withUser'])->create();
 
@@ -89,14 +89,14 @@ class ShowAlbumTest extends TestCase
         $response->assertStatus(404);
     }
 
-    public function test_bad_slug_redirect_page_not_found()
+    public function test_bad_slug_redirect_page_not_found(): void
     {
         $response = $this->get('/albums/some-random-slug');
 
         $response->assertStatus(404);
     }
 
-    public function test_album_has_og_tags_without_image()
+    public function test_album_has_og_tags_without_image(): void
     {
         $album = factory(PublicAlbum::class)->state('withUser')->create();
 
@@ -104,7 +104,7 @@ class ShowAlbumTest extends TestCase
         $locale = App::getLocale();
 
         $response->assertSee("<meta property=\"og:title\" content=\"{$album->title}\"/>", false)
-            ->assertSee("<meta property=\"article:author\" content=\"{$album->user->name}\"/>", false)
+            ->assertSee("<meta property=\"article:author\" content=\"{$album->user()->username}\"/>", false)
             ->assertSee('<meta property="article:section" content="Photography"/>', false)
             ->assertSee("<meta property=\"article:modified_time\" content=\"{$album->updated_at->toIso8601String()}\"/>", false)
             ->assertSee("<meta property=\"article:published_time\" content=\"{$album->published_at->toIso8601String()}\"/>", false)
@@ -117,7 +117,7 @@ class ShowAlbumTest extends TestCase
         $response->assertDontSee('<meta property="og:image" content=');
     }
 
-    public function test_album_has_og_tags_with_image()
+    public function test_album_has_og_tags_with_image(): void
     {
         /** @var \App\Models\Album $album */
         $album = factory(PublicAlbum::class)->state('withUser')->create();
@@ -126,7 +126,7 @@ class ShowAlbumTest extends TestCase
         $locale = App::getLocale();
 
         $response->assertSee("<meta property=\"og:title\" content=\"{$album->title}\"/>", false)
-            ->assertSee("<meta property=\"article:author\" content=\"{$album->user->name}\"/>", false)
+            ->assertSee("<meta property=\"article:author\" content=\"{$album->user()->username}\"/>", false)
             ->assertSee('<meta property="article:section" content="Photography"/>', false)
             ->assertSee("<meta property=\"article:modified_time\" content=\"{$album->updated_at->toIso8601String()}\"/>", false)
             ->assertSee("<meta property=\"article:published_time\" content=\"{$album->published_at->toIso8601String()}\"/>", false)

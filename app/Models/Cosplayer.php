@@ -4,11 +4,12 @@ namespace App\Models;
 
 use App\Abilities\HasNameAsSlug;
 use App\Abilities\HasSlugRouteKey;
+use App\Facades\Keycloak;
+use App\Services\Keycloak\UserRepresentation;
 use App\Traits\ClearsResponseCache;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\UploadedFile;
@@ -34,7 +35,7 @@ class Cosplayer extends Model implements HasMedia
      *
      * @var array<string>
      */
-    protected $fillable = ['name', 'description', 'slug', 'user_id'];
+    protected $fillable = ['name', 'description', 'slug', 'user_id', 'sso_id'];
 
     /**
      * Return the initials of the cosplayer.
@@ -72,9 +73,9 @@ class Cosplayer extends Model implements HasMedia
     /**
      * Return the linked user.
      */
-    public function user(): BelongsTo
+    public function user(): ?UserRepresentation
     {
-        return $this->belongsTo(User::class);
+        return $this->sso_id ? Keycloak::users()->find($this->sso_id) : null;
     }
 
     /**

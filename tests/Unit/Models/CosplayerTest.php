@@ -3,7 +3,6 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Cosplayer;
-use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\ModelTestCase;
 
@@ -44,16 +43,8 @@ class CosplayerTest extends ModelTestCase
     public function testModelConfiguration()
     {
         $this->runConfigurationAssertions(new Cosplayer(), [
-            'name', 'description', 'slug', 'user_id',
+            'name', 'description', 'slug', 'user_id', 'sso_id',
         ]);
-    }
-
-    public function testHasOneUserRelationship()
-    {
-        $cosplayer = new Cosplayer();
-        $relation = $cosplayer->user();
-
-        $this->assertBelongsToRelation($relation, $cosplayer, new User(), 'user_id');
     }
 
     public function test_cosplayer_with_a_Tom_as_name_will_have_uppercase_t_as_initial()

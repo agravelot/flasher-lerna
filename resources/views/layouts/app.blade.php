@@ -62,7 +62,9 @@
 
 <!-- Scripts -->
 @yield('js')
-@include('layouts.partials._crisp')
+@if (config('crisp.enabled'))
+    @include('layouts.partials._crisp')
+@endif
 <!-- END Scripts -->
 
 </body>

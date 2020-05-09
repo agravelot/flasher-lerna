@@ -5,18 +5,16 @@ services:
     image: "traefik:v2.2"
     restart: unless-stopped
     command:
-      #- "--log.level=DEBUG"
+      - "--log.level=WARN"
       - "--api.insecure=true"
       - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge=true"
-      - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.myhttpchallenge.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-      - "--certificatesresolvers.myhttpchallenge.acme.email=antoine.gravelot@hotmail.fr"
-      - "--certificatesresolvers.myhttpchallenge.acme.storage=/letsencrypt/acme.json"
       - "--providers.docker.network=nginx-proxy"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.permanent=false"
     ports:
       - "80:80"
       - "443:443"
@@ -24,15 +22,16 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
-      - nginx-proxy
+      nginx-proxy:
+      keycloak-network:
+          aliases:
+            - ${KEYCLOAK_URI}
 
   tusd:
     labels:
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd.tls=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.isDevelopment=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.sslRedirect=false"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.accessControlMaxAge=1"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-https-only.redirectscheme.scheme=http"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-https-only.redirectscheme.permanent=false"
 
   nginx:
     environment:
@@ -41,12 +40,10 @@ services:
 #    ports:
 #    - "8090:80"
     labels:
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.isDevelopment=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.sslRedirect=false"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.accessControlMaxAge=1"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-error-check.circuitbreaker.expression=NetworkErrorRatio() > 0.10"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-only.redirectscheme.scheme=http"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-only.redirectscheme.permanent=false"
 
   php:
     environment:
@@ -54,6 +51,8 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       SESSION_SECURE_COOKIE: null
       TELESCOPE_ENABLED: "true"
+    networks:
+      keycloak-network:
 
   cache:
     image: redis:5.0-alpine
@@ -77,12 +76,68 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: ${DB_PASSWORD}
 
+  keycloak:
+    build:
+      context: docker/keycloak
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: db-kc
+      DB_DATABASE: keycloak
+      DB_SCHEMA: public
+      DB_USER: admin
+      DB_PASSWORD: ${DB_PASSWORD}
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      PROXY_ADDRESS_FORWARDING: "true"
+      KEYCLOAK_IMPORT: "/tmp/realm.json"
+      # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
+      #JDBC_PARAMS: "ssl=true"
+    expose:
+      - 8080
+    networks:
+      - keycloak-network
+      - database-network
+      - nginx-proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=nginx-proxy"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.rule=Host(`${KEYCLOAK_URI}`) || Host(`www.${KEYCLOAK_URI}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.middlewares=${COMPOSE_PROJECT_NAME}-keycloak-headers,${COMPOSE_PROJECT_NAME}-keycloak-retry,${COMPOSE_PROJECT_NAME}-keycloak-compress"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-compress.compress=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-retry.retry.attempts=4"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-error-check.circuitbreaker.expression=ResponseCodeRatio(500, 600, 0, 600) > 0.30 || NetworkErrorRatio() > 0.10"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-limit.buffering.maxRequestBodyBytes=50000000" # 50 Mb
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-limit.buffering.memResponseBodyBytes=50000000" # 50 Mb
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-ratelimit.ratelimit.average=1000"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-ratelimit.ratelimit.burst=500"
+      # Local
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.isDevelopment=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlAllowMethods=GET,OPTIONS,POST,PUT,PATCH,DELETE"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlAllowOriginList=*"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlMaxAge=1"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlAllowHeaders=*"
+
+  db-kc:
+    image: postgres:11-alpine
+    restart: unless-stopped
+    expose:
+      - "5432"
+    networks:
+      - database-network
+    volumes:
+      - db-kc-data:/var/lib/postgresql/data:rw,delegated
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
 volumes:
   cache_data:
   db-data:
+  db-kc-data:
 
-networks:
-  nginx-proxy:
-    external: true
-  database-network:
-    external: true

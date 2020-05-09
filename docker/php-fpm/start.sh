@@ -6,10 +6,13 @@ role=${CONTAINER_ROLE:-app}
 env=${APP_ENV:-production}
 cd /var/www/html
 
+
+php artisan keycloak:wait
 php artisan db:wait-connection
 php artisan cache:clear-wait-connection
 
 if [[ "$env" == "local" ]]; then
+  echo "Disabling opcache for local"
   rm -rvf /usr/local/etc/php/conf.d/opcache.ini /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
   php artisan cache:clear
   php artisan config:clear
@@ -42,7 +45,6 @@ elif [[ "$role" == "scheduler" ]]; then
 elif [[ "$role" == "publisher" ]]; then
 
   php artisan migrate --force
-  php artisan passport:keys
 
   rm -rvf public/vendor/*
   php artisan horizon:publish

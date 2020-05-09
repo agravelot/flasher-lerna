@@ -20,7 +20,7 @@ class AlbumOpenGraph implements OpenGraphable, ArticleOpenGraphable, ImagesOpenG
 
     public function author(): string
     {
-        return $this->album->user->name;
+        return $this->album->user()->username;
     }
 
     public function tags(): Collection

@@ -6,6 +6,8 @@ services:
       - .:/var/www/html:rw
 
   php:
+    environment:
+      CRISP_ENABLED: 'false'
     volumes:
       - .:/var/www/html:rw
 
@@ -24,3 +26,7 @@ services:
   db:
     ports:
     - "5432:5432"
+
+  cache:
+    ports:
+      - "6379:6379"

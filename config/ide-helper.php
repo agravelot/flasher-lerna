@@ -28,6 +28,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Factory Builders
+    |--------------------------------------------------------------------------
+    |
+    | Set to true to generate factory generators for better factory()
+    | method auto-completion.
+    |
+    */
+
+    'include_factory_builders' => false,
+
+    /*
+    |--------------------------------------------------------------------------
     | Write Model Magic methods
     |--------------------------------------------------------------------------
     |
@@ -76,10 +88,26 @@ return [
     | Define in which directories the ide-helper:models command should look
     | for models.
     |
+    | glob patterns are supported to easier reach models in sub-directories,
+    | e.g. `app/Services/* /Models` (without the space)
+    |
     */
 
     'model_locations' => [
         'app',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Models to ignore
+    |--------------------------------------------------------------------------
+    |
+    | Define which models should be ignored.
+    |
+    */
+
+    'ignored_models' => [
+        \App\Models\User::class,
     ],
 
     /*
@@ -92,27 +120,11 @@ return [
     */
 
     'extra' => [
-        'Eloquent' => [
-            Illuminate\Database\Eloquent\Builder::class,
-            Illuminate\Database\Query\Builder::class,
-        ],
-        'Session' => [
-            Illuminate\Session\Store::class,
-        ],
+        'Eloquent' => ['Illuminate\Database\Eloquent\Builder', 'Illuminate\Database\Query\Builder'],
+        'Session' => ['Illuminate\Session\Store'],
     ],
 
-    'magic' => [
-        'Log' => [
-            'debug' => 'Monolog\Logger::addDebug',
-            'info' => 'Monolog\Logger::addInfo',
-            'notice' => 'Monolog\Logger::addNotice',
-            'warning' => 'Monolog\Logger::addWarning',
-            'error' => 'Monolog\Logger::addError',
-            'critical' => 'Monolog\Logger::addCritical',
-            'alert' => 'Monolog\Logger::addAlert',
-            'emergency' => 'Monolog\Logger::addEmergency',
-        ],
-    ],
+    'magic' => [],
 
     /*
     |--------------------------------------------------------------------------
@@ -125,6 +137,7 @@ return [
     */
 
     'interfaces' => [
+
     ],
 
     /*
@@ -154,6 +167,7 @@ return [
     |
     */
     'custom_db_types' => [
+
     ],
 
     /*
@@ -194,4 +208,16 @@ return [
         'integer' => 'int',
         'boolean' => 'bool',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Include DocBlocks from classes
+    |--------------------------------------------------------------------------
+    |
+    | Include DocBlocks from classes to allow additional code inspection for
+    | magic methods and properties.
+    |
+    */
+    'include_class_docblocks' => false,
+
 ];

@@ -127,7 +127,6 @@ class StoreInvitationTest extends TestCase
         ]);
 
         $response = $this->storeInvitation($invitation);
-        $response->dump();
         $response->assertCreated()
             ->assertJson([
                 'data' => [

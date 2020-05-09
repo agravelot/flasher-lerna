@@ -90,7 +90,7 @@
                         <div class="dropdown-menu" id="dropdown-menu4" role="menu">
                             <div class="dropdown-content">
                                 <div class="dropdown-item">
-                                    <span class="has-text-weight-bold">{{ Auth::user()->name }}</span>
+                                    <span class="has-text-weight-bold">{{ Auth::user()->username }}</span>
                                 </div>
                                 <hr class="dropdown-divider">
                                 @can('dashboard')
@@ -104,20 +104,24 @@
                                     {{ __('My albums') }}
                                 </a>
                                 <hr class="dropdown-divider">
-                                <a class="dropdown-item has-text-danger"
-                                   onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                <a class="dropdown-item has-text-danger" href="{{ route('keycloak.logout') }}">
                                     {{ __('Logout') }}
                                 </a>
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                      style="display: none;">
-                                    @csrf
-                                </form>
+{{--                                <a class="dropdown-item has-text-danger"--}}
+{{--                                   onclick="event.preventDefault();document.getElementById('logout-form').submit();">--}}
+{{--                                    {{ __('Logout') }}--}}
+{{--                                </a>--}}
+
+{{--                                <form id="logout-form" action="{{ route('keycloak.logout') }}" method="POST"--}}
+{{--                                      style="display: none;">--}}
+{{--                                    @csrf--}}
+{{--                                </form>--}}
                             </div>
                         </div>
                     </div>
                 @else
-                    <a class="button is-black" href="{{ route('login') }}">
+                    <a class="button is-black" href="{{ route('keycloak.login') }}">
                         <span class="icon">
                             <x-fa name="sign-in-alt" library="solid"/>
                         </span>

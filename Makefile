@@ -18,6 +18,10 @@ NO_COLOR    = \033[m
 help:
     @grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-10s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
+docker-compose-schema:
+	docker-compose -f docker-compose.yml -f docker-compose.local.yml -f docker-compose.local-dev.yml config > tmp.yml
+	docker run --rm -it --name dcv -v $(pwd):/input pmsipilot/docker-compose-viz render -m image tmp.yml --force
+	rm tmp.yml
 
 yarn.lock: package.json
 	yarn upgrade

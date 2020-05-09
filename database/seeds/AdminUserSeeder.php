@@ -1,10 +1,9 @@
 <?php
 
+use App\Services\Keycloak\Credential;
+use App\Services\Keycloak\UserRepresentation;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class AdminUserSeeder extends Seeder
 {
@@ -13,15 +12,13 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
-            'name' => 'admin',
-            'email' => 'admin@flasher.com',
-            'password' => Hash::make('secret'),
-            'role' => 'admin',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-            'email_verified_at' => Carbon::now(),
-            'remember_token' => Str::random(10),
-        ]);
+        $user = new UserRepresentation();
+        $user->email = 'admin@flasher.com';
+        $user->username = 'admin';
+        $user->addCredential(new Credential(Hash::make('secret')));
+        $user->addGroup('admin');
+        $user->emailVerified = true;
+
+        Keycloak::users()->create($user);
     }
 }

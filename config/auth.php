@@ -36,12 +36,12 @@ return [
 
     'guards' => [
         'web' => [
-            'driver' => 'session',
+            'driver' => 'keycloak-web',
             'provider' => 'users',
         ],
 
         'api' => [
-            'driver' => 'passport',
+            'driver' => 'keycloak',
             'provider' => 'users',
         ],
     ],
@@ -65,14 +65,9 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
+            'driver' => 'custom-keycloak-users',
             'model' => App\Models\User::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*
