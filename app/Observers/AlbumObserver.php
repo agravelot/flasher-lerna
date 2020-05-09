@@ -19,14 +19,17 @@ class AlbumObserver
     {
         if ($this->shouldBeNotified($album) && $this->hasBeenPublished($album)) {
             $cosplayers = $album->cosplayers()->whereNotNull('sso_id')->get(['sso_id']);
-            $users = [];
+            $emails = [];
             foreach ($cosplayers as $cosplayer) {
                 $user = Keycloak::users()->find($cosplayer->sso_id)->toUser();
                 if ($user->notify_on_album_published) {
-                    $users[] = $user;
+                    $emails[] = $user->email;
                 }
             }
-            Notification::send($users, new PublishedAlbum($album));
+            if ($emails) {
+                // Use on-demand notifications since users are not stored in database.
+                Notification::route('mail', $emails)->notify(new PublishedAlbum($album));
+            }
         }
     }
 

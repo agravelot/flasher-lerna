@@ -32,8 +32,8 @@ class ContactController extends Controller
         $query = new GroupQuery();
         $query->search = 'admin';
         $group = Keycloak::groups()->first($query);
-        $admins = Keycloak::groups()->members($group->id);
-        Notification::send($admins, new ContactSent($contact));
+        $emails = collect(Keycloak::groups()->members($group->id))->map(static fn ($u) => $u->email)->toArray();
+        Notification::route('mail', $emails)->notify(new ContactSent($contact));
 
         return redirect(route('contact.index'))
             ->with('success', __('Your message has been sent'));

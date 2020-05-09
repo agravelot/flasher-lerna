@@ -10,6 +10,7 @@ use App\Notifications\PublishedAlbum;
 use App\Services\Keycloak\UserRepresentation;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
@@ -30,9 +31,14 @@ class PublishedAlbumTest extends TestCase
         $album->cosplayers()->sync($cosplayers);
         $album->update(['published_at' => Carbon::now()]);
 
-        $users = $album->cosplayers->pluck('sso_id')->map(static fn (string $ssoId) => Keycloak::users()->find($ssoId)->toUser());
-        Notification::assertTimesSent(5, PublishedAlbum::class);
-        Notification::assertSentTo($users, PublishedAlbum::class);
+        $users = $album->cosplayers->pluck('sso_id')->map(static fn (string $ssoId) => Keycloak::users()->find($ssoId));
+        Notification::assertSentTo(
+            new AnonymousNotifiable(),
+            PublishedAlbum::class,
+            static function ($notification, $channels, $notifiable) use ($users) {
+                return $notifiable->routes['mail'] === $users->map(static fn (UserRepresentation $user) => $user->email)->toArray();
+            }
+        );
     }
 
     public function test_when_album_is_published_send_notification_to_cosplayers_related_to_an_user_and_ignore_others(): void
@@ -47,9 +53,14 @@ class PublishedAlbumTest extends TestCase
         $album->cosplayers()->sync(Cosplayer::all());
         $album->update(['published_at' => Carbon::now()]);
 
-        $user = Keycloak::users()->find($cosplayerToNotify->sso_id)->toUser();
-        Notification::assertTimesSent(1, PublishedAlbum::class);
-        Notification::assertSentTo($user, PublishedAlbum::class);
+        $user = Keycloak::users()->find($cosplayerToNotify->sso_id);
+        Notification::assertSentTo(
+            new AnonymousNotifiable(),
+            PublishedAlbum::class,
+            static function ($notification, $channels, $notifiable) use ($user) {
+                return $notifiable->routes['mail'] === [$user->email];
+            }
+        );
     }
 
     public function test_when_album_is_published_do_not_send_notification_if_album_has_no_cosplayers_related_to_an_user(): void
