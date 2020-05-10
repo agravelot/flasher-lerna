@@ -66,4 +66,8 @@ return [
         'register' => 'register',
         'callback' => 'callback',
     ],
+
+    'guzzle_options' => [
+        'verify' => env('KEYCLOAK_VERIFY_SSL', true),
+    ]
 ];
