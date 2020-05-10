@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Facades\Keycloak;
 use App\Adapters\Keycloak\UserRepresentation;
+use App\Facades\Keycloak;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

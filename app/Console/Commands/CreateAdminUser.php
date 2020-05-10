@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Facades\Keycloak;
 use App\Adapters\Keycloak\Credential;
 use App\Adapters\Keycloak\UserRepresentation;
+use App\Facades\Keycloak;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 

@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Facades\Keycloak;
-use App\Jobs\AddKeycloakUsers;
-use App\Jobs\CleanAllKeycloakUsers;
 use App\Adapters\Keycloak\Credential;
 use App\Adapters\Keycloak\UserQuery;
 use App\Adapters\Keycloak\UserRepresentation;
+use App\Facades\Keycloak;
+use App\Jobs\AddKeycloakUsers;
+use App\Jobs\CleanAllKeycloakUsers;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 

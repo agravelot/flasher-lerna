@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Facades\Keycloak;
 use App\Adapters\Keycloak\UserRepresentation;
+use App\Facades\Keycloak;
 use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;

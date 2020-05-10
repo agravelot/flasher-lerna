@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\Album;
 use App\Adapters\Keycloak\UserQuery;
 use App\Adapters\Keycloak\UserRepresentation;
+use App\Models\Album;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Http\UploadedFile;

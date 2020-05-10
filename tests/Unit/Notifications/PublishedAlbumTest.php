@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Notifications;
 
+use App\Adapters\Keycloak\UserRepresentation;
 use App\Facades\Keycloak;
 use App\Models\Album;
 use App\Models\Cosplayer;
 use App\Models\User;
 use App\Notifications\PublishedAlbum;
-use App\Adapters\Keycloak\UserRepresentation;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Notifications\AnonymousNotifiable;

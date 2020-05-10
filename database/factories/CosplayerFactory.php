@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\Cosplayer;
 use App\Adapters\Keycloak\UserQuery;
 use App\Adapters\Keycloak\UserRepresentation;
+use App\Models\Cosplayer;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;

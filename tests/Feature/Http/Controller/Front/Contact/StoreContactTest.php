@@ -3,11 +3,11 @@
 namespace Tests\Feature\Http\Controller\Front\Contact;
 
 use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
+use App\Adapters\Keycloak\GroupRepresentation;
+use App\Adapters\Keycloak\UserRepresentation;
 use App\Facades\Keycloak;
 use App\Models\Contact;
 use App\Notifications\ContactSent;
-use App\Adapters\Keycloak\GroupRepresentation;
-use App\Adapters\Keycloak\UserRepresentation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Facades\Notification;
