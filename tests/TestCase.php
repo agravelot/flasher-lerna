@@ -5,7 +5,7 @@ namespace Tests;
 use App\Facades\Keycloak;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\User;
-use App\Services\Keycloak\UserRepresentation;
+use App\Adapters\Keycloak\UserRepresentation;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\Resource;

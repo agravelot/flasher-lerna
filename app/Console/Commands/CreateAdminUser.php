@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Facades\Keycloak;
-use App\Services\Keycloak\Credential;
-use App\Services\Keycloak\UserRepresentation;
+use App\Adapters\Keycloak\Credential;
+use App\Adapters\Keycloak\UserRepresentation;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 

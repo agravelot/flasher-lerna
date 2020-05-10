@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Keycloak;
+namespace App\Adapters\Keycloak;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;

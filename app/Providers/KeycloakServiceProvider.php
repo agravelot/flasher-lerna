@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Services\Keycloak\Keycloak;
+use App\Adapters\Keycloak\Keycloak;
 use App\Services\KeycloakWebService;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Facades\Keycloak;
-use App\Services\Keycloak\UserQuery;
+use App\Adapters\Keycloak\UserQuery;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;

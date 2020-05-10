@@ -1,7 +1,7 @@
 <?php
 
-use App\Services\Keycloak\Credential;
-use App\Services\Keycloak\UserRepresentation;
+use App\Adapters\Keycloak\Credential;
+use App\Adapters\Keycloak\UserRepresentation;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 

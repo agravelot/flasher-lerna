@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Abilities\HasSlugRouteKey;
 use App\Abilities\HasTitleAsSlug;
 use App\Facades\Keycloak;
-use App\Services\Keycloak\UserRepresentation;
+use App\Adapters\Keycloak\UserRepresentation;
 use App\Traits\ClearsResponseCache;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;

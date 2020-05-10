@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ContactStoreRequest;
 use App\Models\Contact;
 use App\Notifications\ContactSent;
-use App\Services\Keycloak\GroupQuery;
+use App\Adapters\Keycloak\GroupQuery;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\View\View;

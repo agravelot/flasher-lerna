@@ -1,6 +1,6 @@
 <?php
 
-use App\Services\Keycloak\UserRepresentation;
+use App\Adapters\Keycloak\UserRepresentation;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Keycloak;
+namespace App\Adapters\Keycloak;
 
 class GroupQuery
 {

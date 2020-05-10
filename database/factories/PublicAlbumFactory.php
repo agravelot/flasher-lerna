@@ -2,7 +2,7 @@
 
 use App\Models\Album;
 use App\Models\PublicAlbum;
-use App\Services\Keycloak\UserRepresentation;
+use App\Adapters\Keycloak\UserRepresentation;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Carbon;
