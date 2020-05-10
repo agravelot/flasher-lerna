@@ -25,7 +25,7 @@ $factory->define(Category::class, static function (Faker $faker) use (&$withCove
 });
 
 //TODO Fix not working
-$factory->afterMaking(Category::class, static function (Category $category, Faker $faker) use (&$withCover) {
+$factory->afterMaking(Category::class, static function (Category $category, Faker $faker) use (&$withCover): void {
     if ($withCover) {
         $category->setCover(UploadedFile::fake()->image('fake.jpg'));
     }

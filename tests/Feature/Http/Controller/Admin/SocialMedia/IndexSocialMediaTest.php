@@ -32,7 +32,7 @@ class IndexSocialMediaTest extends TestCase
 
     private function assertJsonFragments(TestResponse $response, Collection $socialMedias): void
     {
-        $socialMedias->each(static function (SocialMedia $socialMedia) use ($response) {
+        $socialMedias->each(static function (SocialMedia $socialMedia) use ($response): void {
             $response->assertJsonFragment([
                 'name' => $socialMedia->name,
                 'url' => $socialMedia->url,

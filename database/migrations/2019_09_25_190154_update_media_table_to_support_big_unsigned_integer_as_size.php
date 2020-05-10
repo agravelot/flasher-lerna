@@ -13,7 +13,7 @@ class UpdateMediaTableToSupportBigUnsignedIntegerAsSize extends Migration
      */
     public function up(): void
     {
-        Schema::table('media', static function (Blueprint $table) {
+        Schema::table('media', static function (Blueprint $table): void {
             $table->unsignedBigInteger('size')->change();
         });
     }
@@ -23,7 +23,7 @@ class UpdateMediaTableToSupportBigUnsignedIntegerAsSize extends Migration
      */
     public function down(): void
     {
-        Schema::table('media', static function (Blueprint $table) {
+        Schema::table('media', static function (Blueprint $table): void {
             $table->unsignedInteger('size')->change();
         });
     }

@@ -13,7 +13,7 @@ class ShowCategoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_can_show_category_with_data()
+    public function test_guest_can_show_category_with_data(): void
     {
         $category = factory(Category::class)->create();
 

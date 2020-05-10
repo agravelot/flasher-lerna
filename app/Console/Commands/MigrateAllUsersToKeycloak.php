@@ -62,7 +62,7 @@ class MigrateAllUsersToKeycloak extends Command
     private function migrateTable(string $table): void
     {
         $this->info("Updating $table with newer sso ids");
-        DB::table($table)->whereNotNull('user_id')->distinct()->get('user_id')->each(static function (\stdClass $data) use ($table) {
+        DB::table($table)->whereNotNull('user_id')->distinct()->get('user_id')->each(static function (\stdClass $data) use ($table): void {
             $query = new UserQuery();
             $query->email = DB::table('users_save')->find($data->user_id)->email;
             $user = Keycloak::users()->first($query);

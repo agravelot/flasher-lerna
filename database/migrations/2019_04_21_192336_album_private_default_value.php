@@ -13,7 +13,7 @@ class AlbumPrivateDefaultValue extends Migration
      */
     public function up(): void
     {
-        Schema::table('albums', static function (Blueprint $table) {
+        Schema::table('albums', static function (Blueprint $table): void {
             $table->boolean('private')->default(true)->change();
         });
     }
@@ -23,7 +23,7 @@ class AlbumPrivateDefaultValue extends Migration
      */
     public function down(): void
     {
-        Schema::table('albums', static function (Blueprint $table) {
+        Schema::table('albums', static function (Blueprint $table): void {
             $table->boolean('private')->default(null)->change();
         });
     }

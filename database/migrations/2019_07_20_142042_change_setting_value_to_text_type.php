@@ -13,7 +13,7 @@ class ChangeSettingValueToTextType extends Migration
      */
     public function up(): void
     {
-        Schema::table('settings', static function (Blueprint $table) {
+        Schema::table('settings', static function (Blueprint $table): void {
             $table->text('value')->change();
         });
     }
@@ -23,7 +23,7 @@ class ChangeSettingValueToTextType extends Migration
      */
     public function down(): void
     {
-        Schema::table('settings', static function (Blueprint $table) {
+        Schema::table('settings', static function (Blueprint $table): void {
             $table->string('value')->change();
         });
     }

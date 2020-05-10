@@ -41,8 +41,8 @@ class GenerateSitemap extends Command
                 return ! Str::startsWith($uri->getPath(), ['/albums/', '/cosplayers/', '/categories/', '/admin']);
             })->getSitemap();
 
-        PublicAlbum::chunk(10, static function (Collection $users) use ($sitemap) {
-            $users->each(static function (Album $album) use ($sitemap) {
+        PublicAlbum::chunk(10, static function (Collection $users) use ($sitemap): void {
+            $users->each(static function (Album $album) use ($sitemap): void {
                 $sitemap->add(Url::create(route('albums.show', compact('album')))
                     ->setPriority(1.0)
                     ->setLastModificationDate($album->updated_at)
@@ -50,8 +50,8 @@ class GenerateSitemap extends Command
             });
         });
 
-        Cosplayer::chunk(10, static function (Collection $cosplayers) use ($sitemap) {
-            $cosplayers->each(static function (Cosplayer $cosplayer) use ($sitemap) {
+        Cosplayer::chunk(10, static function (Collection $cosplayers) use ($sitemap): void {
+            $cosplayers->each(static function (Cosplayer $cosplayer) use ($sitemap): void {
                 $sitemap->add(Url::create(route('cosplayers.show', compact('cosplayer')))
                     ->setPriority(0.6)
                     ->setLastModificationDate($cosplayer->updated_at)
@@ -59,8 +59,8 @@ class GenerateSitemap extends Command
             });
         });
 
-        Category::chunk(10, static function (Collection $categories) use ($sitemap) {
-            $categories->each(static function (Category $category) use ($sitemap) {
+        Category::chunk(10, static function (Collection $categories) use ($sitemap): void {
+            $categories->each(static function (Category $category) use ($sitemap): void {
                 $sitemap->add(Url::create(route('categories.show', compact('category')))
                     ->setPriority(0.6)
                     ->setLastModificationDate($category->updated_at)

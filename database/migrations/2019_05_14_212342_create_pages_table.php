@@ -13,7 +13,7 @@ class CreatePagesTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('pages', static function (Blueprint $table) {
+        Schema::create('pages', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name')->unique();
             $table->string('title')->unique();

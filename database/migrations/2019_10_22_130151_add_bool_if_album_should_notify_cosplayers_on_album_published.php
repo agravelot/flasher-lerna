@@ -13,7 +13,7 @@ class AddBoolIfAlbumShouldNotifyCosplayersOnAlbumPublished extends Migration
      */
     public function up(): void
     {
-        Schema::table('albums', static function (Blueprint $table) {
+        Schema::table('albums', static function (Blueprint $table): void {
             $table->boolean('notify_users_on_published')->default(1);
         });
     }
@@ -23,7 +23,7 @@ class AddBoolIfAlbumShouldNotifyCosplayersOnAlbumPublished extends Migration
      */
     public function down(): void
     {
-        Schema::table('albums', static function (Blueprint $table) {
+        Schema::table('albums', static function (Blueprint $table): void {
             $table->dropColumn('notify_users_on_published');
         });
     }

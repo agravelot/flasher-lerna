@@ -14,7 +14,7 @@ class ExampleTest extends DuskTestCase
      */
     public function testBasicExample(): void
     {
-        $this->browse(static function (Browser $browser) {
+        $this->browse(static function (Browser $browser): void {
             $browser->visit('/')
                     ->assertSee(settings()->get('app_name'));
         });

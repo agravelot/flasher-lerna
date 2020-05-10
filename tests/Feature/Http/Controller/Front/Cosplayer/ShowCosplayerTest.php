@@ -13,7 +13,7 @@ class ShowCosplayerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_can_view_a_cosplayer()
+    public function test_guest_can_view_a_cosplayer(): void
     {
         $cosplayer = factory(Cosplayer::class)->create();
 
@@ -29,7 +29,7 @@ class ShowCosplayerTest extends TestCase
         return $this->get('/cosplayers/'.$slug);
     }
 
-    public function test_guest_can_not_view_an_unknown_cosplayer()
+    public function test_guest_can_not_view_an_unknown_cosplayer(): void
     {
         $response = $this->showCosplayers('some-random-slug');
 

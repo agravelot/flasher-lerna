@@ -13,7 +13,7 @@ class AddEmailFromSetting extends Migration
      */
     public function up(): void
     {
-        Schema::table('settings', static function (Blueprint $table) {
+        Schema::table('settings', static function (Blueprint $table): void {
             DB::table('settings')->insert([
                 'name' => 'email_from',
                 'value' => null,

@@ -13,7 +13,7 @@ class StoreAdminPagesTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testAdminCanStorePage()
+    public function testAdminCanStorePage(): void
     {
         $this->actingAsAdmin();
         $page = factory(Page::class)->make();
@@ -45,7 +45,7 @@ class StoreAdminPagesTest extends TestCase
         ]);
     }
 
-    public function testUserCannotStorePages()
+    public function testUserCannotStorePages(): void
     {
         $this->actingAsUser();
         $page = factory(Page::class)->make();
@@ -56,7 +56,7 @@ class StoreAdminPagesTest extends TestCase
         $this->assertCount(0, Page::all());
     }
 
-    public function testGuestCannotStorePages()
+    public function testGuestCannotStorePages(): void
     {
         $page = factory(Page::class)->make();
 

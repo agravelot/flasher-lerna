@@ -13,7 +13,7 @@ class IndexAdminSettingsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testAdminCanSeeSettings()
+    public function testAdminCanSeeSettings(): void
     {
         $this->actingAsAdmin();
         $setting = factory(Setting::class)->create(['name' => 'test', 'value' => 'Flasher', 'type' => 'string']);
@@ -29,7 +29,7 @@ class IndexAdminSettingsTest extends TestCase
         return $this->getJson('/api/admin/settings');
     }
 
-    public function testUserCannotSeeSettings()
+    public function testUserCannotSeeSettings(): void
     {
         $this->actingAsUser();
 
@@ -38,7 +38,7 @@ class IndexAdminSettingsTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function testGuestCannotSeeSettings()
+    public function testGuestCannotSeeSettings(): void
     {
         $response = $this->getSettings();
 

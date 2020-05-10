@@ -15,7 +15,7 @@ class StoreCosplayerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testAdminCanStoreCosplayers()
+    public function testAdminCanStoreCosplayers(): void
     {
         $this->actingAsAdmin();
         $cosplayer = factory(Cosplayer::class)->make();
@@ -47,7 +47,7 @@ class StoreCosplayerTest extends TestCase
         ]);
     }
 
-    public function testAdminCanStoreCosplayerWithPicture()
+    public function testAdminCanStoreCosplayerWithPicture(): void
     {
         $this->actingAsAdmin();
         /** @var Cosplayer $cosplayer */
@@ -72,7 +72,7 @@ class StoreCosplayerTest extends TestCase
         $this->assertNotNull($cosplayer->avatar);
     }
 
-    public function testUserCannotStoreCosplayers()
+    public function testUserCannotStoreCosplayers(): void
     {
         $this->actingAsUser();
         $cosplayer = factory(Cosplayer::class)->make();
@@ -83,7 +83,7 @@ class StoreCosplayerTest extends TestCase
         $this->assertSame(0, Cosplayer::count());
     }
 
-    public function testGuestCannotStoreCosplayers()
+    public function testGuestCannotStoreCosplayers(): void
     {
         $cosplayer = factory(Cosplayer::class)->make();
 

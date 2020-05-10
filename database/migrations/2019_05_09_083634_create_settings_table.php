@@ -14,7 +14,7 @@ class CreateSettingsTable extends Migration
     public function up(): void
     {
         Schema::dropIfExists('settings');
-        Schema::create('settings', static function (Blueprint $table) {
+        Schema::create('settings', static function (Blueprint $table): void {
             $table->string('name', 30)->primary();
             $table->string('value');
             $table->enum('type', ['string', 'numeric', 'bool', 'json', 'textarea']);

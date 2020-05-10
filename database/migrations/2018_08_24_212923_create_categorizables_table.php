@@ -13,7 +13,7 @@ class CreateCategorizablesTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('categorizables', static function (Blueprint $table) {
+        Schema::create('categorizables', static function (Blueprint $table): void {
 //            $table->increments('id');
             $table->integer('category_id')->unsigned();
             $table->morphs('categorizable');

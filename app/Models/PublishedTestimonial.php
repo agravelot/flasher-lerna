@@ -14,7 +14,7 @@ class PublishedTestimonial extends Testimonial
     {
         parent::boot();
 
-        static::addGlobalScope(static function ($query) {
+        static::addGlobalScope(static function ($query): void {
             $query->published();
         });
     }

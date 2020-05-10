@@ -30,7 +30,7 @@ $factory->define(Album::class, static function (Faker $faker) use (&$withMedias)
     ];
 });
 
-$factory->afterMaking(Album::class, static function (Album $album, Faker $faker) use (&$withMedias) {
+$factory->afterMaking(Album::class, static function (Album $album, Faker $faker) use (&$withMedias): void {
     if ($withMedias) {
         foreach (range(1, 15) as $i) {
             $album->addPicture(UploadedFile::fake()->image('fake.jpg'));

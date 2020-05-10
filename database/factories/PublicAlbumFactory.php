@@ -28,7 +28,7 @@ $factory->define(PublicAlbum::class, static function (Faker $faker) use (&$withM
     ];
 });
 
-$factory->afterMaking(PublicAlbum::class, static function (Album $album, Faker $faker) use (&$withMedias) {
+$factory->afterMaking(PublicAlbum::class, static function (Album $album, Faker $faker) use (&$withMedias): void {
     if ($withMedias) {
         foreach (range(1, 5) as $i) {
             $album->addMediaFromUrl($faker->imageUrl(640 * $faker->numberBetween(1, 3), 480 * $faker->numberBetween(1, 3)))

@@ -13,7 +13,7 @@ class IndexTestimonialTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_can_see_empty_testimonial_index()
+    public function test_guest_can_see_empty_testimonial_index(): void
     {
         $response = $this->showTestimonials();
 
@@ -26,7 +26,7 @@ class IndexTestimonialTest extends TestCase
         return $this->get('/testimonials');
     }
 
-    public function test_guest_can_see_active_testimonial_index()
+    public function test_guest_can_see_active_testimonial_index(): void
     {
         $testimonialPosts = factory(Testimonial::class, 2)->state('published')->create();
 
@@ -42,7 +42,7 @@ class IndexTestimonialTest extends TestCase
             ->assertDontSee($testimonialPosts->get(1)->email);
     }
 
-    public function test_guest_can_not_see_unactive_testimonial_index()
+    public function test_guest_can_not_see_unactive_testimonial_index(): void
     {
         $testimonialPosts = factory(Testimonial::class, 2)->state('unpublished')->create();
 

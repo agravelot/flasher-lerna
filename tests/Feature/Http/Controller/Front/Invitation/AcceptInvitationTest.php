@@ -48,7 +48,7 @@ class AcceptInvitationTest extends TestCase
         $this->assertSame($invitation->confirmed_at->toString(), $invitation->fresh()->confirmed_at->toString());
     }
 
-    public function test_invited_user_can_not_accept_an_expired_invitation()
+    public function test_invited_user_can_not_accept_an_expired_invitation(): void
     {
         Mail::fake();
         $user = factory(User::class)->make();

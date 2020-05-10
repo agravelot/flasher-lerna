@@ -72,7 +72,7 @@ class UpdateCosplayerTest extends TestCase
         $response->assertJson($this->getCosplayerJson($cosplayer->fresh()));
     }
 
-    public function test_admin_can_update_cosplayer_with_new_avatar()
+    public function test_admin_can_update_cosplayer_with_new_avatar(): void
     {
         $this->actingAsAdmin();
         $cosplayer = factory(Cosplayer::class)->create();

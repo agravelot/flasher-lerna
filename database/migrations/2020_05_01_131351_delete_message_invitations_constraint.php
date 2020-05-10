@@ -13,7 +13,7 @@ class DeleteMessageInvitationsConstraint extends Migration
      */
     public function up(): void
     {
-        Schema::table('invitations', static function (BluePrint $table) {
+        Schema::table('invitations', static function (BluePrint $table): void {
             $table->text('message')->nullable(true)->change();
         });
     }
@@ -23,7 +23,7 @@ class DeleteMessageInvitationsConstraint extends Migration
      */
     public function down(): void
     {
-        Schema::table('invitations', static function (BluePrint $table) {
+        Schema::table('invitations', static function (BluePrint $table): void {
             $table->text('message')->nullable(false)->change();
         });
     }

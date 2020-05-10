@@ -13,7 +13,7 @@ class AddBoolIfUserShouldReceiveNotificationOnAlbumPublish extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', static function (Blueprint $table) {
+        Schema::table('users', static function (Blueprint $table): void {
             $table->boolean('notify_on_album_published')->default(1);
         });
     }
@@ -23,7 +23,7 @@ class AddBoolIfUserShouldReceiveNotificationOnAlbumPublish extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', static function (Blueprint $table) {
+        Schema::table('users', static function (Blueprint $table): void {
             $table->dropColumn('notify_on_album_published');
         });
     }

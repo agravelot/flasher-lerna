@@ -18,7 +18,7 @@ class AdminUpdateTestimonialRequest extends Request
         ];
     }
 
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         if ($this->has('published_at') && $this->published_at !== null) {
             $this->merge(['published_at' => Carbon::parse($this->published_at)]);

@@ -24,7 +24,7 @@ class LoginTest extends DuskTestCase
             'password' => $password,
         ]);
 
-        $this->browse(static function (Browser $browser) use ($admin, $password) {
+        $this->browse(static function (Browser $browser) use ($admin, $password): void {
             $browser->visit('/login')
                 ->type('email', $admin->email)
                 ->type('password', $password)
@@ -42,7 +42,7 @@ class LoginTest extends DuskTestCase
             'password' => $password,
         ]);
 
-        $this->browse(static function (Browser $browser) use ($admin, $password) {
+        $this->browse(static function (Browser $browser) use ($admin, $password): void {
             $browser->visit('/admin')
                 ->assertPathIs('/login')
                 ->type('email', $admin->email)

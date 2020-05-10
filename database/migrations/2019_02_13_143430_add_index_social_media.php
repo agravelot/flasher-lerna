@@ -13,7 +13,7 @@ class AddIndexSocialMedia extends Migration
      */
     public function up(): void
     {
-        Schema::table('social_media', static function (Blueprint $table) {
+        Schema::table('social_media', static function (Blueprint $table): void {
             $table->index('active');
         });
     }
@@ -23,7 +23,7 @@ class AddIndexSocialMedia extends Migration
      */
     public function down(): void
     {
-        Schema::table('social_media', static function (Blueprint $table) {
+        Schema::table('social_media', static function (Blueprint $table): void {
             $table->dropIndex('social_media_active_index');
         });
     }

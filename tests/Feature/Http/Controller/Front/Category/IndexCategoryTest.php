@@ -13,7 +13,7 @@ class IndexCategoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_view_nothing_to_show()
+    public function test_guest_view_nothing_to_show(): void
     {
         $response = $this->showCategories();
 
@@ -26,7 +26,7 @@ class IndexCategoryTest extends TestCase
         return $this->get('categories');
     }
 
-    public function test_guest_can_view_categories()
+    public function test_guest_can_view_categories(): void
     {
         $categories = factory(Category::class, 2)->create();
 

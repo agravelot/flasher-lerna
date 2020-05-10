@@ -16,7 +16,7 @@ class MyAlbumsController extends Controller
     {
         $cosplayer = Cosplayer::where('sso_id', auth()->id())->first();
         $albums = $cosplayer ? PublicAlbum::whereHas('cosplayers',
-                static function (Builder $query) use ($cosplayer) {
+                static function (Builder $query) use ($cosplayer): void {
                     $query->where('cosplayers.id', '=', optional($cosplayer)->id);
                 }
             )->with('media')->paginate()

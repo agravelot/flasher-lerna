@@ -13,7 +13,7 @@ class AddGoldenBookPostPublishedAtIndex extends Migration
      */
     public function up(): void
     {
-        Schema::table('golden_book_posts', static function (Blueprint $table) {
+        Schema::table('golden_book_posts', static function (Blueprint $table): void {
             $table->index('published_at');
         });
     }
@@ -23,7 +23,7 @@ class AddGoldenBookPostPublishedAtIndex extends Migration
      */
     public function down(): void
     {
-        Schema::table('golden_book_posts', static function (Blueprint $table) {
+        Schema::table('golden_book_posts', static function (Blueprint $table): void {
             $table->dropIndex('golden_book_posts_published_at_index');
         });
     }

@@ -13,7 +13,7 @@ class CreatePostsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', static function (Blueprint $table) {
+        Schema::create('posts', static function (Blueprint $table): void {
             $table->increments('id');
             $table->string('title');
             $table->string('slug')->unique();

@@ -14,7 +14,7 @@ class ShowAlbumTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_view_public_albums()
+    public function test_admin_can_view_public_albums(): void
     {
         $this->actingAsAdmin();
         $album = factory(PublicAlbum::class)->state('withUser')->create();
@@ -30,7 +30,7 @@ class ShowAlbumTest extends TestCase
         return $this->json('get', "/api/albums/{$album->slug}");
     }
 
-    public function test_admin_can_download_albums()
+    public function test_admin_can_download_albums(): void
     {
         $this->actingAsAdmin();
         $album = factory(PublicAlbum::class)->state('withUser')->create();
@@ -47,7 +47,7 @@ class ShowAlbumTest extends TestCase
             ]);
     }
 
-    public function test_admin_can_download_albums_as_non_ajax_request()
+    public function test_admin_can_download_albums_as_non_ajax_request(): void
     {
         $this->actingAsAdmin();
         $album = factory(PublicAlbum::class)->state('withUser')->create();
@@ -64,7 +64,7 @@ class ShowAlbumTest extends TestCase
             ]);
     }
 
-    public function test_admin_can_not_view_unpublished_albums()
+    public function test_admin_can_not_view_unpublished_albums(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('unpublished')->create();
@@ -74,7 +74,7 @@ class ShowAlbumTest extends TestCase
         $response->assertStatus(404);
     }
 
-    public function test_admin_can_not_view_secured_albums()
+    public function test_admin_can_not_view_secured_albums(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('password')->create();
@@ -84,7 +84,7 @@ class ShowAlbumTest extends TestCase
         $response->assertStatus(404);
     }
 
-    public function test_admin_get_404_on_bad_slug()
+    public function test_admin_get_404_on_bad_slug(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('password')->create();
@@ -95,7 +95,7 @@ class ShowAlbumTest extends TestCase
         $response->assertStatus(404);
     }
 
-    public function test_user_can_view_public_album()
+    public function test_user_can_view_public_album(): void
     {
         $this->actingAsUser();
         $album = factory(PublicAlbum::class)->state('withUser')->create();
@@ -105,7 +105,7 @@ class ShowAlbumTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_guest_can_view_public_album()
+    public function test_guest_can_view_public_album(): void
     {
         $album = factory(PublicAlbum::class)->state('withUser')->create();
 

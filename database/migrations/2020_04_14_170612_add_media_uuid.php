@@ -14,7 +14,7 @@ class AddMediaUuid extends Migration
      */
     public function up(): void
     {
-        Schema::table('media', static function (Blueprint $table) {
+        Schema::table('media', static function (Blueprint $table): void {
             $table->uuid('uuid')->nullable();
             $table->string('conversions_disk')->nullable();
         });

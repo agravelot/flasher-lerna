@@ -10,7 +10,7 @@ class SocialMediaSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run()
+    public function run(): void
     {
         factory(SocialMedia::class, 5)->create();
     }

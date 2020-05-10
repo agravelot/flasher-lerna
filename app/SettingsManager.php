@@ -44,7 +44,7 @@ class SettingsManager
         return tap(Setting::updateOrCreate(['name' => $name], [
             'name' => $name,
             'value' => $value,
-        ]), static function () {
+        ]), static function (): void {
             Setting::refreshCache();
         });
     }

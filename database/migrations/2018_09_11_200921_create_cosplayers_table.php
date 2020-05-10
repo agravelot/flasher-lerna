@@ -13,7 +13,7 @@ class CreateCosplayersTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('cosplayers', static function (Blueprint $table) {
+        Schema::create('cosplayers', static function (Blueprint $table): void {
             $table->increments('id');
             $table->string('name')->unique();
             $table->string('slug')->unique();

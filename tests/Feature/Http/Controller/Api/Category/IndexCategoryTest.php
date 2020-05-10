@@ -13,7 +13,7 @@ class IndexCategoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_can_index_categories()
+    public function test_guest_can_index_categories(): void
     {
         $response = $this->indexCategories();
 
@@ -25,7 +25,7 @@ class IndexCategoryTest extends TestCase
         return $this->json('get', '/api/categories');
     }
 
-    public function test_guest_can_index_categories_with_data()
+    public function test_guest_can_index_categories_with_data(): void
     {
         $categories = factory(Category::class, 5)->create();
 

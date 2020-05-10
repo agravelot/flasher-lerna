@@ -13,7 +13,7 @@ class UpdateAdminPagesTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testAdminCanUpdatePage()
+    public function testAdminCanUpdatePage(): void
     {
         $this->actingAsAdmin();
         $page = factory(Page::class)->create();
@@ -47,7 +47,7 @@ class UpdateAdminPagesTest extends TestCase
         ]);
     }
 
-    public function testUserCannotUpdatePages()
+    public function testUserCannotUpdatePages(): void
     {
         $this->actingAsUser();
         $page = factory(Page::class)->create(['title' => 'testValue']);
@@ -60,7 +60,7 @@ class UpdateAdminPagesTest extends TestCase
         $this->assertSame('testValue', $page->fresh()->title);
     }
 
-    public function testGuestCannotUpdatePages()
+    public function testGuestCannotUpdatePages(): void
     {
         $page = factory(Page::class)->create(['title' => 'testValue']);
         $page->title = 'newValue';

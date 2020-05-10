@@ -34,7 +34,7 @@ class IndexInvitationTest extends TestCase
 
     private function assertJsonUserFragment(TestResponse $response, Collection $invitations): void
     {
-        $invitations->each(static function (Invitation $invitation) use ($response) {
+        $invitations->each(static function (Invitation $invitation) use ($response): void {
             $response->assertJsonFragment([
                 'id' => $invitation->id,
                 'email' => $invitation->email,

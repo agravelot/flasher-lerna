@@ -14,12 +14,12 @@ class SettingsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_has_non_existent_return_false()
+    public function test_has_non_existent_return_false(): void
     {
         $this->assertFalse(settings()->has('random'));
     }
 
-    public function test_get_non_existent_setting_throw_an_exception()
+    public function test_get_non_existent_setting_throw_an_exception(): void
     {
         try {
             settings()->get('random');
@@ -29,20 +29,20 @@ class SettingsTest extends TestCase
         }
     }
 
-    public function test_get_existent_setting()
+    public function test_get_existent_setting(): void
     {
         $setting = factory(Setting::class)->create(['name' => 'john', 'type' => 'string', 'value' => 'doe']);
         $this->assertSame('doe', settings()->get('john'));
     }
 
-    public function test_create_text_area_setting()
+    public function test_create_text_area_setting(): void
     {
         $setting = factory(Setting::class)->state(SettingType::TextArea)->create();
 
         $this->assertSame(SettingType::TextArea, $setting->type->value);
     }
 
-    public function test_x_setting_type_return_a_x()
+    public function test_x_setting_type_return_a_x(): void
     {
         $types = collect(SettingType::ALIASES_TYPES);
 

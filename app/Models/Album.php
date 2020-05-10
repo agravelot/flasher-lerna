@@ -100,7 +100,7 @@ class Album extends Model implements HasMedia, Feedable
     /**
      * Scope for public albums.
      */
-    public function scopePublic(Builder $query)
+    public function scopePublic(Builder $query): void
     {
         $query->whereNotNull('published_at')->where('private', false);
     }
