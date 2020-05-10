@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class SocialMedia extends Model
 {
     use ClearsResponseCache;
+
+    protected $table = 'social_media';
+
     /**
      * The attributes that are mass assignable.
      *
