@@ -21,5 +21,6 @@ return (new MattAllan\LaravelCodeStyle\Config())
         'static_lambda' => true,
         'phpdoc_to_return_type' => true,
         'declare_strict_types' => true,
+        'fully_qualified_strict_types' => true,
     ])
     ->setRiskyAllowed(true);
