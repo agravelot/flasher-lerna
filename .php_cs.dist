@@ -22,5 +22,8 @@ return (new MattAllan\LaravelCodeStyle\Config())
         'phpdoc_to_return_type' => true,
         'declare_strict_types' => true,
         'fully_qualified_strict_types' => true,
+        'php_unit_strict' => true,
+        'strict_param' => true,
+        'strict_comparison' => true,
     ])
     ->setRiskyAllowed(true);
