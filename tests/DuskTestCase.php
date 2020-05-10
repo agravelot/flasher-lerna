@@ -15,19 +15,16 @@ abstract class DuskTestCase extends BaseTestCase
      * Prepare for Dusk test execution.
      *
      * @beforeClass
-     * @return void
      */
-    public static function prepare()
+    public static function prepare(): void
     {
         static::startChromeDriver();
     }
 
     /**
      * Create the RemoteWebDriver instance.
-     *
-     * @return \Facebook\WebDriver\Remote\RemoteWebDriver
      */
-    protected function driver()
+    protected function driver(): \Facebook\WebDriver\Remote\RemoteWebDriver
     {
         $options = (new ChromeOptions)->addArguments([
             '--disable-gpu',

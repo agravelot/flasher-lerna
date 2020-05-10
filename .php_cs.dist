@@ -19,5 +19,6 @@ return (new MattAllan\LaravelCodeStyle\Config())
         '@Laravel:risky' => true,
         'no_superfluous_phpdoc_tags' => true,
         'static_lambda' => true,
+        'phpdoc_to_return_type' => true,
     ])
     ->setRiskyAllowed(true);

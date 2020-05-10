@@ -27,20 +27,16 @@ class PublishedAlbum extends Notification
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @return array
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['mail'];
     }
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @return MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
                     ->line(__('New photos of you have just been published.'))
@@ -50,10 +46,8 @@ class PublishedAlbum extends Notification
 
     /**
      * Get the array representation of the notification.
-     *
-     * @return array
      */
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             //
