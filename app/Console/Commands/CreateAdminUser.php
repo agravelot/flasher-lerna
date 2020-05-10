@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Adapters\Keycloak\Credential;
@@ -31,7 +33,7 @@ class CreateAdminUser extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): bool
+    public function handle(): void
     {
         $role = $this->argument('role');
         $username = $this->argument('name');
@@ -63,7 +65,5 @@ class CreateAdminUser extends Command
 
         Keycloak::users()->create($user);
         $this->info('User created successfully');
-
-        return 0;
     }
 }

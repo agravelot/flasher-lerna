@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Notifications;
 
 use App\Adapters\Keycloak\UserRepresentation;

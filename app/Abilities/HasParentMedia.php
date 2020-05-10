@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Abilities;
 
 // https://github.com/spatie/laravel-medialibrary/issues/1021

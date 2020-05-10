@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Enums\SettingType;
 use App\Models\Setting;
 use Faker\Generator as Faker;

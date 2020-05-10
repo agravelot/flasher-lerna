@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Cosplayer;
 use App\Models\Invitation;
 use Faker\Generator as Faker;

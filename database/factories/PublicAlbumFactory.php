@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Adapters\Keycloak\UserRepresentation;
 use App\Models\Album;
 use App\Models\PublicAlbum;

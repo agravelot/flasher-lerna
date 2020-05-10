@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Http\Controller\Front\Profile\MyAlbums;
 
 use App\Models\Cosplayer;

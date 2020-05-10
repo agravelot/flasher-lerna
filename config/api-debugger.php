@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'enabled' => (bool) env('API_DEBUGGER_ENABLED', env('APP_DEBUG', false)),
     /*

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Adapters\Keycloak;
 
 class Credential
@@ -13,6 +15,6 @@ class Credential
     public function __construct(string $hashedSaltedValue)
     {
         $this->hashedSaltedValue = $hashedSaltedValue;
-        $this->hashIterations = config('hashing.bcrypt.rounds');
+        $this->hashIterations = (int) config('hashing.bcrypt.rounds');
     }
 }

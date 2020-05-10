@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\SettingType;
@@ -53,7 +55,7 @@ class Setting extends Model implements HasMedia
      */
     public function getValueAttribute($value)
     {
-        if (SettingType::getAliasType($this->type) === \App\Models\Media::class) {
+        if (SettingType::getAliasType($this->type->value) === \App\Models\Media::class) {
             return $this->getFirstMedia(self::SETTING_COLLECTION);
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Http\Controller\Front\Cosplayer;
 
 use App\Models\Cosplayer;
