@@ -69,5 +69,5 @@ return [
 
     'guzzle_options' => [
         'verify' => env('KEYCLOAK_VERIFY_SSL', true),
-    ]
+    ],
 ];
