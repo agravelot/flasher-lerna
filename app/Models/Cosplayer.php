@@ -54,10 +54,8 @@ class Cosplayer extends Model implements HasMedia
 
     /**
      * Add media to Album::PICTURES_COLLECTION collection.
-     *
-     * @param  UploadedFile|null  $media
      */
-    public function setAvatarAttribute($media): void
+    public function setAvatarAttribute(?UploadedFile $media): void
     {
         if (! $media) {
             optional($this->avatar)->delete();

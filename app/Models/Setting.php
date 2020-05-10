@@ -49,11 +49,9 @@ class Setting extends Model implements HasMedia
     /**
      * Get the ability to return an Media for media settings.
      *
-     * @param string $value
-     *
-     * @return Media|string|bool|int|null $value
+     * @return Media|string|bool|int|null
      */
-    public function getValueAttribute($value)
+    public function getValueAttribute(?string $value)
     {
         if (SettingType::getAliasType($this->type->value) === \App\Models\Media::class) {
             return $this->getFirstMedia(self::SETTING_COLLECTION);

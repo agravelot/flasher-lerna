@@ -15,12 +15,10 @@ class EnsureEmailIsVerified extends EnsureEmailIsVerifiedBase
     /**
      * Handle an incoming request.
      *
-     * @param  Request  $request
-     * @param  string|null  $redirectToRoute
      *
      * @return Response|RedirectResponse
      */
-    public function handle($request, Closure $next, $redirectToRoute = null)
+    public function handle(Request $request, Closure $next, ?string $redirectToRoute = null)
     {
         if ($request->wantsJson() && ($request->user()->token && $request->user()->token->email_verified === true)) {
             return $next($request);
