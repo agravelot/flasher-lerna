@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Vizir\KeycloakWebGuard\Models\KeycloakUser;
 
-class User extends KeycloakUser
+class User extends KeycloakUser implements MustVerifyEmail
 {
     use Notifiable, Authorizable;
 
@@ -49,5 +50,29 @@ class User extends KeycloakUser
     public function getKey(): ?string
     {
         return $this->id;
+    }
+
+    public function hasVerifiedEmail(): bool
+    {
+        if ($this->token && $this->token->email_verified === true) {
+            return true;
+        }
+
+        return $this->email_verified;
+    }
+
+    public function markEmailAsVerified()
+    {
+        // TODO: Implement markEmailAsVerified() method.
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        // TODO: Implement sendEmailVerificationNotification() method.
+    }
+
+    public function getEmailForVerification()
+    {
+        // TODO: Implement getEmailForVerification() method.
     }
 }
