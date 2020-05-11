@@ -8185,16 +8185,16 @@
         },
         {
             "name": "vizir/laravel-keycloak-web-guard",
-            "version": "v1.5.4",
+            "version": "v1.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Vizir/laravel-keycloak-web-guard.git",
-                "reference": "92d2d554188e008d0f4acc4b92cb5707c0a3b3e8"
+                "reference": "e5897982d0859288bbdb17062199796e56f9e93c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Vizir/laravel-keycloak-web-guard/zipball/92d2d554188e008d0f4acc4b92cb5707c0a3b3e8",
-                "reference": "92d2d554188e008d0f4acc4b92cb5707c0a3b3e8",
+                "url": "https://api.github.com/repos/Vizir/laravel-keycloak-web-guard/zipball/e5897982d0859288bbdb17062199796e56f9e93c",
+                "reference": "e5897982d0859288bbdb17062199796e56f9e93c",
                 "shasum": ""
             },
             "require": {
@@ -8234,7 +8234,7 @@
                 "keycloak",
                 "laravel"
             ],
-            "time": "2020-05-07T13:52:40+00:00"
+            "time": "2020-05-11T12:52:10+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
