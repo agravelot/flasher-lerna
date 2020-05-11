@@ -54,11 +54,11 @@ class User extends KeycloakUser implements MustVerifyEmail
 
     public function hasVerifiedEmail(): bool
     {
-        if ($this->token && $this->token->email_verified === true) {
+        if (optional($this->token)->email_verified === true) {
             return true;
         }
 
-        return $this->email_verified;
+        return $this->email_verified ?? false;
     }
 
     public function markEmailAsVerified()
