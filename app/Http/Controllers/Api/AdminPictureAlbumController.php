@@ -9,7 +9,6 @@ use App\Http\Requests\DeletePictureAlbumRequest;
 use App\Http\Requests\StorePictureAlbumRequest;
 use App\Http\Resources\AlbumShowResource;
 use App\Http\Resources\UploadMediaCompletedResource;
-use App\Http\Resources\UploadMediaProcessingResource;
 use App\Jobs\DeleteAlbumMedia;
 use App\Models\Album;
 use Illuminate\Http\JsonResponse;
@@ -24,10 +23,8 @@ class AdminPictureAlbumController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return JsonResponse|UploadMediaProcessingResource
      */
-    public function store(StorePictureAlbumRequest $request)
+    public function store(StorePictureAlbumRequest $request): JsonResponse
     {
         JsonResource::withoutWrapping();
         /** @var Album $album */
