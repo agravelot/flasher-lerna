@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
+use LogicException;
 use Vizir\KeycloakWebGuard\Models\KeycloakUser;
 
 class User extends KeycloakUser implements MustVerifyEmail
@@ -61,18 +62,18 @@ class User extends KeycloakUser implements MustVerifyEmail
         return $this->email_verified ?? false;
     }
 
-    public function markEmailAsVerified()
+    public function markEmailAsVerified(): bool
     {
-        // TODO: Implement markEmailAsVerified() method.
+        throw new LogicException('This method should not be executed.');
     }
 
-    public function sendEmailVerificationNotification()
+    public function sendEmailVerificationNotification(): void
     {
-        // TODO: Implement sendEmailVerificationNotification() method.
+        throw new LogicException('This method should not be executed.');
     }
 
-    public function getEmailForVerification()
+    public function getEmailForVerification(): string
     {
-        // TODO: Implement getEmailForVerification() method.
+        throw new LogicException('This method should not be executed.');
     }
 }
