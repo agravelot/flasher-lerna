@@ -4,7 +4,7 @@
             <article class="media">
                 <div class="media-left">
                     <figure class="image">
-                        {{ $cosplayer->getFirstMedia('avatar') }}
+                        {{ $cosplayer->getFirstMedia('avatar', 'thumb') }}
                     </figure>
                 </div>
                 <div class="media-content">
