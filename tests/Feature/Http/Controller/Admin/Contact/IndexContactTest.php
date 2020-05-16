@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Http\Controller\Admin\Contact;
 
 use App\Models\Contact;
@@ -30,7 +32,7 @@ class IndexContactTest extends TestCase
 
     private function assertJsonFragments(TestResponse $response, Collection $contacts): void
     {
-        $contacts->each(static function (Contact $contact) use ($response) {
+        $contacts->each(static function (Contact $contact) use ($response): void {
             $response->assertJsonFragment([
                 'name' => $contact->name,
                 'email' => $contact->email,

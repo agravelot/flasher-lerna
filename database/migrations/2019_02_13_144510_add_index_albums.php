@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,7 +13,7 @@ class AddIndexAlbums extends Migration
      */
     public function up(): void
     {
-        Schema::table('albums', static function (Blueprint $table) {
+        Schema::table('albums', static function (Blueprint $table): void {
             $table->index(['published_at', 'private']);
         });
     }
@@ -21,7 +23,7 @@ class AddIndexAlbums extends Migration
      */
     public function down(): void
     {
-        Schema::table('albums', static function (Blueprint $table) {
+        Schema::table('albums', static function (Blueprint $table): void {
             $table->dropIndex('albums_published_at_private_index');
         });
     }

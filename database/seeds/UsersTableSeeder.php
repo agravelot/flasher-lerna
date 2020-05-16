@@ -1,6 +1,8 @@
 <?php
 
-use App\Models\User;
+declare(strict_types=1);
+
+use App\Adapters\Keycloak\UserRepresentation;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
@@ -10,6 +12,8 @@ class UsersTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = factory(User::class, 10)->create();
+        foreach (range(0, 20) as $i) {
+            Keycloak::users()->create(UserRepresentation::factory());
+        }
     }
 }

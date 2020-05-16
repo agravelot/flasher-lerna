@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -19,7 +21,8 @@ class AdminCosplayerController extends Controller
     public function index(): AnonymousResourceCollection
     {
         return CosplayerResource::collection(
-            QueryBuilder::for(Cosplayer::class)->allowedFilters('name')
+            QueryBuilder::for(Cosplayer::class)
+                ->allowedFilters('name')
                 ->with('media')
                 ->withCount('media')
                 ->paginate(15)
@@ -45,8 +48,6 @@ class AdminCosplayerController extends Controller
      */
     public function show(Cosplayer $cosplayer): CosplayerResource
     {
-        $cosplayer->load('user');
-
         return new CosplayerResource($cosplayer);
     }
 

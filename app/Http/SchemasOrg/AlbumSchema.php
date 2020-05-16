@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\SchemasOrg;
 
 use App\Models\Album;
@@ -24,7 +26,7 @@ class AlbumSchema implements SchemaInterface
             ->primaryImageOfPage(optional($this->album->cover)->getUrl())
             ->specialty($this->album->categories->pluck('name')->toArray())
             ->author([
-                (new Person())->name($this->album->user->name)
+                (new Person())->name($this->album->user()->username)
                     ->email('contact@jkanda.fr')
                     ->telephone('+33766648588')
                     ->url(url('/'))

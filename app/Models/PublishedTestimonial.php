@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Abilities\HasParentModel;
@@ -12,7 +14,7 @@ class PublishedTestimonial extends Testimonial
     {
         parent::boot();
 
-        static::addGlobalScope(static function ($query) {
+        static::addGlobalScope(static function ($query): void {
             $query->published();
         });
     }

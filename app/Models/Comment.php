@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Adapters\Keycloak\UserRepresentation;
+use App\Facades\Keycloak;
 use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Comment extends Model
@@ -18,23 +21,10 @@ class Comment extends Model
      */
     protected $fillable = ['body', 'post_id', 'user_id', 'parent_id'];
 
-    /**
-     * One to Many relation.
-     */
-    public function user(): BelongsTo
+    public function user(): ?UserRepresentation
     {
-        return $this->belongsTo(User::class);
+        return $this->sso_id ? Keycloak::users()->find($this->sso_id) : null;
     }
-
-//    /**
-//     * One to Many relation
-//     *
-//     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-//     */
-//    public function post()
-//    {
-//        return $this->belongsTo(Post::class);
-//    }
 
     public function commentable(): MorphTo
     {

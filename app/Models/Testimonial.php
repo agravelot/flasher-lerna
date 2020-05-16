@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Adapters\Keycloak\UserRepresentation;
+use App\Facades\Keycloak;
 use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Testimonial extends Model
 {
@@ -16,7 +19,7 @@ class Testimonial extends Model
      *
      * @var array<string>
      */
-    protected $fillable = ['name', 'body', 'email', 'published_at'];
+    protected $fillable = ['name', 'body', 'email', 'published_at', 'sso_id'];
 
     /**
      * @var array<string>
@@ -66,8 +69,8 @@ class Testimonial extends Model
     /**
      * Return the related user.
      */
-    public function user(): BelongsTo
+    public function user(): ?UserRepresentation
     {
-        return $this->belongsTo(User::class);
+        return $this->sso_id ? Keycloak::users()->first($this->sso_id) : null;
     }
 }

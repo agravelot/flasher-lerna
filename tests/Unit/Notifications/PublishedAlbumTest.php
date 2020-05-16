@@ -1,13 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Notifications;
 
+use App\Adapters\Keycloak\UserRepresentation;
+use App\Facades\Keycloak;
 use App\Models\Album;
 use App\Models\Cosplayer;
 use App\Models\User;
 use App\Notifications\PublishedAlbum;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
@@ -28,9 +33,14 @@ class PublishedAlbumTest extends TestCase
         $album->cosplayers()->sync($cosplayers);
         $album->update(['published_at' => Carbon::now()]);
 
-        $users = $album->cosplayers->pluck('user');
-        Notification::assertTimesSent(5, PublishedAlbum::class);
-        Notification::assertSentTo($users, PublishedAlbum::class);
+        $users = $album->cosplayers->pluck('sso_id')->map(static fn (string $ssoId) => Keycloak::users()->find($ssoId));
+        Notification::assertSentTo(
+            new AnonymousNotifiable(),
+            PublishedAlbum::class,
+            static function ($notification, $channels, $notifiable) use ($users) {
+                return $notifiable->routes['mail'] === $users->map(static fn (UserRepresentation $user) => $user->email)->toArray();
+            }
+        );
     }
 
     public function test_when_album_is_published_send_notification_to_cosplayers_related_to_an_user_and_ignore_others(): void
@@ -45,9 +55,14 @@ class PublishedAlbumTest extends TestCase
         $album->cosplayers()->sync(Cosplayer::all());
         $album->update(['published_at' => Carbon::now()]);
 
-        $user = $cosplayerToNotify->user;
-        Notification::assertTimesSent(1, PublishedAlbum::class);
-        Notification::assertSentTo($user, PublishedAlbum::class);
+        $user = Keycloak::users()->find($cosplayerToNotify->sso_id);
+        Notification::assertSentTo(
+            new AnonymousNotifiable(),
+            PublishedAlbum::class,
+            static function ($notification, $channels, $notifiable) use ($user) {
+                return $notifiable->routes['mail'] === [$user->email];
+            }
+        );
     }
 
     public function test_when_album_is_published_do_not_send_notification_if_album_has_no_cosplayers_related_to_an_user(): void
@@ -63,10 +78,21 @@ class PublishedAlbumTest extends TestCase
     {
         Notification::fake();
         /** @var User $user */
-        $user = factory(User::class)->create(['notify_on_album_published' => false]);
+        $user = factory(User::class)->make(['notify_on_album_published' => false]);
+        Keycloak::shouldReceive('users->create')->withAnyArgs()->once();
+        Keycloak::shouldReceive('users->find->toUser')
+            ->withAnyArgs()
+            ->once()
+            ->andReturn($user);
+        $userRepresentation = new UserRepresentation();
+        $userRepresentation->id = $user->id;
+        Keycloak::shouldReceive('users->first')
+            ->withAnyArgs()
+            ->once()
+            ->andReturn($userRepresentation);
+
         /** @var Cosplayer $cosplayer */
-        $cosplayer = factory(Cosplayer::class)->create();
-        $user->cosplayer()->save($cosplayer);
+        $cosplayer = factory(Cosplayer::class)->create(['sso_id' => $user->id]);
         /** @var Album $album */
         $album = factory(Album::class)->states(['unpublished', 'withUser'])->create();
         Notification::assertNothingSent();
@@ -81,10 +107,9 @@ class PublishedAlbumTest extends TestCase
     {
         Notification::fake();
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->make();
         /** @var Cosplayer $cosplayer */
-        $cosplayer = factory(Cosplayer::class)->create();
-        $user->cosplayer()->save($cosplayer);
+        $cosplayer = factory(Cosplayer::class)->create(['sso_id' => $user->id]);
         /** @var Album $album */
         $album = factory(Album::class)->states(['unpublished', 'withUser'])->create([
             'notify_users_on_published' => false,

@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Http\Controller\Api\Admin\MediaOrdering;
 
 use App\Models\Album;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
@@ -73,7 +74,7 @@ class MediaOrderingControllerTest extends TestCase
     public function test_guest_can_not_order_media(): void
     {
         /** @var Album $album */
-        $album = factory(Album::class)->states(['withMedias'])->create(['user_id' => factory(User::class)->create()->id]);
+        $album = factory(Album::class)->states(['withMedias', 'withUser'])->create();
 
         $response = $this->setMediaOrdering($album->slug, []);
 

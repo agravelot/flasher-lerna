@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
-use App\Http\Requests\UserRequest;
-use App\Models\User;
-use Illuminate\Auth\Events\Verified;
+use App\Adapters\Keycloak\Credential;
+use App\Adapters\Keycloak\UserRepresentation;
+use App\Facades\Keycloak;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class CreateAdminUser extends Command
 {
@@ -15,10 +17,10 @@ class CreateAdminUser extends Command
      *
      * @var string
      */
-    protected $signature = 'user:create 
-                            {role? : Role} 
-                            {name? : Username} 
-                            {email? : Email-address} 
+    protected $signature = 'user:create
+                            {role? : Role}
+                            {name? : Username}
+                            {email? : Email-address}
                             {password? : Password}';
 
     /**
@@ -31,7 +33,7 @@ class CreateAdminUser extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): bool
+    public function handle(): void
     {
         $role = $this->argument('role');
         $username = $this->argument('name');
@@ -54,49 +56,14 @@ class CreateAdminUser extends Command
             $password = $this->secret('Enter your user password');
         }
 
-        $data = [
-            'name' => $username,
-            'email' => $email,
-            'password' => $password,
-            'role' => $role,
-        ];
+        $user = new UserRepresentation();
+        $user->username = $username;
+        $user->email = $email;
+        $user->emailVerified = true;
+        $user->addCredential(new Credential(Hash::make($password)));
+        $user->groups = [$role];
 
-        // Only get filtered keys for name and email
-        $filter = array_fill_keys(['name', 'email'], '');
-        $rules = array_intersect_key((new UserRequest())->rules(), $filter);
-
-        if (! $this->validate($data, $rules)) {
-            return 1;
-        }
-
-        $this->create($data);
-
-        return 0;
-    }
-
-    private function validate(array $data, array $rules): bool
-    {
-        $validator = Validator::make($data, $rules);
-
-        if ($validator->fails()) {
-            $this->error('User not created. See error messages below:');
-
-            foreach ($validator->errors()->all() as $error) {
-                $this->warn($error);
-            }
-
-            return false;
-        }
-
-        return true;
-    }
-
-    private function create($data): void
-    {
-        $user = User::create($data);
-        if ($user->markEmailAsVerified()) {
-            event(new Verified($user));
-        }
+        Keycloak::users()->create($user);
         $this->info('User created successfully');
     }
 }

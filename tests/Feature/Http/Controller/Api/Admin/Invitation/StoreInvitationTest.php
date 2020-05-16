@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Http\Controller\Api\Admin\Invitation;
 
 use App\Mail\InvitationMail;
@@ -127,7 +129,6 @@ class StoreInvitationTest extends TestCase
         ]);
 
         $response = $this->storeInvitation($invitation);
-        $response->dump();
         $response->assertCreated()
             ->assertJson([
                 'data' => [

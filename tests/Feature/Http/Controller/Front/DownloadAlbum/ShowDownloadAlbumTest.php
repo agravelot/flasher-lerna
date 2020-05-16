@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Http\Controller\Front\DownloadAlbum;
 
 use App\Models\Album;
@@ -14,7 +16,7 @@ class ShowDownloadAlbumTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_download_a_published_album()
+    public function test_admin_can_download_a_published_album(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->states(['published', 'withMedias'])->create();
@@ -25,7 +27,7 @@ class ShowDownloadAlbumTest extends TestCase
         $response->assertHeader('Content-Disposition', 'attachment; filename="'.$album->zip_file_name.'"');
     }
 
-    public function test_admin_can_download_a_unpublished_album()
+    public function test_admin_can_download_a_unpublished_album(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->states(['unpublished'])->create();
@@ -36,12 +38,11 @@ class ShowDownloadAlbumTest extends TestCase
         $response->assertHeader('Content-Disposition', 'attachment; filename="'.$album->zip_file_name.'"');
     }
 
-    public function test_user_present_as_a_cosplayer_in_a_album_can_download_it()
+    public function test_user_present_as_a_cosplayer_in_a_album_can_download_it(): void
     {
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
+        $this->actingAsUser();
         /** @var Cosplayer $cosplayer */
-        $cosplayer = factory(Cosplayer::class)->create(['user_id' => $user->id]);
+        $cosplayer = factory(Cosplayer::class)->create(['sso_id' => auth()->id()]);
         /** @var Album $album */
         $album = factory(Album::class)->states(['published', 'passwordLess'])->create();
         $album->cosplayers()->attach($cosplayer);
@@ -54,11 +55,11 @@ class ShowDownloadAlbumTest extends TestCase
         $response->assertHeader('Content-Disposition', 'attachment; filename="'.$album->zip_file_name.'"');
     }
 
-    public function test_user_present_as_a_cosplayer_in_a_album_can_not_download_it_if_not_published()
+    public function test_user_present_as_a_cosplayer_in_a_album_can_not_download_it_if_not_published(): void
     {
-        $user = factory(User::class)->create();
-        $cosplayer = factory(Cosplayer::class)->create(['user_id' => $user->id]);
+        $user = factory(User::class)->make();
         $this->actingAs($user);
+        $cosplayer = factory(Cosplayer::class)->create(['sso_id' => $user->id]);
         $album = factory(Album::class)->states(['unpublished'])->create();
         $album->cosplayers()->attach($cosplayer);
 
@@ -68,7 +69,7 @@ class ShowDownloadAlbumTest extends TestCase
         $this->assertNotInstanceOf(StreamedResponse::class, $response->baseResponse);
     }
 
-    public function test_user_non_present_as_a_cosplayer_in_a_album_cannot_download_it()
+    public function test_user_non_present_as_a_cosplayer_in_a_album_cannot_download_it(): void
     {
         $this->actingAsUser();
         $album = factory(Album::class)->states(['published'])->create();
@@ -79,15 +80,13 @@ class ShowDownloadAlbumTest extends TestCase
         $this->assertNotInstanceOf(StreamedResponse::class, $response->baseResponse);
     }
 
-    public function test_guest_cannot_download_a_album_and_are_redirected_to_the_login()
+    public function test_guest_cannot_download_a_album_and_are_redirected_to_the_login(): void
     {
         $album = factory(Album::class)->states(['published', 'withUser'])->create();
 
         $response = $this->getDownloadAlbum($album);
 
-        $response->assertRedirect('/login');
-        $this->followRedirects($response)
-            ->assertOk();
+        $response->assertRedirect(route('keycloak.login'));
     }
 
     private function getDownloadAlbum(Album $album): TestResponse

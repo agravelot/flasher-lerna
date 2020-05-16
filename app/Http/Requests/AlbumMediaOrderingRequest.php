@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests;
 
 use App\Models\Album;
@@ -25,7 +27,7 @@ class AlbumMediaOrderingRequest extends Request
                 'integer',
                 'exists:media,id',
                 Rule::exists('media', 'id')
-                    ->where(static function (Builder $query) use ($album) {
+                    ->where(static function (Builder $query) use ($album): void {
                         $query->where('model_id', $album->id)
                             ->where('model_type', Album::class);
                     }),

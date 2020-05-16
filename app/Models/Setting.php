@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\SettingType;
@@ -39,7 +41,7 @@ class Setting extends Model implements HasMedia
             Cache::forget(self::SETTINGS_CACHE_KEY);
         }
 
-        return tap(self::with('media')->get(), static function (Collection $settings) {
+        return tap(self::with('media')->get(), static function (Collection $settings): void {
             Cache::forever(self::SETTINGS_CACHE_KEY, $settings);
         });
     }
@@ -47,13 +49,11 @@ class Setting extends Model implements HasMedia
     /**
      * Get the ability to return an Media for media settings.
      *
-     * @param string $value
-     *
-     * @return Media|string|bool|int|null $value
+     * @return Media|string|bool|int|null
      */
-    public function getValueAttribute($value)
+    public function getValueAttribute(?string $value)
     {
-        if (SettingType::getAliasType($this->type) === \App\Models\Media::class) {
+        if (SettingType::getAliasType($this->type->value) === \App\Models\Media::class) {
             return $this->getFirstMedia(self::SETTING_COLLECTION);
         }
 

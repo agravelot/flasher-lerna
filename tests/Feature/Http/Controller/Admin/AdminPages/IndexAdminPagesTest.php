@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Http\Controller\Admin\AdminPages;
 
 use App\Models\Page;
@@ -11,7 +13,7 @@ class IndexAdminPagesTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testAdminCanSeePages()
+    public function testAdminCanSeePages(): void
     {
         $this->actingAsAdmin();
         $page = factory(Page::class)->create();
@@ -27,7 +29,7 @@ class IndexAdminPagesTest extends TestCase
         return $this->getJson('/api/admin/pages');
     }
 
-    public function testUserCannotSeePages()
+    public function testUserCannotSeePages(): void
     {
         $this->actingAsUser();
 
@@ -36,7 +38,7 @@ class IndexAdminPagesTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function testGuestCannotSeePages()
+    public function testGuestCannotSeePages(): void
     {
         $response = $this->getPages();
 

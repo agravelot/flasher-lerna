@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Http\Controller\Api\AdminMedia;
 
 use App\Models\Album;
@@ -85,7 +87,7 @@ class StoreMediaWebhookTest extends TestCase
         $response->assertUnauthorized();
     }
 
-    private function sendMediaAddedWebhook(string $mediaName, string $albumId): TestResponse
+    private function sendMediaAddedWebhook(string $mediaName, int $albumId): TestResponse
     {
         return $this->postJson('/api/admin/album-media-added', [
             'Upload' => [

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,7 +13,7 @@ class CreateActivityLogTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('activity_log', static function (Blueprint $table) {
+        Schema::create('activity_log', static function (Blueprint $table): void {
             $table->increments('id');
             $table->string('log_name')->nullable();
             $table->text('description');

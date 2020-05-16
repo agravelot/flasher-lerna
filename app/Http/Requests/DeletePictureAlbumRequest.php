@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests;
 
 use App\Models\Album;
@@ -16,7 +18,7 @@ class DeletePictureAlbumRequest extends Request
         return [
             'media_id' => [
                 'required', 'integer',
-                Rule::exists('media', 'id')->where(function (Builder $query) {
+                Rule::exists('media', 'id')->where(function (Builder $query): void {
                     $query->where('model_type', Album::class)
                         ->where('model_id', $this->album->id);
                 }),

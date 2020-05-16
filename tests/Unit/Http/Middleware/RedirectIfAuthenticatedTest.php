@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Http\Middleware;
 
 use App\Http\Middleware\RedirectIfAuthenticated;
@@ -13,7 +15,7 @@ use Tests\TestCase;
 
 class RedirectIfAuthenticatedTest extends TestCase
 {
-    public function test_it_redirect_if_logged_in()
+    public function test_it_redirect_if_logged_in(): void
     {
         $request = new Request();
         $next = static function ($request) {
@@ -40,7 +42,7 @@ class RedirectIfAuthenticatedTest extends TestCase
         $this->assertSame(302, $response->status());
     }
 
-    public function test_it_if_not_login()
+    public function test_it_if_not_login(): void
     {
         $request = new Request();
         $next = static function ($request) {

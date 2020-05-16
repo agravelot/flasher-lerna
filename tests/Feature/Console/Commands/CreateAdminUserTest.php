@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Console\Commands;
 
-use App\Models\User;
+use App\Facades\Keycloak;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class CreateAdminUserTest extends TestCase
@@ -21,7 +21,7 @@ class CreateAdminUserTest extends TestCase
             ->expectsQuestion('Enter your user password', 'admin')
             ->expectsOutput('User created successfully')
             ->assertExitCode(0);
-        $this->assertCount(1, User::all());
+        $this->assertSame(1, Keycloak::users()->count());
     }
 
     public function test_create_user_with_argument(): void
@@ -34,50 +34,6 @@ class CreateAdminUserTest extends TestCase
         ])
             ->expectsOutput('User created successfully')
             ->assertExitCode(0);
-        $this->assertCount(1, User::all());
-    }
-
-    public function test_can_not_create_user_with_malformed_email(): void
-    {
-        $this->artisan('user:create', [
-            'role' => 'admin',
-            'name' => 'admin',
-            'email' => 'admin',
-            'password' => 'secret',
-        ])
-            ->expectsOutput('User not created. See error messages below:')
-            ->expectsOutput('The email must be a valid email address.')
-            ->assertExitCode(1);
-        $this->assertCount(0, User::all());
-    }
-
-    public function test_can_not_create_user_with_malformed_username(): void
-    {
-        $this->artisan('user:create', [
-            'role' => 'admin',
-            'name' => 'admin',
-            'email' => 'admin',
-            'password' => 'secret',
-        ])
-            ->expectsOutput('User not created. See error messages below:')
-            ->expectsOutput('The email must be a valid email address.')
-            ->assertExitCode(1);
-        $this->assertCount(0, User::all());
-    }
-
-    public function test_create_user_with_argument_is_stores_in_database(): void
-    {
-        Artisan::call('user:create', [
-            'role' => 'admin',
-            'name' => 'admin',
-            'email' => 'admin@picblog.com',
-            'password' => 'secret',
-        ]);
-
-        $this->assertNotNull($user = User::latest()->first());
-        $this->assertSame('admin', $user->name);
-        $this->assertSame('admin', $user->role);
-        $this->assertSame('admin@picblog.com', $user->email);
-        $this->assertTrue(Hash::check('secret', $user->password));
+        $this->assertSame(1, Keycloak::users()->count());
     }
 }

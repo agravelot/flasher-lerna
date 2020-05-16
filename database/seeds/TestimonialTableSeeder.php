@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Seeder;
 
 class TestimonialTableSeeder extends Seeder
@@ -7,7 +9,7 @@ class TestimonialTableSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run()
+    public function run(): void
     {
         factory(\App\Models\Testimonial::class, 20)
             ->state('published')

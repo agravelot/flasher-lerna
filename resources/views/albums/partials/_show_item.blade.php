@@ -19,7 +19,7 @@
             @if ($profilePicture)
                 <div class="column">
                     <figure class="image is-64x64 is-pulled-right">
-                        <img src="{{ $profilePicture->getUrl('thumb') }}" alt="Avatar de {{ $album->user->name }}"
+                        <img src="{{ $profilePicture->getUrl('thumb') }}" alt="Avatar de {{ $album->user()->username }}"
                              class="is-rounded">
                     </figure>
                 </div>
@@ -28,7 +28,7 @@
             <div class="column">
                 <div class="content {{ $profilePicture ? 'is-pulled-left' : '' }}">
                     {{ __('By') }}&nbsp;
-                    <a class="has-text-white" href="{{ url('/') }}" rel="author">{{ $album->user->name }}</a>
+                    <a class="has-text-white" href="{{ url('/') }}" rel="author">{{ $album->user()->username }}</a>
                 </div>
             </div>
         </div>

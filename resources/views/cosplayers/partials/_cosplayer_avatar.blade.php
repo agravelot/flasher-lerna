@@ -4,7 +4,7 @@
     </figure>
 @else
     <figure class="is-centered avatar-circle"
-            style="background-color: {{ string_to_color($cosplayer->name) }}">
+            style="background-color: #000000">
         <span class="initials">
             {{ $cosplayer->initial }}
         </span>

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests;
 
 use Illuminate\Database\Eloquent\Collection;
@@ -45,7 +47,7 @@ abstract class ModelTestCase extends TestCase
         $primaryKey = 'id',
         $connection = null,
         $slug = null
-    ) {
+    ): void {
         $this->assertSame($fillable, $model->getFillable());
         $this->assertSame($guarded, $model->getGuarded());
         $this->assertSame($hidden, $model->getHidden());
@@ -84,7 +86,7 @@ abstract class ModelTestCase extends TestCase
         $key = null,
         $parent = null,
         \Closure $queryCheck = null
-    ) {
+    ): void {
         $this->assertInstanceOf(HasMany::class, $relation);
 
         if (null !== $queryCheck) {
@@ -122,7 +124,7 @@ abstract class ModelTestCase extends TestCase
         $key,
         $owner = null,
         \Closure $queryCheck = null
-    ) {
+    ): void {
         $this->assertInstanceOf(BelongsTo::class, $relation);
 
         if (null !== $queryCheck) {
@@ -156,7 +158,7 @@ abstract class ModelTestCase extends TestCase
         $key,
         $parent = null,
         \Closure $queryCheck = null
-    ) {
+    ): void {
         $this->assertInstanceOf(BelongsToMany::class, $relation);
 
         if (null !== $queryCheck) {

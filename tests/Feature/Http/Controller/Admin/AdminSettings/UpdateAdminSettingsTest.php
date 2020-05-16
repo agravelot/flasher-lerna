@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Http\Controller\Admin\AdminSettings;
 
 use App\Enums\SettingType;
@@ -14,7 +16,7 @@ class UpdateAdminSettingsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testAdminCanUpdateSetting()
+    public function testAdminCanUpdateSetting(): void
     {
         $this->actingAsAdmin();
         $setting = factory(Setting::class)->create([
@@ -39,7 +41,7 @@ class UpdateAdminSettingsTest extends TestCase
         return $this->json('patch', "/api/admin/settings/{$setting->id}", ['value' => $setting->value]);
     }
 
-    public function testUserCannotUpdateSettings()
+    public function testUserCannotUpdateSettings(): void
     {
         $countBefore = Setting::all()->count();
         $this->actingAsUser();
@@ -53,7 +55,7 @@ class UpdateAdminSettingsTest extends TestCase
         $this->assertSame('testValue', $setting->fresh()->value);
     }
 
-    public function testGuestCannotUpdateSettings()
+    public function testGuestCannotUpdateSettings(): void
     {
         $countBefore = Setting::all()->count();
         $setting = factory(Setting::class)->create(['type' => 'string', 'value' => 'testValue']);
@@ -73,7 +75,7 @@ class UpdateAdminSettingsTest extends TestCase
 //        $this->assertFalse($setting->value);
 //    }
 
-    public function test_a_numeric_setting_can_store_string_with_value_to_zero()
+    public function test_a_numeric_setting_can_store_string_with_value_to_zero(): void
     {
         $this->actingAsAdmin();
         $setting = factory(Setting::class)->create([
@@ -88,7 +90,7 @@ class UpdateAdminSettingsTest extends TestCase
         $this->assertSame(0, $setting->fresh()->value);
     }
 
-    public function test_setting_type_to_media_can_store_media()
+    public function test_setting_type_to_media_can_store_media(): void
     {
         $this->actingAsAdmin();
         $setting = factory(Setting::class)->create([
@@ -101,7 +103,7 @@ class UpdateAdminSettingsTest extends TestCase
         $this->assertInstanceOf(Media::class, $setting->fresh()->value);
     }
 
-    public function test_setting_type_to_media_can_update_media()
+    public function test_setting_type_to_media_can_update_media(): void
     {
         $this->actingAsAdmin();
         $setting = factory(Setting::class)->create([
@@ -115,7 +117,7 @@ class UpdateAdminSettingsTest extends TestCase
         $this->assertSame('test.png', ($setting->fresh()->value)->file_name);
     }
 
-    public function test_email_setting_type_cannot_store_bad_email()
+    public function test_email_setting_type_cannot_store_bad_email(): void
     {
         $this->actingAsAdmin();
         $setting = factory(Setting::class)->create([

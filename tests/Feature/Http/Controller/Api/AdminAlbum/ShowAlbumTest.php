@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Http\Controller\Api\AdminAlbum;
 
 use App\Models\Album;
@@ -12,7 +14,7 @@ class ShowAlbumTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_view_published_albums()
+    public function test_admin_can_view_published_albums(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('published')->create();
@@ -23,7 +25,7 @@ class ShowAlbumTest extends TestCase
             ->assertSee($album->title);
     }
 
-    public function test_get_album_contains_links()
+    public function test_get_album_contains_links(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
@@ -41,7 +43,7 @@ class ShowAlbumTest extends TestCase
         return $this->json('get', "/api/admin/albums/{$album->slug}");
     }
 
-    public function test_admin_can_view_unpublished_albums()
+    public function test_admin_can_view_unpublished_albums(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('unpublished')->create();
@@ -52,7 +54,7 @@ class ShowAlbumTest extends TestCase
             ->assertSee($album->title);
     }
 
-    public function test_admin_can_view_secured_albums()
+    public function test_admin_can_view_secured_albums(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('password')->create();
@@ -63,7 +65,7 @@ class ShowAlbumTest extends TestCase
             ->assertSee($album->title);
     }
 
-    public function test_admin_can_view_password_less_albums()
+    public function test_admin_can_view_password_less_albums(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('passwordLess')->create();
@@ -73,7 +75,7 @@ class ShowAlbumTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_user_can_not_view_index()
+    public function test_user_can_not_view_index(): void
     {
         $this->actingAsUser();
         $album = factory(PublicAlbum::class)->state('withUser')->create();
@@ -83,7 +85,7 @@ class ShowAlbumTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_guest_can_not_view_public_album()
+    public function test_guest_can_not_view_public_album(): void
     {
         $album = factory(PublicAlbum::class)->state('withUser')->create();
 

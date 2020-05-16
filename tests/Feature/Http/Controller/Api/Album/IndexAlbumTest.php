@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Http\Controller\Api\Album;
 
 use App\Models\Album;
@@ -10,7 +12,7 @@ class IndexAlbumTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_view_published_albums()
+    public function test_admin_can_view_published_albums(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->states(['published', 'passwordLess'])->create();
@@ -21,7 +23,7 @@ class IndexAlbumTest extends TestCase
         $this->assertSame($album->title, $response->decodeResponseJson('data')[0]['title']);
     }
 
-    public function test_admin_can_not_view_unpublished_albums()
+    public function test_admin_can_not_view_unpublished_albums(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('unpublished')->create();
@@ -32,7 +34,7 @@ class IndexAlbumTest extends TestCase
             ->assertJson(['data' => []]);
     }
 
-    public function test_admin_can_not_view_secured_albums()
+    public function test_admin_can_not_view_secured_albums(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('password')->create();
@@ -43,7 +45,7 @@ class IndexAlbumTest extends TestCase
             ->assertJson(['data' => []]);
     }
 
-    public function test_user_can_view_index()
+    public function test_user_can_view_index(): void
     {
         $this->actingAsUser();
 
@@ -52,7 +54,7 @@ class IndexAlbumTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_user_can_view_published_albums()
+    public function test_user_can_view_published_albums(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->states(['published', 'passwordLess'])->create();
@@ -63,7 +65,7 @@ class IndexAlbumTest extends TestCase
         $this->assertSame($album->title, $response->decodeResponseJson('data')[0]['title']);
     }
 
-    public function test_user_can_not_view_unpublished_albums()
+    public function test_user_can_not_view_unpublished_albums(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('unpublished')->create();
@@ -74,7 +76,7 @@ class IndexAlbumTest extends TestCase
             ->assertJson(['data' => []]);
     }
 
-    public function test_user_can_not_view_secured_albums()
+    public function test_user_can_not_view_secured_albums(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('password')->create();
@@ -85,14 +87,14 @@ class IndexAlbumTest extends TestCase
             ->assertJson(['data' => []]);
     }
 
-    public function test_guest_can_not_view_index()
+    public function test_guest_can_not_view_index(): void
     {
         $response = $this->json('get', '/api/albums');
 
         $response->assertOk();
     }
 
-    public function test_guest_can_view_published_albums()
+    public function test_guest_can_view_published_albums(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->states(['published', 'passwordLess'])->create();
@@ -103,7 +105,7 @@ class IndexAlbumTest extends TestCase
         $this->assertSame($album->title, $response->decodeResponseJson('data')[0]['title']);
     }
 
-    public function test_guest_can_not_view_unpublished_albums()
+    public function test_guest_can_not_view_unpublished_albums(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('unpublished')->create();
@@ -114,7 +116,7 @@ class IndexAlbumTest extends TestCase
             ->assertJson(['data' => []]);
     }
 
-    public function test_guest_can_not_view_secured_albums()
+    public function test_guest_can_not_view_secured_albums(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('password')->create();

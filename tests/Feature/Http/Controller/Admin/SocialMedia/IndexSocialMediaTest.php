@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Http\Controller\Admin\SocialMedia;
 
 use App\Models\SocialMedia;
@@ -30,7 +32,7 @@ class IndexSocialMediaTest extends TestCase
 
     private function assertJsonFragments(TestResponse $response, Collection $socialMedias): void
     {
-        $socialMedias->each(static function (SocialMedia $socialMedia) use ($response) {
+        $socialMedias->each(static function (SocialMedia $socialMedia) use ($response): void {
             $response->assertJsonFragment([
                 'name' => $socialMedia->name,
                 'url' => $socialMedia->url,

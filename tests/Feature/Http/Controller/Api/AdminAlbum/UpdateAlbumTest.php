@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Http\Controller\Api\AdminAlbum;
 
 use App\Models\Album;
@@ -16,7 +18,7 @@ class UpdateAlbumTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_update_an_album()
+    public function test_admin_can_update_an_album(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
@@ -41,7 +43,7 @@ class UpdateAlbumTest extends TestCase
         ], $optional));
     }
 
-    public function test_admin_can_update_an_album_with_a_new_category()
+    public function test_admin_can_update_an_album_with_a_new_category(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
@@ -62,7 +64,7 @@ class UpdateAlbumTest extends TestCase
             ]]);
     }
 
-    public function test_admin_can_update_an_album_with_an_non_existent_category_and_a_picture()
+    public function test_admin_can_update_an_album_with_an_non_existent_category_and_a_picture(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
@@ -75,7 +77,7 @@ class UpdateAlbumTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function test_admin_can_update_an_album_with_a_cosplayer()
+    public function test_admin_can_update_an_album_with_a_cosplayer(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
@@ -90,7 +92,7 @@ class UpdateAlbumTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_admin_can_not_update_an_album_with_an_non_existent_cosplayer()
+    public function test_admin_can_not_update_an_album_with_an_non_existent_cosplayer(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
@@ -103,7 +105,7 @@ class UpdateAlbumTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function test_admin_can_update_an_album_with_published_now()
+    public function test_admin_can_update_an_album_with_published_now(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('published')->create();
@@ -114,7 +116,7 @@ class UpdateAlbumTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_user_cannot_update_an_album()
+    public function test_user_cannot_update_an_album(): void
     {
         $this->actingAsUser();
         $album = factory(Album::class)->create();
@@ -125,7 +127,7 @@ class UpdateAlbumTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_guest_cannot_update_an_album()
+    public function test_guest_cannot_update_an_album(): void
     {
         $album = factory(Album::class)->state('withUser')->create();
 
@@ -135,7 +137,7 @@ class UpdateAlbumTest extends TestCase
         $response->assertStatus(401);
     }
 
-    public function test_cosplayer_are_not_saved_twice_after_update()
+    public function test_cosplayer_are_not_saved_twice_after_update(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
@@ -150,7 +152,7 @@ class UpdateAlbumTest extends TestCase
         $this->assertSame(1, $album->fresh()->cosplayers->count());
     }
 
-    public function test_category_are_not_saved_twice_after_update()
+    public function test_category_are_not_saved_twice_after_update(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
@@ -165,7 +167,7 @@ class UpdateAlbumTest extends TestCase
         $this->assertSame(1, $album->fresh()->categories->count());
     }
 
-    public function test_album_can_be_updated_with_a_new_published_at_date()
+    public function test_album_can_be_updated_with_a_new_published_at_date(): void
     {
         $this->actingAsAdmin();
         /** @var Album $album */
@@ -179,7 +181,7 @@ class UpdateAlbumTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_album_with_categories_can_un_attach()
+    public function test_album_with_categories_can_un_attach(): void
     {
         $this->actingAsAdmin();
         /** @var Album $album */
@@ -197,7 +199,7 @@ class UpdateAlbumTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_album_with_multiple_categories_can_un_attach_one()
+    public function test_album_with_multiple_categories_can_un_attach_one(): void
     {
         $this->actingAsAdmin();
         /** @var Album $album */
@@ -217,7 +219,7 @@ class UpdateAlbumTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_album_update_a_published_album_to_unpublished()
+    public function test_album_update_a_published_album_to_unpublished(): void
     {
         $this->actingAsAdmin();
         /** @var Album $album */
@@ -231,7 +233,7 @@ class UpdateAlbumTest extends TestCase
         $this->assertFalse($album->fresh()->isPublished());
     }
 
-    public function test_album_update_an_unpublished_album_to_published()
+    public function test_album_update_an_unpublished_album_to_published(): void
     {
         $this->actingAsAdmin();
         /** @var Album $album */

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\OpenGraphs;
 
 use App\Http\OpenGraphs\Contracts\ArticleOpenGraphable;
@@ -20,7 +22,7 @@ class AlbumOpenGraph implements OpenGraphable, ArticleOpenGraphable, ImagesOpenG
 
     public function author(): string
     {
-        return $this->album->user->name;
+        return $this->album->user()->username;
     }
 
     public function tags(): Collection

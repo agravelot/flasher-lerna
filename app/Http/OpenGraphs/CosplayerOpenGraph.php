@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\OpenGraphs;
 
 use App\Http\OpenGraphs\Contracts\OpenGraphable;

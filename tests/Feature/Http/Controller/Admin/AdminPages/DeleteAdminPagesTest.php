@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Http\Controller\Admin\AdminPages;
 
 use App\Models\Page;
@@ -11,7 +13,7 @@ class DeleteAdminPagesTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testAdminCanDeletePages()
+    public function testAdminCanDeletePages(): void
     {
         $this->actingAsAdmin();
         $page = factory(Page::class)->create();
@@ -28,7 +30,7 @@ class DeleteAdminPagesTest extends TestCase
         return $this->json('delete', "/api/admin/pages/{$page->id}");
     }
 
-    public function testUserCannotDeletePages()
+    public function testUserCannotDeletePages(): void
     {
         $this->actingAsUser();
 
@@ -41,7 +43,7 @@ class DeleteAdminPagesTest extends TestCase
         $this->assertCount(1, Page::all());
     }
 
-    public function testGuestCannotDeletePages()
+    public function testGuestCannotDeletePages(): void
     {
         $page = factory(Page::class)->create();
         $this->assertCount(1, Page::all());

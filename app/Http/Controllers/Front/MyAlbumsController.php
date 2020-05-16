@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cosplayer;
 use App\Models\PublicAlbum;
-use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -12,11 +14,10 @@ class MyAlbumsController extends Controller
 {
     public function __invoke(): View
     {
-        /** @var User $user */
-        $user = auth()->user();
-        $albums = $user->cosplayer ? PublicAlbum::whereHas('cosplayers',
-                static function (Builder $query) use ($user) {
-                    $query->where('cosplayers.id', '=', $user->cosplayer->id);
+        $cosplayer = Cosplayer::where('sso_id', auth()->id())->first();
+        $albums = $cosplayer ? PublicAlbum::whereHas('cosplayers',
+                static function (Builder $query) use ($cosplayer): void {
+                    $query->where('cosplayers.id', '=', optional($cosplayer)->id);
                 }
             )->with('media')->paginate()
         : collect();

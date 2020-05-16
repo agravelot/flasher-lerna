@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Http\Controller\Front\Testimonial;
 
 use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
@@ -13,7 +15,7 @@ class StoreTestimonialTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_can_post_to_the_testimonial_and_is_not_published()
+    public function test_guest_can_post_to_the_testimonial_and_is_not_published(): void
     {
         NoCaptcha::shouldReceive('verifyResponse')
             ->once()
@@ -37,7 +39,7 @@ class StoreTestimonialTest extends TestCase
         return $this->post('/testimonials', array_merge($testimonialPost->toArray(), $data));
     }
 
-    public function test_guest_can_not_post_to_the_testimonial_without_captcha()
+    public function test_guest_can_not_post_to_the_testimonial_without_captcha(): void
     {
         $post = factory(Testimonial::class)->make();
 
@@ -51,7 +53,7 @@ class StoreTestimonialTest extends TestCase
             ->assertDontSee('Your message has been added to the testimonial');
     }
 
-    public function test_admin_can_post_to_the_testimonial()
+    public function test_admin_can_post_to_the_testimonial(): void
     {
         $this->actingAsAdmin();
         NoCaptcha::shouldReceive('verifyResponse')
@@ -70,7 +72,7 @@ class StoreTestimonialTest extends TestCase
             ->assertDontSee($post->name);
     }
 
-    public function test_admin_can_not_post_to_the_testimonial_without_captcha()
+    public function test_admin_can_not_post_to_the_testimonial_without_captcha(): void
     {
         $this->actingAsAdmin();
         $post = factory(Testimonial::class)->make();

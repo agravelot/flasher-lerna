@@ -20,7 +20,7 @@ jobs:
 
     - name: Update docker-compose version
       run: |
-        sudo curl -L "https://github.com/docker/compose/releases/download/1.25.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
         sudo chmod +x /usr/local/bin/docker-compose
         docker-compose version
         docker -v
@@ -29,6 +29,7 @@ jobs:
       run: |
         docker network create nginx-proxy
         docker network create database-network
+        docker network create keycloak-network
 
 #    - name: Docker Lint
 #      uses: luke142367/Docker-Lint-Action@v1.0.0
@@ -50,9 +51,10 @@ jobs:
     - name: Start docker stack
       run: |
         docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d
-        docker-compose -f docker-compose.yml -f docker-compose.local.yml kill queue scheduler nginx traefik
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml kill queue scheduler nginx
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T cache redis-cli config set maxmemory 41943040
         docker cp vendor $(docker-compose ps -q php):/var/www/html/
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan keycloak:wait
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan cache:clear-wait-connection
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan db:wait-connection
       env:
@@ -70,12 +72,22 @@ jobs:
         SESSION_DRIVER: "array"
         CACHE_DRIVER: "array"
         BROADCAST_DRIVER: "log"
+        KEYCLOAK_URI: keycloak.localhost
+        KEYCLOAK_URL: https://keycloak.localhost
+        KEYCLOAK_BASE_URL: https://keycloak.localhost/auth
+        KEYCLOAK_REALM_PUBLIC_KEY: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApAkeUQ7GQ3scmbTJ1ByDUEUFZSnpabglmmE24HCbiEAPBcwqrhZrI3e8pjQw2sy1fgXDrLMXUFSDyvwUAPNPDMx3BsLQJSWQK1B2eKyOi2xzM1Jg6rgFyaFJZlgxmW+0vrzS2R1tSKk4LCymsiMXtC0Emm6EGGc+EnP40VmIr1wNphvLpch25APbPaGqWx3JXkm8D5+AoSziClca/yrIoJm/z3gu/M8ZSyL0wH/vGKqNANooQNQ9KYZe91VHqwEXCLKzCpuzEGtX08n3NfNn0RMI+vGfnF0mLx/MhuaUfqWcLFEpLmqr1BAtlcniL/j8IYfO0L23M6uWKsEa0SpdhQIDAQAB
+        KEYCLOAK_VERIFY_SSL: false
+        KEYCLOAK_SSL: false
+        KEYCLOAK_PORT: 8080
+        KEYCLOAK_REALM: jkanda
+        KEYCLOAK_CLIENT_ID: flasher
+        KEYCLOAK_MASTER_USERNAME: admin
+        KEYCLOAK_MASTER_PASSWORD: admin
 
     - name: Run php test suites
       run: |
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php touch .env
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan key:generate
-        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan passport:keys
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php vendor/bin/phpunit --coverage-text --colors=never
       env:
         APP_URL: http://localhost
@@ -176,6 +188,16 @@ jobs:
         CLOUDFRONT_PRIVATE_KEY: ${{ secrets.CLOUDFRONT_PRIVATE_KEY }}
         ADMIN_URL: ${{ secrets.ADMIN_URL_STAGING }}
         CRISP_WEBSITE_ID: ${{ secrets.CRISP_WEBSITE_ID }}
+        KEYCLOAK_URI: ${{ secrets.KEYCLOAK_URI }}
+        KEYCLOAK_URL: ${{ secrets.KEYCLOAK_URL }}
+        KEYCLOAK_BASE_URL: ${{ secrets.KEYCLOAK_BASE_URL }}
+        KEYCLOAK_REALM_PUBLIC_KEY: ${{ secrets.KEYCLOAK_REALM_PUBLIC_KEY }}
+        KEYCLOAK_VERIFY_SSL: true
+        KEYCLOAK_SSL: true
+        KEYCLOAK_REALM: jkanda
+        KEYCLOAK_CLIENT_ID: flasher
+        KEYCLOAK_MASTER_USERNAME: ${{ secrets.KEYCLOAK_MASTER_USERNAME }}
+        KEYCLOAK_MASTER_PASSWORD: ${{ secrets.KEYCLOAK_MASTER_PASSWORD }}
       run: |
         eval $(ssh-agent -s)
         mkdir -p ~/.ssh
@@ -227,6 +249,16 @@ jobs:
         CLOUDFRONT_PRIVATE_KEY: ${{ secrets.CLOUDFRONT_PRIVATE_KEY }}
         ADMIN_URL: ${{ secrets.ADMIN_URL_PRODUCTION }}
         CRISP_WEBSITE_ID: ${{ secrets.CRISP_WEBSITE_ID }}
+        KEYCLOAK_URI: ${{ secrets.KEYCLOAK_URI }}
+        KEYCLOAK_URL: ${{ secrets.KEYCLOAK_URL }}
+        KEYCLOAK_BASE_URL: ${{ secrets.KEYCLOAK_BASE_URL }}
+        KEYCLOAK_REALM_PUBLIC_KEY: ${{ secrets.KEYCLOAK_REALM_PUBLIC_KEY }}
+        KEYCLOAK_VERIFY_SSL: true
+        KEYCLOAK_SSL: true
+        KEYCLOAK_REALM: jkanda
+        KEYCLOAK_CLIENT_ID: flasher
+        KEYCLOAK_MASTER_USERNAME: ${{ secrets.KEYCLOAK_MASTER_USERNAME }}
+        KEYCLOAK_MASTER_PASSWORD: ${{ secrets.KEYCLOAK_MASTER_PASSWORD }}
       run: |
         eval $(ssh-agent -s)
         mkdir -p ~/.ssh

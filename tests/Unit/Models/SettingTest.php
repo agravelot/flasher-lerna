@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Models;
 
 use App\Models\Setting;
@@ -12,7 +14,7 @@ class SettingTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_updating_settings_refresh_cached_values()
+    public function test_updating_settings_refresh_cached_values(): void
     {
         /** @var Collection $cacheBefore */
         $cacheBefore = Cache::get(Setting::SETTINGS_CACHE_KEY);
@@ -28,7 +30,7 @@ class SettingTest extends TestCase
         );
     }
 
-    public function test_settings_are_cached()
+    public function test_settings_are_cached(): void
     {
         settings()->get('app_name');
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Http\Controller\Admin\Cosplayer;
 
 use App\Models\Cosplayer;
@@ -12,7 +14,7 @@ class IndexCosplayerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testAdminCanIndexCosplayers()
+    public function testAdminCanIndexCosplayers(): void
     {
         $this->actingAsAdmin();
         $cosplayers = factory(Cosplayer::class, 8)->create();
@@ -30,7 +32,7 @@ class IndexCosplayerTest extends TestCase
 
     private function assertJsonUserFragment(TestResponse $response, Collection $cosplayers): void
     {
-        $cosplayers->each(static function (Cosplayer $cosplayer) use ($response) {
+        $cosplayers->each(static function (Cosplayer $cosplayer) use ($response): void {
             $response->assertJsonFragment([
                 'name' => $cosplayer->name,
                 'slug' => $cosplayer->slug,
@@ -38,7 +40,7 @@ class IndexCosplayerTest extends TestCase
         });
     }
 
-    public function testUserCannotIndexCosplayers()
+    public function testUserCannotIndexCosplayers(): void
     {
         $this->actingAsUser();
         $cosplayers = factory(Cosplayer::class, 8)->create();
@@ -48,7 +50,7 @@ class IndexCosplayerTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function testGuestCannotIndexCosplayers()
+    public function testGuestCannotIndexCosplayers(): void
     {
         $cosplayers = factory(Cosplayer::class, 8)->create();
 

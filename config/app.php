@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'new_conversions' => false,
     'signed_medias_urls' => env('ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL', false),
@@ -178,6 +180,7 @@ return [
         // App\Providers\TelescopeServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
+        App\Providers\KeycloakServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -234,5 +237,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'Keycloak' => App\Facades\Keycloak::class,
     ],
 ];

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,7 +14,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AdminUserSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(AlbumsTableSeeder::class);
-        $this->call(PostsTableSeeder::class);
         $this->call(TestimonialTableSeeder::class);
         $this->call(ContactTableSeeder::class);
         $this->call(CosplayerSeeder::class);

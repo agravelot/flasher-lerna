@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use App\Models\Album;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\Facades\Auth;
 
 /** @mixin Album */
@@ -38,7 +39,7 @@ class AlbumShowResource extends JsonResource
             'medias' => MediaResource::collection($this->getMedia(Album::PICTURES_COLLECTION)),
             'categories' => CategoryResource::collection($this->categories),
             'cosplayers' => CosplayerResource::collection($this->cosplayers),
-            'user' => new UserResource($this->user),
+            //'user' => new UserResource($this->user),
             'links' => [
                 'view' => route('albums.show', ['album' => $this]),
                 'edit' => $this->when(
@@ -61,8 +62,7 @@ class AlbumShowResource extends JsonResource
         // Because we are using this resource directly in your views.
         // We need need to check the request is an ajax request.
         // In order to use the auth with the proper guard.
-        $name = $this->request->ajax() ? 'api' : 'web';
-        $guard = Auth::guard($name);
+        $guard = Auth::guard($this->request->wantsJson() ? 'api' : 'web');
 
         return $guard->check() && $guard->user()->can($permission, $album);
     }

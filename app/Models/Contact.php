@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Adapters\Keycloak\UserRepresentation;
+use App\Facades\Keycloak;
 use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Contact extends Model
 {
@@ -17,11 +20,8 @@ class Contact extends Model
      */
     protected $fillable = ['name', 'email', 'message'];
 
-    /**
-     * Return the related user of this contact (is nullable).
-     */
-    public function user(): BelongsTo
+    public function user(): ?UserRepresentation
     {
-        return $this->belongsTo(User::class);
+        return $this->sso_id ? Keycloak::users()->find($this->sso_id) : null;
     }
 }

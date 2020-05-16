@@ -1,6 +1,7 @@
 <?php
 
-Auth::routes(['verify' => true]);
+declare(strict_types=1);
+
 Route::impersonate();
 Route::feeds();
 

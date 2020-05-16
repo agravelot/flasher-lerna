@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -13,7 +15,7 @@ class CheckAdmin
     public function handle(Request $request, Closure $next)
     {
         if (! $request->user()->isAdmin()) {
-            abort(403);
+            abort(403, 'User must have admin privileges to perform this action.');
         }
 
         return $next($request);

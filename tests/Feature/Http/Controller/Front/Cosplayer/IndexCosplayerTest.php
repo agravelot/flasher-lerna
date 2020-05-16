@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Http\Controller\Front\Cosplayer;
 
 use App\Models\Cosplayer;
@@ -11,7 +13,7 @@ class IndexCosplayerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_view_nothing_to_show()
+    public function test_guest_view_nothing_to_show(): void
     {
         $response = $this->showCosplayers();
 
@@ -24,7 +26,7 @@ class IndexCosplayerTest extends TestCase
         return $this->get('/cosplayers');
     }
 
-    public function test_guest_can_view_published_albums()
+    public function test_guest_can_view_published_albums(): void
     {
         $cosplayers = factory(Cosplayer::class, 2)->create();
 

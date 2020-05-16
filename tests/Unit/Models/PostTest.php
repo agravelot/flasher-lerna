@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Models;
 
 use App\Models\Post;
@@ -10,7 +12,7 @@ class PostTest extends ModelTestCase
 {
     use WithFaker;
 
-    public function testRouteKeyName()
+    public function testRouteKeyName(): void
     {
         $slug = $this->faker->slug;
         $post = factory(Post::class)->make([
@@ -23,7 +25,7 @@ class PostTest extends ModelTestCase
         $this->assertSame($$routeKey, $slug);
     }
 
-    public function testSlugAsRouteKeyName()
+    public function testSlugAsRouteKeyName(): void
     {
         $post = new Post();
         $routeKey = $post->getRouteKeyName();
@@ -33,7 +35,7 @@ class PostTest extends ModelTestCase
         $this->assertSame($excepted, $routeKey);
     }
 
-    public function testSlugSourceAsTitle()
+    public function testSlugSourceAsTitle(): void
     {
         $post = new Post();
         $slugSource = $post->sluggable()['slug']['source'];
@@ -43,7 +45,7 @@ class PostTest extends ModelTestCase
         $this->assertSame($excepted, $slugSource);
     }
 
-    public function testModelConfiguration()
+    public function testModelConfiguration(): void
     {
         $this->runConfigurationAssertions(new Post(), [
             'title', 'slug', 'seo_title', 'excerpt', 'body', 'meta_description', 'meta_keywords', 'active', 'user_id',

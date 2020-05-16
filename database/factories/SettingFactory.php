@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Enums\SettingType;
 use App\Models\Setting;
 use Faker\Generator as Faker;
@@ -16,7 +18,7 @@ $factory->define(Setting::class, static function (Faker $faker) {
         'name' => $faker->word,
         'type' => $randomType, // Need be before 'value'
         'value' => static function () use ($faker, $randomType) {
-            if (in_array($randomType, [SettingType::String, SettingType::TextArea])) {
+            if (in_array($randomType, [SettingType::String, SettingType::TextArea], true)) {
                 return $faker->sentence;
             }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
@@ -16,7 +18,7 @@ class InvitationController extends Controller
     {
         $this->authorize('view', $invitation);
 
-        $invitation->cosplayer->user()->associate(auth()->user());
+        $invitation->cosplayer->sso_id = auth()->id();
         $invitation->cosplayer->save();
         $invitation->update(['confirmed_at' => now()]);
 

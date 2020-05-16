@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use App\Models\Setting;
@@ -42,7 +44,7 @@ class SettingsManager
         return tap(Setting::updateOrCreate(['name' => $name], [
             'name' => $name,
             'value' => $value,
-        ]), static function () {
+        ]), static function (): void {
             Setting::refreshCache();
         });
     }

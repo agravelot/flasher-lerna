@@ -1,61 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests;
 
-use App\Exceptions\Handler;
+use App\Adapters\Keycloak\UserRepresentation;
+use App\Facades\Keycloak;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\User;
-use Closure;
-use Exception;
-use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Database\Connection;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Schema\SQLiteBuilder;
-use Illuminate\Database\SQLiteConnection;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Fluent;
-use InvalidArgumentException;
-use Laravel\Passport\Passport;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
-
-    public function __construct(?string $name = null, array $data = [], string $dataName = '')
-    {
-        parent::__construct($name, $data, $dataName);
-        $this->hotfixSqlite();
-    }
-
-    public function hotfixSqlite(): void
-    {
-        Connection::resolverFor('sqlite', function ($connection, $database, $prefix, $config) {
-            return new class($connection, $database, $prefix, $config) extends SQLiteConnection {
-                public function getSchemaBuilder()
-                {
-                    if ($this->schemaGrammar === null) {
-                        $this->useDefaultSchemaGrammar();
-                    }
-
-                    return new class($this) extends SQLiteBuilder {
-                        protected function createBlueprint($table, Closure $callback = null)
-                        {
-                            return new class($table, $callback) extends Blueprint {
-                                public function dropForeign($index)
-                                {
-                                    return new Fluent();
-                                }
-                            };
-                        }
-                    };
-                }
-            };
-        });
-    }
 
     protected function setUp(): void
     {
@@ -67,59 +28,30 @@ abstract class TestCase extends BaseTestCase
         JsonResource::$wrap = 'data';
         Storage::fake();
         Storage::fake('s3');
+        foreach (Keycloak::users()->all() as $user) {
+            /* @var UserRepresentation $user */
+            Keycloak::users()->delete($user->id);
+        }
     }
 
     protected function actingAsAdminNotStored(): void
     {
         $admin = factory(User::class)->state('admin')->make();
-        $this->actingAs($admin);
+        $this->actingAs($admin, 'api');
+        $this->actingAs($admin, 'web');
     }
 
     protected function actingAsAdmin(): void
     {
-        $admin = factory(User::class)->state('admin')->create();
-        $this->actingAs($admin);
-        Passport::actingAs($admin, ['*']);
+        $admin = factory(User::class)->state('admin')->make();
+        $this->actingAs($admin, 'api');
+        $this->actingAs($admin, 'web');
     }
 
     protected function actingAsUser(): void
     {
-        $user = factory(User::class)->state('user')->create();
-        $this->actingAs($user);
-        Passport::actingAs($user, ['*']);
-    }
-
-    protected function assertAuthenticationRequired($uri, $method = 'get', $redirect = '/login'): void
-    {
-        $method = mb_strtolower($method);
-        if (! \in_array($method, ['get', 'post', 'put', 'update', 'delete'], true)) {
-            throw new InvalidArgumentException('Invalid method: '.$method);
-        }
-        // Html check
-        $response = $this->$method($uri);
-        $response->assertStatus(302);
-        $response->assertRedirect($redirect);
-        // Json check
-        $method .= 'Json';
-        $response = $this->$method($uri);
-        $response->assertStatus(401);
-    }
-
-    protected function disableExceptionHandling(): void
-    {
-        $this->app->instance(ExceptionHandler::class, new class() extends Handler {
-            public function __construct()
-            {
-            }
-
-            public function report(Exception $e)
-            {
-            }
-
-            public function render($request, Exception $e)
-            {
-                throw $e;
-            }
-        });
+        $user = factory(User::class)->state('user')->make();
+        $this->actingAs($user, 'api');
+        $this->actingAs($user, 'web');
     }
 }
