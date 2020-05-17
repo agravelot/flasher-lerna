@@ -3,9 +3,7 @@
         <div class="box">
             <article class="media">
                 <div class="media-left">
-                    <figure class="image">
-                        {{ $cosplayer->getFirstMedia('avatar', 'thumb') }}
-                    </figure>
+                    @include('cosplayers.partials._cosplayer_avatar', compact('cosplayer'))
                 </div>
                 <div class="media-content">
                     <div class="content">
