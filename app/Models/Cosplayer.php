@@ -62,6 +62,7 @@ class Cosplayer extends Model implements HasMedia
             return $media(self::RESPONSIVE_PICTURES_CONVERSION);
         });
     }
+
     /**
      * Add media to Album::PICTURES_COLLECTION collection.
      */
