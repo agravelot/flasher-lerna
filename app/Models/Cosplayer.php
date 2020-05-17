@@ -21,6 +21,7 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\File;
+use Spatie\MediaLibrary\MediaCollections\HtmlableMedia;
 
 class Cosplayer extends Model implements HasMedia
 {
@@ -31,6 +32,9 @@ class Cosplayer extends Model implements HasMedia
         HasNameAsSlug,
         ClearsResponseCache,
         Searchable;
+
+    public const RESPONSIVE_PICTURES_CONVERSION = 'responsive';
+    const AVATAR_COLLECTION = 'avatar';
 
     /**
      * The attributes that are mass assignable.
@@ -49,7 +53,14 @@ class Cosplayer extends Model implements HasMedia
 
     public function getAvatarAttribute(): ?Media
     {
-        return $this->getFirstMedia('avatar');
+        return $this->getFirstMedia(self::AVATAR_COLLECTION);
+    }
+
+    public function getAvatarResponsiveAttribute(): ?HtmlableMedia
+    {
+        return optional($this->avatar, static function (Media $media) {
+            return $media(self::RESPONSIVE_PICTURES_CONVERSION);
+        });
     }
 
     /**
@@ -66,8 +77,7 @@ class Cosplayer extends Model implements HasMedia
         $this->addMedia($media)
             ->usingFileName("{$this->slug}.{$media->clientExtension()}")
             ->preservingOriginal()
-            ->withResponsiveImages()
-            ->toMediaCollectionOnCloudDisk('avatar');
+            ->toMediaCollectionOnCloudDisk(self::AVATAR_COLLECTION);
     }
 
     /**
@@ -107,7 +117,7 @@ class Cosplayer extends Model implements HasMedia
      */
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('avatar')
+        $this->addMediaCollection(self::AVATAR_COLLECTION)
             ->acceptsFile(static function (File $file) {
                 return Str::startsWith($file->mimeType, 'image/');
             })
@@ -121,9 +131,14 @@ class Cosplayer extends Model implements HasMedia
      */
     public function registerMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
     {
+        $this->addMediaConversion(self::RESPONSIVE_PICTURES_CONVERSION)
+            ->optimize()
+            ->withResponsiveImages()
+            ->performOnCollections(self::AVATAR_COLLECTION);
+
         $this->addMediaConversion('thumb')
             ->crop('crop-center', 96, 96)
-            ->performOnCollections('avatar');
+            ->performOnCollections(self::AVATAR_COLLECTION);
     }
 
     public function searchableAs(): string
