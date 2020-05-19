@@ -125,7 +125,7 @@
                         </div>
                     </div>
                 @else
-                    <a class="button is-black" href="{{ route('keycloak.login') }}">
+                    <a class="button is-black" href="{{ route('keycloak.login') }}" aria-label="{{ __('Login') }}">
                         <span class="icon">
                             <x-fa name="sign-in-alt" library="solid"/>
                         </span>

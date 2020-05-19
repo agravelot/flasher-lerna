@@ -1,5 +1,5 @@
 <div class="column is-half-tablet is-one-third-widescreen">
-    <a href="{{ route('categories.show', ['category' => $category]) }}">
+    <a href="{{ route('categories.show', ['category' => $category]) }}" aria-label="{{ $category->name }}">
         <div class="card has-hover-zoom">
             @if ($category->cover)
                 <div class="card-image">
