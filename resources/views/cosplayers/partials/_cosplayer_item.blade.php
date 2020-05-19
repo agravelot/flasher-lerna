@@ -1,5 +1,5 @@
 <div class="column is-half-tablet is-one-third-widescreen">
-    <a href="{{ route('cosplayers.show', compact('cosplayer')) }}">
+    <a href="{{ route('cosplayers.show', compact('cosplayer')) }}" aria-label="{{ $cosplayer->name }}">
         <div class="box">
             <article class="media">
                 <div class="media-left">

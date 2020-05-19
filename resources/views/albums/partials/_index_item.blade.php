@@ -22,13 +22,15 @@
                 @foreach($column as $mediaKey => $album)
                     @php($key = $columnKey + $mediaKey)
                     <a href="{{ route('albums.show', compact('album')) }}"
-                       class="has-margin-right-md">
+                       class="has-margin-right-md" aria-label="{{ $album->title }}">
                         <article class="card has-hover-zoom is-clipped">
-                            <div v-if="album.media" class="card-image">
-                                <figure class="image">
-                                    {{ $album->coverResponsive }}
-                                </figure>
-                            </div>
+                            @if ($album->coverResponsive)
+                                <div class="card-image">
+                                    <figure class="image">
+                                        {{ $album->coverResponsive }}
+                                    </figure>
+                                </div>
+                            @endif
                             <div class="card-content">
                                 <div class="content">
                                     <h3 class="title">{{ $album->title }}</h3>
@@ -58,13 +60,15 @@
                 @foreach($column as $mediaKey => $album)
                     @php($key = $columnKey + $mediaKey)
                     <a href="{{ route('albums.show', compact('album')) }}"
-                       class="has-margin-right-md">
+                       class="has-margin-right-md" aria-label="{{ $album->title }}">
                         <article class="card has-hover-zoom is-clipped">
-                            <div v-if="album.media" class="card-image">
-                                <figure class="image">
-                                    {{ $album->coverResponsive }}
-                                </figure>
-                            </div>
+                            @if ($album->coverResponsive)
+                                <div class="card-image">
+                                    <figure class="image">
+                                        {{ $album->coverResponsive }}
+                                    </figure>
+                                </div>
+                            @endif
                             <div class="card-content">
                                 <div class="content">
                                     <h3 class="title">{{ $album->title }}</h3>
@@ -90,13 +94,15 @@
 <section class="is-hidden-tablet">
     @foreach($albums as $album)
         <div class="has-margin-top-md">
-            <a href="{{ route('albums.show', compact('album')) }}">
+            <a href="{{ route('albums.show', compact('album')) }}" aria-label="{{ $album->title }}">
                 <article class="card has-hover-zoom is-clipped">
-                    <div v-if="album.media" class="card-image">
-                        <figure class="image">
-                            {{ $album->coverResponsive }}
-                        </figure>
-                    </div>
+                    @if ($album->coverResponsive)
+                        <div class="card-image">
+                            <figure class="image">
+                                {{ $album->coverResponsive }}
+                            </figure>
+                        </div>
+                    @endif
                     <div class="card-content">
                         <div class="content">
                             <h3 class="title">{{ $album->title }}</h3>
