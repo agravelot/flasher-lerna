@@ -145,7 +145,6 @@ services:
       - nginx-proxy
       - backend
     environment:
-      NGINX_HOST: ${APP_URI}
       ERROR_LOG_LEVEL: ${ERROR_LOG_LEVEL}
     labels:
       - "traefik.enable=true"
