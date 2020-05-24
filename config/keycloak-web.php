@@ -22,7 +22,7 @@ return [
      *
      * @see Keycloak >> Realm Settings >> Keys >> RS256 >> Public Key
      */
-    'realm_public_key' => env('KEYCLOAK_REALM_PUBLIC_KEY', null),
+    'realm_public_key' => env('KEYCLOAK_REALM_PUBLIC_KEY', ''),
 
     /*
      * Keycloak Client ID

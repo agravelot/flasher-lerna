@@ -75,7 +75,6 @@ jobs:
         KEYCLOAK_URI: keycloak.localhost
         KEYCLOAK_URL: https://keycloak.localhost
         KEYCLOAK_BASE_URL: https://keycloak.localhost/auth
-        KEYCLOAK_REALM_PUBLIC_KEY: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApAkeUQ7GQ3scmbTJ1ByDUEUFZSnpabglmmE24HCbiEAPBcwqrhZrI3e8pjQw2sy1fgXDrLMXUFSDyvwUAPNPDMx3BsLQJSWQK1B2eKyOi2xzM1Jg6rgFyaFJZlgxmW+0vrzS2R1tSKk4LCymsiMXtC0Emm6EGGc+EnP40VmIr1wNphvLpch25APbPaGqWx3JXkm8D5+AoSziClca/yrIoJm/z3gu/M8ZSyL0wH/vGKqNANooQNQ9KYZe91VHqwEXCLKzCpuzEGtX08n3NfNn0RMI+vGfnF0mLx/MhuaUfqWcLFEpLmqr1BAtlcniL/j8IYfO0L23M6uWKsEa0SpdhQIDAQAB
         KEYCLOAK_VERIFY_SSL: false
         KEYCLOAK_SSL: false
         KEYCLOAK_PORT: 8080
@@ -191,7 +190,6 @@ jobs:
         KEYCLOAK_URI: ${{ secrets.KEYCLOAK_URI }}
         KEYCLOAK_URL: ${{ secrets.KEYCLOAK_URL }}
         KEYCLOAK_BASE_URL: ${{ secrets.KEYCLOAK_BASE_URL }}
-        KEYCLOAK_REALM_PUBLIC_KEY: ${{ secrets.KEYCLOAK_REALM_PUBLIC_KEY }}
         KEYCLOAK_VERIFY_SSL: true
         KEYCLOAK_SSL: true
         KEYCLOAK_REALM: jkanda
@@ -252,7 +250,6 @@ jobs:
         KEYCLOAK_URI: ${{ secrets.KEYCLOAK_URI_PRODUCTION }}
         KEYCLOAK_URL: ${{ secrets.KEYCLOAK_URL_PRODUCTION }}
         KEYCLOAK_BASE_URL: ${{ secrets.KEYCLOAK_BASE_URL_PRODUCTION }}
-        KEYCLOAK_REALM_PUBLIC_KEY: ${{ secrets.KEYCLOAK_REALM_PUBLIC_KEY_PRODUCTION }}
         KEYCLOAK_VERIFY_SSL: true
         KEYCLOAK_SSL: true
         KEYCLOAK_REALM: jkanda
