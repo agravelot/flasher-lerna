@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 use KeycloakGuard\Exceptions\ResourceAccessNotAllowedException;
 use KeycloakGuard\Exceptions\UserNotFoundException;
 use KeycloakGuard\KeycloakGuard;
-use UnexpectedValueException;
 
 /**
  * Class KeycloakApiGuard.
@@ -40,12 +39,25 @@ class KeycloakApiGuard implements Guard
     /**
      * Decode token, validate and authenticate user.
      */
-    private function authenticate()
+    private function authenticate(): void
     {
-        [$headb64, $bodyb64, $cryptob64] = explode('.', $this->request->bearerToken());
-        if (null === $payload = JWT::jsonDecode(JWT::urlsafeB64Decode($bodyb64))) {
-            throw new UnexpectedValueException('Invalid claims encoding');
+        if (! $this->request->bearerToken()) {
+            return;
         }
+
+        $tokens = explode('.', $this->request->bearerToken());
+
+        if ($tokens === false || count($tokens) !== 3) {
+            return;
+        }
+
+        [$headb64, $bodyb64, $cryptob64] = explode('.', $this->request->bearerToken());
+        $payload = JWT::jsonDecode(JWT::urlsafeB64Decode($bodyb64));
+
+        if ($payload === null) {
+            return;
+        }
+
         $this->decodedToken = $payload;
 
         if ($this->decodedToken) {
