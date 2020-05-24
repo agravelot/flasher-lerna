@@ -52,13 +52,7 @@ class KeycloakApiGuard implements Guard
         }
 
         [$headb64, $bodyb64, $cryptob64] = explode('.', $this->request->bearerToken());
-        $payload = JWT::jsonDecode(JWT::urlsafeB64Decode($bodyb64));
-
-        if ($payload === null) {
-            return;
-        }
-
-        $this->decodedToken = $payload;
+        $this->decodedToken = JWT::jsonDecode(JWT::urlsafeB64Decode($bodyb64));
 
         if ($this->decodedToken) {
             $this->validate([
@@ -109,8 +103,10 @@ class KeycloakApiGuard implements Guard
 
     /**
      * Get the ID for the currently authenticated user.
+     *
+     * @return void|string
      */
-    public function id(): ?int
+    public function id()
     {
         if ($user = $this->user()) {
             return $this->user()->id;
