@@ -6,7 +6,6 @@ role=${CONTAINER_ROLE:-app}
 env=${APP_ENV:-production}
 cd /var/www/html
 
-
 php artisan keycloak:wait
 php artisan db:wait-connection
 php artisan cache:clear-wait-connection
@@ -40,7 +39,7 @@ elif [[ "$role" == "queue" ]]; then
 elif [[ "$role" == "scheduler" ]]; then
 
   echo "Scheduler role"
-  exec crond -f -c /etc/crontabs -d 8
+  exec php artisan schedule:run
 
 elif [[ "$role" == "publisher" ]]; then
 
