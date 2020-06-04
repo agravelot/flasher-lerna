@@ -53,9 +53,10 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('dashboard', 'App\Policies\AdminPolicy@dashboard');
 
-        Auth::provider('custom-keycloak-users', static function ($app, array $config) {
-            return new CustomKeycloakUserProvider($config['model']);
-        });
+        Auth::provider(
+            'custom-keycloak-users',
+            static fn ($app, array $config) => new CustomKeycloakUserProvider($config['model'])
+        );
 
         Auth::extend('keycloak-api-guard', static fn ($app, $name, array $config) => new KeycloakApiGuard(
             Auth::createUserProvider($config['provider']), $app->request
