@@ -37,13 +37,13 @@ echo Role : $role
 
 if [[ "$role" == "app" ]]; then
 
-    php artisan migrate --force
-
     rm -rvf public/vendor/*
+
+    php artisan migrate --force
     php artisan horizon:publish
     echo "$CLOUDFRONT_PRIVATE_KEY" | tr -d '\r' > storage/trusted-signer.pem
 
-    if [ "$TELESCOPE_ENABLED" == true ]; then
+    if [ "$TELESCOPE_ENABLED" == true && "$env" == "local" ]; then
         echo "Publishing telescope assets"
         php artisan telescope:publish
     fi
