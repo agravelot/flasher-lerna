@@ -13,6 +13,13 @@ php artisan cache:clear-wait-connection
 if [[ "$env" == "local" ]]; then
   echo "Disabling opcache for local"
   rm -rvf /usr/local/etc/php/conf.d/opcache.ini /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+
+  echo "Install composer dev dependencies"
+  php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+  php composer-setup.php
+  ./composer.phar install
+
+  echo "Clearing cache"
   php artisan cache:clear
   php artisan config:clear
   php artisan route:clear
@@ -26,20 +33,20 @@ else
   php artisan event:cache
 fi
 
+echo Role : $role
+
 if [[ "$role" == "app" ]]; then
 
-  echo "App role"
   exec php-fpm
 
 elif [[ "$role" == "queue" ]]; then
 
-  echo "Queue role"
   exec php artisan horizon
 
 elif [[ "$role" == "scheduler" ]]; then
 
-  echo "Scheduler role"
-  exec php artisan schedule:run
+  php artisan schedule:run
+  exit 0
 
 elif [[ "$role" == "publisher" ]]; then
 
@@ -55,6 +62,6 @@ elif [[ "$role" == "publisher" ]]; then
   fi
 
 else
-  echo "Could not match the container role \"$role\""
+  echo "Could not match the container role : "$role
   exit 1
 fi
