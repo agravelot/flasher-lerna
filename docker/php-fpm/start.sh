@@ -37,6 +37,17 @@ echo Role : $role
 
 if [[ "$role" == "app" ]]; then
 
+    php artisan migrate --force
+
+    rm -rvf public/vendor/*
+    php artisan horizon:publish
+    echo "$CLOUDFRONT_PRIVATE_KEY" | tr -d '\r' > storage/trusted-signer.pem
+
+    if [ "$TELESCOPE_ENABLED" == true ]; then
+        echo "Publishing telescope assets"
+        php artisan telescope:publish
+    fi
+
   exec php-fpm
 
 elif [[ "$role" == "queue" ]]; then
@@ -47,19 +58,6 @@ elif [[ "$role" == "scheduler" ]]; then
 
   php artisan schedule:run
   exit 0
-
-elif [[ "$role" == "publisher" ]]; then
-
-  php artisan migrate --force
-
-  rm -rvf public/vendor/*
-  php artisan horizon:publish
-  echo "$CLOUDFRONT_PRIVATE_KEY" | tr -d '\r' > storage/trusted-signer.pem
-
-  if [ "$TELESCOPE_ENABLED" == true ]; then
-      echo "Publishing telescope assets"
-      php artisan telescope:publish
-  fi
 
 else
   echo "Could not match the container role : "$role
