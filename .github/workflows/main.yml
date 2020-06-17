@@ -40,7 +40,7 @@ jobs:
 #        target: Dockerfile
 
     - name: Build the Docker stack
-      run: docker-compose build
+      run: COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build
 
     - name: Fetch php dev dependencies
       run: |
