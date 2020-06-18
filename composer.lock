@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "396819ce2e6fa2428b94bc44c4684502",
+    "content-hash": "7928300d4ff20d0311cb06e865a00b8a",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -8715,16 +8715,16 @@
         },
         {
             "name": "vizir/laravel-keycloak-web-guard",
-            "version": "v1.5.6",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Vizir/laravel-keycloak-web-guard.git",
-                "reference": "e106fa886e02b37a38bd5dc32e0d5b52660639ef"
+                "reference": "c442f79ac3fca08d08c4c91a587a3ad1fa073136"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Vizir/laravel-keycloak-web-guard/zipball/e106fa886e02b37a38bd5dc32e0d5b52660639ef",
-                "reference": "e106fa886e02b37a38bd5dc32e0d5b52660639ef",
+                "url": "https://api.github.com/repos/Vizir/laravel-keycloak-web-guard/zipball/c442f79ac3fca08d08c4c91a587a3ad1fa073136",
+                "reference": "c442f79ac3fca08d08c4c91a587a3ad1fa073136",
                 "shasum": ""
             },
             "require": {
@@ -8764,7 +8764,7 @@
                 "keycloak",
                 "laravel"
             ],
-            "time": "2020-05-25T13:12:58+00:00"
+            "time": "2020-06-01T14:44:01+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

@@ -44,7 +44,7 @@
     "spatie/laravel-responsecache": "^6.0",
     "spatie/laravel-sitemap": "^5.3",
     "spatie/schema-org": "^2.9",
-    "vizir/laravel-keycloak-web-guard": "^1.5"
+    "vizir/laravel-keycloak-web-guard": "^2.0"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.2",
