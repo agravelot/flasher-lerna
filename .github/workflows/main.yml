@@ -44,13 +44,13 @@ jobs:
 
     - name: Fetch php dev dependencies
       run: |
-        docker build -t vendor_dev -f docker/vendor-dev/Dockerfile .
+        DOCKER_BUILDKIT=1 docker build -t vendor_dev -f docker/vendor-dev/Dockerfile .
         export VENDOR_DOCKER=$(docker run -d -t vendor_dev tail -f /dev/null)
         docker cp -a $VENDOR_DOCKER:/app/vendor .
 
     - name: Start docker stack
       run: |
-        docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d
+        COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d
         docker-compose -f docker-compose.yml -f docker-compose.local.yml kill queue scheduler nginx
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T cache redis-cli config set maxmemory 41943040
         docker cp vendor $(docker-compose ps -q php):/var/www/html/
