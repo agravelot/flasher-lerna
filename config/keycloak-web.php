@@ -44,7 +44,7 @@ return [
      *
      * @link https://www.keycloak.org/docs/3.2/securing_apps/topics/oidc/oidc-generic.html
      */
-    'cache_openid' => env('KEYCLOAK_CACHE_OPENID', false),
+    'cache_openid' => env('KEYCLOAK_CACHE_OPENID', true),
 
     /*
      * Page to redirect after callback if there's no "intent"
