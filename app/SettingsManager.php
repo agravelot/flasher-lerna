@@ -25,8 +25,8 @@ class SettingsManager
      */
     public function get(string $name, $default = null)
     {
-        if ($this->settings === null) {
-            Setting::getCache();
+        if (! isset($this->settings)) {
+            $this->settings = Setting::getCache();
         }
 
         $setting = $this->settings->firstWhere('name', '===', $name);
