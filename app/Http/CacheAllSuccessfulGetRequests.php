@@ -15,7 +15,7 @@ class CacheAllSuccessfulGetRequests extends CacheAllSuccessfulGetRequestsBase
             return false;
         }
 
-        if ($this->isPassportRequest($request)) {
+        if ($this->isRequestWithFlash($request)) {
             return false;
         }
 
@@ -35,10 +35,5 @@ class CacheAllSuccessfulGetRequests extends CacheAllSuccessfulGetRequestsBase
         }
 
         return false;
-    }
-
-    public function isPassportRequest(Request $request): bool
-    {
-        return $request->is('oauth/*');
     }
 }
