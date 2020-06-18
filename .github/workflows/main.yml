@@ -122,143 +122,143 @@ jobs:
 #        docker-compose -f docker-compose.yml -f docker-compose.local.yml down -v
 #        docker system prune -f
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-
-    - uses: actions/checkout@v2
-
-    - name: Define env
-      run: |
-        echo "::set-env name=CI_COMMIT_REF_NAME::$(echo -n $GITHUB_REF | cut -d/ -f3-)"
-        echo "::set-env name=CI_COMMIT_SHORT_SHA::$(echo -n $GITHUB_SHA | cut -c 1-6)"
-        echo "::set-env name=PHP_IMAGE::registry.gitlab.com/flasher/flasher/picblog_php:$(echo -n $GITHUB_SHA | cut -c 1-6)"
-        echo "::set-env name=NGINX_IMAGE::registry.gitlab.com/flasher/flasher/picblog_nginx:$(echo -n $GITHUB_SHA | cut -c 1-6)"
-
-    - name: Update docker-compose version
-      run: |
-        sudo curl -L "https://github.com/docker/compose/releases/download/1.25.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-        sudo chmod +x /usr/local/bin/docker-compose
-        docker-compose version
-        docker -v
-
-      # STAGING
-    - name: Deploy to staging
-      if: github.ref == 'refs/heads/develop'
-      env:
-        CI_COMMIT_SHORT_SHA: ${{ env.CI_COMMIT_SHORT_SHA }}
-        CI_COMMIT_REF_NAME: ${{ env.CI_COMMIT_REF_NAME }}
-        CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-        CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
-        CI_DEPLOY_SSH_PORT: ${{ secrets.CI_STAGING_DEPLOY_SSH_PORT }}
-        CI_DEPLOY_URI: ${{ secrets.CI_STAGING_DEPLOY_URI }}
-        SSH_PRIVATE_KEY: ${{ secrets.CI_STAGING_SSH_PRIVATE_KEY }}
-        SSH_USER: ${{ secrets.CI_STAGING_SSH_USER }}
-        REMOTE: ${{ secrets.CI_STAGING_SSH_USER }}@${{ secrets.CI_STAGING_DEPLOY_URI }}
-        APP_URL: ${{ secrets.APP_URL_STAGING }}
-        APP_URI: ${{ secrets.APP_URI_STAGING }}
-        APP_NAME: ${{ secrets.APP_NAME_STAGING }}
-        APP_KEY: ${{ secrets.APP_KEY_STAGING }}
-        APP_ENV: "staging"
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD_STAGING }}
-        MAIL_MAILER: ${{ secrets.MAIL_MAILER }}
-        SES_KEY: ${{ secrets.SES_KEY }}
-        SES_SECRET: ${{ secrets.SES_SECRET }}
-        SES_REGION: ${{ secrets.SES_REGION }}
-        S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
-        S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
-        S3_DEFAULT_REGION: ${{ secrets.S3_DEFAULT_REGION }}
-        S3_BUCKET: ${{ secrets.S3_BUCKET }}
-        S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
-        S3_BUCKET_CDN: ${{ secrets.S3_BUCKET_CDN }}
-        NOCAPTCHA_SECRET: ${{ secrets.NOCAPTCHA_SECRET_STAGING }}
-        NOCAPTCHA_SITEKEY: ${{ secrets.NOCAPTCHA_SITEKEY_STAGING }}
-        SENTRY_LARAVEL_DSN: ${{ secrets.SENTRY_LARAVEL_DSN }}
-        ANALYTICS_TRACKING_ID_PROD: ${{ secrets.ANALYTICS_TRACKING_ID_PROD }}
-        FRONT_SENTRY_DSN_PUBLIC: ${{ secrets.FRONT_SENTRY_DSN_PUBLIC }}
-        MAIL_FROM_ADDRESS: ${{ secrets.MAIL_FROM_ADDRESS }}
-        ERROR_LOG_LEVEL: ${{ secrets.ERROR_LOG_LEVEL }}
-        SCOUT_QUEUE: "true"
-        ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
-        ALGOLIA_SECRET: ${{ secrets.ALGOLIA_SECRET }}
-        ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL: ${{ secrets.ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL }}
-        CLOUDFRONT_KEY_PAIR_ID: ${{ secrets.CLOUDFRONT_KEY_PAIR_ID }}
-        CLOUDFRONT_PRIVATE_KEY: ${{ secrets.CLOUDFRONT_PRIVATE_KEY }}
-        ADMIN_URL: ${{ secrets.ADMIN_URL_STAGING }}
-        CRISP_WEBSITE_ID: ${{ secrets.CRISP_WEBSITE_ID }}
-        KEYCLOAK_URI: ${{ secrets.KEYCLOAK_URI }}
-        KEYCLOAK_URL: ${{ secrets.KEYCLOAK_URL }}
-        KEYCLOAK_BASE_URL: ${{ secrets.KEYCLOAK_BASE_URL }}
-        KEYCLOAK_VERIFY_SSL: true
-        KEYCLOAK_SSL: true
-        KEYCLOAK_REALM: jkanda
-        KEYCLOAK_CLIENT_ID: flasher
-        KEYCLOAK_MASTER_USERNAME: ${{ secrets.KEYCLOAK_MASTER_USERNAME }}
-        KEYCLOAK_MASTER_PASSWORD: ${{ secrets.KEYCLOAK_MASTER_PASSWORD }}
-      run: |
-        eval $(ssh-agent -s)
-        mkdir -p ~/.ssh
-        echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-        chmod +x docker/*.sh
-        bash -c 'cd docker/ && ./deploy.sh staging'
-
-    # PRODUCTION
-    - name: Deploy to production
-      if: github.ref == 'refs/heads/master'
-      env:
-        CI_COMMIT_SHORT_SHA: ${{ env.CI_COMMIT_SHORT_SHA }}
-        CI_COMMIT_REF_NAME: ${{ env.CI_COMMIT_REF_NAME }}
-        CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-        CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
-        CI_DEPLOY_SSH_PORT: ${{ secrets.CI_PRODUCTION_DEPLOY_SSH_PORT }}
-        CI_DEPLOY_URI: ${{ secrets.CI_PRODUCTION_DEPLOY_URI }}
-        SSH_PRIVATE_KEY: ${{ secrets.CI_PRODUCTION_SSH_PRIVATE_KEY }}
-        SSH_USER: ${{ secrets.CI_PRODUCTION_SSH_USER }}
-        REMOTE: ${{ secrets.CI_PRODUCTION_SSH_USER }}@${{ secrets.CI_PRODUCTION_DEPLOY_URI }}
-        APP_URL: ${{ secrets.APP_URL_PRODUCTION }}
-        APP_URI: ${{ secrets.APP_URI_PRODUCTION }}
-        APP_NAME: ${{ secrets.APP_NAME_PRODUCTION }}
-        APP_KEY: ${{ secrets.APP_KEY_PRODUCTION }}
-        APP_ENV: "production"
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD_PRODUCTION }}
-        MAIL_MAILER: ${{ secrets.MAIL_MAILER }}
-        SES_KEY: ${{ secrets.SES_KEY }}
-        SES_SECRET: ${{ secrets.SES_SECRET }}
-        SES_REGION: ${{ secrets.SES_REGION }}
-        S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
-        S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
-        S3_DEFAULT_REGION: ${{ secrets.S3_DEFAULT_REGION }}
-        S3_BUCKET: ${{ secrets.S3_BUCKET }}
-        S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
-        S3_BUCKET_CDN: ${{ secrets.S3_BUCKET_CDN }}
-        NOCAPTCHA_SECRET: ${{ secrets.NOCAPTCHA_SECRET }}
-        NOCAPTCHA_SITEKEY: ${{ secrets.NOCAPTCHA_SITEKEY }}
-        SENTRY_LARAVEL_DSN: ${{ secrets.SENTRY_LARAVEL_DSN }}
-        ANALYTICS_TRACKING_ID_PROD: ${{ secrets.ANALYTICS_TRACKING_ID_PROD }}
-        FRONT_SENTRY_DSN_PUBLIC: ${{ secrets.FRONT_SENTRY_DSN_PUBLIC }}
-        MAIL_FROM_ADDRESS: ${{ secrets.MAIL_FROM_ADDRESS }}
-        ERROR_LOG_LEVEL: ${{ secrets.ERROR_LOG_LEVEL }}
-        SCOUT_QUEUE: "true"
-        ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
-        ALGOLIA_SECRET: ${{ secrets.ALGOLIA_SECRET }}
-        ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL: ${{ secrets.ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL }}
-        CLOUDFRONT_KEY_PAIR_ID: ${{ secrets.CLOUDFRONT_KEY_PAIR_ID }}
-        CLOUDFRONT_PRIVATE_KEY: ${{ secrets.CLOUDFRONT_PRIVATE_KEY }}
-        ADMIN_URL: ${{ secrets.ADMIN_URL_PRODUCTION }}
-        CRISP_WEBSITE_ID: ${{ secrets.CRISP_WEBSITE_ID }}
-        KEYCLOAK_URI: ${{ secrets.KEYCLOAK_URI_PRODUCTION }}
-        KEYCLOAK_URL: ${{ secrets.KEYCLOAK_URL_PRODUCTION }}
-        KEYCLOAK_BASE_URL: ${{ secrets.KEYCLOAK_BASE_URL_PRODUCTION }}
-        KEYCLOAK_VERIFY_SSL: true
-        KEYCLOAK_SSL: true
-        KEYCLOAK_REALM: jkanda
-        KEYCLOAK_CLIENT_ID: flasher
-        KEYCLOAK_MASTER_USERNAME: ${{ secrets.KEYCLOAK_MASTER_USERNAME_PRODUCTION }}
-        KEYCLOAK_MASTER_PASSWORD: ${{ secrets.KEYCLOAK_MASTER_PASSWORD_PRODUCTION }}
-      run: |
-        eval $(ssh-agent -s)
-        mkdir -p ~/.ssh
-        echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-        chmod +x docker/*.sh
-        bash -c 'cd docker/ && ./deploy.sh production'
+#  deploy:
+#    needs: build
+#    runs-on: ubuntu-latest
+#    steps:
+#
+#    - uses: actions/checkout@v2
+#
+#    - name: Define env
+#      run: |
+#        echo "::set-env name=CI_COMMIT_REF_NAME::$(echo -n $GITHUB_REF | cut -d/ -f3-)"
+#        echo "::set-env name=CI_COMMIT_SHORT_SHA::$(echo -n $GITHUB_SHA | cut -c 1-6)"
+#        echo "::set-env name=PHP_IMAGE::registry.gitlab.com/flasher/flasher/picblog_php:$(echo -n $GITHUB_SHA | cut -c 1-6)"
+#        echo "::set-env name=NGINX_IMAGE::registry.gitlab.com/flasher/flasher/picblog_nginx:$(echo -n $GITHUB_SHA | cut -c 1-6)"
+#
+#    - name: Update docker-compose version
+#      run: |
+#        sudo curl -L "https://github.com/docker/compose/releases/download/1.25.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+#        sudo chmod +x /usr/local/bin/docker-compose
+#        docker-compose version
+#        docker -v
+#
+#      # STAGING
+#    - name: Deploy to staging
+#      if: github.ref == 'refs/heads/develop'
+#      env:
+#        CI_COMMIT_SHORT_SHA: ${{ env.CI_COMMIT_SHORT_SHA }}
+#        CI_COMMIT_REF_NAME: ${{ env.CI_COMMIT_REF_NAME }}
+#        CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
+#        CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
+#        CI_DEPLOY_SSH_PORT: ${{ secrets.CI_STAGING_DEPLOY_SSH_PORT }}
+#        CI_DEPLOY_URI: ${{ secrets.CI_STAGING_DEPLOY_URI }}
+#        SSH_PRIVATE_KEY: ${{ secrets.CI_STAGING_SSH_PRIVATE_KEY }}
+#        SSH_USER: ${{ secrets.CI_STAGING_SSH_USER }}
+#        REMOTE: ${{ secrets.CI_STAGING_SSH_USER }}@${{ secrets.CI_STAGING_DEPLOY_URI }}
+#        APP_URL: ${{ secrets.APP_URL_STAGING }}
+#        APP_URI: ${{ secrets.APP_URI_STAGING }}
+#        APP_NAME: ${{ secrets.APP_NAME_STAGING }}
+#        APP_KEY: ${{ secrets.APP_KEY_STAGING }}
+#        APP_ENV: "staging"
+#        DB_PASSWORD: ${{ secrets.DB_PASSWORD_STAGING }}
+#        MAIL_MAILER: ${{ secrets.MAIL_MAILER }}
+#        SES_KEY: ${{ secrets.SES_KEY }}
+#        SES_SECRET: ${{ secrets.SES_SECRET }}
+#        SES_REGION: ${{ secrets.SES_REGION }}
+#        S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+#        S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+#        S3_DEFAULT_REGION: ${{ secrets.S3_DEFAULT_REGION }}
+#        S3_BUCKET: ${{ secrets.S3_BUCKET }}
+#        S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
+#        S3_BUCKET_CDN: ${{ secrets.S3_BUCKET_CDN }}
+#        NOCAPTCHA_SECRET: ${{ secrets.NOCAPTCHA_SECRET_STAGING }}
+#        NOCAPTCHA_SITEKEY: ${{ secrets.NOCAPTCHA_SITEKEY_STAGING }}
+#        SENTRY_LARAVEL_DSN: ${{ secrets.SENTRY_LARAVEL_DSN }}
+#        ANALYTICS_TRACKING_ID_PROD: ${{ secrets.ANALYTICS_TRACKING_ID_PROD }}
+#        FRONT_SENTRY_DSN_PUBLIC: ${{ secrets.FRONT_SENTRY_DSN_PUBLIC }}
+#        MAIL_FROM_ADDRESS: ${{ secrets.MAIL_FROM_ADDRESS }}
+#        ERROR_LOG_LEVEL: ${{ secrets.ERROR_LOG_LEVEL }}
+#        SCOUT_QUEUE: "true"
+#        ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+#        ALGOLIA_SECRET: ${{ secrets.ALGOLIA_SECRET }}
+#        ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL: ${{ secrets.ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL }}
+#        CLOUDFRONT_KEY_PAIR_ID: ${{ secrets.CLOUDFRONT_KEY_PAIR_ID }}
+#        CLOUDFRONT_PRIVATE_KEY: ${{ secrets.CLOUDFRONT_PRIVATE_KEY }}
+#        ADMIN_URL: ${{ secrets.ADMIN_URL_STAGING }}
+#        CRISP_WEBSITE_ID: ${{ secrets.CRISP_WEBSITE_ID }}
+#        KEYCLOAK_URI: ${{ secrets.KEYCLOAK_URI }}
+#        KEYCLOAK_URL: ${{ secrets.KEYCLOAK_URL }}
+#        KEYCLOAK_BASE_URL: ${{ secrets.KEYCLOAK_BASE_URL }}
+#        KEYCLOAK_VERIFY_SSL: true
+#        KEYCLOAK_SSL: true
+#        KEYCLOAK_REALM: jkanda
+#        KEYCLOAK_CLIENT_ID: flasher
+#        KEYCLOAK_MASTER_USERNAME: ${{ secrets.KEYCLOAK_MASTER_USERNAME }}
+#        KEYCLOAK_MASTER_PASSWORD: ${{ secrets.KEYCLOAK_MASTER_PASSWORD }}
+#      run: |
+#        eval $(ssh-agent -s)
+#        mkdir -p ~/.ssh
+#        echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+#        chmod +x docker/*.sh
+#        bash -c 'cd docker/ && ./deploy.sh staging'
+#
+#    # PRODUCTION
+#    - name: Deploy to production
+#      if: github.ref == 'refs/heads/master'
+#      env:
+#        CI_COMMIT_SHORT_SHA: ${{ env.CI_COMMIT_SHORT_SHA }}
+#        CI_COMMIT_REF_NAME: ${{ env.CI_COMMIT_REF_NAME }}
+#        CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
+#        CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
+#        CI_DEPLOY_SSH_PORT: ${{ secrets.CI_PRODUCTION_DEPLOY_SSH_PORT }}
+#        CI_DEPLOY_URI: ${{ secrets.CI_PRODUCTION_DEPLOY_URI }}
+#        SSH_PRIVATE_KEY: ${{ secrets.CI_PRODUCTION_SSH_PRIVATE_KEY }}
+#        SSH_USER: ${{ secrets.CI_PRODUCTION_SSH_USER }}
+#        REMOTE: ${{ secrets.CI_PRODUCTION_SSH_USER }}@${{ secrets.CI_PRODUCTION_DEPLOY_URI }}
+#        APP_URL: ${{ secrets.APP_URL_PRODUCTION }}
+#        APP_URI: ${{ secrets.APP_URI_PRODUCTION }}
+#        APP_NAME: ${{ secrets.APP_NAME_PRODUCTION }}
+#        APP_KEY: ${{ secrets.APP_KEY_PRODUCTION }}
+#        APP_ENV: "production"
+#        DB_PASSWORD: ${{ secrets.DB_PASSWORD_PRODUCTION }}
+#        MAIL_MAILER: ${{ secrets.MAIL_MAILER }}
+#        SES_KEY: ${{ secrets.SES_KEY }}
+#        SES_SECRET: ${{ secrets.SES_SECRET }}
+#        SES_REGION: ${{ secrets.SES_REGION }}
+#        S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+#        S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+#        S3_DEFAULT_REGION: ${{ secrets.S3_DEFAULT_REGION }}
+#        S3_BUCKET: ${{ secrets.S3_BUCKET }}
+#        S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
+#        S3_BUCKET_CDN: ${{ secrets.S3_BUCKET_CDN }}
+#        NOCAPTCHA_SECRET: ${{ secrets.NOCAPTCHA_SECRET }}
+#        NOCAPTCHA_SITEKEY: ${{ secrets.NOCAPTCHA_SITEKEY }}
+#        SENTRY_LARAVEL_DSN: ${{ secrets.SENTRY_LARAVEL_DSN }}
+#        ANALYTICS_TRACKING_ID_PROD: ${{ secrets.ANALYTICS_TRACKING_ID_PROD }}
+#        FRONT_SENTRY_DSN_PUBLIC: ${{ secrets.FRONT_SENTRY_DSN_PUBLIC }}
+#        MAIL_FROM_ADDRESS: ${{ secrets.MAIL_FROM_ADDRESS }}
+#        ERROR_LOG_LEVEL: ${{ secrets.ERROR_LOG_LEVEL }}
+#        SCOUT_QUEUE: "true"
+#        ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+#        ALGOLIA_SECRET: ${{ secrets.ALGOLIA_SECRET }}
+#        ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL: ${{ secrets.ENABLED_CLOUDFRONT_MEDIA_SIGNED_URL }}
+#        CLOUDFRONT_KEY_PAIR_ID: ${{ secrets.CLOUDFRONT_KEY_PAIR_ID }}
+#        CLOUDFRONT_PRIVATE_KEY: ${{ secrets.CLOUDFRONT_PRIVATE_KEY }}
+#        ADMIN_URL: ${{ secrets.ADMIN_URL_PRODUCTION }}
+#        CRISP_WEBSITE_ID: ${{ secrets.CRISP_WEBSITE_ID }}
+#        KEYCLOAK_URI: ${{ secrets.KEYCLOAK_URI_PRODUCTION }}
+#        KEYCLOAK_URL: ${{ secrets.KEYCLOAK_URL_PRODUCTION }}
+#        KEYCLOAK_BASE_URL: ${{ secrets.KEYCLOAK_BASE_URL_PRODUCTION }}
+#        KEYCLOAK_VERIFY_SSL: true
+#        KEYCLOAK_SSL: true
+#        KEYCLOAK_REALM: jkanda
+#        KEYCLOAK_CLIENT_ID: flasher
+#        KEYCLOAK_MASTER_USERNAME: ${{ secrets.KEYCLOAK_MASTER_USERNAME_PRODUCTION }}
+#        KEYCLOAK_MASTER_PASSWORD: ${{ secrets.KEYCLOAK_MASTER_PASSWORD_PRODUCTION }}
+#      run: |
+#        eval $(ssh-agent -s)
+#        mkdir -p ~/.ssh
+#        echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+#        chmod +x docker/*.sh
+#        bash -c 'cd docker/ && ./deploy.sh production'
