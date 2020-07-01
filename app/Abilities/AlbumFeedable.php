@@ -16,6 +16,6 @@ trait AlbumFeedable
             ->summary($this->meta_description)
             ->updated($this->updated_at)
             ->link(route('albums.show', ['album' => $this]))
-            ->author($this->user->name);
+            ->author('JKanda');
     }
 }
