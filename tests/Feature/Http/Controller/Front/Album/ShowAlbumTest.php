@@ -106,7 +106,7 @@ class ShowAlbumTest extends TestCase
         $locale = App::getLocale();
 
         $response->assertSee("<meta property=\"og:title\" content=\"{$album->title}\"/>", false)
-            ->assertSee('<meta property="article:author" content="JKanda"/>')
+            ->assertSee('<meta property="article:author" content="JKanda"/>', false)
             ->assertSee('<meta property="article:section" content="Photography"/>', false)
             ->assertSee("<meta property=\"article:modified_time\" content=\"{$album->updated_at->toIso8601String()}\"/>", false)
             ->assertSee("<meta property=\"article:published_time\" content=\"{$album->published_at->toIso8601String()}\"/>", false)
@@ -128,7 +128,7 @@ class ShowAlbumTest extends TestCase
         $locale = App::getLocale();
 
         $response->assertSee("<meta property=\"og:title\" content=\"{$album->title}\"/>", false)
-            ->assertSee('<meta property="article:author" content="JKanda"/>')
+            ->assertSee('<meta property="article:author" content="JKanda"/>', false)
             ->assertSee('<meta property="article:section" content="Photography"/>', false)
             ->assertSee("<meta property=\"article:modified_time\" content=\"{$album->updated_at->toIso8601String()}\"/>", false)
             ->assertSee("<meta property=\"article:published_time\" content=\"{$album->published_at->toIso8601String()}\"/>", false)
