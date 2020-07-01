@@ -23,7 +23,7 @@
         <meta property="article:published_time" content="{{ $openGraph->publishedAt() }}"/>
         <meta property="article:modified_time" content="{{ $openGraph->updatedAt() }}"/>
         {{--<meta property="article:expiration_time" content="" />--}}
-        <meta property="article:author" content="{{ $openGraph->author() }}"/>
+        <meta property="article:author" content="JKanda"/>
         <meta property="article:section" content="Photography"/>
         @foreach($openGraph->tags() as $tag)
             <meta property="article:tag" content="{{ $tag }}"/>
