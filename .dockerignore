@@ -6,6 +6,7 @@
 _ide_helper.php
 _ide_helper_models.php
 .env
+.env.production
 .phpunit.result.cache
 .phpstorm.meta.php
 Dockerfile
