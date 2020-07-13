@@ -34,6 +34,7 @@ class WaitCacheConnectionAndClear extends Command
 
     public function waitConnectionForClear(): void
     {
+        $this->info('Waiting cache ');
         try {
             Cache::clear();
         } catch (Exception $exception) {

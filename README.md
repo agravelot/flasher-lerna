@@ -56,6 +56,7 @@ You can now fire up our stack !
 ```bash
 docker network create database-network
 docker network create nginx-proxy
+docker network create keycloak-network
 docker-compose -f docker-compose.yml -f docker-compose.local.yml -f docker-compose.local-dev.yml up -d
 ```
 

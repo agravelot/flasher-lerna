@@ -28,8 +28,8 @@ class Kernel extends ConsoleKernel
         $schedule->job(new GenerateSitemap())->daily();
         // $schedule->command('telescope:prune --hours=24')
         //  ->daily()->withoutOverlapping();
-        $schedule->command('media-library:clean --force')
-            ->dailyAt('4:30')->runInBackground();
+//        $schedule->command('media-library:clean --force')
+//            ->dailyAt('4:30')->runInBackground();
         // $schedule->command('media-library:regenerate --only-missing --force')
         //  ->dailyAt('5:00')->runInBackground();
         $schedule->command('horizon:snapshot')->everyFiveMinutes()

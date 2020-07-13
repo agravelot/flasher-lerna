@@ -6,14 +6,16 @@ role=${CONTAINER_ROLE:-app}
 env=${APP_ENV:-production}
 cd /var/www/html
 
-
-php artisan keycloak:wait
-php artisan db:wait-connection
-php artisan cache:clear-wait-connection
-
 if [[ "$env" == "local" ]]; then
   echo "Disabling opcache for local"
   rm -rvf /usr/local/etc/php/conf.d/opcache.ini /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+
+  echo "Install composer dev dependencies"
+  php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+  php composer-setup.php
+  ./composer.phar install
+
+  echo "Clearing cache"
   php artisan cache:clear
   php artisan config:clear
   php artisan route:clear
@@ -27,35 +29,37 @@ else
   php artisan event:cache
 fi
 
+php artisan keycloak:wait
+php artisan db:wait-connection
+php artisan cache:clear-wait-connection
+
+echo Role : $role
+
 if [[ "$role" == "app" ]]; then
 
-  echo "App role"
+    rm -rvf public/vendor/*
+
+    php artisan migrate --force
+    php artisan horizon:publish
+    echo "$CLOUDFRONT_PRIVATE_KEY" | tr -d '\r' > storage/trusted-signer.pem
+
+    if [ "$TELESCOPE_ENABLED" == true && "$env" == "local" ]; then
+        echo "Publishing telescope assets"
+        php artisan telescope:publish
+    fi
+
   exec php-fpm
 
 elif [[ "$role" == "queue" ]]; then
 
-  echo "Queue role"
   exec php artisan horizon
 
 elif [[ "$role" == "scheduler" ]]; then
 
-  echo "Scheduler role"
-  exec crond -f -c /etc/crontabs -d 8
-
-elif [[ "$role" == "publisher" ]]; then
-
-  php artisan migrate --force
-
-  rm -rvf public/vendor/*
-  php artisan horizon:publish
-  echo "$CLOUDFRONT_PRIVATE_KEY" | tr -d '\r' > storage/trusted-signer.pem
-
-  if [ "$TELESCOPE_ENABLED" == true ]; then
-      echo "Publishing telescope assets"
-      php artisan telescope:publish
-  fi
+  php artisan schedule:run
+  exit 0
 
 else
-  echo "Could not match the container role \"$role\""
+  echo "Could not match the container role : "$role
   exit 1
 fi

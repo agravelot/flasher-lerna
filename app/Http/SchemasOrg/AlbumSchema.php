@@ -26,7 +26,7 @@ class AlbumSchema implements SchemaInterface
             ->primaryImageOfPage(optional($this->album->cover)->getUrl())
             ->specialty($this->album->categories->pluck('name')->toArray())
             ->author([
-                (new Person())->name($this->album->user()->username)
+                (new Person())->name('JKanda')
                     ->email('contact@jkanda.fr')
                     ->telephone('+33766648588')
                     ->url(url('/'))

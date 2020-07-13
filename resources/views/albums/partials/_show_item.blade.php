@@ -12,27 +12,6 @@
             </div>
         @endif
 
-        <div class="columns is-mobile is-vcentered has-margin-top-md has-margin-bottom-md">
-            @php
-                $profilePicture = settings()->get('profile_picture_homepage');
-            @endphp
-            @if ($profilePicture)
-                <div class="column">
-                    <figure class="image is-64x64 is-pulled-right">
-                        <img src="{{ $profilePicture->getUrl('thumb') }}" alt="Avatar de {{ $album->user()->username }}"
-                             class="is-rounded">
-                    </figure>
-                </div>
-            @endif
-
-            <div class="column">
-                <div class="content {{ $profilePicture ? 'is-pulled-left' : '' }}">
-                    {{ __('By') }}&nbsp;
-                    <a class="has-text-white" href="{{ url('/') }}" rel="author">{{ $album->user()->username }}</a>
-                </div>
-            </div>
-        </div>
-
             @if(Gate::check('download', $album) || Gate::check('update', $album))
                 <div class="columns is-mobile is-centered">
                     <div class="column is-narrow field has-addons">

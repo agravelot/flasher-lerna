@@ -35,15 +35,20 @@ class Setting extends Model implements HasMedia
         'type' => SettingType::class,
     ];
 
+    public static function getCache(): Collection
+    {
+        return tap(self::with('media')->get(), static function (Collection $settings): void {
+            Cache::forever(self::SETTINGS_CACHE_KEY, $settings);
+        });
+    }
+
     public static function refreshCache(): Collection
     {
         if (Cache::has(self::SETTINGS_CACHE_KEY)) {
             Cache::forget(self::SETTINGS_CACHE_KEY);
         }
 
-        return tap(self::with('media')->get(), static function (Collection $settings): void {
-            Cache::forever(self::SETTINGS_CACHE_KEY, $settings);
-        });
+        return self::getCache();
     }
 
     /**
