@@ -172,16 +172,10 @@ return [
         'production' => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue' => ['default', 'emails'],
+                'queue' => ['default', 'emails', 'images'],
                 'balance' => 'auto',
-                'processes' => 2,
-                'tries' => 3,
-            ],
-            'supervisor-2' => [
-                'connection' => 'redis',
-                'queue' => ['images'],
-                'balance' => 'auto',
-                'processes' => 2,
+                'minProcesses' => 1,
+                'maxProcesses' => 4,
                 'tries' => 3,
                 'memory' => 1024,
             ],
@@ -189,16 +183,10 @@ return [
         'staging' => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue' => ['default', 'emails'],
+                'queue' => ['default', 'emails', 'images'],
                 'balance' => 'auto',
-                'processes' => 2,
-                'tries' => 3,
-            ],
-            'supervisor-2' => [
-                'connection' => 'redis',
-                'queue' => ['images'],
-                'balance' => 'auto',
-                'processes' => 1,
+                'minProcesses' => 1,
+                'maxProcesses' => 2,
                 'tries' => 3,
                 'memory' => 1024,
             ],
@@ -206,16 +194,10 @@ return [
         'local' => [
             'supervisor-1' => [
                 'connection' => 'redis',
-                'queue' => ['default', 'emails'],
+                'queue' => ['default', 'emails', 'images'],
                 'balance' => 'auto',
-                'processes' => 2,
-                'tries' => 3,
-            ],
-            'supervisor-2' => [
-                'connection' => 'redis',
-                'queue' => ['images'],
-                'balance' => 'auto',
-                'processes' => 3,
+                'minProcesses' => 1,
+                'maxProcesses' => 3,
                 'tries' => 3,
                 'memory' => 1024,
             ],
