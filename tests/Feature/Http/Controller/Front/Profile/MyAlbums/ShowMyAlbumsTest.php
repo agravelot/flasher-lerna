@@ -76,7 +76,7 @@ class ShowMyAlbumsTest extends TestCase
         $cosplayer = factory(Cosplayer::class)->create([
             'sso_id' => $user->id,
         ]);
-        $albums = factory(Album::class, 3)->make([
+        $albums = factory(Album::class, 3)->states(['published', 'password'])->make([
             'sso_id' => factory(User::class)->make()->id,
         ]);
         $cosplayer->albums()->saveMany($albums);
