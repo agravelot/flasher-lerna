@@ -91,6 +91,28 @@ class ShowMyAlbumsTest extends TestCase
             ->assertSee($albums->get(2)->title);
     }
 
+    public function test_user_can_not_see_unpublished_albums(): void
+    {
+        $user = factory(User::class)->make();
+        /** @var Cosplayer $cosplayer */
+        $cosplayer = factory(Cosplayer::class)->create([
+            'sso_id' => $user->id,
+        ]);
+        $albums = factory(Album::class, 3)->states(['unpublished', 'password'])->make([
+            'sso_id' => factory(User::class)->make()->id,
+        ]);
+        $cosplayer->albums()->saveMany($albums);
+        $this->actingAs($user);
+
+        $response = $this->getMyAlbums();
+
+        $response->assertOk()
+            ->assertSee('Nothing to show')
+            ->assertDontSee($albums->get(0)->title)
+            ->assertDontSee($albums->get(1)->title)
+            ->assertDontSee($albums->get(2)->title);
+    }
+
     public function test_guest_can_no_show_his_albums(): void
     {
         $response = $this->getMyAlbums();

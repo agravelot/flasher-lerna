@@ -15,7 +15,7 @@ class MyAlbumsController extends Controller
     public function __invoke(): View
     {
         $cosplayer = Cosplayer::where('sso_id', auth()->id())->first();
-        $albums = $cosplayer ? Album::whereHas('cosplayers',
+        $albums = $cosplayer ? Album::published()->whereHas('cosplayers',
                 static function (Builder $query) use ($cosplayer): void {
                     $query->where('cosplayers.id', '=', optional($cosplayer)->id);
                 }
