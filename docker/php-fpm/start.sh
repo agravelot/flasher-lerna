@@ -6,7 +6,7 @@ role=${CONTAINER_ROLE:-app}
 env=${APP_ENV:-production}
 cd /var/www/html
 
-if [[ "${DISABLE_OPCACHE:-false}" == false ]]; then
+if [[ "${DISABLE_OPCACHE:-false}" == true ]]; then
   echo "Disabling opcache for local"
   rm -rvf /usr/local/etc/php/conf.d/opcache.ini /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
 fi
