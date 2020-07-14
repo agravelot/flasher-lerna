@@ -17,7 +17,7 @@ class ShowAlbumTest extends TestCase
     public function test_admin_can_view_public_albums(): void
     {
         $this->actingAsAdmin();
-        $album = factory(PublicAlbum::class)->state('withUser')->create();
+        $album = factory(PublicAlbum::class)->create();
 
         $response = $this->showAlbum($album);
 
@@ -33,7 +33,7 @@ class ShowAlbumTest extends TestCase
     public function test_admin_can_download_albums(): void
     {
         $this->actingAsAdmin();
-        $album = factory(PublicAlbum::class)->state('withUser')->create();
+        $album = factory(PublicAlbum::class)->create();
 
         $response = $this->showAlbum($album);
 
@@ -50,7 +50,7 @@ class ShowAlbumTest extends TestCase
     public function test_admin_can_download_albums_as_non_ajax_request(): void
     {
         $this->actingAsAdmin();
-        $album = factory(PublicAlbum::class)->state('withUser')->create();
+        $album = factory(PublicAlbum::class)->create();
 
         $response = $this->json('get', "/api/albums/{$album->slug}");
 
@@ -98,7 +98,7 @@ class ShowAlbumTest extends TestCase
     public function test_user_can_view_public_album(): void
     {
         $this->actingAsUser();
-        $album = factory(PublicAlbum::class)->state('withUser')->create();
+        $album = factory(PublicAlbum::class)->create();
 
         $response = $this->showAlbum($album);
 
@@ -107,7 +107,7 @@ class ShowAlbumTest extends TestCase
 
     public function test_guest_can_view_public_album(): void
     {
-        $album = factory(PublicAlbum::class)->state('withUser')->create();
+        $album = factory(PublicAlbum::class)->create();
 
         $response = $this->showAlbum($album);
 

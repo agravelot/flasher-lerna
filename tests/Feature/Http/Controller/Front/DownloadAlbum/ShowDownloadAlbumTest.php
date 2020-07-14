@@ -82,7 +82,7 @@ class ShowDownloadAlbumTest extends TestCase
 
     public function test_guest_cannot_download_a_album_and_are_redirected_to_the_login(): void
     {
-        $album = factory(Album::class)->states(['published', 'withUser'])->create();
+        $album = factory(Album::class)->states(['published'])->create();
 
         $response = $this->getDownloadAlbum($album);
 

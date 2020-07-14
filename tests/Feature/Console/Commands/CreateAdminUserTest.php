@@ -6,6 +6,7 @@ namespace Tests\Feature\Console\Commands;
 
 use App\Facades\Keycloak;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class CreateAdminUserTest extends TestCase
@@ -14,6 +15,7 @@ class CreateAdminUserTest extends TestCase
 
     public function test_create_user_without_argument(): void
     {
+        Keycloak::shouldReceive('users->create')->once()->withAnyArgs()->andReturn();
         $this->artisan('user:create')
             ->expectsQuestion('Please select a user role', 'admin')
             ->expectsQuestion('Please enter a username', 'admin')
@@ -21,11 +23,11 @@ class CreateAdminUserTest extends TestCase
             ->expectsQuestion('Enter your user password', 'admin')
             ->expectsOutput('User created successfully')
             ->assertExitCode(0);
-        $this->assertSame(1, Keycloak::users()->count());
     }
 
     public function test_create_user_with_argument(): void
     {
+        Keycloak::shouldReceive('users->create')->once()->withAnyArgs()->andReturn();
         $this->artisan('user:create', [
             'role' => 'admin',
             'name' => 'admin',
@@ -34,6 +36,5 @@ class CreateAdminUserTest extends TestCase
         ])
             ->expectsOutput('User created successfully')
             ->assertExitCode(0);
-        $this->assertSame(1, Keycloak::users()->count());
     }
 }

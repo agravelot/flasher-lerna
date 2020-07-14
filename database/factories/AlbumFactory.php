@@ -74,15 +74,7 @@ $factory->state(Album::class, 'passwordLess', static function () {
 });
 
 $factory->state(Album::class, 'withUser', static function (Faker $faker) {
-    $user = UserRepresentation::factory();
-    Keycloak::users()->create($user);
-
-    $query = new UserQuery();
-    $query->email = $user->email;
-
-    $user = Keycloak::users()->first($query);
-
     return [
-        'sso_id' => $user->id,
+        'sso_id' => Str::uuid(),
     ];
 });

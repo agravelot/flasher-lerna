@@ -19,7 +19,7 @@ class ShowAlbumTest extends TestCase
 
     public function test_guest_can_view_a_published_album(): void
     {
-        $album = factory(PublicAlbum::class)->states(['withUser'])->create([
+        $album = factory(PublicAlbum::class)->create([
             'title' => 'Test title',
             'body' => 'Some test body, this is a good day!',
         ]);
@@ -42,7 +42,7 @@ class ShowAlbumTest extends TestCase
             'name' => 'Category name',
         ]);
 
-        $album = factory(PublicAlbum::class)->states(['withUser'])->create([
+        $album = factory(PublicAlbum::class)->create([
             'title' => 'Test title',
             'body' => 'Some test body, this is a good day!',
         ]);
@@ -66,7 +66,7 @@ class ShowAlbumTest extends TestCase
             'name' => 'Category name two',
         ]);
 
-        $album = factory(PublicAlbum::class)->states(['withUser'])->create([
+        $album = factory(PublicAlbum::class)->create([
             'title' => 'Test title',
             'body' => 'Some test body, this is a good day!',
         ]);
@@ -84,7 +84,7 @@ class ShowAlbumTest extends TestCase
 
     public function test_guest_cannot_view_unpublished_album_listing(): void
     {
-        $album = factory(Album::class)->states(['unpublished', 'passwordLess', 'withUser'])->create();
+        $album = factory(Album::class)->states(['unpublished', 'passwordLess'])->create();
 
         $response = $this->showAlbum($album);
 
@@ -100,7 +100,7 @@ class ShowAlbumTest extends TestCase
 
     public function test_album_has_og_tags_without_image(): void
     {
-        $album = factory(PublicAlbum::class)->state('withUser')->create();
+        $album = factory(PublicAlbum::class)->create();
 
         $response = $this->get("/albums/{$album->slug}");
         $locale = App::getLocale();
@@ -122,7 +122,7 @@ class ShowAlbumTest extends TestCase
     public function test_album_has_og_tags_with_image(): void
     {
         /** @var \App\Models\Album $album */
-        $album = factory(PublicAlbum::class)->state('withUser')->create();
+        $album = factory(PublicAlbum::class)->create();
         $album->addPicture(UploadedFile::fake()->image('test.png'));
         $response = $this->get("/albums/{$album->slug}");
         $locale = App::getLocale();

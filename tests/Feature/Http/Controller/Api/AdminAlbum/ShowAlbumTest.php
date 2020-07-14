@@ -78,7 +78,7 @@ class ShowAlbumTest extends TestCase
     public function test_user_can_not_view_index(): void
     {
         $this->actingAsUser();
-        $album = factory(PublicAlbum::class)->state('withUser')->create();
+        $album = factory(PublicAlbum::class)->create();
 
         $response = $this->showAlbum($album);
 
@@ -87,7 +87,7 @@ class ShowAlbumTest extends TestCase
 
     public function test_guest_can_not_view_public_album(): void
     {
-        $album = factory(PublicAlbum::class)->state('withUser')->create();
+        $album = factory(PublicAlbum::class)->create();
 
         $response = $this->showAlbum($album);
 

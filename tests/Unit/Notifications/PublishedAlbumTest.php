@@ -24,21 +24,35 @@ class PublishedAlbumTest extends TestCase
     public function test_updating_album_as_published_send_notification_to_cosplayers_related_to_an_user(): void
     {
         Notification::fake();
+        $user = factory(User::class)->make();
+        Keycloak::shouldReceive('users->find->toUser')->andReturn($user);
         /** @var Collection $cosplayers */
-        $cosplayers = factory(Cosplayer::class, 5)->state('withUser')->create();
+        $cosplayers = factory(Cosplayer::class, 5)->create(['sso_id' => $user->id]);
         /** @var Album $album */
-        $album = factory(Album::class)->states(['unpublished', 'withUser'])->create();
+        $album = factory(Album::class)->states(['unpublished'])->create(['sso_id' => $user->id]);
         Notification::assertNothingSent();
 
         $album->cosplayers()->sync($cosplayers);
         $album->update(['published_at' => Carbon::now()]);
 
-        $users = $album->cosplayers->pluck('sso_id')->map(static fn (string $ssoId) => Keycloak::users()->find($ssoId));
+        $users = $album->cosplayers->pluck('sso_id')->map(static fn(string $ssoId) => UserRepresentation::fromArray([
+            'id' => $user->id,
+            'email' => $user->email,
+            'username' => $user->username,
+            'emailVerified' => $user->email_verified,
+            'enabled' => true,
+            'attributes' => [
+                'notify_on_album_published' => $user->notify_on_album_published,
+            ],
+        ]));
+
         Notification::assertSentTo(
             new AnonymousNotifiable(),
             PublishedAlbum::class,
             static function ($notification, $channels, $notifiable) use ($users) {
-                return $notifiable->routes['mail'] === $users->map(static fn (UserRepresentation $user) => $user->email)->toArray();
+                return $notifiable->routes['mail'] === $users->map(
+                    static fn(UserRepresentation $user) => $user->email
+                )->toArray();
             }
         );
     }
@@ -46,10 +60,21 @@ class PublishedAlbumTest extends TestCase
     public function test_when_album_is_published_send_notification_to_cosplayers_related_to_an_user_and_ignore_others(): void
     {
         Notification::fake();
-        $cosplayerToNotify = factory(Cosplayer::class)->state('withUser')->create();
-        factory(Cosplayer::class)->create();
+        $user = factory(User::class)->make();
+        Keycloak::shouldReceive('users->find')->andReturn(UserRepresentation::fromArray([
+            'id' => $user->id,
+            'email' => $user->email,
+            'username' => $user->username,
+            'emailVerified' => $user->email_verified,
+            'enabled' => true,
+            'attributes' => [
+                'notify_on_album_published' => $user->notify_on_album_published,
+            ],
+        ]));
+        $cosplayerToNotify = factory(Cosplayer::class)->create(['sso_id' => $user->id]);
+        factory(Cosplayer::class, 5)->create();
         /** @var Album $album */
-        $album = factory(Album::class)->states(['unpublished', 'withUser'])->create();
+        $album = factory(Album::class)->states(['unpublished'])->create();
         Notification::assertNothingSent();
 
         $album->cosplayers()->sync(Cosplayer::all());
@@ -65,11 +90,12 @@ class PublishedAlbumTest extends TestCase
         );
     }
 
-    public function test_when_album_is_published_do_not_send_notification_if_album_has_no_cosplayers_related_to_an_user(): void
+    public function test_when_album_is_published_do_not_send_notification_if_album_has_no_cosplayers_related_to_an_user(
+    ): void
     {
         Notification::fake();
         $cosplayers = factory(Cosplayer::class, 5)->create();
-        $album = factory(Album::class)->states(['published', 'withUser'])->create();
+        $album = factory(Album::class)->states(['published'])->create();
 
         Notification::assertNothingSent();
     }
@@ -79,22 +105,14 @@ class PublishedAlbumTest extends TestCase
         Notification::fake();
         /** @var User $user */
         $user = factory(User::class)->make(['notify_on_album_published' => false]);
-        Keycloak::shouldReceive('users->create')->withAnyArgs()->once();
-        Keycloak::shouldReceive('users->find->toUser')
-            ->withAnyArgs()
-            ->once()
-            ->andReturn($user);
+        Keycloak::shouldReceive('users->find->toUser')->andReturn($user);
         $userRepresentation = new UserRepresentation();
         $userRepresentation->id = $user->id;
-        Keycloak::shouldReceive('users->first')
-            ->withAnyArgs()
-            ->once()
-            ->andReturn($userRepresentation);
 
         /** @var Cosplayer $cosplayer */
         $cosplayer = factory(Cosplayer::class)->create(['sso_id' => $user->id]);
         /** @var Album $album */
-        $album = factory(Album::class)->states(['unpublished', 'withUser'])->create();
+        $album = factory(Album::class)->states(['unpublished'])->create();
         Notification::assertNothingSent();
 
         $album->cosplayers()->sync($cosplayer);
@@ -111,7 +129,7 @@ class PublishedAlbumTest extends TestCase
         /** @var Cosplayer $cosplayer */
         $cosplayer = factory(Cosplayer::class)->create(['sso_id' => $user->id]);
         /** @var Album $album */
-        $album = factory(Album::class)->states(['unpublished', 'withUser'])->create([
+        $album = factory(Album::class)->states(['unpublished'])->create([
             'notify_users_on_published' => false,
         ]);
         Notification::assertNothingSent();

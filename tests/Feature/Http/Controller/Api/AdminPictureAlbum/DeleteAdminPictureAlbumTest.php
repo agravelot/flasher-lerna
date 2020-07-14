@@ -57,7 +57,7 @@ class DeleteAdminPictureAlbumTest extends TestCase
     {
         /* @var Album $album */
         $album = factory(Album::class)->states([
-            'withMedias', 'withUser',
+            'withMedias',
         ])->create();
         $this->assertSame(15,
             $album->getMedia(Album::PICTURES_COLLECTION)->count()

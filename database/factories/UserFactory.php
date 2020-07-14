@@ -24,6 +24,7 @@ $factory->define(User::class, static function (Faker $faker) {
         'id' => $faker->uuid,
         'preferred_username' => $faker->unique()->userName,
         'email' => $faker->unique()->email,
+        'username' => $faker->unique()->userName,
         'email_verified' => true,
         'password' => Hash::make('secret'),
         'notify_on_album_published' => true,

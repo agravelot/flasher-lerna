@@ -30,13 +30,7 @@ $factory->state(Cosplayer::class, 'avatar', static function () {
 });
 
 $factory->state(Cosplayer::class, 'withUser', static function (Faker $faker) {
-    $user = UserRepresentation::factory();
-    Keycloak::users()->create($user);
-
-    $query = new UserQuery();
-    $query->email = $user->email;
-
     return [
-        'sso_id' => Keycloak::users()->first($query)->id,
+        'sso_id' => Str::uuid()->serialize(),
     ];
 });

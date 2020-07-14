@@ -75,7 +75,7 @@ class AlbumTest extends ModelTestCase
 
     public function test_album_is_public(): void
     {
-        $album = factory(Album::class)->states(['published', 'passwordLess', 'withUser'])->make();
+        $album = factory(Album::class)->states(['published', 'passwordLess'])->make();
 
         $this->assertTrue($album->isPublic());
     }
@@ -138,7 +138,7 @@ class AlbumTest extends ModelTestCase
 
     public function test_album_with_a_published_at_date_are_published(): void
     {
-        $publishedAlbums = factory(Album::class, 2)->states(['published', 'withUser'])->create();
+        $publishedAlbums = factory(Album::class, 2)->states(['published'])->create();
 
         $albums = Album::all();
 
@@ -149,7 +149,7 @@ class AlbumTest extends ModelTestCase
 
     public function test_album_with_unpublished_are_not_visible(): void
     {
-        factory(Album::class, 2)->states(['unpublished', 'passwordLess', 'withUser'])->create();
+        factory(Album::class, 2)->states(['unpublished', 'passwordLess'])->create();
 
         $albums = Album::all();
 
@@ -160,7 +160,7 @@ class AlbumTest extends ModelTestCase
 
     public function test_album_with_a_password_are_not_visible(): void
     {
-        factory(Album::class, 2)->states(['published', 'password', 'withUser'])->create();
+        factory(Album::class, 2)->states(['published', 'password'])->create();
 
         $albums = Album::all();
 
@@ -171,7 +171,7 @@ class AlbumTest extends ModelTestCase
 
     public function test_album_with_a_published_at_date_and_password_are_unpublished(): void
     {
-        factory(Album::class, 2)->states(['published', 'password', 'withUser'])->create();
+        factory(Album::class, 2)->states(['published', 'password'])->create();
 
         $albums = Album::all();
 
@@ -180,7 +180,7 @@ class AlbumTest extends ModelTestCase
 
     public function test_count_four_published_albums_should_be_four(): void
     {
-        $publishedAlbums = factory(Album::class, 4)->states(['published', 'passwordLess', 'withUser'])->create();
+        $publishedAlbums = factory(Album::class, 4)->states(['published', 'passwordLess'])->create();
 
         $albums = Album::all();
 
@@ -193,7 +193,7 @@ class AlbumTest extends ModelTestCase
 
     public function test_count_four_unpublished_albums_should_be_zero(): void
     {
-        factory(Album::class, 4)->states(['unpublished', 'passwordLess', 'withUser'])->create();
+        factory(Album::class, 4)->states(['unpublished', 'passwordLess'])->create();
 
         $albums = Album::all();
 
@@ -206,7 +206,7 @@ class AlbumTest extends ModelTestCase
 
     public function test_album_with_a_published_at_date_are_published_without_public_criteria(): void
     {
-        $publishedAlbums = factory(Album::class, 2)->states(['published', 'withUser'])->create();
+        $publishedAlbums = factory(Album::class, 2)->states(['published'])->create();
 
         $albums = Album::withoutGlobalScope(PublicScope::class)->get();
 
@@ -216,7 +216,7 @@ class AlbumTest extends ModelTestCase
 
     public function test_album_with_password_are_unpublished_without_public_criteria(): void
     {
-        $publishedAlbums = factory(Album::class, 2)->states(['unpublished', 'withUser'])->create();
+        $publishedAlbums = factory(Album::class, 2)->states(['unpublished'])->create();
 
         $albums = Album::withoutGlobalScope(PublicScope::class)->get();
 
@@ -226,7 +226,7 @@ class AlbumTest extends ModelTestCase
 
     public function test_album_with_a_published_at_date_and_password_are_unpublished_without_public_criteria(): void
     {
-        $publishedAlbums = factory(Album::class, 2)->states(['published', 'password', 'withUser'])->create();
+        $publishedAlbums = factory(Album::class, 2)->states(['published', 'password'])->create();
 
         $albums = Album::withoutGlobalScope(PublicScope::class)->get();
 
@@ -236,7 +236,7 @@ class AlbumTest extends ModelTestCase
 
     public function test_count_four_published_albums_should_be_four_without_public_criteria(): void
     {
-        $publishedAlbums = factory(Album::class, 4)->states(['published', 'passwordLess', 'withUser'])->create();
+        $publishedAlbums = factory(Album::class, 4)->states(['published', 'passwordLess'])->create();
 
         $albums = Album::withoutGlobalScope(PublicScope::class)->get();
 
@@ -248,7 +248,7 @@ class AlbumTest extends ModelTestCase
 
     public function test_count_four_unpublished_albums_should_be_zero_without_public_criteria(): void
     {
-        $publishedAlbums = factory(Album::class, 4)->states(['unpublished', 'passwordLess', 'withUser'])->create();
+        $publishedAlbums = factory(Album::class, 4)->states(['unpublished', 'passwordLess'])->create();
 
         $albums = Album::withoutGlobalScope(PublicScope::class)->get();
 
@@ -261,7 +261,7 @@ class AlbumTest extends ModelTestCase
     public function test_mage_first_in_is_the_album_cover(): void
     {
         /** @var Album $album */
-        $album = factory(Album::class)->states('withUser')->create();
+        $album = factory(Album::class)->create();
         $exceptedName = 'shouldBeTheCover.jpg';
 
         $album->addPicture(UploadedFile::fake()->image($exceptedName));
