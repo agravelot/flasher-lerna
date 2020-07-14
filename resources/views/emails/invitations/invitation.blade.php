@@ -5,7 +5,7 @@ Je vous invite à rejoindre mon site internet en tant que cosplayer. Grâce à l
 
 1. Dans un premier temps, si ce n'est pas déjà fait, je vous invite à créer votre compte :
 
-@component('mail::button', ['url' => url(route('register'))])
+@component('mail::button', ['url' => url(route('keycloak.register'))])
 Se connecter
 @endcomponent
 
