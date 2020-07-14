@@ -26,7 +26,7 @@ class CosplayerResource extends JsonResource
             'avatar' => $this->whenLoaded('media', new MediaResource($this->avatar)),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'sso_id' => $this->sso_id,
+            'user_id' => $this->sso_id,
             'links' => [
                 'related' => route('cosplayers.show', ['cosplayer' => $this]),
             ],
