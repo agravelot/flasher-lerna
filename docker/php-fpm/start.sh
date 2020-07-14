@@ -15,20 +15,6 @@ if [[ "$env" == "local" ]]; then
   php composer-setup.php
   ./composer.phar install
 
-     # PHP SPX
-    apk add --no-cache zlib-dev \
-    git clone https://github.com/NoiseByNorthwest/php-spx.git /tmp/php-spx \
-    cd /tmp/php-spx \
-    phpize \
-    ./configure \
-    make \
-    make install \
-    docker-php-ext-enable spx \
-    echo 'spx.http_enabled=1' >> /usr/local/etc/php/conf.d/docker-php-ext-spx.ini \
-    echo 'spx.http_key="dev"' >> /usr/local/etc/php/conf.d/docker-php-ext-spx.ini \
-    echo 'spx.http_ip_whitelist="*"' >> /usr/local/etc/php/conf.d/docker-php-ext-spx.ini \
-    cd -
-
   echo "Clearing cache"
   php artisan cache:clear
   php artisan config:clear
