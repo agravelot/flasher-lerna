@@ -77,7 +77,7 @@ RUN : \
 
 # PHP SPX
 RUN : \
-    && apk add --no-cache zlib-dev \
+    && apk add --no-cache zlib-dev git \
     && git clone https://github.com/NoiseByNorthwest/php-spx.git /tmp/php-spx \
     && cd /tmp/php-spx \
     && phpize \
