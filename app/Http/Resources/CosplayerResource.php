@@ -28,7 +28,6 @@ class CosplayerResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'sso_id' => $this->sso_id,
-            'user' => $this->sso_id ? Keycloak::users()->find($this->sso_id) : null,
             'links' => [
                 'related' => route('cosplayers.show', ['cosplayer' => $this]),
             ],
