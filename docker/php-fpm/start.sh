@@ -6,10 +6,17 @@ role=${CONTAINER_ROLE:-app}
 env=${APP_ENV:-production}
 cd /var/www/html
 
-if [[ "$env" == "local" ]]; then
+if [[ "${DISABLE_OPCACHE:-false}" == false ]]; then
   echo "Disabling opcache for local"
   rm -rvf /usr/local/etc/php/conf.d/opcache.ini /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+fi
 
+if [[ "${ENABLE_SPX:-false}" == false ]]; then
+  echo "Disable PHP SPX"
+  rm -rvf /usr/local/etc/php/conf.d/docker-php-ext-spx.ini
+fi
+
+if [[ "$env" == "local" ]]; then
   echo "Install composer dev dependencies"
   php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
   php composer-setup.php
