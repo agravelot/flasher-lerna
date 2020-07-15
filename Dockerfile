@@ -76,20 +76,20 @@ RUN : \
         ;
 
 # PHP SPX
-RUN : \
-    && apk add --no-cache zlib-dev git $PHPIZE_DEPS \
-    && git clone https://github.com/NoiseByNorthwest/php-spx.git /tmp/php-spx \
-    && cd /tmp/php-spx \
-    && phpize \
-    && ./configure \
-    && make \
-    && make install \
-    && docker-php-ext-enable spx \
-    && echo 'spx.http_enabled=1' >> /usr/local/etc/php/conf.d/docker-php-ext-spx.ini \
-    && echo 'spx.http_key="dev"' >> /usr/local/etc/php/conf.d/docker-php-ext-spx.ini \
-    && echo 'spx.http_ip_whitelist="*"' >> /usr/local/etc/php/conf.d/docker-php-ext-spx.ini \
-    && apk del $PHPIZE_DEPS \
-    && cd -
+#RUN : \
+#    && apk add --no-cache zlib-dev git $PHPIZE_DEPS \
+#    && git clone https://github.com/NoiseByNorthwest/php-spx.git /tmp/php-spx \
+#    && cd /tmp/php-spx \
+#    && phpize \
+#    && ./configure \
+#    && make \
+#    && make install \
+#    && docker-php-ext-enable spx \
+#    && echo 'spx.http_enabled=1' >> /usr/local/etc/php/conf.d/docker-php-ext-spx.ini \
+#    && echo 'spx.http_key="dev"' >> /usr/local/etc/php/conf.d/docker-php-ext-spx.ini \
+#    && echo 'spx.http_ip_whitelist="*"' >> /usr/local/etc/php/conf.d/docker-php-ext-spx.ini \
+#    && apk del $PHPIZE_DEPS \
+#    && cd -
 
 COPY --chown=1000:1000 docker/php-fpm/start.sh /start.sh
 COPY docker/php-fpm/crontab /etc/crontabs/root
