@@ -30,7 +30,7 @@ abstract class TestCase extends BaseTestCase
         Storage::fake();
         Storage::fake('s3');
         Http::fake([
-            config('keycloak-web.base_url').'/realms/master/protocol/openid-connect/token' => Http::response(['access_token' => ''])
+            config('keycloak-web.base_url').'/realms/master/protocol/openid-connect/token' => Http::response(['access_token' => '']),
         ]);
 //        foreach (Keycloak::users()->all() as $user) {
 //            /* @var UserRepresentation $user */

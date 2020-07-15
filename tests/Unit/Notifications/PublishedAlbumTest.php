@@ -35,7 +35,7 @@ class PublishedAlbumTest extends TestCase
         $album->cosplayers()->sync($cosplayers);
         $album->update(['published_at' => Carbon::now()]);
 
-        $users = $album->cosplayers->pluck('sso_id')->map(static fn(string $ssoId) => UserRepresentation::fromArray([
+        $users = $album->cosplayers->pluck('sso_id')->map(static fn (string $ssoId) => UserRepresentation::fromArray([
             'id' => $user->id,
             'email' => $user->email,
             'username' => $user->username,
@@ -51,7 +51,7 @@ class PublishedAlbumTest extends TestCase
             PublishedAlbum::class,
             static function ($notification, $channels, $notifiable) use ($users) {
                 return $notifiable->routes['mail'] === $users->map(
-                    static fn(UserRepresentation $user) => $user->email
+                    static fn (UserRepresentation $user) => $user->email
                 )->toArray();
             }
         );
@@ -91,8 +91,7 @@ class PublishedAlbumTest extends TestCase
     }
 
     public function test_when_album_is_published_do_not_send_notification_if_album_has_no_cosplayers_related_to_an_user(
-    ): void
-    {
+    ): void {
         Notification::fake();
         $cosplayers = factory(Cosplayer::class, 5)->create();
         $album = factory(Album::class)->states(['published'])->create();

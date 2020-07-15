@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Adapters\Keycloak\UserQuery;
-use App\Adapters\Keycloak\UserRepresentation;
 use App\Models\Album;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;

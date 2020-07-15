@@ -6,7 +6,6 @@ namespace Tests\Feature\Console\Commands;
 
 use App\Facades\Keycloak;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class CreateAdminUserTest extends TestCase

@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Adapters\Keycloak\UserQuery;
-use App\Adapters\Keycloak\UserRepresentation;
 use App\Models\Cosplayer;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
