@@ -28,6 +28,7 @@ class AlbumIndexResource extends JsonResource
             'private' => $this->private,
             //'media' => $this->whenLoaded('media', new MediaResource($this->getFirstMedia(Album::PICTURES_COLLECTION))),
             'media_count' => $this->media_count,
+            'categories' => CategoryResource::collection($this->categories)
         ];
     }
 }

@@ -26,7 +26,7 @@ class AlbumController extends Controller
     {
         return AlbumIndexResource::collection(
             QueryBuilder::for(PublicAlbum::class)
-                ->with('media')
+                ->with('media', 'categories')
                 ->latest()
                 ->paginate(10)
         );
