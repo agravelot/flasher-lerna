@@ -50,7 +50,7 @@ jobs:
 
     - name: Start docker stack
       run: |
-        COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d php db redis
+        COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d php db cache
         docker-compose -f docker-compose.yml -f docker-compose.local.yml kill queue scheduler nginx keycloak traefik
         docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T cache redis-cli config set maxmemory 41943040
         docker cp vendor $(docker-compose ps -q php):/var/www/html/
