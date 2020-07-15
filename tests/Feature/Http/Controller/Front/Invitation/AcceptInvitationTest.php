@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Http\Controller\Front\DownloadAlbum;
+namespace Tests\Feature\Http\Controller\Front\Invitation;
 
 use App\Models\Invitation;
 use App\Models\User;
