@@ -25,6 +25,8 @@ class CategoryController extends Controller
      */
     public function show(Category $category): View
     {
-        return view('categories.show', compact('category'));
+        $albums = $category->publishedAlbums()->with('media.model', 'categories')->paginate();
+
+        return view('categories.show', compact('category', 'albums'));
     }
 }
