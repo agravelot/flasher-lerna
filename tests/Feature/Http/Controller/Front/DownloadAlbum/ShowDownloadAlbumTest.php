@@ -69,6 +69,23 @@ class ShowDownloadAlbumTest extends TestCase
         $this->assertNotInstanceOf(StreamedResponse::class, $response->baseResponse);
     }
 
+    public function test_user_present_as_a_cosplayer_in_a_private_album_can_download_it(): void
+    {
+        $this->actingAsUser();
+        /** @var Cosplayer $cosplayer */
+        $cosplayer = factory(Cosplayer::class)->create(['sso_id' => auth()->id()]);
+        /** @var Album $album */
+        $album = factory(Album::class)->states(['published', 'password'])->create();
+        $album->cosplayers()->attach($cosplayer);
+        $album->save();
+
+        $response = $this->getDownloadAlbum($album);
+
+        $response->assertOk();
+        $this->assertInstanceOf(StreamedResponse::class, $response->baseResponse);
+        $response->assertHeader('Content-Disposition', 'attachment; filename="'.$album->zip_file_name.'"');
+    }
+
     public function test_user_non_present_as_a_cosplayer_in_a_album_cannot_download_it(): void
     {
         $this->actingAsUser();

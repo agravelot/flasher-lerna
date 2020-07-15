@@ -19,7 +19,7 @@ class AlbumPolicy extends Policy
             return true;
         }
 
-        if ($album->isPublic() && $album->cosplayers->contains(Cosplayer::where('sso_id', auth()->id())->first())) {
+        if ($album->isPublished() && $album->cosplayers->contains(Cosplayer::where('sso_id', auth()->id())->first())) {
             return true;
         }
 
