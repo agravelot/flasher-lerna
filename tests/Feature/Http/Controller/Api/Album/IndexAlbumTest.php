@@ -45,24 +45,16 @@ class IndexAlbumTest extends TestCase
             ->assertJson(['data' => []]);
     }
 
-    public function test_user_can_view_index(): void
-    {
-        $this->actingAsUser();
-
-        $response = $this->json('get', '/api/albums');
-
-        $response->assertOk();
-    }
-
     public function test_user_can_view_published_albums(): void
     {
         $this->actingAsAdmin();
-        $album = factory(Album::class)->states(['published', 'passwordLess'])->create();
+        $album = factory(Album::class)->states(['published', 'passwordLess', 'withMedias'])->create();
 
         $response = $this->json('get', '/api/albums');
 
-        $response->assertOk();
-        $this->assertSame($album->title, $response->decodeResponseJson('data')[0]['title']);
+        $response->assertOk()
+            ->assertJsonPath('data.0.media.name', 'fake')
+            ->assertJsonPath('data.0.title', $album->title);
     }
 
     public function test_user_can_not_view_unpublished_albums(): void
