@@ -106,3 +106,8 @@ img {
 .is-clickable {
     cursor: pointer;
 }
+
+.hero.is-black a {
+    color: white;
+    text-decoration: underline;
+}
