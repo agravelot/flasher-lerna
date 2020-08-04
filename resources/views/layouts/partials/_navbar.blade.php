@@ -94,8 +94,8 @@
                                 </div>
                                 <hr class="dropdown-divider">
                                 @can('dashboard')
-                                    <a class="dropdown-item {{ Request::is('admin*') ? 'is-active' : '' }}"
-                                       href="{{ route('admin.dashboard') }}">
+                                    <a class="dropdown-item"
+                                       href="https://{{ config('app.admin_url') }}">
                                         {{ __('Admin') }}
                                     </a>
                                 @endcan
