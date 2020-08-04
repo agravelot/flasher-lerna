@@ -28,7 +28,7 @@
 
                         @can('update', $album)
                             <div class="control">
-                                <a class="button is-black" href="{{ config('app.admin_url')."/albums/{$album->slug}" }}">
+                                <a class="button is-black" href="https://{{ config('app.admin_url')."/albums/{$album->slug}" }}">
                                     <span class="icon is-small">
                                         <x-fa name="edit" library="solid"/>
                                     </span>
