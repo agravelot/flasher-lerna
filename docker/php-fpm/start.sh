@@ -59,6 +59,7 @@ if [[ "$role" == "app" ]]; then
 
 elif [[ "$role" == "queue" ]]; then
 
+  php artisan sitemap:generate
   exec php artisan horizon
 
 elif [[ "$role" == "scheduler" ]]; then
