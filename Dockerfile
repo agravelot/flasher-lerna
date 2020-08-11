@@ -39,7 +39,7 @@ RUN : \
         && apk del user-add-dep \
         && ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
         && chown -h 1000:1000 /var/www/html/public/storage \
-        && ln -s /var/www/html/storage/sitemap.xml /var/www/html/public/sitemap.xml \
+        && ln -s /var/www/html/storage/app/public/sitemap.xml /var/www/html/public/sitemap.xml \
         && chown -h 1000:1000 /var/www/html/public/sitemap.xml \
         && mkdir /var/www/html/public/vendor \
         && chown -h 1000:1000 /var/www/html/public/vendor \
