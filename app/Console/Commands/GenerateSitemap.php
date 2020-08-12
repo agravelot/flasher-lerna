@@ -38,7 +38,7 @@ class GenerateSitemap extends Command
     {
         $sitemap = SitemapGenerator::create(config('app.url'))
             ->shouldCrawl(static function (UriInterface $uri) {
-                return ! Str::startsWith($uri->getPath(), ['/albums/', '/cosplayers/', '/categories/', '/admin']);
+                return ! Str::startsWith($uri->getPath(), ['/albums/', '/cosplayers/', '/categories/', '/admin', '/login', '/register']);
             })->getSitemap();
 
         PublicAlbum::chunk(10, static function (Collection $albums) use ($sitemap): void {
