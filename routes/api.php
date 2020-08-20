@@ -22,6 +22,8 @@ Route::group([
     Route::apiResource('testimonials', 'TestimonialController')->only('index');
     Route::apiResource('categories', 'CategoryController')
         ->only('index', 'show');
+    Route::apiResource('settings', 'SettingsController');
+
 //    Route::resource('/account', 'AccountController')->middleware(['auth'])->only('destroy')
 //        ->parameters([
 //            'account' => 'user',
