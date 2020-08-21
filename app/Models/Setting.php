@@ -22,6 +22,7 @@ class Setting extends Model implements HasMedia
 
     private const SETTING_COLLECTION = 'setting_media';
     public const SETTINGS_CACHE_KEY = 'settings';
+    public const RESPONSIVE_PICTURES_CONVERSION = 'responsive';
 
     /**
      * @var array<string>
@@ -93,7 +94,6 @@ class Setting extends Model implements HasMedia
         if ($value instanceof \Symfony\Component\HttpFoundation\File\File) {
             $this->addMedia($value)
                 ->preservingOriginal()
-                ->withResponsiveImages()
                 ->toMediaCollectionOnCloudDisk(self::SETTING_COLLECTION);
 
             $this->attributes['value'] = null;
@@ -124,6 +124,11 @@ class Setting extends Model implements HasMedia
         $this->addMediaConversion('thumb')
             ->width(400)
             ->optimize()
+            ->performOnCollections(self::SETTING_COLLECTION);
+
+        $this->addMediaConversion(self::RESPONSIVE_PICTURES_CONVERSION)
+            ->optimize()
+            ->withResponsiveImages()
             ->performOnCollections(self::SETTING_COLLECTION);
     }
 }
