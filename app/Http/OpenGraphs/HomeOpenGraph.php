@@ -6,6 +6,7 @@ namespace App\Http\OpenGraphs;
 
 use App\Http\OpenGraphs\Contracts\ImagesOpenGraphable;
 use App\Http\OpenGraphs\Contracts\OpenGraphable;
+use App\Models\Media;
 use App\Models\Setting;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -14,13 +15,10 @@ class HomeOpenGraph implements OpenGraphable, ImagesOpenGraphable
 {
     public function images(): Collection
     {
+        /** @var Media $profile */
         $profile = settings()->get('profile_picture_homepage');
 
-        if ($profile === null) {
-            return collect();
-        }
-
-        return collect([$profile(Setting::RESPONSIVE_PICTURES_CONVERSION)]);
+        return $profile ? collect([$profile(Setting::RESPONSIVE_PICTURES_CONVERSION)]) : collect();
     }
 
     public function title(): string
