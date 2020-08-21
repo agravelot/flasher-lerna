@@ -14,7 +14,7 @@
                         <div class="column">
                             <figure class="image is-128x128 is-pulled-right">
                                 @if ($profilePicture)
-                                    {{ $profilePicture(\App\Models\Setting::RESPONSIVE_PICTURES_CONVERSION) }}
+                                    {{ $profilePicture(\App\Models\Setting::RESPONSIVE_PICTURES_CONVERSION, ['class' => 'is-rounded']) }}
                                 @endif
                             </figure>
                         </div>
@@ -59,8 +59,8 @@
                                             <div class="tags">
                                                 @foreach($album->categories as $category)
                                                     <span class="tag">
-                                                {{ $category->name }}
-                                            </span>
+                                                        {{ $category->name }}
+                                                    </span>
                                                 @endforeach
                                             </div>
                                         </div>
