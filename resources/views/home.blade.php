@@ -14,7 +14,7 @@
                         <div class="column">
                             <figure class="image is-128x128 is-pulled-right">
                                 @if ($profilePicture)
-                                    {{ $profilePicture(\App\Models\Setting::RESPONSIVE_PICTURES_CONVERSION, ['class' => 'is-rounded']) }}
+                                    {{ $profilePicture(\App\Models\Setting::RESPONSIVE_PICTURES_CONVERSION, ['class' => 'is-rounded responsive-media responsive-media-lazy']) }}
                                 @endif
                             </figure>
                         </div>
