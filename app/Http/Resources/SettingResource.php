@@ -20,9 +20,7 @@ class SettingResource extends JsonResource
      */
     public function toArray($request): array
     {
-        $isMediaSetting = $this->type->value === SettingType::Media;
-
-        if ($isMediaSetting) {
+        if ($this->type->value === SettingType::Media) {
             return (new MediaSettingResource($this))->toArray($request);
         }
 
