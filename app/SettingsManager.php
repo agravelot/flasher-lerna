@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Enums\SettingType;
 use App\Models\Setting;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
@@ -36,6 +35,7 @@ class SettingsManager
             if ($default === null) {
                 throw new InvalidArgumentException("Unable to find '$name' setting");
             }
+
             return $default;
         }
 
