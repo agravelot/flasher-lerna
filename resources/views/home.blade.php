@@ -14,7 +14,7 @@
                         <div class="column">
                             <figure class="image is-128x128 is-pulled-right">
                                 @if ($profilePicture)
-                                    $profilePicture
+                                    {{ $profilePicture(\App\Models\Setting::RESPONSIVE_PICTURES_CONVERSION) }}
                                 @endif
                             </figure>
                         </div>

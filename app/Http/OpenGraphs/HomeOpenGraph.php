@@ -18,7 +18,7 @@ class HomeOpenGraph implements OpenGraphable, ImagesOpenGraphable
         /** @var Media $profile */
         $profile = settings()->get('profile_picture_homepage');
 
-        return $profile ? collect([$profile(Setting::RESPONSIVE_PICTURES_CONVERSION)]) : collect();
+        return $profile ? collect([$profile]) : collect();
     }
 
     public function title(): string
