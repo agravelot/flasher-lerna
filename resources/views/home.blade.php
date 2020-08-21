@@ -14,8 +14,7 @@
                         <div class="column">
                             <figure class="image is-128x128 is-pulled-right">
                                 @if ($profilePicture)
-                                    <img src="{{ $profilePicture->getUrl('thumb') }}"
-                                         alt="Avatar de {{ settings()->get('app_name') }}" class="is-rounded">
+                                    $profilePicture
                                 @endif
                             </figure>
                         </div>
