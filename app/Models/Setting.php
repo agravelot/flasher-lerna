@@ -20,8 +20,8 @@ class Setting extends Model implements HasMedia
 {
     use CastsEnums, InteractsWithMedia, ClearsResponseCache;
 
-    private const SETTING_COLLECTION = 'setting_media';
     public const SETTINGS_CACHE_KEY = 'settings';
+    public const SETTING_COLLECTION = 'setting_media';
     public const RESPONSIVE_PICTURES_CONVERSION = 'responsive';
 
     /**

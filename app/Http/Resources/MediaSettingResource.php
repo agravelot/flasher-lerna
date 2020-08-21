@@ -25,7 +25,7 @@ class MediaSettingResource extends JsonResource
             'value' => $this->value ? [
                 'name' => optional($this->value)->name,
                 'url' => optional($this->value)->getFullUrl(),
-                'src_set' => optional($this->value)->getSrcset(),
+                'src_set' => optional($this->value)->getSrcset(Setting::RESPONSIVE_PICTURES_CONVERSION),
             ] : null,
             'type' => optional($this->type)->value,
             'title' => $this->title,
