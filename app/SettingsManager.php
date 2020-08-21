@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Enums\SettingType;
 use App\Models\Setting;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
@@ -31,8 +32,18 @@ class SettingsManager
 
         $setting = $this->settings->firstWhere('name', '===', $name);
 
+        if ($setting === null) {
+            return $default;
+        }
+
         if (! $setting && $default === null) {
             throw new InvalidArgumentException("Unable to find '$name' setting");
+        }
+
+        if ($setting->type->value === SettingType::Media && $setting->value) {
+            $media = $setting->value;
+
+            return $media(Setting::RESPONSIVE_PICTURES_CONVERSION) ?: $default;
         }
 
         return optional($setting)->value ?: $default;

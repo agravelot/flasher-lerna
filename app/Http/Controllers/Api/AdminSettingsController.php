@@ -44,7 +44,7 @@ class AdminSettingsController extends Controller
 
             $setting->value = $request->file('file');
 
-            return (new UploadMediaCompletedResource($setting->value))->response()->setStatusCode(201);
+            return (new UploadMediaCompletedResource($setting->value))->response()->setStatusCode(200);
         }
 
         $setting->update($request->only('value'));
