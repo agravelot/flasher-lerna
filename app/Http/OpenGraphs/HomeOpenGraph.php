@@ -7,7 +7,6 @@ namespace App\Http\OpenGraphs;
 use App\Http\OpenGraphs\Contracts\ImagesOpenGraphable;
 use App\Http\OpenGraphs\Contracts\OpenGraphable;
 use App\Models\Media;
-use App\Models\Setting;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
