@@ -15,7 +15,6 @@ class MyAlbumsController extends Controller
 {
     public function __invoke(): AnonymousResourceCollection
     {
-        dump(auth()->id());
         $cosplayer = Cosplayer::where('sso_id', auth()->id())->first();
         $albums = $cosplayer ? Album::published()->whereHas('cosplayers',
                 static function (Builder $query) use ($cosplayer): void {
