@@ -17,7 +17,7 @@ Route::group([
     'namespace' => 'Api',
     'as' => 'api.',
 ], static function (): void {
-    // Front
+    // Public
     Route::apiResource('albums', 'AlbumController')->only('index', 'show');
     Route::apiResource('testimonials', 'TestimonialController')->only('index');
     Route::apiResource('categories', 'CategoryController')
@@ -28,6 +28,14 @@ Route::group([
 //        ->parameters([
 //            'account' => 'user',
 //        ]);
+
+    // User
+    Route::get('/me/albums', 'MyAlbumsController')->middleware(['auth:api', 'verified'])->name('me.my-albums');
+    Route::resource('download-albums', 'DownloadAlbumController')->only(['show'])
+        ->middleware(['auth:api', 'verified'])
+        ->parameters([
+            'download-albums' => 'album',
+        ]);
 
     // Admin
     Route::group([
