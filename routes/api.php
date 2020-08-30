@@ -19,6 +19,7 @@ Route::group([
 ], static function (): void {
     // Public
     Route::apiResource('albums', 'AlbumController')->only('index', 'show');
+    Route::apiResource('cosplayers', 'CosplayerController')->only('index', 'show');
     Route::apiResource('testimonials', 'TestimonialController')->only('index');
     Route::apiResource('categories', 'CategoryController')
         ->only('index', 'show');
