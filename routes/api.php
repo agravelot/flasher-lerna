@@ -33,10 +33,12 @@ Route::group([
     // User
     Route::get('/me/albums', 'MyAlbumsController')->middleware(['auth:api', 'verified'])->name('me.my-albums');
     Route::resource('download-albums', 'DownloadAlbumController')->only(['show'])
-        ->middleware(['auth:api', 'verified'])
+        ->middleware(['signed'])
         ->parameters([
             'download-albums' => 'album',
         ]);
+    Route::get('generate-download-albums/{album}', 'GenerateDownloadAlbumLinkController')
+        ->middleware(['auth:api', 'verified']);
 
     // Admin
     Route::group([

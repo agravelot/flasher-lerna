@@ -30,40 +30,6 @@ class ShowAlbumTest extends TestCase
         return $this->json('get', "/api/albums/{$album->slug}");
     }
 
-    public function test_admin_can_download_albums(): void
-    {
-        $this->actingAsAdmin();
-        $album = factory(PublicAlbum::class)->create();
-
-        $response = $this->showAlbum($album);
-
-        $response->assertOk()
-            ->assertJson([
-                'data' => [
-                    'links' => [
-                        'download' => route('download-albums.show', ['album' => $album]),
-                    ],
-                ],
-            ]);
-    }
-
-    public function test_admin_can_download_albums_as_non_ajax_request(): void
-    {
-        $this->actingAsAdmin();
-        $album = factory(PublicAlbum::class)->create();
-
-        $response = $this->json('get', "/api/albums/{$album->slug}");
-
-        $response->assertOk()
-            ->assertJson([
-                'data' => [
-                    'links' => [
-                        'download' => route('download-albums.show', ['album' => $album]),
-                    ],
-                ],
-            ]);
-    }
-
     public function test_admin_can_not_view_unpublished_albums(): void
     {
         $this->actingAsAdmin();

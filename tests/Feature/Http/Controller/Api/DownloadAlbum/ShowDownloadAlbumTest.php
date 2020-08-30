@@ -8,6 +8,8 @@ use App\Models\Album;
 use App\Models\Cosplayer;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Testing\TestResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Tests\TestCase;
@@ -16,15 +18,37 @@ class ShowDownloadAlbumTest extends TestCase
 {
     use RefreshDatabase;
 
+    /** @test */
+    public function cannot_download_without_signed_url(): void
+    {
+        $this->actingAsAdmin();
+        $album = factory(Album::class)->states(['published', 'withMedias'])->create();
+
+        $response = $this->getJson('/api/download-albums/'.$album->slug);
+
+        $response->assertStatus(403);
+    }
+
+    public function test_guest_can_download_with_generated_url_by_user(): void
+    {
+        $album = factory(Album::class)->states(['published', 'withMedias'])->create();
+
+        $response = $this->get(URL::temporarySignedRoute('api.download-albums.show', now()->addHours(1), ['album' => $album]));
+
+        $response->assertOk()->assertHeader('Content-Disposition', 'attachment; filename="'.$album->zip_file_name.'"');
+        $this->assertInstanceOf(StreamedResponse::class, $response->baseResponse);
+    }
+
     public function test_admin_can_download_a_published_album(): void
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->states(['published', 'withMedias'])->create();
 
-        $response = $this->getDownloadAlbum($album);
+        $generateResponse = $this->generateDownloadLink($album)->assertOk();
+        $response = $this->get($generateResponse->json('url'));
 
+        $response->assertOk()->assertHeader('Content-Disposition', 'attachment; filename="'.$album->zip_file_name.'"');
         $this->assertInstanceOf(StreamedResponse::class, $response->baseResponse);
-        $response->assertHeader('Content-Disposition', 'attachment; filename="'.$album->zip_file_name.'"');
     }
 
     public function test_admin_can_download_a_unpublished_album(): void
@@ -32,7 +56,8 @@ class ShowDownloadAlbumTest extends TestCase
         $this->actingAsAdmin();
         $album = factory(Album::class)->states(['unpublished'])->create();
 
-        $response = $this->getDownloadAlbum($album);
+        $generateResponse = $this->generateDownloadLink($album)->assertOk();
+        $response = $this->get($generateResponse->json('url'));
 
         $this->assertInstanceOf(StreamedResponse::class, $response->baseResponse);
         $response->assertHeader('Content-Disposition', 'attachment; filename="'.$album->zip_file_name.'"');
@@ -48,14 +73,15 @@ class ShowDownloadAlbumTest extends TestCase
         $album->cosplayers()->attach($cosplayer);
         $album->save();
 
-        $response = $this->getDownloadAlbum($album);
+        $generateResponse = $this->generateDownloadLink($album)->assertOk();
+        $response = $this->get($generateResponse->json('url'));
 
         $response->assertOk();
         $this->assertInstanceOf(StreamedResponse::class, $response->baseResponse);
         $response->assertHeader('Content-Disposition', 'attachment; filename="'.$album->zip_file_name.'"');
     }
 
-    public function test_user_present_as_a_cosplayer_in_a_album_can_not_download_it_if_not_published(): void
+    public function test_user_present_as_a_cosplayer_in_a_album_can_not_generate_link_if_not_published(): void
     {
         $user = factory(User::class)->make();
         $this->actingAs($user);
@@ -63,10 +89,10 @@ class ShowDownloadAlbumTest extends TestCase
         $album = factory(Album::class)->states(['unpublished'])->create();
         $album->cosplayers()->attach($cosplayer);
 
-        $response = $this->get("/download-albums/{$album->slug}");
+        $generateResponse = $this->generateDownloadLink($album);
 
-        $response->assertStatus(403);
-        $this->assertNotInstanceOf(StreamedResponse::class, $response->baseResponse);
+        $generateResponse->assertStatus(401);
+        $this->assertNotInstanceOf(StreamedResponse::class, $generateResponse->baseResponse);
     }
 
     public function test_user_present_as_a_cosplayer_in_a_private_album_can_download_it(): void
@@ -79,7 +105,8 @@ class ShowDownloadAlbumTest extends TestCase
         $album->cosplayers()->attach($cosplayer);
         $album->save();
 
-        $response = $this->getDownloadAlbum($album);
+        $generateResponse = $this->generateDownloadLink($album)->assertOk();
+        $response = $this->get($generateResponse->json('url'));
 
         $response->assertOk();
         $this->assertInstanceOf(StreamedResponse::class, $response->baseResponse);
@@ -91,23 +118,20 @@ class ShowDownloadAlbumTest extends TestCase
         $this->actingAsUser();
         $album = factory(Album::class)->states(['published'])->create();
 
-        $response = $this->getDownloadAlbum($album);
-
-        $response->assertStatus(403);
-        $this->assertNotInstanceOf(StreamedResponse::class, $response->baseResponse);
+        $this->generateDownloadLink($album)->assertStatus(403);
     }
 
     public function test_guest_cannot_download_a_album_and_are_redirected_to_the_login(): void
     {
         $album = factory(Album::class)->states(['published'])->create();
 
-        $response = $this->getDownloadAlbum($album);
+        $generateResponse = $this->generateDownloadLink($album);
 
-        $response->assertRedirect(route('keycloak.login'));
+        $generateResponse->assertStatus(401);
     }
 
-    private function getDownloadAlbum(Album $album): TestResponse
+    public function generateDownloadLink(Album $album): TestResponse
     {
-        return $this->get('/api/download-albums/'.$album->slug);
+        return $this->getJson('/api/generate-download-albums/'.$album->slug);
     }
 }
