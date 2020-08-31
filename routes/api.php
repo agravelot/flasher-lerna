@@ -24,6 +24,7 @@ Route::group([
     Route::apiResource('categories', 'CategoryController')
         ->only('index', 'show');
     Route::apiResource('settings', 'SettingsController');
+    Route::resource('contact', 'ContactController')->only(['store']);
 
 //    Route::resource('/account', 'AccountController')->middleware(['auth'])->only('destroy')
 //        ->parameters([
