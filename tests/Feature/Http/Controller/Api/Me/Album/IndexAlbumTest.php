@@ -30,6 +30,20 @@ class IndexAlbumTest extends TestCase
         $response->assertStatus(200)->assertJsonCount(5, 'data');
     }
 
+    /** @test */
+    public function user_user_no_linked_will_get_empty_result_with_pagination(): void
+    {
+        $this->withoutExceptionHandling();
+        factory(Album::class, 5)->create();
+        $this->actingAsUser();
+
+        $response = $this->getJson('/api/me/albums');
+
+        $response->assertStatus(200)
+            ->assertJsonCount(0, 'data')
+            ->assertJsonPath('meta.total', 0);
+    }
+
     public function test_non_verified_user_cannot_index_his_albums(): void
     {
         $user = factory(User::class)->state('user')->make(['email_verified' => false]);
