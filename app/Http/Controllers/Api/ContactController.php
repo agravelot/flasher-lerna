@@ -11,9 +11,7 @@ use App\Http\Requests\ContactStoreRequest;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
 use App\Notifications\ContactSent;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\View\View;
 
 class ContactController extends Controller
 {
