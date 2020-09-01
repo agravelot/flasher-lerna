@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Http\Controller\Api\Contact;
 
-use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
 use App\Adapters\Keycloak\GroupRepresentation;
 use App\Adapters\Keycloak\UserRepresentation;
 use App\Facades\Keycloak;
