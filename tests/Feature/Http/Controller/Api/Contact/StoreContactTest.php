@@ -50,16 +50,10 @@ class StoreContactTest extends TestCase
 
     private function storeContact(Contact $contact): TestResponse
     {
-        // prevent validation error on captcha
-        NoCaptcha::shouldReceive('verifyResponse')
-            ->once()
-            ->andReturn(true);
-
         return $this->post('/api/contact', [
             'email' => $contact->email,
             'name' => $contact->name,
             'message' => $contact->message,
-            'g-recaptcha-response' => '1',
         ]);
     }
 }

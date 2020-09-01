@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Api;
 use App\Adapters\Keycloak\GroupQuery;
 use App\Facades\Keycloak;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ContactStoreRequest;
+use App\Http\Requests\ContactStoreApiRequest;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
 use App\Notifications\ContactSent;
@@ -18,7 +18,7 @@ class ContactController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ContactStoreRequest $request): ContactResource
+    public function store(ContactStoreApiRequest $request): ContactResource
     {
         $contact = Contact::create($request->validated());
 
