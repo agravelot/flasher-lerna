@@ -25,6 +25,7 @@ Route::group([
         ->only('index', 'show');
     Route::apiResource('settings', 'SettingsController');
     Route::resource('contact', 'ContactController')->only(['store']);
+    Route::apiResource('social-medias', 'SocialMediaController')->only(['index']);
 
 //    Route::resource('/account', 'AccountController')->middleware(['auth'])->only('destroy')
 //        ->parameters([
