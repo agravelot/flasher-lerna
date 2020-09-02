@@ -9,8 +9,8 @@
     <meta property="og:url" content="{{ request()->url() }}"/>
     <meta property="og:locale" content="{{ app()->getLocale() }}"/>
     <meta name="twitter:card" content="{{ $openGraph->title() }}" />
-    <meta name="twitter:site" content="@jujunne_kanda" />
-    <meta name="twitter:creator" content="@jujunne_kanda" />
+    <meta name="twitter:site" content="@JujunneK" />
+    <meta name="twitter:creator" content="@JujunneK" />
 
     @if ($openGraph instanceof \App\Http\OpenGraphs\Contracts\ProfileOpenGraphable)
         <meta property="profile:username" content="{{ $openGraph->username() }}">
@@ -32,12 +32,14 @@
 
     @if ($openGraph instanceof \App\Http\OpenGraphs\Contracts\ImagesOpenGraphable)
         @foreach($openGraph->images() as $image)
-            <meta property="og:image" content="{{ $image->getUrl('thumb') }}"/>
-            <meta property="og:image:secure_url" content="{{ $image->getUrl('thumb') }}"/>
-            <meta property="og:image:type" content="{{ $image->mime_type }}"/>
-            <meta property="og:image:width" content="{{ $image->width }}"/>
-            <meta property="og:image:height" content="{{ $image->height }}"/>
-            <meta property="og:image:alt" content="{{ $openGraph->title() }}"/>
+            @if ($image)
+                <meta property="og:image" content="{{ $image->getUrl('thumb') }}"/>
+                <meta property="og:image:secure_url" content="{{ $image->getUrl('thumb') }}"/>
+                <meta property="og:image:type" content="{{ $image->mime_type }}"/>
+                <meta property="og:image:width" content="{{ $image->width }}"/>
+                <meta property="og:image:height" content="{{ $image->height }}"/>
+                <meta property="og:image:alt" content="{{ $openGraph->title() }}"/>
+            @endif
         @endforeach
     @endif
 @stop

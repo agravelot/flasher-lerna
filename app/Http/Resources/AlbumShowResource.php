@@ -46,10 +46,6 @@ class AlbumShowResource extends JsonResource
                     $this->checkCan('update', $album),
                     "/admin/albums/{$this->slug}/edit"
                 ),
-                'download' => $this->when(
-                    $this->checkCan('download', $album),
-                    route('download-albums.show', ['album' => $this])
-                ),
             ],
         ];
     }

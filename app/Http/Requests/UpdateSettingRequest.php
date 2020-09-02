@@ -31,7 +31,7 @@ class UpdateSettingRequest extends Request
         if ($type === SettingType::Email) {
             $rules['value'] = 'email';
         } elseif ($type === SettingType::Media) {
-            $rules['file'] = 'sometimes|file|max:20000';
+            $rules['file'] = 'required|file|max:20000';
         }
 
         return $rules;

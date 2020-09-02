@@ -11,9 +11,9 @@ use App\Models\User;
 class AlbumPolicy extends Policy
 {
     /**
-     * Determine whether the user can download the album.
+     * Determine whether the user can generate a signed download link for this album.
      */
-    public function download(User $user, Album $album): bool
+    public function generateDownload(User $user, Album $album): bool
     {
         if (optional($user)->isAdmin()) {
             return true;
@@ -24,6 +24,11 @@ class AlbumPolicy extends Policy
         }
 
         return false;
+    }
+
+    public function download(User $user, Album $album): bool
+    {
+        return $this->generateDownload($user, $album);
     }
 
     /**

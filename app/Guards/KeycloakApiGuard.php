@@ -133,6 +133,10 @@ class KeycloakApiGuard implements Guard
         } else {
             $class = $this->provider->getModel();
             $user = new $class();
+            $user->id = $this->decodedToken->sub;
+            $user->username = $this->decodedToken->preferred_username;
+            $user->email = $this->decodedToken->email;
+            $user->email_verified = $this->decodedToken->email_verified ?? null;
         }
 
         $this->setUser($user);
@@ -175,8 +179,9 @@ class KeycloakApiGuard implements Guard
 
     /**
      * Check if authenticated user has a especific role into resource.
-     * @param string $resource
-     * @param string $role
+     *
+     * @param  string  $resource
+     * @param  string  $role
      */
     public function hasRole($resource, $role): bool
     {

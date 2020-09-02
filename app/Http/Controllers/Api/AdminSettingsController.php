@@ -42,9 +42,9 @@ class AdminSettingsController extends Controller
         if ($setting->type->value === SettingType::Media) {
             JsonResource::withoutWrapping();
 
-            $setting->value = $request->file();
+            $setting->value = $request->file('file');
 
-            return (new UploadMediaCompletedResource($setting->value))->response()->setStatusCode(201);
+            return (new UploadMediaCompletedResource($setting->value))->response()->setStatusCode(200);
         }
 
         $setting->update($request->only('value'));

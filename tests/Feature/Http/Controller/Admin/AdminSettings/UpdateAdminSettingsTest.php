@@ -36,8 +36,27 @@ class UpdateAdminSettingsTest extends TestCase
         $this->assertSame('newValue', $setting->fresh()->value);
     }
 
-    private function updateSetting(Setting $setting): TestResponse
+    public function test_admin_can_update_image_as_value(): void
     {
+        $this->actingAsAdmin();
+        $setting = factory(Setting::class)->create([
+            'name' => 'test', 'value' => UploadedFile::fake()->image('test.jpg'), 'type' => SettingType::Media,
+            'description' => null,
+        ]);
+
+        $response = $this->updateSetting($setting, UploadedFile::fake()->image('new.jpg'));
+
+        $response->assertOk()->assertJsonPath('name', 'new.jpg');
+
+        $this->assertSame('new.jpg', $setting->fresh()->value->file_name);
+    }
+
+    private function updateSetting(Setting $setting, ?UploadedFile $media = null): TestResponse
+    {
+        if ($setting->type->value === SettingType::Media) {
+            return $this->post("/api/admin/settings/{$setting->id}", ['_method' => 'PATCH', 'file' => $media], ['accept' => 'application/json']);
+        }
+
         return $this->json('patch', "/api/admin/settings/{$setting->id}", ['value' => $setting->value]);
     }
 

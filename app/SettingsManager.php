@@ -31,11 +31,15 @@ class SettingsManager
 
         $setting = $this->settings->firstWhere('name', '===', $name);
 
-        if (! $setting && $default === null) {
-            throw new InvalidArgumentException("Unable to find '$name' setting");
+        if ($setting === null) {
+            if ($default === null) {
+                throw new InvalidArgumentException("Unable to find '$name' setting");
+            }
+
+            return $default;
         }
 
-        return optional($setting)->value ?: $default;
+        return $setting->value;
     }
 
     public function set(string $name, $value): Setting
