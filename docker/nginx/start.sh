@@ -7,9 +7,7 @@ set -o errexit   ## set -e : exit the script if any statement returns a non-true
 
 # Update nginx config from environments
 mv /etc/nginx/nginx.conf /etc/nginx/nginx.template
-mv /etc/nginx/sites-enabled/default.conf /etc/nginx/sites-enabled/default.template
 envsubst \$ERROR_LOG_LEVEL < /etc/nginx/nginx.template > /etc/nginx/nginx.conf
-envsubst \$NGINX_HOST < /etc/nginx/sites-enabled/default.template > /etc/nginx/sites-enabled/default.conf
 
 # Validate nginx configuraition
 nginx -t

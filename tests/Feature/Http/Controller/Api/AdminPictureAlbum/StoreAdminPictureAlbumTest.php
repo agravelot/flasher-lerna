@@ -62,7 +62,7 @@ class StoreAdminPictureAlbumTest extends TestCase
     public function test_guest_can_not_store_a_picture_to_an_album(): void
     {
         Queue::fake();
-        $album = factory(Album::class)->state('withUser')->create();
+        $album = factory(Album::class)->create();
         $image = UploadedFile::fake()->image('fake.jpg');
 
         $response = $this->storeAlbumPicture($album, $image);

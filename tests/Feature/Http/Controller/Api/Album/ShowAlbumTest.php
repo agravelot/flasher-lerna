@@ -17,7 +17,7 @@ class ShowAlbumTest extends TestCase
     public function test_admin_can_view_public_albums(): void
     {
         $this->actingAsAdmin();
-        $album = factory(PublicAlbum::class)->state('withUser')->create();
+        $album = factory(PublicAlbum::class)->create();
 
         $response = $this->showAlbum($album);
 
@@ -28,40 +28,6 @@ class ShowAlbumTest extends TestCase
     private function showAlbum(Album $album): TestResponse
     {
         return $this->json('get', "/api/albums/{$album->slug}");
-    }
-
-    public function test_admin_can_download_albums(): void
-    {
-        $this->actingAsAdmin();
-        $album = factory(PublicAlbum::class)->state('withUser')->create();
-
-        $response = $this->showAlbum($album);
-
-        $response->assertOk()
-            ->assertJson([
-                'data' => [
-                    'links' => [
-                        'download' => route('download-albums.show', ['album' => $album]),
-                    ],
-                ],
-            ]);
-    }
-
-    public function test_admin_can_download_albums_as_non_ajax_request(): void
-    {
-        $this->actingAsAdmin();
-        $album = factory(PublicAlbum::class)->state('withUser')->create();
-
-        $response = $this->json('get', "/api/albums/{$album->slug}");
-
-        $response->assertOk()
-            ->assertJson([
-                'data' => [
-                    'links' => [
-                        'download' => route('download-albums.show', ['album' => $album]),
-                    ],
-                ],
-            ]);
     }
 
     public function test_admin_can_not_view_unpublished_albums(): void
@@ -98,7 +64,7 @@ class ShowAlbumTest extends TestCase
     public function test_user_can_view_public_album(): void
     {
         $this->actingAsUser();
-        $album = factory(PublicAlbum::class)->state('withUser')->create();
+        $album = factory(PublicAlbum::class)->create();
 
         $response = $this->showAlbum($album);
 
@@ -107,7 +73,7 @@ class ShowAlbumTest extends TestCase
 
     public function test_guest_can_view_public_album(): void
     {
-        $album = factory(PublicAlbum::class)->state('withUser')->create();
+        $album = factory(PublicAlbum::class)->create();
 
         $response = $this->showAlbum($album);
 

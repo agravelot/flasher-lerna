@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Adapters\Keycloak\UserQuery;
-use App\Adapters\Keycloak\UserRepresentation;
 use App\Models\Cosplayer;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
@@ -30,13 +28,7 @@ $factory->state(Cosplayer::class, 'avatar', static function () {
 });
 
 $factory->state(Cosplayer::class, 'withUser', static function (Faker $faker) {
-    $user = UserRepresentation::factory();
-    Keycloak::users()->create($user);
-
-    $query = new UserQuery();
-    $query->email = $user->email;
-
     return [
-        'sso_id' => Keycloak::users()->first($query)->id,
+        'sso_id' => Str::uuid()->serialize(),
     ];
 });

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
-use App\Facades\Keycloak;
 use App\Models\Cosplayer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -27,8 +26,7 @@ class CosplayerResource extends JsonResource
             'avatar' => $this->whenLoaded('media', new MediaResource($this->avatar)),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'sso_id' => $this->sso_id,
-            'user' => $this->sso_id ? Keycloak::users()->find($this->sso_id) : null,
+            'user_id' => $this->sso_id,
             'links' => [
                 'related' => route('cosplayers.show', ['cosplayer' => $this]),
             ],

@@ -7,16 +7,11 @@ namespace App;
 use App\Models\Setting;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
-use Spatie\MediaLibrary\Models\Media;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class SettingsManager
 {
-    private Collection $settings;
-
-    public function __construct()
-    {
-        $this->settings = Setting::refreshCache();
-    }
+    private ?Collection $settings;
 
     public function has(string $name): bool
     {
@@ -30,13 +25,21 @@ class SettingsManager
      */
     public function get(string $name, $default = null)
     {
-        $setting = $this->settings->firstWhere('name', '===', $name);
-
-        if (! $setting && $default === null) {
-            throw new InvalidArgumentException("Unable to find '$name' setting");
+        if (! isset($this->settings)) {
+            $this->settings = Setting::getCache();
         }
 
-        return optional($setting)->value ?: $default;
+        $setting = $this->settings->firstWhere('name', '===', $name);
+
+        if ($setting === null) {
+            if ($default === null) {
+                throw new InvalidArgumentException("Unable to find '$name' setting");
+            }
+
+            return $default;
+        }
+
+        return $setting->value;
     }
 
     public function set(string $name, $value): Setting

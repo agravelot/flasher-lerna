@@ -17,15 +17,30 @@ Route::group([
     'namespace' => 'Api',
     'as' => 'api.',
 ], static function (): void {
-    // Front
+    // Public
     Route::apiResource('albums', 'AlbumController')->only('index', 'show');
+    Route::apiResource('cosplayers', 'CosplayerController')->only('index', 'show');
     Route::apiResource('testimonials', 'TestimonialController')->only('index');
     Route::apiResource('categories', 'CategoryController')
         ->only('index', 'show');
+    Route::apiResource('settings', 'SettingsController');
+    Route::resource('contact', 'ContactController')->only(['store']);
+    Route::apiResource('social-medias', 'SocialMediaController')->only(['index']);
+
 //    Route::resource('/account', 'AccountController')->middleware(['auth'])->only('destroy')
 //        ->parameters([
 //            'account' => 'user',
 //        ]);
+
+    // User
+    Route::get('/me/albums', 'MyAlbumsController')->middleware(['auth:api', 'verified'])->name('me.my-albums');
+    Route::resource('download-albums', 'DownloadAlbumController')->only(['show'])
+        ->middleware(['signed'])
+        ->parameters([
+            'download-albums' => 'album',
+        ]);
+    Route::get('generate-download-albums/{album}', 'GenerateDownloadAlbumLinkController')
+        ->middleware(['auth:api', 'verified']);
 
     // Admin
     Route::group([

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Http\Controller\Api\Album;
 
 use App\Models\Album;
+use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -45,24 +46,32 @@ class IndexAlbumTest extends TestCase
             ->assertJson(['data' => []]);
     }
 
-    public function test_user_can_view_index(): void
-    {
-        $this->actingAsUser();
-
-        $response = $this->json('get', '/api/albums');
-
-        $response->assertOk();
-    }
-
     public function test_user_can_view_published_albums(): void
     {
         $this->actingAsAdmin();
-        $album = factory(Album::class)->states(['published', 'passwordLess'])->create();
+        $album = factory(Album::class)->states(['published', 'passwordLess', 'withMedias'])->create();
 
         $response = $this->json('get', '/api/albums');
 
-        $response->assertOk();
-        $this->assertSame($album->title, $response->decodeResponseJson('data')[0]['title']);
+        $response->assertOk()
+            ->assertJsonPath('data.0.media.name', 'fake')
+            ->assertJsonPath('data.0.title', $album->title);
+    }
+
+    public function test_user_can_view_published_albums_filtered_with_category(): void
+    {
+        $this->actingAsAdmin();
+        factory(Album::class)->states(['published', 'passwordLess', 'withMedias'])->create();
+        $category = factory(Category::class)->create();
+        $album = factory(Album::class)->states(['published', 'passwordLess', 'withMedias'])->create();
+        $album->categories()->sync($category);
+
+        $response = $this->json('get', '/api/albums?filter[categories.id]='.$category->id);
+
+        $response->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.media.name', 'fake')
+            ->assertJsonPath('data.0.title', $album->title);
     }
 
     public function test_user_can_not_view_unpublished_albums(): void

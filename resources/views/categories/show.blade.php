@@ -34,10 +34,6 @@
                 </div>
             @endif
 
-            @php
-                /** @var App\Models\Category $category */
-                $albums = $category->load(['publishedAlbums.media', 'publishedAlbums.categories'])->publishedAlbums()->paginate();
-            @endphp
             @include('albums.partials._index_item', compact('albums'))
         </div>
     </section>

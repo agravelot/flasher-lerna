@@ -74,7 +74,7 @@ class MediaOrderingControllerTest extends TestCase
     public function test_guest_can_not_order_media(): void
     {
         /** @var Album $album */
-        $album = factory(Album::class)->states(['withMedias', 'withUser'])->create();
+        $album = factory(Album::class)->states(['withMedias'])->create();
 
         $response = $this->setMediaOrdering($album->slug, []);
 

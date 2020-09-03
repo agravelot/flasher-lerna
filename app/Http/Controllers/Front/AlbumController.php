@@ -16,7 +16,7 @@ class AlbumController extends Controller
      */
     public function index(): View
     {
-        $albums = PublicAlbum::with('categories')->latest()->paginate(10);
+        $albums = PublicAlbum::with('categories', 'media.model')->latest()->paginate(10);
 
         return view('albums.index', compact('albums'));
     }
@@ -28,7 +28,7 @@ class AlbumController extends Controller
      */
     public function show(PublicAlbum $album): View
     {
-        $album->load(['cosplayers.media', 'categories']);
+        $album->load(['cosplayers.media', 'categories', 'media.model']);
         $this->authorize('view', $album);
 
         return view('albums.show', compact('album'));

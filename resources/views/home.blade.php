@@ -13,8 +13,9 @@
                     @if ($profilePicture)
                         <div class="column">
                             <figure class="image is-128x128 is-pulled-right">
-                                <img src="{{ $profilePicture->getUrl('thumb') }}"
-                                     alt="Avatar de {{ settings()->get('app_name') }}" class="is-rounded">
+                                @if ($profilePicture)
+                                    {{ $profilePicture(\App\Models\Setting::RESPONSIVE_PICTURES_CONVERSION, ['class' => 'is-rounded responsive-media responsive-media-lazy']) }}
+                                @endif
                             </figure>
                         </div>
                     @endif
@@ -58,8 +59,8 @@
                                             <div class="tags">
                                                 @foreach($album->categories as $category)
                                                     <span class="tag">
-                                                {{ $category->name }}
-                                            </span>
+                                                        {{ $category->name }}
+                                                    </span>
                                                 @endforeach
                                             </div>
                                         </div>

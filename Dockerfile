@@ -39,7 +39,7 @@ RUN : \
         && apk del user-add-dep \
         && ln -s /var/www/html/storage/app/public /var/www/html/public/storage \
         && chown -h 1000:1000 /var/www/html/public/storage \
-        && ln -s /var/www/html/storage/sitemap.xml /var/www/html/public/sitemap.xml \
+        && ln -s /var/www/html/storage/app/public/sitemap.xml /var/www/html/public/sitemap.xml \
         && chown -h 1000:1000 /var/www/html/public/sitemap.xml \
         && mkdir /var/www/html/public/vendor \
         && chown -h 1000:1000 /var/www/html/public/vendor \
@@ -74,6 +74,22 @@ RUN : \
         && ./composer check-platform-reqs \
         && rm -f ./composer \
         ;
+
+# PHP SPX
+#RUN : \
+#    && apk add --no-cache zlib-dev git $PHPIZE_DEPS \
+#    && git clone https://github.com/NoiseByNorthwest/php-spx.git /tmp/php-spx \
+#    && cd /tmp/php-spx \
+#    && phpize \
+#    && ./configure \
+#    && make \
+#    && make install \
+#    && docker-php-ext-enable spx \
+#    && echo 'spx.http_enabled=1' >> /usr/local/etc/php/conf.d/docker-php-ext-spx.ini \
+#    && echo 'spx.http_key="dev"' >> /usr/local/etc/php/conf.d/docker-php-ext-spx.ini \
+#    && echo 'spx.http_ip_whitelist="*"' >> /usr/local/etc/php/conf.d/docker-php-ext-spx.ini \
+#    && apk del $PHPIZE_DEPS \
+#    && cd -
 
 COPY --chown=1000:1000 docker/php-fpm/start.sh /start.sh
 COPY docker/php-fpm/crontab /etc/crontabs/root

@@ -21,13 +21,3 @@ Route::namespace('Front')->group(static function (): void {
     Route::resource('invitations', 'InvitationController')->only(['show'])->middleware(['auth', 'signed']);
     Route::get('/account/my-albums', 'MyAlbumsController')->middleware(['auth'])->name('profile.my-albums');
 });
-
-//BACK
-Route::group([
-    'middleware' => ['auth', 'verified', 'admin'],
-    'prefix' => 'admin',
-    'as' => 'admin.',
-    'namespace' => 'Admin',
-], static function (): void {
-    Route::get('/{any?}', 'AdminController')->where('any', '.*')->name('dashboard');
-});

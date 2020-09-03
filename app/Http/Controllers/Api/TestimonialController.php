@@ -8,6 +8,7 @@ use App\Http\Resources\TestimonialResource;
 use App\Models\Testimonial;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class TestimonialController extends Controller
 {
@@ -16,7 +17,10 @@ class TestimonialController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        $testimonials = Testimonial::published()->paginate();
+        $testimonials = QueryBuilder::for(Testimonial::class)
+            ->allowedSorts('published_at')
+            ->published()
+            ->paginate();
 
         return TestimonialResource::collection($testimonials);
     }

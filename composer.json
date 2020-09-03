@@ -40,11 +40,11 @@
     "sentry/sentry-laravel": "^1.0",
     "spatie/laravel-feed": "^2.4",
     "spatie/laravel-medialibrary": "^8.0",
-    "spatie/laravel-query-builder": "^2.0.1",
+    "spatie/laravel-query-builder": "^3.0.0",
     "spatie/laravel-responsecache": "^6.0",
     "spatie/laravel-sitemap": "^5.3",
     "spatie/schema-org": "^2.9",
-    "vizir/laravel-keycloak-web-guard": "^1.5"
+    "vizir/laravel-keycloak-web-guard": "^2.0"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.2",

@@ -43,7 +43,7 @@ return [
         ],
 
         'api' => [
-            'driver' => 'keycloak',
+            'driver' => 'keycloak-api-guard',
             'provider' => 'users',
         ],
     ],

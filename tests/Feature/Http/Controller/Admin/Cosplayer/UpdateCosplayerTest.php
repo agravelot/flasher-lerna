@@ -21,7 +21,7 @@ class UpdateCosplayerTest extends TestCase
         $cosplayer = factory(Cosplayer::class)->create();
         $this->assertNull($cosplayer->sso_id);
 
-        $cosplayer->sso_id = factory(Cosplayer::class)->state('withUser')->make()->sso_id;
+        $cosplayer->sso_id = factory(Cosplayer::class)->states(['withUser'])->make()->sso_id;
         $response = $this->update($cosplayer);
 
         $response->assertOk();
@@ -61,14 +61,14 @@ class UpdateCosplayerTest extends TestCase
     public function test_admin_can_update_cosplayer_with_updated_related_user(): void
     {
         $this->actingAsAdmin();
-        $cosplayer = factory(Cosplayer::class)->state('withUser')->create();
-        $this->assertNotNull($cosplayer->user());
+        $cosplayer = factory(Cosplayer::class)->states(['withUser'])->create();
+        $this->assertNotNull($cosplayer->sso_id);
 
-        $cosplayer->sso_id = factory(Cosplayer::class)->state('withUser')->make()->sso_id;
+        $cosplayer->sso_id = Str::uuid()->serialize();
         $response = $this->update($cosplayer);
 
         $response->assertOk();
-        $this->assertNotNull($cosplayer->fresh()->user());
+        $this->assertNotNull($cosplayer->fresh()->sso_id);
         $response->assertJson($this->getCosplayerJson($cosplayer->fresh()));
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\CustomKeycloakUserProvider;
+use App\Guards\KeycloakApiGuard;
 use App\Models\Album;
 use App\Models\Category;
 use App\Models\Contact;
@@ -24,7 +25,6 @@ use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -53,10 +53,13 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('dashboard', 'App\Policies\AdminPolicy@dashboard');
 
-        //Passport::routes();
+        Auth::provider(
+            'custom-keycloak-users',
+            static fn ($app, array $config) => new CustomKeycloakUserProvider($config['model'])
+        );
 
-        Auth::provider('custom-keycloak-users', static function ($app, array $config) {
-            return new CustomKeycloakUserProvider($config['model']);
-        });
+        Auth::extend('keycloak-api-guard', static fn ($app, $name, array $config) => new KeycloakApiGuard(
+            Auth::createUserProvider($config['provider']), $app->request
+        ));
     }
 }

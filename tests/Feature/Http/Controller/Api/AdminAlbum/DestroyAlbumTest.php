@@ -50,7 +50,7 @@ class DestroyAlbumTest extends TestCase
     public function test_guest_can_not_destroy_a_album_and_is_redirected_to_login(): void
     {
         /** @var Album $album */
-        $album = factory(Album::class)->state('withUser')->create();
+        $album = factory(Album::class)->create();
 
         $response = $this->deleteAlbum($album->slug);
 

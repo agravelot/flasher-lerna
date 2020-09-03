@@ -11,19 +11,24 @@ use App\Models\User;
 class AlbumPolicy extends Policy
 {
     /**
-     * Determine whether the user can download the album.
+     * Determine whether the user can generate a signed download link for this album.
      */
-    public function download(User $user, Album $album): bool
+    public function generateDownload(User $user, Album $album): bool
     {
         if (optional($user)->isAdmin()) {
             return true;
         }
 
-        if ($album->isPublic() && $album->cosplayers->contains(Cosplayer::where('sso_id', auth()->id())->first())) {
+        if ($album->isPublished() && $album->cosplayers->contains(Cosplayer::where('sso_id', auth()->id())->first())) {
             return true;
         }
 
         return false;
+    }
+
+    public function download(User $user, Album $album): bool
+    {
+        return $this->generateDownload($user, $album);
     }
 
     /**

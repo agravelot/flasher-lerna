@@ -38,11 +38,11 @@ class GenerateSitemap extends Command
     {
         $sitemap = SitemapGenerator::create(config('app.url'))
             ->shouldCrawl(static function (UriInterface $uri) {
-                return ! Str::startsWith($uri->getPath(), ['/albums/', '/cosplayers/', '/categories/', '/admin']);
+                return ! Str::startsWith($uri->getPath(), ['/albums/', '/cosplayers/', '/categories/', '/admin', '/login', '/register']);
             })->getSitemap();
 
-        PublicAlbum::chunk(10, static function (Collection $users) use ($sitemap): void {
-            $users->each(static function (Album $album) use ($sitemap): void {
+        PublicAlbum::chunk(10, static function (Collection $albums) use ($sitemap): void {
+            $albums->each(static function (Album $album) use ($sitemap): void {
                 $sitemap->add(Url::create(route('albums.show', compact('album')))
                     ->setPriority(1.0)
                     ->setLastModificationDate($album->updated_at)
@@ -68,6 +68,7 @@ class GenerateSitemap extends Command
             });
         });
 
-        $sitemap->writeToFile(storage_path('sitemap.xml'));
+        $sitemap->writeToFile(storage_path('app/public/sitemap.xml'));
+        $this->info('Sitemap successfully generated.');
     }
 }

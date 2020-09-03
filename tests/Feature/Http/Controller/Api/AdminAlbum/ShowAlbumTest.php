@@ -33,7 +33,6 @@ class ShowAlbumTest extends TestCase
         $response = $this->showAlbum($album);
 
         $response->assertOk()
-            ->assertJsonPath('data.links.download', route('download-albums.show', compact('album')))
             ->assertJsonPath('data.links.view', route('albums.show', compact('album')))
             ->assertJsonPath('data.links.edit', "/admin/albums/{$album->slug}/edit");
     }
@@ -78,7 +77,7 @@ class ShowAlbumTest extends TestCase
     public function test_user_can_not_view_index(): void
     {
         $this->actingAsUser();
-        $album = factory(PublicAlbum::class)->state('withUser')->create();
+        $album = factory(PublicAlbum::class)->create();
 
         $response = $this->showAlbum($album);
 
@@ -87,7 +86,7 @@ class ShowAlbumTest extends TestCase
 
     public function test_guest_can_not_view_public_album(): void
     {
-        $album = factory(PublicAlbum::class)->state('withUser')->create();
+        $album = factory(PublicAlbum::class)->create();
 
         $response = $this->showAlbum($album);
 

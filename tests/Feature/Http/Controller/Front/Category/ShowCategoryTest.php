@@ -34,7 +34,7 @@ class ShowCategoryTest extends TestCase
     {
         /** @var Category $category */
         $category = factory(Category::class)->create();
-        $albums = factory(Album::class, 2)->states('published', 'passwordLess', 'withUser')->create();
+        $albums = factory(Album::class, 2)->states('published', 'passwordLess')->create();
         $category->albums()->attach($albums);
 
         $response = $this->showCategory($category);
@@ -58,7 +58,7 @@ class ShowCategoryTest extends TestCase
     {
         /** @var Category $category */
         $category = factory(Category::class)->create();
-        $album = factory(Album::class)->states('unpublished', 'passwordLess', 'withUser')->create();
+        $album = factory(Album::class)->states('unpublished', 'passwordLess')->create();
         $category->albums()->attach($album);
 
         $response = $this->showCategory($category);

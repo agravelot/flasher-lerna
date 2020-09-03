@@ -129,7 +129,7 @@ class UpdateAlbumTest extends TestCase
 
     public function test_guest_cannot_update_an_album(): void
     {
-        $album = factory(Album::class)->state('withUser')->create();
+        $album = factory(Album::class)->create();
 
         $response = $this->updateAlbum($album);
 

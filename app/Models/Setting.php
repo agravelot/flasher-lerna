@@ -20,8 +20,9 @@ class Setting extends Model implements HasMedia
 {
     use CastsEnums, InteractsWithMedia, ClearsResponseCache;
 
-    private const SETTING_COLLECTION = 'setting_media';
     public const SETTINGS_CACHE_KEY = 'settings';
+    public const SETTING_COLLECTION = 'setting_media';
+    public const RESPONSIVE_PICTURES_CONVERSION = 'responsive';
 
     /**
      * @var array<string>
@@ -35,15 +36,20 @@ class Setting extends Model implements HasMedia
         'type' => SettingType::class,
     ];
 
+    public static function getCache(): Collection
+    {
+        return tap(self::with('media')->get(), static function (Collection $settings): void {
+            Cache::forever(self::SETTINGS_CACHE_KEY, $settings);
+        });
+    }
+
     public static function refreshCache(): Collection
     {
         if (Cache::has(self::SETTINGS_CACHE_KEY)) {
             Cache::forget(self::SETTINGS_CACHE_KEY);
         }
 
-        return tap(self::with('media')->get(), static function (Collection $settings): void {
-            Cache::forever(self::SETTINGS_CACHE_KEY, $settings);
-        });
+        return self::getCache();
     }
 
     /**
@@ -88,7 +94,6 @@ class Setting extends Model implements HasMedia
         if ($value instanceof \Symfony\Component\HttpFoundation\File\File) {
             $this->addMedia($value)
                 ->preservingOriginal()
-                ->withResponsiveImages()
                 ->toMediaCollectionOnCloudDisk(self::SETTING_COLLECTION);
 
             $this->attributes['value'] = null;
@@ -119,6 +124,11 @@ class Setting extends Model implements HasMedia
         $this->addMediaConversion('thumb')
             ->width(400)
             ->optimize()
+            ->performOnCollections(self::SETTING_COLLECTION);
+
+        $this->addMediaConversion(self::RESPONSIVE_PICTURES_CONVERSION)
+            ->optimize()
+            ->withResponsiveImages()
             ->performOnCollections(self::SETTING_COLLECTION);
     }
 }

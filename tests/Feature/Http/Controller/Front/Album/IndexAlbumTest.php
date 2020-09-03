@@ -28,7 +28,7 @@ class IndexAlbumTest extends TestCase
 
     public function test_guest_can_view_published_albums(): void
     {
-        $albums = factory(Album::class, 2)->states(['published', 'passwordLess', 'withUser'])->create();
+        $albums = factory(Album::class, 2)->states(['published', 'passwordLess'])->create();
 
         $response = $this->showAlbums();
 
@@ -41,7 +41,7 @@ class IndexAlbumTest extends TestCase
 
     public function test_guest_can_not_view_unpublished_albums(): void
     {
-        $albums = factory(Album::class, 2)->states(['unpublished', 'passwordLess', 'withUser'])->create();
+        $albums = factory(Album::class, 2)->states(['unpublished', 'passwordLess'])->create();
 
         $response = $this->showAlbums();
 
@@ -53,7 +53,7 @@ class IndexAlbumTest extends TestCase
 
     public function test_guest_can_not_view_albums_with_password(): void
     {
-        $albums = factory(Album::class, 2)->states(['published', 'password', 'withUser'])->create();
+        $albums = factory(Album::class, 2)->states(['published', 'password'])->create();
 
         $response = $this->showAlbums();
 
@@ -65,7 +65,7 @@ class IndexAlbumTest extends TestCase
 
     public function test_guest_can_not_view_unpublished_albums_with_password(): void
     {
-        $albums = factory(Album::class, 2)->states(['unpublished', 'password', 'withUser'])->create();
+        $albums = factory(Album::class, 2)->states(['unpublished', 'password'])->create();
 
         $response = $this->showAlbums();
 

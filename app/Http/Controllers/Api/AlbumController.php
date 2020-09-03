@@ -10,6 +10,7 @@ use App\Http\Resources\AlbumShowResource;
 use App\Models\Album;
 use App\Models\PublicAlbum;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class AlbumController extends Controller
@@ -26,7 +27,8 @@ class AlbumController extends Controller
     {
         return AlbumIndexResource::collection(
             QueryBuilder::for(PublicAlbum::class)
-                ->with('media')
+                ->allowedFilters(AllowedFilter::exact('categories.id'))
+                ->with('media', 'categories')
                 ->latest()
                 ->paginate(10)
         );
