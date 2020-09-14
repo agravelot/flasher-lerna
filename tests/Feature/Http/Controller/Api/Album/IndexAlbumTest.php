@@ -6,6 +6,7 @@ namespace Tests\Feature\Http\Controller\Api\Album;
 
 use App\Models\Album;
 use App\Models\Category;
+use App\Models\Cosplayer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
