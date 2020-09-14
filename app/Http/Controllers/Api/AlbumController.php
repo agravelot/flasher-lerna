@@ -28,6 +28,7 @@ class AlbumController extends Controller
         return AlbumIndexResource::collection(
             QueryBuilder::for(PublicAlbum::class)
                 ->allowedFilters(AllowedFilter::exact('categories.id'))
+                ->allowedFilters(AllowedFilter::exact('cosplayers.id'))
                 ->with('media', 'categories')
                 ->latest()
                 ->paginate(10)

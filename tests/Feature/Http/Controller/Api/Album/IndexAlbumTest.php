@@ -74,6 +74,22 @@ class IndexAlbumTest extends TestCase
             ->assertJsonPath('data.0.title', $album->title);
     }
 
+    public function test_user_can_view_published_albums_filtered_with_cosplayers(): void
+    {
+        $this->actingAsAdmin();
+        factory(Album::class)->states(['published', 'passwordLess', 'withMedias'])->create();
+        $cosplayer = factory(Cosplayer::class)->create();
+        $album = factory(Album::class)->states(['published', 'passwordLess', 'withMedias'])->create();
+        $album->cosplayers()->sync($cosplayer);
+
+        $response = $this->json('get', '/api/albums?filter[cosplayers.id]='.$cosplayer->id);
+
+        $response->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.media.name', 'fake')
+            ->assertJsonPath('data.0.title', $album->title);
+    }
+
     public function test_user_can_not_view_unpublished_albums(): void
     {
         $this->actingAsAdmin();
