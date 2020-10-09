@@ -7,6 +7,7 @@ namespace Tests\Feature\Http\Controller\Api\AdminAlbum;
 use App\Models\Album;
 use App\Models\PublicAlbum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
@@ -18,11 +19,14 @@ class ShowAlbumTest extends TestCase
     {
         $this->actingAsAdmin();
         $album = factory(Album::class)->state('published')->create();
+        $album->addPicture(UploadedFile::fake()->image('fake.jpg', 200, 300));
 
         $response = $this->showAlbum($album);
 
         $response->assertOk()
-            ->assertSee($album->title);
+            ->assertJsonPath('data.title', $album->title)
+            ->assertJsonPath('data.medias.0.width', 200)
+            ->assertJsonPath('data.medias.0.height', 300);
     }
 
     public function test_get_album_contains_links(): void

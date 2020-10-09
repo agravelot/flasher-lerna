@@ -176,9 +176,12 @@ class Album extends Model implements HasMedia, Feedable
      */
     public function addPicture($media): Media
     {
+        [$width, $height] = getimagesize($media->getRealPath());
+
         return $this->addMedia($media)
             ->usingFileName("{$this->slug}.{$media->getClientOriginalExtension()}")
             ->preservingOriginal()
+            ->withCustomProperties(['width' => $width, 'height' => $height])
             ->toMediaCollectionOnCloudDisk(self::PICTURES_COLLECTION);
     }
 

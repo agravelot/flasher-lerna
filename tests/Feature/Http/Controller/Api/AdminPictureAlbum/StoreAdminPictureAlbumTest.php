@@ -16,34 +16,22 @@ class StoreAdminPictureAlbumTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_admin_can_store_a_picture_to_an_album(): void
+    public function test_admin_can_store_a_picture_to_an_album_with_dimensions(): void
     {
         Queue::fake();
         $this->actingAsAdmin();
         $album = factory(Album::class)->create();
-        $image = UploadedFile::fake()->image('fake.jpg');
+        $image = UploadedFile::fake()->image('fake.jpg', 4096, 3826);
         Queue::assertNotPushed(PerformConversions::class);
 
         $response = $this->storeAlbumPicture($album, $image);
 
         $this->assertSame(1, $album->fresh()->media->count());
         $response->assertCreated();
+        $this->assertSame(4096, $album->fresh()->media->first()->getCustomProperty('width'));
+        $this->assertSame(3826, $album->fresh()->media->first()->getCustomProperty('height'));
         Queue::assertPushedOn('images', PerformConversions::class);
     }
-
-    /* public function test_admin_can_not_store_a_video_to_an_album(): void
-     {
-         Queue::fake();
-         $this->actingAsAdmin();
-         $album = factory(Album::class)->create();
-         $video = UploadedFile::fake()->image('fake.mp4');
-
-         $response = $this->storeAlbumPicture($album, $video);
-
-         $this->assertSame(0, $album->fresh()->media->count());
-         $response->assertStatus(422);
-         Queue::assertNothingPushed();
-     }*/
 
     public function test_user_can_not_store_a_picture_to_an_album(): void
     {
