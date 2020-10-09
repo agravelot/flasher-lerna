@@ -26,6 +26,8 @@ class MediaResource extends JsonResource
             'file_name' => $this->file_name,
             'thumb' => $this->getUrl('thumb'),
             'src_set' => $this->getSrcset(Album::RESPONSIVE_PICTURES_CONVERSION),
+            'width' => $this->getCustomProperty('width'),
+            'height' => $this->getCustomProperty('height'),
         ];
     }
 }
