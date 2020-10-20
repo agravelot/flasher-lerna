@@ -43,7 +43,6 @@ Route::group([
         ->middleware(['auth:api', 'verified']);
     Route::resource('invitations', 'AcceptInvitationController')->only(['show'])->middleware(['auth:api', 'verified']);
 
-
     // Admin
     Route::group([
         'middleware' => ['auth:api', 'verified', 'admin'],
