@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Http\Controller\Front\Invitation;
+namespace Tests\Feature\Http\Controller\Api\Invitation;
 
 use App\Models\Invitation;
 use App\Models\User;
@@ -18,10 +18,9 @@ class AcceptInvitationTest extends TestCase
 
     public function test_invited_user_can_accept_invitation_and_cosplayer_is_linked_to_user(): void
     {
-        $this->withoutExceptionHandling();
         Mail::fake();
         $user = factory(User::class)->make();
-        $this->actingAs($user);
+        $this->actingAs($user, 'api');
         $invitation = factory(Invitation::class)->state('unconfirmed')->create([
             'created_at' => now()->subDays(5),
         ]);
@@ -37,7 +36,7 @@ class AcceptInvitationTest extends TestCase
     {
         Mail::fake();
         $user = factory(User::class)->make();
-        $this->actingAs($user);
+        $this->actingAs($user, 'api');
         $invitation = factory(Invitation::class)->state('confirmed')->create([
             'created_at' => now()->subDay(),
         ]);
@@ -52,7 +51,7 @@ class AcceptInvitationTest extends TestCase
     {
         Mail::fake();
         $user = factory(User::class)->make();
-        $this->actingAs($user);
+        $this->actingAs($user, 'api');
         $invitation = factory(Invitation::class)->state('unconfirmed')->create([
             'created_at' => now()->subDays(20),
         ]);
@@ -73,36 +72,11 @@ class AcceptInvitationTest extends TestCase
 
         $response = $this->acceptInvitation($invitation);
 
-        $response->assertRedirect('/login');
-    }
-
-    public function test_accepting_invitation_without_valid_signature_return_403_and_is_not_linked(): void
-    {
-        Mail::fake();
-        $user = factory(User::class)->make();
-        $this->actingAs($user);
-        $invitation = factory(Invitation::class)->state('unconfirmed')->create([
-            'created_at' => now()->addDays(5),
-        ]);
-
-        $response = $this->acceptInvitationWithoutSignature($invitation);
-
-        $this->assertSame(403, $response->status());
-        $this->assertNull($invitation->fresh()->confirmed_at);
-        $this->assertNull($invitation->fresh()->cosplayer->sso_id);
+        $response->assertStatus(401);
     }
 
     private function acceptInvitation(Invitation $invitation): TestResponse
     {
-        $url = URL::temporarySignedRoute(
-            'invitations.show', now()->addDays(15), compact('invitation')
-        );
-
-        return $this->get($url);
-    }
-
-    private function acceptInvitationWithoutSignature(Invitation $invitation): TestResponse
-    {
-        return $this->get('/invitations/'.$invitation->id);
+        return $this->getJson('/api/invitations/'.$invitation->uuid);
     }
 }

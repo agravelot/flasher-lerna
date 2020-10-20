@@ -53,7 +53,7 @@ class DeleteInvitationTest extends TestCase
     {
         return $this->json(
             'DELETE',
-            "/api/admin/invitations/{$invitation->id}"
+            "/api/admin/invitations/{$invitation->uuid}"
         );
     }
 }

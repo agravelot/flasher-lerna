@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Front;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\InvitationResource;
 use App\Models\Invitation;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\View\View;
 
-class InvitationController extends Controller
+class AcceptInvitationController extends Controller
 {
     /**
      * @throws AuthorizationException
      */
-    public function show(Invitation $invitation): View
+    public function show(Invitation $invitation): InvitationResource
     {
         $this->authorize('view', $invitation);
 
@@ -22,6 +22,6 @@ class InvitationController extends Controller
         $invitation->cosplayer->save();
         $invitation->update(['confirmed_at' => now()]);
 
-        return view('invitations.welcome', compact('invitation'));
+        return new InvitationResource($invitation);
     }
 }
