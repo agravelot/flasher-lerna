@@ -9,7 +9,7 @@ return [
 
   'realm' => env('KEYCLOAK_REALM'),
 
-    'client_id' => env('KEYCLOAK_CLIENT_ID', null),
+  'client_id' => env('KEYCLOAK_CLIENT_ID', null),
 
   'realm_public_key' => env('KEYCLOAK_REALM_PUBLIC_KEY', null),
 
