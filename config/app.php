@@ -8,9 +8,10 @@ return [
 
     /*
      |--------------------------------------------------------------------------
-     | Administration url to redirect the client.
+     | Frontend urls to redirect the client.
      |--------------------------------------------------------------------------
      */
+    'frontend_url' => env('FRONTEND_URL'),
     'admin_url' => env('ADMIN_URL'),
 
     /*
