@@ -13,7 +13,7 @@ S'enregistrer
 
 2. Une fois connecté à votre compte, rendez-vous sur le lien ci-dessous.
 
-@component('mail::button', ['url' => url(config('app.frontend_url').'/invitations/'.$invitation->uuid)])
+@component('mail::button', ['url' => url(config('app.frontend_url').'/invitations/validate?code='.$invitation->uuid)])
 Valider mon invitation
 @endcomponent
 

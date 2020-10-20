@@ -41,7 +41,12 @@ Route::group([
         ]);
     Route::get('generate-download-albums/{album}', 'GenerateDownloadAlbumLinkController')
         ->middleware(['auth:api', 'verified']);
-    Route::resource('invitations', 'AcceptInvitationController')->only(['show'])->middleware(['auth:api', 'verified']);
+    Route::resource('validate-invitations', 'AcceptInvitationController')
+        ->only(['show'])
+        ->middleware(['auth:api', 'verified'])
+        ->parameters([
+            'validate-invitations' => 'invitation',
+        ]);
 
     // Admin
     Route::group([
