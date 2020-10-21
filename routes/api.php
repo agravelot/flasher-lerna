@@ -41,12 +41,12 @@ Route::group([
         ]);
     Route::get('generate-download-albums/{album}', 'GenerateDownloadAlbumLinkController')
         ->middleware(['auth:api', 'verified']);
-    Route::resource('validate-invitations', 'AcceptInvitationController')
-        ->only(['show'])
+
+    //Route::pattern('invitation', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$');
+
+    Route::get('invitations/{invitation}/accept', 'AcceptInvitationController')
         ->middleware(['auth:api', 'verified'])
-        ->parameters([
-            'validate-invitations' => 'invitation',
-        ]);
+        ->where('invitation', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$');
 
     // Admin
     Route::group([

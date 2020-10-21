@@ -31,6 +31,21 @@ class AcceptInvitationTest extends TestCase
         $this->assertSame($user->id, ($invitation->cosplayer->sso_id));
     }
 
+    public function test_return_404_on_non_valid_uuid(): void
+    {
+        Mail::fake();
+        $user = factory(User::class)->make();
+        $this->actingAs($user, 'api');
+        $invitation = factory(Invitation::class)->state('unconfirmed')->create([
+            'created_at' => now()->subDays(5),
+        ]);
+        $invitation->uuid = 'bad-uuid';
+
+        $response = $this->acceptInvitation($invitation);
+
+        $response->assertNotFound();
+    }
+
     public function test_invited_user_can_not_accept_invitation_twice(): void
     {
         Mail::fake();
@@ -76,6 +91,6 @@ class AcceptInvitationTest extends TestCase
 
     private function acceptInvitation(Invitation $invitation): TestResponse
     {
-        return $this->getJson('/api/validate-invitations/'.$invitation->uuid);
+        return $this->getJson("/api/invitations/{$invitation->uuid}/accept");
     }
 }

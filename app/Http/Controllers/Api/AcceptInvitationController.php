@@ -14,7 +14,7 @@ class AcceptInvitationController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function show(Invitation $invitation): InvitationResource
+    public function __invoke(Invitation $invitation): InvitationResource
     {
         $this->authorize('view', $invitation);
 
