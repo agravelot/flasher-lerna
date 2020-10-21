@@ -5,7 +5,7 @@ Je vous invite à rejoindre mon site internet en tant que cosplayer. Grâce à l
 
 1. Dans un premier temps, si ce n'est pas déjà fait, je vous invite à créer votre compte :
 
-@component('mail::button', ['url' => url(config('app.frontend_url'))])
+@component('mail::button', ['url' => $frontendUrl])
 S'enregistrer
 @endcomponent
 
@@ -13,7 +13,7 @@ S'enregistrer
 
 2. Une fois connecté à votre compte, rendez-vous sur le lien ci-dessous.
 
-@component('mail::button', ['url' => url(config('app.frontend_url').'/invitations/validate?code='.$invitation->uuid)])
+@component('mail::button', ['url' => $invitationUrl])
 Valider mon invitation
 @endcomponent
 
