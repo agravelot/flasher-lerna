@@ -38,7 +38,6 @@ class InvitationMail extends Mailable implements ShouldQueue
     {
         return $this->markdown('emails.invitations.invitation')
             ->text('emails.invitations.invitation_txt')
-            ->subject("{$this->invitation->cosplayer->name}: Invitation pour récupérer vos 📸 photos")
-            ->with(['invitation' => $this->invitation]);
+            ->subject("{$this->invitation->cosplayer->name}: Invitation pour récupérer vos 📸 photos");
     }
 }
