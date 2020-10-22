@@ -13,7 +13,6 @@ class Invitation extends Model
     use Uuids;
 
     public $incrementing = false;
-    protected $primaryKey = 'uuid';
     protected $fillable = ['email', 'cosplayer_id', 'message', 'confirmed_at'];
     protected $dates = ['confirmed_at'];
 

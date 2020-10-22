@@ -39,7 +39,7 @@ class AcceptInvitationTest extends TestCase
         $invitation = factory(Invitation::class)->state('unconfirmed')->create([
             'created_at' => now()->subDays(5),
         ]);
-        $invitation->uuid = 'bad-uuid';
+        $invitation->id = 'bad-uuid';
 
         $response = $this->acceptInvitation($invitation);
 
