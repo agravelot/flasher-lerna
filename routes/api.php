@@ -42,6 +42,10 @@ Route::group([
     Route::get('generate-download-albums/{album}', 'GenerateDownloadAlbumLinkController')
         ->middleware(['auth:api', 'verified']);
 
+    Route::get('invitations/{invitation}/accept', 'AcceptInvitationController')
+        ->middleware(['auth:api', 'verified'])
+        ->where('invitation', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$');
+
     // Admin
     Route::group([
         'middleware' => ['auth:api', 'verified', 'admin'],

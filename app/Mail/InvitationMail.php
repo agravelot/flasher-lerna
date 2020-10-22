@@ -9,7 +9,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\URL;
 
 class InvitationMail extends Mailable implements ShouldQueue
 {
@@ -41,9 +40,8 @@ class InvitationMail extends Mailable implements ShouldQueue
             ->text('emails.invitations.invitation_txt')
             ->subject("{$this->invitation->cosplayer->name}: Invitation pour récupérer vos 📸 photos")
             ->with([
-                'temporaryInvitationUrl' => URL::temporarySignedRoute(
-                    'invitations.show', now()->addDays(15), ['invitation' => $this->invitation]
-                ),
+                'invitationUrl' => config('app.frontend_url').'/invitations/validate?code='.$this->invitation->id,
+                'frontendUrl' => config('app.frontend_url'),
             ]);
     }
 }

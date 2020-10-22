@@ -13,10 +13,10 @@ jobs:
 
     - name: Define env
       run: |
-        echo "::set-env name=CI_COMMIT_REF_NAME::$(echo -n $GITHUB_REF | cut -d/ -f3-)"
-        echo "::set-env name=CI_COMMIT_SHORT_SHA::$(echo -n $GITHUB_SHA | cut -c 1-7)"
-        echo "::set-env name=PHP_IMAGE::registry.gitlab.com/flasher/flasher/picblog_php:$(echo -n $GITHUB_SHA | cut -c 1-7)"
-        echo "::set-env name=NGINX_IMAGE::registry.gitlab.com/flasher/flasher/picblog_nginx:$(echo -n $GITHUB_SHA | cut -c 1-7)"
+        echo "CI_COMMIT_REF_NAME=$(echo -n $GITHUB_REF | cut -d/ -f3-)" >> $GITHUB_ENV
+        echo "CI_COMMIT_SHORT_SHA=$(echo -n $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV
+        echo "PHP_IMAGE=registry.gitlab.com/flasher/flasher/picblog_php:$(echo -n $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV
+        echo "NGINX_IMAGE=registry.gitlab.com/flasher/flasher/picblog_nginx:$(echo -n $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV
 
     - name: Update docker-compose version
       run: |
@@ -81,29 +81,29 @@ jobs:
         KEYCLOAK_MASTER_USERNAME: admin
         KEYCLOAK_MASTER_PASSWORD: admin
 
-    - name: Run php test suites
-      run: |
-        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php touch .env
-        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan key:generate
-        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php vendor/bin/phpunit --coverage-text --colors=never
-      env:
-        APP_URL: http://localhost
-        APP_URI: localhost
-        APP_NAME: ${{ secrets.APP_NAME_STAGING }}
-        APP_KEY: ${{ secrets.APP_KEY_STAGING }}
-        APP_ENV: "testing"
-        DB_PASSWORD: "secretPassword"
-
-    - name: Run php lint
-      run: |
-        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -e APP_ENV=testing -T php php vendor/bin/php-cs-fixer fix --dry-run --diff
-      env:
-        APP_URL: http://localhost
-        APP_URI: localhost
-        APP_NAME: ${{ secrets.APP_NAME_STAGING }}
-        APP_KEY: ${{ secrets.APP_KEY_STAGING }}
-        APP_ENV: "local"
-        DB_PASSWORD: "secretPassword"
+#    - name: Run php test suites
+#      run: |
+#        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php touch .env
+#        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan key:generate
+#        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php vendor/bin/phpunit --coverage-text --colors=never
+#      env:
+#        APP_URL: http://localhost
+#        APP_URI: localhost
+#        APP_NAME: ${{ secrets.APP_NAME_STAGING }}
+#        APP_KEY: ${{ secrets.APP_KEY_STAGING }}
+#        APP_ENV: "testing"
+#        DB_PASSWORD: "secretPassword"
+#
+#    - name: Run php lint
+#      run: |
+#        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -e APP_ENV=testing -T php php vendor/bin/php-cs-fixer fix --dry-run --diff
+#      env:
+#        APP_URL: http://localhost
+#        APP_URI: localhost
+#        APP_NAME: ${{ secrets.APP_NAME_STAGING }}
+#        APP_KEY: ${{ secrets.APP_KEY_STAGING }}
+#        APP_ENV: "local"
+#        DB_PASSWORD: "secretPassword"
 
     - name: Login to GitLab repository
       uses: azure/docker-login@v1

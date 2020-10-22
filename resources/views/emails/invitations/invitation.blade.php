@@ -5,15 +5,15 @@ Je vous invite à rejoindre mon site internet en tant que cosplayer. Grâce à l
 
 1. Dans un premier temps, si ce n'est pas déjà fait, je vous invite à créer votre compte :
 
-@component('mail::button', ['url' => url(route('keycloak.register'))])
-Se connecter
+@component('mail::button', ['url' => $frontendUrl])
+S'enregistrer
 @endcomponent
 
 ⚠ Assurez-vous de bien valider votre adresse email, sinon certaines fonctionnalités ne seront pas accessibles (tel que le téléchargement).
 
 2. Une fois connecté à votre compte, rendez-vous sur le lien ci-dessous.
 
-@component('mail::button', ['url' => $temporaryInvitationUrl])
+@component('mail::button', ['url' => $invitationUrl])
 Valider mon invitation
 @endcomponent
 
