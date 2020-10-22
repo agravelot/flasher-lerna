@@ -22,11 +22,7 @@ class InvitationPolicy extends Policy
      */
     public function view(?User $user, Invitation $invitation): bool
     {
-        if ($invitation->isAccepted() || $invitation->isExpired()) {
-            return false;
-        }
-
-        return true;
+      return true;
     }
 
     /**

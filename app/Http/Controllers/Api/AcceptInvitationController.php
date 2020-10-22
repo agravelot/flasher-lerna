@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\InvitationResource;
 use App\Models\Invitation;
 use Illuminate\Auth\Access\AuthorizationException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class AcceptInvitationController extends Controller
 {
@@ -17,6 +18,14 @@ class AcceptInvitationController extends Controller
     public function __invoke(Invitation $invitation): InvitationResource
     {
         $this->authorize('view', $invitation);
+
+        if ($invitation->isAccepted()) {
+            throw new UnauthorizedHttpException('ACCEPTED');
+        }
+
+        if ($invitation->isExpired()) {
+            throw new UnauthorizedHttpException('EXPIRED');
+        }
 
         $invitation->cosplayer->sso_id = auth()->id() ?? auth()->user()->token->sub;
         $invitation->cosplayer->save();

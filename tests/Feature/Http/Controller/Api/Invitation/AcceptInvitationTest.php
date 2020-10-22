@@ -46,7 +46,7 @@ class AcceptInvitationTest extends TestCase
         $response->assertNotFound();
     }
 
-    public function test_invited_user_can_not_accept_invitation_twice(): void
+    public function test_user_can_not_accept_invitation_twice(): void
     {
         Mail::fake();
         $user = factory(User::class)->make();
@@ -57,7 +57,22 @@ class AcceptInvitationTest extends TestCase
 
         $response = $this->acceptInvitation($invitation);
 
-        $this->assertSame(403, $response->status());
+        $this->assertSame(401, $response->status());
+        $this->assertSame($invitation->confirmed_at->toString(), $invitation->fresh()->confirmed_at->toString());
+    }
+
+    public function test_admin_can_not_accept_invitation_twice(): void
+    {
+        Mail::fake();
+        $user = factory(User::class)->state('admin')->make();
+        $this->actingAs($user, 'api');
+        $invitation = factory(Invitation::class)->state('confirmed')->create([
+            'created_at' => now()->subDay(),
+        ]);
+
+        $response = $this->acceptInvitation($invitation);
+
+        $this->assertSame(401, $response->status());
         $this->assertSame($invitation->confirmed_at->toString(), $invitation->fresh()->confirmed_at->toString());
     }
 
