@@ -57,7 +57,7 @@ class AcceptInvitationTest extends TestCase
 
         $response = $this->acceptInvitation($invitation);
 
-        $this->assertSame(401, $response->status());
+        $this->assertSame(400, $response->status());
         $this->assertSame($invitation->confirmed_at->toString(), $invitation->fresh()->confirmed_at->toString());
     }
 
@@ -72,7 +72,7 @@ class AcceptInvitationTest extends TestCase
 
         $response = $this->acceptInvitation($invitation);
 
-        $this->assertSame(401, $response->status());
+        $this->assertSame(400, $response->status());
         $this->assertSame($invitation->confirmed_at->toString(), $invitation->fresh()->confirmed_at->toString());
     }
 
@@ -87,7 +87,7 @@ class AcceptInvitationTest extends TestCase
 
         $response = $this->acceptInvitation($invitation);
 
-        $this->assertSame(403, $response->status());
+        $this->assertSame(400, $response->status());
         $this->assertNull($invitation->fresh()->confirmed_at);
         $this->assertSame($user->sso_id, ($invitation->cosplayer->sso_id));
     }

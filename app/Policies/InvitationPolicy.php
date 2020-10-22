@@ -22,7 +22,7 @@ class InvitationPolicy extends Policy
      */
     public function view(?User $user, Invitation $invitation): bool
     {
-      return true;
+        return true;
     }
 
     /**
