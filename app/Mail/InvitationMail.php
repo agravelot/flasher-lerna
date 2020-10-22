@@ -40,7 +40,7 @@ class InvitationMail extends Mailable implements ShouldQueue
             ->text('emails.invitations.invitation_txt')
             ->subject("{$this->invitation->cosplayer->name}: Invitation pour récupérer vos 📸 photos")
             ->with([
-                'invitationUrl' => config('app.frontend_url').'/invitations/validate?code='.$this->invitation->uuid,
+                'invitationUrl' => config('app.frontend_url').'/invitations/validate?code='.$this->invitation->id,
                 'frontendUrl' => config('app.frontend_url'),
             ]);
     }
