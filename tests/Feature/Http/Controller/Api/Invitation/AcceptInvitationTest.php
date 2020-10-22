@@ -91,6 +91,6 @@ class AcceptInvitationTest extends TestCase
 
     private function acceptInvitation(Invitation $invitation): TestResponse
     {
-        return $this->getJson("/api/invitations/{$invitation->uuid}/accept");
+        return $this->getJson("/api/invitations/{$invitation->id}/accept");
     }
 }

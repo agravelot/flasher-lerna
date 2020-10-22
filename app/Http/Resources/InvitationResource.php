@@ -13,7 +13,7 @@ class InvitationResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'id' => $this->uuid,
+            'id' => $this->id,
             'email' => $this->email,
             'cosplayer' => new CosplayerResource($this->cosplayer),
             'message' => $this->message,
