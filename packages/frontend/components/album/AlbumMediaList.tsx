@@ -1,0 +1,91 @@
+import React, { FunctionComponent } from "react";
+import Image from "next/image";
+import Album from "~/models/album";
+import { ImageGallery, ImageObject, Person } from "schema-dts";
+import { useRouter } from "next/dist/client/router";
+import { configuration } from "~/utils/configuration";
+import { sizes } from "~/utils/util";
+
+type Props = {
+  album: Album;
+  openGalleryAt: (index: number) => void;
+};
+
+const AlbumMediaList: FunctionComponent<Props> = ({
+  album,
+  openGalleryAt,
+}: Props) => {
+  const { asPath } = useRouter();
+
+  const person: Person = {
+    "@type": "Person",
+    name: "JKanda",
+    url: configuration.appUrl,
+  };
+
+  const image: ImageObject = {
+    "@type": "ImageObject",
+    thumbnailUrl: album.medias?.[0].thumb,
+    contentUrl: album.medias?.[0].thumb,
+    author: person,
+    name: album.medias?.[0].thumb,
+    license: "",
+    acquireLicensePage: "",
+  };
+
+  const jsonLd: ImageGallery = {
+    "@type": "ImageGallery",
+    name: album.title,
+    keywords: album.categories?.map((c) => c.name) ?? [],
+    isAccessibleForFree: true,
+    primaryImageOfPage: image,
+    image,
+    author: [person],
+    creator: person,
+    dateCreated: album.created_at,
+    dateModified: album.updated_at ?? undefined,
+    datePublished: album.published_at ?? undefined,
+    thumbnailUrl: album.medias?.[0].thumb,
+    url: process.env.APP_URL + asPath,
+    abstract: album.meta_description,
+    // copyrightHolder: getModule(JsonLdModule, $store).getOrganization,
+    copyrightYear: new Date(album.created_at).getFullYear(),
+    license: "",
+    inLanguage: { "@type": "Language", name: "French" },
+  };
+
+  return (
+    <div className="flex flex-wrap -mx-2 items-center">
+      <div>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: `${JSON.stringify(jsonLd)}`,
+          }}
+        ></script>
+      </div>
+
+      {album.medias?.map((media, index) => (
+        <div
+          key={media.id}
+          className="flex-auto w-full md:w-1/2 cursor-pointer"
+          onClick={() => openGalleryAt(index)}
+          tabIndex={0}
+        >
+          <Image
+            className="w-full p-1 object-contain"
+            src={media.url}
+            alt={media.name}
+            layout="responsive"
+            height={media.height}
+            width={media.width}
+            sizes={sizes(2, "container")}
+            draggable={false}
+          />
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default AlbumMediaList;

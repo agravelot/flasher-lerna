@@ -1,0 +1,41 @@
+import { useRouter } from "next/dist/client/router";
+import { FunctionComponent } from "react";
+
+interface Props {
+  path?: string;
+  targetBlank?: boolean;
+}
+
+const AdminOverlay: FunctionComponent<Props> = ({
+  path,
+  targetBlank = true,
+}: Props) => {
+  const router = useRouter();
+
+  return (
+    <div className="fixed bottom-0 right-0 p-8 z-30">
+      <a
+        className="h-12 w-12 bg-black rounded-full flex items-center text-white text-center"
+        target={targetBlank ? "_blank" : "_self"}
+        href={`https://admin.jkanda.fr${path ?? router.asPath}`}
+      >
+        <svg
+          className="p-3"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1}
+            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+          />
+        </svg>
+      </a>
+    </div>
+  );
+};
+
+export default AdminOverlay;
