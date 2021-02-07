@@ -1,5 +1,4 @@
 import { FunctionComponent } from "react";
-import Media from "~/models/media";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, {
@@ -11,6 +10,7 @@ import SwiperCore, {
   Mousewheel,
 } from "swiper";
 import "swiper/swiper-bundle.css";
+import { Media } from "@flasher/models";
 
 export type Props = {
   medias: Media[];

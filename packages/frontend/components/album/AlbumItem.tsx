@@ -1,8 +1,8 @@
 import Link from "next/link";
 import React, { FunctionComponent } from "react";
-import Album from "~/models/album";
 import Image from "next/image";
-import { sizes } from "~/utils/util";
+import { Album } from "@flasher/models";
+import { sizes } from "../../utils/util";
 
 interface Props {
   album: Album;

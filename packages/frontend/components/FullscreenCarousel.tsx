@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect } from "react";
-import { Props as CarouselProps } from "~/components/SwiperCarousel";
-import { SwiperCarousel } from "~/components/SwiperCarousel";
+import { Props as CarouselProps } from "./SwiperCarousel";
+import { SwiperCarousel } from "./SwiperCarousel";
 
 export type Props = { openned: boolean; close: () => void } & CarouselProps;
 

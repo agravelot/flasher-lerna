@@ -1,4 +1,4 @@
-export default class Page {
+export  class Page {
   public id!: number;
   public name!: string;
   public title!: string;

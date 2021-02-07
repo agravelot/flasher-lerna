@@ -1,5 +1,5 @@
+import { SocialMedia } from "@flasher/models";
 import { FunctionComponent } from "react";
-import SocialMedia from "~/models/social-media";
 
 interface Props {
   socialMedia: SocialMedia;

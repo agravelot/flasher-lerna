@@ -1,6 +1,6 @@
+import { Album } from "@flasher/models";
 import React, { FunctionComponent } from "react";
-import AlbumItem from "~/components/album/AlbumItem";
-import Album from "~/models/album";
+import AlbumItem from "./AlbumItem";
 
 type Props = {
   albums: Album[];

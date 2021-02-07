@@ -1,8 +1,8 @@
 import { FunctionComponent } from "react";
-import Testimonial from "~/models/testimonial";
 import { AggregateRating } from "schema-dts";
-import { configuration } from "~/utils/configuration";
-import TestimonialItem from "~/components/TestimonialItem";
+import { configuration } from "../utils/configuration";
+import TestimonialItem from "../components/TestimonialItem";
+import { Testimonial } from "@flasher/models";
 
 interface Props {
   testimonials: Testimonial[];

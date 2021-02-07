@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Category from "~/models/category";
-import { sizes } from "~/utils/util";
+import { sizes } from "../../utils/util";
+import { Category } from "@flasher/models";
 
 interface Props {
   category: Category;

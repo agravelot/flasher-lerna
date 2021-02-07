@@ -1,9 +1,9 @@
 import { FunctionComponent, useEffect } from "react";
-import { SearchStatus, useSearch } from "contexts/AppContext";
+import { SearchStatus, useSearch } from "../../contexts/AppContext";
 import dynamic from "next/dynamic";
 import { Transition } from "@headlessui/react";
 
-const LazySearch = dynamic(() => import("~/components/search/Search"), {
+const LazySearch = dynamic(() => import("./Search"), {
   ssr: false,
 });
 

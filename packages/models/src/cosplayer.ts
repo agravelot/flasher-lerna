@@ -1,6 +1,6 @@
-import Media from "~/models/media";
+import {Media} from './media';
 
-export default class Cosplayer {
+export  class Cosplayer {
   public id!: number;
   public name!: string;
   public slug!: string;

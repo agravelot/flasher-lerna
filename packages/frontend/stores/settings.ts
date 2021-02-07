@@ -1,5 +1,4 @@
-import { SettingMedia } from "../models/setting";
-import Setting, { SettingKeys } from "~/models/setting";
+import { Setting, SettingKeys, SettingMedia } from "@flasher/models";
 import { api, PaginatedReponse } from "../utils/api";
 
 export interface Settings {

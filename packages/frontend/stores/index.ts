@@ -1,5 +1,5 @@
-import SocialMedia from "~/models/social-media";
-import { getSettings, Settings } from "~/stores/settings";
+import { SocialMedia } from "@flasher/models";
+import { getSettings, Settings } from "./settings";
 import { getSocialMedias } from "./social-medias";
 
 export type GlobalProps = Settings & { socialMedias: SocialMedia[] };

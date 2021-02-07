@@ -5,26 +5,28 @@ import {
   GetStaticPropsResult,
   NextPage,
 } from "next";
-import Layout from "~/components/Layout";
-import CosplayerList from "~/components/cosplayer/CosplayerList";
-import Header from "~/components/Header";
-import Pagination, { PaginationProps } from "~/components/Pagination";
-import { api, PaginatedReponse } from "~/utils/api";
-import { range } from "~/utils/util";
-import Cosplayer from "~/models/cosplayer";
-import { getGlobalProps, GlobalProps } from "~/stores";
+import Layout from "../../../components/Layout";
+import CosplayerList from "../../../components/cosplayer/CosplayerList";
+import Header from "../../../components/Header";
+import Pagination, { PaginationProps } from "../../../components/Pagination";
+import { range } from "../../../utils/util";
+import { getGlobalProps, GlobalProps } from "../../../stores";
 import dynamic from "next/dynamic";
-import useAuthentication from "~/hooks/useAuthentication";
 import { NextSeo } from "next-seo";
+import { api, PaginatedReponse, useAuthentication } from "@flasher/common";
+import { Cosplayer } from "@flasher/models";
 
 type Props = {
   cosplayers: Cosplayer[];
   pagination: PaginationProps;
 } & GlobalProps;
 
-const DynamicAdminOverlay = dynamic(() => import("~/components/AdminOverlay"), {
-  ssr: false,
-});
+const DynamicAdminOverlay = dynamic(
+  () => import("../../../components/AdminOverlay"),
+  {
+    ssr: false,
+  }
+);
 
 const perPage = 24;
 

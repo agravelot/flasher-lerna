@@ -5,19 +5,18 @@ import {
   GetStaticPropsResult,
   NextPage,
 } from "next";
-import Layout from "~/components/Layout";
-import Header from "~/components/Header";
-import Album from "~/models/album";
-import AlbumList from "~/components/album/AlbumList";
-import Pagination, { PaginationProps } from "~/components/Pagination";
-import { api, PaginatedReponse } from "~/utils/api";
-import { range } from "~/utils/util";
-import { getGlobalProps, GlobalProps } from "~/stores";
+import Layout from "../../../components/Layout";
+import Header from "../../../components/Header";
+import AlbumList from "../../../components/album/AlbumList";
+import Pagination, { PaginationProps } from "../../../components/Pagination";
+import { getGlobalProps, GlobalProps } from "../../../stores";
 import dynamic from "next/dynamic";
-import useAuthentication from "~/hooks/useAuthentication";
 import { NextSeo } from "next-seo";
-import { configuration } from "~/utils/configuration";
+import { configuration } from "../../../utils/configuration";
 import { useRouter } from "next/dist/client/router";
+import { Album } from "@flasher/models";
+import { api, PaginatedReponse, useAuthentication } from "@flasher/common";
+import { range } from "../../../utils/util";
 
 type Props = {
   albums: Album[];
@@ -26,9 +25,12 @@ type Props = {
 
 const perPage = 12;
 
-const DynamicAdminOverlay = dynamic(() => import("~/components/AdminOverlay"), {
-  ssr: false,
-});
+const DynamicAdminOverlay = dynamic(
+  () => import("../../../components/AdminOverlay"),
+  {
+    ssr: false,
+  }
+);
 
 const IndexAlbum: NextPage<Props> = ({
   albums,
@@ -54,7 +56,7 @@ const IndexAlbum: NextPage<Props> = ({
           url: configuration.appUrl + pathname,
           images: albums
             .map((a) => ({
-              url: a.media?.thumb ?? "",
+              url: a.media?.url ?? "",
               width: a.media?.width,
               height: a.media?.height,
               alt: a.title,

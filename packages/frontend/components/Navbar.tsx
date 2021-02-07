@@ -1,8 +1,8 @@
+import { useAuthentication } from "@flasher/common";
 import Link from "next/link";
 import { FunctionComponent, useContext, useState } from "react";
-import useAuthentication from "hooks/useAuthentication";
-import NavbarAccount from "~/components/NavbarAccount";
-import { SearchContext } from "contexts/AppContext";
+import NavbarAccount from "../components/NavbarAccount";
+import { SearchContext } from "../contexts/AppContext";
 
 const Navbar: FunctionComponent = () => {
   const [showMenu, setShowMenu] = useState(false);

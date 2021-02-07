@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import Link from "next/link";
-import { range } from "~/utils/util";
+import { range } from "../utils/util";
 
 export class PaginationProps {
   showInfo!: boolean;

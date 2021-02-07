@@ -1,9 +1,9 @@
 import { AppProps } from "next/app";
 import { SSRKeycloakProvider, SSRCookies } from "@react-keycloak/ssr";
-import { configuration } from "~/utils/configuration";
-import "styles/main.css";
+import { configuration } from "../utils/configuration";
+import "../styles/main.css";
 import { ReactElement, useEffect } from "react";
-import { useAnalytics } from "~/hooks/useAnalytics";
+import { useAnalytics } from "../hooks/useAnalytics";
 import { useRouter } from "next/dist/client/router";
 
 function App({ Component, pageProps }: AppProps): ReactElement {

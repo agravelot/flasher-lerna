@@ -1,8 +1,8 @@
 import { FunctionComponent } from "react";
-import Testimonial from "~/models/testimonial";
-import Avatar from "~/components/Avatar";
+import Avatar from "../components/Avatar";
 import { Review } from "schema-dts";
-import { configuration } from "~/utils/configuration";
+import { configuration } from "../utils/configuration";
+import { Testimonial } from "@flasher/models";
 
 interface Props {
   testimonial: Testimonial;

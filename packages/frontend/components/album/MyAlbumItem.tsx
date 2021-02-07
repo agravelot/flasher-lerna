@@ -1,10 +1,10 @@
 import { FunctionComponent } from "react";
-import Album from "~/models/album";
 import Image from "next/image";
 import Link from "next/link";
-import { api } from "~/utils/api";
 import { useKeycloak } from "@react-keycloak/ssr";
-import { useAnalytics } from "~/hooks/useAnalytics";
+import { useAnalytics } from "../../hooks/useAnalytics";
+import { Album } from "@flasher/models";
+import { api } from "@flasher/common";
 
 export interface Props {
   album: Album;

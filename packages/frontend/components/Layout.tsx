@@ -1,13 +1,13 @@
 import React, { FunctionComponent, ReactNode } from "react";
 import Head from "next/head";
-import Navbar from "~/components/Navbar";
-import Footer from "~/components/Footer";
-import { SearchModal } from "~/components/search/SearchModal";
-import { SearchContextProvider } from "contexts/AppContext";
-import SocialMedia from "~/models/social-media";
-import { useFavion } from "~/hooks/useFavicon";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import { SearchModal } from "../components/search/SearchModal";
+import { SearchContextProvider } from "../contexts/AppContext";
+import { useFavion } from "../hooks/useFavicon";
 import { DefaultSeo, SocialProfileJsonLd } from "next-seo";
-import { configuration } from "~/utils/configuration";
+import { configuration } from "../utils/configuration";
+import { SocialMedia } from "@flasher/models";
 
 type Props = {
   children?: ReactNode;
@@ -64,11 +64,6 @@ const Layout: FunctionComponent<Props> = ({
         <link
           key="preconnect-google-ga"
           href="https://www.google-analytics.com"
-          rel="preconnect"
-        />
-        <link
-          key="preconnect-cdn-assets"
-          href="https://assets.jkanda.fr"
           rel="preconnect"
         />
         <link

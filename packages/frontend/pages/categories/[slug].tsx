@@ -4,26 +4,32 @@ import {
   GetStaticPropsContext,
   NextPage,
 } from "next";
-import Layout from "~/components/Layout";
-import Header from "~/components/Header";
-import Category from "~/models/category";
-import { api, PaginatedReponse, WrappedResponse } from "~/utils/api";
-import Album from "~/models/album";
-import AlbumItem from "~/components/album/AlbumItem";
-import { getGlobalProps, GlobalProps } from "~/stores";
+import Layout from "../../components/Layout";
+import Header from "../../components/Header";
+import AlbumItem from "../../components/album/AlbumItem";
+import { getGlobalProps, GlobalProps } from "../../stores";
 import dynamic from "next/dynamic";
-import useAuthentication from "~/hooks/useAuthentication";
 import { NextSeo } from "next-seo";
-import { configuration } from "~/utils/configuration";
+import { configuration } from "../../utils/configuration";
+import {
+  api,
+  PaginatedReponse,
+  useAuthentication,
+  WrappedResponse,
+} from "@flasher/common";
+import { Album, Category } from "@flasher/models";
 
 type Props = {
   category: Category;
   albums: Album[];
 } & GlobalProps;
 
-const DynamicAdminOverlay = dynamic(() => import("~/components/AdminOverlay"), {
-  ssr: false,
-});
+const DynamicAdminOverlay = dynamic(
+  () => import("../../components/AdminOverlay"),
+  {
+    ssr: false,
+  }
+);
 
 const ShowCategory: NextPage<Props> = ({
   category,
@@ -51,7 +57,7 @@ const ShowCategory: NextPage<Props> = ({
           },
           images: [
             {
-              url: category.cover?.thumb ?? "",
+              url: category.cover?.url ?? "",
               width: category.cover?.width,
               height: category.cover?.height,
               alt: category.name,
@@ -63,7 +69,6 @@ const ShowCategory: NextPage<Props> = ({
         {category.cover && (
           <Header
             src={category.cover?.url}
-            srcSet={category.cover?.src_set}
             title={category.name}
             description={`Découvrez les albums de la catégorie ${category.name.toLowerCase()}`}
           />

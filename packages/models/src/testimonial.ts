@@ -1,4 +1,4 @@
-export default class Testimonial {
+export  class Testimonial {
   id!: number;
   name!: string;
   email!: string;

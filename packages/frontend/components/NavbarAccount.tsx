@@ -1,6 +1,7 @@
+import { useAuthentication } from "@flasher/common";
 import Link from "next/link";
 import { FunctionComponent, useState } from "react";
-import useAuthentication from "hooks/useAuthentication";
+import { configuration } from "../utils/configuration";
 
 const NavbarAccount: FunctionComponent = () => {
   const {
@@ -8,10 +9,10 @@ const NavbarAccount: FunctionComponent = () => {
     keycloak,
     register,
     login,
-    administration,
     parsedToken,
     isAdmin,
   } = useAuthentication();
+  const { administration } = configuration;
 
   // Dropdown
   const toggleDropdown = () => setIsOpenned((openned) => !openned);
@@ -98,7 +99,7 @@ const NavbarAccount: FunctionComponent = () => {
                         className="w-full block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
                         role="menuitem"
                         tabIndex={0}
-                        href={administration()}
+                        href={administration}
                         target="_blank"
                         rel="noreferrer"
                       >

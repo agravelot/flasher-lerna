@@ -1,4 +1,4 @@
-export default class Invitation {
+export  class Invitation {
   id!: number;
   email!: string;
   message!: string;

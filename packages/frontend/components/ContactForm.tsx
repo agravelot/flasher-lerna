@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from "react";
-import { api, HttpRequestError } from "~/utils/api";
 import { Formik, Field, Form, FormikHelpers, ErrorMessage } from "formik";
+import { api, HttpRequestError } from "@flasher/common";
 
 // interface ContactError {
 //   errors: { email: string[]; name: string[]; message: string[] };

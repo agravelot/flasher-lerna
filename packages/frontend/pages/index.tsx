@@ -1,17 +1,16 @@
 import Link from "next/link";
-import Layout from "~/components/Layout";
+import Layout from "../components/Layout";
 import Image from "next/image";
-import Header from "~/components/Header";
-import ContactForm from "~/components/ContactForm";
-import { TestimonialList } from "~/components/TestimonialList";
-import AlbumList from "~/components/album/AlbumList";
-import Testimonial from "~/models/testimonial";
-import Album from "~/models/album";
+import Header from "../components/Header";
+import ContactForm from "../components/ContactForm";
+import { TestimonialList } from "../components/TestimonialList";
+import AlbumList from "../components/album/AlbumList";
 import { GetStaticProps, GetStaticPropsResult, NextPage } from "next";
-import { api, PaginatedReponse } from "~/utils/api";
-import { getGlobalProps, GlobalProps } from "~/stores";
-import Separator from "~/components/Separator";
+import { api, PaginatedReponse } from "../utils/api";
+import { getGlobalProps, GlobalProps } from "../stores";
+import Separator from "../components/Separator";
 import { NextSeo } from "next-seo";
+import { Album, Testimonial } from "@flasher/models";
 
 const toggleTestimonialModal = () => {
   return;
@@ -52,7 +51,7 @@ const IndexPage: NextPage<Props> = ({
         <Header title={appName} separatorClass="text-gray-300" />
         <section className="pb-20 bg-gray-300">
           <div className="container mx-auto">
-            <div className="md:flex flex-wrap -mt-24 md:-mx-3 overflow-x-hidden">
+            <div className="flex flex-wrap -mt-24 md:-mx-3 overflow-x-hidden">
               <Link href="/albums/page/1">
                 <a
                   tabIndex={0}

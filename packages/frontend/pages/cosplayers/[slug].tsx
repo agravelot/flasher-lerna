@@ -1,25 +1,31 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import Layout from "~/components/Layout";
-import Avatar from "~/components/Avatar";
-import Album from "~/models/album";
-import { api, PaginatedReponse, WrappedResponse } from "~/utils/api";
-import { range } from "~/utils/util";
-import Cosplayer from "~/models/cosplayer";
-import AlbumItem from "~/components/album/AlbumItem";
-import { getGlobalProps, GlobalProps } from "~/stores";
-import Separator from "~/components/Separator";
+import Layout from "../../components/Layout";
+import Avatar from "../../components/Avatar";
+import { range } from "../../utils/util";
+import AlbumItem from "../../components/album/AlbumItem";
+import { getGlobalProps, GlobalProps } from "../../stores";
+import Separator from "../../components/Separator";
 import dynamic from "next/dynamic";
-import useAuthentication from "~/hooks/useAuthentication";
 import { NextSeo } from "next-seo";
+import { Album, Cosplayer } from "@flasher/models";
+import {
+  api,
+  PaginatedReponse,
+  useAuthentication,
+  WrappedResponse,
+} from "@flasher/common";
 
 type Props = {
   cosplayer: Cosplayer;
   albums: Album[];
 } & GlobalProps;
 
-const DynamicAdminOverlay = dynamic(() => import("~/components/AdminOverlay"), {
-  ssr: false,
-});
+const DynamicAdminOverlay = dynamic(
+  () => import("../../components/AdminOverlay"),
+  {
+    ssr: false,
+  }
+);
 
 const ShowCosplayer: NextPage<Props> = ({
   cosplayer,
@@ -43,7 +49,7 @@ const ShowCosplayer: NextPage<Props> = ({
           },
           images: [cosplayer.avatar, ...albums.map((a) => a.media)].map(
             (cover) => ({
-              url: cover?.thumb ?? "",
+              url: cover?.url ?? "",
               height: cover?.height,
               width: cover?.width,
             })
@@ -77,7 +83,7 @@ const ShowCosplayer: NextPage<Props> = ({
                       <div className="-mt-16">
                         <Avatar
                           name={cosplayer.name}
-                          src={cosplayer.avatar?.thumb}
+                          src={cosplayer.avatar?.url}
                           size={24}
                           border={true}
                         />

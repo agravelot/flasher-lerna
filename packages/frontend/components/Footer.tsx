@@ -1,9 +1,10 @@
 import { FunctionComponent } from "react";
-import SocialMediaItem from "~/components/SocialMedia";
+import SocialMediaItem from "../components/SocialMedia";
 import Link from "next/link";
-import useAuthentication from "hooks/useAuthentication";
-import SocialMedia from "~/models/social-media";
-import Separator from "~/components/Separator";
+import Separator from "./Separator";
+import { SocialMedia } from "@flasher/models";
+import { useAuthentication } from "@flasher/common";
+import { configuration } from "../utils/configuration";
 
 interface Props {
   socialMedias: SocialMedia[];
@@ -12,7 +13,8 @@ interface Props {
 const date = new Date().getFullYear();
 
 const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
-  const { keycloak, register, login, administration } = useAuthentication();
+  const { keycloak, register, login } = useAuthentication();
+  const { administration } = configuration;
 
   return (
     <footer className="relative bg-gray-300 pt-8 pb-6">
@@ -102,7 +104,7 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                         <a
                           tabIndex={0}
                           className="block py-2 text-sm"
-                          href={administration()}
+                          href={administration}
                           target="_blank"
                           rel="noreferrer"
                         >
@@ -129,7 +131,7 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                         </a>
                       </Link>
 
-                      <li className="hidden md:flex items-center">
+                      <li className="md:flex items-center">
                         <a
                           tabIndex={0}
                           className="block py-2 text-sm"
@@ -153,7 +155,7 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                           S'inscrire
                         </button>
                       </li>
-                      <li className="hidden md:flex items-center">
+                      <li className="md:flex items-center">
                         <button
                           tabIndex={0}
                           className="block py-2 text-sm"

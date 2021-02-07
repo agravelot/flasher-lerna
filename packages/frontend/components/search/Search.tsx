@@ -6,9 +6,9 @@ import {
   CustomSearchBox,
   CosplayerHits,
   CategoryHits,
-} from "~/components/search/Hits";
+} from "./Hits";
 import { FunctionComponent } from "react";
-import { configuration } from "~/utils/configuration";
+import { configuration } from "../../utils/configuration";
 
 const Search: FunctionComponent = () => {
   const client = algoliasearch(

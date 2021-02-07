@@ -1,6 +1,6 @@
+import { Category } from "@flasher/models";
 import React, { FunctionComponent } from "react";
-import CategoryItem from "~/components/category/CategoryItem";
-import Category from "~/models/category";
+import CategoryItem from "../../components/category/CategoryItem";
 
 type Props = {
   categories: Category[];

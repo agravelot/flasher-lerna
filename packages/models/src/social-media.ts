@@ -1,8 +1,8 @@
-export default class SocialMedia {
+export  class SocialMedia {
   id!: number;
   name!: string;
   url!: string;
-  icon!: "facebook-f" | "instagram";
+  icon!: 'facebook-f' | 'instagram';
   color!: string;
   active!: boolean;
   created_at!: Date;

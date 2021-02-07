@@ -1,20 +1,24 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import Layout from "~/components/Layout";
-import Album from "~/models/album";
-import Header from "~/components/Header";
-import { api, PaginatedReponse, WrappedResponse } from "~/utils/api";
 import Link from "next/link";
-import CosplayerItem from "~/components/cosplayer/CosplayerItem";
-import AlbumList from "~/components/album/AlbumList";
+import CosplayerItem from "../../components/cosplayer/CosplayerItem";
+import AlbumList from "../../components/album/AlbumList";
 import { NextSeo, ArticleJsonLd } from "next-seo";
 import { useRouter } from "next/dist/client/router";
-import { configuration } from "~/utils/configuration";
-import { range } from "~/utils/util";
-import { getGlobalProps, GlobalProps } from "~/stores";
+import { configuration } from "../../utils/configuration";
+import { range } from "../../utils/util";
+import { getGlobalProps, GlobalProps } from "../../stores";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import useAuthentication from "~/hooks/useAuthentication";
-import AlbumMediaList from "~/components/album/AlbumMediaList";
+import { Album } from "@flasher/models";
+import {
+  api,
+  PaginatedReponse,
+  useAuthentication,
+  WrappedResponse,
+} from "@flasher/common";
+import Layout from "../../components/Layout";
+import Header from "../../components/Header";
+import AlbumMediaList from "../../components/album/AlbumMediaList";
 
 type Props = {
   album: Album;
@@ -22,13 +26,16 @@ type Props = {
 } & GlobalProps;
 
 const DynamicFullscreenCarousel = dynamic(
-  () => import("~/components/FullscreenCarousel"),
+  () => import("../../components/FullscreenCarousel"),
   { ssr: false }
 );
 
-const DynamicAdminOverlay = dynamic(() => import("~/components/AdminOverlay"), {
-  ssr: false,
-});
+const DynamicAdminOverlay = dynamic(
+  () => import("../../components/AdminOverlay"),
+  {
+    ssr: false,
+  }
+);
 
 const ShowAlbum: NextPage<Props> = ({
   album,
@@ -66,7 +73,7 @@ const ShowAlbum: NextPage<Props> = ({
           description: album.meta_description,
           type: "article",
           images: album.medias?.slice(0, 5).flatMap((m) => ({
-            url: m.thumb,
+            url: m.url,
             alt: m.name,
             width: m.width,
             height: m.height,
@@ -83,7 +90,7 @@ const ShowAlbum: NextPage<Props> = ({
       <ArticleJsonLd
         url={url}
         title={title}
-        images={album.medias?.slice(0, 5).flatMap((m) => m.thumb) ?? []}
+        images={album.medias?.slice(0, 5).flatMap((m) => m.url) ?? []}
         datePublished={album.created_at}
         dateModified={album.updated_at ?? album.created_at}
         authorName={appName}
@@ -94,7 +101,6 @@ const ShowAlbum: NextPage<Props> = ({
       <Header
         title={album.title}
         src={album.medias?.[0].url}
-        srcSet={album.medias?.[0].src_set}
         alt-description={album.title}
       >
         <div className="px-6 py-4">

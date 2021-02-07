@@ -6,8 +6,8 @@ import {
 } from "react-instantsearch-dom";
 import { StateResultsProvided } from "react-instantsearch-core";
 import Link from "next/link";
-import Image from "~/components/Image";
-import Avatar from "~/components/Avatar";
+import Image from "../Image";
+import Avatar from "../Avatar";
 import { ReactElement } from "react";
 
 export const CustomSearchBox = connectSearchBox(
@@ -101,7 +101,7 @@ export const AlbumHits = connectHits(({ hits }) => (
           <a>
             <Image
               className="object-cover"
-              src={hit.thumb}
+              src={hit.cover}
               alt={hit.title}
               width={2000}
               height={2000}
@@ -139,7 +139,7 @@ export const CategoryHits = connectHits(({ hits }) => (
           prefetch={false}
         >
           <a className="">
-            <Avatar name={hit.title} src={hit.thumb} />
+            <Avatar name={hit.title} src={hit.cover} />
           </a>
         </Link>
         <div className="p-4">
@@ -167,7 +167,7 @@ export const CosplayerHits = connectHits(({ hits }) => (
           href={{ pathname: "/cosplayers/[slug]", query: { slug: hit.slug } }}
           prefetch={false}
         >
-          <Avatar name={hit.name} src={hit.thumb} />
+          <Avatar name={hit.name} src={hit.avatar} />
         </Link>
         <div className="p-4">
           <Link

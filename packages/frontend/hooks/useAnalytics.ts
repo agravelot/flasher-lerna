@@ -1,5 +1,5 @@
 import ReactGA, { EventArgs, FieldsObject, TrackerNames } from "react-ga";
-import { configuration } from "~/utils/configuration";
+import { configuration } from "../utils/configuration";
 
 interface AnalyticsHook {
   initialize: () => void;

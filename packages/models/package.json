@@ -1,0 +1,9 @@
+{
+  "name": "@flasher/models",
+  "version": "0.1.0",
+  "private": true,
+  "main": "src/",
+  "peerDependencies": {
+    "typescript": "^4.0.0"
+  }
+}

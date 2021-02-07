@@ -1,7 +1,7 @@
-import FilterableById from "~/models/interfaces/filterableById";
-import Media from "~/models/media";
+import {FilterableById} from './interfaces/filterableById';
+import {Media} from './media';
 
-export default class Category implements FilterableById {
+export  class Category implements FilterableById {
   public id!: number;
   public slug!: string;
   public name!: string;

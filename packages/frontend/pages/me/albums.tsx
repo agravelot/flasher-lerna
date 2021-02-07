@@ -1,15 +1,14 @@
 import { GetStaticProps } from "next";
 import React, { FunctionComponent, useEffect, useState } from "react";
-import Album from "~/models/album";
-import { api, PaginatedReponse } from "~/utils/api";
-import Layout from "~/components/Layout";
-import Header from "~/components/Header";
+import Layout from "../../components/Layout";
+import Header from "../../components/Header";
 import Link from "next/link";
-import Pagination, { PaginationProps } from "~/components/Pagination";
-import { getGlobalProps, GlobalProps } from "~/stores";
-import MyAlbumItem from "~/components/album/MyAlbumItem";
-import useAuthentication from "~/hooks/useAuthentication";
+import Pagination, { PaginationProps } from "../../components/Pagination";
+import { getGlobalProps, GlobalProps } from "../../stores";
+import MyAlbumItem from "../../components/album/MyAlbumItem";
 import { NextSeo } from "next-seo";
+import { api, PaginatedReponse, useAuthentication } from "@flasher/common";
+import { Album } from "@flasher/models";
 
 type Props = GlobalProps;
 

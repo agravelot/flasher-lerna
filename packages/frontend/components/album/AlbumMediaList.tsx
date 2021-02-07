@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from "react";
 import Image from "next/image";
-import Album from "~/models/album";
 import { ImageGallery, ImageObject, Person } from "schema-dts";
 import { useRouter } from "next/dist/client/router";
-import { configuration } from "~/utils/configuration";
-import { sizes } from "~/utils/util";
+import { sizes } from "../../utils/util";
+import { configuration } from "../../utils/configuration";
+import { Album } from "@flasher/models";
 
 type Props = {
   album: Album;
@@ -25,10 +25,10 @@ const AlbumMediaList: FunctionComponent<Props> = ({
 
   const image: ImageObject = {
     "@type": "ImageObject",
-    thumbnailUrl: album.medias?.[0].thumb,
-    contentUrl: album.medias?.[0].thumb,
+    thumbnailUrl: album.medias?.[0].url,
+    contentUrl: album.medias?.[0].url,
     author: person,
-    name: album.medias?.[0].thumb,
+    name: album.medias?.[0].name,
     license: "",
     acquireLicensePage: "",
   };
@@ -45,7 +45,7 @@ const AlbumMediaList: FunctionComponent<Props> = ({
     dateCreated: album.created_at,
     dateModified: album.updated_at ?? undefined,
     datePublished: album.published_at ?? undefined,
-    thumbnailUrl: album.medias?.[0].thumb,
+    thumbnailUrl: album.medias?.[0].url,
     url: process.env.APP_URL + asPath,
     abstract: album.meta_description,
     // copyrightHolder: getModule(JsonLdModule, $store).getOrganization,
@@ -68,7 +68,7 @@ const AlbumMediaList: FunctionComponent<Props> = ({
       {album.medias?.map((media, index) => (
         <div
           key={media.id}
-          className="flex-auto w-full md:w-1/2 cursor-pointer"
+          className="flex-auto w-full md:w-1/2 cursor-pointer flex-grow-0"
           onClick={() => openGalleryAt(index)}
           tabIndex={0}
         >

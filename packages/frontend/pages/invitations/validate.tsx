@@ -1,13 +1,13 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import Link from "next/link";
-import Layout from "~/components/Layout";
-import Header from "~/components/Header";
-import { getGlobalProps, GlobalProps } from "~/stores";
+import Layout from "../../components/Layout";
+import Header from "../../components/Header";
+import { getGlobalProps, GlobalProps } from "../../stores";
 import { useRouter } from "next/dist/client/router";
-import { api, WrappedResponse } from "~/utils/api";
-import Invitation from "~/models/invitation";
+import { api, WrappedResponse } from "../../utils/api";
 import { GetStaticProps, GetStaticPropsResult } from "next";
 import { NextSeo } from "next-seo";
+import { Invitation } from "@flasher/models";
 
 enum Status {
   Loading,
