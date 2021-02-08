@@ -56,6 +56,7 @@ module.exports = withTM(
         ],
       },
       poweredByHeader: false,
+      compress: false,
     }))
   ))
 );
