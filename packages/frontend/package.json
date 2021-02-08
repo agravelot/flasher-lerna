@@ -32,6 +32,7 @@
     "next-pwa": "^5.0.0",
     "next-seo": "^4.14.0",
     "next-sitemap": "^1.2.26",
+    "next-transpile-modules": "^6.2.0",
     "ngx-pwa-icons": "^0.1.2",
     "postcss": "^8.1.10",
     "postcss-flexbugs-fixes": "^5.0.2",
