@@ -48,7 +48,7 @@ jobs:
         # push: true
         # tags: :latest
         cache-from: type=registry,ref=registry.gitlab.com/flasher/flasher/flasher-frontend:latest
-        cache-to: type=inline  
+        cache-to: type=inline,mode=max  
         build-args: |
             NEXT_PUBLIC_API_URL=https://api.jkanda.fr/api
             NEXT_PUBLIC_KEYCLOAK_REALM=jkanda
