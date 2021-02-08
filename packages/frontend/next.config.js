@@ -13,6 +13,30 @@ const withTM = require("next-transpile-modules")([
 module.exports = withTM(
   (module.exports = withBundleAnalyzer(
     (module.exports = withPWA({
+      async redirects() {
+        return [
+          {
+            source: "/contact",
+            destination: "/#contact",
+            permanent: true,
+          },
+          {
+            source: "/albums",
+            destination: "/albums/page/1",
+            permanent: true,
+          },
+          {
+            source: "/categories",
+            destination: "/categories/page/1",
+            permanent: true,
+          },
+          {
+            source: "/cosplayers",
+            destination: "/cosplayers/page/1",
+            permanent: true,
+          },
+        ];
+      },
       // future: { webpack5: true },
       pwa: {
         dest: "public",
