@@ -6,7 +6,7 @@ COPY packages/frontend/package.json packages/frontend/package.json
 COPY packages/common/package.json packages/common/package.json 
 COPY packages/models/package.json packages/models/package.json 
 
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile --production
 
 
 ####
@@ -21,7 +21,6 @@ ENV NEXT_PUBLIC_KEYCLOAK_URL=${NEXT_PUBLIC_KEYCLOAK_URL}
 ENV NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=${NEXT_PUBLIC_KEYCLOAK_CLIENT_ID}
 ENV NODE_ENV=production
 
-RUN env 
 WORKDIR /app
 
 COPY . . 
