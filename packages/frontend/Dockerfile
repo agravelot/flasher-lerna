@@ -1,17 +1,4 @@
-FROM node:14-alpine as deps 
-
-COPY package.json yarn.lock lerna.json ./
-
-COPY packages/frontend/package.json packages/frontend/package.json
-COPY packages/common/package.json packages/common/package.json 
-COPY packages/models/package.json packages/models/package.json 
-
-RUN yarn install --frozen-lockfile --production
-
-
-####
-
-FROM node:14-alpine as builder
+FROM node:14-alpine
 
 ARG NEXT_PUBLIC_API_URL
 
@@ -23,16 +10,15 @@ ENV NODE_ENV=production
 
 WORKDIR /app
 
+COPY package.json yarn.lock lerna.json ./
+COPY packages/frontend/package.json packages/frontend/package.json
+COPY packages/common/package.json packages/common/package.json 
+COPY packages/models/package.json packages/models/package.json 
+
+RUN yarn install --frozen-lockfile --production
+
 COPY . . 
-COPY --from=deps . .
 
 RUN yarn workspace @flasher/frontend run build
 
-###
-
-FROM node:14-alpine
-
-#TODO Env 
-
-COPY --from=builder . .
 CMD ["node_modules/.bin/next", "start", "packages/frontend"]
