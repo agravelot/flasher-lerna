@@ -16,9 +16,9 @@ const withTM = require("next-transpile-modules")([
 
 module.exports = withPlugins([
   [
+    withTM,
+    withPWA,
     [
-      withTM,
-      withPWA,
       optional(() => require("@next/bundle-analyzer")),
       {
         enabled: process.env.ANALYZE === "true",
