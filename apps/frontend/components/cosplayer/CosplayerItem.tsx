@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import Avatar from "../../components/Avatar";
+import Avatar from "../Avatar";
 import Link from "next/link";
 import { Cosplayer } from "@flasher/models";
 

@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import SocialMediaItem from "../components/SocialMedia";
+import SocialMediaItem from "./SocialMedia";
 import Link from "next/link";
 import Separator from "./Separator";
 import { SocialMedia } from "@flasher/models";

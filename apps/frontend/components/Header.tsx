@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import Image from "next/image";
-import Separator from "../components/Separator";
+import Separator from "./Separator";
 import { Media } from "@flasher/models";
 
 const defaultMedia: Media = {

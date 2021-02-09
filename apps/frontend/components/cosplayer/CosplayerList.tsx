@@ -1,6 +1,6 @@
 import { Cosplayer } from "@flasher/models";
 import React, { FunctionComponent } from "react";
-import CosplayerItem from "../../components/cosplayer/CosplayerItem";
+import CosplayerItem from "./CosplayerItem";
 
 type Props = {
   cosplayers: Cosplayer[];

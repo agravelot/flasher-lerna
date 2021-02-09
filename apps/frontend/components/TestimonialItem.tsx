@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import Avatar from "../components/Avatar";
+import Avatar from "./Avatar";
 import { Review } from "schema-dts";
 import { configuration } from "../utils/configuration";
 import { Testimonial } from "@flasher/models";

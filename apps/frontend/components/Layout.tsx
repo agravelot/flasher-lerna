@@ -1,8 +1,8 @@
 import React, { FunctionComponent, ReactNode } from "react";
 import Head from "next/head";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import { SearchModal } from "../components/search/SearchModal";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
+import { SearchModal } from "./search/SearchModal";
 import { SearchContextProvider } from "../contexts/AppContext";
 import { useFavion } from "../hooks/useFavicon";
 import { DefaultSeo, SocialProfileJsonLd } from "next-seo";

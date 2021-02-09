@@ -1,7 +1,7 @@
 import { useAuthentication } from "@flasher/common";
 import Link from "next/link";
 import { FunctionComponent, useContext, useState } from "react";
-import NavbarAccount from "../components/NavbarAccount";
+import NavbarAccount from "./NavbarAccount";
 import { SearchContext } from "../contexts/AppContext";
 
 const Navbar: FunctionComponent = () => {
