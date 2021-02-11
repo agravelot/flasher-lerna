@@ -153,7 +153,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     });
 
   const albums = await api<PaginatedReponse<Album[]>>(
-    `/albums?filter[cosplayers.id]=${params?.page ?? 1}`
+    `/albums?filter[cosplayers.id]=${cosplayer.id}`
   )
     .then((res) => res.json())
     .then((json) => json.data)
