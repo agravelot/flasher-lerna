@@ -6,9 +6,10 @@ import {
 } from "react-instantsearch-dom";
 import { StateResultsProvided } from "react-instantsearch-core";
 import Link from "next/link";
-import Image from "../Image";
 import Avatar from "../Avatar";
 import { ReactElement } from "react";
+import { sizes } from "utils/util";
+import Image from "next/image";
 
 export const CustomSearchBox = connectSearchBox(
   ({ currentRefinement, refine }) => {
@@ -105,6 +106,7 @@ export const AlbumHits = connectHits(({ hits }) => (
               alt={hit.title}
               width={2000}
               height={2000}
+              sizes={sizes(3, "container")}
               // quality={95}
               // width={hit.width}
               // height="hit.height"
