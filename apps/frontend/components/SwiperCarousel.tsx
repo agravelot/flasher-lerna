@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, {
@@ -11,6 +11,7 @@ import SwiperCore, {
 } from "swiper";
 import "swiper/swiper-bundle.css";
 import { Media } from "@flasher/models";
+import { debounce } from "lodash-es";
 
 export type Props = {
   medias: Media[];
@@ -30,10 +31,33 @@ export const SwiperCarousel: FunctionComponent<Props> = ({
     Mousewheel,
   ]);
 
+  const [screenSize, setScreenSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  // Will force rerender on screen resize, allow dynamic `sizes`to wark
+  useEffect(() => {
+    const handleResize = debounce(
+      () =>
+        setScreenSize({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        }),
+      100
+    );
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <Swiper
       initialSlide={beginAt}
-      spaceBetween={350}
+      spaceBetween={50}
       slidesPerView={1}
       navigation
       pagination={{ clickable: true }}
@@ -51,11 +75,14 @@ export const SwiperCarousel: FunctionComponent<Props> = ({
                 objectFit="contain"
                 className="max-h-screen"
                 layout="fill"
+                priority={true}
                 src={m.url}
                 alt={m.name}
                 draggable={false}
                 sizes={
-                  Math.ceil((window.innerHeight / m.width) * m.height) + "px"
+                  screenSize.height > screenSize.width
+                    ? "100vw" // Image will be full width in almost any cases.
+                    : `${Math.ceil((screenSize.height / m.width) * m.height)}px` // Determine wanted size
                 }
               />
             </div>
