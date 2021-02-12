@@ -43,20 +43,25 @@ export const SwiperCarousel: FunctionComponent<Props> = ({
       zoom
       grabCursor
     >
-      {medias.map((m) => (
-        <SwiperSlide key={m.id} zoom>
-          <div className="flex items-center align-middle justify-center h-screen">
-            <Image
-              objectFit="contain"
-              className="max-h-screen w-full"
-              layout="fill"
-              src={m.url}
-              alt={m.name}
-              draggable={false}
-            />
-          </div>
-        </SwiperSlide>
-      ))}
+      {medias.map((m) => {
+        return (
+          <SwiperSlide key={m.id} zoom>
+            <div className="flex items-center align-middle justify-center h-screen">
+              <Image
+                objectFit="contain"
+                className="max-h-screen"
+                layout="fill"
+                src={m.url}
+                alt={m.name}
+                draggable={false}
+                sizes={
+                  Math.ceil((window.innerHeight / m.width) * m.height) + "px"
+                }
+              />
+            </div>
+          </SwiperSlide>
+        );
+      })}
     </Swiper>
   );
 };
