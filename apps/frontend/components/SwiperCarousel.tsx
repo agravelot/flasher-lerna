@@ -31,6 +31,8 @@ export const SwiperCarousel: FunctionComponent<Props> = ({
     Mousewheel,
   ]);
 
+  const [currentIndex, setCurrentIndex] = useState(beginAt);
+
   const [screenSize, setScreenSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -54,6 +56,11 @@ export const SwiperCarousel: FunctionComponent<Props> = ({
     };
   }, []);
 
+  const isNearbyOfCurrentIndex = (index: number): boolean =>
+    currentIndex + 1 === index ||
+    currentIndex === index ||
+    currentIndex - 1 === index;
+
   return (
     <Swiper
       initialSlide={beginAt}
@@ -66,8 +73,11 @@ export const SwiperCarousel: FunctionComponent<Props> = ({
       mousewheel
       zoom
       grabCursor
+      onSlideChangeTransitionEnd={
+        (swiper) => setCurrentIndex(swiper.realIndex) // Force re-render to loas next/previous images
+      }
     >
-      {medias.map((m) => {
+      {medias.map((m, index) => {
         return (
           <SwiperSlide key={m.id} zoom>
             <div className="flex items-center align-middle justify-center h-screen">
@@ -75,7 +85,7 @@ export const SwiperCarousel: FunctionComponent<Props> = ({
                 objectFit="contain"
                 className="max-h-screen"
                 layout="fill"
-                priority={true}
+                priority={isNearbyOfCurrentIndex(index)}
                 src={m.url}
                 alt={m.name}
                 draggable={false}
