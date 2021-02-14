@@ -29,10 +29,10 @@ export interface ConfigurationInterface {
 const envVarsSchema = joi
   .object()
   .keys({
-    NODE_ENV: joi
-      .string()
-      .valid("production", "development", "test")
-      .required(),
+    // NODE_ENV: joi
+    //   .string()
+    //   .valid("production", "development", "test")
+    //   .required(),
     NEXT_PUBLIC_APP_URL: joi
       .string()
       .required()
