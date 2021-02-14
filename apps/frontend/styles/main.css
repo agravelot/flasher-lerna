@@ -6,10 +6,10 @@ img {
     pointer-events: none;
 }
 
-@font-face{
+/* @font-face{
     font-family: 'Caveat';
     font-style: normal;
     font-weight: 400;
     src: local('Caveat'), url('/fonts/Caveat-VariableFont_wght.ttf') format('truetype');
     font-display: optional;
-}
+} */

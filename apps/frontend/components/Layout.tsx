@@ -58,14 +58,13 @@ const Layout: FunctionComponent<Props> = ({
         <meta name="msapplication-TileColor" content="#2B5797" />
         <meta name="msapplication-tap-highlight" content="no" />
         <meta name="theme-color" content="#000000" />
-        <link
+        {/* <link
           key="preconnect-serif-font"
           rel="preload"
           href="/fonts/Caveat-VariableFont_wght.ttf"
           as="font"
           type="font/ttf"
-        />
-
+        /> */}
         <link
           key="preconnect-google-ga"
           href="https://www.google-analytics.com"
