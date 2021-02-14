@@ -51,6 +51,7 @@ jobs:
         cache-from: type=registry,ref=registry.gitlab.com/flasher/flasher/flasher-frontend:latest
         cache-to: type=inline
         build-args: |
+            "NEXT_PUBLIC_APP_URL=${{ secrets.NEXT_PUBLIC_APP_URL }}"
             "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}"
             "NEXT_PUBLIC_KEYCLOAK_REALM=${{ secrets.NEXT_PUBLIC_KEYCLOAK_REALM }}"
             "NEXT_PUBLIC_KEYCLOAK_URL=${{ secrets.NEXT_PUBLIC_KEYCLOAK_URL }}"

@@ -1,8 +1,8 @@
 module.exports = {
-  siteUrl: process.env.APP_URL,
+  siteUrl: process.env.NEXT_PUBLIC_APP_URL,
   generateRobotsTxt: true, // (optional)
   exclude: [],
-  changefreq: "daily",
+  changefreq: "weekly",
   priority: 0.7,
   transform: (config, url) => {
     return {
