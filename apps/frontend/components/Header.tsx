@@ -6,7 +6,7 @@ import { Media } from "@flasher/models";
 const defaultMedia: Media = {
   id: 9999,
   url:
-    "https://assets-jkanda.s3.fr-par.scw.cloud/medias/3151/shooting-magicluna-en-saber.jpg",
+    "https://assets-jkanda.s3.fr-par.scw.cloud/medias/3499/oceane-avec-un-style-androgyne.jpg",
   name: "",
   file_name: "aze",
   width: 6000,
