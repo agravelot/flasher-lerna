@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+
+  db:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: flasher
+      POSTGRES_USER: flasher
+      POSTGRES_PASSWORD: flasher
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data:rw,delegated
+
+volumes:
+  db-data:
