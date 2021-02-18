@@ -46,30 +46,18 @@ JSON Sample
 
 // Album struct is a row record of the albums table in the flasher database
 type Album struct {
-	//[ 0] id                                             INT4                 null: false  primary: true   isArray: false  auto: false  col: INT4            len: -1      default: []
-	ID int32 `gorm:"primary_key;column:id;type:INT4;" json:"id"`
-	//[ 1] slug                                           VARCHAR(255)         null: false  primary: false  isArray: false  auto: false  col: VARCHAR         len: 255     default: []
-	Slug string `gorm:"column:slug;type:VARCHAR;size:255;" json:"slug"`
-	//[ 2] title                                          VARCHAR(255)         null: false  primary: false  isArray: false  auto: false  col: VARCHAR         len: 255     default: []
-	Title string `gorm:"column:title;type:VARCHAR;size:255;" json:"title"`
-	//[ 3] body                                           TEXT                 null: true   primary: false  isArray: false  auto: false  col: TEXT            len: -1      default: []
-	Body null.String `gorm:"column:body;type:TEXT;" json:"body"`
-	//[ 4] published_at                                   TIMESTAMP            null: true   primary: false  isArray: false  auto: false  col: TIMESTAMP       len: -1      default: []
-	PublishedAt null.Time `gorm:"column:published_at;type:TIMESTAMP;" json:"published_at"`
-	//[ 5] private                                        BOOL                 null: false  primary: false  isArray: false  auto: false  col: BOOL            len: -1      default: [true]
-	Private bool `gorm:"column:private;type:BOOL;default:true;" json:"private"`
-	//[ 6] user_id                                        INT8                 null: true   primary: false  isArray: false  auto: false  col: INT8            len: -1      default: []
-	UserID null.Int `gorm:"column:user_id;type:INT8;" json:"user_id"`
-	//[ 7] created_at                                     TIMESTAMP            null: true   primary: false  isArray: false  auto: false  col: TIMESTAMP       len: -1      default: []
-	CreatedAt null.Time `gorm:"column:created_at;type:TIMESTAMP;" json:"created_at"`
-	//[ 8] updated_at                                     TIMESTAMP            null: true   primary: false  isArray: false  auto: false  col: TIMESTAMP       len: -1      default: []
-	UpdatedAt null.Time `gorm:"column:updated_at;type:TIMESTAMP;" json:"updated_at"`
-	//[ 9] notify_users_on_published                      BOOL                 null: false  primary: false  isArray: false  auto: false  col: BOOL            len: -1      default: [true]
-	NotifyUsersOnPublished bool `gorm:"column:notify_users_on_published;type:BOOL;default:true;" json:"notify_users_on_published"`
-	//[10] meta_description                               VARCHAR(255)         null: false  primary: false  isArray: false  auto: false  col: VARCHAR         len: 255     default: []
-	MetaDescription string `gorm:"column:meta_description;type:VARCHAR;size:255;" json:"meta_description"`
-	//[11] sso_id                                         UUID                 null: true   primary: false  isArray: false  auto: false  col: UUID            len: -1      default: []
-	SsoID null.String `gorm:"column:sso_id;type:UUID;" json:"sso_id"`
+	ID                     int32       `gorm:"primary_key;column:id;type:INT4;" json:"id" example:"1"`
+	Slug                   string      `gorm:"column:slug;type:VARCHAR;size:255;" json:"slug" example:"a-good-album"`
+	Title                  string      `gorm:"column:title;type:VARCHAR;size:255;" json:"title" example:"A good album"`
+	Body                   null.String `gorm:"column:body;type:TEXT;" json:"body" swaggertype:"string" example:"<p>Hello world</p>"`
+	PublishedAt            null.Time   `gorm:"column:published_at;type:TIMESTAMP;" json:"published_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
+	Private                bool        `gorm:"column:private;type:BOOL;default:true;" json:"private" example:"true"`
+	UserID                 null.Int    `gorm:"column:user_id;type:INT8;" json:"user_id" swaggertype:"number" example:"1"`
+	CreatedAt              null.Time   `gorm:"column:created_at;type:TIMESTAMP;" json:"created_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
+	UpdatedAt              null.Time   `gorm:"column:updated_at;type:TIMESTAMP;" json:"updated_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
+	NotifyUsersOnPublished bool        `gorm:"column:notify_users_on_published;type:BOOL;default:true;" json:"notify_users_on_published" example:"true"`
+	MetaDescription        string      `gorm:"column:meta_description;type:VARCHAR;size:255;" json:"meta_description" example:"A good meta"`
+	SsoID                  null.String `gorm:"column:sso_id;type:UUID;" json:"sso_id" swaggertype:"string" example:"123e4567-e89b-12d3-a456-426614174000"`
 }
 
 var albumsTableInfo = &TableInfo{
