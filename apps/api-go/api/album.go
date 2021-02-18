@@ -8,6 +8,16 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// ListAlbums godoc
+// @Summary List albums
+// @Description Get paginated list of albums
+// @ID get-string-by-int
+// @Accept  json
+// @Produce  json
+// @Param page path int true "page" default(1)
+// @Param per_page path int true "per_page" default(10)
+// @Success 200 {array} model.Album
+// @Router /albums [get]
 func GetAlbums(c echo.Context) error {
 	dbInstance := db.DbManager()
 
