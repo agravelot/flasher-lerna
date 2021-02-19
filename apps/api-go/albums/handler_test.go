@@ -11,7 +11,14 @@ import (
 	"github.com/kinbiko/jsonassert"
 	echo "github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
+	"gorm.io/gorm"
 )
+
+func ClearDB(db *gorm.DB) {
+	if err := db.Where("1 = 1").Delete(&Album{}).Error; err != nil {
+		panic(err)
+	}
+}
 
 func TestGetAlbums(t *testing.T) {
 	// Setup
@@ -19,10 +26,7 @@ func TestGetAlbums(t *testing.T) {
 	db, _ := db.Init()
 
 	t.Run("should be able to list albums", func(t *testing.T) {
-		err := db.Where("1 = 1").Delete(&Album{}).Error
-		if err != nil {
-			panic(err)
-		}
+		ClearDB(db)
 
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		rec := httptest.NewRecorder()
@@ -35,6 +39,21 @@ func TestGetAlbums(t *testing.T) {
 			assert.Equal(t, `{"data":[],"meta":{"total":0,"per_page":10}}`+"\n", rec.Body.String())
 		}
 	})
+
+	// t.Run("should be able to list public albums", func(t *testing.T) {
+	// 	ClearDB(db)
+
+	// 	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	// 	rec := httptest.NewRecorder()
+	// 	c := e.NewContext(req, rec)
+	// 	c.SetPath("/albums")
+
+	// 	// Assertions
+	// 	if assert.NoError(t, GetAlbums(c)) {
+	// 		assert.Equal(t, http.StatusOK, rec.Code)
+	// 		assert.Equal(t, `{"data":[],"meta":{"total":0,"per_page":10}}`+"\n", rec.Body.String())
+	// 	}
+	// })
 }
 
 func TestGetAlbum(t *testing.T) {
@@ -42,51 +61,69 @@ func TestGetAlbum(t *testing.T) {
 	e := echo.New()
 	db, _ := db.Init()
 
-	t.Run("should return 404 on with bad slug", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodGet, "/", nil)
-		rec := httptest.NewRecorder()
-		c := e.NewContext(req, rec)
-		c.SetPath("/albums/:slug")
-		c.SetParamNames("slug")
-		c.SetParamValues("not-found-album")
+	tt := []struct {
+		name   string
+		slug   string
+		status int
+		err    string
+		body   string
+		albums []map[string]interface{}
+	}{
+		{
+			name:   "should return 404 on with bad slug",
+			slug:   "not-found-album",
+			status: http.StatusNotFound,
+			err:    "Album not found.",
+			albums: []map[string]interface{}{{
+				"Title": "A good album", "Slug": "a-good-album", "Private": false, "PublishedAt": null.NewTime(time.Now(), true),
+			}},
+		},
+		{
+			name:   "should be able to get an album",
+			slug:   "a-good-album",
+			status: http.StatusOK,
+			err:    "",
+			albums: []map[string]interface{}{{
+				"Title": "A good album", "Slug": "a-good-album", "Private": false, "PublishedAt": null.NewTime(time.Now(), true),
+			}},
+			body: `{"id":"<<PRESENCE>>","slug":"a-good-album","title":"A good album","body":null,"published_at":"<<PRESENCE>>","private":false,"user_id":null,"created_at":null,"updated_at":null,"notify_users_on_published":true,"meta_description":"","sso_id":null}` + "\n",
+		},
+	}
 
-		// Assertions
-		err := GetAlbum(c)
-		if assert.Error(t, err) {
-			he, ok := err.(*echo.HTTPError)
-			if ok {
-				assert.Equal(t, http.StatusNotFound, he.Code)
+	for _, tc := range tt {
+		t.Run(tc.name, func(t *testing.T) {
+
+			// Arrange
+			ClearDB(db)
+			for _, a := range tc.albums {
+				if err := db.Model(Album{}).Create(a).Error; err != nil {
+					panic(err)
+				}
 			}
-		}
-	})
 
-	t.Run("should be able to get an album", func(t *testing.T) {
+			// Act
+			req := httptest.NewRequest(http.MethodGet, "/", nil)
+			rec := httptest.NewRecorder()
+			c := e.NewContext(req, rec)
+			c.SetPath("/albums/:slug")
+			c.SetParamNames("slug")
+			c.SetParamValues(tc.slug)
 
-		err := db.Where("1 = 1").Delete(&Album{}).Error
-		if err != nil {
-			panic(err)
-		}
-		album := map[string]interface{}{
-			"Title": "A good album", "Slug": "a-good-album", "Private": false, "PublishedAt": null.NewTime(time.Now(), true),
-		}
-		if err := db.Model(Album{}).Create(album).Error; err != nil {
-			panic(err)
-		}
-
-		req := httptest.NewRequest(http.MethodGet, "/", nil)
-		rec := httptest.NewRecorder()
-		c := e.NewContext(req, rec)
-		c.SetPath("/albums/:slug")
-		c.SetParamNames("slug")
-		c.SetParamValues("a-good-album")
-
-		// Assertions
-		ja := jsonassert.New(t)
-		expJSON := `{"id":"<<PRESENCE>>","slug":"a-good-album","title":"A good album","body":null,"published_at":"<<PRESENCE>>","private":false,"user_id":null,"created_at":null,"updated_at":null,"notify_users_on_published":true,"meta_description":"","sso_id":null}` + "\n"
-		if assert.NoError(t, GetAlbum(c)) {
-			assert.Equal(t, http.StatusOK, rec.Code)
-			ja.Assertf(rec.Body.String(), expJSON)
-			// assert.Equal(t, expJSON, rec.Body.String())
-		}
-	})
+			// Assert
+			if tc.err != "" {
+				if err := GetAlbum(c); assert.Error(t, err) {
+					he, ok := err.(*echo.HTTPError)
+					if ok {
+						assert.Equal(t, tc.status, he.Code)
+					}
+				}
+			} else {
+				ja := jsonassert.New(t)
+				if assert.NoError(t, GetAlbum(c)) {
+					assert.Equal(t, tc.status, rec.Code)
+					ja.Assertf(rec.Body.String(), tc.body)
+				}
+			}
+		})
+	}
 }
