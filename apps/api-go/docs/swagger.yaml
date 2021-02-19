@@ -51,7 +51,6 @@ paths:
       consumes:
       - application/json
       description: Get paginated list of albums
-      operationId: get-string-by-int
       parameters:
       - default: 1
         description: page
@@ -75,4 +74,23 @@ paths:
               $ref: '#/definitions/model.Album'
             type: array
       summary: List albums
+  /albums/{slug}:
+    get:
+      consumes:
+      - application/json
+      description: Get an allbum by slug
+      parameters:
+      - description: Album Slug
+        in: path
+        name: page
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Album'
+      summary: Show a album
 swagger: "2.0"

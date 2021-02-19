@@ -1,6 +1,7 @@
 package route
 
 import (
+	"api-go/albums"
 	"api-go/api"
 	"net/http"
 
@@ -15,9 +16,7 @@ func Init(e *echo.Echo) *echo.Echo {
 
 	v1 := e.Group("/api/v1")
 	{
-		// v1.POST("/testimonials", api.PostTestimonial())
-		v1.GET("/albums", api.GetAlbums)
-		v1.GET("/albums/:slug", api.GetAlbum)
+		albums.Setup(v1)
 
 		v1.GET("/testimonials", api.GetTestimonials)
 		v1.GET("/testimonials/:id", api.GetTestimonial)

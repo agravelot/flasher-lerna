@@ -7,11 +7,13 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/go-openapi/spec v0.20.3 // indirect
 	github.com/guregu/null v4.0.0+incompatible
+	github.com/kinbiko/jsonassert v1.0.1
 	github.com/labstack/echo/v4 v4.2.0
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/satori/go.uuid v1.2.0
+	github.com/stretchr/testify v1.6.1
 	github.com/swaggo/echo-swagger v1.1.0
 	github.com/swaggo/swag v1.7.0
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad // indirect

@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/labstack/echo/v4"
@@ -36,6 +37,7 @@ func GetPaginationFromRequest(c echo.Context) (int, int) {
 
 func Paginate(page int, pageSize int) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
+		fmt.Println(db)
 		offset := (page - 1) * pageSize
 		return db.Offset(offset).Limit(pageSize)
 	}
