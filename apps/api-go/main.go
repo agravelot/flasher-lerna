@@ -2,15 +2,12 @@ package main
 
 import (
 	"api-go/db"
+	"api-go/docs"
 	"api-go/route"
 	"fmt"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-
-	_ "api-go/docs"
-
-	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
 // @title Swagger Example API
@@ -22,7 +19,7 @@ import (
 func main() {
 	e := echo.New()
 
-	e.GET("/swagger/*", echoSwagger.WrapHandler)
+	docs.Setup(e)
 
 	db.Init()
 	route.Init(e)

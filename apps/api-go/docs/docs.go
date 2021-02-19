@@ -34,7 +34,6 @@ var doc = `{
                     "application/json"
                 ],
                 "summary": "List albums",
-                "operationId": "get-string-by-int",
                 "parameters": [
                     {
                         "type": "integer",
@@ -61,6 +60,35 @@ var doc = `{
                             "items": {
                                 "$ref": "#/definitions/model.Album"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/albums/{slug}": {
+            "get": {
+                "description": "Get an allbum by slug",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Show a album",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Album Slug",
+                        "name": "page",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Album"
                         }
                     }
                 }

@@ -31,7 +31,7 @@ func init() {
 	tables = make(map[string]*TableInfo)
 
 	tables["album_cosplayer"] = album_cosplayerTableInfo
-	tables["albums"] = albumsTableInfo
+	// tables["albums"] = albumsTableInfo
 	tables["categories"] = categoriesTableInfo
 	tables["categorizables"] = categorizablesTableInfo
 	tables["comments"] = commentsTableInfo
@@ -39,7 +39,7 @@ func init() {
 	tables["cosplayers"] = cosplayersTableInfo
 	tables["invitations"] = invitationsTableInfo
 	tables["media"] = mediaTableInfo
-	tables["migrations"] = migrationsTableInfo
+	// tables["migrations"] = migrationsTableInfo
 	tables["pages"] = pagesTableInfo
 	tables["posts"] = postsTableInfo
 	tables["settings"] = settingsTableInfo

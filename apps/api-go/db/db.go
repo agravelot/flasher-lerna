@@ -1,7 +1,6 @@
 package db
 
 import (
-	"api-go/model"
 	"log"
 	"os"
 	"time"
@@ -14,13 +13,14 @@ import (
 var db *gorm.DB
 var err error
 
-func Init() {
+func Init() (*gorm.DB, error) {
 
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
 			SlowThreshold: time.Second, // Slow SQL threshold
 			LogLevel:      logger.Info, // Log level
+			Colorful:      true,
 		},
 	)
 
@@ -33,10 +33,11 @@ func Init() {
 	if err != nil {
 		panic("DB Connection Error")
 	}
-	db.AutoMigrate(&model.Album{})
 
+	return db, nil
 }
 
+// DbManager Return Gorm DB instance
 func DbManager() *gorm.DB {
 	return db
 }
