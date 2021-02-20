@@ -2,6 +2,8 @@ package albums
 
 import (
 	"api-go/db"
+	"encoding/json"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -20,7 +22,7 @@ func ClearDB(db *gorm.DB) {
 	}
 }
 
-func TestGetAlbums(t *testing.T) {
+func TestListAlbums(t *testing.T) {
 	// Setup
 	e := echo.New()
 	db, _ := db.Init()
@@ -34,29 +36,54 @@ func TestGetAlbums(t *testing.T) {
 		c.SetPath("/albums")
 
 		// Assertions
-		if assert.NoError(t, GetAlbums(c)) {
+		if assert.NoError(t, ListAlbums(c)) {
 			assert.Equal(t, http.StatusOK, rec.Code)
 			assert.Equal(t, `{"data":[],"meta":{"total":0,"per_page":10}}`+"\n", rec.Body.String())
 		}
 	})
 
-	// t.Run("should be able to list public albums", func(t *testing.T) {
-	// 	ClearDB(db)
+	t.Run("should be able to list public albums", func(t *testing.T) {
+		ClearDB(db)
+		albums := []map[string]interface{}{
+			{
+				"Title": "A good album", "Slug": "a-good-album", "Private": false, "PublishedAt": null.NewTime(time.Now(), true),
+			},
+			{
+				"Title": "A good album", "Slug": "a-good-album-non-published", "Private": false,
+			},
+			{
+				"Title": "A good album", "Slug": "a-good-album-private", "Private": true, "PublishedAt": null.NewTime(time.Now(), true),
+			},
+		}
+		for _, a := range albums {
+			if err := db.Model(Album{}).Create(a).Error; err != nil {
+				panic(err)
+			}
+		}
 
-	// 	req := httptest.NewRequest(http.MethodGet, "/", nil)
-	// 	rec := httptest.NewRecorder()
-	// 	c := e.NewContext(req, rec)
-	// 	c.SetPath("/albums")
+		req := httptest.NewRequest(http.MethodGet, "/", nil)
+		rec := httptest.NewRecorder()
+		c := e.NewContext(req, rec)
+		c.SetPath("/albums")
 
-	// 	// Assertions
-	// 	if assert.NoError(t, GetAlbums(c)) {
-	// 		assert.Equal(t, http.StatusOK, rec.Code)
-	// 		assert.Equal(t, `{"data":[],"meta":{"total":0,"per_page":10}}`+"\n", rec.Body.String())
-	// 	}
-	// })
+		// Assertions
+		if assert.NoError(t, ListAlbums(c)) {
+			result := PaginatedAlbums{}
+
+			assert.Equal(t, http.StatusOK, rec.Code)
+			if err := json.NewDecoder(rec.Body).Decode(&result); err != nil {
+				log.Fatalln(err)
+			}
+			assert.Equal(t, 10, result.Meta.PerPage)
+			assert.Equal(t, 1, len(result.Data), "only one album should be avaiblable publicly")
+			assert.Equal(t, result.Data[0].Slug, "a-good-album")
+			// So(len(result), ShouldEqual, 0)
+			// assert.Equal(t, `{"data":[],"meta":{"total":0,"per_page":10}}`+"\n", rec.Body.String())
+		}
+	})
 }
 
-func TestGetAlbum(t *testing.T) {
+func TestShowAlbum(t *testing.T) {
 	// Setup
 	e := echo.New()
 	db, _ := db.Init()
@@ -111,7 +138,7 @@ func TestGetAlbum(t *testing.T) {
 
 			// Assert
 			if tc.err != "" {
-				if err := GetAlbum(c); assert.Error(t, err) {
+				if err := ShowAlbum(c); assert.Error(t, err) {
 					he, ok := err.(*echo.HTTPError)
 					if ok {
 						assert.Equal(t, tc.status, he.Code)
@@ -119,7 +146,7 @@ func TestGetAlbum(t *testing.T) {
 				}
 			} else {
 				ja := jsonassert.New(t)
-				if assert.NoError(t, GetAlbum(c)) {
+				if assert.NoError(t, ShowAlbum(c)) {
 					assert.Equal(t, tc.status, rec.Code)
 					ja.Assertf(rec.Body.String(), tc.body)
 				}
