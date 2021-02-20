@@ -7,8 +7,8 @@ import (
 )
 
 func Setup(e *echo.Group) {
-	e.GET("/albums", GetAlbums)
-	e.GET("/albums/:slug", GetAlbum)
+	e.GET("/albums", ListAlbums)
+	e.GET("/albums/:slug", ShowAlbum)
 
 	dbi := db.DbManager()
 

@@ -18,6 +18,26 @@ type Paginated struct {
 	Meta Meta        `json:"meta"`
 }
 
+func Paginatee(c echo.Context) func(db *gorm.DB) *gorm.DB {
+	return func(db *gorm.DB) *gorm.DB {
+		page, _ := strconv.Atoi(c.QueryParam("page"))
+		if page == 0 {
+			page = 1
+		}
+
+		pageSize, _ := strconv.Atoi(c.QueryParam("per_page"))
+		switch {
+		case pageSize > 100:
+			pageSize = 100
+		case pageSize <= 0:
+			pageSize = 10
+		}
+
+		offset := (page - 1) * pageSize
+		return db.Offset(offset).Limit(pageSize)
+	}
+}
+
 func GetPaginationFromRequest(c echo.Context) (int, int) {
 	page, _ := strconv.Atoi(c.QueryParam("page"))
 	if page == 0 {
@@ -37,8 +57,10 @@ func GetPaginationFromRequest(c echo.Context) (int, int) {
 
 func Paginate(page int, pageSize int) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
-		fmt.Println(db)
 		offset := (page - 1) * pageSize
+		fmt.Println(page)
+		fmt.Println(offset)
+		fmt.Println(pageSize)
 		return db.Offset(offset).Limit(pageSize)
 	}
 }
