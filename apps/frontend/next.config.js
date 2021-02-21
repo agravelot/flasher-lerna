@@ -53,6 +53,7 @@ module.exports = withTM(
           "assets.jkanda.fr",
           "s3.fr-par.scw.cloud",
           "assets-jkanda.s3.fr-par.scw.cloud",
+          "assets.blog.jkanda.s3.fr-par.scw.cloud",
         ],
       },
       poweredByHeader: false,

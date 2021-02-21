@@ -96,6 +96,17 @@ const Navbar: FunctionComponent = () => {
               </a>
             </Link>
           </li>
+          <li className="hidden lg:flex items-center">
+            <Link href={{ pathname: "/blog" }}>
+              <a
+                role="menuitem"
+                tabIndex={0}
+                className="text-white hover:text-gray-300 px-3 py-4 text-xs uppercase font-bold"
+              >
+                Blog
+              </a>
+            </Link>
+          </li>
 
           {/* Right */}
           <li className="flex items-center ml-auto">
