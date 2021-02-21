@@ -36,11 +36,11 @@ const Header: FunctionComponent<Props> = ({
     className="relative pt-16 pb-32 flex content-center items-center justify-center"
     style={{ minHeight: "75vh" }}
   >
-    <div className="absolute top-0 w-full h-full bg-center bg-cover">
-      <span className="w-full h-full absolute bg-black"></span>
+    <div
+      className="absolute top-0 w-full h-full bg-center bg-cover"
+      style={{ filter: "brightness(80%);" }}
+    >
       <Image
-        className="opacity-75"
-        // className="object-cover w-full h-full"
         src={src}
         alt={altDescription}
         layout="fill"
