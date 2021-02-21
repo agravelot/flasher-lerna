@@ -91,6 +91,17 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                         </a>
                       </Link>
                     </li>
+                    <li>
+                      <Link
+                        href={{
+                          pathname: "/blog",
+                        }}
+                      >
+                        <a tabIndex={0} className="block py-2 text-sm">
+                          Blog
+                        </a>
+                      </Link>
+                    </li>
                   </ul>
                 </div>
                 <div className="w-full lg:w-4/12 px-4">

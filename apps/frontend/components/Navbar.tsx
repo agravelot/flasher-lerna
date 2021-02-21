@@ -96,6 +96,17 @@ const Navbar: FunctionComponent = () => {
               </a>
             </Link>
           </li>
+          <li className="hidden lg:flex items-center">
+            <Link href={{ pathname: "/blog" }}>
+              <a
+                role="menuitem"
+                tabIndex={0}
+                className="text-white hover:text-gray-300 px-3 py-4 text-xs uppercase font-bold"
+              >
+                Blog
+              </a>
+            </Link>
+          </li>
 
           {/* Right */}
           <li className="flex items-center ml-auto">
@@ -204,6 +215,18 @@ const Navbar: FunctionComponent = () => {
                     className="text-gray-800 px-3 py-4 flex items-center justify-center text-xs uppercase font-bold w-full"
                   >
                     <span>Contact</span>
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <Link href={{ pathname: "/blog" }}>
+                  <a
+                    tabIndex={0}
+                    aria-haspopup="true"
+                    role="menuitem"
+                    className="text-gray-800 px-3 py-4 flex items-center justify-center text-xs uppercase font-bold w-full"
+                  >
+                    <span>Blog</span>
                   </a>
                 </Link>
               </li>
