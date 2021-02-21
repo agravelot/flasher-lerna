@@ -3,7 +3,7 @@ import React from "react";
 import { ArticleJsonLd, NextSeo } from "next-seo";
 import renderToString from "next-mdx-remote/render-to-string";
 import hydrate from "next-mdx-remote/hydrate";
-import Image, { ImageProps } from "next/image";
+import { ImageProps } from "next/image";
 import { BlogPost, getAllPosts, getPostBySlug } from "utils/markdown";
 import { getGlobalProps, GlobalProps } from "stores";
 import Layout from "components/Layout";
@@ -15,7 +15,16 @@ type Props = {
 } & GlobalProps;
 
 const ImageCustom = (props: ImageProps) => {
-  return <Image layout="responsive" width="200" height="200" src={props.src} />;
+  // return (
+  //   <Image layout="responsive" width="2000" height="2000" src={props.src} />
+  // );
+
+  return (
+    <img
+      src={"/_next/image?url=" + encodeURIComponent(props.src) + "&w=828&q=75"}
+      loading="lazy"
+    />
+  );
 };
 
 const components = {
