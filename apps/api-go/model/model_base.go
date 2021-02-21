@@ -32,8 +32,8 @@ func init() {
 
 	tables["album_cosplayer"] = album_cosplayerTableInfo
 	// tables["albums"] = albumsTableInfo
-	tables["categories"] = categoriesTableInfo
-	tables["categorizables"] = categorizablesTableInfo
+	// tables["categories"] = categoriesTableInfo
+	// tables["categorizables"] = categorizablesTableInfo
 	tables["comments"] = commentsTableInfo
 	tables["contacts"] = contactsTableInfo
 	tables["cosplayers"] = cosplayersTableInfo

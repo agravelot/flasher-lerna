@@ -1,6 +1,7 @@
 package albums
 
 import (
+	"api-go/categories"
 	"database/sql"
 	"time"
 
@@ -43,18 +44,19 @@ JSON Sample
 
 // Album struct is a row record of the albums table in the flasher database
 type Album struct {
-	ID                     uint        `gorm:"primaryKey;autoIncrement" json:"id" example:"1"`
-	Slug                   string      `gorm:"type:VARCHAR;size:255;uniqueIndex" json:"slug" example:"a-good-album"`
-	Title                  string      `gorm:"type:VARCHAR;size:255;" json:"title" example:"A good album"`
-	Body                   null.String `gorm:"type:TEXT;" json:"body" swaggertype:"string" example:"<p>Hello world</p>"`
-	PublishedAt            null.Time   `gorm:"type:TIMESTAMP;" json:"published_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
-	Private                bool        `gorm:"type:BOOL;default:true;" json:"private" example:"true"`
-	UserID                 null.Int    `gorm:"type:INT8;" json:"user_id" swaggertype:"number" example:"1"`
-	CreatedAt              null.Time   `gorm:"type:TIMESTAMP;" json:"created_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
-	UpdatedAt              null.Time   `gorm:"type:TIMESTAMP;" json:"updated_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
-	NotifyUsersOnPublished bool        `gorm:"type:BOOL;default:true;" json:"notify_users_on_published" example:"true"`
-	MetaDescription        string      `gorm:"type:VARCHAR;size:255;" json:"meta_description" example:"A good meta"`
-	SsoID                  null.String `gorm:"type:UUID;" json:"sso_id" swaggertype:"string" example:"123e4567-e89b-12d3-a456-426614174000"`
+	ID                     uint                   `gorm:"primaryKey;autoIncrement" json:"id" example:"1"`
+	Slug                   string                 `gorm:"type:VARCHAR;size:255;uniqueIndex" json:"slug" example:"a-good-album"`
+	Title                  string                 `gorm:"type:VARCHAR;size:255;" json:"title" example:"A good album"`
+	Body                   null.String            `gorm:"type:TEXT;" json:"body" swaggertype:"string" example:"<p>Hello world</p>"`
+	PublishedAt            null.Time              `gorm:"type:TIMESTAMP;" json:"published_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
+	Private                bool                   `gorm:"type:BOOL;default:true;" json:"private" example:"true"`
+	UserID                 null.Int               `gorm:"type:INT8;" json:"user_id" swaggertype:"number" example:"1"`
+	CreatedAt              null.Time              `gorm:"type:TIMESTAMP;" json:"created_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
+	UpdatedAt              null.Time              `gorm:"type:TIMESTAMP;" json:"updated_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
+	NotifyUsersOnPublished bool                   `gorm:"type:BOOL;default:true;" json:"notify_users_on_published" example:"true"`
+	MetaDescription        string                 `gorm:"type:VARCHAR;size:255;" json:"meta_description" example:"A good meta"`
+	SsoID                  null.String            `gorm:"type:UUID;" json:"sso_id" swaggertype:"string" example:"123e4567-e89b-12d3-a456-426614174000"`
+	Categories             []*categories.Category `gorm:"many2many:album_category;"`
 }
 
 // TableName sets the insert table name for this struct type
