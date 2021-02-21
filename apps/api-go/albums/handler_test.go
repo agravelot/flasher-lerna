@@ -1,8 +1,10 @@
 package albums
 
 import (
+	"api-go/categories"
 	"api-go/db"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -17,15 +19,26 @@ import (
 )
 
 func ClearDB(db *gorm.DB) {
-	if err := db.Where("1 = 1").Delete(&Album{}).Error; err != nil {
+	var tables []string
+	if err := db.Table("information_schema.tables").Where("table_schema = ?", "public").Pluck("table_name", &tables).Error; err != nil {
 		panic(err)
 	}
+	for _, table := range tables {
+		db.Exec("DELETE FROM " + table + " WHERE 1 = 1")
+	}
+
+	// test category
+	c := categories.Category{Name: "Jinzhu"}
+	res := db.Create(&c)
+	fmt.Println(res)
 }
 
 func TestListAlbums(t *testing.T) {
 	// Setup
 	e := echo.New()
 	db, _ := db.Init()
+	Setup(e)
+	categories.Setup(e)
 
 	t.Run("should be able to list albums", func(t *testing.T) {
 		ClearDB(db)
