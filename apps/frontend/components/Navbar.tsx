@@ -219,6 +219,18 @@ const Navbar: FunctionComponent = () => {
                 </Link>
               </li>
               <li>
+                <Link href={{ pathname: "/blog" }}>
+                  <a
+                    tabIndex={0}
+                    aria-haspopup="true"
+                    role="menuitem"
+                    className="text-gray-800 px-3 py-4 flex items-center justify-center text-xs uppercase font-bold w-full"
+                  >
+                    <span>Blog</span>
+                  </a>
+                </Link>
+              </li>
+              <li>
                 <button
                   tabIndex={0}
                   aria-haspopup="true"
