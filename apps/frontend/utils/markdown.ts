@@ -1,6 +1,7 @@
 import fs from "fs";
 import { join } from "path";
 import matter from "gray-matter";
+import { MdxRemote } from "next-mdx-remote/types";
 
 const postsDirectory = join(process.cwd(), "blog");
 
@@ -30,7 +31,7 @@ export interface BlogPost {
   title: string;
   author: string;
   slug: string;
-  content: string;
+  content: MdxRemote.Source | string;
   metaDescription: string;
   status: "published" | "draft";
   createdAt: string;

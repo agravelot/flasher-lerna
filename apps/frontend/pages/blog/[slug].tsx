@@ -9,6 +9,7 @@ import { getGlobalProps, GlobalProps } from "stores";
 import Layout from "components/Layout";
 import { configuration } from "utils/configuration";
 import Header from "components/Header";
+import { MdxRemote } from "next-mdx-remote/types";
 
 type Props = {
   post: BlogPost;
@@ -35,7 +36,7 @@ const components = {
 };
 
 const Post: NextPage<Props> = ({ post, appName, socialMedias }: Props) => {
-  const content = hydrate(post.content, { components });
+  const content = hydrate(post.content as MdxRemote.Source, { components });
   return (
     <Layout socialMedias={socialMedias} appName={appName}>
       <NextSeo
@@ -86,6 +87,8 @@ const Post: NextPage<Props> = ({ post, appName, socialMedias }: Props) => {
   );
 };
 
+export default Post;
+
 export const getStaticProps: GetStaticProps = async ({
   params,
   preview,
@@ -104,8 +107,6 @@ export const getStaticProps: GetStaticProps = async ({
     },
   };
 };
-
-export default Post;
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const posts = getAllPosts();
