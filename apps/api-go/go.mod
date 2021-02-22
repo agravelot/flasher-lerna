@@ -5,7 +5,9 @@ go 1.15
 require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
+	github.com/go-kit/kit v0.10.0
 	github.com/go-openapi/spec v0.20.3 // indirect
+	github.com/gorilla/mux v1.7.3
 	github.com/guregu/null v4.0.0+incompatible
 	github.com/kinbiko/jsonassert v1.0.1
 	github.com/labstack/echo/v4 v4.2.0
