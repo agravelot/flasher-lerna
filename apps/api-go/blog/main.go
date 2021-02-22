@@ -1,7 +1,7 @@
 package main
 
 import (
-	"api-go/blog/blog"
+	"api-go/blog/article"
 	"api-go/db"
 	"flag"
 	"fmt"
@@ -27,17 +27,17 @@ func main() {
 	}
 
 	db, _ := db.Init()
-	db.AutoMigrate(&blog.Blog{})
+	db.AutoMigrate(&article.Article{})
 
-	var s blog.Service
+	var s article.Service
 	{
-		s = blog.NewService(db)
-		s = blog.LoggingMiddleware(logger)(s)
+		s = article.NewService(db)
+		s = article.LoggingMiddleware(logger)(s)
 	}
 
 	var h http.Handler
 	{
-		h = blog.MakeHTTPHandler(s, log.With(logger, "component", "HTTP"))
+		h = article.MakeHTTPHandler(s, log.With(logger, "component", "HTTP"))
 	}
 
 	errs := make(chan error)
