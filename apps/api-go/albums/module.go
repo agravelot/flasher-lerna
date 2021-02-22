@@ -13,4 +13,5 @@ func Setup(e *echo.Echo) {
 	dbi := db.DbManager()
 
 	dbi.AutoMigrate(&Album{})
+	// db.AutoMigrate(&Category{})
 }
