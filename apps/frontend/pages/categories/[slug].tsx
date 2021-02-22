@@ -126,7 +126,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({
 
   const global = await getGlobalProps();
 
-  return { props: { category, albums, ...global } };
+  return { props: { category, albums, ...global }, revalidate: 60 };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

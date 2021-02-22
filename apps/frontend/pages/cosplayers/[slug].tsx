@@ -163,7 +163,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const global = await getGlobalProps();
 
-  return { props: { cosplayer, albums, ...global } };
+  return { props: { cosplayer, albums, ...global }, revalidate: 60 };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

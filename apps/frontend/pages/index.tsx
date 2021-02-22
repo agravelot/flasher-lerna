@@ -220,5 +220,5 @@ export const getStaticProps: GetStaticProps = async ({
 
   const global = await getGlobalProps();
 
-  return { props: { albums, testimonials, ...global } };
+  return { props: { albums, testimonials, ...global }, revalidate: 60 };
 };

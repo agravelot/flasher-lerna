@@ -120,6 +120,7 @@ export const getStaticProps: GetStaticProps = async ({
         routeName: "/albums/page/[page]",
       },
     },
+    revalidate: 60,
   };
 };
 

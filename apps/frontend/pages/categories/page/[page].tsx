@@ -107,6 +107,7 @@ export const getStaticProps: GetStaticProps = async (
         routeName: "/categories/page/[page]",
       },
     },
+    revalidate: 60,
   };
 };
 

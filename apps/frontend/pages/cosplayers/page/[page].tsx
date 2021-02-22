@@ -106,6 +106,7 @@ export const getStaticProps: GetStaticProps = async ({
         routeName: "/cosplayers/page/[page]",
       },
     },
+    revalidate: 60,
   };
 };
 
