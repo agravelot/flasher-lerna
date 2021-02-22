@@ -1,7 +1,6 @@
 package albums
 
 import (
-	"api-go/categories"
 	"api-go/db"
 	"encoding/json"
 	"fmt"
@@ -12,7 +11,6 @@ import (
 	"time"
 
 	"github.com/guregu/null"
-	"github.com/kinbiko/jsonassert"
 	echo "github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
@@ -28,7 +26,7 @@ func ClearDB(db *gorm.DB) {
 	}
 
 	// test category
-	c := categories.Category{Name: "Jinzhu"}
+	c := Category{Name: "Jinzhu"}
 	res := db.Create(&c)
 	fmt.Println(res)
 }
@@ -38,7 +36,7 @@ func TestListAlbums(t *testing.T) {
 	e := echo.New()
 	db, _ := db.Init()
 	Setup(e)
-	categories.Setup(e)
+	// Setup(e)
 
 	t.Run("should be able to list albums", func(t *testing.T) {
 		ClearDB(db)
@@ -59,13 +57,13 @@ func TestListAlbums(t *testing.T) {
 		ClearDB(db)
 		albums := []map[string]interface{}{
 			{
-				"Title": "A good album", "Slug": "a-good-album", "Private": false, "PublishedAt": null.NewTime(time.Now(), true),
+				"Title": "A good album", "Slug": "a-good-album", "Private": false, "PublishedAt": null.NewTime(time.Now(), true), "MetaDescription": "qzdqsd",
 			},
 			{
-				"Title": "A good album", "Slug": "a-good-album-non-published", "Private": false,
+				"Title": "A good album non-published", "Slug": "a-good-album-non-published", "Private": false, "MetaDescription": "qzdqsd",
 			},
 			{
-				"Title": "A good album", "Slug": "a-good-album-private", "Private": true, "PublishedAt": null.NewTime(time.Now(), true),
+				"Title": "A good album private", "Slug": "a-good-album-private", "Private": true, "PublishedAt": null.NewTime(time.Now(), true), "MetaDescription": "qzdqsd",
 			},
 		}
 		for _, a := range albums {
@@ -101,13 +99,15 @@ func TestShowAlbum(t *testing.T) {
 	e := echo.New()
 	db, _ := db.Init()
 
+	now := null.NewTime(time.Now(), true)
+
 	tt := []struct {
-		name   string
-		slug   string
-		status int
-		err    string
-		body   string
-		albums []map[string]interface{}
+		name     string
+		slug     string
+		status   int
+		err      string
+		albums   []map[string]interface{}
+		expected Album
 	}{
 		{
 			name:   "should return 404 on with bad slug",
@@ -115,7 +115,7 @@ func TestShowAlbum(t *testing.T) {
 			status: http.StatusNotFound,
 			err:    "Album not found.",
 			albums: []map[string]interface{}{{
-				"Title": "A good album", "Slug": "a-good-album", "Private": false, "PublishedAt": null.NewTime(time.Now(), true),
+				"Title": "A good album", "Slug": "a-good-album", "Private": false, "PublishedAt": now, "MetaDescription": "qzdqsd",
 			}},
 		},
 		{
@@ -124,9 +124,9 @@ func TestShowAlbum(t *testing.T) {
 			status: http.StatusOK,
 			err:    "",
 			albums: []map[string]interface{}{{
-				"Title": "A good album", "Slug": "a-good-album", "Private": false, "PublishedAt": null.NewTime(time.Now(), true),
+				"Title": "A good album", "Slug": "a-good-album", "Private": false, "PublishedAt": now, "MetaDescription": "qzdqsd",
 			}},
-			body: `{"id":"<<PRESENCE>>","slug":"a-good-album","title":"A good album","body":null,"published_at":"<<PRESENCE>>","private":false,"user_id":null,"created_at":null,"updated_at":null,"notify_users_on_published":true,"meta_description":"","sso_id":null}` + "\n",
+			expected: Album{Title: "A good album", Private: false, PublishedAt: now, MetaDescription: "qzdqsd", NotifyUsersOnPublished: true},
 		},
 	}
 
@@ -158,10 +158,19 @@ func TestShowAlbum(t *testing.T) {
 					}
 				}
 			} else {
-				ja := jsonassert.New(t)
 				if assert.NoError(t, ShowAlbum(c)) {
 					assert.Equal(t, tc.status, rec.Code)
-					ja.Assertf(rec.Body.String(), tc.body)
+					result := Album{}
+					if err := json.NewDecoder(rec.Body).Decode(&result); err != nil {
+						log.Fatalln(err)
+					}
+
+					assert.Equal(t, tc.expected.Title, result.Title)
+					assert.Equal(t, tc.expected.MetaDescription, result.MetaDescription)
+					assert.Equal(t, tc.expected.Private, result.Private)
+					assert.Equal(t, tc.expected.Body, result.Body)
+					assert.Equal(t, tc.expected.NotifyUsersOnPublished, result.NotifyUsersOnPublished, "should notify user by defualt")
+					assert.Equal(t, tc.expected.SsoID, result.SsoID)
 				}
 			}
 		})

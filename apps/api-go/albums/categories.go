@@ -1,7 +1,6 @@
-package categories
+package albums
 
 import (
-	"api-go/albums"
 	"database/sql"
 	"time"
 
@@ -41,14 +40,14 @@ JSON Sample
 
 // Category struct is a row record of the categories table in the flasher database
 type Category struct {
-	ID              uint            `gorm:"primaryKey;autoIncrement" json:"id" example:"1"`
-	Name            string          `gorm:"column:name;type:VARCHAR;size:255;" json:"name"`
-	Slug            string          `gorm:"column:slug;type:VARCHAR;size:255;" json:"slug"`
-	Description     null.String     `gorm:"column:description;type:TEXT;" json:"description"`
-	CreatedAt       null.Time       `gorm:"column:created_at;type:TIMESTAMP;" json:"created_at"`
-	UpdatedAt       null.Time       `gorm:"column:updated_at;type:TIMESTAMP;" json:"updated_at"`
-	MetaDescription string          `gorm:"column:meta_description;type:VARCHAR;size:155;" json:"meta_description"`
-	Albums          []*albums.Album `gorm:"many2many:album_category;"`
+	ID              uint        `gorm:"primaryKey;autoIncrement" json:"id" example:"1"`
+	Name            string      `gorm:"column:name;type:VARCHAR;size:255;" json:"name"`
+	Slug            string      `gorm:"column:slug;type:VARCHAR;size:255;" json:"slug"`
+	Description     null.String `gorm:"column:description;type:TEXT;" json:"description"`
+	CreatedAt       null.Time   `gorm:"column:created_at;type:TIMESTAMP;" json:"created_at"`
+	UpdatedAt       null.Time   `gorm:"column:updated_at;type:TIMESTAMP;" json:"updated_at"`
+	MetaDescription string      `gorm:"column:meta_description;type:VARCHAR;size:155;" json:"meta_description"`
+	Albums          []*Album    `gorm:"many2many:album_category;"`
 }
 
 // TableName sets the insert table name for this struct type
