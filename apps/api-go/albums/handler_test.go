@@ -1,9 +1,8 @@
 package albums
 
 import (
-	"api-go/db"
+	database "api-go/db"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -13,33 +12,17 @@ import (
 	"github.com/guregu/null"
 	echo "github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
-	"gorm.io/gorm"
 )
-
-func ClearDB(db *gorm.DB) {
-	var tables []string
-	if err := db.Table("information_schema.tables").Where("table_schema = ?", "public").Pluck("table_name", &tables).Error; err != nil {
-		panic(err)
-	}
-	for _, table := range tables {
-		db.Exec("DELETE FROM " + table + " WHERE 1 = 1")
-	}
-
-	// test category
-	c := Category{Name: "Jinzhu"}
-	res := db.Create(&c)
-	fmt.Println(res)
-}
 
 func TestListAlbums(t *testing.T) {
 	// Setup
 	e := echo.New()
-	db, _ := db.Init()
+	db, _ := database.Init()
 	Setup(e)
 	// Setup(e)
 
 	t.Run("should be able to list albums", func(t *testing.T) {
-		ClearDB(db)
+		database.ClearDB(db)
 
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		rec := httptest.NewRecorder()
@@ -54,7 +37,7 @@ func TestListAlbums(t *testing.T) {
 	})
 
 	t.Run("should be able to list public albums", func(t *testing.T) {
-		ClearDB(db)
+		database.ClearDB(db)
 		albums := []map[string]interface{}{
 			{
 				"Title": "A good album", "Slug": "a-good-album", "Private": false, "PublishedAt": null.NewTime(time.Now(), true), "MetaDescription": "qzdqsd",
@@ -97,7 +80,7 @@ func TestListAlbums(t *testing.T) {
 func TestShowAlbum(t *testing.T) {
 	// Setup
 	e := echo.New()
-	db, _ := db.Init()
+	db, _ := database.Init()
 
 	now := null.NewTime(time.Now(), true)
 
@@ -134,7 +117,7 @@ func TestShowAlbum(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 
 			// Arrange
-			ClearDB(db)
+			database.ClearDB(db)
 			for _, a := range tc.albums {
 				if err := db.Model(Album{}).Create(a).Error; err != nil {
 					panic(err)

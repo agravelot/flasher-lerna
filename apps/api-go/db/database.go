@@ -1,4 +1,4 @@
-package db
+package database
 
 import (
 	"log"
@@ -40,4 +40,14 @@ func Init() (*gorm.DB, error) {
 // DbManager Return Gorm DB instance
 func DbManager() *gorm.DB {
 	return db
+}
+
+func ClearDB(db *gorm.DB) {
+	var tables []string
+	if err := db.Table("information_schema.tables").Where("table_schema = ?", "public").Pluck("table_name", &tables).Error; err != nil {
+		panic(err)
+	}
+	for _, table := range tables {
+		db.Exec("DELETE FROM " + table + " WHERE 1 = 1")
+	}
 }

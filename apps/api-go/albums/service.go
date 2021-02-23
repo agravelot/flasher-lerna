@@ -2,7 +2,7 @@ package albums
 
 import (
 	"api-go/api"
-	"api-go/db"
+	database "api-go/db"
 
 	"gorm.io/gorm"
 )
@@ -15,7 +15,7 @@ type PaginatedAlbums struct {
 
 // GetAlbumBySlug godoc
 func GetAlbumBySlug(slug string) (Album, error) {
-	db := db.DbManager()
+	db := database.DbManager()
 	album := Album{}
 	err := db.Where("slug = ?", slug).Scopes(Public).First(&album).Error
 
@@ -23,7 +23,7 @@ func GetAlbumBySlug(slug string) (Album, error) {
 }
 
 func GetAlbumsPaginated(page, perPage int) PaginatedAlbums {
-	dbInstance := db.DbManager()
+	dbInstance := database.DbManager()
 
 	albums := []Album{}
 	dbInstance.Scopes(api.Paginate(page, perPage), Public).Find(&albums)

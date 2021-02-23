@@ -1,7 +1,7 @@
 package main
 
 import (
-	"api-go/db"
+	database "api-go/db"
 	"api-go/docs"
 	"api-go/route"
 	"fmt"
@@ -21,7 +21,7 @@ func main() {
 
 	docs.Setup(e)
 
-	db.Init()
+	database.Init()
 	route.Init(e)
 
 	// e.Use(middleware.Recover())
