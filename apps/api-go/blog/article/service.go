@@ -28,9 +28,8 @@ type PaginatedArticles struct {
 }
 
 var (
-	ErrInconsistentIDs = errors.New("inconsistent IDs")
-	ErrAlreadyExists   = errors.New("already exists")
-	ErrNotFound        = errors.New("not found")
+	ErrAlreadyExists = errors.New("already exists")
+	ErrNotFound      = errors.New("not found")
 )
 
 type service struct {
@@ -118,11 +117,14 @@ func (s *service) PatchArticle(ctx context.Context, slug string, p Article) erro
 }
 
 func (s *service) DeleteArticle(ctx context.Context, slug string) error {
-	// s.mtx.Lock()
-	// defer s.mtx.Unlock()
-	// if _, ok := s.m[id]; !ok {
-	// 	return ErrNotFound
-	// }
-	// delete(s.m, id)
+	if err := s.db.Where("slug = ?", slug).First(&Article{}).Error; err != nil {
+		return ErrNotFound
+	}
+
+	err := s.db.Where("slug = ?", slug).Delete(&Article{}).Error
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

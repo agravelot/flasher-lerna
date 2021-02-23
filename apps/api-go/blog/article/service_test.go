@@ -75,3 +75,29 @@ func TestGetArticleList(t *testing.T) {
 		assert.Equal(t, 0, len(r.Data))
 	})
 }
+
+func TestDeleteArticle(t *testing.T) {
+	t.Run("should be able to delete article and is soft deleted", func(t *testing.T) {
+		database.ClearDB(db)
+		a := Article{Name: "A good name", Slug: "a-good-slug"}
+		db.Create(&a)
+
+		err := s.DeleteArticle(context.Background(), a.Slug)
+
+		var total, totalScopeless int64
+		db.Model(&a).Count(&total)
+		db.Model(&a).Unscoped().Count(&totalScopeless)
+		assert.NoError(t, err)
+		assert.Equal(t, 0, int(total))
+		assert.Equal(t, 1, int(totalScopeless))
+	})
+
+	t.Run("should not be able to delete an non existant article", func(t *testing.T) {
+		database.ClearDB(db)
+
+		err := s.DeleteArticle(context.Background(), "a-random-slug")
+
+		assert.Error(t, err)
+		assert.EqualError(t, err, ErrNotFound.Error())
+	})
+}
