@@ -39,10 +39,6 @@ func MakeHTTPHandler(s Service, logger log.Logger) http.Handler {
 	// PUT     /articles/:id                       post updated article information about the article
 	// PATCH   /articles/:id                       partial updated article information
 	// DELETE  /articles/:id                       remove the given article
-	// GET     /articles/:id/addresses/            retrieve addresses associated with the article
-	// GET     /articles/:id/addresses/:addressID  retrieve a particular article address
-	// POST    /articles/:id/addresses/            add a new address
-	// DELETE  /articles/:id/addresses/:addressID  remove an address
 
 	r.Methods("POST").Path("/articles").Handler(httptransport.NewServer(
 		e.PostArticleEndpoint,
@@ -271,7 +267,7 @@ func codeFrom(err error) int {
 	switch err {
 	case ErrNotFound:
 		return http.StatusNotFound
-	case ErrAlreadyExists, ErrInconsistentIDs:
+	case ErrAlreadyExists:
 		return http.StatusBadRequest
 	default:
 		return http.StatusInternalServerError

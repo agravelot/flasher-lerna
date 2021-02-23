@@ -237,7 +237,7 @@ type getArticleRequest struct {
 func (r getArticleListResponse) error() error { return r.Err }
 
 type getArticleResponse struct {
-	Article Article `json:"Article,omitempty"`
+	Article Article `json:"article,omitempty"`
 	Err     error   `json:"err,omitempty"`
 }
 
