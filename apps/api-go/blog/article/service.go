@@ -11,13 +11,17 @@ import (
 // Service is a simple CRUD interface for user articles.
 type Service interface {
 	PostArticle(ctx context.Context, p Article) error
-	GetArticleList(ctx context.Context) (PaginatedArticles, error)
+	GetArticleList(ctx context.Context, params *PaginationParams) (PaginatedArticles, error)
 	GetArticle(ctx context.Context, slug string) (Article, error)
 	PutArticle(ctx context.Context, slug string, p Article) error
 	PatchArticle(ctx context.Context, slug string, p Article) error
 	DeleteArticle(ctx context.Context, slug string) error
 }
 
+type PaginationParams struct {
+	Page    int
+	PerPage int
+}
 type PaginatedArticles struct {
 	Data []Article `json:"data"`
 	Meta api.Meta  `json:"meta"`
@@ -39,16 +43,20 @@ func NewService(db *gorm.DB) Service {
 	}
 }
 
-func (s *service) GetArticleList(ctx context.Context) (PaginatedArticles, error) {
+func (s *service) GetArticleList(ctx context.Context, params *PaginationParams) (PaginatedArticles, error) {
+	if params == nil {
+		params = &PaginationParams{1, 10}
+	}
+
 	articles := []Article{}
-	s.db.Scopes(api.Paginate(1, 10)).Find(&articles)
+	s.db.Scopes(api.Paginate(params.Page, params.PerPage)).Find(&articles)
 
 	var total int64
-	s.db.Model(&articles).Scopes(api.Paginate(1, 10)).Count(&total)
+	s.db.Model(&articles).Scopes(api.Paginate(params.Page, params.PerPage)).Count(&total)
 
 	return PaginatedArticles{
 		Data: articles,
-		Meta: api.Meta{Total: total, PerPage: 10},
+		Meta: api.Meta{Total: total, PerPage: params.PerPage},
 	}, nil
 }
 

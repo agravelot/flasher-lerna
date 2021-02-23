@@ -31,11 +31,11 @@ func (mw loggingMiddleware) PostArticle(ctx context.Context, a Article) (err err
 	return mw.next.PostArticle(ctx, a)
 }
 
-func (mw loggingMiddleware) GetArticleList(ctx context.Context) (p PaginatedArticles, err error) {
+func (mw loggingMiddleware) GetArticleList(ctx context.Context, params *PaginationParams) (p PaginatedArticles, err error) {
 	defer func(begin time.Time) {
 		mw.logger.Log("method", "GetArticleList", "page", 1, "took", time.Since(begin), "err", err)
 	}(time.Now())
-	return mw.next.GetArticleList(ctx)
+	return mw.next.GetArticleList(ctx, params)
 }
 
 func (mw loggingMiddleware) GetArticle(ctx context.Context, slug string) (p Article, err error) {

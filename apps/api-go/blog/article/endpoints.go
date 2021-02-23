@@ -153,7 +153,7 @@ func MakePostArticleEndpoint(s Service) endpoint.Endpoint {
 
 func MakeGetArticleListEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		p, e := s.GetArticleList(ctx)
+		p, e := s.GetArticleList(ctx, &PaginationParams{1, 10})
 		return getArticleListResponse{Data: p, Err: e}, nil
 	}
 }
