@@ -95,7 +95,7 @@ const ShowCategory: NextPage<Props> = ({
             {albums.map((album) => (
               <div
                 key={album.id}
-                className="w-full p-1 flex-auto md:w-1/2 lg:w-1/3"
+                className="w-full p-1 flex-grow-0 md:w-1/2 lg:w-1/3"
               >
                 <AlbumItem album={album} />
               </div>
