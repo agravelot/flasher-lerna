@@ -10,7 +10,7 @@ import (
 
 // Service is a simple CRUD interface for user articles.
 type Service interface {
-	PostArticle(ctx context.Context, p Article) error
+	PostArticle(ctx context.Context, p Article) (Article, error)
 	GetArticleList(ctx context.Context, params *PaginationParams) (PaginatedArticles, error)
 	GetArticle(ctx context.Context, slug string) (Article, error)
 	PutArticle(ctx context.Context, slug string, p Article) error
@@ -59,14 +59,11 @@ func (s *service) GetArticleList(ctx context.Context, params *PaginationParams) 
 	}, nil
 }
 
-func (s *service) PostArticle(ctx context.Context, p Article) error {
-	// s.mtx.Lock()
-	// defer s.mtx.Unlock()
-	// if _, ok := s.m[p.ID]; ok {
-	// 	return ErrAlreadyExists // POST = create, don't overwrite
-	// }
-	// s.m[p.ID] = p
-	return nil
+func (s *service) PostArticle(ctx context.Context, a Article) (Article, error) {
+	if err := s.db.Create(&a).Error; err != nil {
+		return a, err
+	}
+	return a, nil
 }
 
 func (s *service) GetArticle(ctx context.Context, slug string) (Article, error) {

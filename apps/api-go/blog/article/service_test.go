@@ -18,6 +18,7 @@ var (
 func TestMain(m *testing.M) {
 	db, _ = database.Init()
 	database.ClearDB(db)
+	db.AutoMigrate(Article{})
 	s = NewService(db)
 
 	exitVal := m.Run() // Run tests
@@ -73,6 +74,52 @@ func TestGetArticleList(t *testing.T) {
 		assert.Equal(t, int64(0), r.Meta.Total)
 		assert.Equal(t, 10, r.Meta.PerPage)
 		assert.Equal(t, 0, len(r.Data))
+	})
+}
+
+func TestPostArticle(t *testing.T) {
+	t.Run("should be able to create an article and generate slug", func(t *testing.T) {
+		database.ClearDB(db)
+		a := Article{Name: "A good name"}
+
+		res, err := s.PostArticle(context.Background(), a)
+
+		assert.NoError(t, err)
+		var total int64
+		db.Model(&Article{}).Count(&total)
+		assert.Equal(t, 1, int(total))
+		assert.Equal(t, a.Name, res.Name)
+		assert.Equal(t, "a-good-name", res.Slug)
+	})
+
+	t.Run("should be able to create an article with a specified slug", func(t *testing.T) {
+		database.ClearDB(db)
+		a := Article{Name: "A good name", Slug: "wtf-is-this-slug"}
+
+		res, err := s.PostArticle(context.Background(), a)
+
+		assert.NoError(t, err)
+		var total int64
+		db.Model(&Article{}).Count(&total)
+		assert.Equal(t, 1, int(total))
+		assert.Equal(t, a.Name, res.Name)
+		assert.Equal(t, a.Slug, res.Slug)
+	})
+
+	t.Run("should not be able to create an article with same slug", func(t *testing.T) {
+		database.ClearDB(db)
+		a := Article{Name: "A good name", Slug: "a-good-slug"}
+		db.Create(&a)
+		dup := Article{Name: "A good name", Slug: "a-good-slug"}
+
+		res, err := s.PostArticle(context.Background(), dup)
+
+		assert.Error(t, err)
+		println(err.Error())
+		var total int64
+		db.Model(&Article{}).Count(&total)
+		assert.Equal(t, 1, int(total))
+		assert.Equal(t, a.Name, res.Name)
 	})
 }
 

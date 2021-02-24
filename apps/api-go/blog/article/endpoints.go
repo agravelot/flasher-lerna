@@ -146,7 +146,7 @@ func (e Endpoints) DeleteArticle(ctx context.Context, id string) error {
 func MakePostArticleEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(postArticleRequest)
-		e := s.PostArticle(ctx, req.Article)
+		_, e := s.PostArticle(ctx, req.Article)
 		return postArticleResponse{Err: e}, nil
 	}
 }
