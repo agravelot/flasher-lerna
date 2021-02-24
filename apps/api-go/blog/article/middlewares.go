@@ -24,11 +24,11 @@ type loggingMiddleware struct {
 	logger log.Logger
 }
 
-func (mw loggingMiddleware) PostArticle(ctx context.Context, a Article) (err error) {
+func (mw loggingMiddleware) PostArticle(ctx context.Context, ar Article) (a Article, err error) {
 	defer func(begin time.Time) {
 		mw.logger.Log("method", "PostArticle", "id", a.ID, "took", time.Since(begin), "err", err)
 	}(time.Now())
-	return mw.next.PostArticle(ctx, a)
+	return mw.next.PostArticle(ctx, ar)
 }
 
 func (mw loggingMiddleware) GetArticleList(ctx context.Context, params *PaginationParams) (p PaginatedArticles, err error) {
