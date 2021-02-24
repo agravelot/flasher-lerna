@@ -38,7 +38,7 @@ const Header: FunctionComponent<Props> = ({
   >
     <div
       className="absolute top-0 w-full h-full bg-center bg-cover"
-      style={{ filter: "brightness(80%);" }}
+      style={{ filter: "brightness(80%)" }}
     >
       <Image
         src={src}
