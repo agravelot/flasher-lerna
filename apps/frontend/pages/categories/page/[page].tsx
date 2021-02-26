@@ -122,6 +122,6 @@ export const getStaticPaths: GetStaticPaths = async (): Promise<
     paths: range(1, res.meta.last_page).map((page) => ({
       params: { page: String(page) },
     })),
-    fallback: false,
+    fallback: true,
   };
 };
