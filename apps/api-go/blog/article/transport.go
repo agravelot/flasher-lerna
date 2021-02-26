@@ -7,7 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -67,18 +66,14 @@ type UserClaimsKeyType string
 const UserClaimsKey UserClaimsKeyType = "user"
 
 func GetUserClaims(ctx context.Context) *Claims {
-	// claims, ok := ctx.Value("user").(*Claims)
-	fmt.Printf("get user claims  : %+v\n", ctx.Value("user"))
-
-	// TODO Failed to cast to Claims in test, but working in live
-	claims, ok := ctx.Value("user").(*Claims)
+	claims, ok := ctx.Value("user").(Claims)
 
 	if !ok {
 		println("unable to get claims")
 		return nil
 	}
 
-	return claims
+	return &claims
 }
 
 // ClaimsToContext Inject user claims into context
@@ -94,7 +89,6 @@ func ClaimsToContext() httptransport.RequestFunc {
 		}
 
 		parser := new(jwtgo.Parser)
-		// token, p, err := parser.ParseUnverified(tokenString, jwtgo.MapClaims{})
 		token, _, err := parser.ParseUnverified(tokenString, &Claims{})
 
 		if err != nil {
@@ -102,11 +96,8 @@ func ClaimsToContext() httptransport.RequestFunc {
 		}
 
 		claims := token.Claims.(*Claims)
-		// fmt.Printf("%+v\n", claims)
 
-		println(UserClaimsKey)
-
-		return context.WithValue(ctx, UserClaimsKey, claims)
+		return context.WithValue(ctx, "user", claims)
 	}
 }
 

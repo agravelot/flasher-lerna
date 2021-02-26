@@ -3,7 +3,6 @@ package article
 import (
 	database "api-go/db"
 	"context"
-	"fmt"
 	"os"
 	"testing"
 
@@ -109,7 +108,7 @@ func authAsUser(ctx context.Context) (context.Context, Claims) {
 		Email:             "test@test.com",
 	}
 
-	println(UserClaimsKey)
+	// println(UserClaimsKey)
 
 	return context.WithValue(ctx, "user", claims), claims
 }
@@ -147,14 +146,6 @@ func TestPostArticle(t *testing.T) {
 		a := Article{Name: "A good name"}
 		ctx, claims := authAsUser(context.Background())
 
-		fmt.Printf("from test user : %+v\n", GetUserClaims(ctx))
-		fmt.Printf("from test claims : %+v\n", claims)
-
-		// printContextInternals(ctx, true)
-
-		// TODO set user in context
-		// fmt.Println(ctx.Value(jwt.JWTTokenContextKey))
-
 		res, err := s.PostArticle(ctx, a)
 
 		assert.NoError(t, err)
@@ -163,39 +154,40 @@ func TestPostArticle(t *testing.T) {
 		assert.Equal(t, 1, int(total))
 		assert.Equal(t, a.Name, res.Name)
 		assert.Equal(t, "a-good-name", res.Slug)
-		// TODO assert ssoid
-		// assert.Equal(t, claims.Sub, res.AuthorUUID)
+		assert.Equal(t, claims.Sub, res.AuthorUUID)
 	})
 
-	// t.Run("should be able to create an article with a specified slug", func(t *testing.T) {
-	// 	database.ClearDB(db)
-	// 	a := Article{Name: "A good name", Slug: "wtf-is-this-slug"}
+	t.Run("should be able to create an article with a specified slug", func(t *testing.T) {
+		database.ClearDB(db)
+		a := Article{Name: "A good name", Slug: "wtf-is-this-slug"}
+		ctx, _ := authAsUser(context.Background())
 
-	// 	res, err := s.PostArticle(context.Background(), a)
+		res, err := s.PostArticle(ctx, a)
 
-	// 	assert.NoError(t, err)
-	// 	var total int64
-	// 	db.Model(&Article{}).Count(&total)
-	// 	assert.Equal(t, 1, int(total))
-	// 	assert.Equal(t, a.Name, res.Name)
-	// 	assert.Equal(t, a.Slug, res.Slug)
-	// })
+		assert.NoError(t, err)
+		var total int64
+		db.Model(&Article{}).Count(&total)
+		assert.Equal(t, 1, int(total))
+		assert.Equal(t, a.Name, res.Name)
+		assert.Equal(t, a.Slug, res.Slug)
+	})
 
-	// t.Run("should not be able to create an article with same slug", func(t *testing.T) {
-	// 	database.ClearDB(db)
-	// 	a := Article{Name: "A good name", Slug: "a-good-slug"}
-	// 	db.Create(&a)
-	// 	dup := Article{Name: "A good name", Slug: "a-good-slug"}
+	t.Run("should not be able to create an article with same slug", func(t *testing.T) {
+		database.ClearDB(db)
+		a := Article{Name: "A good name", Slug: "a-good-slug"}
+		db.Create(&a)
+		dup := Article{Name: "A good name", Slug: "a-good-slug"}
+		ctx, _ := authAsUser(context.Background())
 
-	// 	res, err := s.PostArticle(context.Background(), dup)
+		res, err := s.PostArticle(ctx, dup)
 
-	// 	assert.Error(t, err)
-	// 	println(err.Error())
-	// 	var total int64
-	// 	db.Model(&Article{}).Count(&total)
-	// 	assert.Equal(t, 1, int(total))
-	// 	assert.Equal(t, a.Name, res.Name)
-	// })
+		assert.Error(t, err)
+		println(err.Error())
+		var total int64
+		db.Model(&Article{}).Count(&total)
+		assert.Equal(t, 1, int(total))
+		assert.Equal(t, a.Name, res.Name)
+	})
 }
 
 func TestDeleteArticle(t *testing.T) {

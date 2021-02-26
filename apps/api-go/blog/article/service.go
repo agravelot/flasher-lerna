@@ -4,7 +4,6 @@ import (
 	"api-go/api"
 	"context"
 	"errors"
-	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -65,7 +64,7 @@ func (s *service) GetArticleList(ctx context.Context, params *PaginationParams) 
 func (s *service) PostArticle(ctx context.Context, a Article) (Article, error) {
 	user := GetUserClaims(ctx)
 
-	fmt.Printf("user : %+v\n", user)
+	a.AuthorUUID = user.Sub
 
 	//TODO check if admin
 	if user == nil {
