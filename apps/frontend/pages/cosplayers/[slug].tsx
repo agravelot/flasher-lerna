@@ -183,6 +183,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
     paths: albums.flat().map((album) => ({
       params: { slug: album.slug },
     })),
-    fallback: true,
+    fallback: "blocking",
   };
 };
