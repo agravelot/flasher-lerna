@@ -7,12 +7,15 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 
 	"github.com/gorilla/mux"
 
+	jwtgo "github.com/dgrijalva/jwt-go"
+	"github.com/go-kit/kit/auth/jwt"
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/transport"
 	httptransport "github.com/go-kit/kit/transport/http"
@@ -24,6 +27,89 @@ var (
 	ErrBadRouting = errors.New("inconsistent mapping between route and handler (programmer error)")
 )
 
+type Claims struct {
+	Exp               int            `json:"exp"`
+	Iat               int            `json:"iat"`
+	AuthTime          int            `json:"auth_time"`
+	Jti               string         `json:"jti"`
+	Iss               string         `json:"iss"`
+	Aud               string         `json:"aud"`
+	Sub               string         `json:"sub"`
+	Typ               string         `json:"typ"`
+	Azp               string         `json:"azp"`
+	Nonce             string         `json:"nonce"`
+	SessionState      string         `json:"session_state"`
+	Acr               string         `json:"acr"`
+	AllowedOrigins    []string       `json:"allowed-origins"`
+	RealmAccess       RealmAccess    `json:"realm_access"`
+	ResourceAccess    ResourceAccess `json:"resource_access"`
+	Scope             string         `json:"scope"`
+	EmailVerified     bool           `json:"email_verified"`
+	PreferredUsername string         `json:"preferred_username"`
+	Email             string         `json:"email"`
+}
+type RealmAccess struct {
+	Roles []string `json:"roles"`
+}
+type Account struct {
+	Roles []string `json:"roles"`
+}
+type ResourceAccess struct {
+	Account Account `json:"account"`
+}
+
+func (m Claims) Valid() error {
+	return nil
+}
+
+type UserClaimsKeyType string
+
+const UserClaimsKey UserClaimsKeyType = "user"
+
+func GetUserClaims(ctx context.Context) *Claims {
+	// claims, ok := ctx.Value("user").(*Claims)
+	fmt.Printf("get user claims  : %+v\n", ctx.Value("user"))
+
+	// TODO Failed to cast to Claims in test, but working in live
+	claims, ok := ctx.Value("user").(*Claims)
+
+	if !ok {
+		println("unable to get claims")
+		return nil
+	}
+
+	return claims
+}
+
+// ClaimsToContext Inject user claims into context
+func ClaimsToContext() httptransport.RequestFunc {
+	return func(ctx context.Context, r *http.Request) context.Context {
+
+		tokenString, ok := ctx.Value(jwt.JWTTokenContextKey).(string)
+
+		// Unable to find token in current context, do not inject user
+		if ok == false {
+			println("token not included, skipping")
+			return ctx
+		}
+
+		parser := new(jwtgo.Parser)
+		// token, p, err := parser.ParseUnverified(tokenString, jwtgo.MapClaims{})
+		token, _, err := parser.ParseUnverified(tokenString, &Claims{})
+
+		if err != nil {
+			panic("Unable to parse token")
+		}
+
+		claims := token.Claims.(*Claims)
+		// fmt.Printf("%+v\n", claims)
+
+		println(UserClaimsKey)
+
+		return context.WithValue(ctx, UserClaimsKey, claims)
+	}
+}
+
 // MakeHTTPHandler mounts all of the service endpoints into an http.Handler.
 // Useful in a articlesvc server.
 func MakeHTTPHandler(s Service, logger log.Logger) http.Handler {
@@ -32,20 +118,17 @@ func MakeHTTPHandler(s Service, logger log.Logger) http.Handler {
 	options := []httptransport.ServerOption{
 		httptransport.ServerErrorHandler(transport.NewLogErrorHandler(logger)),
 		httptransport.ServerErrorEncoder(encodeError),
+		httptransport.ServerBefore(jwt.HTTPToContext()), // Inject jwt into context
+		httptransport.ServerBefore(ClaimsToContext()),
 	}
 
-	// POST    /articles/                          adds another article
+	// GET     /articles                           list all articles
+	// POST    /articles                           adds another article
 	// GET     /articles/:id                       retrieves the given article by id
 	// PUT     /articles/:id                       post updated article information about the article
 	// PATCH   /articles/:id                       partial updated article information
 	// DELETE  /articles/:id                       remove the given article
 
-	r.Methods("POST").Path("/articles").Handler(httptransport.NewServer(
-		e.PostArticleEndpoint,
-		decodePostArticleRequest,
-		encodeResponse,
-		options...,
-	))
 	r.Methods("GET").Path("/articles").Handler(httptransport.NewServer(
 		e.GetArticleListEndpoint,
 		decodeGetArticleListRequest,
@@ -55,6 +138,12 @@ func MakeHTTPHandler(s Service, logger log.Logger) http.Handler {
 	r.Methods("GET").Path("/articles/{id}").Handler(httptransport.NewServer(
 		e.GetArticleEndpoint,
 		decodeGetArticleRequest,
+		encodeResponse,
+		options...,
+	))
+	r.Methods("POST").Path("/articles").Handler(httptransport.NewServer(
+		e.PostArticleEndpoint,
+		decodePostArticleRequest,
 		encodeResponse,
 		options...,
 	))
@@ -144,7 +233,7 @@ func decodeDeleteArticleRequest(_ context.Context, r *http.Request) (request int
 
 func encodePostArticleRequest(ctx context.Context, req *http.Request, request interface{}) error {
 	// r.Methods("POST").Path("/articles/")
-	req.URL.Path = "/articles/"
+	req.URL.Path = "/articles"
 	return encodeRequest(ctx, req, request)
 }
 
@@ -265,6 +354,8 @@ func encodeError(_ context.Context, err error, w http.ResponseWriter) {
 
 func codeFrom(err error) int {
 	switch err {
+	case ErrNoAuth:
+		return http.StatusUnauthorized
 	case ErrNotFound:
 		return http.StatusNotFound
 	case ErrAlreadyExists:

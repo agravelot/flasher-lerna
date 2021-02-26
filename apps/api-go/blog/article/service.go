@@ -4,6 +4,7 @@ import (
 	"api-go/api"
 	"context"
 	"errors"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -30,6 +31,7 @@ type PaginatedArticles struct {
 var (
 	ErrAlreadyExists = errors.New("already exists")
 	ErrNotFound      = errors.New("not found")
+	ErrNoAuth        = errors.New("not authenticated")
 )
 
 type service struct {
@@ -43,6 +45,7 @@ func NewService(db *gorm.DB) Service {
 }
 
 func (s *service) GetArticleList(ctx context.Context, params *PaginationParams) (PaginatedArticles, error) {
+
 	if params == nil {
 		params = &PaginationParams{1, 10}
 	}
@@ -60,6 +63,15 @@ func (s *service) GetArticleList(ctx context.Context, params *PaginationParams) 
 }
 
 func (s *service) PostArticle(ctx context.Context, a Article) (Article, error) {
+	user := GetUserClaims(ctx)
+
+	fmt.Printf("user : %+v\n", user)
+
+	//TODO check if admin
+	if user == nil {
+		return Article{}, ErrNoAuth
+	}
+
 	if err := s.db.Create(&a).Error; err != nil {
 		return a, err
 	}
