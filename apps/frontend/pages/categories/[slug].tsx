@@ -137,5 +137,5 @@ export const getStaticPaths: GetStaticPaths = async () => {
     params: { slug: category.slug },
   }));
 
-  return { paths, fallback: false };
+  return { paths, fallback: true };
 };
