@@ -9,7 +9,7 @@ Je vous invite à rejoindre mon site internet en tant que cosplayer. Grâce à l
 S'enregistrer
 @endcomponent
 
-⚠ Assurez-vous de bien valider votre adresse email, sinon certaines fonctionnalités ne seront pas accessibles (tel que le téléchargement).
+⚠ Assurez-vous de bien valider votre adresse email, sinon certaines fonctionnalités ne seront pas accessibles (telle que le téléchargement).
 
 2. Une fois connecté à votre compte, rendez-vous sur le lien ci-dessous.
 
@@ -19,10 +19,10 @@ Valider mon invitation
 
 Votre compte est dorénavant relié au cosplayer {{ $invitation->cosplayer->name }}.
 
-3. Vous pouvez mainenant accéder et télécharger vos albums depuis 'Mon profil' -> 'Mes albums'.
+3. Vous pouvez maintenant accéder et télécharger vos albums depuis 'Mon profil' -> 'Mes albums'.
 
 Si vous avez la moindre question, n'hésitez pas à me contacter via le formulaire de contact, ou sur les réseaux sociaux.
-Je me ferrais un plaisir de vous répondre. 😉
+Je me ferais un plaisir de vous répondre. 😉
 
 {{ config('app.name') }}.
 @endcomponent
