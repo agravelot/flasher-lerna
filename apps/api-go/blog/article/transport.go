@@ -345,8 +345,12 @@ func encodeError(_ context.Context, err error, w http.ResponseWriter) {
 
 func codeFrom(err error) int {
 	switch err {
+	case ErrAlreadyExists:
+		return http.StatusForbidden
 	case ErrNoAuth:
 		return http.StatusUnauthorized
+	case ErrNotAdmin:
+		return http.StatusForbidden
 	case ErrNotFound:
 		return http.StatusNotFound
 	case ErrAlreadyExists:

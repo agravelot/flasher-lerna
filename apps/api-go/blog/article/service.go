@@ -31,6 +31,7 @@ var (
 	ErrAlreadyExists = errors.New("already exists")
 	ErrNotFound      = errors.New("not found")
 	ErrNoAuth        = errors.New("not authenticated")
+	ErrNotAdmin      = errors.New("not admin")
 )
 
 type service struct {
@@ -43,6 +44,20 @@ func NewService(db *gorm.DB) Service {
 	}
 }
 
+func isAdmin(c Claims) bool {
+	r := c.RealmAccess.Roles
+	for _, a := range r {
+		if a == "admin" {
+			return true
+		}
+	}
+	return false
+}
+
+func Published(db *gorm.DB) *gorm.DB {
+	return db.Where("published_at is not null")
+}
+
 func (s *service) GetArticleList(ctx context.Context, params *PaginationParams) (PaginatedArticles, error) {
 
 	if params == nil {
@@ -50,10 +65,10 @@ func (s *service) GetArticleList(ctx context.Context, params *PaginationParams) 
 	}
 
 	articles := []Article{}
-	s.db.Scopes(api.Paginate(params.Page, params.PerPage)).Find(&articles)
+	s.db.Scopes(api.Paginate(params.Page, params.PerPage), Published).Find(&articles)
 
 	var total int64
-	s.db.Model(&articles).Scopes(api.Paginate(params.Page, params.PerPage)).Count(&total)
+	s.db.Model(&articles).Scopes(api.Paginate(params.Page, params.PerPage), Published).Count(&total)
 
 	return PaginatedArticles{
 		Data: articles,
@@ -64,15 +79,22 @@ func (s *service) GetArticleList(ctx context.Context, params *PaginationParams) 
 func (s *service) PostArticle(ctx context.Context, a Article) (Article, error) {
 	user := GetUserClaims(ctx)
 
-	a.AuthorUUID = user.Sub
-
-	//TODO check if admin
 	if user == nil {
 		return Article{}, ErrNoAuth
 	}
 
+	if isAdmin(*user) == false {
+		return Article{}, ErrNotAdmin
+	}
+
+	a.AuthorUUID = user.Sub
+
 	if err := s.db.Create(&a).Error; err != nil {
-		return a, err
+		// TODO Cast pg error to have clean check
+		if err.Error() == "ERROR: duplicate key value violates unique constraint \"idx_articles_slug\" (SQLSTATE 23505)" {
+			return Article{}, ErrAlreadyExists
+		}
+		return Article{}, err
 	}
 	return a, nil
 }

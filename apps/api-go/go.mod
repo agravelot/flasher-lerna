@@ -15,8 +15,10 @@ require (
 	github.com/gosimple/slug v1.9.0
 	github.com/guregu/null v4.0.0+incompatible
 	github.com/imdario/mergo v0.3.11 // indirect
+	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/kinbiko/jsonassert v1.0.1
 	github.com/labstack/echo/v4 v4.2.0
+	github.com/lib/pq v1.9.0
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/pelletier/go-toml v1.8.1 // indirect
