@@ -3,6 +3,7 @@ package article
 import (
 	"time"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/gosimple/slug"
 	"github.com/guregu/null"
 	"gorm.io/gorm"
@@ -13,7 +14,7 @@ import (
 type Article struct {
 	ID              uint           `gorm:"primarykey" json:"id"`
 	Slug            string         `json:"slug" gorm:"uniqueIndex"`
-	Name            string         `json:"name"`
+	Name            string         `json:"name" validate:"required"`
 	MetaDescription string         `json:"meta_description"`
 	Content         string         `json:"content"`
 	AuthorUUID      string         `json:"author_uuid"`
@@ -28,4 +29,19 @@ func (a *Article) BeforeCreate(tx *gorm.DB) (err error) {
 		a.Slug = slug.Make(a.Name)
 	}
 	return
+}
+
+// use a single instance of Validate, it caches struct info
+var validate *validator.Validate
+
+func (a *Article) Validate() error {
+	validate = validator.New()
+
+	err := validate.Struct(a)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -11,6 +11,7 @@ require (
 	github.com/fatih/color v1.10.0 // indirect
 	github.com/go-kit/kit v0.10.0
 	github.com/go-openapi/spec v0.20.3 // indirect
+	github.com/go-playground/validator/v10 v10.4.1 // indirect
 	github.com/gorilla/mux v1.7.3
 	github.com/gosimple/slug v1.9.0
 	github.com/guregu/null v4.0.0+incompatible

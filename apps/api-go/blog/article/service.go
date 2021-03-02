@@ -4,6 +4,7 @@ import (
 	"api-go/api"
 	"context"
 	"errors"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -88,6 +89,12 @@ func (s *service) PostArticle(ctx context.Context, a Article) (Article, error) {
 	}
 
 	a.AuthorUUID = user.Sub
+
+	if err := a.Validate(); err != nil {
+		fmt.Printf("err : %+v\n", err)
+
+		return Article{}, err
+	}
 
 	if err := s.db.Create(&a).Error; err != nil {
 		// TODO Cast pg error to have clean check

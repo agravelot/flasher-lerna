@@ -224,6 +224,25 @@ func TestPostArticle(t *testing.T) {
 		assert.Equal(t, 1, int(total))
 	})
 
+	t.Run("should not be able to save article with empty name", func(t *testing.T) {
+		database.ClearDB(db)
+		a := Article{Name: ""}
+		ctx, _ := authAsAdmin(context.Background())
+
+		_, err := s.PostArticle(ctx, a)
+
+		// TODO check error type someway to work with codeFrom
+		// TODO cast error
+		assert.Error(t, err)
+		var total int64
+		db.Model(&Article{}).Count(&total)
+		assert.Equal(t, 0, int(total))
+		// assert.Equal(t, a.Name, res.Name)
+		// assert.Equal(t, "a-good-name", res.Slug)
+		// assert.Equal(t, claims.Sub, res.AuthorUUID)
+		// assert.False(t, res.PublishedAt.Valid)
+	})
+
 	t.Run("should not be able to post article as user", func(t *testing.T) {
 		database.ClearDB(db)
 		a := Article{Name: "A good name", Slug: "a-good-slug"}
