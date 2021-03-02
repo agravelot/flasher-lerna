@@ -2,6 +2,7 @@ package article
 
 import (
 	"api-go/api"
+	"api-go/blog/auth"
 	"context"
 	"errors"
 	"fmt"
@@ -45,16 +46,6 @@ func NewService(db *gorm.DB) Service {
 	}
 }
 
-func isAdmin(c Claims) bool {
-	r := c.RealmAccess.Roles
-	for _, a := range r {
-		if a == "admin" {
-			return true
-		}
-	}
-	return false
-}
-
 func Published(db *gorm.DB) *gorm.DB {
 	return db.Where("published_at is not null")
 }
@@ -78,13 +69,13 @@ func (s *service) GetArticleList(ctx context.Context, params *PaginationParams) 
 }
 
 func (s *service) PostArticle(ctx context.Context, a Article) (Article, error) {
-	user := GetUserClaims(ctx)
+	user := auth.GetUserClaims(ctx)
 
 	if user == nil {
 		return Article{}, ErrNoAuth
 	}
 
-	if isAdmin(*user) == false {
+	if user.IsAdmin() == false {
 		return Article{}, ErrNotAdmin
 	}
 

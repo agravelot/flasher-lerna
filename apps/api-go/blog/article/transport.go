@@ -3,6 +3,7 @@ package article
 // The articlesvc is just over HTTP, so we just have a single transport.go.
 
 import (
+	"api-go/blog/auth"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -13,7 +14,6 @@ import (
 
 	"github.com/gorilla/mux"
 
-	jwtgo "github.com/dgrijalva/jwt-go"
 	"github.com/go-kit/kit/auth/jwt"
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/transport"
@@ -26,81 +26,6 @@ var (
 	ErrBadRouting = errors.New("inconsistent mapping between route and handler (programmer error)")
 )
 
-type Claims struct {
-	Exp               int            `json:"exp"`
-	Iat               int            `json:"iat"`
-	AuthTime          int            `json:"auth_time"`
-	Jti               string         `json:"jti"`
-	Iss               string         `json:"iss"`
-	Aud               string         `json:"aud"`
-	Sub               string         `json:"sub"`
-	Typ               string         `json:"typ"`
-	Azp               string         `json:"azp"`
-	Nonce             string         `json:"nonce"`
-	SessionState      string         `json:"session_state"`
-	Acr               string         `json:"acr"`
-	AllowedOrigins    []string       `json:"allowed-origins"`
-	RealmAccess       RealmAccess    `json:"realm_access"`
-	ResourceAccess    ResourceAccess `json:"resource_access"`
-	Scope             string         `json:"scope"`
-	EmailVerified     bool           `json:"email_verified"`
-	PreferredUsername string         `json:"preferred_username"`
-	Email             string         `json:"email"`
-}
-type RealmAccess struct {
-	Roles []string `json:"roles"`
-}
-type Account struct {
-	Roles []string `json:"roles"`
-}
-type ResourceAccess struct {
-	Account Account `json:"account"`
-}
-
-func (m Claims) Valid() error {
-	return nil
-}
-
-type UserClaimsKeyType string
-
-const UserClaimsKey UserClaimsKeyType = "user"
-
-func GetUserClaims(ctx context.Context) *Claims {
-	claims, ok := ctx.Value("user").(Claims)
-
-	if !ok {
-		println("unable to get claims")
-		return nil
-	}
-
-	return &claims
-}
-
-// ClaimsToContext Inject user claims into context
-func ClaimsToContext() httptransport.RequestFunc {
-	return func(ctx context.Context, r *http.Request) context.Context {
-
-		tokenString, ok := ctx.Value(jwt.JWTTokenContextKey).(string)
-
-		// Unable to find token in current context, do not inject user
-		if ok == false {
-			println("token not included, skipping")
-			return ctx
-		}
-
-		parser := new(jwtgo.Parser)
-		token, _, err := parser.ParseUnverified(tokenString, &Claims{})
-
-		if err != nil {
-			panic("Unable to parse token")
-		}
-
-		claims := token.Claims.(*Claims)
-
-		return context.WithValue(ctx, "user", claims)
-	}
-}
-
 // MakeHTTPHandler mounts all of the service endpoints into an http.Handler.
 // Useful in a articlesvc server.
 func MakeHTTPHandler(s Service, logger log.Logger) http.Handler {
@@ -109,8 +34,8 @@ func MakeHTTPHandler(s Service, logger log.Logger) http.Handler {
 	options := []httptransport.ServerOption{
 		httptransport.ServerErrorHandler(transport.NewLogErrorHandler(logger)),
 		httptransport.ServerErrorEncoder(encodeError),
-		httptransport.ServerBefore(jwt.HTTPToContext()), // Inject jwt into context
-		httptransport.ServerBefore(ClaimsToContext()),
+		httptransport.ServerBefore(jwt.HTTPToContext()),
+		httptransport.ServerBefore(auth.ClaimsToContext()),
 	}
 
 	// GET     /articles                           list all articles
