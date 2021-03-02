@@ -122,8 +122,8 @@ const MyAlbums: FunctionComponent<Props> = ({
                 {status === State.Failed && "Une erreur a eu lieu."}
               </span>
               <br />
-              Pour remédier à cela, n'hésitez à me
-              <Link
+              {/*  eslint-disable-next-line prettier/prettier */}
+              Pour remédier à cela, n'hésitez à me <Link
                 href={{
                   pathname: "/",
                   hash: "contact",
@@ -132,8 +132,9 @@ const MyAlbums: FunctionComponent<Props> = ({
                 <a className="underline text-pink-600 hover:text-pink-800">
                   contacter
                 </a>
-              </Link>
-              ! <br />
+                {/*  eslint-disable-next-line prettier/prettier */}
+              </Link> !
+              <br />
               Je me ferais un plaisir à vous répondre.
             </div>
           </section>
