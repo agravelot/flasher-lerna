@@ -5,7 +5,6 @@ import (
 	"api-go/blog/auth"
 	"context"
 	"errors"
-	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -24,6 +23,7 @@ type PaginationParams struct {
 	Page    int
 	PerPage int
 }
+
 type PaginatedArticles struct {
 	Data []Article `json:"data"`
 	Meta api.Meta  `json:"meta"`
@@ -82,8 +82,6 @@ func (s *service) PostArticle(ctx context.Context, a Article) (Article, error) {
 	a.AuthorUUID = user.Sub
 
 	if err := a.Validate(); err != nil {
-		fmt.Printf("err : %+v\n", err)
-
 		return Article{}, err
 	}
 
@@ -94,6 +92,7 @@ func (s *service) PostArticle(ctx context.Context, a Article) (Article, error) {
 		}
 		return Article{}, err
 	}
+
 	return a, nil
 }
 

@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/guregu/null"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
@@ -161,7 +162,7 @@ func TestGetArticleList(t *testing.T) {
 func TestPostArticle(t *testing.T) {
 	t.Run("should be able to create an article and generate slug as admin", func(t *testing.T) {
 		database.ClearDB(db)
-		a := Article{Name: "A good name"}
+		a := Article{Name: "A good name", MetaDescription: "a meta decription"}
 		ctx, claims := authAsAdmin(context.Background())
 
 		res, err := s.PostArticle(ctx, a)
@@ -178,7 +179,7 @@ func TestPostArticle(t *testing.T) {
 
 	t.Run("should be able to create an published article and generate slug as admin", func(t *testing.T) {
 		database.ClearDB(db)
-		a := Article{Name: "A good name", PublishedAt: null.NewTime(time.Now(), true)}
+		a := Article{Name: "A good name", MetaDescription: "a meta decription", PublishedAt: null.NewTime(time.Now(), true)}
 		ctx, claims := authAsAdmin(context.Background())
 
 		res, err := s.PostArticle(ctx, a)
@@ -195,7 +196,7 @@ func TestPostArticle(t *testing.T) {
 
 	t.Run("should be able to create an article with a specified slug", func(t *testing.T) {
 		database.ClearDB(db)
-		a := Article{Name: "A good name", Slug: "wtf-is-this-slug"}
+		a := Article{Name: "A good name", Slug: "wtf-is-this-slug", MetaDescription: "a meta decription"}
 		ctx, claims := authAsAdmin(context.Background())
 
 		res, err := s.PostArticle(ctx, a)
@@ -211,15 +212,14 @@ func TestPostArticle(t *testing.T) {
 
 	t.Run("should not be able to create an article with same slug", func(t *testing.T) {
 		database.ClearDB(db)
-		a := Article{Name: "A good name", Slug: "a-good-slug"}
+		a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 		db.Create(&a)
-		dup := Article{Name: "A good name", Slug: "a-good-slug"}
+		dup := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 		ctx, _ := authAsAdmin(context.Background())
 
 		_, err := s.PostArticle(ctx, dup)
 
 		assert.Error(t, err)
-		println("err : " + err.Error())
 		var total int64
 		db.Model(&Article{}).Count(&total)
 		assert.Equal(t, 1, int(total))
@@ -232,22 +232,66 @@ func TestPostArticle(t *testing.T) {
 
 		_, err := s.PostArticle(ctx, a)
 
-		// TODO check error type someway to work with codeFrom
-		// TODO cast error
 		assert.Error(t, err)
-		println(err.Error())
+		validationErrors := err.(validator.ValidationErrors)
+		assert.Equal(t, "Article.Name", validationErrors[0].Namespace())
+		assert.Equal(t, "required", validationErrors[0].ActualTag())
 		var total int64
 		db.Model(&Article{}).Count(&total)
 		assert.Equal(t, 0, int(total))
-		// assert.Equal(t, a.Name, res.Name)
-		// assert.Equal(t, "a-good-name", res.Slug)
-		// assert.Equal(t, claims.Sub, res.AuthorUUID)
-		// assert.False(t, res.PublishedAt.Valid)
+	})
+
+	t.Run("should not be able to save article with too long name", func(t *testing.T) {
+		database.ClearDB(db)
+		a := Article{Name: "a very too long big enormous title that will never fit in any screen..."}
+		ctx, _ := authAsAdmin(context.Background())
+
+		_, err := s.PostArticle(ctx, a)
+
+		assert.Error(t, err)
+		validationErrors := err.(validator.ValidationErrors)
+		assert.Equal(t, "Article.Name", validationErrors[0].Namespace())
+		assert.Equal(t, "lt", validationErrors[0].ActualTag())
+		var total int64
+		db.Model(&Article{}).Count(&total)
+		assert.Equal(t, 0, int(total))
+	})
+
+	t.Run("should not be able to save article with empty meta description", func(t *testing.T) {
+		database.ClearDB(db)
+		a := Article{Name: "a good name", MetaDescription: ""}
+		ctx, _ := authAsAdmin(context.Background())
+
+		_, err := s.PostArticle(ctx, a)
+
+		assert.Error(t, err)
+		validationErrors := err.(validator.ValidationErrors)
+		assert.Equal(t, "Article.MetaDescription", validationErrors[0].Namespace())
+		assert.Equal(t, "required", validationErrors[0].ActualTag())
+		var total int64
+		db.Model(&Article{}).Count(&total)
+		assert.Equal(t, 0, int(total))
+	})
+
+	t.Run("should not be able to save article with too meta description", func(t *testing.T) {
+		database.ClearDB(db)
+		a := Article{Name: "A good name", MetaDescription: "a very too long big enormous title that will never fit in any screen..."}
+		ctx, _ := authAsAdmin(context.Background())
+
+		_, err := s.PostArticle(ctx, a)
+
+		assert.Error(t, err)
+		validationErrors := err.(validator.ValidationErrors)
+		assert.Equal(t, "Article.MetaDescription", validationErrors[0].Namespace())
+		assert.Equal(t, "lt", validationErrors[0].ActualTag())
+		var total int64
+		db.Model(&Article{}).Count(&total)
+		assert.Equal(t, 0, int(total))
 	})
 
 	t.Run("should not be able to post article as user", func(t *testing.T) {
 		database.ClearDB(db)
-		a := Article{Name: "A good name", Slug: "a-good-slug"}
+		a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 		ctx, _ := authAsUser(context.Background())
 
 		_, err := s.PostArticle(ctx, a)
@@ -261,7 +305,7 @@ func TestPostArticle(t *testing.T) {
 
 	t.Run("should not be able to post article as guest", func(t *testing.T) {
 		database.ClearDB(db)
-		a := Article{Name: "A good name", Slug: "a-good-slug"}
+		a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 
 		_, err := s.PostArticle(context.Background(), a)
 
@@ -276,7 +320,7 @@ func TestPostArticle(t *testing.T) {
 func TestDeleteArticle(t *testing.T) {
 	t.Run("should be able to delete article and is soft deleted", func(t *testing.T) {
 		database.ClearDB(db)
-		a := Article{Name: "A good name", Slug: "a-good-slug"}
+		a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 		db.Create(&a)
 
 		err := s.DeleteArticle(context.Background(), a.Slug)
