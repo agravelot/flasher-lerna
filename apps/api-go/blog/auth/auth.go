@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	jwtgo "github.com/dgrijalva/jwt-go"
@@ -62,11 +61,7 @@ const UserClaimsKey UserClaimsKeyType = "user"
 func GetUserClaims(ctx context.Context) *Claims {
 	claims, ok := ctx.Value("user").(*Claims)
 
-	fmt.Printf("GetUserClaims %+v\n", ctx.Value("user"))
-	fmt.Printf("ok %+v\n", ok)
-
 	if !ok {
-		println("unable to get claims")
 		return nil
 	}
 
@@ -81,7 +76,6 @@ func ClaimsToContext() httptransport.RequestFunc {
 
 		// Unable to find token in current context, do not inject user
 		if ok == false {
-			println("token not included, skipping")
 			return ctx
 		}
 

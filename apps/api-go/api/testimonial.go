@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -36,6 +35,5 @@ func GetTestimonials(c echo.Context) error {
 
 func GetTestimonial(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
-	fmt.Println(c.ParamNames())
 	return c.JSON(http.StatusOK, testimonials[id])
 }
