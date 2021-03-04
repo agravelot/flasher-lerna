@@ -97,248 +97,240 @@ func TestMain(m *testing.M) {
 	os.Exit(exitVal)
 }
 
-func TestGetArticleList(t *testing.T) {
+func TestShouldBeAbleToListEmpty(t *testing.T) {
+	database.ClearDB(db)
+	r, _ := s.GetArticleList(context.Background(), nil)
 
-	t.Run("should be able to list empty", func(t *testing.T) {
-		database.ClearDB(db)
-
-		r, _ := s.GetArticleList(context.Background(), nil)
-
-		assert.Equal(t, 0, len(r.Data))
-		assert.Equal(t, int64(0), r.Meta.Total)
-		assert.Equal(t, 10, r.Meta.PerPage)
-	})
-
-	t.Run("should be able to list with one published article", func(t *testing.T) {
-		database.ClearDB(db)
-		a := Article{Name: "A good name", PublishedAt: null.NewTime(time.Now(), true)}
-		db.Create(&a)
-
-		r, _ := s.GetArticleList(context.Background(), nil)
-
-		assert.Equal(t, int64(1), r.Meta.Total)
-		assert.Equal(t, 10, r.Meta.PerPage)
-		assert.Equal(t, 1, len(r.Data))
-	})
-
-	t.Run("should be able to list with custom per page", func(t *testing.T) {
-		database.ClearDB(db)
-		a := Article{Name: "A good name", PublishedAt: null.NewTime(time.Now(), true)}
-		db.Create(&a)
-
-		r, _ := s.GetArticleList(context.Background(), &PaginationParams{1, 15})
-
-		assert.Equal(t, int64(1), r.Meta.Total)
-		assert.Equal(t, 15, r.Meta.PerPage)
-		assert.Equal(t, 1, len(r.Data))
-	})
-
-	t.Run("should not list soft deleted articles", func(t *testing.T) {
-		database.ClearDB(db)
-		a := Article{Name: "A good name", PublishedAt: null.NewTime(time.Now(), true)}
-		db.Create(&a)
-		db.Delete(&a)
-
-		r, _ := s.GetArticleList(context.Background(), nil)
-
-		assert.Equal(t, int64(0), r.Meta.Total)
-		assert.Equal(t, 10, r.Meta.PerPage)
-		assert.Equal(t, 0, len(r.Data))
-	})
-
-	t.Run("should not list non published articles", func(t *testing.T) {
-		database.ClearDB(db)
-		a := Article{Name: "A good name"}
-		db.Create(&a)
-
-		r, _ := s.GetArticleList(context.Background(), nil)
-
-		assert.Equal(t, int64(0), r.Meta.Total)
-		assert.Equal(t, 10, r.Meta.PerPage)
-		assert.Equal(t, 0, len(r.Data))
-	})
+	assert.Equal(t, 0, len(r.Data))
+	assert.Equal(t, int64(0), r.Meta.Total)
+	assert.Equal(t, 10, r.Meta.PerPage)
 }
 
-func TestPostArticle(t *testing.T) {
-	t.Run("should be able to create an article and generate slug as admin", func(t *testing.T) {
-		database.ClearDB(db)
-		a := Article{Name: "A good name", MetaDescription: "a meta decription"}
-		ctx, claims := authAsAdmin(context.Background())
+func TestShouldBeAbleToListWithOnePublishedArticle(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: "A good name", PublishedAt: null.NewTime(time.Now(), true)}
+	db.Create(&a)
 
-		res, err := s.PostArticle(ctx, a)
+	r, _ := s.GetArticleList(context.Background(), nil)
 
-		assert.NoError(t, err)
-		var total int64
-		db.Model(&Article{}).Count(&total)
-		assert.Equal(t, 1, int(total))
-		assert.Equal(t, a.Name, res.Name)
-		assert.Equal(t, "a-good-name", res.Slug)
-		assert.Equal(t, claims.Sub, res.AuthorUUID)
-		assert.False(t, res.PublishedAt.Valid)
-	})
-
-	t.Run("should be able to create an published article and generate slug as admin", func(t *testing.T) {
-		database.ClearDB(db)
-		a := Article{Name: "A good name", MetaDescription: "a meta decription", PublishedAt: null.NewTime(time.Now(), true)}
-		ctx, claims := authAsAdmin(context.Background())
-
-		res, err := s.PostArticle(ctx, a)
-
-		assert.NoError(t, err)
-		var total int64
-		db.Model(&Article{}).Count(&total)
-		assert.Equal(t, 1, int(total))
-		assert.Equal(t, a.Name, res.Name)
-		assert.Equal(t, "a-good-name", res.Slug)
-		assert.Equal(t, claims.Sub, res.AuthorUUID)
-		assert.True(t, res.PublishedAt.Valid)
-	})
-
-	t.Run("should be able to create an article with a specified slug", func(t *testing.T) {
-		database.ClearDB(db)
-		a := Article{Name: "A good name", Slug: "wtf-is-this-slug", MetaDescription: "a meta decription"}
-		ctx, claims := authAsAdmin(context.Background())
-
-		res, err := s.PostArticle(ctx, a)
-
-		assert.NoError(t, err)
-		var total int64
-		db.Model(&Article{}).Count(&total)
-		assert.Equal(t, 1, int(total))
-		assert.Equal(t, a.Name, res.Name)
-		assert.Equal(t, a.Slug, res.Slug)
-		assert.Equal(t, claims.Sub, res.AuthorUUID)
-	})
-
-	t.Run("should not be able to create an article with same slug", func(t *testing.T) {
-		database.ClearDB(db)
-		a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
-		db.Create(&a)
-		dup := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
-		ctx, _ := authAsAdmin(context.Background())
-
-		_, err := s.PostArticle(ctx, dup)
-
-		assert.Error(t, err)
-		var total int64
-		db.Model(&Article{}).Count(&total)
-		assert.Equal(t, 1, int(total))
-	})
-
-	t.Run("should not be able to save article with empty name", func(t *testing.T) {
-		database.ClearDB(db)
-		a := Article{Name: ""}
-		ctx, _ := authAsAdmin(context.Background())
-
-		_, err := s.PostArticle(ctx, a)
-
-		assert.Error(t, err)
-		validationErrors := err.(validator.ValidationErrors)
-		assert.Equal(t, "Article.Name", validationErrors[0].Namespace())
-		assert.Equal(t, "required", validationErrors[0].ActualTag())
-		var total int64
-		db.Model(&Article{}).Count(&total)
-		assert.Equal(t, 0, int(total))
-	})
-
-	t.Run("should not be able to save article with too long name", func(t *testing.T) {
-		database.ClearDB(db)
-		a := Article{Name: "a very too long big enormous title that will never fit in any screen..."}
-		ctx, _ := authAsAdmin(context.Background())
-
-		_, err := s.PostArticle(ctx, a)
-
-		assert.Error(t, err)
-		validationErrors := err.(validator.ValidationErrors)
-		assert.Equal(t, "Article.Name", validationErrors[0].Namespace())
-		assert.Equal(t, "lt", validationErrors[0].ActualTag())
-		var total int64
-		db.Model(&Article{}).Count(&total)
-		assert.Equal(t, 0, int(total))
-	})
-
-	t.Run("should not be able to save article with empty meta description", func(t *testing.T) {
-		database.ClearDB(db)
-		a := Article{Name: "a good name", MetaDescription: ""}
-		ctx, _ := authAsAdmin(context.Background())
-
-		_, err := s.PostArticle(ctx, a)
-
-		assert.Error(t, err)
-		validationErrors := err.(validator.ValidationErrors)
-		assert.Equal(t, "Article.MetaDescription", validationErrors[0].Namespace())
-		assert.Equal(t, "required", validationErrors[0].ActualTag())
-		var total int64
-		db.Model(&Article{}).Count(&total)
-		assert.Equal(t, 0, int(total))
-	})
-
-	t.Run("should not be able to save article with too meta description", func(t *testing.T) {
-		database.ClearDB(db)
-		a := Article{Name: "A good name", MetaDescription: "a very too long big enormous title that will never fit in any screen..."}
-		ctx, _ := authAsAdmin(context.Background())
-
-		_, err := s.PostArticle(ctx, a)
-
-		assert.Error(t, err)
-		validationErrors := err.(validator.ValidationErrors)
-		assert.Equal(t, "Article.MetaDescription", validationErrors[0].Namespace())
-		assert.Equal(t, "lt", validationErrors[0].ActualTag())
-		var total int64
-		db.Model(&Article{}).Count(&total)
-		assert.Equal(t, 0, int(total))
-	})
-
-	t.Run("should not be able to post article as user", func(t *testing.T) {
-		database.ClearDB(db)
-		a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
-		ctx, _ := authAsUser(context.Background())
-
-		_, err := s.PostArticle(ctx, a)
-
-		assert.Error(t, err)
-		assert.Equal(t, ErrNotAdmin, err)
-		var total int64
-		db.Model(&Article{}).Count(&total)
-		assert.Equal(t, 0, int(total))
-	})
-
-	t.Run("should not be able to post article as guest", func(t *testing.T) {
-		database.ClearDB(db)
-		a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
-
-		_, err := s.PostArticle(context.Background(), a)
-
-		assert.Error(t, err)
-		assert.Equal(t, ErrNoAuth, err)
-		var total int64
-		db.Model(&Article{}).Count(&total)
-		assert.Equal(t, 0, int(total))
-	})
+	assert.Equal(t, int64(1), r.Meta.Total)
+	assert.Equal(t, 10, r.Meta.PerPage)
+	assert.Equal(t, 1, len(r.Data))
 }
 
-func TestDeleteArticle(t *testing.T) {
-	t.Run("should be able to delete article and is soft deleted", func(t *testing.T) {
-		database.ClearDB(db)
-		a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
-		db.Create(&a)
+func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: "A good name", PublishedAt: null.NewTime(time.Now(), true)}
+	db.Create(&a)
 
-		err := s.DeleteArticle(context.Background(), a.Slug)
+	r, _ := s.GetArticleList(context.Background(), &PaginationParams{1, 15})
 
-		var total, totalScopeless int64
-		db.Model(&a).Count(&total)
-		db.Model(&a).Unscoped().Count(&totalScopeless)
-		assert.NoError(t, err)
-		assert.Equal(t, 0, int(total))
-		assert.Equal(t, 1, int(totalScopeless))
-	})
+	assert.Equal(t, int64(1), r.Meta.Total)
+	assert.Equal(t, 15, r.Meta.PerPage)
+	assert.Equal(t, 1, len(r.Data))
+}
 
-	t.Run("should not be able to delete an non existant article", func(t *testing.T) {
-		database.ClearDB(db)
+func TestShouldNotListSoftDeletedArticles(t *testing.T) {
+	database.ClearDB(db)
 
-		err := s.DeleteArticle(context.Background(), "a-random-slug")
+	a := Article{Name: "A good name", PublishedAt: null.NewTime(time.Now(), true)}
+	db.Create(&a)
+	db.Delete(&a)
 
-		assert.Error(t, err)
-		assert.EqualError(t, err, ErrNotFound.Error())
-	})
+	r, _ := s.GetArticleList(context.Background(), nil)
+
+	assert.Equal(t, int64(0), r.Meta.Total)
+	assert.Equal(t, 10, r.Meta.PerPage)
+	assert.Equal(t, 0, len(r.Data))
+}
+
+func TestShouldNotListNonPublishedArticles(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: "A good name"}
+	db.Create(&a)
+
+	r, _ := s.GetArticleList(context.Background(), nil)
+
+	assert.Equal(t, int64(0), r.Meta.Total)
+	assert.Equal(t, 10, r.Meta.PerPage)
+	assert.Equal(t, 0, len(r.Data))
+}
+
+func TestShouldBeAbleToCreateAnArticleAndGenerateSlugAsAdmin(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: "A good name", MetaDescription: "a meta decription"}
+	ctx, claims := authAsAdmin(context.Background())
+
+	res, err := s.PostArticle(ctx, a)
+
+	assert.NoError(t, err)
+	var total int64
+	db.Model(&Article{}).Count(&total)
+	assert.Equal(t, 1, int(total))
+	assert.Equal(t, a.Name, res.Name)
+	assert.Equal(t, "a-good-name", res.Slug)
+	assert.Equal(t, claims.Sub, res.AuthorUUID)
+	assert.False(t, res.PublishedAt.Valid)
+}
+
+func TestShouldBeAbleToCreateAnPublishedArticleAndGenerateSlugAsAdmin(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: "A good name", MetaDescription: "a meta decription", PublishedAt: null.NewTime(time.Now(), true)}
+	ctx, claims := authAsAdmin(context.Background())
+
+	res, err := s.PostArticle(ctx, a)
+
+	assert.NoError(t, err)
+	var total int64
+	db.Model(&Article{}).Count(&total)
+	assert.Equal(t, 1, int(total))
+	assert.Equal(t, a.Name, res.Name)
+	assert.Equal(t, "a-good-name", res.Slug)
+	assert.Equal(t, claims.Sub, res.AuthorUUID)
+	assert.True(t, res.PublishedAt.Valid)
+}
+
+func TestShouldBeAbleToCreateAnArticleWithASpecifiedSlug(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: "A good name", Slug: "wtf-is-this-slug", MetaDescription: "a meta decription"}
+	ctx, claims := authAsAdmin(context.Background())
+
+	res, err := s.PostArticle(ctx, a)
+
+	assert.NoError(t, err)
+	var total int64
+	db.Model(&Article{}).Count(&total)
+	assert.Equal(t, 1, int(total))
+	assert.Equal(t, a.Name, res.Name)
+	assert.Equal(t, a.Slug, res.Slug)
+	assert.Equal(t, claims.Sub, res.AuthorUUID)
+}
+
+func TestShouldNotBeAbleToCreateAnArticleWithSameSlug(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	db.Create(&a)
+	dup := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	ctx, _ := authAsAdmin(context.Background())
+
+	_, err := s.PostArticle(ctx, dup)
+
+	assert.Error(t, err)
+	var total int64
+	db.Model(&Article{}).Count(&total)
+	assert.Equal(t, 1, int(total))
+}
+
+func TestShouldNotBeAbleToSaveArticleWithEmptyName(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: ""}
+	ctx, _ := authAsAdmin(context.Background())
+
+	_, err := s.PostArticle(ctx, a)
+
+	assert.Error(t, err)
+	validationErrors := err.(validator.ValidationErrors)
+	assert.Equal(t, "Article.Name", validationErrors[0].Namespace())
+	assert.Equal(t, "required", validationErrors[0].ActualTag())
+	var total int64
+	db.Model(&Article{}).Count(&total)
+	assert.Equal(t, 0, int(total))
+}
+
+func TestShouldNotBeAbleToSaveArticleWithTooLongName(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: "a very too long big enormous title that will never fit in any screen..."}
+	ctx, _ := authAsAdmin(context.Background())
+
+	_, err := s.PostArticle(ctx, a)
+
+	assert.Error(t, err)
+	validationErrors := err.(validator.ValidationErrors)
+	assert.Equal(t, "Article.Name", validationErrors[0].Namespace())
+	assert.Equal(t, "lt", validationErrors[0].ActualTag())
+	var total int64
+	db.Model(&Article{}).Count(&total)
+	assert.Equal(t, 0, int(total))
+}
+
+func TestShouldNotBeAbleToSaveArticleWithEmptyMetaDescription(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: "a good name", MetaDescription: ""}
+	ctx, _ := authAsAdmin(context.Background())
+
+	_, err := s.PostArticle(ctx, a)
+
+	assert.Error(t, err)
+	validationErrors := err.(validator.ValidationErrors)
+	assert.Equal(t, "Article.MetaDescription", validationErrors[0].Namespace())
+	assert.Equal(t, "required", validationErrors[0].ActualTag())
+	var total int64
+	db.Model(&Article{}).Count(&total)
+	assert.Equal(t, 0, int(total))
+}
+
+func TestShouldNotBeAbleToSaveArticleWithTooLongMetaDescription(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: "A good name", MetaDescription: "a very too long big enormous title that will never fit in any screen..."}
+	ctx, _ := authAsAdmin(context.Background())
+
+	_, err := s.PostArticle(ctx, a)
+
+	assert.Error(t, err)
+	validationErrors := err.(validator.ValidationErrors)
+	assert.Equal(t, "Article.MetaDescription", validationErrors[0].Namespace())
+	assert.Equal(t, "lt", validationErrors[0].ActualTag())
+	var total int64
+	db.Model(&Article{}).Count(&total)
+	assert.Equal(t, 0, int(total))
+}
+
+func TestShouldNotBeAbleToPostArticleAsUser(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	ctx, _ := authAsUser(context.Background())
+
+	_, err := s.PostArticle(ctx, a)
+
+	assert.Error(t, err)
+	assert.Equal(t, ErrNotAdmin, err)
+	var total int64
+	db.Model(&Article{}).Count(&total)
+	assert.Equal(t, 0, int(total))
+}
+
+func TestShouldNotBeAbleToPostArticleAsGuest(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+
+	_, err := s.PostArticle(context.Background(), a)
+
+	assert.Error(t, err)
+	assert.Equal(t, ErrNoAuth, err)
+	var total int64
+	db.Model(&Article{}).Count(&total)
+	assert.Equal(t, 0, int(total))
+}
+
+func TestShouldBeAbleToDeleteArticleAndIsSoftDeleted(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	db.Create(&a)
+
+	err := s.DeleteArticle(context.Background(), a.Slug)
+
+	var total, totalScopeless int64
+	db.Model(&a).Count(&total)
+	db.Model(&a).Unscoped().Count(&totalScopeless)
+	assert.NoError(t, err)
+	assert.Equal(t, 0, int(total))
+	assert.Equal(t, 1, int(totalScopeless))
+}
+
+func TestShouldNotBeAbleToDeleteAnNonExistantArticle(t *testing.T) {
+	database.ClearDB(db)
+	err := s.DeleteArticle(context.Background(), "a-random-slug")
+
+	assert.Error(t, err)
+	assert.EqualError(t, err, ErrNotFound.Error())
 }
