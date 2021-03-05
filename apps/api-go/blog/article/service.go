@@ -15,7 +15,7 @@ type Service interface {
 	GetArticleList(ctx context.Context, params *PaginationParams) (PaginatedArticles, error)
 	GetArticle(ctx context.Context, slug string) (Article, error)
 	PutArticle(ctx context.Context, slug string, p Article) error
-	PatchArticle(ctx context.Context, slug string, p Article) error
+	PatchArticle(ctx context.Context, slug string, p Article) (Article, error)
 	DeleteArticle(ctx context.Context, slug string) error
 }
 
@@ -69,6 +69,7 @@ func (s *service) GetArticleList(ctx context.Context, params *PaginationParams) 
 }
 
 func (s *service) PostArticle(ctx context.Context, a Article) (Article, error) {
+	// TODO filter status
 	user := auth.GetUserClaims(ctx)
 
 	if user == nil {
@@ -97,6 +98,7 @@ func (s *service) PostArticle(ctx context.Context, a Article) (Article, error) {
 }
 
 func (s *service) GetArticle(ctx context.Context, slug string) (Article, error) {
+	// TODO 404 non published
 	a := Article{}
 	err := s.db.Where("slug = ?", slug).First(&a).Error
 
@@ -117,30 +119,24 @@ func (s *service) PutArticle(ctx context.Context, slug string, p Article) error 
 	return nil
 }
 
-func (s *service) PatchArticle(ctx context.Context, slug string, p Article) error {
-	// if p.ID != "" && id != p.ID {
-	// 	return ErrInconsistentIDs
-	// }
+func (s *service) PatchArticle(ctx context.Context, slug string, a Article) (Article, error) {
+	user := auth.GetUserClaims(ctx)
 
-	// s.mtx.Lock()
-	// defer s.mtx.Unlock()
+	if user == nil {
+		return Article{}, ErrNoAuth
+	}
 
-	// existing, ok := s.m[id]
-	// if !ok {
-	// 	return ErrNotFound // PATCH = update existing, don't create
-	// }
+	if user.IsAdmin() == false {
+		return Article{}, ErrNotAdmin
+	}
 
-	// // We assume that it's not possible to PATCH the ID, and that it's not
-	// // possible to PATCH any field to its zero value. That is, the zero value
-	// // means not specified. The way around this is to use e.g. Name *string in
-	// // the Article definition. But since this is just a demonstrative example,
-	// // I'm leaving that out.
+	if err := a.Validate(); err != nil {
+		return Article{}, err
+	}
 
-	// if p.Name != "" {
-	// 	existing.Name = p.Name
-	// }
-	// s.m[id] = existing
-	return nil
+	s.db.Save(a)
+
+	return a, nil
 }
 
 func (s *service) DeleteArticle(ctx context.Context, slug string) error {

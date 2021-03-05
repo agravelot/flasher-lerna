@@ -124,7 +124,7 @@ func decodePutArticleRequest(_ context.Context, r *http.Request) (request interf
 
 func decodePatchArticleRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
 	vars := mux.Vars(r)
-	id, ok := vars["id"]
+	slug, ok := vars["slug"]
 	if !ok {
 		return nil, ErrBadRouting
 	}
@@ -133,7 +133,7 @@ func decodePatchArticleRequest(_ context.Context, r *http.Request) (request inte
 		return nil, err
 	}
 	return patchArticleRequest{
-		ID:      id,
+		Slug:    slug,
 		Article: article,
 	}, nil
 }
@@ -178,8 +178,8 @@ func encodePutArticleRequest(ctx context.Context, req *http.Request, request int
 func encodePatchArticleRequest(ctx context.Context, req *http.Request, request interface{}) error {
 	// r.Methods("PATCH").Path("/articles/{id}")
 	r := request.(patchArticleRequest)
-	articleID := url.QueryEscape(r.ID)
-	req.URL.Path = "/articles/" + articleID
+	articleSlug := url.QueryEscape(r.Slug)
+	req.URL.Path = "/articles/" + articleSlug
 	return encodeRequest(ctx, req, request)
 }
 

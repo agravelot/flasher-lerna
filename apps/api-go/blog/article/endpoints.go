@@ -120,8 +120,8 @@ func (e Endpoints) PutArticle(ctx context.Context, id string, p Article) error {
 }
 
 // PatchArticle implements Service. Primarily useful in a client.
-func (e Endpoints) PatchArticle(ctx context.Context, id string, p Article) error {
-	request := patchArticleRequest{ID: id, Article: p}
+func (e Endpoints) PatchArticle(ctx context.Context, slug string, p Article) error {
+	request := patchArticleRequest{Slug: slug, Article: p}
 	response, err := e.PatchArticleEndpoint(ctx, request)
 	if err != nil {
 		return err
@@ -183,8 +183,8 @@ func MakePutArticleEndpoint(s Service) endpoint.Endpoint {
 func MakePatchArticleEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(patchArticleRequest)
-		e := s.PatchArticle(ctx, req.ID, req.Article)
-		return patchArticleResponse{Err: e}, nil
+		a, e := s.PatchArticle(ctx, req.Slug, req.Article)
+		return patchArticleResponse{Article: a, Err: e}, nil
 	}
 }
 
@@ -255,12 +255,13 @@ type putArticleResponse struct {
 func (r putArticleResponse) error() error { return nil }
 
 type patchArticleRequest struct {
-	ID      string
+	Slug    string
 	Article Article
 }
 
 type patchArticleResponse struct {
-	Err error `json:"err,omitempty"`
+	Err     error `json:"err,omitempty"`
+	Article Article
 }
 
 func (r patchArticleResponse) error() error { return r.Err }

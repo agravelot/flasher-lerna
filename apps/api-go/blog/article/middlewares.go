@@ -52,11 +52,11 @@ func (mw loggingMiddleware) PutArticle(ctx context.Context, id string, p Article
 	return mw.next.PutArticle(ctx, id, p)
 }
 
-func (mw loggingMiddleware) PatchArticle(ctx context.Context, id string, p Article) (err error) {
+func (mw loggingMiddleware) PatchArticle(ctx context.Context, slug string, p Article) (a Article, err error) {
 	defer func(begin time.Time) {
-		mw.logger.Log("method", "PatchArticle", "id", id, "took", time.Since(begin), "err", err)
+		mw.logger.Log("method", "PatchArticle", "slug", slug, "took", time.Since(begin), "err", err)
 	}(time.Now())
-	return mw.next.PatchArticle(ctx, id, p)
+	return mw.next.PatchArticle(ctx, slug, p)
 }
 
 func (mw loggingMiddleware) DeleteArticle(ctx context.Context, id string) (err error) {

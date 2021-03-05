@@ -97,6 +97,8 @@ func TestMain(m *testing.M) {
 	os.Exit(exitVal)
 }
 
+/////// LIST ////////
+
 func TestShouldBeAbleToListEmpty(t *testing.T) {
 	database.ClearDB(db)
 	r, _ := s.GetArticleList(context.Background(), nil)
@@ -155,6 +157,8 @@ func TestShouldNotListNonPublishedArticles(t *testing.T) {
 	assert.Equal(t, 10, r.Meta.PerPage)
 	assert.Equal(t, 0, len(r.Data))
 }
+
+///////// POST ///////////
 
 func TestShouldBeAbleToCreateAnArticleAndGenerateSlugAsAdmin(t *testing.T) {
 	database.ClearDB(db)
@@ -311,6 +315,68 @@ func TestShouldNotBeAbleToPostArticleAsGuest(t *testing.T) {
 	db.Model(&Article{}).Count(&total)
 	assert.Equal(t, 0, int(total))
 }
+
+//////// UPDATE //////////
+
+func TestShouldBeAbleToUpdateArticleNameAsAdmin(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	db.Create(&a)
+
+	a.Name = "A new name"
+	new, err := s.PatchArticle(context.Background(), a.Slug, a)
+
+	assert.NoError(t, err)
+	assert.Equal(t, "A new name", new.Name)
+	var total int64
+	db.Model(&Article{}).Count(&total)
+	assert.Equal(t, 1, int(total))
+}
+
+func TestShouldNotBeAbleToUpdateArticleTooShortNameAsAdmin(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	db.Create(&a)
+
+	a.Name = ""
+	_, err := s.PatchArticle(context.Background(), a.Slug, a)
+
+	assert.Error(t, err)
+	var total int64
+	db.Model(&Article{}).Count(&total)
+	assert.Equal(t, 1, int(total))
+}
+
+func TestShouldNotBeAbleToUpdateArticleAsUser(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	ctx, _ := authAsUser(context.Background())
+	db.Create(&a)
+
+	_, err := s.PatchArticle(ctx, a.Slug, a)
+
+	assert.Error(t, err)
+	assert.Equal(t, ErrNotAdmin, err)
+	var total int64
+	db.Model(&Article{}).Count(&total)
+	assert.Equal(t, 1, int(total))
+}
+
+func TestShouldNotBeAbleToUpdateArticleAsGuest(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	db.Create(&a)
+
+	_, err := s.PatchArticle(context.Background(), a.Slug, a)
+
+	assert.Error(t, err)
+	assert.Equal(t, ErrNoAuth, err)
+	var total int64
+	db.Model(&Article{}).Count(&total)
+	assert.Equal(t, 1, int(total))
+}
+
+//////// DELETE //////////
 
 func TestShouldBeAbleToDeleteArticleAndIsSoftDeleted(t *testing.T) {
 	database.ClearDB(db)
