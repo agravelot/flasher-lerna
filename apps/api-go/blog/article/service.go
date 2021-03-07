@@ -61,13 +61,15 @@ func (s *service) GetArticleList(ctx context.Context, params *PaginationParams) 
 	articles := []Article{}
 	var total int64
 
-	query := s.db.Model(&articles).Scopes(api.Paginate(params.Page, params.PerPage))
+	query := s.db.Model(&articles)
 
 	if user == nil || (user != nil && user.IsAdmin() == false) {
 		query = query.Scopes(Published)
 	}
 
-	query.Find(&articles).Count(&total)
+	// TODO Can run in goroutines ?
+	query.Count(&total)
+	query.Scopes(api.Paginate(params.Page, params.PerPage)).Find(&articles)
 
 	return PaginatedArticles{
 		Data: articles,

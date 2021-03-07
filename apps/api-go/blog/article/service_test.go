@@ -5,6 +5,7 @@ import (
 	database "api-go/db"
 	"context"
 	"os"
+	"strconv"
 	"testing"
 	"time"
 
@@ -118,6 +119,40 @@ func TestShouldBeAbleToListWithOnePublishedArticle(t *testing.T) {
 	assert.Equal(t, int64(1), r.Meta.Total)
 	assert.Equal(t, 10, r.Meta.PerPage)
 	assert.Equal(t, 1, len(r.Data))
+}
+
+func TestShouldBeAbleToListPublishedArticlesOnSecondPage(t *testing.T) {
+	database.ClearDB(db)
+	for i := 0; i < 10; i++ {
+		tmp := Article{Name: "A good name " + strconv.Itoa(i), PublishedAt: null.NewTime(time.Now(), true)}
+		db.Create(&tmp)
+	}
+	a := Article{Name: "On second page", PublishedAt: null.NewTime(time.Now(), true)}
+	db.Create(&a)
+
+	r, _ := s.GetArticleList(context.Background(), &PaginationParams{Page: 2, PerPage: 10})
+
+	assert.Equal(t, int64(11), r.Meta.Total)
+	assert.Equal(t, 10, r.Meta.PerPage)
+	assert.Equal(t, 1, len(r.Data))
+	assert.Equal(t, a.Name, r.Data[0].Name)
+}
+
+func TestShouldBeAbleToListPublishedArticlesOnSecondPageWithCustomPerPage(t *testing.T) {
+	database.ClearDB(db)
+	for i := 0; i < 2; i++ {
+		tmp := Article{Name: "A good name " + strconv.Itoa(i), PublishedAt: null.NewTime(time.Now(), true)}
+		db.Create(&tmp)
+	}
+	a := Article{Name: "On second page", PublishedAt: null.NewTime(time.Now(), true)}
+	db.Create(&a)
+
+	r, _ := s.GetArticleList(context.Background(), &PaginationParams{Page: 2, PerPage: 2})
+
+	assert.Equal(t, int64(3), r.Meta.Total)
+	assert.Equal(t, 2, r.Meta.PerPage)
+	assert.Equal(t, 1, len(r.Data))
+	assert.Equal(t, a.Name, r.Data[0].Name)
 }
 
 func TestShouldBeAbleToListNonPublishedArticleAsAdmin(t *testing.T) {
