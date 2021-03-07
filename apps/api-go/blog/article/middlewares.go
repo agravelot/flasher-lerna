@@ -31,7 +31,7 @@ func (mw loggingMiddleware) PostArticle(ctx context.Context, ar Article) (a Arti
 	return mw.next.PostArticle(ctx, ar)
 }
 
-func (mw loggingMiddleware) GetArticleList(ctx context.Context, params *PaginationParams) (p PaginatedArticles, err error) {
+func (mw loggingMiddleware) GetArticleList(ctx context.Context, params PaginationParams) (p PaginatedArticles, err error) {
 	defer func(begin time.Time) {
 		mw.logger.Log("method", "GetArticleList", "page", 1, "took", time.Since(begin), "err", err)
 	}(time.Now())

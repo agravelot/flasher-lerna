@@ -12,7 +12,7 @@ import (
 // Service is a simple CRUD interface for user articles.
 type Service interface {
 	PostArticle(ctx context.Context, p Article) (Article, error)
-	GetArticleList(ctx context.Context, params *PaginationParams) (PaginatedArticles, error)
+	GetArticleList(ctx context.Context, params PaginationParams) (PaginatedArticles, error)
 	GetArticle(ctx context.Context, slug string) (Article, error)
 	PutArticle(ctx context.Context, slug string, p Article) error
 	PatchArticle(ctx context.Context, slug string, p Article) (Article, error)
@@ -50,12 +50,7 @@ func Published(db *gorm.DB) *gorm.DB {
 	return db.Where("published_at is not null")
 }
 
-func (s *service) GetArticleList(ctx context.Context, params *PaginationParams) (PaginatedArticles, error) {
-
-	if params == nil {
-		params = &PaginationParams{1, 10}
-	}
-
+func (s *service) GetArticleList(ctx context.Context, params PaginationParams) (PaginatedArticles, error) {
 	user := auth.GetUserClaims(ctx)
 
 	articles := []Article{}
