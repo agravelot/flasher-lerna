@@ -80,6 +80,6 @@ export const configuration: ConfigurationInterface = {
       ? process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_DEBUG === "true"
       : process.env.NODE_ENV !== "production",
   },
-  twitter: "JujunneK",
+  twitter: "Jkandaphoto",
   administration: process.env.NEXT_PUBLIC_ADMINISTRATION_URL ?? "",
 };
