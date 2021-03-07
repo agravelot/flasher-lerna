@@ -104,9 +104,16 @@ func (s *service) PostArticle(ctx context.Context, a Article) (Article, error) {
 }
 
 func (s *service) GetArticle(ctx context.Context, slug string) (Article, error) {
-	// TODO 404 non published
+	user := auth.GetUserClaims(ctx)
+
+	query := s.db.Where("slug = ?", slug)
+
+	if user == nil || (user != nil && user.IsAdmin() == false) {
+		query = query.Scopes(Published)
+	}
+
 	a := Article{}
-	err := s.db.Where("slug = ?", slug).First(&a).Error
+	err := query.First(&a).Error
 
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		return Article{}, ErrNotFound

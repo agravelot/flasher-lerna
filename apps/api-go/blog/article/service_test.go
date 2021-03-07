@@ -171,7 +171,67 @@ func TestShouldNotListNonPublishedArticles(t *testing.T) {
 	assert.Equal(t, 0, len(r.Data))
 }
 
-///////// POST ///////////
+///////// SHOW  ///////////
+
+func TestShouldBeAbleToGetPublishedArticleAsGuest(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: "A good name", Slug: "a-good-name", PublishedAt: null.NewTime(time.Now(), true)}
+	db.Create(&a)
+
+	r, err := s.GetArticle(context.Background(), a.Slug)
+
+	assert.NoError(t, err)
+	assert.Equal(t, a.Slug, r.Slug)
+}
+
+func TestShouldBeAbleToGetPublishedArticleAsUser(t *testing.T) {
+	database.ClearDB(db)
+	ctx, _ := authAsUser(context.Background())
+	a := Article{Name: "A good name", Slug: "a-good-name", PublishedAt: null.NewTime(time.Now(), true)}
+	db.Create(&a)
+
+	r, err := s.GetArticle(ctx, a.Slug)
+
+	assert.NoError(t, err)
+	assert.Equal(t, a.Slug, r.Slug)
+}
+
+func TestShouldBeAbleToGetNonPublishedArticleAsGuest(t *testing.T) {
+	database.ClearDB(db)
+	a := Article{Name: "A good name", Slug: "a-good-name"}
+	db.Create(&a)
+
+	_, err := s.GetArticle(context.Background(), a.Slug)
+
+	assert.Error(t, err)
+	assert.Equal(t, ErrNotFound, err)
+}
+
+func TestShouldBeAbleToGetNonPublishedArticleAsUser(t *testing.T) {
+	database.ClearDB(db)
+	ctx, _ := authAsUser(context.Background())
+	a := Article{Name: "A good name", Slug: "a-good-name"}
+	db.Create(&a)
+
+	_, err := s.GetArticle(ctx, a.Slug)
+
+	assert.Error(t, err)
+	assert.Equal(t, ErrNotFound, err)
+}
+
+func TestShouldBeAbleToGetNonPublishedArticleAsAdmin(t *testing.T) {
+	database.ClearDB(db)
+	ctx, _ := authAsAdmin(context.Background())
+	a := Article{Name: "A good name", Slug: "a-good-name"}
+	db.Create(&a)
+
+	r, err := s.GetArticle(ctx, a.Slug)
+
+	assert.NoError(t, err)
+	assert.Equal(t, a.Slug, r.Slug)
+}
+
+///////// POST  ///////////
 
 func TestShouldBeAbleToCreateAnArticleAndGenerateSlugAsAdmin(t *testing.T) {
 	database.ClearDB(db)
