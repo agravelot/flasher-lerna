@@ -56,11 +56,18 @@ func (s *service) GetArticleList(ctx context.Context, params *PaginationParams) 
 		params = &PaginationParams{1, 10}
 	}
 
-	articles := []Article{}
-	s.db.Scopes(api.Paginate(params.Page, params.PerPage), Published).Find(&articles)
+	user := auth.GetUserClaims(ctx)
 
+	articles := []Article{}
 	var total int64
-	s.db.Model(&articles).Scopes(api.Paginate(params.Page, params.PerPage), Published).Count(&total)
+
+	query := s.db.Model(&articles).Scopes(api.Paginate(params.Page, params.PerPage))
+
+	if user == nil || (user != nil && user.IsAdmin() == false) {
+		query = query.Scopes(Published)
+	}
+
+	query.Find(&articles).Count(&total)
 
 	return PaginatedArticles{
 		Data: articles,
@@ -69,7 +76,6 @@ func (s *service) GetArticleList(ctx context.Context, params *PaginationParams) 
 }
 
 func (s *service) PostArticle(ctx context.Context, a Article) (Article, error) {
-	// TODO filter status
 	user := auth.GetUserClaims(ctx)
 
 	if user == nil {
@@ -129,6 +135,8 @@ func (s *service) PatchArticle(ctx context.Context, slug string, a Article) (Art
 	if user.IsAdmin() == false {
 		return Article{}, ErrNotAdmin
 	}
+
+	a.AuthorUUID = user.Sub
 
 	if err := a.Validate(); err != nil {
 		return Article{}, err

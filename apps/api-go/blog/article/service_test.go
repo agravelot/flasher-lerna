@@ -120,6 +120,19 @@ func TestShouldBeAbleToListWithOnePublishedArticle(t *testing.T) {
 	assert.Equal(t, 1, len(r.Data))
 }
 
+func TestShouldBeAbleToListNonPublishedArticleAsAdmin(t *testing.T) {
+	ctx, _ := authAsAdmin(context.Background())
+	database.ClearDB(db)
+	a := Article{Name: "A good name"}
+	db.Create(&a)
+
+	r, _ := s.GetArticleList(ctx, nil)
+
+	assert.Equal(t, int64(1), r.Meta.Total)
+	assert.Equal(t, 10, r.Meta.PerPage)
+	assert.Equal(t, 1, len(r.Data))
+}
+
 func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 	database.ClearDB(db)
 	a := Article{Name: "A good name", PublishedAt: null.NewTime(time.Now(), true)}
@@ -320,11 +333,13 @@ func TestShouldNotBeAbleToPostArticleAsGuest(t *testing.T) {
 
 func TestShouldBeAbleToUpdateArticleNameAsAdmin(t *testing.T) {
 	database.ClearDB(db)
+	ctx, _ := authAsAdmin(context.Background())
+
 	a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	db.Create(&a)
 
 	a.Name = "A new name"
-	new, err := s.PatchArticle(context.Background(), a.Slug, a)
+	new, err := s.PatchArticle(ctx, a.Slug, a)
 
 	assert.NoError(t, err)
 	assert.Equal(t, "A new name", new.Name)
