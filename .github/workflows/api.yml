@@ -1,0 +1,41 @@
+name: api
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - 'v*'
+  pull_request:
+
+
+jobs:
+  build:
+    # runs-on: self-hosted
+    runs-on: ubuntu-latest
+    steps:
+    -
+      name: Setup docker-compose
+      run: |
+        sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        docker-compose -f apps/api-go/docker-compose.yml up -d
+    - 
+      name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    -
+      name: Build api
+      uses: actions/setup-go@v2
+      with:
+        go-version: '^1.16.0'
+    -
+      name: Test
+      run: |
+        cd apps/api-go 
+        go test ./...
+    -
+      name: Build
+      run: |
+        cd apps/api-go 
+        go build
