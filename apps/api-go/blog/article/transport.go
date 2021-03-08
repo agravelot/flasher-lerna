@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strconv"
 
 	"github.com/gorilla/mux"
 
@@ -24,6 +25,7 @@ var (
 	// ErrBadRouting is returned when an expected path variable is missing.
 	// It always indicates programmer error.
 	ErrBadRouting = errors.New("inconsistent mapping between route and handler (programmer error)")
+	ErrBadRequest = errors.New("unable to handle request")
 )
 
 // MakeHTTPHandler mounts all of the service endpoints into an http.Handler.
@@ -94,7 +96,25 @@ func decodePostArticleRequest(_ context.Context, r *http.Request) (request inter
 }
 
 func decodeGetArticleListRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
-	return getArticleListRequest{}, nil
+	var page, perPage int
+
+	pageString := r.URL.Query().Get("page")
+	if pageString != "" {
+		page, err = strconv.Atoi(pageString)
+		if err != nil {
+			return nil, ErrBadRequest
+		}
+	}
+
+	perPageString := r.URL.Query().Get("per_page")
+	if perPageString != "" {
+		perPage, err = strconv.Atoi(perPageString)
+		if err != nil {
+			return nil, ErrBadRequest
+		}
+	}
+
+	return getArticleListRequest{Page: page, PerPage: perPage}, nil
 }
 
 func decodeGetArticleRequest(_ context.Context, r *http.Request) (request interface{}, err error) {

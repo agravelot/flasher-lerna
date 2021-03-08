@@ -2,11 +2,9 @@ package article
 
 import (
 	"context"
-	"net/url"
-	"strings"
+	"fmt"
 
 	"github.com/go-kit/kit/endpoint"
-	httptransport "github.com/go-kit/kit/transport/http"
 )
 
 // Endpoints collects all of the endpoints that compose a Article service. It's
@@ -46,99 +44,23 @@ func MakeServerEndpoints(s Service) Endpoints {
 	}
 }
 
-// MakeClientEndpoints returns an Endpoints struct where each endpoint invokes
-// the corresponding method on the remote instance, via a transport/http.Client.
-// Useful in a Articlesvc client.
-func MakeClientEndpoints(instance string) (Endpoints, error) {
-	if !strings.HasPrefix(instance, "http") {
-		instance = "http://" + instance
+func MakeGetArticleListEndpoint(s Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		req := request.(getArticleListRequest)
+
+		if req.Page == 0 {
+			req.Page = 1
+		}
+
+		if req.PerPage == 0 {
+			req.PerPage = 10
+		}
+
+		fmt.Printf("%+v\n", req)
+
+		p, e := s.GetArticleList(ctx, PaginationParams{req.Page, req.PerPage})
+		return getArticleListResponse{Data: p, Err: e}, nil
 	}
-	tgt, err := url.Parse(instance)
-	if err != nil {
-		return Endpoints{}, err
-	}
-	tgt.Path = ""
-
-	options := []httptransport.ClientOption{}
-
-	// Note that the request encoders need to modify the request URL, changing
-	// the path. That's fine: we simply need to provide specific encoders for
-	// each endpoint.
-
-	return Endpoints{
-		PostArticleEndpoint:    httptransport.NewClient("POST", tgt, encodePostArticleRequest, decodePostArticleResponse, options...).Endpoint(),
-		GetArticleEndpoint:     httptransport.NewClient("GET", tgt, encodeGetArticleRequest, decodeGetArticleResponse, options...).Endpoint(),
-		GetArticleListEndpoint: httptransport.NewClient("GET", tgt, encodeGetArticleListRequest, decodeGetArticleResponse, options...).Endpoint(),
-		PutArticleEndpoint:     httptransport.NewClient("PUT", tgt, encodePutArticleRequest, decodePutArticleResponse, options...).Endpoint(),
-		PatchArticleEndpoint:   httptransport.NewClient("PATCH", tgt, encodePatchArticleRequest, decodePatchArticleResponse, options...).Endpoint(),
-		DeleteArticleEndpoint:  httptransport.NewClient("DELETE", tgt, encodeDeleteArticleRequest, decodeDeleteArticleResponse, options...).Endpoint(),
-	}, nil
-}
-
-// PostArticle implements Service. Primarily useful in a client.
-func (e Endpoints) PostArticle(ctx context.Context, a Article) error {
-	request := postArticleRequest{Article: a}
-	response, err := e.PostArticleEndpoint(ctx, request)
-	if err != nil {
-		return err
-	}
-	resp := response.(postArticleResponse)
-	return resp.Err
-}
-
-// GetArticleList implements Service. Primarily useful in a client.
-func (e Endpoints) GetArticleList(ctx context.Context, id string) (PaginatedArticles, error) {
-	request := getArticleListRequest{}
-	response, err := e.GetArticleListEndpoint(ctx, request)
-	if err != nil {
-		return PaginatedArticles{}, err
-	}
-	resp := response.(getArticleListResponse)
-	return resp.Data, resp.Err
-}
-
-// GetArticle implements Service. Primarily useful in a client.
-func (e Endpoints) GetArticle(ctx context.Context, id string) (Article, error) {
-	request := getArticleRequest{ID: id}
-	response, err := e.GetArticleEndpoint(ctx, request)
-	if err != nil {
-		return Article{}, err
-	}
-	resp := response.(getArticleResponse)
-	return resp.Article, resp.Err
-}
-
-// PutArticle implements Service. Primarily useful in a client.
-func (e Endpoints) PutArticle(ctx context.Context, id string, p Article) error {
-	request := putArticleRequest{ID: id, Article: p}
-	response, err := e.PutArticleEndpoint(ctx, request)
-	if err != nil {
-		return err
-	}
-	resp := response.(putArticleResponse)
-	return resp.Err
-}
-
-// PatchArticle implements Service. Primarily useful in a client.
-func (e Endpoints) PatchArticle(ctx context.Context, slug string, p Article) error {
-	request := patchArticleRequest{Slug: slug, Article: p}
-	response, err := e.PatchArticleEndpoint(ctx, request)
-	if err != nil {
-		return err
-	}
-	resp := response.(patchArticleResponse)
-	return resp.Err
-}
-
-// DeleteArticle implements Service. Primarily useful in a client.
-func (e Endpoints) DeleteArticle(ctx context.Context, id string) error {
-	request := deleteArticleRequest{ID: id}
-	response, err := e.DeleteArticleEndpoint(ctx, request)
-	if err != nil {
-		return err
-	}
-	resp := response.(deleteArticleResponse)
-	return resp.Err
 }
 
 // MakePostArticleEndpoint returns an endpoint via the passed service.
@@ -148,13 +70,6 @@ func MakePostArticleEndpoint(s Service) endpoint.Endpoint {
 		req := request.(postArticleRequest)
 		_, e := s.PostArticle(ctx, req.Article)
 		return postArticleResponse{Err: e}, nil
-	}
-}
-
-func MakeGetArticleListEndpoint(s Service) endpoint.Endpoint {
-	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		p, e := s.GetArticleList(ctx, PaginationParams{1, 10})
-		return getArticleListResponse{Data: p, Err: e}, nil
 	}
 }
 
@@ -223,7 +138,10 @@ type postArticleResponse struct {
 
 func (r postArticleResponse) error() error { return r.Err }
 
-type getArticleListRequest struct{}
+type getArticleListRequest struct {
+	Page    int
+	PerPage int
+}
 
 type getArticleListResponse struct {
 	Data PaginatedArticles `json:"data,omitempty"`
