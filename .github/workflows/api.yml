@@ -3,7 +3,7 @@ name: api
 on:
   push:
     paths:
-        - 'apps/api-go'
+      - 'apps/api-go/**'
     branches:
       - '**'
     tags:
