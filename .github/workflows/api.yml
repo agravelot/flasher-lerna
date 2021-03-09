@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'apps/api-go/**'
+      - '.github/workflows/api.yml'
     branches:
       - '**'
     tags:

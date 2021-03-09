@@ -6,6 +6,8 @@ on:
       - 'apps/frontend/**'
       - 'apps/common/**'
       - 'libs/**'
+      - 'yarn.lock'
+      - '.github/workflows/frontend.yml'
     branches:
       - '**'
     tags:
