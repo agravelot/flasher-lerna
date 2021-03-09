@@ -2,6 +2,10 @@ name: frontend
 
 on:
   push:
+    paths:
+      - 'apps/frontend'
+      - 'apps/common'
+      - 'libs'
     branches:
       - '**'
     tags:
