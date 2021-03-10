@@ -1,6 +1,8 @@
 package database
 
 import (
+	"api-go/config"
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -13,7 +15,7 @@ import (
 var db *gorm.DB
 var err error
 
-func Init() (*gorm.DB, error) {
+func Init(c config.Configurations) (*gorm.DB, error) {
 
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
@@ -25,6 +27,7 @@ func Init() (*gorm.DB, error) {
 	)
 
 	dsn := "host=localhost user=flasher password=flasher dbname=flasher port=5432 sslmode=disable"
+	dsn = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable", c.DbHost, c.DbUser, c.DbPassword, c.DbName, c.DbPort)
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{Logger: newLogger})
 	if err != nil {
 		log.Fatalf("Got error when connect database, the error is '%v'", err)

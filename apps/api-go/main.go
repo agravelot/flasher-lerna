@@ -2,8 +2,8 @@ package main
 
 import (
 	"api-go/blog/article"
+	"api-go/config"
 	database "api-go/db"
-	"flag"
 	"fmt"
 	"net/http"
 	"os"
@@ -14,10 +14,7 @@ import (
 )
 
 func main() {
-	var (
-		httpAddr = flag.String("http.addr", ":8080", "HTTP listen address")
-	)
-	flag.Parse()
+	config := config.LoadDotEnv()
 
 	var logger log.Logger
 	{
@@ -26,7 +23,7 @@ func main() {
 		logger = log.With(logger, "caller", log.DefaultCaller)
 	}
 
-	db, _ := database.Init()
+	db, _ := database.Init(config)
 	db.AutoMigrate(&article.Article{})
 
 	var s article.Service
@@ -48,8 +45,8 @@ func main() {
 	}()
 
 	go func() {
-		logger.Log("transport", "HTTP", "addr", *httpAddr)
-		errs <- http.ListenAndServe(*httpAddr, h)
+		logger.Log("transport", "HTTP", "addr", config.Port)
+		errs <- http.ListenAndServe(fmt.Sprintf(":%d", config.Port), h)
 	}()
 
 	logger.Log("exit", <-errs)
