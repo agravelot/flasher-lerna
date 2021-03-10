@@ -86,8 +86,8 @@ func MakeGetArticleEndpoint(s Service) endpoint.Endpoint {
 func MakePutArticleEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(putArticleRequest)
-		e := s.PutArticle(ctx, req.ID, req.Article)
-		return putArticleResponse{Err: e}, nil
+		a, e := s.PutArticle(ctx, req.ID, req.Article)
+		return putArticleResponse{Article: a, Err: e}, nil
 	}
 }
 
@@ -166,6 +166,7 @@ type putArticleRequest struct {
 }
 
 type putArticleResponse struct {
+	Article
 	Err error `json:"err,omitempty"`
 }
 
@@ -177,8 +178,8 @@ type patchArticleRequest struct {
 }
 
 type patchArticleResponse struct {
-	Err error `json:"err,omitempty"`
 	Article
+	Err error `json:"err,omitempty"`
 }
 
 func (r patchArticleResponse) error() error { return r.Err }

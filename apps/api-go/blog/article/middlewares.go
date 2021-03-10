@@ -45,11 +45,11 @@ func (mw loggingMiddleware) GetArticle(ctx context.Context, slug string) (p Arti
 	return mw.next.GetArticle(ctx, slug)
 }
 
-func (mw loggingMiddleware) PutArticle(ctx context.Context, id string, p Article) (err error) {
+func (mw loggingMiddleware) PutArticle(ctx context.Context, id string, ar Article) (a Article, err error) {
 	defer func(begin time.Time) {
 		mw.logger.Log("method", "PutArticle", "id", id, "took", time.Since(begin), "err", err)
 	}(time.Now())
-	return mw.next.PutArticle(ctx, id, p)
+	return mw.next.PutArticle(ctx, id, ar)
 }
 
 func (mw loggingMiddleware) PatchArticle(ctx context.Context, slug string, p Article) (a Article, err error) {

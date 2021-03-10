@@ -14,7 +14,7 @@ type Service interface {
 	PostArticle(ctx context.Context, p Article) (Article, error)
 	GetArticleList(ctx context.Context, params PaginationParams) (PaginatedArticles, error)
 	GetArticle(ctx context.Context, slug string) (Article, error)
-	PutArticle(ctx context.Context, slug string, p Article) error
+	PutArticle(ctx context.Context, slug string, p Article) (Article, error)
 	PatchArticle(ctx context.Context, slug string, p Article) (Article, error)
 	DeleteArticle(ctx context.Context, slug string) error
 }
@@ -119,17 +119,7 @@ func (s *service) GetArticle(ctx context.Context, slug string) (Article, error) 
 	return a, err
 }
 
-func (s *service) PutArticle(ctx context.Context, slug string, p Article) error {
-	// if id != p.ID {
-	// 	return ErrInconsistentIDs
-	// }
-	// s.mtx.Lock()
-	// defer s.mtx.Unlock()
-	// s.m[id] = p // PUT = create or update
-	return nil
-}
-
-func (s *service) PatchArticle(ctx context.Context, slug string, a Article) (Article, error) {
+func (s *service) PutArticle(ctx context.Context, slug string, a Article) (Article, error) {
 	user := auth.GetUserClaims(ctx)
 
 	if user == nil {
@@ -149,6 +139,10 @@ func (s *service) PatchArticle(ctx context.Context, slug string, a Article) (Art
 	s.db.Save(a)
 
 	return a, nil
+}
+
+func (s *service) PatchArticle(ctx context.Context, slug string, a Article) (Article, error) {
+	return Article{}, nil
 }
 
 func (s *service) DeleteArticle(ctx context.Context, slug string) error {

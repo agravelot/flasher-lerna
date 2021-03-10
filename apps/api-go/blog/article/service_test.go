@@ -434,7 +434,7 @@ func TestShouldBeAbleToUpdateArticleNameAsAdmin(t *testing.T) {
 	db.Create(&a)
 
 	a.Name = "A new name"
-	new, err := s.PatchArticle(ctx, a.Slug, a)
+	new, err := s.PutArticle(ctx, a.Slug, a)
 
 	assert.NoError(t, err)
 	assert.Equal(t, "A new name", new.Name)
@@ -449,7 +449,7 @@ func TestShouldNotBeAbleToUpdateArticleTooShortNameAsAdmin(t *testing.T) {
 	db.Create(&a)
 
 	a.Name = ""
-	_, err := s.PatchArticle(context.Background(), a.Slug, a)
+	_, err := s.PutArticle(context.Background(), a.Slug, a)
 
 	assert.Error(t, err)
 	var total int64
@@ -463,7 +463,7 @@ func TestShouldNotBeAbleToUpdateArticleAsUser(t *testing.T) {
 	ctx, _ := authAsUser(context.Background())
 	db.Create(&a)
 
-	_, err := s.PatchArticle(ctx, a.Slug, a)
+	_, err := s.PutArticle(ctx, a.Slug, a)
 
 	assert.Error(t, err)
 	assert.Equal(t, ErrNotAdmin, err)
@@ -477,7 +477,7 @@ func TestShouldNotBeAbleToUpdateArticleAsGuest(t *testing.T) {
 	a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	db.Create(&a)
 
-	_, err := s.PatchArticle(context.Background(), a.Slug, a)
+	_, err := s.PutArticle(context.Background(), a.Slug, a)
 
 	assert.Error(t, err)
 	assert.Equal(t, ErrNoAuth, err)
