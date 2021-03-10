@@ -11,3 +11,4 @@
 **/.vscode
 **/.dockerignore
 **/Dockerfile
+kubernetes
