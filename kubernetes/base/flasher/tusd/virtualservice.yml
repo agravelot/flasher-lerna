@@ -1,0 +1,27 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: tusd-virtualservice
+spec:
+  hosts:
+    - "api.jkanda.fr"
+  gateways:
+    - flasher-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /tus/
+      route:
+        - destination:
+            host: tusd
+            port:
+              number: 8080
+    - match:
+        - uri:
+            prefix: /metrics
+      route:
+        - destination:
+            host: tusd
+            port:
+              number: 8080
+

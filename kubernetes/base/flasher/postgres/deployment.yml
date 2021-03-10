@@ -1,0 +1,113 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  serviceName: postgres
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+        tier: databases
+    spec:
+      enableServiceLinks: false
+      containers:
+        - image: postgres:13-alpine
+          name: postgres
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: password
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: user
+            - name: POSTGRES_DB
+              value: default
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+              name: tcp-postgres
+          volumeMounts:
+            - name: postgres
+              mountPath: /var/lib/postgresql/data
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -h
+                - localhost
+                - -U
+                - postgres
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -h
+                - localhost
+                - -U
+                - postgres
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+        - image: nevax/postgresql-backup-s3
+          name: pgbackups3
+          env:
+            - name: POSTGRES_HOST
+              value: postgres
+            - name: POSTGRES_DATABASE
+              value: all
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  key: user
+                  name: postgres-secret
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: postgres-secret
+            - name: S3_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  key: accessKeyId
+                  name: s3-backup
+            - name: S3_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: secretAccessKey
+                  name: s3-backup
+            - name: S3_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  key: bucket
+                  name: s3-backup
+            - name: S3_REGION
+              valueFrom:
+                secretKeyRef:
+                  key: region
+                  name: s3-backup
+            - name: S3_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  key: endpoint
+                  name: s3-backup
+            - name: S3_PREFIX
+              value: 'postgres'
+            - name: SCHEDULE
+              value: "@daily"
+      volumes:
+        - name: postgres
+          persistentVolumeClaim:
+            claimName: pvc-postgres

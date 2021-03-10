@@ -1,0 +1,10 @@
+.idea
+kustomize
+.bin
+secret.yml
+secrets.yml
+secret.yaml
+secrets.yaml
+*.deb
+*.key
+istio-*

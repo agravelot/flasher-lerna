@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+    service: postgres
+spec:
+  ports:
+    - name: tcp-postgres
+      port: 5432
+      protocol: TCP
+  selector:
+    app: postgres

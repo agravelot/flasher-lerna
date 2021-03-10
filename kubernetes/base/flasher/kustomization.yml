@@ -1,0 +1,10 @@
+resources:
+  - api
+  # - tusd
+  - admin
+  - postgres
+  - redis
+  - keycloak
+  - frontend
+  - gateway.yml
+  - peer-authentication.yml

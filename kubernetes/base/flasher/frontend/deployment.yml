@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  annotations:
+    keel.sh/approvals: "1"
+    keel.sh/policy: all
+    keel.sh/trigger: poll
+    keel.sh/pollSchedule: "@every 1m"
+    keel.sh/notify: deployments
+    # keel.sh/match-tag: "true" # only makes a difference when used with 'force' policy, will only update if tag matches :dev->:dev, :prod->:prod 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      volumes:
+        - name: frontend-nginx-conf-d-volume
+          configMap:
+            name: frontend-nginx-conf-d-config
+        - name: nginx-cache-volume
+          persistentVolumeClaim:
+            claimName: pvc-nginx-cache
+      imagePullSecrets:
+        - name: gitlab-registry
+      containers:
+        - image: library/nginx:1.18-alpine
+          imagePullPolicy: IfNotPresent
+          name: frontend-nginx
+          command:
+            - "nginx"
+            - "-g"
+            - "daemon off;"
+          volumeMounts:
+            - name: frontend-nginx-conf-d-volume
+              mountPath: /etc/nginx/conf.d
+            - name: nginx-cache-volume
+              mountPath: /var/lib/nginx/cache
+          ports:
+            - name: http-frontend
+              containerPort: 80
+          readinessProbe:
+            httpGet:
+              port: 80
+              path: /
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+        - image: frontend
+          imagePullPolicy: Always
+          name: nextjs
+          ports:
+            - name: http-nextjs
+              containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: frontend-config
+          env:
+            - name: NEXT_PUBLIC_APP_URL
+              value: https://jkanda.fr
+            - name: NEXT_PUBLIC_API_URL
+              value: https://api.jkanda.fr/api
+            - name: NEXT_PUBLIC_KEYCLOAK_REALM
+              value: jkanda
+            - name: NEXT_PUBLIC_KEYCLOAK_URL
+              value: https://accounts.jkanda.fr/auth
+            - name: NEXT_PUBLIC_KEYCLOAK_CLIENT_ID
+              value: flasher
+            - name: NEXT_PUBLIC_ADMINISTRATION_URL
+              value: https://admin.jkanda.fr
+            - name: NEXT_PUBLIC_ALGOLIA_APP_ID
+              valueFrom:
+                secretKeyRef:
+                  key: ALGOLIA_APP_ID
+                  name: api-secret
+            - name: NEXT_PUBLIC_ALGOLIA_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: ALGOLIA_SECRET
+                  name: api-secret
+            - name: NEXT_PUBLIC_GOOGLE_ANALYTICS_UA
+              valueFrom:
+                secretKeyRef:
+                  key: trackingId
+                  name: google-analytics
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "1024Mi"
+              cpu: "3000m"
+
