@@ -231,7 +231,7 @@ func TestShouldBeAbleToGetPublishedArticleAsUser(t *testing.T) {
 	assert.Equal(t, a.Slug, r.Slug)
 }
 
-func TestShouldBeAbleToGetNonPublishedArticleAsGuest(t *testing.T) {
+func TestShouldNotBeAbleToGetNonPublishedArticleAsGuest(t *testing.T) {
 	database.ClearDB(db)
 	a := Article{Name: "A good name", Slug: "a-good-name"}
 	db.Create(&a)
@@ -242,7 +242,7 @@ func TestShouldBeAbleToGetNonPublishedArticleAsGuest(t *testing.T) {
 	assert.Equal(t, ErrNotFound, err)
 }
 
-func TestShouldBeAbleToGetNonPublishedArticleAsUser(t *testing.T) {
+func TestShouldNotBeAbleToGetNonPublishedArticleAsUser(t *testing.T) {
 	database.ClearDB(db)
 	ctx, _ := authAsUser(context.Background())
 	a := Article{Name: "A good name", Slug: "a-good-name"}

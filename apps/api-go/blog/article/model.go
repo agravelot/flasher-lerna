@@ -18,7 +18,7 @@ type Article struct {
 	MetaDescription string         `json:"meta_description" validate:"required,gt=1,lt=60"`
 	Content         string         `json:"content"`
 	AuthorUUID      string         `json:"author_uuid" validate:"required,uuid"`
-	PublishedAt     null.Time      `gorm:"type:TIMESTAMP;" json:"published_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
+	PublishedAt     null.Time      `json:"published_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
 	CreatedAt       time.Time      `json:"created_at"`
 	UpdatedAt       time.Time      `json:"updated_at"`
 	DeletedAt       gorm.DeletedAt `gorm:"index" json:"-"`
@@ -39,9 +39,5 @@ func (a *Article) Validate() error {
 
 	err := validate.Struct(a)
 
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
