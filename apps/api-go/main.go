@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	config := config.LoadDotEnv()
+	config := config.LoadDotEnv("")
 
 	var logger log.Logger
 	{
