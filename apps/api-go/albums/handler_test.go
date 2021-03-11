@@ -1,6 +1,7 @@
 package albums
 
 import (
+	"api-go/config"
 	database "api-go/db"
 	"encoding/json"
 	"log"
@@ -17,7 +18,8 @@ import (
 func TestListAlbums(t *testing.T) {
 	// Setup
 	e := echo.New()
-	db, _ := database.Init()
+	config := config.LoadDotEnv("../")
+	db, _ := database.Init(config)
 	Setup(e)
 	// Setup(e)
 
@@ -80,7 +82,8 @@ func TestListAlbums(t *testing.T) {
 func TestShowAlbum(t *testing.T) {
 	// Setup
 	e := echo.New()
-	db, _ := database.Init()
+	config := config.LoadDotEnv("../")
+	db, _ := database.Init(config)
 
 	now := null.NewTime(time.Now(), true)
 

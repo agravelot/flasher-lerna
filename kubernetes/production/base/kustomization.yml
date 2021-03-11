@@ -1,14 +1,5 @@
 namespace: flasher-production
 
-vars:
-  - name: NAMESPACE
-    objref:
-      kind: Deployment
-      name: admin
-      apiVersion: apps/v1
-    fieldref:
-      fieldpath: metadata.namespace
-
 patchesJson6902:
   # Change certificate secret key
   - target:
@@ -125,10 +116,10 @@ configMapGenerator:
 images:
   - name: nginx
     newName: registry.gitlab.com/flasher/flasher/picblog_nginx
-    newTag: "c805294"
+    newTag: "3e931cc"
   - name: php
     newName: registry.gitlab.com/flasher/flasher/picblog_php
-    newTag: "c805294"
+    newTag: "3e931cc"
   - name: postgres
     newTag: 12-alpine
   # - name: tusd
@@ -142,4 +133,7 @@ images:
     newTag: "e97738f"
   - name: frontend
     newName: registry.gitlab.com/flasher/flasher/flasher-frontend
-    newTag: 1.0.4
+    newTag: 1.2.5
+  - name: api-v2
+    newName: registry.gitlab.com/flasher/flasher/flasher-api-go
+    newTag: feature-go-api

@@ -1,6 +1,7 @@
 resources:
   - api
   # - tusd
+  - api-v2
   - admin
   - postgres
   - redis
@@ -8,3 +9,4 @@ resources:
   - frontend
   - gateway.yml
   - peer-authentication.yml
+  - authorization-policy.yml

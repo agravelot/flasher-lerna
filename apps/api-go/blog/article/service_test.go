@@ -2,6 +2,7 @@ package article
 
 import (
 	"api-go/blog/auth"
+	"api-go/config"
 	database "api-go/db"
 	"context"
 	"os"
@@ -87,7 +88,8 @@ func authAsAdmin(ctx context.Context) (context.Context, auth.Claims) {
 }
 
 func TestMain(m *testing.M) {
-	db, _ = database.Init()
+	config := config.LoadDotEnv("../../")
+	db, _ = database.Init(config)
 	database.ClearDB(db)
 	db.AutoMigrate(Article{})
 	s = NewService(db)
