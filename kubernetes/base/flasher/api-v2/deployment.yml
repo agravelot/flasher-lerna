@@ -22,12 +22,18 @@ spec:
             - name: http-api-v2
               containerPort: 8080
           env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: user
+                  name: postgres-secret
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: postgres-secret
             - name: DB_HOST
               value: postgres
-            - name: DB_USER
-              value: admin
-            - name: DB_PASSWORD
-              value: admin
             - name: DB_NAME
               value: apiv2
             - name: DB_PORT
