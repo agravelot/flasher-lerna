@@ -83,3 +83,10 @@ jobs:
       run: |
         cd apps/api-go 
         go test ./...
+      env:
+        DB_HOST: localhost
+        DB_USER: flasher
+        DB_PASSWORD: flasher
+        DB_NAME: flasher
+        DB_PORT: 5432
+        PORT: 8080
