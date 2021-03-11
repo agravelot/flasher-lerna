@@ -1,0 +1,10 @@
+resources:
+  - base
+  - ../base/istio-system
+  # - ../base/keel
+  - tls
+  - kiali.yml
+#  - namespace.yml
+
+generators:
+  - secret-generator.yml

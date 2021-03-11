@@ -1,0 +1,48 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: api-v2-virtualservice
+spec:
+  hosts:
+    - "api.jkanda.fr"
+  gateways:
+    - flasher-gateway
+  http:
+    - name: "api-v2-routes"
+      match:
+      - uri:
+          prefix: "/api/v2"
+      rewrite:
+        uri: " "
+      route:
+      - destination:
+          host: api-v2
+          port:
+            number: 8080
+      headers:
+        response:
+          add:
+            Strict-Transport-Security: max-age=31536000; includeSubDomains
+            X-Robots-Tag: "noindex, nofollow"
+      corsPolicy:
+        allowOrigins:
+           - exact: https://jkanda.fr
+           - exact: https://admin.jkanda.fr
+           - exact: https://frontend.jkanda.fr
+           - exact: http://localhost:3000
+        allowHeaders:
+          - authorization
+          - content-type
+          - cache-control
+          - x-requested-with
+        allowMethods:
+          - OPTIONS
+          - GET
+          - POST
+          - PATCH
+          - DELETE
+        allowCredentials: true
+        #maxAge: "24h"
+
+
+

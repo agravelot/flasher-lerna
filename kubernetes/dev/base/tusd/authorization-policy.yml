@@ -1,0 +1,12 @@
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: tusd-request-authentication
+spec:
+  jwtRules:
+    - issuer: https://accounts.127.0.0.1.nip.io/auth/realms/jkanda
+      # TODO jwksUri by default and override in dev
+      #jwksUri: https://raw.githubusercontent.com/istio/istio/release-1.6/security/tools/jwt/samples/jwks.json
+      #jwksUri: http://keycloak:8080/auth/realms/jkanda/protocol/openid-connect/certs
+      #jwksUri: https://accounts.jkanda.fr/auth/realms/jkanda/protocol/openid-connect/certs
+      jwks: '{"keys":[{"kid":"sB4fmxXeOhWISqhnKKxGceJ-mCvDoV9mc3KlvR9Z4kI","kty":"RSA","alg":"RS256","use":"sig","n":"nDmx1e4t-THqX4tVGxC8jE363kUXgSZsHG3w1T9-M-Yc91Yo7DkIryYYVxjXD2Sd48lEVcspHvpDPctrnOP0vqmhLxV-Gp2TKRapbl1Jfdn6kqPJcl0uSaci5w-7tesAOHYa5lTI17EeXVUp9e864Ruobg4L1dcAY7-4yy6rXHu_CRUtX9307VZ3R6rZcxbgxR0UMJSy0IScAlYwupZS-WiR_zmGQl_zftNC9s_8IW2e6Xf8gWBk_ajjthIwYYzNLQmDqNpiPE59mYjO98ZeV4_6idv8I8oKMIqyEsTmmWqX8EYI8itksBkF24dZWYtLXoaiVBzHjtofWFgHX9fucw","e":"AQAB","x5c":["MIICmzCCAYMCBgFyTYmdjTANBgkqhkiG9w0BAQsFADARMQ8wDQYDVQQDDAZqa2FuZGEwHhcNMjAwNTI1MjAzMTAzWhcNMzAwNTI1MjAzMjQzWjARMQ8wDQYDVQQDDAZqa2FuZGEwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCcObHV7i35Mepfi1UbELyMTfreRReBJmwcbfDVP34z5hz3VijsOQivJhhXGNcPZJ3jyURVyyke+kM9y2uc4/S+qaEvFX4anZMpFqluXUl92fqSo8lyXS5JpyLnD7u16wA4dhrmVMjXsR5dVSn17zrhG6huDgvV1wBjv7jLLqtce78JFS1f3fTtVndHqtlzFuDFHRQwlLLQhJwCVjC6llL5aJH/OYZCX/N+00L2z/whbZ7pd/yBYGT9qOO2EjBhjM0tCYOo2mI8Tn2ZiM73xl5Xj/qJ2/wjygowirISxOaZapfwRgjyK2SwGQXbh1lZi0tehqJUHMeO2h9YWAdf1+5zAgMBAAEwDQYJKoZIhvcNAQELBQADggEBABvCaJiifmMvpLQWjqOeXYUJydEvWTdSgWNEstYCgjJ6fv7evhP0CJhteNaKk/Ib13u5VqVPjoGXOt6FGflbzhVxccLhYoBPKFi7HxmiXXj6qsq1W0bQYOhgkIk/P7cmAPsvnif4EBBQMCMYNjwepZz4z1XV1eHmxlbhN6vH4pN/GFc1hIl5e3d0kPKLdiOFNzNwVjY5WMDSmQ60xwgG54U2atDY+1SE64urd+S/PXh/SnpC0AF2tFL25Nj/WACWAr6DKVUtyO7UhZxUGJRP/aP5iCCkKbW/417mgFjjg8FlydogGHIg2tM0E67Y8N5UdGkKVwfOIYZha5+GlFPvnDU="],"x5t":"Xmuh7lScYOhkiDWL0jdpfXLqK_Q","x5t#S256":"21NgcdA8gsdqa7DY5ESb2lBFV4zt6GcKe2F7LImwVds"}]}'

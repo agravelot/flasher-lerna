@@ -2,6 +2,12 @@ name: frontend
 
 on:
   push:
+    paths:
+      - 'apps/frontend/**'
+      - 'apps/common/**'
+      - 'libs/**'
+      - 'yarn.lock'
+      - '.github/workflows/frontend.yml'
     branches:
       - '**'
     tags:

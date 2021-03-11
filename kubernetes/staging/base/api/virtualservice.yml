@@ -1,0 +1,37 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: api-virtualservice
+spec:
+  hosts:
+    - "api.agravelot.eu" # TODO Only replace this line
+  http:
+    - route:
+        - destination:
+            host: api
+            port:
+              number: 80
+          headers:
+            response:
+              add:
+                X-Robots-Tag: "noindex, nofollow"
+                Strict-Transport-Security: max-age=31536000; includeSubDomains
+      corsPolicy:
+        allowOrigins:
+          - exact: https://agravelot.eu
+          - exact: https://admin.agravelot.eu # TODO Only replace this line
+          - exact: http://localhost:3000 # TODO Only replace this line
+        allowHeaders:
+          - authorization
+          - content-type
+          # Media upload
+          - cache-control
+          - x-requested-with
+        allowMethods:
+          - OPTIONS
+          - GET
+          - POST
+          - PATCH
+          - DELETE
+        allowCredentials: true
+        #maxAge: "24h"

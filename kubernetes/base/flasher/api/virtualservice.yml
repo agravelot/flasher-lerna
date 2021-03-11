@@ -1,0 +1,44 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: api-virtualservice
+spec:
+  hosts:
+    - "api.jkanda.fr"
+  gateways:
+    - flasher-gateway
+  http:
+    - route:
+      - destination:
+          host: api
+          port:
+            number: 80
+      headers:
+        response:
+          add:
+            Strict-Transport-Security: max-age=31536000; includeSubDomains
+            X-Robots-Tag: "noindex, nofollow"
+      corsPolicy:
+        allowOrigins:
+           - exact: https://jkanda.fr
+           - exact: https://admin.jkanda.fr
+           - exact: https://frontend.jkanda.fr
+           - exact: http://localhost:3000
+           - exact: https://flasher-frontend-nextjs.vercel.app
+           - regex: https:\/\/.*vercel.app.*
+        allowHeaders:
+          - authorization
+          - content-type
+          - cache-control
+          - x-requested-with
+        allowMethods:
+          - OPTIONS
+          - GET
+          - POST
+          - PATCH
+          - DELETE
+        allowCredentials: true
+        #maxAge: "24h"
+
+
+

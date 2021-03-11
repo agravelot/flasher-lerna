@@ -1,0 +1,46 @@
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: jwt-api
+spec:
+  selector:
+    matchLabels:
+      app: api
+  jwtRules:
+    - issuer: https://accounts.jkanda.fr/auth/realms/jkanda
+      jwksUri: https://accounts.jkanda.fr/auth/realms/jkanda/protocol/openid-connect/certs
+      audiences:
+        - account
+      forwardOriginalToken: true
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-admin
+spec:
+  action: ALLOW
+  selector:
+    matchLabels:
+      app: api
+  rules:
+    - to:
+        - operation:
+            paths: ["/api/admin/*"]
+      when:
+        - key: request.auth.claims[groups]
+          values: ["admin"]
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-frontend-api-policy
+spec:
+  action: ALLOW
+  selector:
+    matchLabels:
+      app: api
+  rules:
+    - to:
+        - operation:
+            paths: ["/*"]
+            notPaths: ["/api/admin/*"]

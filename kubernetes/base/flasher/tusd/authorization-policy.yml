@@ -1,0 +1,31 @@
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: tusd-request-authentication
+spec:
+  selector:
+    matchLabels:
+      app: tusd
+  jwtRules:
+    - issuer: https://accounts.jkanda.fr/auth/realms/jkanda
+      jwksUri: https://accounts.jkanda.fr/auth/realms/jkanda/protocol/openid-connect/certs
+      audiences:
+        - account
+      forwardOriginalToken: false
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: tusd-allow-admin
+spec:
+  action: ALLOW
+  selector:
+    matchLabels:
+      app: tusd
+  rules:
+    - to:
+        - operation:
+            paths: ["/*"]
+      when:
+        - key: request.auth.claims[groups]
+          values: ["admin"]

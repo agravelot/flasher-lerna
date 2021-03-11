@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: aws-ses-smtp-egress
+spec:
+  hosts:
+    - email-smtp.eu-west-1.amazonaws.com
+  exportTo:
+    - "."
+  ports:
+    - number: 25
+      name: tcp-aws-ses
+      protocol: TCP
+    - number: 465
+      name: tcp-aws-ses-2
+      protocol: TCP
+    - number: 587
+      name: tcp-aws-ses-3
+      protocol: TCP
+  resolution: DNS
+  location: MESH_EXTERNAL

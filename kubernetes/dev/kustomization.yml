@@ -1,0 +1,5 @@
+resources:
+  - base
+  - tls
+  - metallb
+#  - namespace.yml

@@ -1,0 +1,11 @@
+resources:
+  - base
+  - ../base/istio-system
+  # - ../base/keel
+#  - ../base/cert-manager
+  - tls
+  - kiali.yml
+#  - namespace.yml
+
+generators:
+  - secret-generator.yml
