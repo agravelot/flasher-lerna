@@ -7,4 +7,3 @@ secret.yaml
 secrets.yaml
 *.deb
 *.key
-istio-*

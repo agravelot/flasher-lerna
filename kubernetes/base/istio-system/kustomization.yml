@@ -1,0 +1,6 @@
+resources:
+  - gzip.yml
+  - https://raw.githubusercontent.com/istio/istio/release-1.9/samples/addons/grafana.yaml
+  # - https://raw.githubusercontent.com/istio/istio/release-1.9/samples/addons/prometheus.yaml
+
+namespace: istio-system
