@@ -12,6 +12,7 @@ import dynamic from "next/dynamic";
 import { Album } from "@flasher/models";
 import {
   api,
+  HttpNotFound,
   PaginatedReponse,
   useAuthentication,
   WrappedResponse,
@@ -184,29 +185,36 @@ const ShowAlbum: NextPage<Props> = ({
 export default ShowAlbum;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const album = await api<WrappedResponse<Album>>(`/albums/${params?.slug}`)
-    .then((res) => res.json())
-    .then((res) => res.data);
+  try {
+    const album = await api<WrappedResponse<Album>>(`/albums/${params?.slug}`)
+      .then((res) => res.json())
+      .then((res) => res.data);
 
-  const albumCategories = album.categories
-    ?.map((c) => c.id)
-    .flat()
-    .join(",");
+    const albumCategories = album.categories
+      ?.map((c) => c.id)
+      .flat()
+      .join(",");
 
-  const recommendedAlbums = await api<PaginatedReponse<Album[]>>(
-    `/albums?filter[categories.id]=${albumCategories}`
-  )
-    .then((res) => res.json())
-    .then((json) => json.data)
-    .then((albums) => albums.filter((a) => a.id !== album.id).slice(0, 3))
-    .catch((e) => {
-      // error({ statusCode: 500, message: 'Unable to get recommended albums' })
-      throw e;
-    });
+    const recommendedAlbums = await api<PaginatedReponse<Album[]>>(
+      `/albums?filter[categories.id]=${albumCategories}`
+    )
+      .then((res) => res.json())
+      .then((json) => json.data)
+      .then((albums) => albums.filter((a) => a.id !== album.id).slice(0, 3))
+      .catch((e) => {
+        // error({ statusCode: 500, message: 'Unable to get recommended albums' })
+        throw e;
+      });
 
-  const global = await getGlobalProps();
+    const global = await getGlobalProps();
 
-  return { props: { album, recommendedAlbums, ...global }, revalidate: 60 };
+    return { props: { album, recommendedAlbums, ...global }, revalidate: 60 };
+  } catch (e) {
+    if (e instanceof HttpNotFound) {
+      return { notFound: true };
+    }
+    throw e;
+  }
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

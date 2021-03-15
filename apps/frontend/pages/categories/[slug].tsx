@@ -13,6 +13,7 @@ import { NextSeo } from "next-seo";
 import { configuration } from "../../utils/configuration";
 import {
   api,
+  HttpNotFound,
   PaginatedReponse,
   useAuthentication,
   WrappedResponse,
@@ -113,20 +114,27 @@ export default ShowCategory;
 export const getStaticProps: GetStaticProps<Props> = async ({
   params,
 }: GetStaticPropsContext) => {
-  const category = await api<WrappedResponse<Category>>(
-    `/categories/${params?.slug}`
-  )
-    .then((res) => res.json())
-    .then((res) => res.data);
-  const albums = await api<PaginatedReponse<Album[]>>(
-    `/albums?filter[categories.id]=${category.id}`
-  )
-    .then((res) => res.json())
-    .then((res) => res.data);
+  try {
+    const category = await api<WrappedResponse<Category>>(
+      `/categories/${params?.slug}`
+    )
+      .then((res) => res.json())
+      .then((res) => res.data);
+    const albums = await api<PaginatedReponse<Album[]>>(
+      `/albums?filter[categories.id]=${category.id}`
+    )
+      .then((res) => res.json())
+      .then((res) => res.data);
 
-  const global = await getGlobalProps();
+    const global = await getGlobalProps();
 
-  return { props: { category, albums, ...global }, revalidate: 60 };
+    return { props: { category, albums, ...global }, revalidate: 60 };
+  } catch (e) {
+    if (e instanceof HttpNotFound) {
+      return { notFound: true };
+    }
+    throw e;
+  }
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

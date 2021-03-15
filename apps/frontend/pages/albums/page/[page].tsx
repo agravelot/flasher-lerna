@@ -99,23 +99,27 @@ export default IndexAlbum;
 export const getStaticProps: GetStaticProps = async ({
   params,
 }): Promise<GetStaticPropsResult<Props>> => {
-  const body = await api<PaginatedReponse<Album[]>>(
+  const res = await api<PaginatedReponse<Album[]>>(
     `/albums?page=${params?.page ?? 1}&per_page=${perPage}`
   ).then((res) => res.json());
+
+  if (res.data.length === 0) {
+    return { notFound: true };
+  }
 
   const global = await getGlobalProps();
 
   return {
     props: {
       ...global,
-      albums: body.data,
+      albums: res.data,
       pagination: {
-        perPage: body.meta.per_page,
-        from: body.meta.from,
-        to: body.meta.to,
-        totalItems: body.meta.total,
-        lastPage: body.meta.last_page,
-        currentPage: body.meta.current_page,
+        perPage: res.meta.per_page,
+        from: res.meta.from,
+        to: res.meta.to,
+        totalItems: res.meta.total,
+        lastPage: res.meta.last_page,
+        currentPage: res.meta.current_page,
         showInfo: true,
         routeName: "/albums/page/[page]",
       },

@@ -89,6 +89,10 @@ export const getStaticProps: GetStaticProps = async ({
     `/cosplayers?page=${params?.page}&per_page=${perPage}`
   ).then((res) => res.json());
 
+  if (body.data.length === 0) {
+    return { notFound: true };
+  }
+
   const global = await getGlobalProps();
 
   return {

@@ -9,14 +9,13 @@ import Header from "../../../components/Header";
 import Pagination from "../../../components/Pagination";
 import Layout from "../../../components/Layout";
 import CategoryList from "../../../components/category/CategoryList";
-import { api, PaginatedReponse } from "../../../utils/api";
 import { range } from "../../../utils/util";
 import { PaginationProps } from "../../../components/Pagination";
 import { getGlobalProps, GlobalProps } from "../../../stores";
 import dynamic from "next/dynamic";
 import { NextSeo } from "next-seo";
 import { Category } from "@flasher/models";
-import { useAuthentication } from "@flasher/common";
+import { api, PaginatedReponse, useAuthentication } from "@flasher/common";
 
 type Props = {
   categories: Category[];
@@ -89,6 +88,10 @@ export const getStaticProps: GetStaticProps = async (
   const body = await api<PaginatedReponse<Category[]>>(
     `/categories?page=${context.params?.page ?? 1}&per_page=${perPage}`
   ).then((res) => res.json());
+
+  if (body.data.length === 0) {
+    return { notFound: true };
+  }
 
   const global = await getGlobalProps();
 

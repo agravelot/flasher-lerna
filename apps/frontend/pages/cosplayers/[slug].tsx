@@ -10,6 +10,7 @@ import { NextSeo } from "next-seo";
 import { Album, Cosplayer } from "@flasher/models";
 import {
   api,
+  HttpNotFound,
   PaginatedReponse,
   useAuthentication,
   WrappedResponse,
@@ -143,27 +144,34 @@ const ShowCosplayer: NextPage<Props> = ({
 export default ShowCosplayer;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const cosplayer = await api<WrappedResponse<Cosplayer>>(
-    `/cosplayers/${params?.slug}`
-  )
-    .then((res) => res.json())
-    .then((json) => json.data)
-    .catch((e) => {
-      throw e;
-    });
+  try {
+    const cosplayer = await api<WrappedResponse<Cosplayer>>(
+      `/cosplayers/${params?.slug}`
+    )
+      .then((res) => res.json())
+      .then((json) => json.data)
+      .catch((e) => {
+        throw e;
+      });
 
-  const albums = await api<PaginatedReponse<Album[]>>(
-    `/albums?filter[cosplayers.id]=${cosplayer.id}`
-  )
-    .then((res) => res.json())
-    .then((json) => json.data)
-    .catch((e) => {
-      throw e;
-    });
+    const albums = await api<PaginatedReponse<Album[]>>(
+      `/albums?filter[cosplayers.id]=${cosplayer.id}`
+    )
+      .then((res) => res.json())
+      .then((json) => json.data)
+      .catch((e) => {
+        throw e;
+      });
 
-  const global = await getGlobalProps();
+    const global = await getGlobalProps();
 
-  return { props: { cosplayer, albums, ...global }, revalidate: 60 };
+    return { props: { cosplayer, albums, ...global }, revalidate: 60 };
+  } catch (e) {
+    if (e instanceof HttpNotFound) {
+      return { notFound: true };
+    }
+    throw e;
+  }
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

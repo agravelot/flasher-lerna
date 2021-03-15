@@ -6,11 +6,11 @@ import ContactForm from "../components/ContactForm";
 import { TestimonialList } from "../components/TestimonialList";
 import AlbumList from "../components/album/AlbumList";
 import { GetStaticProps, GetStaticPropsResult, NextPage } from "next";
-import { api, PaginatedReponse } from "../utils/api";
 import { getGlobalProps, GlobalProps } from "../stores";
 import Separator from "../components/Separator";
 import { NextSeo } from "next-seo";
 import { Album, Testimonial } from "@flasher/models";
+import { api, PaginatedReponse } from "@flasher/common";
 
 const toggleTestimonialModal = () => {
   return;

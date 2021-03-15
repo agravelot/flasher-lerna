@@ -1,5 +1,5 @@
+import { api, PaginatedReponse } from "@flasher/common";
 import { Setting, SettingKeys, SettingMedia } from "@flasher/models";
-import { api, PaginatedReponse } from "../utils/api";
 
 export interface Settings {
   homepageTitle: string;

@@ -1,5 +1,5 @@
+import { api, PaginatedReponse } from "@flasher/common/src";
 import { SocialMedia } from "@flasher/models";
-import { api, PaginatedReponse } from "../utils/api";
 
 export const getSocialMedias = (): Promise<SocialMedia[]> =>
   api<PaginatedReponse<SocialMedia[]>>("/social-medias")

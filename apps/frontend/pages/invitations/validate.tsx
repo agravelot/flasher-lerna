@@ -4,10 +4,10 @@ import Layout from "../../components/Layout";
 import Header from "../../components/Header";
 import { getGlobalProps, GlobalProps } from "../../stores";
 import { useRouter } from "next/dist/client/router";
-import { api, WrappedResponse } from "../../utils/api";
 import { GetStaticProps, GetStaticPropsResult } from "next";
 import { NextSeo } from "next-seo";
 import { Invitation } from "@flasher/models";
+import { api, WrappedResponse } from "@flasher/common/src";
 
 enum Status {
   Loading,
