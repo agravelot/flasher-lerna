@@ -18,7 +18,7 @@ type Article struct {
 	MetaDescription string         `json:"meta_description" validate:"required,gt=1,lt=60"`
 	Content         string         `json:"content"`
 	AuthorUUID      string         `json:"author_uuid" validate:"required,uuid"`
-	PublishedAt     null.Time      `json:"published_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
+	PublishedAt     null.Time      `json:"published_at" swaggertype:"string" example:"2019-04-19T17:47:28Z" ts:"date,null"`
 	CreatedAt       time.Time      `json:"created_at"`
 	UpdatedAt       time.Time      `json:"updated_at"`
 	DeletedAt       gorm.DeletedAt `gorm:"index" json:"-"`
