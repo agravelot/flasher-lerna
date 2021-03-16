@@ -7,6 +7,7 @@ resources:
   - redis
   - keycloak
   - frontend
+  - monitoring
   - gateway.yml
   - peer-authentication.yml
   - authorization-policy.yml
