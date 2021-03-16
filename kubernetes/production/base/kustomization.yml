@@ -133,7 +133,7 @@ images:
     newTag: "e97738f"
   - name: frontend
     newName: registry.gitlab.com/flasher/flasher/flasher-frontend
-    newTag: 1.2.5
+    newTag: 1.2.6
   - name: api-v2
     newName: registry.gitlab.com/flasher/flasher/flasher-api-go
     newTag: feature-go-api
