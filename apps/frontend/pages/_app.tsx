@@ -2,29 +2,10 @@ import { AppProps } from "next/app";
 import { SSRKeycloakProvider, SSRCookies } from "@react-keycloak/ssr";
 import { configuration } from "../utils/configuration";
 import "../styles/main.css";
-import { ReactElement, useEffect } from "react";
-import { useAnalytics } from "../hooks/useAnalytics";
-import { useRouter } from "next/dist/client/router";
+import { ReactElement } from "react";
+import { Analytics } from "components/Analytics";
 
 function App({ Component, pageProps }: AppProps): ReactElement {
-  const { initialize, pageView } = useAnalytics();
-  const router = useRouter();
-
-  useEffect(() => {
-    initialize();
-    pageView();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    // Listen for page changes after a navigation or when the query changes
-    router.events.on("routeChangeComplete", pageView);
-    return () => {
-      router.events.off("routeChangeComplete", pageView);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.events]);
-
   return (
     <SSRKeycloakProvider
       initOptions={{
@@ -33,6 +14,7 @@ function App({ Component, pageProps }: AppProps): ReactElement {
       keycloakConfig={configuration.keycloak}
       persistor={SSRCookies({})}
     >
+      <Analytics />
       <Component {...pageProps} />
     </SSRKeycloakProvider>
   );
