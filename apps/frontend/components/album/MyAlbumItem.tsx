@@ -2,7 +2,6 @@ import { FunctionComponent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useKeycloak } from "@react-keycloak/ssr";
-import { useAnalytics } from "../../hooks/useAnalytics";
 import { Album } from "@flasher/models";
 import { api } from "@flasher/common";
 
@@ -20,7 +19,6 @@ const MyAlbumItem: FunctionComponent<Props> = ({
   showDownload,
 }: Props) => {
   const { keycloak } = useKeycloak();
-  const { exception } = useAnalytics();
 
   const downloadAlbum = async (): Promise<void> => {
     const response = await api<GenerateDownloakLink>(
@@ -33,7 +31,6 @@ const MyAlbumItem: FunctionComponent<Props> = ({
     )
       .then((res) => {
         if (!res.response.ok) {
-          exception(res.response);
           // TODO Notify user here
         }
         return res.json();
