@@ -105,7 +105,12 @@ const IndexPage: NextPage<Props> = ({
                 <h2 className="text-4xl font-semibold">
                   <span>
                     {"Ils sont "}
-                    <span className="bg-gradient-to-r from-blue-700 to-red-700 mb- shadow-none bg-clip-text text-transparent">
+                    <span
+                      className="bg-clip-text bg-gradient-to-r from-blue-700 to-red-700 shadow-none text-transparent"
+                      style={{
+                        WebkitBackgroundClip: "text",
+                      }}
+                    >
                       ravis
                     </span>
                   </span>
