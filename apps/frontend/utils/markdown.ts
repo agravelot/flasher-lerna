@@ -42,8 +42,8 @@ export function getAllPosts(status: "all" | "published" = "all"): BlogPost[] {
   const slugs = getPostSlugs();
   const posts = slugs
     .map((slug) => getPostBySlug(slug))
-    .filter((p) => status === "all" || p.status === "published");
-  // sort posts by date in descending order
-  // .sort((post1, post2) => (post1.createdAt > post2.createdAt ? "-1" : "1"));
+    .filter((p) => status === "all" || p.status === "published")
+    .sort((post1, post2) => (post1.createdAt < post2.createdAt ? -1 : 1));
+
   return posts;
 }
