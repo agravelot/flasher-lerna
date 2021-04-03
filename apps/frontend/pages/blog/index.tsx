@@ -79,7 +79,12 @@ const IndexAlbum: NextPage<Props> = ({
                 <p className="text-gray-600 mt-4">{post.metaDescription}</p>
                 <Link href={`/blog/${post.slug}`}>
                   <a className="inline-block w-full">
-                    <span className="bg-gradient-to-r from-blue-700 to-red-700 mx-4 shadow-none bg-clip-text text-transparent float-right font-semibold hover:underline">
+                    <span
+                      className="bg-gradient-to-r from-blue-700 to-red-700 mx-4 shadow-none bg-clip-text text-transparent float-right font-semibold hover:underline"
+                      style={{
+                        WebkitBackgroundClip: "text",
+                      }}
+                    >
                       Lire la suite
                     </span>
                   </a>
