@@ -1,10 +1,10 @@
-name: api
+name: api-go
 
 on:
   push:
     paths:
       - 'apps/api-go/**'
-      - '.github/workflows/api.yml'
+      - '.github/workflows/api-go.yml'
     branches:
       - '**'
     tags:
@@ -14,7 +14,7 @@ on:
 
 jobs:
   docker:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       -
         name: Checkout
@@ -63,8 +63,15 @@ jobs:
           cache-to: type=inline
   test:
     # runs-on: self-hosted
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
+    - name: Update docker-compose version
+      if: ${{ env.ACT }}
+      run: |
+        sudo curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+        docker-compose version
+        docker -v
     - 
       name: Checkout
       uses: actions/checkout@v2
