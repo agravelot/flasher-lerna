@@ -1,8 +1,9 @@
 # ==== Frontend ==== #
-FROM node:13-alpine as frontend
+FROM node:15-alpine as frontend
 WORKDIR /app
 COPY . .
 RUN : \
+        && apk add --no-cache python2 make g++ \
         && yarn install --production=true \
         && yarn production \
         ;
