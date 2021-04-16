@@ -1,14 +1,13 @@
-FROM composer:1.10.5 as vendor-dev
+FROM composer:2 as vendor-dev
 COPY . .
 
-RUN composer global require hirak/prestissimo \
-        && composer install \
-            --ignore-platform-reqs \
-            --no-interaction \
-            --prefer-dist \
-            --no-progress \
-            --profile \
-            --no-scripts \
-            --optimize-autoloader \
-            --classmap-authoritative \
-        && chown -R 33:33 vendor/
+RUN composer install \
+        --ignore-platform-reqs \
+        --no-interaction \
+        --prefer-dist \
+        --no-progress \
+        --profile \
+        --no-scripts \
+        --optimize-autoloader \
+        --classmap-authoritative \
+    && chown -R 33:33 vendor/

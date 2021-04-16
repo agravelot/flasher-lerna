@@ -8,21 +8,19 @@ RUN : \
         ;
 
 # ==== PHP Dependencies ==== #
-FROM composer:1.10.5 as vendor
+FROM composer:2 as vendor
 COPY . .
 
-RUN : \
-        && composer global require hirak/prestissimo \
-        && composer install \
-            --ignore-platform-reqs \
-            --no-interaction \
-            --prefer-dist \
-            --no-progress \
-            --profile \
-            --no-scripts \
-            # Production only
-            --no-dev \
-            --classmap-authoritative
+RUN composer install \
+        --ignore-platform-reqs \
+        --no-interaction \
+        --prefer-dist \
+        --no-progress \
+        --profile \
+        --no-scripts \
+        # Production only
+        --no-dev \
+        --classmap-authoritative
 
 # ==== Nginx ==== #
 FROM nginx:alpine as nginx
