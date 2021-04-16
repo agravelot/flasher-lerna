@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         printerClass="NunoMaduro\Collision\Adapters\Phpunit\Printer">
+    <testsuites>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory suffix="Test.php">./tests/Feature</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./app</directory>
+        </whitelist>
+    </filter>
+    <php>
+        <server name="APP_KEY" value="base64:pRJG5YkZlHzwYvnURTuNw7lGuHM/A8J9lrcFUFnrkoA="/>
+        <server name="APP_ENV" value="testing"/>
+        <server name="DB_DATABASE" value="flasher"/>
+        <server name="TELESCOPE_ENABLED" value="false"/>
+        <server name="QUEUE_DRIVER" value="sync"/>
+        <server name="QUEUE_CONNECTION" value="sync"/>
+        <server name="KEYCLOAK_VERIFY_SSL" value="false"/>
+    </php>
+</phpunit>
