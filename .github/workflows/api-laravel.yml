@@ -116,4 +116,5 @@ jobs:
         password: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
     - name: Push images to registry
+      working-directory: apps/api-laravel
       run: docker-compose push php nginx
