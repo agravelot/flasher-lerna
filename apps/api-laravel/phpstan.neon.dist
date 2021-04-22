@@ -1,0 +1,12 @@
+includes:
+  - vendor/nunomaduro/larastan/extension.neon
+  - vendor/bensampo/laravel-enum/extension.neon
+parameters:
+  level: 0
+  ignoreErrors:
+    - '#Access to an undefined property App\\Demo\\[a-zA-Z0-9\\_]+::\$[a-zA-Z0-9\\_]+\.#'
+    - '#Call to an undefined method App\\Http\\Resources\\DemoResource::DemoMethod\(\)\.#'
+  excludes_analyse:
+  paths:
+    - app
+    - modules

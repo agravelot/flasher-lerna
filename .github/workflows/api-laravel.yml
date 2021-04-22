@@ -1,0 +1,120 @@
+name: api-laravel
+
+on:
+  push:
+    paths:
+      - 'apps/api-laravel/**'
+      - '.github/workflows/api-laravel.yml'
+    branches:
+      - '**'
+    tags:
+      - 'v*'
+  pull_request:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-18.04
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Define env
+      run: |
+        echo "CI_COMMIT_REF_NAME=$(echo -n $GITHUB_REF | cut -d/ -f3-)" >> $GITHUB_ENV
+        echo "CI_COMMIT_SHORT_SHA=$(echo -n $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV
+        echo "PHP_IMAGE=registry.gitlab.com/flasher/flasher/picblog_php:$(echo -n $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV
+        echo "NGINX_IMAGE=registry.gitlab.com/flasher/flasher/picblog_nginx:$(echo -n $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV
+
+    - name: Update docker-compose version
+      run: |
+        sudo curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+        docker-compose version
+        docker -v
+
+    - name: Create required docker network
+      run: |
+        docker network create nginx-proxy || true
+        docker network create database-network || true
+        docker network create keycloak-network || true
+
+    - name: Build the Docker stack
+      working-directory: apps/api-laravel
+      run: COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build
+
+    - name: Fetch php dev dependencies
+      working-directory: apps/api-laravel
+      run: |
+        DOCKER_BUILDKIT=1 docker build -t vendor_dev -f docker/vendor-dev/Dockerfile .
+        export VENDOR_DOCKER=$(docker run -d -t vendor_dev tail -f /dev/null)
+        docker cp -a $VENDOR_DOCKER:/app/vendor .
+
+    - name: Start docker stack
+      working-directory: apps/api-laravel
+      run: |
+        COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d php db cache
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T cache redis-cli config set maxmemory 41943040
+        docker cp vendor $(docker-compose -f docker-compose.yml -f docker-compose.local.yml ps -q php):/var/www/html/
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan cache:clear-wait-connection
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan db:wait-connection
+      env:
+        APP_URL: http://localhost
+        APP_URI: localhost
+        APP_NAME: "app-testing"
+        APP_KEY: "base64:6EeKJ27o9A8CseMypr02sRY95mxXfbzwNS37b5jyaCk="
+        APP_ENV: "testing"
+        DB_PASSWORD: "secretPassword"
+        ERROR_LOG_LEVEL: "info"
+        QUEUE_DRIVER: "sync"
+        SESSION_DRIVER: "array"
+        CACHE_DRIVER: "array"
+        BROADCAST_DRIVER: "log"
+        KEYCLOAK_URI: keycloak.localhost
+        KEYCLOAK_URL: https://keycloak.localhost
+        KEYCLOAK_BASE_URL: https://keycloak.localhost/auth
+        KEYCLOAK_VERIFY_SSL: false
+        KEYCLOAK_SSL: false
+        KEYCLOAK_PORT: 8080
+        KEYCLOAK_REALM: jkanda
+        KEYCLOAK_CLIENT_ID: flasher
+        KEYCLOAK_MASTER_USERNAME: admin
+        KEYCLOAK_MASTER_PASSWORD: admin
+
+    - name: Run php test suites
+      working-directory: apps/api-laravel
+      run: |
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php touch .env
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php php artisan key:generate
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php vendor/bin/phpunit --coverage-text --colors=never
+      env:
+        APP_URL: http://localhost
+        APP_URI: localhost
+        APP_NAME: "app-testing"
+        APP_KEY: "base64:6EeKJ27o9A8CseMypr02sRY95mxXfbzwNS37b5jyaCk="
+        APP_ENV: "testing"
+        DB_PASSWORD: "secretPassword"
+
+    - name: Run php lint
+      working-directory: apps/api-laravel
+      run: |
+        docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -e APP_ENV=testing -T php php vendor/bin/php-cs-fixer fix --dry-run --diff
+      env:
+        APP_URL: http://localhost
+        APP_URI: localhost
+        APP_NAME: "app-testing"
+        APP_KEY: "base64:6EeKJ27o9A8CseMypr02sRY95mxXfbzwNS37b5jyaCk="
+        APP_ENV: "local"
+        DB_PASSWORD: "secretPassword"
+
+    - name: Login to GitLab repository
+      uses: azure/docker-login@v1
+      with:
+        login-server: registry.gitlab.com
+        username: ${{ secrets.CI_REGISTRY_USER }}
+        password: ${{ secrets.CI_REGISTRY_PASSWORD }}
+
+    - name: Push images to registry
+      working-directory: apps/api-laravel
+      run: docker-compose push php nginx
