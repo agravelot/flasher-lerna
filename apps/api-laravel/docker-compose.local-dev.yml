@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+
+  nginx:
+    volumes:
+      - .:/var/www/html:rw
+
+  php:
+    environment:
+      CRISP_ENABLED: 'false'
+    volumes:
+      - .:/var/www/html:rw
+
+  publisher:
+    volumes:
+      - .:/var/www/html:rw
+
+  queue:
+    volumes:
+      - .:/var/www/html:rw
+
+  scheduler:
+    volumes:
+      - .:/var/www/html:rw
+
+  db:
+    ports:
+    - "5432:5432"
+
+  cache:
+    ports:
+      - "6379:6379"
