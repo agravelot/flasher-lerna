@@ -73,6 +73,9 @@ export const CustomHighlight = connectHighlight(
           part.isHighlighted ? (
             <em
               className="bg-gradient-to-r from-blue-700 to-red-700 mb- shadow-none bg-clip-text text-transparent"
+              style={{
+                WebkitBackgroundClip: "text",
+              }}
               key={index}
             >
               {part.value}
