@@ -77,7 +77,9 @@ const Post: NextPage<Props> = ({ post, appName, socialMedias }: Props) => {
       <div className="container mx-auto">
         <div className="flex justify-center py-16 px-4 text-justify">
           <article className="content-center max-w-none prose prose-sm sm:prose lg:prose-lg xl:prose-xl">
-            <MDXRemote {...post.contentSerialized} components={components} />
+            {post.contentSerialized && (
+              <MDXRemote {...post.contentSerialized} components={components} />
+            )}
           </article>
         </div>
       </div>
