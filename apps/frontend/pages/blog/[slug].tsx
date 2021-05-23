@@ -1,15 +1,14 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import React from "react";
 import { ArticleJsonLd, NextSeo } from "next-seo";
-import renderToString from "next-mdx-remote/render-to-string";
-import hydrate from "next-mdx-remote/hydrate";
+import { serialize } from "next-mdx-remote/serialize";
 import { ImageProps } from "next/image";
 import { BlogPost, getAllPosts, getPostBySlug } from "utils/markdown";
 import { getGlobalProps, GlobalProps } from "stores";
 import Layout from "components/Layout";
 import { configuration } from "utils/configuration";
 import Header from "components/Header";
-import { MdxRemote } from "next-mdx-remote/types";
+import { MDXRemote } from "next-mdx-remote";
 
 type Props = {
   post: BlogPost;
@@ -36,7 +35,6 @@ const components = {
 };
 
 const Post: NextPage<Props> = ({ post, appName, socialMedias }: Props) => {
-  const content = hydrate(post.content as MdxRemote.Source, { components });
   return (
     <Layout socialMedias={socialMedias} appName={appName}>
       <NextSeo
@@ -79,7 +77,7 @@ const Post: NextPage<Props> = ({ post, appName, socialMedias }: Props) => {
       <div className="container mx-auto">
         <div className="flex justify-center py-16 px-4 text-justify">
           <article className="content-center max-w-none prose prose-sm sm:prose lg:prose-lg xl:prose-xl">
-            {content}
+            <MDXRemote {...post.contentSerialized} components={components} />
           </article>
         </div>
       </div>
@@ -94,11 +92,17 @@ export const getStaticProps: GetStaticProps = async ({
   preview,
   previewData,
 }) => {
-  const post = preview ? previewData : getPostBySlug(params?.slug as string);
+  const post = preview
+    ? (previewData as BlogPost)
+    : await getPostBySlug(params?.slug as string);
+
+  if (!post) {
+    return { notFound: true };
+  }
 
   const global = await getGlobalProps();
 
-  post.content = await renderToString(post.content, { components });
+  post.contentSerialized = await serialize(post.content);
 
   return {
     props: {
@@ -109,7 +113,7 @@ export const getStaticProps: GetStaticProps = async ({
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const posts = getAllPosts();
+  const posts = await getAllPosts();
 
   return {
     paths: posts.map((post) => {
