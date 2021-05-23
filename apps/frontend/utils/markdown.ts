@@ -52,5 +52,7 @@ export async function getAllPosts(
 
   return posts
     .filter((p) => status === "all" || p.status === "published")
-    .sort((post1, post2) => (post1.createdAt < post2.createdAt ? -1 : 1));
+    .sort((post1, post2) =>
+      new Date(post1.createdAt) > new Date(post2.createdAt) ? -1 : 1
+    );
 }
