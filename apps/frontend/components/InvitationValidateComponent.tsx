@@ -88,15 +88,15 @@ const InvitationValidateComponent: FunctionComponent = () => {
     }
 
     if (status === Status.NonValid) {
-      return "Code non valide";
+      return "Invitation non valide";
     }
 
     if (status === Status.AlreadyAccepted) {
-      return "Ce code a déjà été utilisé";
+      return "Cette invitation a déjà été utilisé";
     }
 
     if (status === Status.Expired) {
-      return "Code expiré";
+      return "Invitation expiré";
     }
 
     if (status === Status.Success) {
