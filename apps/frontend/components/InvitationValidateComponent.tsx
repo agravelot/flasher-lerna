@@ -2,7 +2,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/dist/client/router";
 import { Invitation } from "@flasher/models";
-import { api, WrappedResponse } from "@flasher/common/src";
+import { api, useAuthentication, WrappedResponse } from "@flasher/common";
 
 export enum Status {
   Loading,
@@ -16,44 +16,53 @@ export enum Status {
 const InvitationValidateComponent: FunctionComponent = () => {
   const [status, setStatus] = useState<Status>(Status.Loading);
   const router = useRouter();
+  const { initialized, login, parsedToken, keycloak } = useAuthentication();
 
   useEffect(() => {
-    console.log(router.query);
+    if (!initialized) {
+      return;
+    }
+
+    if (!parsedToken) {
+      login();
+    }
 
     const code = router.query.code;
     if (!code) {
       setStatus(Status.Error);
       throw new Error("Invitation code is not provided.");
     }
-    api<WrappedResponse<Invitation>>(`/invitations/${code}/accept`).then(
-      async (res) => {
-        if (res.response?.status === 400) {
-          const message = (await res.response?.json()).data.message;
-          if (message === "ACCEPTED") {
-            setStatus(Status.AlreadyAccepted);
-            return;
-          }
-          if (message === "EXPIRED") {
-            setStatus(Status.Expired);
-            return;
-          }
+    api<WrappedResponse<Invitation>>(`/invitations/${code}/accept`, {
+      headers: {
+        Authorization: `Bearer ${keycloak.token}`,
+      },
+    }).then(async (res) => {
+      if (res.response?.status === 400) {
+        const message = (await res.response?.json()).data.message;
+        if (message === "ACCEPTED") {
+          setStatus(Status.AlreadyAccepted);
+          return;
+        }
+        if (message === "EXPIRED") {
           setStatus(Status.Expired);
           return;
         }
-        if (res.response?.status === 404) {
-          setStatus(Status.NonValid);
-          return;
-        }
-
-        if (res.response.ok === false) {
-          setStatus(Status.Error);
-        }
-
-        setStatus(Status.Success);
+        setStatus(Status.Expired);
+        return;
       }
-    );
+      if (res.response?.status === 404) {
+        setStatus(Status.NonValid);
+        return;
+      }
+
+      if (res.response.ok === false) {
+        setStatus(Status.Error);
+      }
+
+      setStatus(Status.Success);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [initialized]);
 
   const message = (): string => {
     if (status === Status.Loading) {
