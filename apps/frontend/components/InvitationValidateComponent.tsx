@@ -2,7 +2,14 @@ import { FunctionComponent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/dist/client/router";
 import { Invitation } from "@flasher/models";
-import { api, useAuthentication, WrappedResponse } from "@flasher/common";
+import {
+  api,
+  HttpNotFound,
+  HttpRequestError,
+  WrappedResponse,
+} from "@flasher/common";
+import { useKeycloak } from "@react-keycloak/ssr";
+import { KeycloakInstance } from "keycloak-js";
 
 export enum Status {
   Loading,
@@ -16,15 +23,49 @@ export enum Status {
 const InvitationValidateComponent: FunctionComponent = () => {
   const [status, setStatus] = useState<Status>(Status.Loading);
   const router = useRouter();
-  const { initialized, login, parsedToken, keycloak } = useAuthentication();
+  const { initialized, keycloak } = useKeycloak<KeycloakInstance>();
 
   useEffect(() => {
+    const validate = async (c: string) => {
+      try {
+        await api<WrappedResponse<Invitation>>(`/invitations/${c}/accept`, {
+          headers: {
+            Authorization: `Bearer ${keycloak?.token}`,
+          },
+        });
+        setStatus(Status.Success);
+      } catch (e) {
+        if (e instanceof HttpNotFound) {
+          setStatus(Status.NonValid);
+        }
+
+        if (e instanceof HttpRequestError) {
+          if (e.response.status === 400) {
+            const message = (await e.response.json()).message;
+            if (message === "ACCEPTED") {
+              setStatus(Status.AlreadyAccepted);
+              return;
+            }
+            if (message === "EXPIRED") {
+              setStatus(Status.Expired);
+              return;
+            }
+            setStatus(Status.Error);
+          }
+          if (e.response.ok === false) {
+            setStatus(Status.Error);
+          }
+        }
+      }
+    };
+
     if (!initialized) {
       return;
     }
 
-    if (!parsedToken) {
-      login();
+    if (!keycloak?.authenticated) {
+      keycloak?.login();
+      return;
     }
 
     const code = router.query.code;
@@ -32,37 +73,10 @@ const InvitationValidateComponent: FunctionComponent = () => {
       setStatus(Status.Error);
       throw new Error("Invitation code is not provided.");
     }
-    api<WrappedResponse<Invitation>>(`/invitations/${code}/accept`, {
-      headers: {
-        Authorization: `Bearer ${keycloak.token}`,
-      },
-    }).then(async (res) => {
-      if (res.response?.status === 400) {
-        const message = (await res.response?.json()).data.message;
-        if (message === "ACCEPTED") {
-          setStatus(Status.AlreadyAccepted);
-          return;
-        }
-        if (message === "EXPIRED") {
-          setStatus(Status.Expired);
-          return;
-        }
-        setStatus(Status.Expired);
-        return;
-      }
-      if (res.response?.status === 404) {
-        setStatus(Status.NonValid);
-        return;
-      }
 
-      if (res.response.ok === false) {
-        setStatus(Status.Error);
-      }
-
-      setStatus(Status.Success);
-    });
+    validate(code as string);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialized]);
+  }, [initialized, keycloak]);
 
   const message = (): string => {
     if (status === Status.Loading) {
@@ -134,7 +148,7 @@ const InvitationValidateComponent: FunctionComponent = () => {
         </div>
       )}
 
-      <h1 className="text-gray-900 font-bold text-xl mb-2">{message}</h1>
+      <h1 className="text-gray-900 font-bold text-xl mb-2">{message()}</h1>
 
       {status === Status.Success && (
         <div>
