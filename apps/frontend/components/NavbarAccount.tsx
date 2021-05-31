@@ -4,14 +4,8 @@ import { FunctionComponent, useState } from "react";
 import { configuration } from "../utils/configuration";
 
 const NavbarAccount: FunctionComponent = () => {
-  const {
-    initialized,
-    keycloak,
-    register,
-    login,
-    parsedToken,
-    isAdmin,
-  } = useAuthentication();
+  const { initialized, keycloak, register, login, parsedToken, isAdmin } =
+    useAuthentication();
   const { administration } = configuration;
 
   // Dropdown
