@@ -63,8 +63,6 @@ const getCategories = async (): Promise<Page[]> => {
     const categories = await repo.categories.list({ page, perPage });
 
     for (const category of categories.data) {
-      console.log({ category });
-
       // TODO missing timestamps category
 
       pages.push({
@@ -131,10 +129,12 @@ interface PrerenderManifest {
 const getDefaultRoutes = (): Page[] => {
   try {
     const manifest: PrerenderManifest = JSON.parse(
-      fs.readFileSync(join(process.cwd(), ".next", "prerender-manifest.json"), "utf8")
+      fs.readFileSync(
+        join(process.cwd(), ".next", "prerender-manifest.json"),
+        "utf8"
+      )
     );
     const paths = Object.keys(manifest.routes);
-    console.log(paths);
     return paths.map((p) => ({
       url: p,
       lastMod: new Date().toISOString(),
