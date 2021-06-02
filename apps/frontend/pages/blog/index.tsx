@@ -24,11 +24,13 @@ const IndexAlbum: NextPage<Props> = ({
 
   const title = `Blog - Photographe | ${appName}`;
   const description =
-    "Venez plonger dans mes différents univers à travers des albums divers et variés ! Entre balade, cosplay, et portrait.";
+    "Venez plonger dans mes différents univers à travers mes articles divers et variés ! Entre balade, cosplay, et portrait.";
 
   return (
     <Layout socialMedias={socialMedias} appName={appName}>
       <NextSeo
+        title={title}
+        description={description}
         openGraph={{
           title: title,
           description: description,
@@ -118,7 +120,6 @@ export const getStaticProps: GetStaticProps = async (): Promise<
   GetStaticPropsResult<Props>
 > => {
   const posts = await getAllPosts("published");
-
   const global = await getGlobalProps();
 
   return {
