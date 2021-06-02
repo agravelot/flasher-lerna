@@ -23,7 +23,7 @@ class ApiResponse<T> {
   json = (): Promise<T> => this.response.json();
 }
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? process.env.NX_API_URL ?? '';
+const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? '';
 
 export async function api<T>(
   url: string,

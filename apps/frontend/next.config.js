@@ -37,7 +37,6 @@ module.exports = withTM(
           },
         ];
       },
-      // future: { webpack5: true },
       pwa: {
         dest: "public",
         runtimeCaching,
