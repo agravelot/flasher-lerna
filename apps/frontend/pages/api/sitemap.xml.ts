@@ -39,7 +39,7 @@ const getAlbums = async (): Promise<Page[]> => {
         url: `/albums/${album.slug}`,
         lastMod: album.updated_at ?? (album.published_at as string),
         changefreq: "monthly",
-        priority: "0.7",
+        priority: "0.8",
         images:
           album.medias?.map((m) => ({ loc: generateNextImageUrl(m.url) })) ??
           (album.media?.url
@@ -67,7 +67,7 @@ const getCategories = async (): Promise<Page[]> => {
         url: `/categories/${category.slug}`,
         lastMod: category.updated_at ?? category.created_at,
         changefreq: "monthly",
-        priority: "0.7",
+        priority: "0.5",
         images: category.cover
           ? [{ loc: generateNextImageUrl(category.cover?.url) }]
           : [],
@@ -93,7 +93,7 @@ const getCosplayers = async () => {
         url: `/cosplayers/${cosplayer.slug}`,
         lastMod: cosplayer.updated_at ?? cosplayer.created_at,
         changefreq: "monthly",
-        priority: "0.7",
+        priority: "0.6",
         images: cosplayer.avatar
           ? [{ loc: generateNextImageUrl(cosplayer.avatar?.url) }]
           : [],
@@ -110,7 +110,7 @@ const getBlogs = async (): Promise<Page[]> => {
     url: `/blog/${p.slug}`,
     lastMod: new Date(p.updatedAt ?? p.createdAt).toISOString(),
     changefreq: "monthly",
-    priority: "0.7",
+    priority: "0.9",
     images: [],
   }));
 };
