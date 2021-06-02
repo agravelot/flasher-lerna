@@ -63,8 +63,6 @@ const getCategories = async (): Promise<Page[]> => {
     const categories = await repo.categories.list({ page, perPage });
 
     for (const category of categories.data) {
-      // TODO missing timestamps category
-
       pages.push({
         url: `/categories/${category.slug}`,
         lastMod: category.updated_at ?? category.created_at,
