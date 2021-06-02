@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\TestimonialRequest;
 use App\Http\Resources\TestimonialResource;
 use App\Models\Testimonial;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
