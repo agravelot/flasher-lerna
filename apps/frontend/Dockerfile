@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:15-alpine
 
 ARG NEXT_PUBLIC_APP_URL
 ARG NEXT_PUBLIC_API_URL
@@ -29,4 +29,6 @@ COPY apps/models apps/models
 
 RUN yarn workspace @flasher/frontend run build
 
-CMD ["node_modules/.bin/next", "start", "apps/frontend"]
+WORKDIR /app/apps/frontend
+
+CMD ["../../node_modules/.bin/next", "start"]
