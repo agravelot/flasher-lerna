@@ -9,8 +9,8 @@ export  class Category implements FilterableById {
   public meta_description!: string;
   public description!: string | null;
   // eslint-disable-next-line camelcase
-  public created_at!: Date;
+  public created_at!: string;
   // eslint-disable-next-line camelcase
-  public updated_at!: Date;
+  public updated_at!: string;
   public cover!: Media | null;
 }

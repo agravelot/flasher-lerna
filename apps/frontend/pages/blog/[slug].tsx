@@ -9,6 +9,7 @@ import Layout from "components/Layout";
 import { configuration } from "utils/configuration";
 import Header from "components/Header";
 import { MDXRemote } from "next-mdx-remote";
+import { generateNextImageUrl } from "utils/util";
 
 type Props = {
   post: BlogPost;
@@ -19,12 +20,7 @@ const ImageCustom = (props: ImageProps) => {
   //   <Image layout="responsive" width="2000" height="2000" src={props.src} />
   // );
 
-  return (
-    <img
-      src={"/_next/image?url=" + encodeURIComponent(props.src) + "&w=828&q=75"}
-      loading="lazy"
-    />
-  );
+  return <img src={generateNextImageUrl(props.src)} loading="lazy" />;
 };
 
 const components = {

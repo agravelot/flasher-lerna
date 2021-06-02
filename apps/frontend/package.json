@@ -6,13 +6,11 @@
     "dev:debug": "NODE_OPTIONS='--inspect' next dev",
     "prebuild": "yarn favicon && yarn pwa:icons",
     "build": "next build",
-    "postbuild": "yarn sitemap",
     "start": "next start",
     "type-check": "tsc",
     "lint": "eslint '**/*{js,jsx,ts,tsx}' --fix",
     "pwa:icons": "ngx-pwa-icons -i static/icon.png -o public",
     "favicon": "real-favicon generate faviconDescription.json faviconData.json public",
-    "sitemap": "next-sitemap"
   },
   "dependencies": {
     "@flasher/common": "^0.1.0",
