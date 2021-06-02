@@ -180,14 +180,11 @@ return [
         App\Providers\HorizonServiceProvider::class,
         // App\Providers\TelescopeServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\ComposerServiceProvider::class,
         App\Providers\KeycloakServiceProvider::class,
 
         /*
          * Package Service Providers...
          */
-        Lab404\Impersonate\ImpersonateServiceProvider::class,
-        Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
     ],
 

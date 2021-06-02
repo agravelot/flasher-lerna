@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-use App\Models\Media;
 use BenSampo\Enum\Enum;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 final class SettingType extends Enum
 {

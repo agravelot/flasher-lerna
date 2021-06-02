@@ -37,7 +37,6 @@ class ShowAlbumTest extends TestCase
         $response = $this->showAlbum($album);
 
         $response->assertOk()
-            ->assertJsonPath('data.links.view', route('albums.show', compact('album')))
             ->assertJsonPath('data.links.edit', "/admin/albums/{$album->slug}/edit");
     }
 

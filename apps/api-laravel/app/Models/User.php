@@ -8,9 +8,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use LogicException;
-use Vizir\KeycloakWebGuard\Models\KeycloakUser;
 
-class User extends KeycloakUser implements MustVerifyEmail
+class User extends AbstractUser implements MustVerifyEmail
 {
     use Notifiable, Authorizable;
 

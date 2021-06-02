@@ -8,7 +8,6 @@ use App\Abilities\HasSlugRouteKey;
 use App\Abilities\HasTitleAsSlug;
 use App\Adapters\Keycloak\UserRepresentation;
 use App\Facades\Keycloak;
-use App\Traits\ClearsResponseCache;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -16,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Post extends Model
 {
-    use Sluggable, HasSlugRouteKey, HasTitleAsSlug, ClearsResponseCache;
+    use Sluggable, HasSlugRouteKey, HasTitleAsSlug;
 
     /**
      * The attributes that are mass assignable.

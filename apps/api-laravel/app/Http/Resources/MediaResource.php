@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
-use App\Models\Album;
 use App\Models\Media;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -24,8 +23,7 @@ class MediaResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'file_name' => $this->file_name,
-            'thumb' => $this->getUrl('thumb'),
-            'src_set' => $this->getSrcset(Album::RESPONSIVE_PICTURES_CONVERSION),
+            'url' => $this->getUrl(),
             'width' => $this->getCustomProperty('width'),
             'height' => $this->getCustomProperty('height'),
         ];

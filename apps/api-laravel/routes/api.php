@@ -20,7 +20,7 @@ Route::group([
     // Public
     Route::apiResource('albums', 'AlbumController')->only('index', 'show');
     Route::apiResource('cosplayers', 'CosplayerController')->only('index', 'show');
-    Route::apiResource('testimonials', 'TestimonialController')->only('index');
+    Route::apiResource('testimonials', 'TestimonialController')->only('index', 'store');
     Route::apiResource('categories', 'CategoryController')
         ->only('index', 'show');
     Route::apiResource('settings', 'SettingsController');
@@ -46,6 +46,8 @@ Route::group([
         ->middleware(['auth:api', 'verified'])
         ->where('invitation', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$');
 
+    Route::get('monitor', 'MonitorController');
+
     // Admin
     Route::group([
         'middleware' => ['auth:api', 'verified', 'admin'],
@@ -53,7 +55,6 @@ Route::group([
         'prefix' => 'admin',
     ], static function (): void {
         Route::get('dashboard', 'AdminDashboardController')->name('dashboard');
-        Route::get('clear-cache', 'AdminClearCacheController')->name('clear-cache');
 
         Route::apiResource('album-media-added', 'AdminMediaWebhook')->only(['store']);
         Route::apiResource('albums', 'AdminAlbumController');

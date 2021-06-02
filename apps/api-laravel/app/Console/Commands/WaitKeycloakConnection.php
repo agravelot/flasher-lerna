@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 
 class WaitKeycloakConnection extends Command
@@ -25,14 +26,16 @@ class WaitKeycloakConnection extends Command
 
     /**
      * Execute the console command.
+     *
+     * @throws RequestException
      */
     public function handle(): void
     {
-        $this->info('Waiting keycloak : '.config('keycloak-web.base_url'));
+        $this->info('Waiting keycloak : '.config('keycloak.url'));
         $response = Http::withOptions(['verify' => false])
             ->retry(50, 1000)
             ->timeout(2)
-            ->get(config('keycloak-web.base_url'));
+            ->get(config('keycloak.url'));
 
         if (! $response->successful()) {
             $response->throw();

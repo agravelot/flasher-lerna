@@ -5,20 +5,19 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\SettingType;
-use App\Traits\ClearsResponseCache;
 use BenSampo\Enum\Traits\CastsEnums;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use LogicException;
-use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\File;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Setting extends Model implements HasMedia
 {
-    use CastsEnums, InteractsWithMedia, ClearsResponseCache;
+    use CastsEnums, InteractsWithMedia;
 
     public const SETTINGS_CACHE_KEY = 'settings';
     public const SETTING_COLLECTION = 'setting_media';
@@ -59,7 +58,7 @@ class Setting extends Model implements HasMedia
      */
     public function getValueAttribute(?string $value)
     {
-        if (SettingType::getAliasType($this->type->value) === \App\Models\Media::class) {
+        if (SettingType::getAliasType($this->type->value) === \Spatie\MediaLibrary\MediaCollections\Models\Media::class) {
             return $this->getFirstMedia(self::SETTING_COLLECTION);
         }
 
@@ -114,21 +113,5 @@ class Setting extends Model implements HasMedia
             ->acceptsFile(static function (File $file) {
                 return mb_strpos($file->mimeType, 'image/') === 0;
             });
-    }
-
-    /**
-     * @throws InvalidManipulation
-     */
-    public function registerMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
-    {
-        $this->addMediaConversion('thumb')
-            ->width(400)
-            ->optimize()
-            ->performOnCollections(self::SETTING_COLLECTION);
-
-        $this->addMediaConversion(self::RESPONSIVE_PICTURES_CONVERSION)
-            ->optimize()
-            ->withResponsiveImages()
-            ->performOnCollections(self::SETTING_COLLECTION);
     }
 }

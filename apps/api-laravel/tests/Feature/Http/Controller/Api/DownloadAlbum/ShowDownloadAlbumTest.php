@@ -84,14 +84,14 @@ class ShowDownloadAlbumTest extends TestCase
     public function test_user_present_as_a_cosplayer_in_a_album_can_not_generate_link_if_not_published(): void
     {
         $user = factory(User::class)->make();
-        $this->actingAs($user);
+        $this->actingAs($user, 'api');
         $cosplayer = factory(Cosplayer::class)->create(['sso_id' => $user->id]);
         $album = factory(Album::class)->states(['unpublished'])->create();
         $album->cosplayers()->attach($cosplayer);
 
         $generateResponse = $this->generateDownloadLink($album);
 
-        $generateResponse->assertStatus(401);
+        $generateResponse->assertStatus(403);
         $this->assertNotInstanceOf(StreamedResponse::class, $generateResponse->baseResponse);
     }
 

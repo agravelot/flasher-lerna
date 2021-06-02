@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class SocialMedia extends Model
 {
-    use ClearsResponseCache;
-
     protected $table = 'social_media';
 
     /**

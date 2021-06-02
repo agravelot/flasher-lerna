@@ -6,14 +6,11 @@ namespace App\Models;
 
 use App\Adapters\Keycloak\UserRepresentation;
 use App\Facades\Keycloak;
-use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Testimonial extends Model
 {
-    use ClearsResponseCache;
-
     /**
      * The attributes that are mass assignable.
      *

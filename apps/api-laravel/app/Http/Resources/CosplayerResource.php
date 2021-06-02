@@ -27,9 +27,6 @@ class CosplayerResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'user_id' => $this->sso_id,
-            'links' => [
-                'related' => route('cosplayers.show', ['cosplayer' => $this]),
-            ],
         ];
     }
 }

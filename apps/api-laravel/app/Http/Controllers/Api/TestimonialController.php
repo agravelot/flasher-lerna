@@ -24,4 +24,11 @@ class TestimonialController extends Controller
 
         return TestimonialResource::collection($testimonials);
     }
+
+    public function store(TestimonialRequest $request): TestimonialResource
+    {
+        $testimonial = Testimonial::create($request->validated());
+
+        return new TestimonialResource($testimonial);
+    }
 }
