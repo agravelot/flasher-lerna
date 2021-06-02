@@ -28,6 +28,8 @@ class CategoryResource extends JsonResource
             'links' => [
                 'related' => route('categories.show', ['category' => $this]),
             ],
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
