@@ -1,25 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
+import { apiRepository } from "@flasher/common/src/useRepository";
+import ArticleTable from "./components/ArticleTable";
+import Drawer from "./components/Drawer";
+import { Album, Article } from "@flasher/models/src";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import AlbumTable from "./components/AlbumsTable";
+import Dashboard from "./components/Dashboard";
 
 function App() {
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [albums, setAlbums] = useState<Album[]>([]);
+
+  useEffect(() => {
+    const repo = apiRepository();
+
+    repo.articles.list({ page: 1, perPage: 10 }).then((res) => {
+      setArticles(res.data);
+    });
+    repo.albums.list({ page: 1, perPage: 10 }).then((res) => {
+      setAlbums(res.data);
+    });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="text-red-600"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="h-screen">
+        <Drawer>
+          <Switch>
+            <Route path="/albums">
+              <AlbumTable albums={albums} />
+            </Route>
+            <Route path="/articles">
+              <ArticleTable articles={articles} />
+            </Route>
+            <Route path="/">
+              <div>
+                <Dashboard albumsCount={1} />
+              </div>
+            </Route>
+          </Switch>
+        </Drawer>
+      </div>
+    </Router>
   );
 }
 
