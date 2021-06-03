@@ -1,5 +1,5 @@
 import { api, PaginatedReponse, WrappedResponse } from './api';
-import { Album, Category, Cosplayer, DashboardData } from '@flasher/models';
+import { Album, Article, Category, Cosplayer, DashboardData } from '@flasher/models';
 import { KeycloakInstance } from 'keycloak-js';
 
 type Pagination = {
@@ -13,6 +13,7 @@ export type CategoryListParams = {
   };
 } & Pagination
 
+
 // TODO Callback to return token on request ?
 export const apiRepository = (keycloak?: KeycloakInstance) => {
   const authHeader = () => ({
@@ -20,6 +21,16 @@ export const apiRepository = (keycloak?: KeycloakInstance) => {
   });
 
   return {
+    articles: {
+      list: ({ page = 1, perPage = 10 }: Pagination) =>
+        api<PaginatedReponse<Article[]>>(
+          `/v2/articles?page=${page}&per_page=${perPage}`,
+        ).then((res) => res.json()),
+      retrieve: (slug: string) =>
+        api<WrappedResponse<Article>>(
+          `/v2/articles/${slug}`,
+        ).then((res) => res.json()),
+    },
 
     albums: {
       list: ({ page = 1, perPage = 10 }: Pagination) =>

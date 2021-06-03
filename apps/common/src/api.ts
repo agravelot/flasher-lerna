@@ -23,7 +23,7 @@ class ApiResponse<T> {
   json = (): Promise<T> => this.response.json();
 }
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? '';
+const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? process.env.REACT_APP_API_URL ?? '';
 
 export async function api<T>(
   url: string,
@@ -58,6 +58,15 @@ export interface WrappedResponse<T> {
   data: T;
 }
 
+export interface MetaPaginatedReponse {
+  current_page: number;
+  from: number;
+  last_page: number;
+  path: string;
+  per_page: number;
+  to: number;
+  total: number;
+}
 export interface PaginatedReponse<T> extends WrappedResponse<T> {
   links: {
     first: string;
@@ -65,13 +74,5 @@ export interface PaginatedReponse<T> extends WrappedResponse<T> {
     prev: string | null;
     next: string | null;
   };
-  meta: {
-    current_page: number;
-    from: number;
-    last_page: number;
-    path: string;
-    per_page: number;
-    to: number;
-    total: number;
-  };
+  meta: MetaPaginatedReponse;
 }

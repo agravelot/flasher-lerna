@@ -2,6 +2,7 @@ import { Album } from "@flasher/models";
 import { FunctionComponent } from "react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { generateNextImageUrl } from "@flasher/common";
 
 export interface AlbumTableProps {
   albums: Album[];
@@ -40,10 +41,15 @@ const AlbumTable: FunctionComponent<AlbumTableProps> = ({
                   <div className="flex items-center space-x-3">
                     <div className="avatar">
                       <div className="w-12 h-12 mask mask-squircle">
-                        <img
-                          src={a.media?.url}
-                          alt="Avatar Tailwind CSS Component"
-                        />
+                        {a.media && (
+                          <img
+                            src={`https://jkanda.fr${generateNextImageUrl(
+                              a.media?.url,
+                              640
+                            )}`}
+                            alt={`Image ${a.title}`}
+                          />
+                        )}
                       </div>
                     </div>
                     <div>
@@ -83,15 +89,6 @@ const AlbumTable: FunctionComponent<AlbumTableProps> = ({
           </tr>
         </tfoot>
       </table>
-
-      <div className="btn-group">
-        <button className="btn">Previous</button>
-        <button className="btn">1</button>
-        <button className="btn btn-active">2</button>
-        <button className="btn">3</button>
-        <button className="btn">4</button>
-        <button className="btn">Next</button>
-      </div>
     </div>
   );
 };

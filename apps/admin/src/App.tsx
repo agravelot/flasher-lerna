@@ -3,23 +3,19 @@ import "./App.css";
 import { apiRepository } from "@flasher/common/src/useRepository";
 import ArticleTable from "./components/ArticleTable";
 import Drawer from "./components/Drawer";
-import { Album, Article } from "@flasher/models/src";
+import { Article } from "@flasher/models/src";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import AlbumTable from "./components/AlbumsTable";
+import AlbumList from "./pages/AlbumList";
 import Dashboard from "./components/Dashboard";
 
 function App() {
   const [articles, setArticles] = useState<Article[]>([]);
-  const [albums, setAlbums] = useState<Album[]>([]);
 
   useEffect(() => {
     const repo = apiRepository();
 
     repo.articles.list({ page: 1, perPage: 10 }).then((res) => {
       setArticles(res.data);
-    });
-    repo.albums.list({ page: 1, perPage: 10 }).then((res) => {
-      setAlbums(res.data);
     });
   }, []);
 
@@ -29,7 +25,7 @@ function App() {
         <Drawer>
           <Switch>
             <Route path="/albums">
-              <AlbumTable albums={albums} />
+              <AlbumList />
             </Route>
             <Route path="/articles">
               <ArticleTable articles={articles} />
