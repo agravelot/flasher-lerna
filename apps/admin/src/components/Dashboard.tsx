@@ -1,12 +1,11 @@
 import { FunctionComponent } from "react";
 
 export interface DashboardProps {
+  cosplayersCount: number;
+  usersCount: number;
   albumsCount: number;
-  mediaCount?: number;
-  contactCount?: number;
-  invitationCount?: number;
-  articleCount?: number;
-  userCount?: number;
+  contactsCount: number;
+  albumMediasCount: number;
 }
 
 const Dashboard: FunctionComponent<DashboardProps> = (
@@ -21,12 +20,22 @@ const Dashboard: FunctionComponent<DashboardProps> = (
       </div>
       <div className="stat place-items-center place-content-center">
         <div className="stat-title">Users</div>
-        <div className="stat-value text-success">{props.userCount}</div>
+        <div className="stat-value text-success">{props.usersCount}</div>
         <div className="stat-desc text-success">↗︎ 400 (22%)</div>
       </div>
       <div className="stat place-items-center place-content-center">
-        <div className="stat-title">New Registers</div>
-        <div className="stat-value text-error">1,200</div>
+        <div className="stat-title">Contact</div>
+        <div className="stat-value text-success">{props.contactsCount}</div>
+        <div className="stat-desc text-success">↗︎ 400 (22%)</div>
+      </div>
+      <div className="stat place-items-center place-content-center">
+        <div className="stat-title">Modèles</div>
+        <div className="stat-value text-success">{props.cosplayersCount}</div>
+        <div className="stat-desc text-success">↗︎ 400 (22%)</div>
+      </div>
+      <div className="stat place-items-center place-content-center">
+        <div className="stat-title">Media</div>
+        <div className="stat-value text-error">{props.albumMediasCount}</div>
         <div className="stat-desc text-error">↘︎ 90 (14%)</div>
       </div>
     </div>

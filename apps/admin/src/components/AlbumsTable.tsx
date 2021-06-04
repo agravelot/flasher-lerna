@@ -2,7 +2,7 @@ import { Album } from "@flasher/models";
 import { FunctionComponent } from "react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { generateNextImageUrl } from "@flasher/common";
+import { generateNextImageUrl, resolveAlbumStatus } from "@flasher/common";
 
 export interface AlbumTableProps {
   albums: Album[];
@@ -60,6 +60,21 @@ const AlbumTable: FunctionComponent<AlbumTableProps> = ({
                             locale: fr,
                           })}
                       </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div className="flex items-center space-x-3">
+                    <div data-tip="neutral" className="tooltip">
+                      {resolveAlbumStatus(a) === "draft" && (
+                        <div className="badge">Brouillon</div>
+                      )}
+                      {resolveAlbumStatus(a) === "private" && (
+                        <div className="badge bg-red-600">Privé</div>
+                      )}
+                      {resolveAlbumStatus(a) === "published" && (
+                        <div className="badge badge-accent">Publié</div>
+                      )}
                     </div>
                   </div>
                 </td>

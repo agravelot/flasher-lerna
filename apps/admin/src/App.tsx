@@ -7,6 +7,25 @@ import { Article } from "@flasher/models/src";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AlbumList from "./pages/AlbumList";
 import Dashboard from "./components/Dashboard";
+import Keycloak from "keycloak-js";
+import { ReactKeycloakProvider } from "@react-keycloak/web";
+import Home from "./pages/Home";
+
+// Setup Keycloak instance as needed
+// Pass initialization options as required or leave blank to load from 'keycloak.json'
+const keycloak = Keycloak({
+  url: "https://accounts.jkanda.fr/auth",
+  realm: "jkanda",
+  clientId: "flasher",
+});
+
+const eventLogger = (event: unknown, error: unknown) => {
+  console.log("onKeycloakEvent", event, error);
+};
+
+const tokenLogger = (tokens: unknown) => {
+  console.log("onKeycloakTokens", tokens);
+};
 
 function App() {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -20,25 +39,30 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <div className="h-screen">
-        <Drawer>
-          <Switch>
-            <Route path="/albums">
-              <AlbumList />
-            </Route>
-            <Route path="/articles">
-              <ArticleTable articles={articles} />
-            </Route>
-            <Route path="/">
-              <div>
-                <Dashboard albumsCount={1} />
-              </div>
-            </Route>
-          </Switch>
-        </Drawer>
-      </div>
-    </Router>
+    <ReactKeycloakProvider
+      authClient={keycloak}
+      onEvent={eventLogger}
+      onTokens={tokenLogger}
+      initOptions={{ onLoad: "login-required" }}
+    >
+      <Router>
+        <div className="h-screen">
+          <Drawer>
+            <Switch>
+              <Route path="/albums">
+                <AlbumList />
+              </Route>
+              <Route path="/articles">
+                <ArticleTable articles={articles} />
+              </Route>
+              <Route path="/">
+                <Home />
+              </Route>
+            </Switch>
+          </Drawer>
+        </div>
+      </Router>
+    </ReactKeycloakProvider>
   );
 }
 

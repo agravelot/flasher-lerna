@@ -1,3 +1,5 @@
+import { Album } from "@flasher/models";
+
 export const range = (start: number, end: number): number[] =>
   Array(end + 1 - start)
     .fill(1)
@@ -20,3 +22,14 @@ export const resolveOriginalImage = (url: string): string =>
 
 export const generateNextImageUrl = (imageUrl: string, width = 828): string =>
   "/_next/image?url=" + encodeURIComponent(imageUrl) + `&w=${width}&q=75`;
+
+export const resolveAlbumStatus = (album: Album): 'published'| 'private' | 'draft' => {
+    if (album.private && album.published_at !== null) {
+      return 'private'
+    } 
+    if (album.published_at !== null) {
+      return 'published'
+    }
+
+    return 'draft'
+  }
