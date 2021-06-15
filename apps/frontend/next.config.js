@@ -43,16 +43,12 @@ module.exports = withTM(
         disable: process.env.NODE_ENV !== "production",
         mode: process.env.NODE_ENV,
       },
-      future: {
-        webpack5: true,
-      },
       reactStrictMode: true,
       env: {
         baseUrl: "baseUrl",
       },
       images: {
         domains: [
-          "assets.jkanda.fr",
           "s3.fr-par.scw.cloud",
           "assets-jkanda.s3.fr-par.scw.cloud",
           "assets.blog.jkanda.s3.fr-par.scw.cloud",
