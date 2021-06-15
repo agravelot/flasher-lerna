@@ -21,6 +21,7 @@
     "eslint-config-prettier": "^6.14.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.4",
+    "formik": "^2.2.9",
     "keycloak-js": "^13.0.1",
     "postcss": "^7",
     "prettier": "^2.1.2",
