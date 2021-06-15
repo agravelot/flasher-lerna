@@ -1,6 +1,9 @@
-import { apiRepository } from "@flasher/common/src/useRepository";
 import { Album } from "@flasher/models";
-import { MetaPaginatedReponse, Pagination } from "@flasher/common";
+import {
+  MetaPaginatedReponse,
+  Pagination,
+  apiRepository,
+} from "@flasher/common";
 import { FunctionComponent, useEffect, useState } from "react";
 import AlbumTable from "../components/AlbumsTable";
 import { useLocation } from "react-router-dom";
