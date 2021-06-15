@@ -65,6 +65,8 @@ spec:
             - configMapRef:
                 name: frontend-config
           env:
+            - name: PORT
+              value: "3000"
             - name: NEXT_PUBLIC_APP_URL
               value: https://jkanda.fr
             - name: NEXT_PUBLIC_API_URL
