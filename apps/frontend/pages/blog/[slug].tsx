@@ -20,7 +20,14 @@ const ImageCustom = (props: ImageProps) => {
   //   <Image layout="responsive" width="2000" height="2000" src={props.src} />
   // );
 
-  return <img src={generateNextImageUrl(props.src)} loading="lazy" />;
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={generateNextImageUrl(props.src as string)}
+      loading="lazy"
+      alt={props.alt}
+    />
+  );
 };
 
 const components = {

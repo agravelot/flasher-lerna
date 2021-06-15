@@ -171,6 +171,7 @@ export const CosplayerHits = connectHits(({ hits }) => (
         <Link
           href={{ pathname: "/cosplayers/[slug]", query: { slug: hit.slug } }}
           prefetch={false}
+          passHref={true}
         >
           <Avatar name={hit.name} src={hit.avatar} />
         </Link>

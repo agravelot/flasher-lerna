@@ -38,6 +38,7 @@ const Avatar: FunctionComponent<Props> = ({
             src={src}
             height={96}
             width={96}
+            alt={`Avatar de ${name}`}
           />
         )}
         {!src && (

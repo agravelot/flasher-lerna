@@ -164,7 +164,7 @@ const InvitationValidateComponent: FunctionComponent = () => {
       )}
       {status >= 2 && (
         <div className="text-gray-700 text-base">
-          <span>N'hésitez pas à me contarter pour remédier à cela.</span>
+          <span>N&apos;hésitez pas à me contarter pour remédier à cela.</span>
           <div className="mt-8">
             <Link href={{ pathname: "/", hash: "#contact" }}>
               <a className="mt-12 bg-gradient-to-r mx-auto from-blue-700 to-red-700 hover:from-pink-500 hover:to-orange-500 text-white font-semibold py-3 px-10 rounded-lg">

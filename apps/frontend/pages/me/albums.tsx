@@ -123,7 +123,7 @@ const MyAlbums: FunctionComponent<Props> = ({
               </span>
               <br />
               {/*  eslint-disable-next-line prettier/prettier */}
-              Pour remédier à cela, n'hésitez à me <Link
+              Pour remédier à cela, n&apos;hésitez à me <Link
                 href={{
                   pathname: "/",
                   hash: "contact",

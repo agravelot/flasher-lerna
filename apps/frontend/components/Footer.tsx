@@ -51,7 +51,7 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                     <li>
                       <Link href="/">
                         <a tabIndex={0} className="block py-2 text-sm">
-                          Page d'accueil
+                          Page d&apos;accueil
                         </a>
                       </Link>
                     </li>
@@ -163,7 +163,7 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                           type="button"
                           onClick={() => register()}
                         >
-                          S'inscrire
+                          S&apos;inscrire
                         </button>
                       </li>
                       <li className="md:flex items-center">

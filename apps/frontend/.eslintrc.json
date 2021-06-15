@@ -6,6 +6,7 @@
       "node": true
   },
   "extends": [
+      "next",
       "prettier",
       "prettier/react",
       "prettier/standard",
@@ -46,6 +47,7 @@
           "error",
           "always"
       ],
+      "no-irregular-whitespace": "off",
       "react/jsx-uses-react": "off",
       "react/react-in-jsx-scope": "off",
       "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
