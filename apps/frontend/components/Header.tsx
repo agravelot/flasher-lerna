@@ -36,7 +36,7 @@ const Header: FunctionComponent<Props> = ({
     style={{ minHeight: "75vh" }}
   >
     <div
-      className="absolute top-0 w-full h-full bg-center bg-cover"
+      className="absolute top-0 w-full h-full bg-center bg-cover bg-black"
       style={{ filter: "brightness(80%)" }}
     >
       <Image
