@@ -27,12 +27,6 @@ services:
           aliases:
             - ${KEYCLOAK_URI}
 
-  tusd:
-    labels:
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd.tls=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.isDevelopment=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.accessControlMaxAge=1"
-
   nginx:
     environment:
       ERROR_LOG_LEVEL: ${ERROR_LOG_LEVEL}
