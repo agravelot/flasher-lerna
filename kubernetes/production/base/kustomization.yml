@@ -127,7 +127,7 @@ images:
   #   newTag: v1.2.0
   - name: keycloak
     newName: registry.gitlab.com/flasher/flasher/keycloak
-    newTag: 12.0.1
+    newTag: 1.7.0
   - name: admin
     newName: registry.gitlab.com/flasher/flasher/flasher-admin
     newTag: "e97738f"
