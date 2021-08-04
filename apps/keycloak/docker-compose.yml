@@ -1,0 +1,56 @@
+version: '3.7'
+services:
+
+  keycloak:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: db
+      DB_DATABASE: keycloak
+      DB_SCHEMA: public
+      DB_USER: admin
+      DB_PASSWORD: ${DB_PASSWORD}
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      PROXY_ADDRESS_FORWARDING: "true"
+      KEYCLOAK_IMPORT: "/tmp/realm.json"
+      # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
+      #JDBC_PARAMS: "ssl=true"
+    expose:
+      - 8080
+    networks:
+      - keycloak-network
+      - database-network
+      - nginx-proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=nginx-proxy"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.rule=Host(`${KEYCLOAK_URI}`) || Host(`www.${KEYCLOAK_URI}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.tls.certresolver=myhttpchallenge"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-keycloak.middlewares=${COMPOSE_PROJECT_NAME}-keycloak-headers,${COMPOSE_PROJECT_NAME}-keycloak-retry,${COMPOSE_PROJECT_NAME}-keycloak-compress"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-compress.compress=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-retry.retry.attempts=4"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-error-check.circuitbreaker.expression=ResponseCodeRatio(500, 600, 0, 600) > 0.30 || NetworkErrorRatio() > 0.10"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-limit.buffering.maxRequestBodyBytes=50000000" # 50 Mb
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-limit.buffering.memResponseBodyBytes=50000000" # 50 Mb
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-ratelimit.ratelimit.average=1000"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-ratelimit.ratelimit.burst=500"
+      # Local
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.isDevelopment=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlAllowMethods=GET,OPTIONS,POST,PUT,PATCH,DELETE"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlAllowOriginList=*"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlMaxAge=1"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlAllowCredentials=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlAllowHeaders=*"
+
+networks:
+  database-network:
+    external: true
+  keycloak-network:
+    external: true
+  nginx-proxy:
+    external: true
