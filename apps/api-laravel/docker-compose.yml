@@ -1,43 +1,6 @@
 version: '3.7'
 services:
 
-  tusd:
-    image: tusproject/tusd
-    networks:
-      - backend
-      - nginx-proxy
-    command: -base-path /tus/ -behind-proxy -hooks-http http://nginx/api/admin/album-media-added -hooks-http-retry 5 -hooks-http-backoff 2 -hooks-enabled-events post-finish,pre-create
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=nginx-proxy"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd.rule=(Host(`${APP_URI}`) && PathPrefix(`/tus`)) || (Host(`www.${APP_URI}`) && PathPrefix(`/tus`))"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd.entrypoints=websecure"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd.middlewares=${COMPOSE_PROJECT_NAME}-tusd-retry,${COMPOSE_PROJECT_NAME}-tusd-error-check,${COMPOSE_PROJECT_NAME}-tusd-headers,${COMPOSE_PROJECT_NAME}-tusd-compress"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd.tls.certresolver=myhttpchallenge"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.stsSeconds=63072000"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.stsIncludeSubdomains=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.stsPreload=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.forceSTSHeader=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.contentTypeNosniff=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.sslRedirect=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.referrerPolicy=same-origin"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.frameDeny=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.browserXssFilter=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.accessControlAllowMethods=GET,OPTIONS,POST,PUT,PATCH,DELETE"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.accessControlAllowOriginList=*"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.accessControlMaxAge=63072000"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.accessControlAllowCredentials=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.accessControlAllowHeaders=Authorization,Origin,Content-Type,Accept,tus-resumable,upload-length,upload-metadata,upload-offset"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.addVaryHeader=true"
-      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.sslProxyHeaders=https"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-compress.compress=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-retry.retry.attempts=4"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-error-check.circuitbreaker.expression=ResponseCodeRatio(500, 600, 0, 600) > 0.30 || NetworkErrorRatio() > 0.10"
-      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-limit.buffering.maxRequestBodyBytes=20000000" # 20 Mb
-      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-limit.buffering.memResponseBodyBytes=20000000" # 20 Mb
-      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-ratelimit.ratelimit.average=1000"
-      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-ratelimit.ratelimit.burst=500"
-
   php: &php_base
     image: registry.gitlab.com/flasher/flasher/picblog_php:${CI_COMMIT_SHORT_SHA:-latest}
     build:
