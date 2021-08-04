@@ -30,7 +30,7 @@ class StoreAdminPictureAlbumTest extends TestCase
         $response->assertCreated();
         $this->assertSame(4096, $album->fresh()->media->first()->getCustomProperty('width'));
         $this->assertSame(3826, $album->fresh()->media->first()->getCustomProperty('height'));
-        Queue::assertPushedOn('images', PerformConversions::class);
+        // Queue::assertPushedOn('images', PerformConversions::class);
     }
 
     public function test_user_can_not_store_a_picture_to_an_album(): void

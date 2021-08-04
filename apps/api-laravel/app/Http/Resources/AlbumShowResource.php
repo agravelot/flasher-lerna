@@ -41,7 +41,6 @@ class AlbumShowResource extends JsonResource
             'cosplayers' => CosplayerResource::collection($this->cosplayers),
             //'user' => new UserResource($this->user),
             'links' => [
-                'view' => route('albums.show', ['album' => $this]),
                 'edit' => $this->when(
                     $this->checkCan('update', $album),
                     "/admin/albums/{$this->slug}/edit"
@@ -55,11 +54,6 @@ class AlbumShowResource extends JsonResource
      */
     private function checkCan(string $permission, Album $album): bool
     {
-        // Because we are using this resource directly in your views.
-        // We need need to check the request is an ajax request.
-        // In order to use the auth with the proper guard.
-        $guard = Auth::guard($this->request->wantsJson() ? 'api' : 'web');
-
-        return $guard->check() && $guard->user()->can($permission, $album);
+        return Auth::guard('api')->check() && Auth::guard('api')->user()->can($permission, $album);
     }
 }

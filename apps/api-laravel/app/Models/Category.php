@@ -6,18 +6,16 @@ namespace App\Models;
 
 use App\Abilities\HasNameAsSlug;
 use App\Abilities\HasSlugRouteKey;
-use App\Traits\ClearsResponseCache;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\UploadedFile;
 use Laravel\Scout\Searchable;
-use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\File;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Category extends Model implements HasMedia
 {
@@ -26,7 +24,6 @@ class Category extends Model implements HasMedia
         SluggableScopeHelpers,
         HasSlugRouteKey,
         HasNameAsSlug,
-        ClearsResponseCache,
         Searchable;
 
     public const COVER_COLLECTION = 'cover';
@@ -50,7 +47,7 @@ class Category extends Model implements HasMedia
      *
      * @param  File|UploadedFile|null  $media
      */
-    public function setCover($media): ?\Spatie\MediaLibrary\MediaCollections\Models\Media
+    public function setCover($media): ?Media
     {
         if ($media === null && $this->cover) {
             $this->cover->delete();
@@ -81,45 +78,19 @@ class Category extends Model implements HasMedia
     }
 
     /**
-     * Register the media conversions.
-     *
-     * @throws InvalidManipulation
-     */
-    public function registerMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
-    {
-        $this->addMediaConversion(self::RESPONSIVE_CONVERSION)
-            ->optimize()
-            ->withResponsiveImages()
-            ->performOnCollections(self::COVER_COLLECTION);
-
-        $this->addMediaConversion(self::THUMB_CONVERSION)
-            ->width(400)
-            ->optimize()
-            ->performOnCollections(self::COVER_COLLECTION);
-    }
-
-    /**
-     * Posts relationships.
-     */
-    public function posts(): MorphToMany
-    {
-        return $this->morphedByMany(Post::class, 'categorizable')->latest();
-    }
-
-    /**
      * Albums relationships.
      */
-    public function albums(): MorphToMany
+    public function albums(): BelongsToMany
     {
-        return $this->morphedByMany(Album::class, 'categorizable')->latest();
+        return $this->belongsToMany(Album::class)->latest();
     }
 
     /**
      * Album relationship, only published.
      */
-    public function publishedAlbums(): MorphToMany
+    public function publishedAlbums(): BelongsToMany
     {
-        return $this->morphedByMany(PublicAlbum::class, 'categorizable')->latest();
+        return $this->belongsToMany(PublicAlbum::class)->latest();
     }
 
     public function searchableAs(): string
@@ -137,8 +108,7 @@ class Category extends Model implements HasMedia
             'slug' => $this->slug,
             'name' => $this->name,
             'meta_description' => $this->meta_description,
-            'thumb' => optional($this->cover)->getUrl('thumb'),
-            'url' => route('categories.show', ['category' => $this]),
+            'cover' => optional($this->cover)->getUrl(),
         ];
     }
 

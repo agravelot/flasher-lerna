@@ -18,6 +18,7 @@ const AdminOverlay: FunctionComponent<Props> = ({
         className="h-12 w-12 bg-black rounded-full flex items-center text-white text-center"
         target={targetBlank ? "_blank" : "_self"}
         href={`https://admin.jkanda.fr${path ?? router.asPath}`}
+        rel="noreferrer"
       >
         <svg
           className="p-3"

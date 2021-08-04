@@ -24,7 +24,7 @@ return [
     /*
      * The fully qualified class name of the media model.
      */
-    'media_model' => \App\Models\Media::class,
+    'media_model' => \Spatie\MediaLibrary\MediaCollections\Models\Media::class,
 
     'remote' => [
         /*
@@ -68,7 +68,7 @@ return [
      * When urls to files get generated, this class will be called. Leave empty
      * if your files are stored locally above the site root or on s3.
      */
-    'url_generator' => \App\SignedCloudFrontUrlGenerator::class,
+    'url_generator' => \Spatie\MediaLibrary\Support\UrlGenerator\DefaultUrlGenerator::class,
 
     /*
      * Whether to activate versioning when urls to files get generated.

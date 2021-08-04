@@ -37,15 +37,11 @@ module.exports = withTM(
           },
         ];
       },
-      // future: { webpack5: true },
       pwa: {
         dest: "public",
         runtimeCaching,
         disable: process.env.NODE_ENV !== "production",
         mode: process.env.NODE_ENV,
-      },
-      future: {
-        webpack5: true,
       },
       reactStrictMode: true,
       env: {
@@ -53,7 +49,6 @@ module.exports = withTM(
       },
       images: {
         domains: [
-          "assets.jkanda.fr",
           "s3.fr-par.scw.cloud",
           "assets-jkanda.s3.fr-par.scw.cloud",
           "assets.blog.jkanda.s3.fr-par.scw.cloud",

@@ -7,6 +7,6 @@ export  class Cosplayer {
   public description!: string | null;
   public avatar!: Media | null;
   public user_id!: string | null;
-  public created_at!: Date;
-  public updated_at!: Date;
+  public created_at!: string;
+  public updated_at!: string;
 }

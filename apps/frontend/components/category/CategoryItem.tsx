@@ -11,12 +11,7 @@ interface Props {
 const CategoryItem: FunctionComponent<Props> = ({ category }: Props) => {
   return (
     <div className="rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition duration-200 ease-in-out h-full">
-      <div
-        className="bg-gradient-to-r from-blue-700 to-red-700 mb- shadow-none bg-opacity-50 h-full"
-        style={{
-          WebkitBackgroundClip: "text",
-        }}
-      >
+      <div className="bg-gradient-to-r from-blue-700 to-red-700 mb- shadow-none bg-opacity-50 h-full">
         <Link
           href={{
             pathname: "/categories/[slug]",

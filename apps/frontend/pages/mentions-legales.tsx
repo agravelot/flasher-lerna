@@ -2,13 +2,9 @@ import Layout from "../components/Layout";
 import Header from "../components/Header";
 import { GetStaticProps, GetStaticPropsResult, NextPage } from "next";
 import { getGlobalProps, GlobalProps } from "../stores";
-import { Testimonial, Album } from "@flasher/models";
-import { api, PaginatedReponse } from "@flasher/common";
+import Link from "next/link";
 
-type Props = {
-  albums: Album[];
-  testimonials: Testimonial[];
-} & GlobalProps;
+type Props = GlobalProps;
 
 const IndexPage: NextPage<Props> = ({ appName, socialMedias }: Props) => {
   return (
@@ -19,25 +15,25 @@ const IndexPage: NextPage<Props> = ({ appName, socialMedias }: Props) => {
         <section className="relative py-20">
           <div className="container mx-auto px-4">
             <strong>
-              La seule contrepartie à l'utilisation de ces mentions légales, est
-              l'engagement total à laisser le lien crédit subdelirium sur cette
-              page de mentions légales.
+              La seule contrepartie à l&apos;utilisation de ces mentions
+              légales, est l&apos;engagement total à laisser le lien crédit
+              subdelirium sur cette page de mentions légales.
             </strong>
             <br />
             Vos mentions légales :<h2>Informations légales</h2>
             <h3>1. Présentation du site.</h3>
             <p>
-              En vertu de l'article 6 de la loi n° 2004-575 du 21 juin 2004 pour
-              la confiance dans l'économie numérique, il est précisé aux
-              utilisateurs du site <a href="/">https://jkanda.fr/</a> l'identité
-              des différents intervenants dans le cadre de sa réalisation et de
-              son suivi :
+              En vertu de l&apos;article 6 de la loi n° 2004-575 du 21 juin 2004
+              pour la confiance dans l&apos;économie numérique, il est précisé
+              aux utilisateurs du site <Link href="/">https://jkanda.fr/</Link>{" "}
+              l&apos;identité des différents intervenants dans le cadre de sa
+              réalisation et de son suivi :
             </p>
             <p>
               <strong>Propriétaire</strong> : JKanda – Particulier – 07800
               <br />
               <strong>Créateur</strong> :{" "}
-              <a href="https://github.com/agravelot">GRAVELOT Antoine</a>
+              <Link href="https://github.com/agravelot">GRAVELOT Antoine</Link>
               <br />
               <strong>Responsable publication</strong> : ANTOINE Julie –
               0766648588
@@ -52,26 +48,18 @@ const IndexPage: NextPage<Props> = ({ appName, socialMedias }: Props) => {
               l’Evêque, 75008 Paris
               <br />
               Crédits : FRECHET Romain
-              <br />
-              Le modèle de mentions légales est offert par Subdelirium.com{" "}
-              <a
-                target="_blank"
-                href="https://www.subdelirium.com/generateur-de-mentions-legales/"
-              >
-                Mentions légales
-              </a>
             </p>
             <h3>
               2. Conditions générales d’utilisation du site et des services
               proposés.
             </h3>
             <p>
-              L’utilisation du site <a href="/">https://jkanda.fr/</a> implique
-              l’acceptation pleine et entière des conditions générales
+              L’utilisation du site <Link href="/">https://jkanda.fr/</Link>{" "}
+              implique l’acceptation pleine et entière des conditions générales
               d’utilisation ci-après décrites. Ces conditions d’utilisation sont
               susceptibles d’être modifiées ou complétées à tout moment, les
-              utilisateurs du site <a href="/">https://jkanda.fr/</a> sont donc
-              invités à les consulter de manière régulière.
+              utilisateurs du site <Link href="/">https://jkanda.fr/</Link> sont
+              donc invités à les consulter de manière régulière.
             </p>
             <p>
               Ce site est normalement accessible à tout moment aux utilisateurs.
@@ -81,7 +69,7 @@ const IndexPage: NextPage<Props> = ({ appName, socialMedias }: Props) => {
               l’intervention.
             </p>
             <p>
-              Le site <a href="/">https://jkanda.fr/</a> est mis à jour
+              Le site <Link href="/">https://jkanda.fr/</Link> est mis à jour
               régulièrement par ANTOINE Julie. De la même façon, les mentions
               légales peuvent être modifiées à tout moment : elles s’imposent
               néanmoins à l’utilisateur qui est invité à s’y référer le plus
@@ -89,24 +77,26 @@ const IndexPage: NextPage<Props> = ({ appName, socialMedias }: Props) => {
             </p>
             <h3>3. Description des services fournis.</h3>
             <p>
-              Le site <a href="/">https://jkanda.fr/</a> a pour objet de fournir
-              une information concernant l’ensemble des activités de la société.
+              Le site <Link href="/">https://jkanda.fr/</Link> a pour objet de
+              fournir une information concernant l’ensemble des activités de la
+              société.
             </p>
             <p>
               JKanda s’efforce de fournir sur le site{" "}
-              <a href="/">https://jkanda.fr/</a> des informations aussi précises
-              que possible. Toutefois, il ne pourra être tenue responsable des
-              omissions, des inexactitudes et des carences dans la mise à jour,
-              qu’elles soient de son fait ou du fait des tiers partenaires qui
-              lui fournissent ces informations.
+              <Link href="/">https://jkanda.fr/</Link> des informations aussi
+              précises que possible. Toutefois, il ne pourra être tenue
+              responsable des omissions, des inexactitudes et des carences dans
+              la mise à jour, qu’elles soient de son fait ou du fait des tiers
+              partenaires qui lui fournissent ces informations.
             </p>
             <p>
               Tous les informations indiquées sur le site{" "}
-              <a href="/">https://jkanda.fr/</a> sont données à titre indicatif,
-              et sont susceptibles d’évoluer. Par ailleurs, les renseignements
-              figurant sur le site <a href="/">https://jkanda.fr/</a> ne sont
-              pas exhaustifs. Ils sont donnés sous réserve de modifications
-              ayant été apportées depuis leur mise en ligne.
+              <Link href="/">https://jkanda.fr/</Link> sont données à titre
+              indicatif, et sont susceptibles d’évoluer. Par ailleurs, les
+              renseignements figurant sur le site{" "}
+              <Link href="/">https://jkanda.fr/</Link> ne sont pas exhaustifs.
+              Ils sont donnés sous réserve de modifications ayant été apportées
+              depuis leur mise en ligne.
             </p>
             <h3>4. Limitations contractuelles sur les données techniques.</h3>
             <p>Le site utilise la technologie JavaScript.</p>
@@ -148,7 +138,7 @@ const IndexPage: NextPage<Props> = ({ appName, socialMedias }: Props) => {
               JKanda ne pourra également être tenue responsable des dommages
               indirects (tels par exemple qu’une perte de marché ou perte d’une
               chance) consécutifs à l’utilisation du site{" "}
-              <a href="/">https://jkanda.fr/</a>.
+              <Link href="/">https://jkanda.fr/</Link>.
             </p>
             <p>
               Des espaces interactifs (possibilité de poser des questions dans
@@ -167,27 +157,29 @@ const IndexPage: NextPage<Props> = ({ appName, socialMedias }: Props) => {
             <p>
               En France, les données personnelles sont notamment protégées par
               la loi n° 78-87 du 6 janvier 1978, la loi n° 2004-801 du 6 août
-              2004, l'article L. 226-13 du Code pénal et la Directive Européenne
-              du 24 octobre 1995.
+              2004, l&apos;article L. 226-13 du Code pénal et la Directive
+              Européenne du 24 octobre 1995.
             </p>
             <p>
-              A l'occasion de l'utilisation du site{" "}
-              <a href="/">https://jkanda.fr/</a>, peuvent êtres recueillies :
-              l'URL des liens par l'intermédiaire desquels l'utilisateur a
-              accédé au site <a href="/">https://jkanda.fr/</a>, le fournisseur
-              d'accès de l'utilisateur, l'adresse de protocole Internet (IP) de
-              l'utilisateur.
+              A l&apos;occasion de l&apos;utilisation du site{" "}
+              <Link href="/">https://jkanda.fr/</Link>, peuvent êtres
+              recueillies : l&apos;URL des liens par l&apos;intermédiaire
+              desquels l&apos;utilisateur a accédé au site{" "}
+              <Link href="/">https://jkanda.fr/</Link>, le fournisseur
+              d&apos;accès de l&apos;utilisateur, l&apos;adresse de protocole
+              Internet (IP) de l&apos;utilisateur.
             </p>
             <p>
               {" "}
               En tout état de cause JKanda ne collecte des informations
-              personnelles relatives à l'utilisateur que pour le besoin de
+              personnelles relatives à l&apos;utilisateur que pour le besoin de
               certains services proposés par le site{" "}
-              <a href="/">https://jkanda.fr/</a>. L'utilisateur fournit ces
-              informations en toute connaissance de cause, notamment lorsqu'il
-              procède par lui-même à leur saisie. Il est alors précisé à
-              l'utilisateur du site <a href="/">https://jkanda.fr/</a>{" "}
-              l’obligation ou non de fournir ces informations.
+              <Link href="/">https://jkanda.fr/</Link>. L&apos;utilisateur
+              fournit ces informations en toute connaissance de cause, notamment
+              lorsqu&apos;il procède par lui-même à leur saisie. Il est alors
+              précisé à l&apos;utilisateur du site{" "}
+              <Link href="/">https://jkanda.fr/</Link> l’obligation ou non de
+              fournir ces informations.
             </p>
             <p>
               Conformément aux dispositions des articles 38 et suivants de la
@@ -200,15 +192,15 @@ const IndexPage: NextPage<Props> = ({ appName, socialMedias }: Props) => {
               réponse doit être envoyée.
             </p>
             <p>
-              Aucune information personnelle de l'utilisateur du site{" "}
-              <a href="/">https://jkanda.fr/</a> n'est publiée à l'insu de
-              l'utilisateur, échangée, transférée, cédée ou vendue sur un
-              support quelconque à des tiers. Seule l'hypothèse du rachat de
-              JKanda et de ses droits permettrait la transmission des dites
-              informations à l'éventuel acquéreur qui serait à son tour tenu de
-              la même obligation de conservation et de modification des données
-              vis à vis de l'utilisateur du site{" "}
-              <a href="/">https://jkanda.fr/</a>.
+              Aucune information personnelle de l&apos;utilisateur du site{" "}
+              <Link href="/">https://jkanda.fr/</Link> n&apos;est publiée à
+              l&apos;insu de l&apos;utilisateur, échangée, transférée, cédée ou
+              vendue sur un support quelconque à des tiers. Seule
+              l&apos;hypothèse du rachat de JKanda et de ses droits permettrait
+              la transmission des dites informations à l&apos;éventuel acquéreur
+              qui serait à son tour tenu de la même obligation de conservation
+              et de modification des données vis à vis de l&apos;utilisateur du
+              site <Link href="/">https://jkanda.fr/</Link>.
             </p>
             <p>
               Les bases de données sont protégées par les dispositions de la loi
@@ -217,15 +209,15 @@ const IndexPage: NextPage<Props> = ({ appName, socialMedias }: Props) => {
             </p>
             <h3>8. Liens hypertextes et cookies.</h3>
             <p>
-              Le site <a href="/">https://jkanda.fr/</a> contient un certain
-              nombre de liens hypertextes vers d’autres sites, mis en place avec
-              l’autorisation de JKanda. Cependant, JKanda n’a pas la possibilité
-              de vérifier le contenu des sites ainsi visités, et n’assumera en
-              conséquence aucune responsabilité de ce fait.
+              Le site <Link href="/">https://jkanda.fr/</Link> contient un
+              certain nombre de liens hypertextes vers d’autres sites, mis en
+              place avec l’autorisation de JKanda. Cependant, JKanda n’a pas la
+              possibilité de vérifier le contenu des sites ainsi visités, et
+              n’assumera en conséquence aucune responsabilité de ce fait.
             </p>
             <p>
-              La navigation sur le site <a href="/">https://jkanda.fr/</a> est
-              susceptible de provoquer l’installation de cookie(s) sur
+              La navigation sur le site <Link href="/">https://jkanda.fr/</Link>{" "}
+              est susceptible de provoquer l’installation de cookie(s) sur
               l’ordinateur de l’utilisateur. Un cookie est un fichier de petite
               taille, qui ne permet pas l’identification de l’utilisateur, mais
               qui enregistre des informations relatives à la navigation d’un
@@ -247,43 +239,44 @@ const IndexPage: NextPage<Props> = ({ appName, socialMedias }: Props) => {
             </p>
             <p>
               Sous Firefox : en haut de la fenêtre du navigateur, cliquez sur le
-              bouton Firefox, puis aller dans l'onglet Options. Cliquer sur
-              l'onglet Vie privée. Paramétrez les Règles de conservation sur :
-              utiliser les paramètres personnalisés pour l'historique. Enfin
-              décochez-la pour désactiver les cookies.
+              bouton Firefox, puis aller dans l&apos;onglet Options. Cliquer sur
+              l&apos;onglet Vie privée. Paramétrez les Règles de conservation
+              sur : utiliser les paramètres personnalisés pour
+              l&apos;historique. Enfin décochez-la pour désactiver les cookies.
             </p>
             <p>
               Sous Safari : Cliquez en haut à droite du navigateur sur le
               pictogramme de menu (symbolisé par un rouage). Sélectionnez
               Paramètres. Cliquez sur Afficher les paramètres avancés. Dans la
-              section "Confidentialité", cliquez sur Paramètres de contenu. Dans
-              la section "Cookies", vous pouvez bloquer les cookies.
+              section &quot;Confidentialité&quot;, cliquez sur Paramètres de
+              contenu. Dans la section &quot;Cookies&quot;, vous pouvez bloquer
+              les cookies.
             </p>
             <p>
               Sous Chrome : Cliquez en haut à droite du navigateur sur le
               pictogramme de menu (symbolisé par trois lignes horizontales).
               Sélectionnez Paramètres. Cliquez sur Afficher les paramètres
-              avancés. Dans la section "Confidentialité", cliquez sur
-              préférences. Dans l'onglet "Confidentialité", vous pouvez bloquer
-              les cookies.
+              avancés. Dans la section &quot;Confidentialité&quot;, cliquez sur
+              préférences. Dans l&apos;onglet &quot;Confidentialité&quot;, vous
+              pouvez bloquer les cookies.
             </p>
             <h3>9. Droit applicable et attribution de juridiction.</h3>
             <p>
               Tout litige en relation avec l’utilisation du site{" "}
-              <a href="/">https://jkanda.fr/</a> est soumis au droit français.
-              Il est fait attribution exclusive de juridiction aux tribunaux
-              compétents de Paris.
+              <Link href="/">https://jkanda.fr/</Link> est soumis au droit
+              français. Il est fait attribution exclusive de juridiction aux
+              tribunaux compétents de Paris.
             </p>
             <h3>10. Les principales lois concernées.</h3>
             <p>
               Loi n° 78-17 du 6 janvier 1978, notamment modifiée par la loi n°
-              2004-801 du 6 août 2004 relative à l'informatique, aux fichiers et
-              aux libertés.
+              2004-801 du 6 août 2004 relative à l&apos;informatique, aux
+              fichiers et aux libertés.
             </p>
             <p>
               {" "}
-              Loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie
-              numérique.
+              Loi n° 2004-575 du 21 juin 2004 pour la confiance dans
+              l&apos;économie numérique.
             </p>
             <h3>11. Lexique.</h3>
             <p>
@@ -293,8 +286,9 @@ const IndexPage: NextPage<Props> = ({ appName, socialMedias }: Props) => {
             <p>
               Informations personnelles : « les informations qui permettent,
               sous quelque forme que ce soit, directement ou non,
-              l'identification des personnes physiques auxquelles elles
-              s'appliquent » (article 4 de la loi n° 78-17 du 6 janvier 1978).
+              l&apos;identification des personnes physiques auxquelles elles
+              s&apos;appliquent » (article 4 de la loi n° 78-17 du 6 janvier
+              1978).
             </p>
           </div>
         </section>
@@ -305,21 +299,10 @@ const IndexPage: NextPage<Props> = ({ appName, socialMedias }: Props) => {
 
 export default IndexPage;
 
-export const getStaticProps: GetStaticProps = async ({
-  params,
-}): Promise<GetStaticPropsResult<Props>> => {
-  const albums = await api<PaginatedReponse<Album[]>>(
-    `/albums?page=${params?.page ?? 1}`
-  )
-    .then((res) => res.json())
-    .then((res) => res.data.slice(0, 3));
-  const testimonials = await api<PaginatedReponse<Testimonial[]>>(
-    `/testimonials?page=${params?.page ?? 1}`
-  )
-    .then((res) => res.json())
-    .then((res) => res.data);
-
+export const getStaticProps: GetStaticProps = async (): Promise<
+  GetStaticPropsResult<Props>
+> => {
   const global = await getGlobalProps();
 
-  return { props: { albums, testimonials, ...global } };
+  return { props: { ...global } };
 };

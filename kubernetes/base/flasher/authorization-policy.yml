@@ -33,6 +33,23 @@ spec:
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
+  name: accept-invitation-policy
+spec:
+  selector:
+    matchLabels:
+      app: api
+  action: DENY
+  rules:
+  - from:
+    - source:
+        notRequestPrincipals: ["*"]
+    to:
+    - operation:
+        paths: ["/api/invitations/*"]
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
   name: allow-frontend-api-policy
 spec:
   action: ALLOW

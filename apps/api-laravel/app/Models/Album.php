@@ -4,38 +4,32 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Abilities\AlbumFeedable;
 use App\Abilities\HasSlugRouteKey;
 use App\Abilities\HasTitleAsSlug;
 use App\Adapters\Keycloak\UserRepresentation;
 use App\Facades\Keycloak;
-use App\Traits\ClearsResponseCache;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
-use Spatie\Feed\Feedable;
-use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\File;
 use Spatie\MediaLibrary\MediaCollections\HtmlableMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class Album extends Model implements HasMedia, Feedable
+class Album extends Model implements HasMedia
 {
     use Sluggable,
         SluggableScopeHelpers,
         InteractsWithMedia,
         HasSlugRouteKey,
         HasTitleAsSlug,
-        ClearsResponseCache,
-        AlbumFeedable,
         Searchable;
 
     public const PICTURES_COLLECTION = 'pictures';
@@ -164,9 +158,9 @@ class Album extends Model implements HasMedia, Feedable
     /**
      * Return all the categories of this album.
      */
-    public function categories(): MorphToMany
+    public function categories(): BelongsToMany
     {
-        return $this->morphToMany(Category::class, 'categorizable');
+        return $this->belongsToMany(Category::class);
     }
 
     /**
@@ -196,22 +190,6 @@ class Album extends Model implements HasMedia, Feedable
             });
     }
 
-    /**
-     * @throws InvalidManipulation
-     */
-    public function registerMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
-    {
-        $this->addMediaConversion(self::RESPONSIVE_PICTURES_CONVERSION)
-            ->optimize()
-            ->withResponsiveImages()
-            ->performOnCollections(self::PICTURES_COLLECTION);
-
-        $this->addMediaConversion('thumb')
-            ->width(400)
-            ->optimize()
-            ->performOnCollections(self::PICTURES_COLLECTION);
-    }
-
     public function searchableAs(): string
     {
         return 'albums-'.config('app.env');
@@ -227,8 +205,7 @@ class Album extends Model implements HasMedia, Feedable
             'slug' => $this->slug,
             'title' => $this->title,
             'meta_description' => $this->meta_description,
-            'thumb' => optional($this->cover)->getUrl('thumb'),
-            'url' => route('albums.show', ['album' => $this]),
+            'cover' => optional($this->cover)->getUrl(),
         ];
     }
 

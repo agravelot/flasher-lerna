@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:15-alpine
 
 ARG NEXT_PUBLIC_APP_URL
 ARG NEXT_PUBLIC_API_URL
@@ -21,7 +21,7 @@ COPY apps/frontend/package.json apps/frontend/package.json
 COPY apps/common/package.json apps/common/package.json 
 COPY apps/models/package.json apps/models/package.json 
 
-RUN yarn install --frozen-lockfile --production && yarn cache clean
+RUN yarn install --frozen-lockfile && yarn cache clean
 
 COPY apps/frontend apps/frontend
 COPY apps/common apps/common 
@@ -29,4 +29,6 @@ COPY apps/models apps/models
 
 RUN yarn workspace @flasher/frontend run build
 
-CMD ["node_modules/.bin/next", "start", "apps/frontend"]
+WORKDIR /app/apps/frontend
+
+CMD ["../../node_modules/.bin/next", "start"]

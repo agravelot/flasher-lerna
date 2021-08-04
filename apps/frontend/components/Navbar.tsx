@@ -25,10 +25,9 @@ const Navbar: FunctionComponent = () => {
           className="w-full relative flex justify-between lg:static lg:justify-start"
         >
           {/* Left */}
-          <li className="flex items-center">
+          <li className="flex items-center" role="menuitem">
             <Link href={{ pathname: "/" }}>
               <a
-                role="menuitem"
                 tabIndex={0}
                 className="text-sm font-bold leading-relaxed inline-block mr-4 whitespace-no-wrap uppercase text-white p-2"
               >

@@ -25,9 +25,8 @@ class CategoryResource extends JsonResource
             'meta_description' => $this->meta_description,
             'description' => $this->description,
             'cover' => $this->whenLoaded('media', new MediaResource($this->cover)),
-            'links' => [
-                'related' => route('categories.show', ['category' => $this]),
-            ],
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

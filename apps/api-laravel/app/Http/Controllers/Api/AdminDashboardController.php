@@ -9,9 +9,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Album;
 use App\Models\Contact;
 use App\Models\Cosplayer;
-use App\Models\Media;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class AdminDashboardController extends Controller
 {

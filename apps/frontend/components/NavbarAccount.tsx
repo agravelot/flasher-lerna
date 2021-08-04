@@ -4,14 +4,8 @@ import { FunctionComponent, useState } from "react";
 import { configuration } from "../utils/configuration";
 
 const NavbarAccount: FunctionComponent = () => {
-  const {
-    initialized,
-    keycloak,
-    register,
-    login,
-    parsedToken,
-    isAdmin,
-  } = useAuthentication();
+  const { initialized, keycloak, register, login, parsedToken, isAdmin } =
+    useAuthentication();
   const { administration } = configuration;
 
   // Dropdown
@@ -22,8 +16,8 @@ const NavbarAccount: FunctionComponent = () => {
 
   if (initialized === false || keycloak.authenticated === false) {
     return (
-      <ul className="flex items-center">
-        <li className="flex items-center">
+      <ul className="flex items-center" role="menubar">
+        <li className="flex items-center" role="menuitem">
           <button
             className="text-white hover:text-gray-300 text-xs font-bold uppercase rounded p-2"
             type="button"
@@ -33,7 +27,7 @@ const NavbarAccount: FunctionComponent = () => {
             {"S'inscrire"}
           </button>
         </li>
-        <li className="hidden md:flex items-center">
+        <li className="hidden md:flex items-center" role="menuitem">
           <button
             className="text-white hover:text-gray-300 text-xs font-bold uppercase rounded p-2"
             type="button"

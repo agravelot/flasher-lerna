@@ -29,9 +29,6 @@ class ShowCategoryTest extends TestCase
                     'name' => $category->name,
                     'slug' => $category->slug,
                     'description' => $category->description,
-                    'links' => [
-                        'related' => url("/categories/{$category->slug}"),
-                    ],
                     'cover' => [
                         'id' => $category->cover->id,
                         'name' => $category->cover->name,

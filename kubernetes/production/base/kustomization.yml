@@ -116,10 +116,10 @@ configMapGenerator:
 images:
   - name: nginx
     newName: registry.gitlab.com/flasher/flasher/picblog_nginx
-    newTag: "3e931cc"
+    newTag: "7830a86"
   - name: php
     newName: registry.gitlab.com/flasher/flasher/picblog_php
-    newTag: "3e931cc"
+    newTag: "7830a86"
   - name: postgres
     newTag: 12-alpine
   # - name: tusd
@@ -133,7 +133,7 @@ images:
     newTag: "e97738f"
   - name: frontend
     newName: registry.gitlab.com/flasher/flasher/flasher-frontend
-    newTag: 1.4.1
+    newTag: 1.4.6-rc.8
   - name: api-v2
     newName: registry.gitlab.com/flasher/flasher/flasher-api-go
     newTag: feature-go-api

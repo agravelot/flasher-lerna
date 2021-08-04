@@ -1,5 +1,5 @@
 import { api, PaginatedReponse, WrappedResponse } from './api';
-import { Album, Category, Cosplayer, DashboardData } from '@flasher/models';
+import { Album, Article, Category, Cosplayer, DashboardData } from '@flasher/models';
 import { KeycloakInstance } from 'keycloak-js';
 
 type Pagination = {
@@ -13,13 +13,65 @@ export type CategoryListParams = {
   };
 } & Pagination
 
+
 // TODO Callback to return token on request ?
-export const useRepository = (keycloak: KeycloakInstance | undefined) => {
-  const authHeader = () => ({
-    headers: { Authorization: `Bearer ${keycloak?.token}` }
-  });
+export const apiRepository = (keycloak?: KeycloakInstance) => {
+  const authHeader = () => {
+    return keycloak ? {
+      headers: { Authorization: `Bearer ${keycloak.token}` }
+    } : {};
+  };
 
   return {
+    articles: {
+      list: ({ page = 1, perPage = 10 }: Pagination) =>
+        api<PaginatedReponse<Article[]>>(
+          `/v2/articles?page=${page}&per_page=${perPage}`, authHeader()
+        ).then((res) => res.json()),
+      retrieve: (slug: string) =>
+        api<WrappedResponse<Article>>(
+          `/v2/articles/${slug}`, authHeader()
+        ).then((res) => res.json()),
+        create: (article: Partial<Article>) =>{
+          return api<WrappedResponse<Article>>(
+            `/v2/articles`, {method: 'POST', body: JSON.stringify(article), ...authHeader()}
+            ).then((res) => res.json())
+        },
+    },
+
+    albums: {
+      list: ({ page = 1, perPage = 10 }: Pagination) =>
+        api<PaginatedReponse<Album[]>>(
+          `/albums?page=${page}&per_page=${perPage}`,
+        ).then((res) => res.json()),
+      retrieve: (slug: string) =>
+        api<WrappedResponse<Album>>(
+          `/albums/${slug}`,
+        ).then((res) => res.json()),
+    },
+
+    categories: {
+      list: ({ page = 1, perPage = 10, filter }: CategoryListParams) =>
+        api<PaginatedReponse<Category[]>>(
+          `/categories?page=${page}&per_page=${perPage}&filter[name]=${filter?.name}`
+        ).then((res) => res.json()),
+      retrieve: (slug: string) =>
+        api<WrappedResponse<Category>>(
+          `/categories/${slug}`
+        ).then((res) => res.json()),
+    },
+
+    cosplayers: {
+      list: ({ page = 1, perPage = 10 }: Pagination) =>
+        api<PaginatedReponse<Cosplayer[]>>(
+          `/cosplayers?page=${page}&per_page=${perPage}`
+        ).then((res) => res.json()),
+      retrieve: (slug: string) =>
+        api<WrappedResponse<Cosplayer>>(
+          `/cosplayers/${slug}`
+        ).then((res) => res.json()),
+    },
+
     admin: {
       dashboard: () =>
         api<DashboardData>(`/admin/dashboard`, authHeader()).then((res) =>

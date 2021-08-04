@@ -25,9 +25,6 @@ use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Jerodev\LaraFontAwesome\Middleware\InjectStyleSheet;
-use Spatie\ResponseCache\Middlewares\CacheResponse;
-use Spatie\ResponseCache\Middlewares\DoNotCacheResponse;
 
 class Kernel extends HttpKernel
 {
@@ -60,8 +57,6 @@ class Kernel extends HttpKernel
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
             SubstituteBindings::class,
-            InjectStyleSheet::class,
-            CacheResponse::class,
         ],
 
         'api' => [
@@ -88,6 +83,5 @@ class Kernel extends HttpKernel
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
         'admin' => CheckAdmin::class,
-        'doNotCacheResponse' => DoNotCacheResponse::class,
     ];
 }

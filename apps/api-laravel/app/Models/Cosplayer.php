@@ -8,7 +8,6 @@ use App\Abilities\HasNameAsSlug;
 use App\Abilities\HasSlugRouteKey;
 use App\Adapters\Keycloak\UserRepresentation;
 use App\Facades\Keycloak;
-use App\Traits\ClearsResponseCache;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
@@ -17,11 +16,11 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
-use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\File;
 use Spatie\MediaLibrary\MediaCollections\HtmlableMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Cosplayer extends Model implements HasMedia
 {
@@ -30,7 +29,6 @@ class Cosplayer extends Model implements HasMedia
         InteractsWithMedia,
         HasSlugRouteKey,
         HasNameAsSlug,
-        ClearsResponseCache,
         Searchable;
 
     public const RESPONSIVE_PICTURES_CONVERSION = 'responsive';
@@ -124,23 +122,6 @@ class Cosplayer extends Model implements HasMedia
             ->singleFile();
     }
 
-    /**
-     * Register the media conversions.
-     *
-     * @throws InvalidManipulation
-     */
-    public function registerMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
-    {
-        $this->addMediaConversion(self::RESPONSIVE_PICTURES_CONVERSION)
-            ->optimize()
-            ->withResponsiveImages()
-            ->performOnCollections(self::AVATAR_COLLECTION);
-
-        $this->addMediaConversion('thumb')
-            ->crop('crop-center', 96, 96)
-            ->performOnCollections(self::AVATAR_COLLECTION);
-    }
-
     public function searchableAs(): string
     {
         return 'cosplayers-'.config('app.env');
@@ -156,8 +137,7 @@ class Cosplayer extends Model implements HasMedia
             'slug' => $this->slug,
             'name' => $this->name,
             'description' => $this->description,
-            'thumb' => optional($this->avatar)->getUrl('thumb'),
-            'url' => route('cosplayers.show', ['cosplayer' => $this]),
+            'avatar' => optional($this->avatar)->getUrl(),
         ];
     }
 

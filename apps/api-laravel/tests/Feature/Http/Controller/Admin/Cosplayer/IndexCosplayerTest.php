@@ -43,8 +43,6 @@ class IndexCosplayerTest extends TestCase
     public function testUserCannotIndexCosplayers(): void
     {
         $this->actingAsUser();
-        $cosplayers = factory(Cosplayer::class, 8)->create();
-
         $response = $this->getCosplayers();
 
         $response->assertStatus(403);
@@ -52,8 +50,6 @@ class IndexCosplayerTest extends TestCase
 
     public function testGuestCannotIndexCosplayers(): void
     {
-        $cosplayers = factory(Cosplayer::class, 8)->create();
-
         $response = $this->getCosplayers();
 
         $response->assertStatus(401);

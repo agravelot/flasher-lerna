@@ -42,20 +42,17 @@ abstract class TestCase extends BaseTestCase
     {
         $admin = factory(User::class)->state('admin')->make();
         $this->actingAs($admin, 'api');
-        $this->actingAs($admin, 'web');
     }
 
     protected function actingAsAdmin(): void
     {
         $admin = factory(User::class)->state('admin')->make();
         $this->actingAs($admin, 'api');
-        $this->actingAs($admin, 'web');
     }
 
     protected function actingAsUser(): void
     {
         $user = factory(User::class)->state('user')->make();
         $this->actingAs($user, 'api');
-        $this->actingAs($user, 'web');
     }
 }

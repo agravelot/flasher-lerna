@@ -9,6 +9,7 @@ import Layout from "components/Layout";
 import { configuration } from "utils/configuration";
 import Header from "components/Header";
 import { MDXRemote } from "next-mdx-remote";
+import { generateNextImageUrl } from "utils/util";
 
 type Props = {
   post: BlogPost;
@@ -20,9 +21,11 @@ const ImageCustom = (props: ImageProps) => {
   // );
 
   return (
+    // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={"/_next/image?url=" + encodeURIComponent(props.src) + "&w=828&q=75"}
+      src={generateNextImageUrl(props.src as string)}
       loading="lazy"
+      alt={props.alt}
     />
   );
 };

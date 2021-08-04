@@ -17,3 +17,6 @@ export const sizes = (divider: number, size: "container" | "full"): string => {
 
 export const resolveOriginalImage = (url: string): string =>
   url.replace("-thumb", "").replace("/conversions", "");
+
+export const generateNextImageUrl = (imageUrl: string): string =>
+  "/_next/image?url=" + encodeURIComponent(imageUrl) + "&w=828&q=75";

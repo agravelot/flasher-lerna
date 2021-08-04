@@ -45,9 +45,6 @@ RUN : \
         && chmod +x /start.sh \
         ;
 
-# importing webpack assets
-COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
-
 ENTRYPOINT /start.sh
 
 # ==== PHP Application ==== #
@@ -62,7 +59,6 @@ COPY --chown=1000:1000 . /var/www/html
 
 # importing composer and assets dependencies
 COPY --chown=1000:1000 --from=vendor /app/vendor/ /var/www/html/vendor/
-COPY --chown=1000:1000 --from=frontend /app/public/ /var/www/html/public
 COPY --chown=1000:1000 --from=composer /usr/bin/composer ./composer
 
 RUN : \

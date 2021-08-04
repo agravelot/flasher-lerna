@@ -15,7 +15,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'api',
         'passwords' => 'users',
     ],
 
@@ -38,7 +38,7 @@ return [
 
     'guards' => [
         'web' => [
-            'driver' => 'keycloak-web',
+            'driver' => 'token', // Unused
             'provider' => 'users',
         ],
 
@@ -67,7 +67,7 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'custom-keycloak-users',
+            'driver' => 'eloquent', // Unused
             'model' => App\Models\User::class,
         ],
     ],

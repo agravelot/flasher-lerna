@@ -7,7 +7,6 @@ namespace App\Http\Resources;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Http\Resources\Json\Resource;
 
 /** @mixin Setting */
 class MediaSettingResource extends JsonResource
@@ -25,7 +24,8 @@ class MediaSettingResource extends JsonResource
             'value' => $this->value ? [
                 'name' => optional($this->value)->name,
                 'url' => optional($this->value)->getFullUrl(),
-                'src_set' => optional($this->value)->getSrcset(Setting::RESPONSIVE_PICTURES_CONVERSION),
+                'width' => optional($this->value)->getCustomProperty('width'),
+                'height' => optional($this->value)->getCustomProperty('height'),
             ] : null,
             'type' => optional($this->type)->value,
             'title' => $this->title,

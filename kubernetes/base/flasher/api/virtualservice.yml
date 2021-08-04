@@ -25,7 +25,6 @@ spec:
            - exact: https://frontend.jkanda.fr
            - exact: http://localhost:3000
            - exact: https://flasher-frontend-nextjs.vercel.app
-           - regex: https:\/\/.*vercel.app.*
         allowHeaders:
           - authorization
           - content-type

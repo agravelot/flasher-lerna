@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\TestimonialRequest;
 use App\Http\Resources\TestimonialResource;
 use App\Models\Testimonial;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -23,5 +24,12 @@ class TestimonialController extends Controller
             ->paginate();
 
         return TestimonialResource::collection($testimonials);
+    }
+
+    public function store(TestimonialRequest $request): TestimonialResource
+    {
+        $testimonial = Testimonial::create($request->validated());
+
+        return new TestimonialResource($testimonial);
     }
 }

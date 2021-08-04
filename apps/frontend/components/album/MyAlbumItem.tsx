@@ -86,7 +86,7 @@ const MyAlbumItem: FunctionComponent<Props> = ({
               }}
             >
               <a className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded inline-flex items-center mx-3 flex-grow">
-                Voir l'album
+                Voir l&apos;album
               </a>
             </Link>
           </div>
