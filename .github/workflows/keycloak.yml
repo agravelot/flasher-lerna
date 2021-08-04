@@ -1,4 +1,4 @@
-name: Docker
+name: keycloak
 
 on:
   push:
