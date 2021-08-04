@@ -10,6 +10,7 @@ use App\Http\Resources\AlbumShowResource;
 use App\Models\Album;
 use App\Models\PublicAlbum;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -23,14 +24,14 @@ class AlbumController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): AnonymousResourceCollection
+    public function index(Request $request): AnonymousResourceCollection
     {
         return AlbumIndexResource::collection(
             QueryBuilder::for(PublicAlbum::class)
                 ->allowedFilters([AllowedFilter::exact('categories.id'), AllowedFilter::exact('cosplayers.id')])
                 ->with('media', 'categories')
                 ->latest()
-                ->paginate(10)
+                ->paginate($request->query->getInt('per_page', 10))
         );
     }
 
