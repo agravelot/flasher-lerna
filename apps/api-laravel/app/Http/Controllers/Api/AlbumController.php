@@ -9,8 +9,8 @@ use App\Http\Resources\AlbumIndexResource;
 use App\Http\Resources\AlbumShowResource;
 use App\Models\Album;
 use App\Models\PublicAlbum;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
