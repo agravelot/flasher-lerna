@@ -26,6 +26,7 @@ class AdminPictureAlbumController extends Controller
      */
     public function store(StorePictureAlbumRequest $request): JsonResponse
     {
+        set_time_limit(0);
         JsonResource::withoutWrapping();
         /** @var Album $album */
         $album = Album::whereSlug($request->get('album_slug'))->firstOrFail();
