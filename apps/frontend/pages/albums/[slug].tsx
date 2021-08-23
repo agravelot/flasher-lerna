@@ -14,12 +14,12 @@ import {
   api,
   HttpNotFound,
   PaginatedReponse,
-  useAuthentication,
   WrappedResponse,
 } from "@flasher/common";
 import Layout from "../../components/Layout";
 import Header from "../../components/Header";
 import AlbumMediaList from "../../components/album/AlbumMediaList";
+import { useAuthentication } from "hooks/useAuthentication";
 
 type Props = {
   album: Album;

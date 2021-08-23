@@ -15,8 +15,9 @@ import { NextSeo } from "next-seo";
 import { configuration } from "../../../utils/configuration";
 import { useRouter } from "next/dist/client/router";
 import { Album } from "@flasher/models";
-import { api, PaginatedReponse, useAuthentication } from "@flasher/common";
+import { api, PaginatedReponse } from "@flasher/common";
 import { range } from "../../../utils/util";
+import { useAuthentication } from "hooks/useAuthentication";
 
 type Props = {
   albums: Album[];
