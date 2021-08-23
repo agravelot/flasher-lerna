@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { range } from "./util";
+import { range } from "@flasher/common";
 import { Link } from "react-router-dom";
 import React from "react";
 
@@ -43,7 +43,9 @@ export const Pagination: FunctionComponent<PaginationProps> = ({
       <Link
         to={{
           pathname: routeName,
-          search: `?page=${currentPage < lastPage ? currentPage + 1 : lastPage}`,
+          search: `?page=${
+            currentPage < lastPage ? currentPage + 1 : lastPage
+          }`,
         }}
       >
         <a
@@ -73,7 +75,7 @@ export const Pagination: FunctionComponent<PaginationProps> = ({
           <Link
             to={{
               pathname: routeName,
-              search: `?page=${ currentPage > 1 ? currentPage - 1 : 1 }`,
+              search: `?page=${currentPage > 1 ? currentPage - 1 : 1}`,
             }}
           >
             <a
@@ -96,9 +98,9 @@ export const Pagination: FunctionComponent<PaginationProps> = ({
               v-for="page in Array.from(Array(lastPage).keys()).map((x) => ++x)"
               key={page}
               to={{
-                 pathname: routeName, 
-              search: `?page=${ page}`,
-            }}
+                pathname: routeName,
+                search: `?page=${page}`,
+              }}
             >
               <a
                 tabIndex={0}
@@ -112,7 +114,9 @@ export const Pagination: FunctionComponent<PaginationProps> = ({
           <Link
             to={{
               pathname: routeName,
-              search: `?page=${ currentPage < lastPage ? currentPage + 1 : lastPage}`,
+              search: `?page=${
+                currentPage < lastPage ? currentPage + 1 : lastPage
+              }`,
             }}
           >
             <a

@@ -1,4 +1,4 @@
-import { useAuthentication } from "@flasher/common";
+import { useAuthentication } from "hooks/useAuthentication";
 import Link from "next/link";
 import { FunctionComponent, useState } from "react";
 import { configuration } from "../utils/configuration";

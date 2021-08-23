@@ -12,9 +12,9 @@ import {
   api,
   HttpNotFound,
   PaginatedReponse,
-  useAuthentication,
   WrappedResponse,
 } from "@flasher/common";
+import { useAuthentication } from "hooks/useAuthentication";
 
 type Props = {
   cosplayer: Cosplayer;

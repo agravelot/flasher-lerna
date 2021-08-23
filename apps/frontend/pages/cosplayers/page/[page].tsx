@@ -13,8 +13,9 @@ import { range } from "../../../utils/util";
 import { getGlobalProps, GlobalProps } from "../../../stores";
 import dynamic from "next/dynamic";
 import { NextSeo } from "next-seo";
-import { api, PaginatedReponse, useAuthentication } from "@flasher/common";
+import { api, PaginatedReponse } from "@flasher/common";
 import { Cosplayer } from "@flasher/models";
+import { useAuthentication } from "hooks/useAuthentication";
 
 type Props = {
   cosplayers: Cosplayer[];

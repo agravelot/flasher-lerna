@@ -3,8 +3,8 @@ import SocialMediaItem from "./SocialMedia";
 import Link from "next/link";
 import Separator from "./Separator";
 import { SocialMedia } from "@flasher/models";
-import { useAuthentication } from "@flasher/common";
 import { configuration } from "../utils/configuration";
+import { useAuthentication } from "hooks/useAuthentication";
 
 interface Props {
   socialMedias: SocialMedia[];

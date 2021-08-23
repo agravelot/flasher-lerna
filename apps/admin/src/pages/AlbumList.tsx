@@ -1,13 +1,10 @@
 import { Album } from "@flasher/models";
-import {
-  MetaPaginatedReponse,
-  Pagination,
-  apiRepository,
-} from "@flasher/common";
+import { MetaPaginatedReponse, apiRepository } from "@flasher/common";
 import { FunctionComponent, useEffect, useState } from "react";
 import AlbumTable from "../components/AlbumsTable";
 import { useLocation } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
+import { Pagination } from "../components/Pagination";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);

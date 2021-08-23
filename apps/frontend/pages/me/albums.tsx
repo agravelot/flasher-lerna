@@ -7,8 +7,9 @@ import Pagination, { PaginationProps } from "../../components/Pagination";
 import { getGlobalProps, GlobalProps } from "../../stores";
 import MyAlbumItem from "../../components/album/MyAlbumItem";
 import { NextSeo } from "next-seo";
-import { api, PaginatedReponse, useAuthentication } from "@flasher/common";
+import { api, PaginatedReponse } from "@flasher/common";
 import { Album } from "@flasher/models";
+import { useAuthentication } from "hooks/useAuthentication";
 
 type Props = GlobalProps;
 

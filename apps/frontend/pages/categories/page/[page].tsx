@@ -15,7 +15,8 @@ import { getGlobalProps, GlobalProps } from "../../../stores";
 import dynamic from "next/dynamic";
 import { NextSeo } from "next-seo";
 import { Category } from "@flasher/models";
-import { api, PaginatedReponse, useAuthentication } from "@flasher/common";
+import { api, PaginatedReponse } from "@flasher/common";
+import { useAuthentication } from "hooks/useAuthentication";
 
 type Props = {
   categories: Category[];

@@ -15,10 +15,10 @@ import {
   api,
   HttpNotFound,
   PaginatedReponse,
-  useAuthentication,
   WrappedResponse,
 } from "@flasher/common";
 import { Album, Category } from "@flasher/models";
+import { useAuthentication } from "hooks/useAuthentication";
 
 type Props = {
   category: Category;
