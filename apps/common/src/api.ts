@@ -37,6 +37,9 @@ export async function api<T>(
     },
   };
 
+  console.log(init);
+  
+
   return fetch(`${baseUrl}${url}`, init).then((response) => {
     if (response.status === 404) {
       throw new HttpNotFound(response, response.statusText);

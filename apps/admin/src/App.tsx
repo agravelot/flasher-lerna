@@ -7,6 +7,8 @@ import { ReactKeycloakProvider } from "@react-keycloak/web";
 import Home from "./pages/Home";
 import ArticleList from "./pages/ArticleList";
 import ArticleCreate from "./pages/ArticleCreate";
+import AlbumCreate from "./pages/AlbumCreate";
+import AlbumEdit from "./pages/AlbumEdit";
 
 // Setup Keycloak instance as needed
 // Pass initialization options as required or leave blank to load from 'keycloak.json'
@@ -36,6 +38,12 @@ function App() {
         <div className="h-screen">
           <Drawer>
             <Switch>
+              <Route path="/albums/create">
+                <AlbumCreate />
+              </Route>
+              <Route path="/albums/:slug">
+                <AlbumEdit />
+              </Route>
               <Route path="/albums">
                 <AlbumList />
               </Route>

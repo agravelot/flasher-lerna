@@ -44,6 +44,7 @@ export const apiRepository = (keycloak?: KeycloakInstance) => {
         api<PaginatedReponse<Album[]>>(
           `/albums?page=${page}&per_page=${perPage}`,
         ).then((res) => res.json()),
+
       retrieve: (slug: string) =>
         api<WrappedResponse<Album>>(
           `/albums/${slug}`,
@@ -89,6 +90,21 @@ export const apiRepository = (keycloak?: KeycloakInstance) => {
             `/admin/albums/${slug}`,
             authHeader()
           ).then((res) => res.json()),
+         
+        create: (album: Partial<Album>) =>{
+            if (!keycloak) return
+            return api<WrappedResponse<Album>>(
+              `/admin/albums`, {method: 'POST', body: JSON.stringify(album), headers: {'Content-Type': 'application/json', Authorization: `Bearer ${keycloak.token}`}}
+              ).then((res) => res.json())
+          },
+
+          update: (slug: string, album: Partial<Album>) =>{
+            if (!keycloak) return
+            return api<WrappedResponse<Album>>(
+              `/admin/albums/${slug}`, {method: 'PATCH', body: JSON.stringify(album), headers: {'Content-Type': 'application/json', Authorization: `Bearer ${keycloak.token}`}}
+              ).then((res) => res.json())
+          },
+
       },
 
       categories: {

@@ -12,7 +12,7 @@ const Drawer: FunctionComponent<DrawerProps> = ({ children }: DrawerProps) => {
   return (
     <div className="rounded-lg shadow bg-base-200 drawer drawer-mobile h-full">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-      <div className="flex flex-col items-center justify-center drawer-content">
+      <div className="flex flex-col items-center drawer-content">
         <label
           htmlFor="my-drawer-2"
           className="mb-4 btn btn-primary drawer-button lg:hidden"
