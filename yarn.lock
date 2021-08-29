@@ -7225,6 +7225,11 @@ eslint-config-prettier@^6.14.0:
   dependencies:
     get-stdin "^6.0.0"
 
+eslint-config-prettier@^8.3.0:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.3.0.tgz#f7471b20b6fe8a9a9254cc684454202886a2dd7a"
+  integrity sha512-BgZuLUSeKzvlL/VUjx/Yb787VQ26RU3gGjA3iiFvdsp/2bMfVIWUVP7tjxtjS0e+HP409cPlPvNkQloz8C91ew==
+
 eslint-config-react-app@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/eslint-config-react-app/-/eslint-config-react-app-6.0.0.tgz#ccff9fc8e36b322902844cbd79197982be355a0e"
@@ -14825,10 +14830,10 @@ scheduler@^0.20.2:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
 
-schema-dts@^0.8.1:
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/schema-dts/-/schema-dts-0.8.3.tgz#6c03ca47200e80e9a871d6de626a7cf04fe009b7"
-  integrity sha512-GSLeVkUgEe8DzS8/FGWou1wlC8tQ1KXA5amCqCIH/psUzF74fWswtT0QFlSoJLT08CYyixnc3S/lkAm+RExoLQ==
+schema-dts@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/schema-dts/-/schema-dts-0.11.0.tgz#9fc671cefa60b28506b0ac7ed905a41a6417cd8a"
+  integrity sha512-vQgm1BTUb+PYNayCFXb3R6xXovzdigRIDKZ4BWthmJwqrxJZHNGsDXE7k/iXVcPI8vxHVcAaeQ7QNP9RrlQDEw==
 
 schema-utils@^1.0.0:
   version "1.0.0"
