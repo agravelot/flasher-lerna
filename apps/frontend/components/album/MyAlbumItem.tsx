@@ -77,22 +77,20 @@ const MyAlbumItem: FunctionComponent<Props> = ({
           </div>
         </div>
         <div className="flex items-center">
-          {!album.private ||
-            (album.published_at !== null && (
-              <div className="w-1/2">
-                <Link
-                  v-if="!album.private"
-                  href={{
-                    pathname: "/albums/[slug]",
-                    query: { slug: album.slug },
-                  }}
-                >
-                  <a className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded inline-flex items-center mx-3 flex-grow">
-                    Voir l&apos;album
-                  </a>
-                </Link>
-              </div>
-            ))}
+          {!album.private && (
+            <div className="w-1/2">
+              <Link
+                href={{
+                  pathname: "/albums/[slug]",
+                  query: { slug: album.slug },
+                }}
+              >
+                <a className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded inline-flex items-center mx-3 flex-grow">
+                  Voir l&apos;album
+                </a>
+              </Link>
+            </div>
+          )}
 
           <div className="w-1/2">
             {showDownload && (
