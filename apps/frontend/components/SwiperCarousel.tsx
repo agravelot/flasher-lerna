@@ -40,14 +40,17 @@ export const SwiperCarousel: FunctionComponent<Props> = ({
 
   // Will force rerender on screen resize, allow dynamic `sizes`to wark
   useEffect(() => {
-    const handleResize = debounce(
-      () =>
-        setScreenSize({
-          width: window.innerWidth,
-          height: window.innerHeight,
-        }),
-      100
-    );
+    const handleResize = debounce(() => {
+      console.log({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+
+      setScreenSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }, 100);
 
     window.addEventListener("resize", handleResize);
 
@@ -90,8 +93,8 @@ export const SwiperCarousel: FunctionComponent<Props> = ({
                 alt={m.name}
                 draggable={false}
                 sizes={
-                  screenSize.height > screenSize.width
-                    ? "100vw" // Image will be full width in almost any cases.
+                  screenSize.height > screenSize.width || m.width > m.height
+                    ? "100vw" // Image will be full width on mobile and landscape images.
                     : `${Math.ceil((screenSize.height / m.width) * m.height)}px` // Determine wanted size
                 }
               />
