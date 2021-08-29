@@ -9,7 +9,7 @@ import SwiperCore, {
   Keyboard,
   Mousewheel,
 } from "swiper";
-import "swiper/swiper-bundle.css";
+import "swiper/css/bundle";
 import { Media } from "@flasher/models";
 import { debounce } from "lodash-es";
 
