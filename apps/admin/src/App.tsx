@@ -13,7 +13,7 @@ import AlbumEdit from "./pages/AlbumEdit";
 // Setup Keycloak instance as needed
 // Pass initialization options as required or leave blank to load from 'keycloak.json'
 const keycloak = Keycloak({
-  url: "https://accounts.jkanda.fr/auth",
+  url: "https://keycloak.localhost/auth",
   realm: "jkanda",
   clientId: "flasher",
 });
@@ -38,7 +38,7 @@ function App() {
         <div className="h-screen">
           <Drawer>
             <Switch>
-              <Route path="/albums/create">
+              <Route exact path="/albums/create">
                 <AlbumCreate />
               </Route>
               <Route path="/albums/:slug">
@@ -47,7 +47,7 @@ function App() {
               <Route path="/albums">
                 <AlbumList />
               </Route>
-              <Route path="/articles/create">
+              <Route exact path="/articles/create">
                 <ArticleCreate />
               </Route>
               <Route path="/articles">

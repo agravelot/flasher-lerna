@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 import { useHistory } from "react-router-dom";
 import AlbumForm from "../components/AlbumForm";
 
-const ArticleCreate: FunctionComponent = () => {
+const AlbumeCreate: FunctionComponent = () => {
   const history = useHistory();
 
   return (
@@ -17,4 +17,4 @@ const ArticleCreate: FunctionComponent = () => {
   );
 };
 
-export default ArticleCreate;
+export default AlbumeCreate;

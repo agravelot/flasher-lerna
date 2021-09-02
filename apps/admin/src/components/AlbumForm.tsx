@@ -8,8 +8,9 @@ export type FormType = "edit" | "create";
 
 export interface AlbumFormProps {
   album?: Album;
-  onPostSubmit?: () => void;
   type: FormType;
+  onPostSubmit?: () => void;
+  onPostDelete?: () => void;
 }
 
 interface AlbumForm {
@@ -21,14 +22,13 @@ interface AlbumForm {
 
 const AlbumForm: FunctionComponent<AlbumFormProps> = ({
   onPostSubmit,
+  onPostDelete,
   album,
   type,
 }: AlbumFormProps) => {
   const { initialized, keycloak } = useKeycloak();
 
   const onSubmit = async (values: AlbumForm) => {
-    console.log({ values });
-
     if (!initialized) {
       return;
     }
@@ -37,14 +37,24 @@ const AlbumForm: FunctionComponent<AlbumFormProps> = ({
 
     if (type === "edit") {
       if (!album) return;
-      const res = await repo.admin.albums.update(album.slug, values);
-      console.log(res);
+      await repo.admin.albums.update(album.slug, values);
     } else {
-      const res = await repo.admin.albums.create(values);
-      console.log(res);
+      await repo.admin.albums.create(values);
     }
 
     onPostSubmit && onPostSubmit();
+  };
+
+  const deleteAlbum = async () => {
+    if (type !== "edit" || !initialized || !album) {
+      return;
+    }
+
+    const repo = apiRepository(keycloak);
+
+    await repo.admin.albums.delete(album.slug);
+
+    onPostDelete && onPostDelete();
   };
 
   return (
@@ -113,6 +123,10 @@ const AlbumForm: FunctionComponent<AlbumFormProps> = ({
           </button>
         </Form>
       </Formik>
+
+      <button className="btn btn-warning" onClick={() => deleteAlbum()}>
+        Delete
+      </button>
     </div>
   );
 };
