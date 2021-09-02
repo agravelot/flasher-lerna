@@ -15,6 +15,7 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.1.7",
+    "@types/sortablejs": "^1.10.7",
     "@uppy/core": "^2.0.0",
     "@uppy/dashboard": "^2.0.0",
     "@uppy/drag-drop": "^2.0.0",
@@ -35,6 +36,8 @@
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-sortablejs": "^6.0.0",
+    "sortablejs": "^1.14.0",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"

@@ -9,8 +9,9 @@ import {
 import { useHistory, useParams } from "react-router-dom";
 import AlbumForm from "../components/AlbumForm";
 import { apiRepository } from "@flasher/common";
-import { Album } from "@flasher/models";
+import { Album, Media } from "@flasher/models";
 import MediaUploader from "../components/MediaUploader";
+import { MediaOrdering } from "../components/MediaOrdering";
 
 const AlbumEdit: FunctionComponent = () => {
   const history = useHistory();
@@ -42,6 +43,29 @@ const AlbumEdit: FunctionComponent = () => {
     fetchAlbum();
   }, [initialized]);
 
+  const updateMediasOrder = async (medias: Media[]): Promise<void> => {
+    try {
+      if (!album) {
+        throw new Error("Unable to update medias from undefined album.");
+      }
+      if (!album.medias) {
+        throw new Error("Unable to update medias from undefined medias.");
+      }
+      const repo = apiRepository(keycloak);
+
+      await repo.admin.medias.order(
+        medias.map((m) => m.id),
+        slug
+      );
+      // showSuccess(this.$buefy, "Pictures successfully re-ordered");
+    } catch (exception) {
+      // showError(this.$buefy, "Unable to re-ordered the pictures");
+      console.error(exception);
+
+      throw exception;
+    }
+  };
+
   return (
     <div>
       <AlbumForm
@@ -54,10 +78,18 @@ const AlbumEdit: FunctionComponent = () => {
           history.push("/albums");
         }}
       />
-      {album &&
-        album.medias?.map((media, i) => {
-          return <img key={i} src={media.url} width="150px" />;
-        })}
+
+      {album && album.medias && (
+        <MediaOrdering
+          medias={album.medias}
+          setMedia={(medias: Media[]) => {
+            // album.medias = medias;
+            // setAlbum(album);
+            updateMediasOrder(medias);
+            fetchAlbum();
+          }}
+        />
+      )}
 
       {albumIdMemo && (
         <MediaUploader

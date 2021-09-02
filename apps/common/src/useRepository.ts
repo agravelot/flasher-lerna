@@ -105,6 +105,13 @@ export const apiRepository = (keycloak?: KeycloakInstance) => {
               ).then((res) => res.json())
           },
 
+          delete: (slug: string) =>{
+            if (!keycloak) return
+            return api<WrappedResponse<Album>>(
+              `/admin/albums/${slug}`, {method: 'DELETE', headers: {'Content-Type': 'application/json', Authorization: `Bearer ${keycloak.token}`}}
+              ).then((res) => res)
+          },
+
       },
 
       categories: {
@@ -132,6 +139,13 @@ export const apiRepository = (keycloak?: KeycloakInstance) => {
             authHeader()
           ).then((res) => res.json()),
       },
+
+      medias: {
+        order: (ids: number[], albumSlug: string)=> {
+          if (!keycloak) return;
+          return api(`/admin/albums/${albumSlug}/media-ordering`, {method: 'PATCH', headers: {'Content-Type': 'application/json', Authorization: `Bearer ${keycloak.token}`}, body: JSON.stringify( { media_ids: ids })}).then(res => res.json())
+        }
+      }
     },
   };
 };
