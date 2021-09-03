@@ -25,13 +25,14 @@ class StoreMediaWebhookTest extends TestCase
     /** @test */
     public function send_webhook_will_trigger_media_processing(): void
     {
+        config(['app.tusd_endpoint' => 'https://dummyimage.com']);
+
         $this->actingAsAdmin();
         /** @var Album $album */
         $album = factory(Album::class)->create();
         $this->assertCount(0, $album->fresh()->media);
         $path = "albums/{$album->id}";
         $exceptedFileName = "$album->slug.jpeg";
-        Storage::disk('s3')->putFileAs($path, UploadedFile::fake()->image($exceptedFileName), $exceptedFileName);
 
         $response = $this->sendMediaAddedWebhook($exceptedFileName, $album->id);
 
@@ -109,7 +110,7 @@ class StoreMediaWebhookTest extends TestCase
             'HTTPRequest' => [
                 'Method' => 'POST',
                 'URI' => '/600x400/000/fff',
-                'RemoteAddr' => 'https://dummyimage.com',
+                'RemoteAddr' => '100.100.100.100',
                 'Header' => [
                     'test' => '',
                 ],
