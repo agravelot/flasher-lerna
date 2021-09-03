@@ -15,7 +15,7 @@ class MediaAddedRequest extends Request
     {
         return [
             'Upload' => ['required', 'array'],
-            'Upload.ID' => ['required', 'string'],
+            'Upload.ID' => ['nullable', 'string'], # Will be empty during the pre-create event
             'Upload.Size' => ['required', 'integer'],
             'Upload.Offset' => ['required', 'integer'],
             'Upload.IsFinal' => ['required', 'boolean'],
@@ -25,9 +25,9 @@ class MediaAddedRequest extends Request
             'Upload.MetaData.filename' => ['required', 'string'],
             'Upload.MetaData.modelClass' => ['required', Rule::in(['album'])],
             'Upload.MetaData.modelId' => ['required', 'integer', Rule::exists('albums', 'id')],
-            'Upload.Storage' => ['required', 'array'],
-            'Upload.Storage.Type' => ['required', 'string'],
-            'Upload.Storage.Path' => ['required', 'string'],
+            'Upload.Storage' => ['nullable', 'array'],
+            'Upload.Storage.Type' => ['nullable', 'string'],
+            'Upload.Storage.Path' => ['nullable', 'string'],
             'HTTPRequest' => ['required', 'array'],
             'HTTPRequest.Method' => ['required', 'string'],
             'HTTPRequest.URI' => ['required', 'string'],

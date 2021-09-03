@@ -14,9 +14,13 @@ class AdminMediaWebhook extends Controller
 {
     public function store(MediaAddedRequest $request): JsonResponse
     {
+        if ($request->headers->get('hook-name') !== "post-finish") {
+            return response()->json(['message' => 'Waiting post-finish hook.'], 200);
+        }
+
         $album = Album::find($request->json('Upload.MetaData.modelId'));
 
-        $remote = $request->json('HTTPRequest.RemoteAddr').$request->json('HTTPRequest.URI');
+        $remote = config('app.tusd_endpoint').$request->json('HTTPRequest.URI');
 
         $media = $album->addMediaFromUrl($remote)
             ->usingFileName($request->json('Upload.MetaData.filename'))
