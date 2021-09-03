@@ -34,12 +34,9 @@ const Drawer: FunctionComponent<DrawerProps> = ({ children }: DrawerProps) => {
             <Link to="/albums">Albums</Link>
           </li>
           <li>
-            <a>Menu Item</a>
-          </li>
-          <li>
             <a>ID : {keycloak.tokenParsed?.sub}</a>
           </li>
-          <li>
+          <li className="text-red-300">
             <a onClick={() => keycloak.logout()}>Se deconnecter</a>
           </li>
         </ul>

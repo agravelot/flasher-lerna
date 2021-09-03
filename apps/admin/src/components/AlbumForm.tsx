@@ -58,7 +58,7 @@ const AlbumForm: FunctionComponent<AlbumFormProps> = ({
   };
 
   return (
-    <div>
+    <div className="m-8">
       <Formik
         initialValues={{
           title: album?.title ?? "",
@@ -118,15 +118,22 @@ const AlbumForm: FunctionComponent<AlbumFormProps> = ({
             />
           </div>
 
-          <button className="btn btn-primary" type="submit">
-            Submit
-          </button>
+          <div className="m-8 justify-end flex">
+            <button className="btn btn-primary m-2" type="submit">
+              Envoyer
+            </button>
+
+            {type === "edit" && (
+              <button
+                className="btn btn-ghost m-2"
+                onClick={() => deleteAlbum()}
+              >
+                Supprimer
+              </button>
+            )}
+          </div>
         </Form>
       </Formik>
-
-      <button className="btn btn-warning" onClick={() => deleteAlbum()}>
-        Delete
-      </button>
     </div>
   );
 };

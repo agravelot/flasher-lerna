@@ -131,8 +131,7 @@ const MediaUploader: FunctionComponent<MediaUploaderProps> = memo(
     // Concat uplload
     // Image Editor
     return (
-      <div>
-        <img src={""} alt="Current Avatar" />
+      <div className="flex flex-wrap mt-8 justify-center">
         <Dashboard
           plugins={["ImageEditor"]}
           uppy={uppy}

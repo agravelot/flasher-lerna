@@ -14,7 +14,9 @@ const AlbumTable: FunctionComponent<AlbumTableProps> = ({
 }: AlbumTableProps) => {
   return (
     <>
-      <Link to="/albums/create">Create</Link>
+      <Link className="btn" to="/albums/create">
+        Ajouter
+      </Link>
       <div className="overflow-x-auto">
         <table className="table w-full">
           <thead>
@@ -25,8 +27,8 @@ const AlbumTable: FunctionComponent<AlbumTableProps> = ({
                   <span className="checkbox-mark"></span>
                 </label>
               </th>
-              <th>Name</th>
-              <th>Categories</th>
+              <th>Titre</th>
+              <th>Status</th>
               <th></th>
             </tr>
           </thead>
@@ -96,7 +98,7 @@ const AlbumTable: FunctionComponent<AlbumTableProps> = ({
                       to={`/albums/${a.slug}`}
                       className="btn btn-ghost btn-xs"
                     >
-                      details
+                      détails
                     </Link>
                   </th>
                 </tr>
@@ -106,8 +108,8 @@ const AlbumTable: FunctionComponent<AlbumTableProps> = ({
           <tfoot>
             <tr>
               <th></th>
-              <th>Name</th>
-              <th>Categories</th>
+              <th>Titre</th>
+              <th>Status</th>
               <th></th>
             </tr>
           </tfoot>
