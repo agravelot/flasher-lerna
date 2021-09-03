@@ -79,13 +79,18 @@ const AlbumEdit: FunctionComponent = () => {
         }}
       />
 
-      {album && album.medias && (
+      {album?.medias && (
         <MediaOrdering
           medias={album.medias}
           setMedia={(medias: Media[]) => {
-            // album.medias = medias;
-            // setAlbum(album);
-            updateMediasOrder(medias);
+            album.medias = medias;
+            setAlbum(album);
+          }}
+          onEnd={() => {
+            if (!album.medias) {
+              return;
+            }
+            updateMediasOrder(album.medias);
             fetchAlbum();
           }}
         />

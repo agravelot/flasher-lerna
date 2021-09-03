@@ -5,9 +5,14 @@ import { Media } from "@flasher/models";
 interface Props {
   medias: Media[];
   setMedia: (medias: Media[]) => void;
+  onEnd: () => void;
 }
 
-export const MediaOrdering: FC<Props> = ({ medias, setMedia }: Props) => {
+export const MediaOrdering: FC<Props> = ({
+  medias,
+  setMedia,
+  onEnd,
+}: Props) => {
   return (
     <div>
       <ReactSortable
@@ -15,6 +20,7 @@ export const MediaOrdering: FC<Props> = ({ medias, setMedia }: Props) => {
         setList={setMedia}
         animation={200}
         className="flex flex-wrap"
+        onEnd={onEnd}
       >
         {medias.map((media) => (
           <div key={media.id} className="w-1/3 h-96 mt-4">
