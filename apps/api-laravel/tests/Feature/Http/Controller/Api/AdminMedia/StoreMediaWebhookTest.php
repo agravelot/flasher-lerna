@@ -91,7 +91,7 @@ class StoreMediaWebhookTest extends TestCase
     {
         return $this->postJson('/api/admin/album-media-added', [
             'Upload' => [
-                'ID' => 'azeaze',
+                'ID' => 'azeaze', # null on pre-create
                 'Size' => 123,
                 'Offset' => 123,
                 'IsFinal' => true,
@@ -114,6 +114,6 @@ class StoreMediaWebhookTest extends TestCase
                     'test' => '',
                 ],
             ],
-        ]);
+        ], ['hook-name' => "post-finish"]);
     }
 }
