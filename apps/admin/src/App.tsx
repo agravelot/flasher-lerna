@@ -13,9 +13,9 @@ import AlbumEdit from "./pages/AlbumEdit";
 // Setup Keycloak instance as needed
 // Pass initialization options as required or leave blank to load from 'keycloak.json'
 const keycloak = Keycloak({
-  url: "https://keycloak.localhost/auth",
-  realm: "jkanda",
-  clientId: "flasher",
+  url: process.env.REACT_APP_KEYCLOAK_URL,
+  realm: process.env.REACT_APP_KEYCLOAK_REALM ?? "",
+  clientId: process.env.REACT_APP_KEYCLOAK_CLIENT_ID ?? "",
 });
 
 const eventLogger = (event: unknown, error: unknown) => {
