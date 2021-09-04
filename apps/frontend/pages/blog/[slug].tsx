@@ -12,7 +12,8 @@ import { MDXRemote } from "next-mdx-remote";
 import { generateNextImageUrl } from "utils/util";
 import dynamic from "next/dynamic";
 import useInView from "react-cool-inview";
-const Comments = dynamic(() => import("../../components/Comments"));
+
+const Comments = dynamic(() => import("../../components/Comments"), { ssr: false });
 
 type Props = {
   post: BlogPost;
