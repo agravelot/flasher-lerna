@@ -10,6 +10,9 @@ import { configuration } from "utils/configuration";
 import Header from "components/Header";
 import { MDXRemote } from "next-mdx-remote";
 import { generateNextImageUrl } from "utils/util";
+import dynamic from "next/dynamic";
+import useInView from "react-cool-inview";
+const Comments = dynamic(() => import("../../components/Comments"));
 
 type Props = {
   post: BlogPost;
@@ -38,6 +41,10 @@ const components = {
 };
 
 const Post: NextPage<Props> = ({ post, appName, socialMedias }: Props) => {
+  const { observe, inView } = useInView({
+    onEnter: ({ unobserve }) => unobserve(), // only run once
+  });
+
   return (
     <Layout socialMedias={socialMedias} appName={appName}>
       <NextSeo
@@ -85,6 +92,10 @@ const Post: NextPage<Props> = ({ post, appName, socialMedias }: Props) => {
             )}
           </article>
         </div>
+      </div>
+
+      <div ref={observe} className="mt-8 mb-32 container mx-auto">
+        { inView && <Comments url={`${configuration.appUrl}/blog/${post.slug}`} identifier={`/blog/${post.slug}`} title={post.title} /> }
       </div>
     </Layout>
   );
