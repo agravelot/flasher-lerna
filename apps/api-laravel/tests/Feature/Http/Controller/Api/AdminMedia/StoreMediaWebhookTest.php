@@ -7,7 +7,6 @@ namespace Tests\Feature\Http\Controller\Api\AdminMedia;
 use App\Models\Album;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
@@ -92,7 +91,7 @@ class StoreMediaWebhookTest extends TestCase
     {
         return $this->postJson('/api/admin/album-media-added', [
             'Upload' => [
-                'ID' => 'azeaze', # null on pre-create
+                'ID' => 'azeaze', // null on pre-create
                 'Size' => 123,
                 'Offset' => 123,
                 'IsFinal' => true,
@@ -115,6 +114,6 @@ class StoreMediaWebhookTest extends TestCase
                     'test' => '',
                 ],
             ],
-        ], ['hook-name' => "post-finish"]);
+        ], ['hook-name' => 'post-finish']);
     }
 }

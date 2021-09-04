@@ -15,7 +15,7 @@ class MediaAddedRequest extends Request
     {
         return [
             'Upload' => ['required', 'array'],
-            'Upload.ID' => ['nullable', 'string'], # Will be empty during the pre-create event
+            'Upload.ID' => ['nullable', 'string'], // Will be empty during the pre-create event
             'Upload.Size' => ['required', 'integer'],
             'Upload.Offset' => ['required', 'integer'],
             'Upload.IsFinal' => ['required', 'boolean'],

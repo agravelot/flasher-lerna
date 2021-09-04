@@ -14,7 +14,7 @@ class AdminMediaWebhook extends Controller
 {
     public function store(MediaAddedRequest $request): JsonResponse
     {
-        if ($request->headers->get('hook-name') !== "post-finish") {
+        if ($request->headers->get('hook-name') !== 'post-finish') {
             return response()->json(['message' => 'Waiting post-finish hook.'], 200);
         }
 
