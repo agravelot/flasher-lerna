@@ -17,6 +17,7 @@ const Comments = dynamic(() => import("../../components/Comments"), { ssr: false
 
 type Props = {
   post: BlogPost;
+  minutes: number;
 } & GlobalProps;
 
 const ImageCustom = (props: ImageProps) => {
@@ -41,7 +42,7 @@ const components = {
   // p: (props) => <p style={{ color: "tomato" }} {...props} />,
 };
 
-const Post: NextPage<Props> = ({ post, appName, socialMedias }: Props) => {
+const Post: NextPage<Props> = ({ post, appName, minutes, socialMedias }: Props) => {
   const { observe, inView } = useInView({
     onEnter: ({ unobserve }) => unobserve(), // only run once
   });
@@ -88,6 +89,7 @@ const Post: NextPage<Props> = ({ post, appName, socialMedias }: Props) => {
       <div className="container mx-auto">
         <div className="flex justify-center py-16 px-4 text-justify">
           <article className="content-center max-w-none prose prose-sm sm:prose lg:prose-lg xl:prose-xl">
+            <i>Bonjour ceci est un {minutes}</i>
             {post.contentSerialized && (
               <MDXRemote {...post.contentSerialized} components={components} />
             )}
@@ -119,12 +121,15 @@ export const getStaticProps: GetStaticProps = async ({
 
   const global = await getGlobalProps();
 
+  const minutes = 222;
+  
   post.contentSerialized = await serialize(post.content);
 
   return {
     props: {
       ...global,
       post,
+      minutes
     },
   };
 };
