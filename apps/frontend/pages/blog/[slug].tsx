@@ -89,7 +89,7 @@ const Post: NextPage<Props> = ({ post, appName, minutes, socialMedias }: Props) 
       <div className="container mx-auto">
         <div className="flex justify-center py-16 px-4 text-justify">
           <article className="content-center max-w-none prose prose-sm sm:prose lg:prose-lg xl:prose-xl">
-            <i>Bonjour ceci est un {minutes}</i>
+          <i>Lecture {minutes} min.</i>
             {post.contentSerialized && (
               <MDXRemote {...post.contentSerialized} components={components} />
             )}
@@ -120,11 +120,15 @@ export const getStaticProps: GetStaticProps = async ({
   }
 
   const global = await getGlobalProps();
-
-  const minutes = 222;
   
   post.contentSerialized = await serialize(post.content);
 
+  const minutes = (post.content.split(" ").length / 200).toFixed();
+
+  console.log(minutes);
+  
+  // // const minutes = post.content;
+  // const minutes = (words.length).toFixed();
   return {
     props: {
       ...global,
