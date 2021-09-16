@@ -17,7 +17,7 @@ const Comments = dynamic(() => import("../../components/Comments"), { ssr: false
 
 type Props = {
   post: BlogPost;
-  minutes: number;
+  estimatedReadingInMinutes: number;
 } & GlobalProps;
 
 const ImageCustom = (props: ImageProps) => {
@@ -42,7 +42,7 @@ const components = {
   // p: (props) => <p style={{ color: "tomato" }} {...props} />,
 };
 
-const Post: NextPage<Props> = ({ post, appName, minutes, socialMedias }: Props) => {
+const Post: NextPage<Props> = ({ post, appName, estimatedReadingInMinutes, socialMedias }: Props) => {
   const { observe, inView } = useInView({
     onEnter: ({ unobserve }) => unobserve(), // only run once
   });
@@ -89,7 +89,7 @@ const Post: NextPage<Props> = ({ post, appName, minutes, socialMedias }: Props) 
       <div className="container mx-auto">
         <div className="flex justify-center py-16 px-4 text-justify">
           <article className="content-center max-w-none prose prose-sm sm:prose lg:prose-lg xl:prose-xl">
-          <i>Lecture {minutes} min.</i>
+            <i>Temps de lecture estimé : {estimatedReadingInMinutes} min.</i>
             {post.contentSerialized && (
               <MDXRemote {...post.contentSerialized} components={components} />
             )}
@@ -123,17 +123,13 @@ export const getStaticProps: GetStaticProps = async ({
   
   post.contentSerialized = await serialize(post.content);
 
-  const minutes = (post.content.split(" ").length / 200).toFixed();
+  const estimatedReadingInMinutes = (post.content.split(" ").length / 200).toFixed();
 
-  console.log(minutes);
-  
-  // // const minutes = post.content;
-  // const minutes = (words.length).toFixed();
   return {
     props: {
       ...global,
       post,
-      minutes
+      estimatedReadingInMinutes
     },
   };
 };
