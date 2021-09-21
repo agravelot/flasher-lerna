@@ -1,8 +1,9 @@
 resources:
   - api
-  # - tusd
+  - tusd
   - api-v2
   - admin
+  - admin-v2
   - postgres
   - redis
   - keycloak

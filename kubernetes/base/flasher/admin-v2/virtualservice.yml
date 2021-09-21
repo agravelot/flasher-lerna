@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: admin-v2-virtualservice
+spec:
+  hosts:
+    - "adminv2.jkanda.fr"
+  gateways:
+    - flasher-gateway
+  http:
+    - route:
+        - destination:
+            host: admin-v2
+            port:
+              number: 80
+          headers:
+            response:
+              add:
+                X-Robots-Tag: "noindex, nofollow"

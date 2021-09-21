@@ -14,6 +14,10 @@ spec:
           port:
             number: 80
       headers:
+        # request:
+        #   add:
+        #     Accept: application/json
+        #     Content-Type: application/json
         response:
           add:
             Strict-Transport-Security: max-age=31536000; includeSubDomains
@@ -22,9 +26,9 @@ spec:
         allowOrigins:
            - exact: https://jkanda.fr
            - exact: https://admin.jkanda.fr
+           - exact: https://adminv2.jkanda.fr
            - exact: https://frontend.jkanda.fr
            - exact: http://localhost:3000
-           - exact: https://flasher-frontend-nextjs.vercel.app
         allowHeaders:
           - authorization
           - content-type

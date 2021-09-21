@@ -76,8 +76,8 @@ configMapGenerator:
       - MAIL_MAILER=ses
       - SESSION_LIFETIME=120
       - SESSION_SECURE_COOKIE="true"
-      - RESPONSE_CACHE_ENABLED="true"
-      - CRISP_ENABLED="false"
+      - RESPONSE_CACHE_ENABLED="false"
+      - TUSD_ENDPOINT=http://tusd:1080
 
   - name: nginx-config
     literals:
@@ -122,9 +122,9 @@ images:
     newTag: "bca71d9"
   - name: postgres
     newTag: 12-alpine
-  # - name: tusd
-  #   newName: docker.io/tusproject/tusd
-  #   newTag: v1.2.0
+  - name: tusd
+    newName: docker.io/tusproject/tusd
+    newTag: v1.6.0
   - name: keycloak
     newName: registry.gitlab.com/flasher/flasher/keycloak
     newTag: 1.7.2
@@ -133,7 +133,7 @@ images:
     newTag: "e97738f"
   - name: frontend
     newName: registry.gitlab.com/flasher/flasher/flasher-frontend
-    newTag: 1.8.0
+    newTag: 1.10.1
   - name: api-v2
     newName: registry.gitlab.com/flasher/flasher/flasher-api-go
     newTag: 1.7.2

@@ -25,11 +25,8 @@ spec:
             - "*.jkanda.fr"
             - "jkanda.fr"
         dns01:
-          route53:
-            region: eu-central-1
-            hostedZoneID: Z2URDIKQ12QC98
-            accessKeyID: AKIAS7AKPW6TVVRP4F44
-            secretAccessKeySecretRef:
-              name: prod-route53-credentials-secret
-              key: secret-access-key
-
+          cloudflare:
+            email: antoine.gravelot@hotmail.fr
+            apiTokenSecretRef:
+              name: cloudflare-jkanda-api-token-secret
+              key: api-token

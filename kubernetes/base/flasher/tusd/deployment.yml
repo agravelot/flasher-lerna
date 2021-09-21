@@ -14,8 +14,19 @@ spec:
     spec:
       containers:
         - image: tusd
-          imagePullPolicy: IfNotPresent
-          args: ["-base-path" ,"/tus/", "-behind-proxy", "-hooks-http", "http://nginx/api/admin/album-media-added", "-hooks-http-retry", "5", "-hooks-http-backoff", "2", "-hooks-enabled-events", "post-finish,pre-create", "-port=8080", "-max-size=20000000000", "-timeout=6000"]
+          imagePullPolicy: Always
+          args: [
+            "-base-path", "/tus/", 
+            "-behind-proxy", 
+            "-hooks-http", "http://api/api/admin/album-media-added", 
+            "-hooks-http-retry", "5", 
+            "-hooks-http-backoff", "2", 
+            "-hooks-enabled-events", "post-finish,pre-create", 
+            "-port=8080", 
+            "-max-size=20000000000", 
+            "-timeout=6000",
+            "-hooks-http-forward-headers", "Authorization"
+          ]
           name: tusd
           ports:
             - name: tusd-web
@@ -24,3 +35,6 @@ spec:
             httpGet:
               port: 8080
               path: /
+          # securityContext:
+          #   allowPrivilegeEscalation: false
+          #   runAsUser: 0

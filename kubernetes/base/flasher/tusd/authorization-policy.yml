@@ -11,7 +11,7 @@ spec:
       jwksUri: https://accounts.jkanda.fr/auth/realms/jkanda/protocol/openid-connect/certs
       audiences:
         - account
-      forwardOriginalToken: false
+      forwardOriginalToken: true
 ---
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
