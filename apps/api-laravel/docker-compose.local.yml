@@ -2,7 +2,7 @@ version: '3.7'
 services:
 
   traefik:
-    image: "traefik:v2.2"
+    image: "traefik:v2.5"
     restart: unless-stopped
     command:
       - "--log.level=WARN"
@@ -12,9 +12,9 @@ services:
       - "--entrypoints.websecure.address=:443"
       - "--providers.docker.network=nginx-proxy"
       - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
-      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
-      - "--entrypoints.web.http.redirections.entrypoint.permanent=false"
+      # - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      # - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      # - "--entrypoints.web.http.redirections.entrypoint.permanent=false"
     ports:
       - "80:80"
       - "443:443"
@@ -23,29 +23,29 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
       nginx-proxy:
-      keycloak-network:
-          aliases:
-            - ${KEYCLOAK_URI}
+      # keycloak-network:
+      #     aliases:
+      #       - ${KEYCLOAK_URI}
 
-  nginx:
-    environment:
-      ERROR_LOG_LEVEL: ${ERROR_LOG_LEVEL}
-#    ports:
-#    - "8090:80"
-    labels:
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.isDevelopment=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.accessControlMaxAge=1"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-error-check.circuitbreaker.expression=NetworkErrorRatio() > 0.10"
+#   nginx:
+#     environment:
+#       ERROR_LOG_LEVEL: ${ERROR_LOG_LEVEL}
+# #    ports:
+# #    - "8090:80"
+#     labels:
+#       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+#       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.isDevelopment=true"
+#       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.accessControlMaxAge=1"
+#       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-error-check.circuitbreaker.expression=NetworkErrorRatio() > 0.10"
 
-  php:
-    environment:
-      APP_DEBUG: "true"
-      DB_PASSWORD: ${DB_PASSWORD}
-      SESSION_SECURE_COOKIE: null
-      TELESCOPE_ENABLED: "true"
-    networks:
-      keycloak-network:
+  # php:
+  #   environment:
+  #     APP_DEBUG: "true"
+  #     DB_PASSWORD: ${DB_PASSWORD}
+  #     SESSION_SECURE_COOKIE: null
+  #     TELESCOPE_ENABLED: "true"
+  #   networks:
+  #     keycloak-network:
 
   cache:
     image: redis:5.0-alpine
@@ -60,6 +60,8 @@ services:
     restart: unless-stopped
     expose:
       - "5432"
+    ports: 
+      - "5432:5432"
     networks:
       - database-network
     volumes:
@@ -90,9 +92,9 @@ services:
     expose:
       - 8080
     networks:
+      - nginx-proxy
       - keycloak-network
       - database-network
-      - nginx-proxy
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=nginx-proxy"
@@ -109,11 +111,11 @@ services:
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-ratelimit.ratelimit.burst=500"
       # Local
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.isDevelopment=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlAllowMethods=GET,OPTIONS,POST,PUT,PATCH,DELETE"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlAllowOriginList=*"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlMaxAge=1"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlAllowCredentials=true"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accessControlAllowHeaders=*"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accesscontrolallowmethods=GET,OPTIONS,POST,PUT,PATCH,DELETE,HEAD"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accesscontrolalloworiginlist=http://localhost:3000"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accesscontrolmaxage=1"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accesscontrolallowcredentials=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-keycloak-headers.headers.accesscontrolallowheaders=*"
 
   db-kc:
     image: postgres:11-alpine
@@ -129,8 +131,65 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: ${DB_PASSWORD}
 
+  tusd:
+    image: tusproject/tusd
+    command: -behind-proxy -hooks-http http://host.docker.internal:8000/api/admin/album-media-added -hooks-http-retry 5 -hooks-http-backoff 2 -hooks-enabled-events post-finish,pre-create -max-size=2000000000000 -timeout=600 -hooks-http-forward-headers Authorization -port=1080
+    ports:
+      - "1080:1080"
+    # user: root
+    # expose: 
+    #   - "8080"
+    networks:
+       - nginx-proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=nginx-proxy"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd.rule=Host(`${TUSD_URI}`) || Host(`www.${TUSD_URI}`)"
+      # - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd.entrypoints=web,websecure"
+      # - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd.middlewares=${COMPOSE_PROJECT_NAME}-tusd-headers"
+      # - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-compress.compress=true"
+      # - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-retry.retry.attempts=4"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-error-check.circuitbreaker.expression=ResponseCodeRatio(500, 600, 0, 600) > 0.30 || NetworkErrorRatio() > 0.10"
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-limit.buffering.maxRequestBodyBytes=50000000" # 50 Mb
+      #- "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-limit.buffering.memResponseBodyBytes=50000000" # 50 Mb
+      # Local
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.isDevelopment=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.accesscontrolallowmethods=GET,OPTIONS,POST,PUT,PATCH,DELETE,HEAD"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.accesscontrolalloworiginlist=*"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.accesscontrolmaxage=1"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.accesscontrolallowcredentials=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-tusd-headers.headers.accesscontrolallowheaders=*"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    expose: 
+      - 80
+    networks:
+      - nginx-proxy
+      - database-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=nginx-proxy"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-pgadmin.rule=Host(`pgadmin.localhost`) || Host(`www.pgadmin.localhost`)"
+      # - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-tusd.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-pgadmin.entrypoints=web,websecure"
+    environment: 
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: aze
+
 volumes:
   cache_data:
   db-data:
   db-kc-data:
 
+
+networks:
+  backend:
+  nginx-proxy:
+    external: true
+  database-network:
+    external: true
+  keycloak-network:
+    external: true
