@@ -154,7 +154,7 @@ const ShowAlbum: NextPage<Props> = ({
         <AlbumMediaList album={album} openGalleryAt={openGalleryAt} />
       </div>
 
-      {album.cosplayers && (
+      {album.cosplayers?.length && (
         <div className="container mx-auto py-4 overflow-hidden">
           <h2 className="text-3xl text-center my-8 font-semibold">
             {album.cosplayers?.length === 1 ? "Modèle" : "Modèles"}
@@ -176,7 +176,7 @@ const ShowAlbum: NextPage<Props> = ({
         { inView && <Comments url={`${configuration.appUrl}/albums/${album.slug}`} identifier={`/albums/${album.slug}`} title={album.title} /> }
       </div>
 
-      {recommendedAlbums && (
+      {recommendedAlbums.length && (
         <div className="container mx-auto mb-16 lg:mb-24">
           <h2 className="text-3xl text-center my-8 font-semibold">
             Découvrez en plus
