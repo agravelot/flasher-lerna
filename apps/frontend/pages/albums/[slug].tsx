@@ -159,7 +159,7 @@ const ShowAlbum: NextPage<Props> = ({
           <h2 className="text-3xl text-center my-8 font-semibold">
             {album.cosplayers?.length === 1 ? "Modèle" : "Modèles"}
           </h2>
-          <div className="flex flex-wrap items-center justify-center">
+          <div className="flex flex-wrap">
             {album.cosplayers?.map((cosplayer) => (
               <div
                 className="w-1/2 lg:w-1/3 flex justify-center"
@@ -215,6 +215,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         // error({ statusCode: 500, message: 'Unable to get recommended albums' })
         throw e;
       });
+
+    if (recommendedAlbums.length < 3) {
+      await api<WrappedResponse<Album[]>>("/albums")
+        .then((res) => res.json())
+        .then((json) => {
+          recommendedAlbums.push(...json.data.filter(a => a.id !== album.id).slice(0, 3-recommendedAlbums.length));
+        });
+    }
 
     const global = await getGlobalProps();
 
