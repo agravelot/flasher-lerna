@@ -10,6 +10,8 @@ import { NextSeo } from "next-seo";
 import { api, PaginatedReponse } from "@flasher/common";
 import { Album } from "@flasher/models";
 import { useAuthentication } from "hooks/useAuthentication";
+import { configuration } from "utils/configuration";
+import { useRouter } from "next/dist/client/router";
 
 type Props = GlobalProps;
 
@@ -29,6 +31,7 @@ const MyAlbums: FunctionComponent<Props> = ({
   const [pagination, setPagination] = useState<PaginationProps>();
 
   const { initialized, keycloak } = useAuthentication();
+  const { asPath } = useRouter();
 
   useEffect(() => {
     if (initialized === false) {
@@ -78,6 +81,7 @@ const MyAlbums: FunctionComponent<Props> = ({
       <NextSeo
         title={`Mes albums | ${appName}`}
         description="Découvrir les albums dans lesquels j'apparais"
+        canonical={`${configuration.appUrl}${asPath}`}
         openGraph={{
           title: `Mes albums | ${appName}`,
           description: "Découvrir les albums dans lesquels j'apparais",

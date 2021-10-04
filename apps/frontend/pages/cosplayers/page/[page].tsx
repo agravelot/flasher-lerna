@@ -16,6 +16,8 @@ import { NextSeo } from "next-seo";
 import { api, PaginatedReponse } from "@flasher/common";
 import { Cosplayer } from "@flasher/models";
 import { useAuthentication } from "hooks/useAuthentication";
+import { useRouter } from "next/dist/client/router";
+import { configuration } from "utils/configuration";
 
 type Props = {
   cosplayers: Cosplayer[];
@@ -38,12 +40,14 @@ const IndexAlbum: NextPage<Props> = ({
   appName,
 }: Props) => {
   const { isAdmin } = useAuthentication();
+  const { asPath } = useRouter();
 
   return (
     <Layout socialMedias={socialMedias} appName={appName}>
       <NextSeo
         title={`Cosplayers page ${pagination.currentPage} - Photographe | ${appName}`}
         description="Venez plonger dans mes différents univers à travers des albums divers et variés ! Entre balade, cosplay, et portrait."
+        canonical={`${configuration.appUrl}${asPath}`}
         openGraph={{
           title: `Cosplayers page ${pagination.currentPage} - Photographe | ${appName}`,
           description:

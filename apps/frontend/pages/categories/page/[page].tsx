@@ -17,6 +17,8 @@ import { NextSeo } from "next-seo";
 import { Category } from "@flasher/models";
 import { api, PaginatedReponse } from "@flasher/common";
 import { useAuthentication } from "hooks/useAuthentication";
+import { configuration } from "utils/configuration";
+import { useRouter } from "next/dist/client/router";
 
 type Props = {
   categories: Category[];
@@ -39,6 +41,7 @@ const IndexAlbum: NextPage<Props> = ({
   appName,
 }: Props) => {
   const { isAdmin } = useAuthentication();
+  const { asPath } = useRouter();
 
   const title = `Catégories page ${pagination.currentPage} - Photographe | ${appName}`;
   const description =
@@ -49,6 +52,7 @@ const IndexAlbum: NextPage<Props> = ({
       <NextSeo
         title={title}
         description={description}
+        canonical={`${configuration.appUrl}${asPath}`}
         openGraph={{
           title: title,
           description,

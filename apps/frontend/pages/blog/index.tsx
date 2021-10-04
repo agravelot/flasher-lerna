@@ -20,7 +20,7 @@ const IndexAlbum: NextPage<Props> = ({
   socialMedias,
   appName,
 }: Props) => {
-  const { pathname } = useRouter();
+  const { asPath } = useRouter();
 
   const title = `Blog - Photographe | ${appName}`;
   const description =
@@ -30,11 +30,12 @@ const IndexAlbum: NextPage<Props> = ({
     <Layout socialMedias={socialMedias} appName={appName}>
       <NextSeo
         title={title}
+        canonical={`${configuration.appUrl}${asPath}`}
         description={description}
         openGraph={{
           title: title,
           description: description,
-          url: configuration.appUrl + pathname,
+          url: configuration.appUrl + asPath,
           /*  images: albums
             .map((a) => ({
               url: a.media?.thumb ?? "",

@@ -19,6 +19,7 @@ import {
 } from "@flasher/common";
 import { Album, Category } from "@flasher/models";
 import { useAuthentication } from "hooks/useAuthentication";
+import { useRouter } from "next/dist/client/router";
 
 type Props = {
   category: Category;
@@ -39,11 +40,13 @@ const ShowCategory: NextPage<Props> = ({
   appName,
 }: Props) => {
   const { isAdmin } = useAuthentication();
+  const { asPath } = useRouter();
 
   return (
     <Layout socialMedias={socialMedias} appName={appName}>
       <NextSeo
         title={`${category.name} - Photographe | ${appName}`}
+        canonical={`${configuration.appUrl}${asPath}`}
         description={category.meta_description}
         openGraph={{
           title: `${category.name} - Photographe | ${appName}`,

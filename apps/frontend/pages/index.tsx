@@ -11,6 +11,8 @@ import Separator from "../components/Separator";
 import { NextSeo } from "next-seo";
 import { Album, Testimonial } from "@flasher/models";
 import { api, PaginatedReponse } from "@flasher/common";
+import { configuration } from "utils/configuration";
+import { useRouter } from "next/dist/client/router";
 
 const toggleTestimonialModal = () => {
   return;
@@ -31,11 +33,14 @@ const IndexPage: NextPage<Props> = ({
   socialMedias,
   seoDescription,
 }: Props) => {
+  const { asPath } = useRouter();
+
   return (
     <Layout socialMedias={socialMedias} appName={appName}>
       <NextSeo
         title={defaultPageTitle}
         description={seoDescription}
+        canonical={`${configuration.appUrl}${asPath}`}
         openGraph={{
           images: [
             {

@@ -74,6 +74,7 @@ const ShowAlbum: NextPage<Props> = ({
       <NextSeo
         title={title}
         description={album.meta_description}
+        canonical={`${configuration.appUrl}${router.asPath}`}
         additionalMetaTags={[{ name: "author", content: appName }]}
         openGraph={{
           title: title,

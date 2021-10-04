@@ -12,6 +12,7 @@ import { MDXRemote } from "next-mdx-remote";
 import { generateNextImageUrl } from "utils/util";
 import dynamic from "next/dynamic";
 import useInView from "react-cool-inview";
+import { useRouter } from "next/dist/client/router";
 
 const Comments = dynamic(() => import("../../components/Comments"), { ssr: false });
 
@@ -46,12 +47,14 @@ const Post: NextPage<Props> = ({ post, appName, estimatedReadingInMinutes, socia
   const { observe, inView } = useInView({
     onEnter: ({ unobserve }) => unobserve(), // only run once
   });
+  const { asPath } = useRouter();
 
   return (
     <Layout socialMedias={socialMedias} appName={appName}>
       <NextSeo
         title={post.title}
         description={post.metaDescription}
+        canonical={`${configuration.appUrl}${asPath}`}
         additionalMetaTags={[{ name: "author", content: appName }]}
         openGraph={{
           title: post.title,

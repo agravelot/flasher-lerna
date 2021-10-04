@@ -40,7 +40,7 @@ const IndexAlbum: NextPage<Props> = ({
   appName,
 }: Props) => {
   const { isAdmin } = useAuthentication();
-  const { pathname } = useRouter();
+  const { pathname, asPath } = useRouter();
 
   const title = `Albums page ${pagination.currentPage} - Photographe | ${appName}`;
   const description =
@@ -51,6 +51,7 @@ const IndexAlbum: NextPage<Props> = ({
       <NextSeo
         title={title}
         description={description}
+        canonical={`${configuration.appUrl}${asPath}`}
         openGraph={{
           title: title,
           description: description,
