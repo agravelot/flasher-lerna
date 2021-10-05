@@ -150,17 +150,8 @@ const ShowAlbum: NextPage<Props> = ({
             >
               <AlbumMediaList album={album} openGalleryAt={openGalleryAt} />
             </div>
-            
           </article>
-        
       </div>
-
-      {/* <div
-        className="container mx-auto py-4 overflow-hidden mb-16"
-        // :style="galleryContentVisibility"
-      >
-        <AlbumMediaList album={album} openGalleryAt={openGalleryAt} />
-      </div> */}
 
       {album.cosplayers?.length && (
         <div className="container mx-auto py-4 overflow-hidden">
