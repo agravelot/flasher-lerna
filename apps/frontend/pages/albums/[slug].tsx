@@ -140,20 +140,27 @@ const ShowAlbum: NextPage<Props> = ({
       )}
 
       <div className="container mx-auto">
-        <div className="flex justify-center py-16 px-4 text-justify">
-          <article
-            className="content-center prose max-w-none"
-            dangerouslySetInnerHTML={{ __html: album.body ?? "" }}
-          />
-        </div>
+          <article>
+            <div className="flex justify-center py-16 px-4 text-justify">
+              <div className="content-center prose max-w-none" dangerouslySetInnerHTML={{ __html: album.body ?? "" }}/>
+            </div>
+            <div
+              className="container mx-auto py-4 overflow-hidden mb-16"
+              // :style="galleryContentVisibility"
+            >
+              <AlbumMediaList album={album} openGalleryAt={openGalleryAt} />
+            </div>
+            
+          </article>
+        
       </div>
 
-      <div
+      {/* <div
         className="container mx-auto py-4 overflow-hidden mb-16"
         // :style="galleryContentVisibility"
       >
         <AlbumMediaList album={album} openGalleryAt={openGalleryAt} />
-      </div>
+      </div> */}
 
       {album.cosplayers?.length && (
         <div className="container mx-auto py-4 overflow-hidden">
