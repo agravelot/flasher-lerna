@@ -26,6 +26,7 @@ const Comments = dynamic(() => import("../../components/Comments"), { ssr: false
 type Props = {
   album: Album;
   recommendedAlbums: Album[];
+  estimatedReadingInMinutes: number;
 } & GlobalProps;
 
 const DynamicFullscreenCarousel = dynamic(
@@ -43,6 +44,7 @@ const DynamicAdminOverlay = dynamic(
 const ShowAlbum: NextPage<Props> = ({
   album,
   recommendedAlbums,
+  estimatedReadingInMinutes,
   socialMedias,
   appName,
 }: Props) => {
@@ -141,6 +143,7 @@ const ShowAlbum: NextPage<Props> = ({
 
       <div className="container mx-auto">
         <div className="flex justify-center py-16 px-4 text-justify">
+          <i>Temps de lecture estimé : {estimatedReadingInMinutes} min.</i>
           <article
             className="content-center prose max-w-none"
             dangerouslySetInnerHTML={{ __html: album.body ?? "" }}
@@ -206,6 +209,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       .flat()
       .join(",");
 
+    const estimatedReadingInMinutes = 1;
     const recommendedAlbums = await api<PaginatedReponse<Album[]>>(
       `/albums?filter[categories.id]=${albumCategories}`
     )
@@ -227,7 +231,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     const global = await getGlobalProps();
 
-    return { props: { album, recommendedAlbums, ...global }, revalidate: 60 };
+    return { props: { album, recommendedAlbums, estimatedReadingInMinutes, ...global }, revalidate: 60 };
   } catch (e) {
     if (e instanceof HttpNotFound) {
       return { notFound: true };
