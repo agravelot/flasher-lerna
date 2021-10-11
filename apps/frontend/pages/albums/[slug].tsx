@@ -143,7 +143,7 @@ const ShowAlbum: NextPage<Props> = ({
           <article>
             <div className="flex justify-center py-16 px-4 text-justify">
               <div className="content-center prose max-w-none">
-                <i>Temps de lecture estimé : {estimatedReadingInMinutes} min.</i>
+                <i className="pb-4">Temps de lecture estimé : {estimatedReadingInMinutes} min.</i>
                 <div dangerouslySetInnerHTML={{ __html: album.body ?? "" }}/>
               </div>
             </div>
@@ -211,7 +211,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
                   .then((res) => res.json())
                   .then((res) => res.data.body)
                   .then((res) => res?.replace(/<[^>]*>?/gm, ""))
-                  .then((res) => res?.split(" ").length);
+                  .then((res) => (res?.split(" ").length/200).toFixed());
 
     const recommendedAlbums = await api<PaginatedReponse<Album[]>>(
       `/albums?filter[categories.id]=${albumCategories}`
