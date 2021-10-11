@@ -25,6 +25,7 @@ import { ContactSection } from "../../components/ContactSection";
 type Props = {
   album: Album;
   recommendedAlbums: Album[];
+  estimatedReadingInMinutes: number;
 } & GlobalProps;
 
 const DynamicFullscreenCarousel = dynamic(
@@ -42,6 +43,7 @@ const DynamicAdminOverlay = dynamic(
 const ShowAlbum: NextPage<Props> = ({
   album,
   recommendedAlbums,
+  estimatedReadingInMinutes,
   socialMedias,
   appName,
 }: Props) => {
@@ -135,20 +137,20 @@ const ShowAlbum: NextPage<Props> = ({
       )}
 
       <div className="container mx-auto">
-        <article>
-          <div className="flex justify-center py-16 px-4 text-justify">
-            <div
-              className="prose max-w-none content-center"
-              dangerouslySetInnerHTML={{ __html: album.body ?? "" }}
-            />
-          </div>
-          <div
-            className="container mx-auto mb-16 overflow-hidden py-4"
-            // :style="galleryContentVisibility"
-          >
-            <AlbumMediaList album={album} openGalleryAt={openGalleryAt} />
-          </div>
-        </article>
+        <div className="flex justify-center py-16 px-4 text-justify">
+          <i>Temps de lecture estimé : {estimatedReadingInMinutes} min.</i>
+          <article
+            className="content-center prose max-w-none"
+            dangerouslySetInnerHTML={{ __html: album.body ?? "" }}
+          />
+        </div>
+      </div>
+
+      <div
+        className="container mx-auto py-4 overflow-hidden mb-16"
+        // :style="galleryContentVisibility"
+      >
+        <AlbumMediaList album={album} openGalleryAt={openGalleryAt} />
       </div>
 
       {album.cosplayers?.length && (
@@ -199,6 +201,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       .flat()
       .join(",");
 
+    const estimatedReadingInMinutes = 1;
     const recommendedAlbums = await api<PaginatedReponse<Album[]>>(
       `/albums?filter[categories.id]=${albumCategories}`
     )
@@ -224,7 +227,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     const global = await getGlobalProps();
 
-    return { props: { album, recommendedAlbums, ...global }, revalidate: 60 };
+    return { props: { album, recommendedAlbums, estimatedReadingInMinutes, ...global }, revalidate: 60 };
   } catch (e) {
     if (e instanceof HttpNotFound) {
       return { notFound: true, revalidate: 60 };
