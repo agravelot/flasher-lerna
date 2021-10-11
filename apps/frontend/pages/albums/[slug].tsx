@@ -142,7 +142,10 @@ const ShowAlbum: NextPage<Props> = ({
       <div className="container mx-auto">
           <article>
             <div className="flex justify-center py-16 px-4 text-justify">
-              <div className="content-center prose max-w-none" dangerouslySetInnerHTML={{ __html: album.body ?? "" }}/>
+              <div className="content-center prose max-w-none">
+                <i>Temps de lecture estimé : {estimatedReadingInMinutes} min.</i>
+                <div dangerouslySetInnerHTML={{ __html: album.body ?? "" }}/>
+              </div>
             </div>
             <div
               className="container mx-auto py-4 overflow-hidden mb-16"
