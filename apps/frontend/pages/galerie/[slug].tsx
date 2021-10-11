@@ -201,7 +201,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       .flat()
       .join(",");
 
-    const estimatedReadingInMinutes = 1;
+    const estimatedReadingInMinutes = await api<WrappedResponse<Album>>(`/albums/${params?.slug}`)
+                  .then((res) => res.json())
+                  .then((res) => res.data.body)
+                  .then((res) => res?.replace(/<[^>]*>?/gm, ""))
+                  .then((res) => res?.split(" ").length);
+
     const recommendedAlbums = await api<PaginatedReponse<Album[]>>(
       `/albums?filter[categories.id]=${albumCategories}`
     )
