@@ -198,21 +198,29 @@ export default ShowAlbum;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
-    const album = await api<WrappedResponse<Album>>(`/albums/${params?.slug}`)
+    // const album = await api<WrappedResponse<Album>>(`/albums/${params?.slug}`)
+    //   .then((res) => res.json())
+    //   .then((res) => res.data);
+    const {album, estimatedReadingInMinutes} = await api<WrappedResponse<Album>>(`/albums/${params?.slug}`)
       .then((res) => res.json())
-      .then((res) => res.data);
+      .then((res) => {
+          const albumAPI = res.data;
+          const bodyWithoutHtml = album.body?.replace(/<[^>]*>?/gm, "");
+          const estimatedReadingInMinutes = (bodyWithoutHtml?.split(" ").length/200).toFixed();
+          return {album: albumAPI, estimatedReadingInMinutes: estimatedReadingInMinutes};
+      });
 
     const albumCategories = album.categories
       ?.map((c) => c.id)
       .flat()
       .join(",");
 
-    const estimatedReadingInMinutes = await api<WrappedResponse<Album>>(`/albums/${params?.slug}`)
-                  .then((res) => res.json())
-                  .then((res) => res.data.body)
-                  .then((res) => res?.replace(/<[^>]*>?/gm, ""))
-                  .then((res) => (res?.split(" ").length/200).toFixed());
-
+    // const estimatedReadingInMinutes = await api<WrappedResponse<Album>>(`/albums/${params?.slug}`)
+    //               .then((res) => res.json())
+    //               .then((res) => res.data.body)
+    //               .then((res) => res?.replace(/<[^>]*>?/gm, ""))
+    //               .then((res) => (res?.split(" ").length/200).toFixed());
+    
     const recommendedAlbums = await api<PaginatedReponse<Album[]>>(
       `/albums?filter[categories.id]=${albumCategories}`
     )
