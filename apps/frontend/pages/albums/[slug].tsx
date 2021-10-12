@@ -201,12 +201,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     // const album = await api<WrappedResponse<Album>>(`/albums/${params?.slug}`)
     //   .then((res) => res.json())
     //   .then((res) => res.data);
-    
+
     const {album, estimatedReadingInMinutes} = await api<WrappedResponse<Album>>(`/albums/${params?.slug}`)
       .then((res) => res.json())
       .then((res) => {
           const albumAPI: Album | undefined = res.data;
-          const bodyWithoutHtml: string | undefined = album.body?.replace(/<[^>]*>?/gm, "");
+          const bodyWithoutHtml: string | undefined = albumAPI.body?.replace(/<[^>]*>?/gm, "");
           const estimatedReadingInMinutes: string | undefined = (bodyWithoutHtml.split(" ").length/200).toFixed();
           return {album: albumAPI, estimatedReadingInMinutes: estimatedReadingInMinutes};
       });
