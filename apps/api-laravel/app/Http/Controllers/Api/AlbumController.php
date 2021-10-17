@@ -30,7 +30,7 @@ class AlbumController extends Controller
             QueryBuilder::for(PublicAlbum::class)
                 ->allowedFilters([AllowedFilter::exact('categories.id'), AllowedFilter::exact('cosplayers.id')])
                 ->with('media', 'categories')
-                ->latest()
+                ->orderBy('published_at', 'DESC')
                 ->paginate($request->query->getInt('per_page', 10))
         );
     }

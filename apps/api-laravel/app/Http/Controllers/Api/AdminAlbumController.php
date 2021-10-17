@@ -29,7 +29,7 @@ class AdminAlbumController extends Controller
         return AlbumIndexResource::collection(
             QueryBuilder::for(Album::class)->allowedFilters('title')
                 ->withCount('media')
-                ->latest()
+                ->orderBy('published_at', 'DESC')
                 ->paginate(15)
         );
     }
