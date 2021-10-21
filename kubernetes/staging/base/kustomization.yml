@@ -18,28 +18,26 @@ patchesJson6902:
       group: networking.istio.io
     patch: |-
       - op: replace
-        path: /spec/servers/0/port/name
-        value: http-flasher-staging # Change name to avoid conflicts https://istio.io/latest/docs/ops/common-problems/network-issues/#port-conflict-when-configuring-multiple-tls-hosts-in-a-gateway
-      - op: replace
         path: /spec/servers/1/port/name
         value: https-flasher-staging # Change name to avoid conflicts https://istio.io/latest/docs/ops/common-problems/network-issues/#port-conflict-when-configuring-multiple-tls-hosts-in-a-gateway
+      - op: replace
+        path: /spec/servers/0/port/name
+        value: http-flasher-staging # Change name to avoid conflicts https://istio.io/latest/docs/ops/common-problems/network-issues/#port-conflict-when-configuring-multiple-tls-hosts-in-a-gateway
       - op: replace
         path: /spec/servers/1/hosts
         value:
           - "./agravelot.eu"
           - "./*.agravelot.eu"
-
 generators:
   - secret-generator.yml
 
 patchesStrategicMerge:
   - api/authorization-policy.yml
   - api/virtualservice.yml
-  - admin/virtualservice.yml
-  - frontend/virtualservice.yml
-  # - tusd/authorization-policy.yml
-  # - tusd/virtualservice.yml
+  - tusd/authorization-policy.yml
+  - tusd/virtualservice.yml
   - keycloak/virtualservice.yml
+  - frontend/virtualservice.yml
 
 resources:
   - ../../base/flasher
@@ -47,9 +45,9 @@ resources:
 configMapGenerator:
   - name: api-config
     literals:
-      - APP_NAME=Agravelot
+      - APP_NAME=JKanda
       - APP_ENV=staging
-      - APP_DEBUG="true"
+      - APP_DEBUG="false"
       - APP_URL=https://api.agravelot.eu
       - FRONTEND_URL=https://agravelot.eu
       - ADMIN_URL=https://admin.agravelot.eu
@@ -81,9 +79,7 @@ configMapGenerator:
       - SESSION_LIFETIME=120
       - SESSION_SECURE_COOKIE="true"
       - RESPONSE_CACHE_ENABLED="false"
-      - CRISP_ENABLED="false"
-      - ENABLE_SPX="true"
-      - DISABLE_OPCACHE="false"
+      - TUSD_ENDPOINT=http://tusd:1080
 
   - name: nginx-config
     literals:
@@ -99,8 +95,8 @@ configMapGenerator:
     literals:
       - NUXT_HOST=0.0.0.0
       - NUXT_PORT=80
-      - REMOTE_API=https://agravelot.eu
-      - KEYCLOAK_REMOTE_HOST=https://accounts.agravelot.eu # TODO remove
+      - REMOTE_API=https://api.agravelot.eu
+      - KEYCLOAK_REMOTE_HOST=https://accounts.agravelot.eu # TODO Remove
       - KEYCLOAK_HOST=https://accounts.agravelot.eu
       - KEYCLOAK_REALM=jkanda
       - KEYCLOAK_CLIENT_ID=flasher
@@ -108,35 +104,41 @@ configMapGenerator:
 
   - name: frontend-config
     literals:
-      - NUXT_HOST=0.0.0.0
-      - NUXT_PORT=80
+      - NEXT_PUBLIC_APP_URL=https://agravelot.eu
+      - NEXT_PUBLIC_API_URL=https://api.agravelot.eu/api
+      - NEXT_PUBLIC_KEYCLOAK_REALM=jkanda
+      - NEXT_PUBLIC_KEYCLOAK_URL=https://accounts.agravelot.eu/auth
+      - NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=flasher
+      - NEXT_PUBLIC_ADMINISTRATION_URL=https://admin.agravelot.eu
       - REMOTE_API=https://api.agravelot.eu/api
       - KEYCLOAK_HOST=https://accounts.agravelot.eu
       - KEYCLOAK_REALM=jkanda
       - KEYCLOAK_CLIENT_ID=flasher
       - APP_URL=https://agravelot.eu
       - ADMIN_URL=https://admin.agravelot.eu
-      - NODE_ENV=production
-      - DEBUG=nuxt:*
+      - NODE_ENV=staging
 
 images:
   - name: nginx
     newName: registry.gitlab.com/flasher/flasher/picblog_nginx
-    newTag: "c805294"
+    newTag: "bca71d9"
   - name: php
     newName: registry.gitlab.com/flasher/flasher/picblog_php
-    newTag: "c805294"
-  # - name: tusd
-  #   newName: docker.io/tusproject/tusd
-  #   newTag: v1.2.0
+    newTag: "bca71d9"
+  - name: postgres
+    newTag: 14-alpine
+  - name: tusd
+    newName: docker.io/tusproject/tusd
+    newTag: v1.6.0
   - name: keycloak
     newName: registry.gitlab.com/flasher/flasher/keycloak
-    newTag: 12.0.1
+    newTag: 1.7.2
   - name: admin
     newName: registry.gitlab.com/flasher/flasher/flasher-admin
-    newTag: "4140bc2"
+    newTag: "e97738f"
   - name: frontend
     newName: registry.gitlab.com/flasher/flasher/flasher-frontend
-    newTag: 1.0.4
-  - name: postgres
-    newTag: 12-alpine
+    newTag: 1.11.2
+  - name: api-v2
+    newName: registry.gitlab.com/flasher/flasher/flasher-api-go
+    newTag: 1.7.2

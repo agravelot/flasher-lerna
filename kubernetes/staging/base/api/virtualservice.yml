@@ -5,26 +5,32 @@ metadata:
 spec:
   hosts:
     - "api.agravelot.eu" # TODO Only replace this line
+  gateways:
+    - flasher-gateway
   http:
     - route:
-        - destination:
-            host: api
-            port:
-              number: 80
-          headers:
-            response:
-              add:
-                X-Robots-Tag: "noindex, nofollow"
-                Strict-Transport-Security: max-age=31536000; includeSubDomains
+      - destination:
+          host: api
+          port:
+            number: 80
+      headers:
+        # request:
+        #   add:
+        #     Accept: application/json
+        #     Content-Type: application/json
+        response:
+          add:
+            Strict-Transport-Security: max-age=31536000; includeSubDomains
+            X-Robots-Tag: "noindex, nofollow"
       corsPolicy:
         allowOrigins:
-          - exact: https://agravelot.eu
-          - exact: https://admin.agravelot.eu # TODO Only replace this line
-          - exact: http://localhost:3000 # TODO Only replace this line
+           - exact: https://agravelot.eu
+           - exact: https://admin.agravelot.eu # TODO Only replace this line
+           - exact: http://localhost:3000 # TODO Only replace this line
+           - exact: http://localhost:3000
         allowHeaders:
           - authorization
           - content-type
-          # Media upload
           - cache-control
           - x-requested-with
         allowMethods:
@@ -35,3 +41,6 @@ spec:
           - DELETE
         allowCredentials: true
         #maxAge: "24h"
+
+
+

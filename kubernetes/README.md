@@ -57,7 +57,7 @@ Trigger certificates renew : kubectl cert-manager renew ingress-cert-jkanda.fr -
 
 Custom crd :
 ```yaml
-https://github.com/jetstack/cert-manager/releases/download/v0.15.1/cert-manager.crds.yaml
+https://github.com/jetstack/cert-manager/releases/download/v0.15.4/cert-manager.crds.yaml
 https://raw.githubusercontent.com/istio/istio/master/manifests/charts/base/crds/crd-all.gen.yaml
 https://raw.githubusercontent.com/istio/operator/master/data/operator/templates/crd.yaml
 ```

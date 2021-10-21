@@ -1,2 +1,2 @@
 resources:
-  - https://github.com/jetstack/cert-manager/releases/download/v0.15.1/cert-manager.yaml
+  - https://github.com/jetstack/cert-manager/releases/download/v0.15.4/cert-manager.yaml

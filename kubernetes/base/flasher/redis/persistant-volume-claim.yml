@@ -5,7 +5,7 @@ metadata:
   labels:
     app: redis
 spec:
-  storageClassName: scw-bssd-retain
+  storageClassName: longhorn
   accessModes:
     - ReadWriteOnce
   resources:

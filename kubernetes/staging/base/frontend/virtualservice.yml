@@ -17,3 +17,20 @@ spec:
             response:
               add:
                 X-Robots-Tag: "noindex, nofollow"
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: www-redirect-frontend-virtualservice
+spec:
+  gateways:
+  - flasher-gateway
+  hosts:
+  - www.agravelot.eu
+  http:
+  - match:
+    - authority:
+        exact:
+          www.agravelot.eu
+    redirect:
+      authority: agravelot.eu

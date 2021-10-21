@@ -4,6 +4,5 @@ metadata:
   name: tusd-virtualservice
 spec:
   hosts:
-    - "agravelot.eu"
     - "api.agravelot.eu"
 

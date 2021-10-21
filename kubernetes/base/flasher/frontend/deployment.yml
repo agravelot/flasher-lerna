@@ -67,18 +67,6 @@ spec:
           env:
             - name: PORT
               value: "3000"
-            - name: NEXT_PUBLIC_APP_URL
-              value: https://jkanda.fr
-            - name: NEXT_PUBLIC_API_URL
-              value: https://api.jkanda.fr/api
-            - name: NEXT_PUBLIC_KEYCLOAK_REALM
-              value: jkanda
-            - name: NEXT_PUBLIC_KEYCLOAK_URL
-              value: https://accounts.jkanda.fr/auth
-            - name: NEXT_PUBLIC_KEYCLOAK_CLIENT_ID
-              value: flasher
-            - name: NEXT_PUBLIC_ADMINISTRATION_URL
-              value: https://admin.jkanda.fr
             - name: NEXT_PUBLIC_ALGOLIA_APP_ID
               valueFrom:
                 secretKeyRef:
@@ -94,32 +82,32 @@ spec:
                 secretKeyRef:
                   key: trackingId
                   name: google-analytics
-          # resources:
-          #   requests:
-          #     memory: "64Mi"
-          #     cpu: "100m"
-          #   limits:
-          #     memory: "1024Mi"
-          #     cpu: "3000m"
-        - image: h2non/imaginary:latest
-          imagePullPolicy: IfNotPresent
-          name: frontend-imaginary
-          ports:
-            - name: http-imaginary
-              containerPort: 9000
-          env:
-            - name: PORT
-              value: "9000"
-            - name: MALLOC_ARENA_MAX
-              value : "2"
-          command:
-            - imaginary
-            - -enable-url-source
-            - -allowed-origins
-            - https://assets-jkanda.s3.fr-par.scw.cloud,https://assets.blog.jkanda.s3.fr-par.scw.cloud,https://s3.fr-par.scw.cloud
-            - -concurrency
-            - "6"
-          readinessProbe:
-            httpGet:
-              port: 9000
-              path: /
+          resources:
+            requests:
+              memory: "124Mi"
+              cpu: "100m"
+            limits:
+              memory: "4096Mi"
+              cpu: "3000m"
+        # - image: h2non/imaginary:latest
+        #   imagePullPolicy: IfNotPresent
+        #   name: frontend-imaginary
+        #   ports:
+        #     - name: http-imaginary
+        #       containerPort: 9000
+        #   env:
+        #     - name: PORT
+        #       value: "9000"
+        #     - name: MALLOC_ARENA_MAX
+        #       value : "2"
+        #   command:
+        #     - imaginary
+        #     - -enable-url-source
+        #     - -allowed-origins
+        #     - https://assets-jkanda.s3.fr-par.scw.cloud,https://assets.blog.jkanda.s3.fr-par.scw.cloud,https://s3.fr-par.scw.cloud
+        #     - -concurrency
+        #     - "6"
+        #   readinessProbe:
+        #     httpGet:
+        #       port: 9000
+        #       path: /
