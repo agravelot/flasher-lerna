@@ -53,6 +53,7 @@ module.exports = withTM(
           "assets-jkanda.s3.fr-par.scw.cloud",
           "assets.blog.jkanda.s3.fr-par.scw.cloud",
         ],
+        formats: ["image/avif", "image/webp"]
       },
       poweredByHeader: false,
       compress: false,
