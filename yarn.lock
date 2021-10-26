@@ -2834,6 +2834,11 @@
   resolved "https://registry.yarnpkg.com/@next/swc-linux-x64-musl/-/swc-linux-x64-musl-12.0.0.tgz#f6718cecd37bd6e77b7edf19fbfb0f27a1d17411"
   integrity sha512-0pizk3CZasxbaSyn7FzXb9cfrgIjmyq0dA3+MqvFZJNTLjDw8/yk0w3HdAOPFor3Tgoqhu5nsX/X5mnE6tObng==
 
+"@next/swc-linux-x64-musl@^12.0.1-canary.2":
+  version "12.0.1-canary.3"
+  resolved "https://registry.yarnpkg.com/@next/swc-linux-x64-musl/-/swc-linux-x64-musl-12.0.1-canary.3.tgz#102d61c06d83292ad139e8c5c4e3fdb0143fc659"
+  integrity sha512-RxZooVmx+SaVHT1S9S6y+LOaS/yHFIKyrNbXUEkNw8/ILuqMzYLXy/GtzjfRH7eqNR8aVKMhnBXhUrTq4GnYNw==
+
 "@next/swc-win32-arm64-msvc@12.0.0":
   version "12.0.0"
   resolved "https://registry.yarnpkg.com/@next/swc-win32-arm64-msvc/-/swc-win32-arm64-msvc-12.0.0.tgz#456d357cab970d7fa1b6d4ca6dee323e8f4b3883"
