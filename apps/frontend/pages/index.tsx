@@ -12,7 +12,6 @@ import { NextSeo } from "next-seo";
 import { Album, Testimonial } from "@flasher/models";
 import { api, PaginatedReponse } from "@flasher/common";
 import { configuration } from "utils/configuration";
-import { useRouter } from "next/dist/client/router";
 
 const toggleTestimonialModal = () => {
   return;
@@ -42,6 +41,7 @@ const IndexPage: NextPage<Props> = ({
       <NextSeo
         title={defaultPageTitle}
         description={seoDescription}
+        canonical={`${configuration.appUrl}`}
         openGraph={profilePictureHomepage ? {
           images: [
             {
