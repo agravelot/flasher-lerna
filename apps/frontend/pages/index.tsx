@@ -42,9 +42,7 @@ const IndexPage: NextPage<Props> = ({
       <NextSeo
         title={defaultPageTitle}
         description={seoDescription}
-        canonical={`${configuration.appUrl}${asPath}`}
-        openGraph={{
-        openGraph={profilePictureHomepage && {
+        openGraph={profilePictureHomepage ? {
           images: [
             {
               url: profilePictureHomepage.url,
@@ -53,7 +51,7 @@ const IndexPage: NextPage<Props> = ({
               alt: appName,
             },
           ],
-        }}
+        }: undefined}
       />
       <div>
         <Header title={appName} separatorClass="text-gray-300" />
