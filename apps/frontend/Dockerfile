@@ -63,4 +63,6 @@ ENV NODE_ENV=production
 
 COPY --from=builder /app /app
 
+WORKDIR /app/apps/frontend
+
 CMD ["/app/node_modules/.bin/next", "start"]
