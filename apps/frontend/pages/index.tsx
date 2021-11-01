@@ -33,7 +33,9 @@ const IndexPage: NextPage<Props> = ({
   socialMedias,
   seoDescription,
 }: Props) => {
-  const { asPath } = useRouter();
+  if (!profilePictureHomepage) {
+    console.error("Missing profile picture");
+  }
 
   return (
     <Layout socialMedias={socialMedias} appName={appName}>
@@ -42,6 +44,7 @@ const IndexPage: NextPage<Props> = ({
         description={seoDescription}
         canonical={`${configuration.appUrl}${asPath}`}
         openGraph={{
+        openGraph={profilePictureHomepage && {
           images: [
             {
               url: profilePictureHomepage.url,
@@ -73,7 +76,7 @@ const IndexPage: NextPage<Props> = ({
           <Separator separatorClass="text-white" position="top" />
           <div className="container mx-auto px-4">
             <div className="items-center block lg:flex flex-wrap">
-              <div className="mx-auto w-3/5 lg:w-4/12 lg:order-2">
+              {profilePictureHomepage && <div className="mx-auto w-3/5 lg:w-4/12 lg:order-2">
                 <Image
                   className="shadow-lg object-cover w-full p-8 md:p-16 mb-8 lg:mb-0"
                   alt={appName}
@@ -83,7 +86,7 @@ const IndexPage: NextPage<Props> = ({
                   height={2000}
                   // quality={95}
                 />
-              </div>
+              </div>}
               <div className="w-full lg:w-8²/12 ml-auto mr-auto px-4">
                 <div className="md:pr-12">
                   <h2 className="text-3xl font-semibold">
