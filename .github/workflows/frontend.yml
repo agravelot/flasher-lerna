@@ -73,7 +73,7 @@ jobs:
             "NODE_ENV=production"
     -
       name: Build and push base production
-      if: contains($GITHUB_REF, '-rc.')
+      if: contains(GITHUB_REF, '-rc.')
       uses: docker/build-push-action@v2
       with:
         context: .
