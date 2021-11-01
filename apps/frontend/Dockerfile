@@ -61,6 +61,6 @@ ENV NEXT_PUBLIC_ALGOLIA_API_KEY=$NEXT_PUBLIC_ALGOLIA_API_KEY
 ENV NEXT_PUBLIC_GOOGLE_ANALYTICS_UA=$NEXT_PUBLIC_GOOGLE_ANALYTICS_UA
 ENV NODE_ENV=production
 
-COPY --from=builder /app ./
+COPY --from=builder /app /app
 
 CMD ["/app/node_modules/.bin/next", "start"]
