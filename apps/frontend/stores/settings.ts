@@ -5,8 +5,8 @@ export interface Settings {
   homepageTitle: string;
   homepageSubtitle: string;
   footerContent: string;
-  profilePictureHomepage: SettingMedia;
-  backgroundPictureHomepage: SettingMedia;
+  profilePictureHomepage: SettingMedia | null;
+  backgroundPictureHomepage: SettingMedia | null;
   defaultPageTitle: string;
   homepageHeaderSubtitle: string;
   appName: string;
@@ -26,6 +26,27 @@ export const getSettings = async (): Promise<Settings> => {
         }
         return setting;
       };
+
+      console.log({
+        homepageTitle: getSetting(SettingKeys.HomepageTitle).value as string,
+        homepageSubtitle: getSetting(SettingKeys.HomepageSubtitle)
+          .value as string,
+        footerContent: getSetting(SettingKeys.FooterContent).value as string,
+        profilePictureHomepage: getSetting(SettingKeys.ProfilePictureHomepage)
+          .value as SettingMedia,
+        backgroundPictureHomepage: getSetting(
+          SettingKeys.BackgroundPictureHomepage
+        ).value as SettingMedia,
+        defaultPageTitle: getSetting(SettingKeys.DefaultPageTitle)
+          .value as string,
+        homepageHeaderSubtitle: getSetting(SettingKeys.HomepageHeaderSubtitle)
+          .value as string,
+        appName: getSetting(SettingKeys.AppName).value as string,
+        homepageDescription: getSetting(SettingKeys.HomepageDescription)
+          .value as string,
+        seoDescription: getSetting(SettingKeys.SeoDescription).value as string,
+      });
+      
 
       return {
         homepageTitle: getSetting(SettingKeys.HomepageTitle).value as string,
