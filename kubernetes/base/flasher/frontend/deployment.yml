@@ -61,9 +61,9 @@ spec:
           ports:
             - name: http-nextjs
               containerPort: 3000
-          envFrom:
-            - configMapRef:
-                name: frontend-config
+          # envFrom:
+          #   - configMapRef:
+          #       name: frontend-config
           env:
             - name: PORT
               value: "3000"

@@ -100,21 +100,21 @@ configMapGenerator:
       - KEYCLOAK_CLIENT_ID=flasher
       #- DEBUG=nuxt:*
 
-  - name: frontend-config
-    literals:
-      - NEXT_PUBLIC_APP_URL=https://jkanda.fr
-      - NEXT_PUBLIC_API_URL=https://api.jkanda.fr/api
-      - NEXT_PUBLIC_KEYCLOAK_REALM=jkanda
-      - NEXT_PUBLIC_KEYCLOAK_URL=https://accounts.jkanda.fr/auth
-      - NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=flasher
-      - NEXT_PUBLIC_ADMINISTRATION_URL=https://admin.jkanda.fr
-      - REMOTE_API=https://api.jkanda.fr/api
-      - KEYCLOAK_HOST=https://accounts.jkanda.fr
-      - KEYCLOAK_REALM=jkanda
-      - KEYCLOAK_CLIENT_ID=flasher
-      - APP_URL=https://jkanda.fr
-      - ADMIN_URL=https://admin.jkanda.fr
-      - NODE_ENV=production
+  # - name: frontend-config
+  #   literals:
+  #     - NEXT_PUBLIC_APP_URL=https://jkanda.fr
+  #     - NEXT_PUBLIC_API_URL=https://api.jkanda.fr/api
+  #     - NEXT_PUBLIC_KEYCLOAK_REALM=jkanda
+  #     - NEXT_PUBLIC_KEYCLOAK_URL=https://accounts.jkanda.fr/auth
+  #     - NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=flasher
+  #     - NEXT_PUBLIC_ADMINISTRATION_URL=https://admin.jkanda.fr
+  #     - REMOTE_API=https://api.jkanda.fr/api
+  #     - KEYCLOAK_HOST=https://accounts.jkanda.fr
+  #     - KEYCLOAK_REALM=jkanda
+  #     - KEYCLOAK_CLIENT_ID=flasher
+  #     - APP_URL=https://jkanda.fr
+  #     - ADMIN_URL=https://admin.jkanda.fr
+  #     - NODE_ENV=production
 
 images:
   - name: nginx
@@ -133,7 +133,7 @@ images:
     newTag: 1.7.2
   - name: admin
     newName: registry.gitlab.com/flasher/flasher/flasher-admin
-    newTag: "e97738f"
+    newTag: "0fe855b"
   - name: frontend
     newName: registry.gitlab.com/flasher/flasher/flasher-frontend
     newTag: 1.11.2

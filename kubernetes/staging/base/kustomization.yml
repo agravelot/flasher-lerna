@@ -102,21 +102,21 @@ configMapGenerator:
       - KEYCLOAK_CLIENT_ID=flasher
       #- DEBUG=nuxt:*
 
-  - name: frontend-config
-    literals:
-      - NEXT_PUBLIC_APP_URL=https://agravelot.eu
-      - NEXT_PUBLIC_API_URL=https://api.agravelot.eu/api
-      - NEXT_PUBLIC_KEYCLOAK_REALM=jkanda
-      - NEXT_PUBLIC_KEYCLOAK_URL=https://accounts.agravelot.eu/auth
-      - NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=flasher
-      - NEXT_PUBLIC_ADMINISTRATION_URL=https://admin.agravelot.eu
-      - REMOTE_API=https://api.agravelot.eu/api
-      - KEYCLOAK_HOST=https://accounts.agravelot.eu
-      - KEYCLOAK_REALM=jkanda
-      - KEYCLOAK_CLIENT_ID=flasher
-      - APP_URL=https://agravelot.eu
-      - ADMIN_URL=https://admin.agravelot.eu
-      - NODE_ENV=staging
+  # - name: frontend-config
+  #   literals:
+  #     - NEXT_PUBLIC_APP_URL=https://agravelot.eu
+  #     - NEXT_PUBLIC_API_URL=https://api.agravelot.eu/api
+  #     - NEXT_PUBLIC_KEYCLOAK_REALM=jkanda
+  #     - NEXT_PUBLIC_KEYCLOAK_URL=https://accounts.agravelot.eu/auth
+  #     - NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=flasher
+  #     - NEXT_PUBLIC_ADMINISTRATION_URL=https://admin.agravelot.eu
+  #     - REMOTE_API=https://api.agravelot.eu/api
+  #     - KEYCLOAK_HOST=https://accounts.agravelot.eu
+  #     - KEYCLOAK_REALM=jkanda
+  #     - KEYCLOAK_CLIENT_ID=flasher
+  #     - APP_URL=https://agravelot.eu
+  #     - ADMIN_URL=https://admin.agravelot.eu
+  #     - NODE_ENV=production
 
 images:
   - name: nginx
@@ -135,10 +135,10 @@ images:
     newTag: 1.7.2
   - name: admin
     newName: registry.gitlab.com/flasher/flasher/flasher-admin
-    newTag: "e97738f"
+    newTag: "0fe855b"
   - name: frontend
     newName: registry.gitlab.com/flasher/flasher/flasher-frontend
-    newTag: 1.11.2
+    newTag: 1.12.0-rc.9
   - name: api-v2
     newName: registry.gitlab.com/flasher/flasher/flasher-api-go
     newTag: 1.7.2

@@ -64,12 +64,6 @@ jobs:
             "NEXT_PUBLIC_KEYCLOAK_URL=https://accounts.agravelot.eu/auth"
             "NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=flasher"
             "NEXT_PUBLIC_ADMINISTRATION_URL=https://admin.agravelot.eu"
-            "REMOTE_API=https://api.agravelot.eu/api"
-            "KEYCLOAK_HOST=https://accounts.agravelot.eu"
-            "KEYCLOAK_REALM=jkanda"
-            "KEYCLOAK_CLIENT_ID=flasher"
-            "APP_URL=https://agravelot.eu"
-            "ADMIN_URL=https://admin.agravelot.eu"
             "NODE_ENV=production"
     -
       name: Build and push base production
