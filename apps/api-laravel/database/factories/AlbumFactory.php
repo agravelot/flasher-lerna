@@ -47,9 +47,15 @@ $factory->state(Album::class, 'withMedias', static function () use (&$withMedias
     return [];
 });
 
-$factory->state(Album::class, 'published', static function () {
+$factory->state(Album::class, 'published-now', static function () {
     return [
         'published_at' => Carbon::now(),
+    ];
+});
+
+$factory->state(Album::class, 'published', static function () {
+    return [
+        'published_at' => Carbon::now()->subMinutes(rand(1, 55)),
     ];
 });
 
