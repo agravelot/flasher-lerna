@@ -10,6 +10,7 @@ use App\Http\Resources\AlbumIndexResource;
 use App\Http\Resources\AlbumShowResource;
 use App\Jobs\DeleteAlbum;
 use App\Models\Album;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -24,13 +25,13 @@ class AdminAlbumController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): AnonymousResourceCollection
+    public function index(Request $request): AnonymousResourceCollection
     {
         return AlbumIndexResource::collection(
             QueryBuilder::for(Album::class)->allowedFilters('title')
                 ->withCount('media')
                 ->orderBy('published_at', 'DESC')
-                ->paginate(15)
+                ->paginate($request->query->getInt('per_page', 15))
         );
     }
 
