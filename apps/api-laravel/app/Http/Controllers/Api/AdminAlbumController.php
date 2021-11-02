@@ -10,8 +10,8 @@ use App\Http\Resources\AlbumIndexResource;
 use App\Http\Resources\AlbumShowResource;
 use App\Jobs\DeleteAlbum;
 use App\Models\Album;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\QueryBuilder;
 
