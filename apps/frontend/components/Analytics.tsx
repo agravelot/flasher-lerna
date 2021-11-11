@@ -8,9 +8,7 @@ interface Config {
 
 const config: Config = {
   ua: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_UA ?? "",
-  debug: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_DEBUG
-    ? process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_DEBUG === "true"
-    : process.env.NODE_ENV !== "production",
+  debug: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_DEBUG  === "true",
 };
 
 export const Analytics = (): null => {
