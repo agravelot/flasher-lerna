@@ -1,4 +1,8 @@
-FROM node:16-alpine AS deps
+FROM node:16-alpine AS base
+RUN apk add libc6-compat --no-cache
+
+
+FROM base AS deps
 
 WORKDIR /app
 
@@ -12,7 +16,7 @@ RUN yarn install --frozen-lockfile
 
 
 
-FROM node:16-alpine AS builder
+FROM base AS builder
 
 ARG NEXT_PUBLIC_APP_URL
 ARG NEXT_PUBLIC_API_URL
@@ -26,8 +30,6 @@ ARG NEXT_PUBLIC_GOOGLE_ANALYTICS_UA
 
 ENV NODE_ENV=production
 
-# RUN env | grep NEXT && exit 10
-
 WORKDIR /app
 
 COPY [^a]* . 
@@ -37,6 +39,7 @@ COPY apps/common apps/common
 COPY apps/models apps/models 
 
 RUN yarn workspace @flasher/frontend run build && yarn install --frozen-lockfile --production --ignore-scripts --prefer-offline
+RUN cd node_modules/sharp/ && yarn run install && cd -
 
 FROM node:16-alpine AS runner
 
