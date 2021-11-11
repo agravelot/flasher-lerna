@@ -13,6 +13,11 @@ const config: Config = {
 
 export const Analytics = (): null => {
   useEffect(() => {
+    if (!config.ua) {
+      console.error("Google Analytics UA not set");
+      return;
+    }
+
     const ga4react = new GA4React(config.ua);
 
     ga4react.initialize();
