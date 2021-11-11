@@ -4,6 +4,7 @@ import { configuration } from "../utils/configuration";
 import "../styles/main.css";
 import { ReactElement } from "react";
 import { Analytics } from "components/Analytics";
+import { Clarity } from "components/Clarity";
 
 function App({ Component, pageProps }: AppProps): ReactElement {
   return (
@@ -15,6 +16,7 @@ function App({ Component, pageProps }: AppProps): ReactElement {
       persistor={SSRCookies({})}
     >
       <Analytics />
+      <Clarity />
       <Component {...pageProps} />
     </SSRKeycloakProvider>
   );
