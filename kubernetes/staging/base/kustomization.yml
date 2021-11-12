@@ -28,6 +28,11 @@ patchesJson6902:
         value:
           - "./agravelot.eu"
           - "./*.agravelot.eu"
+      - op: replace
+        path: /spec/servers/0/hosts
+        value:
+          - "./agravelot.eu"
+          - "./*.agravelot.eu"
 generators:
   - secret-generator.yml
 
