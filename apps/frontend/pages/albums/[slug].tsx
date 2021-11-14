@@ -20,9 +20,7 @@ import Layout from "../../components/Layout";
 import Header from "../../components/Header";
 import AlbumMediaList from "../../components/album/AlbumMediaList";
 import { useAuthentication } from "hooks/useAuthentication";
-import useInView from "react-cool-inview";
 
-const Comments = dynamic(() => import("../../components/Comments"), { ssr: false });
 type Props = {
   album: Album;
   recommendedAlbums: Album[];
@@ -49,10 +47,6 @@ const ShowAlbum: NextPage<Props> = ({
   const [loadCarousel, setLoadCarousel] = useState<boolean>(false);
   const [isCarouselOpenned, setIsCarouselOpenned] = useState<boolean>(true);
   const [carouselIndex, setCarouselIndex] = useState<number>(0);
-
-  const { observe, inView } = useInView({
-    onEnter: ({ unobserve }) => unobserve(), // only run once
-  });
 
   const router = useRouter();
   const url = `${configuration.appUrl}${router.pathname}`;
@@ -170,10 +164,6 @@ const ShowAlbum: NextPage<Props> = ({
           </div>
         </div>
       )}
-
-      <div ref={observe} className="mt-8 mb-32 container mx-auto">
-        { inView && <Comments url={`${configuration.appUrl}/albums/${album.slug}`} identifier={`/albums/${album.slug}`} title={album.title} /> }
-      </div>
 
       {recommendedAlbums.length && (
         <div className="container mx-auto mb-16 lg:mb-24">
