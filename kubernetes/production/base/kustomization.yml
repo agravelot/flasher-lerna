@@ -124,7 +124,7 @@ images:
     newName: registry.gitlab.com/flasher/flasher/picblog_php
     newTag: "bca71d9"
   - name: postgres
-    newTag: 12-alpine
+    newTag: 14-alpine
   - name: tusd
     newName: docker.io/tusproject/tusd
     newTag: v1.6.0
@@ -136,7 +136,7 @@ images:
     newTag: "0fe855b"
   - name: frontend
     newName: registry.gitlab.com/flasher/flasher/flasher-frontend
-    newTag: 1.11.2
+    newTag: 1.12.3
   - name: api-v2
     newName: registry.gitlab.com/flasher/flasher/flasher-api-go
     newTag: 1.7.2

@@ -18,7 +18,7 @@ spec:
     spec:
       enableServiceLinks: false
       containers:
-        - image: postgres:13-alpine
+        - image: postgres
           name: postgres
           env:
             - name: POSTGRES_PASSWORD
