@@ -126,10 +126,10 @@ configMapGenerator:
 images:
   - name: nginx
     newName: registry.gitlab.com/flasher/flasher/picblog_nginx
-    newTag: "bca71d9"
+    newTag: "10d5061"
   - name: php
     newName: registry.gitlab.com/flasher/flasher/picblog_php
-    newTag: "bca71d9"
+    newTag: "10d5061"
   - name: postgres
     newTag: 14-alpine
   - name: tusd
