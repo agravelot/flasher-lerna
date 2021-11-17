@@ -8,6 +8,14 @@ spec:
   gateways:
     - flasher-gateway
   http:
+    - match:
+        - uri:
+            exact: /_next/image
+      route:
+        - destination:
+            host: frontend
+            port:
+              number: 80
     - route:
         - destination:
             host: frontend

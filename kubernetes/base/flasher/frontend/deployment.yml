@@ -43,10 +43,10 @@ spec:
               mountPath: /var/lib/nginx/cache
           ports:
             - name: http-frontend
-              containerPort: 3000
+              containerPort: 80
           readinessProbe:
             httpGet:
-              port: 3000
+              port: 80
               path: /
           resources:
             requests:
