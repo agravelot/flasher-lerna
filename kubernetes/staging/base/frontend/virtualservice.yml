@@ -8,11 +8,29 @@ spec:
   gateways:
     - flasher-gateway
   http:
-    - route:
+    - match:
+        - uri:
+            exact: /_next/image
+      route:
         - destination:
             host: frontend
             port:
               number: 80
+    - match:
+        - uri:
+            exact: "/sitemap.xml"
+      rewrite:
+        uri: "/api/sitemap.xml"
+      route:
+        - destination:
+            host: frontend
+            port:
+              number: 3000
+    - route:
+        - destination:
+            host: frontend
+            port:
+              number: 3000
           headers:
             response:
               add:
@@ -31,6 +49,6 @@ spec:
   - match:
     - authority:
         exact:
-          www.agravelot.eu
+          www.jkanda.fr
     redirect:
-      authority: agravelot.eu
+      authority: jkanda.fr
