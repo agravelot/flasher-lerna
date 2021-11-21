@@ -84,8 +84,8 @@ spec:
                   name: google-analytics
           resources:
             requests:
-              memory: "124Mi"
-              cpu: "100m"
+              memory: "512Mi"
+              cpu: "1000m"
             limits:
               memory: "4096Mi"
               cpu: "3000m"
