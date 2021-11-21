@@ -16,6 +16,16 @@ spec:
             host: frontend
             port:
               number: 80
+    - match:
+        - uri:
+            exact: "/sitemap.xml"
+      rewrite:
+        uri: "/api/sitemap.xml"
+      route:
+        - destination:
+            host: frontend
+            port:
+              number: 3000
     - route:
         - destination:
             host: frontend
