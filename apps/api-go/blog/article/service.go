@@ -20,8 +20,8 @@ type Service interface {
 }
 
 type PaginationParams struct {
-	Page    int
-	PerPage int
+	Next  string
+	Limit int
 }
 
 type PaginatedArticles struct {
@@ -64,11 +64,11 @@ func (s *service) GetArticleList(ctx context.Context, params PaginationParams) (
 
 	// TODO Can run in goroutines ?
 	query.Count(&total)
-	query.Scopes(api.Paginate(params.Page, params.PerPage)).Find(&articles)
+	query.Scopes(api.Paginate(params.Next, params.Limit)).Find(&articles)
 
 	return PaginatedArticles{
 		Data: articles,
-		Meta: api.Meta{Total: total, PerPage: params.PerPage},
+		Meta: api.Meta{Total: total, Limit: params.Limit},
 	}, nil
 }
 

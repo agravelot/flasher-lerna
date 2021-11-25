@@ -34,7 +34,7 @@ func TestListAlbums(t *testing.T) {
 		// Assertions
 		if assert.NoError(t, ListAlbums(c)) {
 			assert.Equal(t, http.StatusOK, rec.Code)
-			assert.Equal(t, `{"data":[],"meta":{"total":0,"per_page":10}}`+"\n", rec.Body.String())
+			assert.Equal(t, `{"data":[],"meta":{"total":0,"limit":10}}`+"\n", rec.Body.String())
 		}
 	})
 
@@ -70,7 +70,7 @@ func TestListAlbums(t *testing.T) {
 			if err := json.NewDecoder(rec.Body).Decode(&result); err != nil {
 				log.Fatalln(err)
 			}
-			assert.Equal(t, 10, result.Meta.PerPage)
+			assert.Equal(t, 10, result.Meta.Limit)
 			assert.Equal(t, 1, len(result.Data), "only one album should be avaiblable publicly")
 			assert.Equal(t, result.Data[0].Slug, "a-good-album")
 			// So(len(result), ShouldEqual, 0)

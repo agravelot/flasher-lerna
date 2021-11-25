@@ -8,8 +8,8 @@ import (
 )
 
 type Meta struct {
-	Total   int64 `json:"total"`
-	PerPage int   `json:"per_page"`
+	Total int64 `json:"total"`
+	Limit int   `json:"limit"`
 }
 
 type Paginated struct {
@@ -37,11 +37,8 @@ func Paginatee(c echo.Context) func(db *gorm.DB) *gorm.DB {
 	}
 }
 
-func GetPaginationFromRequest(c echo.Context) (int, int) {
-	page, _ := strconv.Atoi(c.QueryParam("page"))
-	if page == 0 {
-		page = 1
-	}
+func GetPaginationFromRequest(c echo.Context) (string, int) {
+	page := c.QueryParam("page")
 
 	pageSize, _ := strconv.Atoi(c.QueryParam("per_page"))
 
@@ -54,9 +51,11 @@ func GetPaginationFromRequest(c echo.Context) (int, int) {
 	return page, pageSize
 }
 
-func Paginate(page int, pageSize int) func(db *gorm.DB) *gorm.DB {
+func Paginate(next string, pageSize int) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
-		offset := (page - 1) * pageSize
-		return db.Offset(offset).Limit(pageSize)
+		if next != "" {
+			db = db.Where("id > ?", next)
+		}
+		return db.Limit(pageSize)
 	}
 }

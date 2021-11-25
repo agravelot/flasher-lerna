@@ -22,18 +22,18 @@ func GetAlbumBySlug(slug string) (Album, error) {
 	return album, err
 }
 
-func GetAlbumsPaginated(page, perPage int) PaginatedAlbums {
+func GetAlbumsPaginated(next string, limit int) PaginatedAlbums {
 	dbInstance := database.DbManager()
 
 	albums := []Album{}
-	dbInstance.Scopes(api.Paginate(page, perPage), Public).Find(&albums)
+	dbInstance.Scopes(api.Paginate(next, limit), Public).Find(&albums)
 
 	var total int64
-	dbInstance.Model(&albums).Scopes(api.Paginate(page, perPage), Public).Count(&total)
+	dbInstance.Model(&albums).Scopes(api.Paginate(next, limit), Public).Count(&total)
 
 	return PaginatedAlbums{
 		Data: albums,
-		Meta: api.Meta{Total: total, PerPage: perPage},
+		Meta: api.Meta{Total: total, Limit: limit},
 	}
 }
 

@@ -96,25 +96,19 @@ func decodePostArticleRequest(_ context.Context, r *http.Request) (request inter
 }
 
 func decodeGetArticleListRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
-	var page, perPage int
+	var limit int
 
-	pageString := r.URL.Query().Get("page")
-	if pageString != "" {
-		page, err = strconv.Atoi(pageString)
+	nextString := r.URL.Query().Get("next")
+
+	limitString := r.URL.Query().Get("limit")
+	if limitString != "" {
+		limit, err = strconv.Atoi(limitString)
 		if err != nil {
 			return nil, ErrBadRequest
 		}
 	}
 
-	perPageString := r.URL.Query().Get("per_page")
-	if perPageString != "" {
-		perPage, err = strconv.Atoi(perPageString)
-		if err != nil {
-			return nil, ErrBadRequest
-		}
-	}
-
-	return getArticleListRequest{Page: page, PerPage: perPage}, nil
+	return getArticleListRequest{Next: nextString, Limit: limit}, nil
 }
 
 func decodeGetArticleRequest(_ context.Context, r *http.Request) (request interface{}, err error) {

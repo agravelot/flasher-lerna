@@ -48,15 +48,15 @@ func MakeGetArticleListEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(getArticleListRequest)
 
-		if req.Page == 0 {
-			req.Page = 1
+		// if req.Page == 0 {
+		// 	req.Page = 1
+		// }
+
+		if req.Limit == 0 {
+			req.Limit = 10
 		}
 
-		if req.PerPage == 0 {
-			req.PerPage = 10
-		}
-
-		pa, e := s.GetArticleList(ctx, PaginationParams{req.Page, req.PerPage})
+		pa, e := s.GetArticleList(ctx, PaginationParams{Next: req.Next, Limit: req.Limit})
 		return getArticleListResponse{PaginatedArticles: pa, Err: e}, nil
 	}
 }
@@ -138,8 +138,8 @@ type postArticleResponse struct {
 func (r postArticleResponse) error() error { return r.Err }
 
 type getArticleListRequest struct {
-	Page    int
-	PerPage int
+	Next  string
+	Limit int
 }
 
 type getArticleListResponse struct {
