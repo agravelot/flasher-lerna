@@ -1,7 +1,6 @@
 package route
 
 import (
-	"api-go/albums"
 	"api-go/api"
 	"net/http"
 
@@ -14,7 +13,7 @@ func Init(e *echo.Echo) *echo.Echo {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 
-	albums.Setup(e)
+	// albums.Setup(e)
 	// categories.Setup(e)
 
 	e.GET("/testimonials", api.GetTestimonials)

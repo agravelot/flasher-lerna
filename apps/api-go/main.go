@@ -1,6 +1,7 @@
 package main
 
 import (
+	album "api-go/albums"
 	"api-go/article"
 	"api-go/config"
 	database "api-go/db"
@@ -32,9 +33,16 @@ func main() {
 		s = article.LoggingMiddleware(logger)(s)
 	}
 
+	var sa album.Service
+	{
+		sa = album.NewService(db)
+		sa = album.LoggingMiddleware(logger)(sa)
+	}
+
 	var h http.Handler
 	{
 		h = article.MakeHTTPHandler(s, log.With(logger, "component", "HTTP"))
+		h = album.MakeHTTPHandler(sa, log.With(logger, "component", "HTTP"))
 	}
 
 	errs := make(chan error)
