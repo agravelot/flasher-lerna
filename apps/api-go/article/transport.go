@@ -3,7 +3,7 @@ package article
 // The articlesvc is just over HTTP, so we just have a single transport.go.
 
 import (
-	"api-go/blog/auth"
+	"api-go/auth"
 	"bytes"
 	"context"
 	"encoding/json"

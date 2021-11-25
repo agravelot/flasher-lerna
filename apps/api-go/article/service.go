@@ -2,7 +2,7 @@ package article
 
 import (
 	"api-go/api"
-	"api-go/blog/auth"
+	"api-go/auth"
 	"context"
 	"errors"
 

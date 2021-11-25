@@ -1,7 +1,7 @@
 package main
 
 import (
-	"api-go/blog/article"
+	"api-go/article"
 	"api-go/config"
 	database "api-go/db"
 	"fmt"
