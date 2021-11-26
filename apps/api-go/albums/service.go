@@ -70,6 +70,16 @@ func (s *service) GetAlbumList(ctx context.Context, params PaginationParams) (Pa
 		spew.Dump(err2)
 	}
 
+	// for _, album := range albums {
+	// 	data := album.Medias[0].ResponsiveImages
+	// 	var c ResponsiveImage
+	// 	err := json.Unmarshal([]byte(data), &c)
+	// 	if err != nil {
+	// 		panic(err)
+	// 	}
+	// 	spew.Dump(c)
+	// }
+
 	return PaginatedAlbums{
 		Data: albums,
 		Meta: api.Meta{Total: total, Limit: params.Limit},
