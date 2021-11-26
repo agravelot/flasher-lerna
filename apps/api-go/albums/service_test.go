@@ -126,6 +126,34 @@ func TestShouldBeAbleToListWithOnePublishedAlbum(t *testing.T) {
 	assert.Equal(t, 1, len(r.Data))
 }
 
+func TestShouldBeOrderedByDateOfPublication(t *testing.T) {
+	database.ClearDB(db)
+	a := Album{Title: "A good Title", PublishedAt: null.NewTime(time.Now(), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
+	b := Album{Title: "A good Title 2", PublishedAt: null.NewTime(time.Now().Add(100*time.Hour), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
+	c := Album{Title: "A good Title 3", PublishedAt: null.NewTime(time.Now().Add(10*time.Hour), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
+	err := db.Create(&a).Error
+	if err != nil {
+		t.Error(err)
+	}
+	err = db.Create(&b).Error
+	if err != nil {
+		t.Error(err)
+	}
+	err = db.Create(&c).Error
+	if err != nil {
+		t.Error(err)
+	}
+
+	r, _ := s.GetAlbumList(context.Background(), PaginationParams{"", 10})
+
+	assert.Equal(t, int64(3), r.Meta.Total)
+	assert.Equal(t, 10, r.Meta.Limit)
+	assert.Equal(t, 3, len(r.Data))
+	assert.Equal(t, a.Slug, r.Data[0].Slug)
+	assert.Equal(t, c.Slug, r.Data[1].Slug)
+	assert.Equal(t, b.Slug, r.Data[2].Slug)
+}
+
 func TestShouldBeAbleToListPublishedAlbumsOnSecondPage(t *testing.T) {
 	var albums []Album
 	database.ClearDB(db)

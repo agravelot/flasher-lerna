@@ -9,6 +9,29 @@ import (
 	"gorm.io/gorm"
 )
 
+type Category struct {
+	ID              int         `gorm:"primaryKey;autoIncrement" json:"id"`
+	Name            string      `gorm:"column:name;type:VARCHAR;size:255;" json:"name"`
+	Slug            string      `gorm:"column:slug;type:VARCHAR;size:255;" json:"slug"`
+	Description     null.String `gorm:"column:description;type:TEXT;" json:"description"`
+	MetaDescription string      `gorm:"column:meta_description;type:VARCHAR;size:155;" json:"meta_description"`
+	CreatedAt       time.Time   `gorm:"type:TIMESTAMP;" json:"created_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
+	UpdatedAt       null.Time   `gorm:"type:TIMESTAMP;" json:"updated_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
+
+	Albums []*Album `gorm:"many2many:album_category" json:"albums"`
+}
+
+type AlbumCategory struct {
+	AlbumID    int       `gorm:"primaryKey"`
+	CategoryID int       `gorm:"primaryKey"`
+	CreatedAt  time.Time `gorm:"type:TIMESTAMP;" json:"created_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
+	UpdatedAt  null.Time `gorm:"type:TIMESTAMP;" json:"updated_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
+}
+
+func (AlbumCategory) TableName() string {
+	return "album_category"
+}
+
 // Album represents a single album.
 // ID should be globally unique.
 type Album struct {
@@ -23,6 +46,8 @@ type Album struct {
 	SsoID                  string    `gorm:"type:UUID;" json:"sso_id" swaggertype:"string" example:"123e4567-e89b-12d3-a456-426614174000"`
 	CreatedAt              time.Time `gorm:"type:TIMESTAMP;" json:"created_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
 	UpdatedAt              null.Time `gorm:"type:TIMESTAMP;" json:"updated_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
+
+	Categories []*Category `gorm:"many2many:album_category" json:"categories"`
 }
 
 func (a *Album) BeforeCreate(tx *gorm.DB) (err error) {

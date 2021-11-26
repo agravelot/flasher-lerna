@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 
+	"github.com/davecgh/go-spew/spew"
 	"gorm.io/gorm"
 )
 
@@ -58,13 +59,16 @@ func (s *service) GetAlbumList(ctx context.Context, params PaginationParams) (Pa
 
 	query := s.db.Model(&albums)
 
-	if user == nil || (user != nil && user.IsAdmin() == false) {
+	if user == nil || (user != nil && !user.IsAdmin()) {
 		query = query.Scopes(Published)
 	}
 
 	// TODO Can run in goroutines ?
 	query.Count(&total)
-	query.Scopes(api.Paginate(params.Next, params.Limit)).Find(&albums)
+	err2 := query.Scopes(api.Paginate(params.Next, params.Limit)).Order("published_at").Preload("Categories").Find(&albums).Error
+	if err2 != nil {
+		spew.Dump(err2)
+	}
 
 	return PaginatedAlbums{
 		Data: albums,
@@ -79,7 +83,7 @@ func (s *service) PostAlbum(ctx context.Context, a Album) (Album, error) {
 		return Album{}, ErrNoAuth
 	}
 
-	if user.IsAdmin() == false {
+	if !user.IsAdmin() {
 		return Album{}, ErrNotAdmin
 	}
 
@@ -105,7 +109,7 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (Album, error) {
 
 	query := s.db.Where("slug = ?", slug)
 
-	if user == nil || (user != nil && user.IsAdmin() == false) {
+	if user == nil || (user != nil && !user.IsAdmin()) {
 		query = query.Scopes(Published)
 	}
 
@@ -126,7 +130,7 @@ func (s *service) PutAlbum(ctx context.Context, slug string, a Album) (Album, er
 		return Album{}, ErrNoAuth
 	}
 
-	if user.IsAdmin() == false {
+	if !user.IsAdmin() {
 		return Album{}, ErrNotAdmin
 	}
 
