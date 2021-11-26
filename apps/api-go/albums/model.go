@@ -9,6 +9,30 @@ import (
 	"gorm.io/gorm"
 )
 
+type Media struct {
+	ID               int32       `gorm:"primary_key;column:id;type:INT4;" json:"id"`
+	ModelType        string      `gorm:"column:model_type;type:VARCHAR;size:255;" json:"model_type"`
+	ModelID          int64       `gorm:"column:model_id;type:INT8;" json:"model_id"`
+	CollectionName   string      `gorm:"column:collection_name;type:VARCHAR;size:255;" json:"collection_name"`
+	Name             string      `gorm:"column:name;type:VARCHAR;size:255;" json:"name"`
+	FileName         string      `gorm:"column:file_name;type:VARCHAR;size:255;" json:"file_name"`
+	MimeType         null.String `gorm:"column:mime_type;type:VARCHAR;size:255;" json:"mime_type"`
+	Disk             string      `gorm:"column:disk;type:VARCHAR;size:255;" json:"disk"`
+	Size             int64       `gorm:"column:size;type:INT8;" json:"size"`
+	Manipulations    string      `gorm:"column:manipulations;type:JSON;" json:"manipulations"`
+	CustomProperties string      `gorm:"column:custom_properties;type:JSON;" json:"custom_properties"`
+	ResponsiveImages string      `gorm:"column:responsive_images;type:JSON;" json:"responsive_images"`
+	OrderColumn      null.Int    `gorm:"column:order_column;type:INT4;" json:"order_column"`
+	CreatedAt        null.Time   `gorm:"column:created_at;type:TIMESTAMP;" json:"created_at"`
+	UpdatedAt        null.Time   `gorm:"column:updated_at;type:TIMESTAMP;" json:"updated_at"`
+	UUID             null.String `gorm:"column:uuid;type:UUID;" json:"uuid"`
+	ConversionsDisk  null.String `gorm:"column:conversions_disk;type:VARCHAR;size:255;" json:"conversions_disk"`
+}
+
+func (Media) TableName() string {
+	return "media"
+}
+
 type Category struct {
 	ID              int         `gorm:"primaryKey;autoIncrement" json:"id"`
 	Name            string      `gorm:"column:name;type:VARCHAR;size:255;" json:"name"`
@@ -48,6 +72,7 @@ type Album struct {
 	UpdatedAt              null.Time `gorm:"type:TIMESTAMP;" json:"updated_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
 
 	Categories []*Category `gorm:"many2many:album_category" json:"categories"`
+	Medias     []*Media    `gorm:"polymorphic:Model;polymorphicValue:App\\Models\\Album" json:"medias"`
 }
 
 func (a *Album) BeforeCreate(tx *gorm.DB) (err error) {

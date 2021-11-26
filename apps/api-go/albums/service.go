@@ -65,7 +65,7 @@ func (s *service) GetAlbumList(ctx context.Context, params PaginationParams) (Pa
 
 	// TODO Can run in goroutines ?
 	query.Count(&total)
-	err2 := query.Scopes(api.Paginate(params.Next, params.Limit)).Order("published_at").Preload("Categories").Find(&albums).Error
+	err2 := query.Scopes(api.Paginate(params.Next, params.Limit)).Order("published_at").Preload("Categories").Preload("Medias").Find(&albums).Error
 	if err2 != nil {
 		spew.Dump(err2)
 	}
