@@ -104,22 +104,26 @@ func TestMain(m *testing.M) {
 
 func TestShouldBeAbleToListEmpty(t *testing.T) {
 	database.ClearDB(db)
-	r, _ := s.GetAlbumList(context.Background(), PaginationParams{"", 10})
+	r, _ := s.GetAlbumList(context.Background(), PaginationParams{0, 10})
 
 	assert.Equal(t, 0, len(r.Data))
 	assert.Equal(t, int64(0), r.Meta.Total)
 	assert.Equal(t, 10, r.Meta.Limit)
 }
 
+func boolPtr(b bool) *bool {
+	return &b
+}
+
 func TestShouldBeAbleToListWithOnePublishedAlbum(t *testing.T) {
 	database.ClearDB(db)
-	a := Album{Title: "A good Title", PublishedAt: null.NewTime(time.Now(), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
+	a := Album{Title: "A good Title aze", PublishedAt: null.NewTime(time.Now().Add(-10*time.Minute), true), Private: boolPtr(false), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
 	err := db.Create(&a).Error
 	if err != nil {
 		t.Error(err)
 	}
 
-	r, _ := s.GetAlbumList(context.Background(), PaginationParams{"", 10})
+	r, _ := s.GetAlbumList(context.Background(), PaginationParams{0, 10})
 
 	assert.Equal(t, int64(1), r.Meta.Total)
 	assert.Equal(t, 10, r.Meta.Limit)
@@ -128,9 +132,9 @@ func TestShouldBeAbleToListWithOnePublishedAlbum(t *testing.T) {
 
 func TestShouldBeOrderedByDateOfPublication(t *testing.T) {
 	database.ClearDB(db)
-	a := Album{Title: "A good Title", PublishedAt: null.NewTime(time.Now(), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-	b := Album{Title: "A good Title 2", PublishedAt: null.NewTime(time.Now().Add(100*time.Hour), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-	c := Album{Title: "A good Title 3", PublishedAt: null.NewTime(time.Now().Add(10*time.Hour), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
+	a := Album{Title: "A good Title", PublishedAt: null.NewTime(time.Now().Add(-100*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
+	b := Album{Title: "A good Title 2", PublishedAt: null.NewTime(time.Now().Add(-10*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
+	c := Album{Title: "A good Title 3", PublishedAt: null.NewTime(time.Now().Add(-1*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
 	err := db.Create(&a).Error
 	if err != nil {
 		t.Error(err)
@@ -144,28 +148,51 @@ func TestShouldBeOrderedByDateOfPublication(t *testing.T) {
 		t.Error(err)
 	}
 
-	r, _ := s.GetAlbumList(context.Background(), PaginationParams{"", 10})
+	r, _ := s.GetAlbumList(context.Background(), PaginationParams{0, 10})
 
 	assert.Equal(t, int64(3), r.Meta.Total)
 	assert.Equal(t, 10, r.Meta.Limit)
 	assert.Equal(t, 3, len(r.Data))
-	assert.Equal(t, a.Slug, r.Data[0].Slug)
-	assert.Equal(t, c.Slug, r.Data[1].Slug)
-	assert.Equal(t, b.Slug, r.Data[2].Slug)
+	assert.Equal(t, c.Slug, r.Data[0].Slug)
+	assert.Equal(t, b.Slug, r.Data[1].Slug)
+	assert.Equal(t, a.Slug, r.Data[2].Slug)
+}
+
+func TestShouldOnlyShowPublicAlbums(t *testing.T) {
+	database.ClearDB(db)
+	albums := []Album{
+		{Title: "A good Title", PublishedAt: null.NewTime(time.Now().Add(-10*time.Minute), true), Private: boolPtr(false), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"},
+		{Title: "A good Title 2", PublishedAt: null.NewTime(time.Now().Add(-10*time.Minute), true), Private: boolPtr(true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"},
+		{Title: "A good Title 3", Private: boolPtr(true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"},
+		{Title: "A good Title 4", Private: boolPtr(false), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"},
+	}
+
+	for _, a := range albums {
+		err := db.Create(&a).Error
+		if err != nil {
+			t.Error(err)
+		}
+	}
+
+	r, _ := s.GetAlbumList(context.Background(), PaginationParams{0, 10})
+
+	assert.Equal(t, int64(1), r.Meta.Total)
+	assert.Equal(t, 10, r.Meta.Limit)
+	assert.Equal(t, 1, len(r.Data))
 }
 
 func TestShouldBeAbleToListPublishedAlbumsOnSecondPage(t *testing.T) {
-	var albums []Album
 	database.ClearDB(db)
+	var albums []Album
 	for i := 0; i < 10; i++ {
-		tmp := Album{Title: "A good Title " + strconv.Itoa(i), PublishedAt: null.NewTime(time.Now(), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
+		tmp := Album{Title: "A good Title " + strconv.Itoa(i), PublishedAt: null.NewTime(time.Now().Add(-1*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
 		db.Create(&tmp)
 		albums = append(albums, tmp)
 	}
-	a := Album{Title: "On second page", PublishedAt: null.NewTime(time.Now(), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
+	a := Album{Title: "On second page", PublishedAt: null.NewTime(time.Now().Add(-1*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
 	db.Create(&a)
 
-	r, _ := s.GetAlbumList(context.Background(), PaginationParams{Next: strconv.FormatUint(uint64(albums[9].ID), 10), Limit: 10})
+	r, _ := s.GetAlbumList(context.Background(), PaginationParams{Next: albums[9].ID, Limit: 10})
 
 	assert.Equal(t, int64(11), r.Meta.Total)
 	assert.Equal(t, 10, r.Meta.Limit)
@@ -177,14 +204,14 @@ func TestShouldBeAbleToListPublishedAlbumsOnSecondPageWithCustomPerPage(t *testi
 	var albums []Album
 	database.ClearDB(db)
 	for i := 0; i < 2; i++ {
-		tmp := Album{Title: "A good Title " + strconv.Itoa(i), PublishedAt: null.NewTime(time.Now(), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
+		tmp := Album{Title: "A good Title " + strconv.Itoa(i), PublishedAt: null.NewTime(time.Now().Add(-1*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
 		db.Create(&tmp)
 		albums = append(albums, tmp)
 	}
-	a := Album{Title: "On second page", PublishedAt: null.NewTime(time.Now(), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
+	a := Album{Title: "On second page", PublishedAt: null.NewTime(time.Now().Add(-1*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
 	db.Create(&a)
 
-	r, _ := s.GetAlbumList(context.Background(), PaginationParams{Next: strconv.FormatUint(uint64(albums[1].ID), 10), Limit: 2})
+	r, _ := s.GetAlbumList(context.Background(), PaginationParams{Next: albums[1].ID, Limit: 2})
 
 	assert.Equal(t, int64(3), r.Meta.Total)
 	assert.Equal(t, 2, r.Meta.Limit)
@@ -198,7 +225,7 @@ func TestShouldBeAbleToListNonPublishedAlbumAsAdmin(t *testing.T) {
 	a := Album{Title: "A good Title", SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
 	db.Create(&a)
 
-	r, _ := s.GetAlbumList(ctx, PaginationParams{"", 10})
+	r, _ := s.GetAlbumList(ctx, PaginationParams{0, 10})
 
 	assert.Equal(t, int64(1), r.Meta.Total)
 	assert.Equal(t, 10, r.Meta.Limit)
@@ -207,10 +234,10 @@ func TestShouldBeAbleToListNonPublishedAlbumAsAdmin(t *testing.T) {
 
 func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 	database.ClearDB(db)
-	a := Album{Title: "A good Title", PublishedAt: null.NewTime(time.Now(), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
+	a := Album{Title: "A good Title", PublishedAt: null.NewTime(time.Now().Add(-1*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
 	db.Create(&a)
 
-	r, _ := s.GetAlbumList(context.Background(), PaginationParams{"", 15})
+	r, _ := s.GetAlbumList(context.Background(), PaginationParams{0, 15})
 
 	assert.Equal(t, int64(1), r.Meta.Total)
 	assert.Equal(t, 15, r.Meta.Limit)
@@ -224,7 +251,7 @@ func TestShouldNotListSoftDeletedAlbums(t *testing.T) {
 	db.Create(&a)
 	db.Delete(&a)
 
-	r, _ := s.GetAlbumList(context.Background(), PaginationParams{"", 10})
+	r, _ := s.GetAlbumList(context.Background(), PaginationParams{0, 10})
 
 	assert.Equal(t, int64(0), r.Meta.Total)
 	assert.Equal(t, 10, r.Meta.Limit)
@@ -236,7 +263,7 @@ func TestShouldNotListNonPublishedAlbums(t *testing.T) {
 	a := Album{Title: "A good Title"}
 	db.Create(&a)
 
-	r, _ := s.GetAlbumList(context.Background(), PaginationParams{"", 10})
+	r, _ := s.GetAlbumList(context.Background(), PaginationParams{0, 10})
 
 	assert.Equal(t, int64(0), r.Meta.Total)
 	assert.Equal(t, 10, r.Meta.Limit)
@@ -247,7 +274,7 @@ func TestShouldNotListNonPublishedAlbums(t *testing.T) {
 
 func TestShouldBeAbleToGetPublishedAlbumAsGuest(t *testing.T) {
 	database.ClearDB(db)
-	a := Album{Title: "A good Title", Slug: "a-good-title", PublishedAt: null.NewTime(time.Now(), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
+	a := Album{Title: "A good Title", Slug: "a-good-title", PublishedAt: null.NewTime(time.Now().Add(-10*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
 	db.Create(&a)
 
 	r, err := s.GetAlbum(context.Background(), a.Slug)
@@ -259,7 +286,7 @@ func TestShouldBeAbleToGetPublishedAlbumAsGuest(t *testing.T) {
 func TestShouldBeAbleToGetPublishedAlbumAsUser(t *testing.T) {
 	database.ClearDB(db)
 	ctx, _ := authAsUser(context.Background())
-	a := Album{Title: "A good Title", Slug: "a-good-title", PublishedAt: null.NewTime(time.Now(), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
+	a := Album{Title: "A good Title", Slug: "a-good-title", PublishedAt: null.NewTime(time.Now().Add(-1*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
 	db.Create(&a)
 
 	r, err := s.GetAlbum(ctx, a.Slug)

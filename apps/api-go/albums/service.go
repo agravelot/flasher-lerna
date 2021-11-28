@@ -5,8 +5,8 @@ import (
 	"api-go/auth"
 	"context"
 	"errors"
+	"time"
 
-	"github.com/davecgh/go-spew/spew"
 	"gorm.io/gorm"
 )
 
@@ -21,7 +21,7 @@ type Service interface {
 }
 
 type PaginationParams struct {
-	Next  string
+	Next  uint
 	Limit int
 }
 
@@ -48,7 +48,7 @@ func NewService(db *gorm.DB) Service {
 }
 
 func Published(db *gorm.DB) *gorm.DB {
-	return db.Where("published_at is not null")
+	return db.Where("published_at < ?", time.Now()).Where("private = ?", false)
 }
 
 func (s *service) GetAlbumList(ctx context.Context, params PaginationParams) (PaginatedAlbums, error) {
@@ -65,20 +65,10 @@ func (s *service) GetAlbumList(ctx context.Context, params PaginationParams) (Pa
 
 	// TODO Can run in goroutines ?
 	query.Count(&total)
-	err2 := query.Scopes(api.Paginate(params.Next, params.Limit)).Order("published_at").Preload("Categories").Preload("Medias").Find(&albums).Error
-	if err2 != nil {
-		spew.Dump(err2)
+	err := query.Scopes(api.Paginate(params.Next, params.Limit)).Order("published_at DESC").Preload("Categories").Preload("Medias").Find(&albums).Error
+	if err != nil {
+		panic(err)
 	}
-
-	// for _, album := range albums {
-	// 	data := album.Medias[0].ResponsiveImages
-	// 	var c ResponsiveImage
-	// 	err := json.Unmarshal([]byte(data), &c)
-	// 	if err != nil {
-	// 		panic(err)
-	// 	}
-	// 	spew.Dump(c)
-	// }
 
 	return PaginatedAlbums{
 		Data: albums,

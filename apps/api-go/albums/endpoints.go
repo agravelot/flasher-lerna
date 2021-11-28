@@ -138,7 +138,7 @@ type postAlbumResponse struct {
 func (r postAlbumResponse) error() error { return r.Err }
 
 type getAlbumListRequest struct {
-	Next  string
+	Next  uint
 	Limit int
 }
 

@@ -67,24 +67,23 @@ type GeneratedConversions struct {
 }
 
 type Media struct {
-	ID               int32            `gorm:"primary_key;column:id;type:INT4;" json:"id"`
-	ModelType        string           `gorm:"column:model_type;type:VARCHAR;size:255;" json:"model_type"`
-	ModelID          int64            `gorm:"column:model_id;type:INT8;" json:"model_id"`
-	CollectionName   string           `gorm:"column:collection_name;type:VARCHAR;size:255;" json:"collection_name"`
-	Name             string           `gorm:"column:name;type:VARCHAR;size:255;" json:"name"`
-	FileName         string           `gorm:"column:file_name;type:VARCHAR;size:255;" json:"file_name"`
-	MimeType         null.String      `gorm:"column:mime_type;type:VARCHAR;size:255;" json:"mime_type"`
-	Disk             string           `gorm:"column:disk;type:VARCHAR;size:255;" json:"disk"`
-	Size             int64            `gorm:"column:size;type:INT8;" json:"size"`
-	Manipulations    string           `gorm:"column:manipulations;type:JSON;" json:"manipulations"`
-	CustomProperties CustomProperties `gorm:"type:json;" json:"custom_properties"`
-	ResponsiveImages ResponsiveImages `gorm:"type:json;" json:"responsive_images"`
-	OrderColumn      null.Int         `gorm:"column:order_column;type:INT4;" json:"order_column"`
-	CreatedAt        null.Time        `gorm:"column:created_at;type:TIMESTAMP;" json:"created_at"`
-	UpdatedAt        null.Time        `gorm:"column:updated_at;type:TIMESTAMP;" json:"updated_at"`
-	UUID             null.String      `gorm:"column:uuid;type:UUID;" json:"uuid"`
-	ConversionsDisk  null.String      `gorm:"column:conversions_disk;type:VARCHAR;size:255;" json:"conversions_disk"`
-	// ResponsiveImages string          `gorm:"column:responsive_images;type:JSON;" json:"responsive_images"`
+	ID               uint              `gorm:"primarykey" json:"id"`
+	ModelType        string            `gorm:"column:model_type;type:VARCHAR;size:255;" json:"model_type"`
+	ModelID          uint              `gorm:"column:model_id;type:INT8;" json:"model_id"`
+	CollectionName   string            `gorm:"column:collection_name;type:VARCHAR;size:255;" json:"collection_name"`
+	Name             string            `gorm:"column:name;type:VARCHAR;size:255;" json:"name"`
+	FileName         string            `gorm:"column:file_name;type:VARCHAR;size:255;" json:"file_name"`
+	MimeType         null.String       `gorm:"column:mime_type;type:VARCHAR;size:255;" json:"mime_type"`
+	Disk             string            `gorm:"column:disk;type:VARCHAR;size:255;" json:"disk"`
+	Size             int64             `gorm:"column:size;type:INT8;" json:"size"`
+	Manipulations    string            `gorm:"column:manipulations;type:JSON;" json:"manipulations"`
+	CustomProperties *CustomProperties `gorm:"type:json;" json:"custom_properties"`
+	ResponsiveImages *ResponsiveImages `gorm:"type:json;" json:"responsive_images"`
+	OrderColumn      null.Int          `gorm:"column:order_column;type:INT4;" json:"order_column"`
+	CreatedAt        null.Time         `gorm:"column:created_at;type:TIMESTAMP;" json:"created_at"`
+	UpdatedAt        null.Time         `gorm:"column:updated_at;type:TIMESTAMP;" json:"updated_at"`
+	UUID             null.String       `gorm:"column:uuid;type:UUID;" json:"uuid"`
+	ConversionsDisk  null.String       `gorm:"column:conversions_disk;type:VARCHAR;size:255;" json:"conversions_disk"`
 }
 
 func (Media) TableName() string {
@@ -92,7 +91,7 @@ func (Media) TableName() string {
 }
 
 type Category struct {
-	ID              int         `gorm:"primaryKey;autoIncrement" json:"id"`
+	ID              int         `gorm:"type:bigint;primaryKey;autoIncrement" json:"id"`
 	Name            string      `gorm:"column:name;type:VARCHAR;size:255;" json:"name"`
 	Slug            string      `gorm:"column:slug;type:VARCHAR;size:255;" json:"slug"`
 	Description     null.String `gorm:"column:description;type:TEXT;" json:"description"`
@@ -117,12 +116,12 @@ func (AlbumCategory) TableName() string {
 // Album represents a single album.
 // ID should be globally unique.
 type Album struct {
-	ID                     uint      `gorm:"primaryKey;autoIncrement" json:"id" example:"1"`
+	ID                     uint      `gorm:"type:bigint;primaryKey;autoIncrement" json:"id" example:"1"`
 	Slug                   string    `gorm:"type:VARCHAR;size:255;uniqueIndex" json:"slug" example:"a-good-album"`
 	Title                  string    `gorm:"type:VARCHAR;size:255;" json:"title" example:"A good album" validate:"required,lt=60"`
 	Body                   string    `gorm:"type:TEXT;" json:"body" swaggertype:"string" example:"<p>Hello world</p>"`
 	PublishedAt            null.Time `gorm:"type:TIMESTAMP;" json:"published_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
-	Private                bool      `gorm:"type:BOOL;default:true;" json:"private" example:"true"`
+	Private                *bool     `gorm:"type:BOOL;default:true;" json:"private" example:"true"`
 	NotifyUsersOnPublished bool      `gorm:"type:BOOL;default:true;" json:"notify_users_on_published" example:"true"`
 	MetaDescription        string    `gorm:"type:VARCHAR;size:255;" json:"meta_description" example:"A good meta" validate:"required,gt=1,lt=60"`
 	SsoID                  string    `gorm:"type:UUID;" json:"sso_id" swaggertype:"string" example:"123e4567-e89b-12d3-a456-426614174000"`

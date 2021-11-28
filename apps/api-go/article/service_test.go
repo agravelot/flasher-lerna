@@ -104,7 +104,7 @@ func TestMain(m *testing.M) {
 
 func TestShouldBeAbleToListEmpty(t *testing.T) {
 	database.ClearDB(db)
-	r, _ := s.GetArticleList(context.Background(), PaginationParams{"", 10})
+	r, _ := s.GetArticleList(context.Background(), PaginationParams{0, 10})
 
 	assert.Equal(t, 0, len(r.Data))
 	assert.Equal(t, int64(0), r.Meta.Total)
@@ -116,7 +116,7 @@ func TestShouldBeAbleToListWithOnePublishedArticle(t *testing.T) {
 	a := Article{Name: "A good name", PublishedAt: null.NewTime(time.Now(), true)}
 	db.Create(&a)
 
-	r, _ := s.GetArticleList(context.Background(), PaginationParams{"", 10})
+	r, _ := s.GetArticleList(context.Background(), PaginationParams{0, 10})
 
 	assert.Equal(t, int64(1), r.Meta.Total)
 	assert.Equal(t, 10, r.Meta.Limit)
@@ -134,7 +134,7 @@ func TestShouldBeAbleToListPublishedArticlesOnSecondPage(t *testing.T) {
 	a := Article{Name: "On second page", PublishedAt: null.NewTime(time.Now(), true)}
 	db.Create(&a)
 
-	r, _ := s.GetArticleList(context.Background(), PaginationParams{Next: strconv.FormatUint(uint64(articles[9].ID), 10), Limit: 10})
+	r, _ := s.GetArticleList(context.Background(), PaginationParams{Next: articles[9].ID, Limit: 10})
 
 	assert.Equal(t, int64(11), r.Meta.Total)
 	assert.Equal(t, 10, r.Meta.Limit)
@@ -153,7 +153,7 @@ func TestShouldBeAbleToListPublishedArticlesOnSecondPageWithCustomPerPage(t *tes
 	a := Article{Name: "On second page", PublishedAt: null.NewTime(time.Now(), true)}
 	db.Create(&a)
 
-	r, _ := s.GetArticleList(context.Background(), PaginationParams{Next: strconv.FormatUint(uint64(articles[1].ID), 10), Limit: 2})
+	r, _ := s.GetArticleList(context.Background(), PaginationParams{Next: articles[1].ID, Limit: 2})
 
 	assert.Equal(t, int64(3), r.Meta.Total)
 	assert.Equal(t, 2, r.Meta.Limit)
@@ -167,7 +167,7 @@ func TestShouldBeAbleToListNonPublishedArticleAsAdmin(t *testing.T) {
 	a := Article{Name: "A good name"}
 	db.Create(&a)
 
-	r, _ := s.GetArticleList(ctx, PaginationParams{"", 10})
+	r, _ := s.GetArticleList(ctx, PaginationParams{0, 10})
 
 	assert.Equal(t, int64(1), r.Meta.Total)
 	assert.Equal(t, 10, r.Meta.Limit)
@@ -179,7 +179,7 @@ func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 	a := Article{Name: "A good name", PublishedAt: null.NewTime(time.Now(), true)}
 	db.Create(&a)
 
-	r, _ := s.GetArticleList(context.Background(), PaginationParams{"", 15})
+	r, _ := s.GetArticleList(context.Background(), PaginationParams{0, 15})
 
 	assert.Equal(t, int64(1), r.Meta.Total)
 	assert.Equal(t, 15, r.Meta.Limit)
@@ -193,7 +193,7 @@ func TestShouldNotListSoftDeletedArticles(t *testing.T) {
 	db.Create(&a)
 	db.Delete(&a)
 
-	r, _ := s.GetArticleList(context.Background(), PaginationParams{"", 10})
+	r, _ := s.GetArticleList(context.Background(), PaginationParams{0, 10})
 
 	assert.Equal(t, int64(0), r.Meta.Total)
 	assert.Equal(t, 10, r.Meta.Limit)
@@ -205,7 +205,7 @@ func TestShouldNotListNonPublishedArticles(t *testing.T) {
 	a := Article{Name: "A good name"}
 	db.Create(&a)
 
-	r, _ := s.GetArticleList(context.Background(), PaginationParams{"", 10})
+	r, _ := s.GetArticleList(context.Background(), PaginationParams{0, 10})
 
 	assert.Equal(t, int64(0), r.Meta.Total)
 	assert.Equal(t, 10, r.Meta.Limit)

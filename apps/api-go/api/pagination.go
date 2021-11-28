@@ -51,9 +51,9 @@ func GetPaginationFromRequest(c echo.Context) (string, int) {
 	return page, pageSize
 }
 
-func Paginate(next string, pageSize int) func(db *gorm.DB) *gorm.DB {
+func Paginate(next uint, pageSize int) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
-		if next != "" {
+		if next != 0 {
 			db = db.Where("id > ?", next)
 		}
 		return db.Limit(pageSize)

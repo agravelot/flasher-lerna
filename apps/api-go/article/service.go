@@ -20,7 +20,7 @@ type Service interface {
 }
 
 type PaginationParams struct {
-	Next  string
+	Next  uint
 	Limit int
 }
 

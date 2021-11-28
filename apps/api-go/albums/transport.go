@@ -96,9 +96,17 @@ func decodePostAlbumRequest(_ context.Context, r *http.Request) (request interfa
 }
 
 func decodeGetAlbumListRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
+	var next uint
 	var limit int
 
 	nextString := r.URL.Query().Get("next")
+	if nextString != "" {
+		v, err := strconv.ParseUint(nextString, 10, 32)
+		if err != nil {
+			return nil, ErrBadRequest
+		}
+		next = uint(v)
+	}
 
 	limitString := r.URL.Query().Get("limit")
 	if limitString != "" {
@@ -108,7 +116,7 @@ func decodeGetAlbumListRequest(_ context.Context, r *http.Request) (request inte
 		}
 	}
 
-	return getAlbumListRequest{Next: nextString, Limit: limit}, nil
+	return getAlbumListRequest{Next: next, Limit: limit}, nil
 }
 
 func decodeGetAlbumRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
