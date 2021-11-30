@@ -91,7 +91,10 @@ func TestMain(m *testing.M) {
 	config := config.LoadDotEnv("../")
 	db, _ = database.Init(config)
 	database.ClearDB(db)
-	db.AutoMigrate(Album{})
+	db.AutoMigrate(&Media{})
+	db.AutoMigrate(&Album{})
+	db.AutoMigrate(&Category{})
+	db.AutoMigrate(&AlbumCategory{})
 	s = NewService(db)
 
 	exitVal := m.Run() // Run tests
