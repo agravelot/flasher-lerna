@@ -137,7 +137,7 @@ func TestShouldBeOrderedByDateOfPublication(t *testing.T) {
 	database.ClearDB(db)
 	a := Album{Title: "A good Title", PublishedAt: null.NewTime(time.Now().Add(-100*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
 	b := Album{Title: "A good Title 2", PublishedAt: null.NewTime(time.Now().Add(-10*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
-	c := Album{Title: "A good Title 3", PublishedAt: null.NewTime(time.Now().Add(-1*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
+	c := Album{Title: "A good Title 3", PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
 	err := db.Create(&a).Error
 	if err != nil {
 		t.Error(err)
@@ -188,11 +188,11 @@ func TestShouldBeAbleToListPublishedAlbumsOnSecondPage(t *testing.T) {
 	database.ClearDB(db)
 	var albums []Album
 	for i := 0; i < 10; i++ {
-		tmp := Album{Title: "A good Title " + strconv.Itoa(i), PublishedAt: null.NewTime(time.Now().Add(-1*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
+		tmp := Album{Title: "A good Title " + strconv.Itoa(i), PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
 		db.Create(&tmp)
 		albums = append(albums, tmp)
 	}
-	a := Album{Title: "On second page", PublishedAt: null.NewTime(time.Now().Add(-1*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
+	a := Album{Title: "On second page", PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
 	db.Create(&a)
 
 	r, _ := s.GetAlbumList(context.Background(), PaginationParams{Next: albums[9].ID, Limit: 10})
@@ -207,11 +207,11 @@ func TestShouldBeAbleToListPublishedAlbumsOnSecondPageWithCustomPerPage(t *testi
 	var albums []Album
 	database.ClearDB(db)
 	for i := 0; i < 2; i++ {
-		tmp := Album{Title: "A good Title " + strconv.Itoa(i), PublishedAt: null.NewTime(time.Now().Add(-1*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
+		tmp := Album{Title: "A good Title " + strconv.Itoa(i), PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
 		db.Create(&tmp)
 		albums = append(albums, tmp)
 	}
-	a := Album{Title: "On second page", PublishedAt: null.NewTime(time.Now().Add(-1*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
+	a := Album{Title: "On second page", PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
 	db.Create(&a)
 
 	r, _ := s.GetAlbumList(context.Background(), PaginationParams{Next: albums[1].ID, Limit: 2})
@@ -237,7 +237,7 @@ func TestShouldBeAbleToListNonPublishedAlbumAsAdmin(t *testing.T) {
 
 func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 	database.ClearDB(db)
-	a := Album{Title: "A good Title", PublishedAt: null.NewTime(time.Now().Add(-1*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
+	a := Album{Title: "A good Title", PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
 	db.Create(&a)
 
 	r, _ := s.GetAlbumList(context.Background(), PaginationParams{0, 15})
@@ -289,7 +289,7 @@ func TestShouldBeAbleToGetPublishedAlbumAsGuest(t *testing.T) {
 func TestShouldBeAbleToGetPublishedAlbumAsUser(t *testing.T) {
 	database.ClearDB(db)
 	ctx, _ := authAsUser(context.Background())
-	a := Album{Title: "A good Title", Slug: "a-good-title", PublishedAt: null.NewTime(time.Now().Add(-1*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
+	a := Album{Title: "A good Title", Slug: "a-good-title", PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
 	db.Create(&a)
 
 	r, err := s.GetAlbum(ctx, a.Slug)
