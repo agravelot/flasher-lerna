@@ -67,7 +67,7 @@ type GeneratedConversions struct {
 }
 
 type Media struct {
-	ID               uint              `gorm:"primarykey" json:"id"`
+	ID               uint              `gorm:"primaryKey,autoIncrement" json:"id"`
 	ModelType        string            `gorm:"column:model_type;type:VARCHAR;size:255;" json:"model_type"`
 	ModelID          uint              `gorm:"column:model_id;type:INT8;" json:"model_id"`
 	CollectionName   string            `gorm:"column:collection_name;type:VARCHAR;size:255;" json:"collection_name"`
