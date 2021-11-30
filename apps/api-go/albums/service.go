@@ -67,7 +67,7 @@ func (s *service) GetAlbumList(ctx context.Context, params PaginationParams) (Pa
 	query.Count(&total)
 	err := query.Scopes(api.Paginate(params.Next, params.Limit)).Order("published_at DESC").Preload("Categories").Preload("Medias").Find(&albums).Error
 	if err != nil {
-		panic(err)
+		return PaginatedAlbums{}, err
 	}
 
 	return PaginatedAlbums{
