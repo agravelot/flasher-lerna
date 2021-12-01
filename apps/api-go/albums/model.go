@@ -91,7 +91,7 @@ func (Media) TableName() string {
 }
 
 type Category struct {
-	ID              int         `gorm:"type:bigint;primaryKey;autoIncrement" json:"id"`
+	ID              uint        `gorm:"type:bigserial;primaryKey;autoIncrement" json:"id" example:"1"`
 	Name            string      `gorm:"column:name;type:VARCHAR;size:255;" json:"name"`
 	Slug            string      `gorm:"column:slug;type:VARCHAR;size:255;" json:"slug"`
 	Description     null.String `gorm:"column:description;type:TEXT;" json:"description"`
@@ -127,8 +127,8 @@ type Album struct {
 	CreatedAt              time.Time `gorm:"type:TIMESTAMP;" json:"created_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
 	UpdatedAt              null.Time `gorm:"type:TIMESTAMP;" json:"updated_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
 
-	Categories []*Category `gorm:"many2many:album_category" json:"categories"`
-	Medias     []*Media    `gorm:"polymorphic:Model;polymorphicValue:App\\Models\\Album" json:"medias"`
+	Categories *[]Category `gorm:"many2many:album_category" json:"categories"`
+	Medias     *[]Media    `gorm:"polymorphic:Model;polymorphicValue:App\\Models\\Album" json:"medias"`
 }
 
 func (a *Album) BeforeCreate(tx *gorm.DB) (err error) {

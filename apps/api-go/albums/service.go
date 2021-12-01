@@ -13,7 +13,7 @@ import (
 // Service is a simple CRUD interface for user albums.
 type Service interface {
 	PostAlbum(ctx context.Context, p Album) (Album, error)
-	GetAlbumList(ctx context.Context, params PaginationParams) (PaginatedAlbums, error)
+	GetAlbumList(ctx context.Context, params AlbumListParams) (PaginatedAlbums, error)
 	GetAlbum(ctx context.Context, slug string) (Album, error)
 	PutAlbum(ctx context.Context, slug string, p Album) (Album, error)
 	PatchAlbum(ctx context.Context, slug string, p Album) (Album, error)
@@ -23,6 +23,15 @@ type Service interface {
 type PaginationParams struct {
 	Next  uint
 	Limit int
+}
+
+type AlbumListIncludesParams struct {
+	Categories bool
+}
+
+type AlbumListParams struct {
+	PaginationParams
+	Includes AlbumListIncludesParams
 }
 
 type PaginatedAlbums struct {
@@ -51,7 +60,7 @@ func Published(db *gorm.DB) *gorm.DB {
 	return db.Where("published_at < ?", time.Now()).Where("private = ?", false)
 }
 
-func (s *service) GetAlbumList(ctx context.Context, params PaginationParams) (PaginatedAlbums, error) {
+func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (PaginatedAlbums, error) {
 	user := auth.GetUserClaims(ctx)
 
 	albums := []Album{}
@@ -63,9 +72,13 @@ func (s *service) GetAlbumList(ctx context.Context, params PaginationParams) (Pa
 		query = query.Scopes(Published)
 	}
 
+	if params.Includes.Categories {
+		query = query.Preload("Categories")
+	}
+
 	// TODO Can run in goroutines ?
 	query.Count(&total)
-	err := query.Scopes(api.Paginate(params.Next, params.Limit)).Order("published_at DESC").Preload("Categories").Preload("Medias").Find(&albums).Error
+	err := query.Scopes(api.Paginate(params.Next, params.Limit)).Order("published_at DESC").Preload("Medias").Find(&albums).Error
 	if err != nil {
 		return PaginatedAlbums{}, err
 	}

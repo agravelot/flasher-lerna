@@ -56,7 +56,7 @@ func MakeGetAlbumListEndpoint(s Service) endpoint.Endpoint {
 			req.Limit = 10
 		}
 
-		pa, e := s.GetAlbumList(ctx, PaginationParams{Next: req.Next, Limit: req.Limit})
+		pa, e := s.GetAlbumList(ctx, AlbumListParams{PaginationParams: PaginationParams{Next: req.Next, Limit: req.Limit}})
 		return getAlbumListResponse{PaginatedAlbums: pa, Err: e}, nil
 	}
 }

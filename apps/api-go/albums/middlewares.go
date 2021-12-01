@@ -31,7 +31,7 @@ func (mw loggingMiddleware) PostAlbum(ctx context.Context, ar Album) (a Album, e
 	return mw.next.PostAlbum(ctx, ar)
 }
 
-func (mw loggingMiddleware) GetAlbumList(ctx context.Context, params PaginationParams) (p PaginatedAlbums, err error) {
+func (mw loggingMiddleware) GetAlbumList(ctx context.Context, params AlbumListParams) (p PaginatedAlbums, err error) {
 	defer func(begin time.Time) {
 		mw.logger.Log("method", "GetAlbumList", "page", 1, "took", time.Since(begin), "err", err)
 	}(time.Now())
