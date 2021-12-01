@@ -46,7 +46,7 @@ func DbManager() *gorm.DB {
 
 func ClearDB(db *gorm.DB) {
 	var tables []string
-	if err := db.Table("information_schema.tables").Where("table_schema = ?", "public").Pluck("table_name", &tables).Error; err != nil {
+	if err := db.Table("information_schema.tables").Where("table_schema = ?", "public").Order("length(table_name) desc").Pluck("table_name", &tables).Error; err != nil {
 		panic(err)
 	}
 	for _, table := range tables {
