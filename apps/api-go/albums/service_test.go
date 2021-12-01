@@ -10,7 +10,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/go-playground/validator/v10"
 	"github.com/guregu/null"
 	"github.com/stretchr/testify/assert"
@@ -296,12 +295,12 @@ func TestShouldBeAbleToListWithoutCategories(t *testing.T) {
 		t.Error(err)
 	}
 
-	spew.Dump(r, r.Data[0].Categories, *r.Data[0].Categories)
+	var nilCategories *[]Category
 
 	assert.Equal(t, int64(1), r.Meta.Total)
 	assert.Equal(t, 10, r.Meta.Limit)
 	assert.Equal(t, 1, len(r.Data))
-	assert.Equal(t, nil, r.Data[0].Categories)
+	assert.Equal(t, nilCategories, r.Data[0].Categories)
 }
 
 // func TestShouldNotListSoftDeletedAlbums(t *testing.T) {
