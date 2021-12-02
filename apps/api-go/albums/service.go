@@ -20,25 +20,6 @@ type Service interface {
 	DeleteAlbum(ctx context.Context, slug string) error
 }
 
-type PaginationParams struct {
-	Next  uint
-	Limit int
-}
-
-type AlbumListIncludesParams struct {
-	Categories bool
-}
-
-type AlbumListParams struct {
-	PaginationParams
-	Includes AlbumListIncludesParams
-}
-
-type PaginatedAlbums struct {
-	Data []Album  `json:"data"`
-	Meta api.Meta `json:"meta"`
-}
-
 var (
 	ErrAlreadyExists = errors.New("already exists")
 	ErrNotFound      = errors.New("not found")
@@ -72,7 +53,7 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 		query = query.Scopes(Published)
 	}
 
-	if params.Includes.Categories {
+	if params.Joins.Categories {
 		query = query.Preload("Categories")
 	}
 

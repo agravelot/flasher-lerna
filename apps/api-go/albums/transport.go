@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 
 	"github.com/gorilla/mux"
 
@@ -97,7 +98,7 @@ func decodePostAlbumRequest(_ context.Context, r *http.Request) (request interfa
 
 func decodeGetAlbumListRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
 	var next uint
-	var limit int
+	limit := 10
 
 	nextString := r.URL.Query().Get("next")
 	if nextString != "" {
@@ -116,7 +117,20 @@ func decodeGetAlbumListRequest(_ context.Context, r *http.Request) (request inte
 		}
 	}
 
-	return getAlbumListRequest{Next: next, Limit: limit}, nil
+	joins := AlbumListJoinsParams{}
+	joinsString := r.URL.Query().Get("join")
+	if joinsString != "" {
+		for _, j := range strings.Split(joinsString, ",") {
+			switch j {
+			case "medias":
+				joins.Medias = true
+			case "categories":
+				joins.Categories = true
+			}
+		}
+	}
+
+	return getAlbumListRequest{Joins: joins, PaginationParams: PaginationParams{Next: next, Limit: limit}}, nil
 }
 
 func decodeGetAlbumRequest(_ context.Context, r *http.Request) (request interface{}, err error) {

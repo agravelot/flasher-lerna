@@ -1,6 +1,7 @@
 package album
 
 import (
+	"api-go/api"
 	"context"
 
 	"github.com/go-kit/kit/endpoint"
@@ -47,15 +48,6 @@ func MakeServerEndpoints(s Service) Endpoints {
 func MakeGetAlbumListEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(getAlbumListRequest)
-
-		// if req.Page == 0 {
-		// 	req.Page = 1
-		// }
-
-		if req.Limit == 0 {
-			req.Limit = 10
-		}
-
 		pa, e := s.GetAlbumList(ctx, AlbumListParams{PaginationParams: PaginationParams{Next: req.Next, Limit: req.Limit}})
 		return getAlbumListResponse{PaginatedAlbums: pa, Err: e}, nil
 	}
@@ -126,6 +118,26 @@ func MakeDeleteAlbumEndpoint(s Service) endpoint.Endpoint {
 // Response types that may contain business-logic errors implement that
 // interface.
 
+type PaginationParams struct {
+	Next  uint
+	Limit int
+}
+
+type AlbumListJoinsParams struct {
+	Categories bool
+	Medias     bool
+}
+
+type AlbumListParams struct {
+	PaginationParams
+	Joins AlbumListJoinsParams
+}
+
+type PaginatedAlbums struct {
+	Data []Album  `json:"data"`
+	Meta api.Meta `json:"meta"`
+}
+
 type postAlbumRequest struct {
 	Album
 }
@@ -138,8 +150,8 @@ type postAlbumResponse struct {
 func (r postAlbumResponse) error() error { return r.Err }
 
 type getAlbumListRequest struct {
-	Next  uint
-	Limit int
+	PaginationParams
+	Joins AlbumListJoinsParams
 }
 
 type getAlbumListResponse struct {
