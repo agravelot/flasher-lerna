@@ -1,5 +1,0 @@
-resources:
-  - deployment.yml
-  - service-account.yml
-  - service.yml
-  - configmap.yml
