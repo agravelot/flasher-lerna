@@ -265,7 +265,7 @@ func TestShouldBeAbleToListWithCategories(t *testing.T) {
 		t.Error(err)
 	}
 
-	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{Includes: AlbumListIncludesParams{Categories: true}, PaginationParams: PaginationParams{0, 10}})
+	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{Joins: AlbumListJoinsParams{Categories: true}, PaginationParams: PaginationParams{0, 10}})
 
 	assert.Equal(t, int64(1), r.Meta.Total)
 	assert.Equal(t, 10, r.Meta.Limit)
@@ -301,6 +301,61 @@ func TestShouldBeAbleToListWithoutCategories(t *testing.T) {
 	assert.Equal(t, 10, r.Meta.Limit)
 	assert.Equal(t, 1, len(r.Data))
 	assert.Equal(t, nilCategories, r.Data[0].Categories)
+}
+
+func TestShouldBeAbleToListWithMedias(t *testing.T) {
+	database.ClearDB(db)
+	medias := []Media{
+		{Name: "A good Category"},
+	}
+	a := Album{
+		Title:       "A good Title",
+		PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true),
+		SsoID:       "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+		Private:     boolPtr(false),
+		Medias:      &medias,
+	}
+	err := db.Create(&a).Error
+	if err != nil {
+		t.Error(err)
+	}
+
+	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{Joins: AlbumListJoinsParams{Medias: true}, PaginationParams: PaginationParams{0, 10}})
+
+	assert.Equal(t, int64(1), r.Meta.Total)
+	assert.Equal(t, 10, r.Meta.Limit)
+	assert.Equal(t, 1, len(r.Data))
+	assert.Equal(t, 1, len(*r.Data[0].Medias))
+}
+
+func TestShouldBeAbleToListWithoutMedias(t *testing.T) {
+	database.ClearDB(db)
+	medias := []Media{
+		{Name: "A good Category"},
+	}
+	a := Album{
+		Title:       "A good Title",
+		PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true),
+		SsoID:       "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+		Private:     boolPtr(false),
+		Medias:      &medias,
+	}
+	err := db.Create(&a).Error
+	if err != nil {
+		t.Error(err)
+	}
+
+	r, err := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{0, 10}})
+	if err != nil {
+		t.Error(err)
+	}
+
+	var nilMedias *[]Media
+
+	assert.Equal(t, int64(1), r.Meta.Total)
+	assert.Equal(t, 10, r.Meta.Limit)
+	assert.Equal(t, 1, len(r.Data))
+	assert.Equal(t, nilMedias, r.Data[0].Medias)
 }
 
 // func TestShouldNotListSoftDeletedAlbums(t *testing.T) {
