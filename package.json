@@ -12,5 +12,9 @@
     "test": "lerna run test --since",
     "new-version": "lerna version --conventional-commits --yes",
     "diff": "lerna diff"
+  },
+  "volta": {
+    "node": "16.13.0",
+    "yarn": "1.22.17"
   }
 }
