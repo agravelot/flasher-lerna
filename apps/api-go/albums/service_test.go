@@ -306,7 +306,7 @@ func TestShouldBeAbleToListWithoutCategories(t *testing.T) {
 func TestShouldBeAbleToListWithMedias(t *testing.T) {
 	database.ClearDB(db)
 	medias := []Media{
-		{Name: "A good Category"},
+		{Name: "A good Media"},
 	}
 	a := Album{
 		Title:       "A good Title",
@@ -331,7 +331,7 @@ func TestShouldBeAbleToListWithMedias(t *testing.T) {
 func TestShouldBeAbleToListWithoutMedias(t *testing.T) {
 	database.ClearDB(db)
 	medias := []Media{
-		{Name: "A good Category"},
+		{Name: "A good Media"},
 	}
 	a := Album{
 		Title:       "A good Title",
