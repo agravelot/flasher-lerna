@@ -76,7 +76,7 @@ type Media struct {
 	MimeType         null.String       `gorm:"column:mime_type;type:VARCHAR;size:255;" json:"mime_type"`
 	Disk             string            `gorm:"column:disk;type:VARCHAR;size:255;" json:"disk"`
 	Size             int64             `gorm:"column:size;type:INT8;" json:"size"`
-	Manipulations    string            `gorm:"column:manipulations;type:JSON;" json:"manipulations"`
+	Manipulations    *interface{}      `gorm:"column:manipulations;type:JSON;" json:"manipulations"`
 	CustomProperties *CustomProperties `gorm:"type:json;" json:"custom_properties"`
 	ResponsiveImages *ResponsiveImages `gorm:"type:json;" json:"responsive_images"`
 	OrderColumn      null.Int          `gorm:"column:order_column;type:INT4;" json:"order_column"`
