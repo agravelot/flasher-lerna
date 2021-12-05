@@ -5,6 +5,7 @@ import (
 	"api-go/auth"
 	"context"
 	"errors"
+	"fmt"
 	"time"
 
 	"gorm.io/gorm"
@@ -62,10 +63,13 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 	}
 
 	// TODO Can run in goroutines ?
-	query.Count(&total)
-	err := query.Scopes(api.Paginate(params.Next, params.Limit)).Order("published_at DESC").Find(&albums).Error
+	err := query.Count(&total).Error
 	if err != nil {
-		return PaginatedAlbums{}, err
+		return PaginatedAlbums{}, fmt.Errorf("error counting albums: %w", err)
+	}
+	err = query.Scopes(api.Paginate(params.Next, params.Limit)).Order("published_at DESC").Find(&albums).Error
+	if err != nil {
+		return PaginatedAlbums{}, fmt.Errorf("error list albums: %w", err)
 	}
 
 	return PaginatedAlbums{
