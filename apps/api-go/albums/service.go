@@ -13,11 +13,11 @@ import (
 
 // Service is a simple CRUD interface for user albums.
 type Service interface {
-	PostAlbum(ctx context.Context, p Album) (Album, error)
 	GetAlbumList(ctx context.Context, params AlbumListParams) (PaginatedAlbums, error)
-	GetAlbum(ctx context.Context, slug string) (Album, error)
-	PutAlbum(ctx context.Context, slug string, p Album) (Album, error)
-	PatchAlbum(ctx context.Context, slug string, p Album) (Album, error)
+	GetAlbum(ctx context.Context, slug string) (AlbumRequest, error)
+	PostAlbum(ctx context.Context, p AlbumRequest) (AlbumRequest, error)
+	PutAlbum(ctx context.Context, slug string, p AlbumRequest) (AlbumRequest, error)
+	PatchAlbum(ctx context.Context, slug string, p AlbumRequest) (AlbumRequest, error)
 	DeleteAlbum(ctx context.Context, slug string) error
 }
 
@@ -45,7 +45,7 @@ func Published(db *gorm.DB) *gorm.DB {
 func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (PaginatedAlbums, error) {
 	user := auth.GetUserClaims(ctx)
 
-	albums := []Album{}
+	albums := []AlbumModel{}
 	var total int64
 
 	query := s.db.Model(&albums)
@@ -72,41 +72,18 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 		return PaginatedAlbums{}, fmt.Errorf("error list albums: %w", err)
 	}
 
+	data := make([]AlbumRequest, len(albums))
+	for i, a := range albums {
+		data[i] = AlbumRequest(a)
+	}
+
 	return PaginatedAlbums{
-		Data: albums,
+		Data: data,
 		Meta: api.Meta{Total: total, Limit: params.Limit},
 	}, nil
 }
 
-func (s *service) PostAlbum(ctx context.Context, a Album) (Album, error) {
-	user := auth.GetUserClaims(ctx)
-
-	if user == nil {
-		return Album{}, ErrNoAuth
-	}
-
-	if !user.IsAdmin() {
-		return Album{}, ErrNotAdmin
-	}
-
-	a.SsoID = user.Sub
-
-	if err := a.Validate(); err != nil {
-		return Album{}, err
-	}
-
-	if err := s.db.Create(&a).Error; err != nil {
-		// TODO Cast pg error to have clean check
-		if err.Error() == "ERROR: duplicate key value violates unique constraint \"idx_albums_slug\" (SQLSTATE 23505)" {
-			return Album{}, ErrAlreadyExists
-		}
-		return Album{}, err
-	}
-
-	return a, nil
-}
-
-func (s *service) GetAlbum(ctx context.Context, slug string) (Album, error) {
+func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumRequest, error) {
 	user := auth.GetUserClaims(ctx)
 
 	query := s.db.Where("slug = ?", slug)
@@ -115,48 +92,78 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (Album, error) {
 		query = query.Scopes(Published)
 	}
 
-	a := Album{}
+	a := AlbumModel{}
 	err := query.First(&a).Error
 
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
-		return Album{}, ErrNotFound
+		return AlbumRequest{}, ErrNotFound
 	}
 
-	return a, err
+	return AlbumRequest(a), err
 }
 
-func (s *service) PutAlbum(ctx context.Context, slug string, a Album) (Album, error) {
+func (s *service) PostAlbum(ctx context.Context, a AlbumRequest) (AlbumRequest, error) {
 	user := auth.GetUserClaims(ctx)
 
 	if user == nil {
-		return Album{}, ErrNoAuth
+		return AlbumRequest{}, ErrNoAuth
 	}
 
 	if !user.IsAdmin() {
-		return Album{}, ErrNotAdmin
+		return AlbumRequest{}, ErrNotAdmin
 	}
 
 	a.SsoID = user.Sub
 
 	if err := a.Validate(); err != nil {
-		return Album{}, err
+		return AlbumRequest{}, err
 	}
 
-	s.db.Save(a)
+	albumModel := AlbumModel(a)
+	if err := s.db.Create(&albumModel).Error; err != nil {
+		// TODO Cast pg error to have clean check
+		if err.Error() == "ERROR: duplicate key value violates unique constraint \"idx_albums_slug\" (SQLSTATE 23505)" {
+			return AlbumRequest{}, ErrAlreadyExists
+		}
+		return AlbumRequest{}, err
+	}
 
-	return a, nil
+	return AlbumRequest(albumModel), nil
 }
 
-func (s *service) PatchAlbum(ctx context.Context, slug string, a Album) (Album, error) {
-	return Album{}, nil
+func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumRequest) (AlbumRequest, error) {
+	user := auth.GetUserClaims(ctx)
+
+	if user == nil {
+		return AlbumRequest{}, ErrNoAuth
+	}
+
+	if !user.IsAdmin() {
+		return AlbumRequest{}, ErrNotAdmin
+	}
+
+	a.SsoID = user.Sub
+
+	if err := a.Validate(); err != nil {
+		return AlbumRequest{}, err
+	}
+
+	albumModel := AlbumModel(a)
+	s.db.Save(albumModel)
+
+	return AlbumRequest(albumModel), nil
+}
+
+func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumRequest) (AlbumRequest, error) {
+	return AlbumRequest{}, nil
 }
 
 func (s *service) DeleteAlbum(ctx context.Context, slug string) error {
-	if err := s.db.Where("slug = ?", slug).First(&Album{}).Error; err != nil {
+	if err := s.db.Where("slug = ?", slug).First(&AlbumModel{}).Error; err != nil {
 		return ErrNotFound
 	}
 
-	err := s.db.Where("slug = ?", slug).Delete(&Album{}).Error
+	err := s.db.Where("slug = ?", slug).Delete(&AlbumModel{}).Error
 	if err != nil {
 		return err
 	}

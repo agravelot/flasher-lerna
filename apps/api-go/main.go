@@ -26,15 +26,15 @@ func main() {
 
 	db, _ := database.Init(config)
 	db.AutoMigrate(&article.Article{})
-	db.AutoMigrate(&album.Media{})
-	db.AutoMigrate(&album.Album{})
-	db.AutoMigrate(&album.Category{})
-	db.AutoMigrate(&album.AlbumCategory{})
-	err := db.SetupJoinTable(&album.Album{}, "Categories", &album.AlbumCategory{})
+	db.AutoMigrate(&album.MediaModel{})
+	db.AutoMigrate(&album.AlbumModel{})
+	db.AutoMigrate(&album.CategoryModel{})
+	db.AutoMigrate(&album.AlbumCategoryModel{})
+	err := db.SetupJoinTable(&album.AlbumModel{}, "Categories", &album.AlbumCategoryModel{})
 	if err != nil {
 		panic(err)
 	}
-	err = db.SetupJoinTable(&album.Category{}, "Albums", &album.AlbumCategory{})
+	err = db.SetupJoinTable(&album.CategoryModel{}, "Albums", &album.AlbumCategoryModel{})
 	if err != nil {
 		panic(err)
 	}
