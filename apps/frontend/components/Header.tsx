@@ -5,8 +5,8 @@ import { Media } from "@flasher/models";
 
 const defaultMedia: Media = {
   id: 9999,
-  url: "https://assets-jkanda.s3.fr-par.scw.cloud/medias/3499/oceane-avec-un-style-androgyne.jpg",
-  name: "",
+  url: "https://assets-jkanda.s3.fr-par.scw.cloud/medias/4191/JKanda_JKA_5053.jpg",
+  name: "Image présentation JKanda",
   file_name: "aze",
   width: 6000,
   height: 4000,
