@@ -63,6 +63,7 @@ spec:
             timeoutSeconds: 1
         - image: nevax/postgresql-backup-s3
           name: pgbackups3
+          imagePullPolicy: Always
           env:
             - name: POSTGRES_HOST
               value: postgres
@@ -107,6 +108,8 @@ spec:
               value: 'postgres'
             - name: SCHEDULE
               value: "@daily"
+            # - name: DELETE_OLDER_THAN
+            #   value: "90 days ago"
       volumes:
         - name: postgres
           persistentVolumeClaim:
