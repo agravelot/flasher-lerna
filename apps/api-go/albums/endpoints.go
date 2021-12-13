@@ -120,7 +120,7 @@ func MakeDeleteAlbumEndpoint(s Service) endpoint.Endpoint {
 
 type PaginationParams struct {
 	Next  uint
-	Limit int
+	Limit int32
 }
 
 type AlbumListJoinsParams struct {

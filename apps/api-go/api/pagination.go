@@ -7,9 +7,14 @@ import (
 	"gorm.io/gorm"
 )
 
-type Meta struct {
+type MetaOld struct {
 	Total int64 `json:"total"`
 	Limit int   `json:"limit"`
+}
+
+type Meta struct {
+	Total int64 `json:"total"`
+	Limit int32 `json:"limit"`
 }
 
 type Paginated struct {

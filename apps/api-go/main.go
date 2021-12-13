@@ -2,9 +2,8 @@ package main
 
 import (
 	album "api-go/albums"
-	"api-go/article"
 	"api-go/config"
-	database "api-go/db"
+	"api-go/database2"
 	"fmt"
 	"net/http"
 	"os"
@@ -24,26 +23,26 @@ func main() {
 		logger = log.With(logger, "caller", log.DefaultCaller)
 	}
 
-	db, _ := database.Init(config)
-	db.AutoMigrate(&article.Article{})
-	db.AutoMigrate(&album.MediaModel{})
-	db.AutoMigrate(&album.AlbumModel{})
-	db.AutoMigrate(&album.CategoryModel{})
-	db.AutoMigrate(&album.AlbumCategoryModel{})
-	err := db.SetupJoinTable(&album.AlbumModel{}, "Categories", &album.AlbumCategoryModel{})
-	if err != nil {
-		panic(err)
-	}
-	err = db.SetupJoinTable(&album.CategoryModel{}, "Albums", &album.AlbumCategoryModel{})
-	if err != nil {
-		panic(err)
-	}
+	db, _ := database2.Init(config)
+	// db.AutoMigrate(&article.Article{})
+	// db.AutoMigrate(&album.MediaModel{})
+	// db.AutoMigrate(&album.AlbumModel{})
+	// db.AutoMigrate(&album.CategoryModel{})
+	// db.AutoMigrate(&album.AlbumCategoryModel{})
+	// err := db.SetupJoinTable(&album.AlbumModel{}, "Categories", &album.AlbumCategoryModel{})
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// err = db.SetupJoinTable(&album.CategoryModel{}, "Albums", &album.AlbumCategoryModel{})
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	var s article.Service
-	{
-		s = article.NewService(db)
-		s = article.LoggingMiddleware(logger)(s)
-	}
+	// var s article.Service
+	// {
+	// 	s = article.NewService(db)
+	// 	s = article.LoggingMiddleware(logger)(s)
+	// }
 
 	var sa album.Service
 	{
@@ -53,7 +52,7 @@ func main() {
 
 	var h http.Handler
 	{
-		h = article.MakeHTTPHandler(s, log.With(logger, "component", "HTTP"))
+		// h = article.MakeHTTPHandler(s, log.With(logger, "component", "HTTP"))
 		h = album.MakeHTTPHandler(sa, log.With(logger, "component", "HTTP"))
 	}
 

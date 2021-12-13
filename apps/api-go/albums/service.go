@@ -3,12 +3,13 @@ package album
 import (
 	"api-go/api"
 	"api-go/auth"
+	"api-go/tutorial"
 	"context"
+	"database/sql"
 	"errors"
-	"fmt"
 	"time"
 
-	"gorm.io/gorm"
+	"github.com/google/uuid"
 )
 
 // Service is a simple CRUD interface for user albums.
@@ -29,47 +30,55 @@ var (
 )
 
 type service struct {
-	db *gorm.DB
+	db *tutorial.Queries
 }
 
-func NewService(db *gorm.DB) Service {
+func NewService(db *tutorial.Queries) Service {
 	return &service{
 		db: db,
 	}
 }
 
-func Published(db *gorm.DB) *gorm.DB {
-	return db.Where("published_at < ?", time.Now()).Where("private = ?", false)
-}
+// func Published(db *tutorial.Queries) *tutorial.Queries {
+// 	return db.Where("published_at < ?", time.Now()).Where("private = ?", false)
+// }
 
 func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (PaginatedAlbums, error) {
 	user := auth.GetUserClaims(ctx)
+	println(user)
 
-	albums := []AlbumModel{}
+	// albums := []AlbumModel{}
 	var total int64
 
-	query := s.db.Model(&albums)
+	// query := s.db.Model(&albums)
 
-	if user == nil || (user != nil && !user.IsAdmin()) {
-		query = query.Scopes(Published)
-	}
+	// if user == nil || (user != nil && !user.IsAdmin()) {
+	// 	query = query.Scopes(Published)
+	// }
 
-	if params.Joins.Categories {
-		query = query.Preload("Categories")
-	}
+	// if params.Joins.Categories {
+	// 	query = query.Preload("Categories")
+	// }
 
-	if params.Joins.Medias {
-		query = query.Preload("Medias")
-	}
+	// if params.Joins.Medias {
+	// 	query = query.Preload("Medias")
+	// }
 
-	// TODO Can run in goroutines ?
-	err := query.Count(&total).Error
+	// // TODO Can run in goroutines ?
+	// err := query.Count(&total).Error
+	// if err != nil {
+	// 	return PaginatedAlbums{}, fmt.Errorf("error counting albums: %w", err)
+	// }
+	// err = query.Scopes(api.Paginate(params.Next, params.Limit)).Order("published_at DESC").Find(&albums).Error
+	// if err != nil {
+	// 	return PaginatedAlbums{}, fmt.Errorf("error list albums: %w", err)
+	// }
+
+	arg := tutorial.GetPublishedAlbumsParams{PublishedAt: sql.NullTime{Time: time.Now(), Valid: true}, Limit: params.Limit}
+
+	albums, err := s.db.GetPublishedAlbums(ctx, arg)
 	if err != nil {
-		return PaginatedAlbums{}, fmt.Errorf("error counting albums: %w", err)
-	}
-	err = query.Scopes(api.Paginate(params.Next, params.Limit)).Order("published_at DESC").Find(&albums).Error
-	if err != nil {
-		return PaginatedAlbums{}, fmt.Errorf("error list albums: %w", err)
+		return PaginatedAlbums{}, err
 	}
 
 	data := make([]AlbumRequest, len(albums))
@@ -84,19 +93,25 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 }
 
 func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumRequest, error) {
-	user := auth.GetUserClaims(ctx)
+	// user := auth.GetUserClaims(ctx)
 
-	query := s.db.Where("slug = ?", slug)
+	// query := s.db.Where("slug = ?", slug)
 
-	if user == nil || (user != nil && !user.IsAdmin()) {
-		query = query.Scopes(Published)
-	}
+	// if user == nil || (user != nil && !user.IsAdmin()) {
+	// 	query = query.Scopes(Published)
+	// }
 
-	a := AlbumModel{}
-	err := query.First(&a).Error
+	// a := AlbumModel{}
+	// err := query.First(&a).Error
 
-	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
-		return AlbumRequest{}, ErrNotFound
+	// if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+	// 	return AlbumRequest{}, ErrNotFound
+	// }
+
+	a, err := s.db.GetAlbumBySlug(ctx, slug)
+
+	if err != nil {
+		return AlbumRequest{}, err
 	}
 
 	return AlbumRequest(a), err
@@ -113,22 +128,43 @@ func (s *service) PostAlbum(ctx context.Context, a AlbumRequest) (AlbumRequest, 
 		return AlbumRequest{}, ErrNotAdmin
 	}
 
-	a.SsoID = user.Sub
+	uid, err := uuid.Parse(user.Sub)
+	if err != nil {
+		return AlbumRequest{}, err
+	}
+
+	a.SsoID = uuid.NullUUID{UUID: uid, Valid: true}
 
 	if err := a.Validate(); err != nil {
 		return AlbumRequest{}, err
 	}
 
-	albumModel := AlbumModel(a)
-	if err := s.db.Create(&albumModel).Error; err != nil {
-		// TODO Cast pg error to have clean check
-		if err.Error() == "ERROR: duplicate key value violates unique constraint \"idx_albums_slug\" (SQLSTATE 23505)" {
-			return AlbumRequest{}, ErrAlreadyExists
-		}
+	arg := tutorial.CreateAlbumParams{
+		Slug:            a.Slug,
+		Title:           a.Title,
+		MetaDescription: a.MetaDescription,
+		Body:            a.Body,
+		PublishedAt:     a.PublishedAt,
+		Private:         a.Private,
+		SsoID:           a.SsoID,
+	}
+	id, err := s.db.CreateAlbum(ctx, arg)
+	if err != nil {
 		return AlbumRequest{}, err
 	}
 
-	return AlbumRequest(albumModel), nil
+	a.ID = id
+
+	// albumModel := AlbumModel(a)
+	// if err := s.db.Create(&albumModel).Error; err != nil {
+	// 	// TODO Cast pg error to have clean check
+	// 	if err.Error() == "ERROR: duplicate key value violates unique constraint \"idx_albums_slug\" (SQLSTATE 23505)" {
+	// 		return AlbumRequest{}, ErrAlreadyExists
+	// 	}
+	// 	return AlbumRequest{}, err
+	// }
+
+	return AlbumRequest(a), nil
 }
 
 func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumRequest) (AlbumRequest, error) {
@@ -142,16 +178,35 @@ func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumRequest) (Al
 		return AlbumRequest{}, ErrNotAdmin
 	}
 
-	a.SsoID = user.Sub
+	uid, err := uuid.Parse(user.Sub)
+	if err != nil {
+		return AlbumRequest{}, err
+	}
+
+	a.SsoID = uuid.NullUUID{UUID: uid, Valid: true}
 
 	if err := a.Validate(); err != nil {
 		return AlbumRequest{}, err
 	}
 
-	albumModel := AlbumModel(a)
-	s.db.Save(albumModel)
+	arg := tutorial.UpdateAlbumParams{
+		Slug:            a.Slug,
+		Title:           a.Title,
+		MetaDescription: a.MetaDescription,
+		Body:            a.Body,
+		PublishedAt:     a.PublishedAt,
+		Private:         a.Private,
+		SsoID:           a.SsoID,
+	}
+	err = s.db.UpdateAlbum(ctx, arg)
+	if err != nil {
+		return AlbumRequest{}, err
+	}
 
-	return AlbumRequest(albumModel), nil
+	// albumModel := AlbumModel(a)
+	// s.db.Save(albumModel)
+
+	return AlbumRequest(a), nil
 }
 
 func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumRequest) (AlbumRequest, error) {
@@ -159,11 +214,12 @@ func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumRequest) (
 }
 
 func (s *service) DeleteAlbum(ctx context.Context, slug string) error {
-	if err := s.db.Where("slug = ?", slug).First(&AlbumModel{}).Error; err != nil {
+
+	if _, err := s.db.GetAlbumBySlug(ctx, slug); err != nil {
 		return ErrNotFound
 	}
 
-	err := s.db.Where("slug = ?", slug).Delete(&AlbumModel{}).Error
+	err := s.db.DeleteAlbum(ctx, slug)
 	if err != nil {
 		return err
 	}
