@@ -5,3 +5,6 @@ packages:
     engine: "postgresql"
     schema: "schema.sql"
     queries: "query.sql"
+    emit_empty_slices: true
+    emit_prepared_queries: true
+    # output_files_suffix: "_albums"

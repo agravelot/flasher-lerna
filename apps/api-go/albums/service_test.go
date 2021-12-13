@@ -121,8 +121,9 @@ func TestMain(m *testing.M) {
 
 func TestShouldBeAbleToListEmpty(t *testing.T) {
 	database2.ClearDB(db)
-	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{0, 10}})
+	r, err := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{0, 10}})
 
+	assert.Nil(t, err)
 	assert.Equal(t, 0, len(r.Data))
 	assert.Equal(t, int64(0), r.Meta.Total)
 	assert.Equal(t, int32(10), r.Meta.Limit)

@@ -30,7 +30,7 @@ type CreateAlbumParams struct {
 }
 
 func (q *Queries) CreateAlbum(ctx context.Context, arg CreateAlbumParams) (int32, error) {
-	row := q.db.QueryRowContext(ctx, createAlbum,
+	row := q.queryRow(ctx, q.createAlbumStmt, createAlbum,
 		arg.Slug,
 		arg.Title,
 		arg.Body,
@@ -52,7 +52,7 @@ WHERE slug = $1
 `
 
 func (q *Queries) DeleteAlbum(ctx context.Context, slug string) error {
-	_, err := q.db.ExecContext(ctx, deleteAlbum, slug)
+	_, err := q.exec(ctx, q.deleteAlbumStmt, deleteAlbum, slug)
 	return err
 }
 
@@ -76,7 +76,7 @@ type GetAlbumBySlugRow struct {
 }
 
 func (q *Queries) GetAlbumBySlug(ctx context.Context, slug string) (GetAlbumBySlugRow, error) {
-	row := q.db.QueryRowContext(ctx, getAlbumBySlug, slug)
+	row := q.queryRow(ctx, q.getAlbumBySlugStmt, getAlbumBySlug, slug)
 	var i GetAlbumBySlugRow
 	err := row.Scan(
 		&i.ID,
@@ -111,12 +111,12 @@ type GetCategoriesByAlbumIdsRow struct {
 }
 
 func (q *Queries) GetCategoriesByAlbumIds(ctx context.Context, dollar_1 []int32) ([]GetCategoriesByAlbumIdsRow, error) {
-	rows, err := q.db.QueryContext(ctx, getCategoriesByAlbumIds, pq.Array(dollar_1))
+	rows, err := q.query(ctx, q.getCategoriesByAlbumIdsStmt, getCategoriesByAlbumIds, pq.Array(dollar_1))
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []GetCategoriesByAlbumIdsRow
+	items := []GetCategoriesByAlbumIdsRow{}
 	for rows.Next() {
 		var i GetCategoriesByAlbumIdsRow
 		if err := rows.Scan(
@@ -158,7 +158,7 @@ type GetCategoryBySlugRow struct {
 }
 
 func (q *Queries) GetCategoryBySlug(ctx context.Context, slug string) (GetCategoryBySlugRow, error) {
-	row := q.db.QueryRowContext(ctx, getCategoryBySlug, slug)
+	row := q.queryRow(ctx, q.getCategoryBySlugStmt, getCategoryBySlug, slug)
 	var i GetCategoryBySlugRow
 	err := row.Scan(
 		&i.ID,
@@ -188,12 +188,12 @@ type GetMediasByAlbumIdsRow struct {
 }
 
 func (q *Queries) GetMediasByAlbumIds(ctx context.Context, dollar_1 []int32) ([]GetMediasByAlbumIdsRow, error) {
-	rows, err := q.db.QueryContext(ctx, getMediasByAlbumIds, pq.Array(dollar_1))
+	rows, err := q.query(ctx, q.getMediasByAlbumIdsStmt, getMediasByAlbumIds, pq.Array(dollar_1))
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []GetMediasByAlbumIdsRow
+	items := []GetMediasByAlbumIdsRow{}
 	for rows.Next() {
 		var i GetMediasByAlbumIdsRow
 		if err := rows.Scan(
@@ -244,12 +244,12 @@ type GetPublishedAlbumsRow struct {
 }
 
 func (q *Queries) GetPublishedAlbums(ctx context.Context, arg GetPublishedAlbumsParams) ([]GetPublishedAlbumsRow, error) {
-	rows, err := q.db.QueryContext(ctx, getPublishedAlbums, arg.PublishedAt, arg.Limit)
+	rows, err := q.query(ctx, q.getPublishedAlbumsStmt, getPublishedAlbums, arg.PublishedAt, arg.Limit)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []GetPublishedAlbumsRow
+	items := []GetPublishedAlbumsRow{}
 	for rows.Next() {
 		var i GetPublishedAlbumsRow
 		if err := rows.Scan(
@@ -305,12 +305,12 @@ type GetPublishedAlbumsAfterIDRow struct {
 }
 
 func (q *Queries) GetPublishedAlbumsAfterID(ctx context.Context, arg GetPublishedAlbumsAfterIDParams) ([]GetPublishedAlbumsAfterIDRow, error) {
-	rows, err := q.db.QueryContext(ctx, getPublishedAlbumsAfterID, arg.PublishedAt, arg.ID, arg.Limit)
+	rows, err := q.query(ctx, q.getPublishedAlbumsAfterIDStmt, getPublishedAlbumsAfterID, arg.PublishedAt, arg.ID, arg.Limit)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []GetPublishedAlbumsAfterIDRow
+	items := []GetPublishedAlbumsAfterIDRow{}
 	for rows.Next() {
 		var i GetPublishedAlbumsAfterIDRow
 		if err := rows.Scan(
@@ -346,12 +346,12 @@ ORDER BY length(table_name)
 `
 
 func (q *Queries) PgListAllTables(ctx context.Context) ([]string, error) {
-	rows, err := q.db.QueryContext(ctx, pgListAllTables)
+	rows, err := q.query(ctx, q.pgListAllTablesStmt, pgListAllTables)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []string
+	items := []string{}
 	for rows.Next() {
 		var table_name string
 		if err := rows.Scan(&table_name); err != nil {
@@ -386,7 +386,7 @@ type UpdateAlbumParams struct {
 }
 
 func (q *Queries) UpdateAlbum(ctx context.Context, arg UpdateAlbumParams) error {
-	_, err := q.db.ExecContext(ctx, updateAlbum,
+	_, err := q.exec(ctx, q.updateAlbumStmt, updateAlbum,
 		arg.Slug,
 		arg.Title,
 		arg.Body,

@@ -9,6 +9,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/google/uuid"
 )
 
@@ -46,6 +47,8 @@ func NewService(db *tutorial.Queries) Service {
 func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (PaginatedAlbums, error) {
 	user := auth.GetUserClaims(ctx)
 	println(user)
+
+	spew.Dump(params.Limit)
 
 	// albums := []AlbumModel{}
 	var total int64
@@ -85,6 +88,11 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 	for i, a := range albums {
 		data[i] = AlbumRequest(a)
 	}
+
+	spew.Dump("aze", PaginatedAlbums{
+		Data: data,
+		Meta: api.Meta{Total: total, Limit: params.Limit},
+	})
 
 	return PaginatedAlbums{
 		Data: data,
