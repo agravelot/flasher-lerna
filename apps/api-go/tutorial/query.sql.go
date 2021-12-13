@@ -338,36 +338,6 @@ func (q *Queries) GetPublishedAlbumsAfterID(ctx context.Context, arg GetPublishe
 	return items, nil
 }
 
-const pgListAllTables = `-- name: PgListAllTables :many
-SELECT table_name
-FROM information_schema.tables
-WHERE table_schema = 'public'
-ORDER BY length(table_name)
-`
-
-func (q *Queries) PgListAllTables(ctx context.Context) ([]string, error) {
-	rows, err := q.query(ctx, q.pgListAllTablesStmt, pgListAllTables)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []string{}
-	for rows.Next() {
-		var table_name string
-		if err := rows.Scan(&table_name); err != nil {
-			return nil, err
-		}
-		items = append(items, table_name)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
 const updateAlbum = `-- name: UpdateAlbum :exec
 UPDATE albums
 SET slug = $1, title = $2, body = $3, private = $4, meta_description = $5, sso_id = $6, published_at = $7, updated_at = NOW()

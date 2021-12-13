@@ -46,9 +46,6 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	if q.getPublishedAlbumsAfterIDStmt, err = db.PrepareContext(ctx, getPublishedAlbumsAfterID); err != nil {
 		return nil, fmt.Errorf("error preparing query GetPublishedAlbumsAfterID: %w", err)
 	}
-	if q.pgListAllTablesStmt, err = db.PrepareContext(ctx, pgListAllTables); err != nil {
-		return nil, fmt.Errorf("error preparing query PgListAllTables: %w", err)
-	}
 	if q.updateAlbumStmt, err = db.PrepareContext(ctx, updateAlbum); err != nil {
 		return nil, fmt.Errorf("error preparing query UpdateAlbum: %w", err)
 	}
@@ -95,11 +92,6 @@ func (q *Queries) Close() error {
 	if q.getPublishedAlbumsAfterIDStmt != nil {
 		if cerr := q.getPublishedAlbumsAfterIDStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing getPublishedAlbumsAfterIDStmt: %w", cerr)
-		}
-	}
-	if q.pgListAllTablesStmt != nil {
-		if cerr := q.pgListAllTablesStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing pgListAllTablesStmt: %w", cerr)
 		}
 	}
 	if q.updateAlbumStmt != nil {
@@ -154,7 +146,6 @@ type Queries struct {
 	getMediasByAlbumIdsStmt       *sql.Stmt
 	getPublishedAlbumsStmt        *sql.Stmt
 	getPublishedAlbumsAfterIDStmt *sql.Stmt
-	pgListAllTablesStmt           *sql.Stmt
 	updateAlbumStmt               *sql.Stmt
 }
 
@@ -170,7 +161,6 @@ func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 		getMediasByAlbumIdsStmt:       q.getMediasByAlbumIdsStmt,
 		getPublishedAlbumsStmt:        q.getPublishedAlbumsStmt,
 		getPublishedAlbumsAfterIDStmt: q.getPublishedAlbumsAfterIDStmt,
-		pgListAllTablesStmt:           q.pgListAllTablesStmt,
 		updateAlbumStmt:               q.updateAlbumStmt,
 	}
 }

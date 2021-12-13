@@ -3,7 +3,7 @@ packages:
   - path: "tutorial"
     name: "tutorial"
     engine: "postgresql"
-    schema: "schema.sql"
+    schema: "migration"
     queries: "query.sql"
     emit_empty_slices: true
     emit_prepared_queries: true

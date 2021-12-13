@@ -3,7 +3,6 @@ package database2
 import (
 	"api-go/config"
 	"api-go/tutorial"
-	"context"
 	"database/sql"
 	"fmt"
 	"log"
@@ -52,21 +51,26 @@ func DbManager() *tutorial.Queries {
 
 //TODO
 func ClearDB(db *tutorial.Queries) {
+	rows, err := db2.Query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY length(table_name) desc;")
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
 	var tables []string
 
-	tables, err := db.PgListAllTables(context.Background())
-	if err != nil {
+	for rows.Next() {
+		var t string
+		if err := rows.Scan(&t); err != nil {
+			panic(err)
+		}
+		tables = append(tables, t)
+	}
+	if err = rows.Err(); err != nil {
 		panic(err)
 	}
 
 	for _, table := range tables {
 		db2.Exec("DELETE FROM " + table + " WHERE 1 = 1")
 	}
-
-	// if err := db.Table("information_schema.tables").Where("table_schema = ?", "public").Order("length(table_name) desc").Pluck("table_name", &tables).Error; err != nil {
-	// 	panic(err)
-	// }
-	// for _, table := range tables {
-	// 	db.Exec("DELETE FROM " + table + " WHERE 1 = 1")
-	// }
 }

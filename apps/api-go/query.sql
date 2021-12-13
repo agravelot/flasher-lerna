@@ -46,10 +46,3 @@ WHERE slug = $8;
 -- name: DeleteAlbum :exec
 DELETE FROM albums
 WHERE slug = $1;
-
-
--- name: PgListAllTables :many
-SELECT table_name
-FROM information_schema.tables
-WHERE table_schema = 'public'
-ORDER BY length(table_name);

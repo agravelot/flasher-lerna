@@ -115,10 +115,6 @@ type FailedJob struct {
 	FailedAt   time.Time
 }
 
-type InformationSchemaTable struct {
-	TableName string
-}
-
 type Invitation struct {
 	OldID       int64
 	CosplayerID int64
