@@ -151,7 +151,7 @@ func TestShouldBeAbleToListWithOnePublishedAlbum(t *testing.T) {
 	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{0, 10}})
 
 	assert.Equal(t, int64(1), r.Meta.Total)
-	assert.Equal(t, 10, r.Meta.Limit)
+	assert.Equal(t, int32(10), r.Meta.Limit)
 	assert.Equal(t, 1, len(r.Data))
 }
 

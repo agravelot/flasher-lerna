@@ -22,16 +22,24 @@ WHERE ci.categorizable_id = ANY($1::int[]) AND ci.categorizable_type = 'App\Mode
 -- name: GetPublishedAlbums :many
 SELECT a.id, a.slug, a.title, a.body, a.private, a.meta_description, a.sso_id, a.published_at, a.created_at, a.updated_at
 FROM albums a
-WHERE a.published_at > $1 AND private = false
+WHERE a.published_at < $1 AND private = false
+ORDER BY a.published_at DESC
+LIMIT $2;
+
+-- name: CountPublishedAlbums :one
+SELECT count(a.id)
+FROM albums a
+WHERE a.published_at < $1 AND private = false
 ORDER BY a.published_at DESC
 LIMIT $2;
 
 -- name: GetPublishedAlbumsAfterID :many
 SELECT a.id, a.slug, a.title, a.body, a.private, a.meta_description, a.sso_id, a.published_at, a.created_at, a.updated_at
 FROM albums a
-WHERE a.published_at > $1 AND private = false AND a.id > $2
+WHERE a.published_at < $1 AND private = false AND a.id > $2
 ORDER BY a.published_at DESC
 LIMIT $3;
+
 
 -- name: CreateAlbum :one
 INSERT INTO albums (slug, title, body, private, meta_description, sso_id, published_at, created_at, updated_at)

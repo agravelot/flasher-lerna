@@ -11,6 +11,26 @@ import (
 	"github.com/lib/pq"
 )
 
+const countPublishedAlbums = `-- name: CountPublishedAlbums :one
+SELECT count(a.id)
+FROM albums a
+WHERE a.published_at < $1 AND private = false
+ORDER BY a.published_at DESC
+LIMIT $2
+`
+
+type CountPublishedAlbumsParams struct {
+	PublishedAt sql.NullTime
+	Limit       int32
+}
+
+func (q *Queries) CountPublishedAlbums(ctx context.Context, arg CountPublishedAlbumsParams) (int64, error) {
+	row := q.queryRow(ctx, q.countPublishedAlbumsStmt, countPublishedAlbums, arg.PublishedAt, arg.Limit)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const createAlbum = `-- name: CreateAlbum :one
 INSERT INTO albums (slug, title, body, private, meta_description, sso_id, published_at, created_at, updated_at)
 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
@@ -220,7 +240,7 @@ func (q *Queries) GetMediasByAlbumIds(ctx context.Context, dollar_1 []int32) ([]
 const getPublishedAlbums = `-- name: GetPublishedAlbums :many
 SELECT a.id, a.slug, a.title, a.body, a.private, a.meta_description, a.sso_id, a.published_at, a.created_at, a.updated_at
 FROM albums a
-WHERE a.published_at > $1 AND private = false
+WHERE a.published_at < $1 AND private = false
 ORDER BY a.published_at DESC
 LIMIT $2
 `
@@ -280,7 +300,7 @@ func (q *Queries) GetPublishedAlbums(ctx context.Context, arg GetPublishedAlbums
 const getPublishedAlbumsAfterID = `-- name: GetPublishedAlbumsAfterID :many
 SELECT a.id, a.slug, a.title, a.body, a.private, a.meta_description, a.sso_id, a.published_at, a.created_at, a.updated_at
 FROM albums a
-WHERE a.published_at > $1 AND private = false AND a.id > $2
+WHERE a.published_at < $1 AND private = false AND a.id > $2
 ORDER BY a.published_at DESC
 LIMIT $3
 `

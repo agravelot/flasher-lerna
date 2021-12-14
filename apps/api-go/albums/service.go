@@ -51,7 +51,7 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 	spew.Dump(params.Limit)
 
 	// albums := []AlbumModel{}
-	var total int64
+	// var total int64
 
 	// query := s.db.Model(&albums)
 
@@ -78,21 +78,23 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 	// }
 
 	arg := tutorial.GetPublishedAlbumsParams{PublishedAt: sql.NullTime{Time: time.Now(), Valid: true}, Limit: params.Limit}
+	arg2 := tutorial.CountPublishedAlbumsParams{PublishedAt: sql.NullTime{Time: time.Now(), Valid: true}, Limit: params.Limit}
 
 	albums, err := s.db.GetPublishedAlbums(ctx, arg)
 	if err != nil {
 		return PaginatedAlbums{}, err
 	}
+	total, err := s.db.CountPublishedAlbums(ctx, arg2)
+	if err != nil {
+		return PaginatedAlbums{}, err
+	}
+
+	spew.Dump(albums)
 
 	data := make([]AlbumRequest, len(albums))
 	for i, a := range albums {
 		data[i] = AlbumRequest(a)
 	}
-
-	spew.Dump("aze", PaginatedAlbums{
-		Data: data,
-		Meta: api.Meta{Total: total, Limit: params.Limit},
-	})
 
 	return PaginatedAlbums{
 		Data: data,

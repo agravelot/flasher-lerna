@@ -22,6 +22,9 @@ func New(db DBTX) *Queries {
 func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	q := Queries{db: db}
 	var err error
+	if q.countPublishedAlbumsStmt, err = db.PrepareContext(ctx, countPublishedAlbums); err != nil {
+		return nil, fmt.Errorf("error preparing query CountPublishedAlbums: %w", err)
+	}
 	if q.createAlbumStmt, err = db.PrepareContext(ctx, createAlbum); err != nil {
 		return nil, fmt.Errorf("error preparing query CreateAlbum: %w", err)
 	}
@@ -54,6 +57,11 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 
 func (q *Queries) Close() error {
 	var err error
+	if q.countPublishedAlbumsStmt != nil {
+		if cerr := q.countPublishedAlbumsStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing countPublishedAlbumsStmt: %w", cerr)
+		}
+	}
 	if q.createAlbumStmt != nil {
 		if cerr := q.createAlbumStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing createAlbumStmt: %w", cerr)
@@ -138,6 +146,7 @@ func (q *Queries) queryRow(ctx context.Context, stmt *sql.Stmt, query string, ar
 type Queries struct {
 	db                            DBTX
 	tx                            *sql.Tx
+	countPublishedAlbumsStmt      *sql.Stmt
 	createAlbumStmt               *sql.Stmt
 	deleteAlbumStmt               *sql.Stmt
 	getAlbumBySlugStmt            *sql.Stmt
@@ -153,6 +162,7 @@ func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 	return &Queries{
 		db:                            tx,
 		tx:                            tx,
+		countPublishedAlbumsStmt:      q.countPublishedAlbumsStmt,
 		createAlbumStmt:               q.createAlbumStmt,
 		deleteAlbumStmt:               q.deleteAlbumStmt,
 		getAlbumBySlugStmt:            q.getAlbumBySlugStmt,
