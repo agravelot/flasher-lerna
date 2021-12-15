@@ -3,14 +3,35 @@ package database2
 import (
 	"api-go/config"
 	"api-go/tutorial"
+	"context"
 	"database/sql"
 	"fmt"
 	"log"
+	"time"
+
+	"github.com/lib/pq"
+	"github.com/qustavo/sqlhooks/v2"
 )
 
 var db *tutorial.Queries
 var db2 *sql.DB
 var err error
+
+// Hooks satisfies the sqlhook.Hooks interface
+type Hooks struct{}
+
+// Before hook will print the query with it's args and return the context with the timestamp
+func (h *Hooks) Before(ctx context.Context, query string, args ...interface{}) (context.Context, error) {
+	// fmt.Printf("> %s %q", query, args)
+	return context.WithValue(ctx, "begin", time.Now()), nil
+}
+
+// After hook will get the timestamp registered on the Before hook and print the elapsed time
+func (h *Hooks) After(ctx context.Context, query string, args ...interface{}) (context.Context, error) {
+	// begin := ctx.Value("begin").(time.Time)
+	// fmt.Printf(". took: %s\n", time.Since(begin))
+	return ctx, nil
+}
 
 func Init(c config.Configurations) (*tutorial.Queries, error) {
 
@@ -23,9 +44,11 @@ func Init(c config.Configurations) (*tutorial.Queries, error) {
 	// 	},
 	// )
 
+	sql.Register("postgresWithHooks", sqlhooks.Wrap(&pq.Driver{}, &Hooks{}))
+
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable", c.DbHost, c.DbUser, c.DbPassword, c.DbName, c.DbPort)
 
-	db2, err = sql.Open("postgres", dsn)
+	db2, err = sql.Open("postgresWithHooks", dsn)
 	if err != nil {
 		log.Fatalf("Got error when connect database, the error is '%v'", err)
 	}
@@ -71,6 +94,10 @@ func ClearDB(db *tutorial.Queries) {
 	}
 
 	for _, table := range tables {
-		db2.Exec("DELETE FROM " + table + " WHERE 1 = 1")
+		// println("Deleting table: " + table)
+		_, err := db2.Exec("DELETE FROM " + table + " WHERE 1 = 1")
+		if err != nil {
+			panic(fmt.Errorf("error deleting table %s: %w", table, err))
+		}
 	}
 }

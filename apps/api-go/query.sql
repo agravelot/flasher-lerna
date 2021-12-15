@@ -1,5 +1,5 @@
 -- name: GetAlbumBySlug :one
-SELECT a.id, a.slug, a.title, a.body, a.private, a.meta_description, a.sso_id, a.published_at, a.created_at, a.updated_at
+SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
 FROM albums a
 WHERE a.slug = $1;
 
@@ -19,32 +19,31 @@ FROM categories c
 INNER JOIN categorizables ci ON ci.category_id = c.id
 WHERE ci.categorizable_id = ANY($1::int[]) AND ci.categorizable_type = 'App\Models\Album';
 
--- name: GetPublishedAlbums :many
-SELECT a.id, a.slug, a.title, a.body, a.private, a.meta_description, a.sso_id, a.published_at, a.created_at, a.updated_at
-FROM albums a
-WHERE a.published_at < $1 AND private = false
-ORDER BY a.published_at DESC
-LIMIT $2;
-
 -- name: CountPublishedAlbums :one
 SELECT count(a.id)
 FROM albums a
-WHERE a.published_at < $1 AND private = false
+WHERE a.published_at < now() AND private = false
+LIMIT 1;
+
+-- name: GetPublishedAlbums :many
+SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
+FROM albums a
+WHERE a.published_at < now() AND private = false
 ORDER BY a.published_at DESC
-LIMIT $2;
+LIMIT $1;
 
 -- name: GetPublishedAlbumsAfterID :many
-SELECT a.id, a.slug, a.title, a.body, a.private, a.meta_description, a.sso_id, a.published_at, a.created_at, a.updated_at
+SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
 FROM albums a
-WHERE a.published_at < $1 AND private = false AND a.id > $2
+WHERE a.published_at < now() AND private = false AND a.id > $1
 ORDER BY a.published_at DESC
-LIMIT $3;
+LIMIT $2;
 
 
 -- name: CreateAlbum :one
 INSERT INTO albums (slug, title, body, private, meta_description, sso_id, published_at, created_at, updated_at)
 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-RETURNING id;
+RETURNING *;
 
 -- name: UpdateAlbum :exec
 UPDATE albums

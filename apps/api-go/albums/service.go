@@ -5,9 +5,8 @@ import (
 	"api-go/auth"
 	"api-go/tutorial"
 	"context"
-	"database/sql"
 	"errors"
-	"time"
+	"fmt"
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/google/uuid"
@@ -16,10 +15,10 @@ import (
 // Service is a simple CRUD interface for user albums.
 type Service interface {
 	GetAlbumList(ctx context.Context, params AlbumListParams) (PaginatedAlbums, error)
-	GetAlbum(ctx context.Context, slug string) (AlbumRequest, error)
-	PostAlbum(ctx context.Context, p AlbumRequest) (AlbumRequest, error)
-	PutAlbum(ctx context.Context, slug string, p AlbumRequest) (AlbumRequest, error)
-	PatchAlbum(ctx context.Context, slug string, p AlbumRequest) (AlbumRequest, error)
+	GetAlbum(ctx context.Context, slug string) (AlbumResponse, error)
+	PostAlbum(ctx context.Context, p AlbumResponse) (AlbumResponse, error)
+	PutAlbum(ctx context.Context, slug string, p AlbumResponse) (AlbumResponse, error)
+	PatchAlbum(ctx context.Context, slug string, p AlbumResponse) (AlbumResponse, error)
 	DeleteAlbum(ctx context.Context, slug string) error
 }
 
@@ -77,23 +76,18 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 	// 	return PaginatedAlbums{}, fmt.Errorf("error list albums: %w", err)
 	// }
 
-	arg := tutorial.GetPublishedAlbumsParams{PublishedAt: sql.NullTime{Time: time.Now(), Valid: true}, Limit: params.Limit}
-	arg2 := tutorial.CountPublishedAlbumsParams{PublishedAt: sql.NullTime{Time: time.Now(), Valid: true}, Limit: params.Limit}
-
-	albums, err := s.db.GetPublishedAlbums(ctx, arg)
+	albums, err := s.db.GetPublishedAlbums(ctx, params.Limit)
 	if err != nil {
-		return PaginatedAlbums{}, err
+		return PaginatedAlbums{}, fmt.Errorf("error list albums: %w", err)
 	}
-	total, err := s.db.CountPublishedAlbums(ctx, arg2)
+	total, err := s.db.CountPublishedAlbums(ctx)
 	if err != nil {
-		return PaginatedAlbums{}, err
+		return PaginatedAlbums{}, fmt.Errorf("error counting albums: %w", err)
 	}
 
-	spew.Dump(albums)
-
-	data := make([]AlbumRequest, len(albums))
+	data := make([]AlbumResponse, len(albums))
 	for i, a := range albums {
-		data[i] = AlbumRequest(a)
+		data[i] = AlbumResponse(a)
 	}
 
 	return PaginatedAlbums{
@@ -102,7 +96,7 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 	}, nil
 }
 
-func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumRequest, error) {
+func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, error) {
 	// user := auth.GetUserClaims(ctx)
 
 	// query := s.db.Where("slug = ?", slug)
@@ -121,32 +115,32 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumRequest, erro
 	a, err := s.db.GetAlbumBySlug(ctx, slug)
 
 	if err != nil {
-		return AlbumRequest{}, err
+		return AlbumResponse{}, err
 	}
 
-	return AlbumRequest(a), err
+	return AlbumResponse(a), err
 }
 
-func (s *service) PostAlbum(ctx context.Context, a AlbumRequest) (AlbumRequest, error) {
+func (s *service) PostAlbum(ctx context.Context, a AlbumResponse) (AlbumResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
 	if user == nil {
-		return AlbumRequest{}, ErrNoAuth
+		return AlbumResponse{}, ErrNoAuth
 	}
 
 	if !user.IsAdmin() {
-		return AlbumRequest{}, ErrNotAdmin
+		return AlbumResponse{}, ErrNotAdmin
 	}
 
 	uid, err := uuid.Parse(user.Sub)
 	if err != nil {
-		return AlbumRequest{}, err
+		return AlbumResponse{}, err
 	}
 
 	a.SsoID = uuid.NullUUID{UUID: uid, Valid: true}
 
 	if err := a.Validate(); err != nil {
-		return AlbumRequest{}, err
+		return AlbumResponse{}, err
 	}
 
 	arg := tutorial.CreateAlbumParams{
@@ -158,12 +152,10 @@ func (s *service) PostAlbum(ctx context.Context, a AlbumRequest) (AlbumRequest, 
 		Private:         a.Private,
 		SsoID:           a.SsoID,
 	}
-	id, err := s.db.CreateAlbum(ctx, arg)
+	a2, err := s.db.CreateAlbum(ctx, arg)
 	if err != nil {
-		return AlbumRequest{}, err
+		return AlbumResponse{}, err
 	}
-
-	a.ID = id
 
 	// albumModel := AlbumModel(a)
 	// if err := s.db.Create(&albumModel).Error; err != nil {
@@ -174,29 +166,29 @@ func (s *service) PostAlbum(ctx context.Context, a AlbumRequest) (AlbumRequest, 
 	// 	return AlbumRequest{}, err
 	// }
 
-	return AlbumRequest(a), nil
+	return AlbumResponse(a2), nil
 }
 
-func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumRequest) (AlbumRequest, error) {
+func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumResponse) (AlbumResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
 	if user == nil {
-		return AlbumRequest{}, ErrNoAuth
+		return AlbumResponse{}, ErrNoAuth
 	}
 
 	if !user.IsAdmin() {
-		return AlbumRequest{}, ErrNotAdmin
+		return AlbumResponse{}, ErrNotAdmin
 	}
 
 	uid, err := uuid.Parse(user.Sub)
 	if err != nil {
-		return AlbumRequest{}, err
+		return AlbumResponse{}, err
 	}
 
 	a.SsoID = uuid.NullUUID{UUID: uid, Valid: true}
 
 	if err := a.Validate(); err != nil {
-		return AlbumRequest{}, err
+		return AlbumResponse{}, err
 	}
 
 	arg := tutorial.UpdateAlbumParams{
@@ -210,17 +202,17 @@ func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumRequest) (Al
 	}
 	err = s.db.UpdateAlbum(ctx, arg)
 	if err != nil {
-		return AlbumRequest{}, err
+		return AlbumResponse{}, err
 	}
 
 	// albumModel := AlbumModel(a)
 	// s.db.Save(albumModel)
 
-	return AlbumRequest(a), nil
+	return AlbumResponse(a), nil
 }
 
-func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumRequest) (AlbumRequest, error) {
-	return AlbumRequest{}, nil
+func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumResponse) (AlbumResponse, error) {
+	return AlbumResponse{}, nil
 }
 
 func (s *service) DeleteAlbum(ctx context.Context, slug string) error {

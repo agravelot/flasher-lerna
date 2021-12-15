@@ -90,7 +90,7 @@ func MakeHTTPHandler(s Service, logger log.Logger) http.Handler {
 
 func decodePostAlbumRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
 	var req postAlbumRequest
-	if e := json.NewDecoder(r.Body).Decode(&req.AlbumRequest); e != nil {
+	if e := json.NewDecoder(r.Body).Decode(&req.AlbumResponse); e != nil {
 		return nil, e
 	}
 	return req, nil
@@ -149,13 +149,13 @@ func decodePutAlbumRequest(_ context.Context, r *http.Request) (request interfac
 	if !ok {
 		return nil, ErrBadRouting
 	}
-	var album AlbumRequest
+	var album AlbumResponse
 	if err := json.NewDecoder(r.Body).Decode(&album); err != nil {
 		return nil, err
 	}
 	return putAlbumRequest{
-		ID:           id,
-		AlbumRequest: album,
+		ID:            id,
+		AlbumResponse: album,
 	}, nil
 }
 
@@ -165,13 +165,13 @@ func decodePatchAlbumRequest(_ context.Context, r *http.Request) (request interf
 	if !ok {
 		return nil, ErrBadRouting
 	}
-	var album AlbumRequest
+	var album AlbumResponse
 	if err := json.NewDecoder(r.Body).Decode(&album); err != nil {
 		return nil, err
 	}
 	return patchAlbumRequest{
-		Slug:         slug,
-		AlbumRequest: album,
+		Slug:          slug,
+		AlbumResponse: album,
 	}, nil
 }
 

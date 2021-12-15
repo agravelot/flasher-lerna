@@ -14,18 +14,12 @@ import (
 const countPublishedAlbums = `-- name: CountPublishedAlbums :one
 SELECT count(a.id)
 FROM albums a
-WHERE a.published_at < $1 AND private = false
-ORDER BY a.published_at DESC
-LIMIT $2
+WHERE a.published_at < now() AND private = false
+LIMIT 1
 `
 
-type CountPublishedAlbumsParams struct {
-	PublishedAt sql.NullTime
-	Limit       int32
-}
-
-func (q *Queries) CountPublishedAlbums(ctx context.Context, arg CountPublishedAlbumsParams) (int64, error) {
-	row := q.queryRow(ctx, q.countPublishedAlbumsStmt, countPublishedAlbums, arg.PublishedAt, arg.Limit)
+func (q *Queries) CountPublishedAlbums(ctx context.Context) (int64, error) {
+	row := q.queryRow(ctx, q.countPublishedAlbumsStmt, countPublishedAlbums)
 	var count int64
 	err := row.Scan(&count)
 	return count, err
@@ -34,7 +28,7 @@ func (q *Queries) CountPublishedAlbums(ctx context.Context, arg CountPublishedAl
 const createAlbum = `-- name: CreateAlbum :one
 INSERT INTO albums (slug, title, body, private, meta_description, sso_id, published_at, created_at, updated_at)
 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-RETURNING id
+RETURNING id, slug, title, body, published_at, private, user_id, created_at, updated_at, notify_users_on_published, meta_description, sso_id
 `
 
 type CreateAlbumParams struct {
@@ -49,7 +43,7 @@ type CreateAlbumParams struct {
 	UpdatedAt       sql.NullTime
 }
 
-func (q *Queries) CreateAlbum(ctx context.Context, arg CreateAlbumParams) (int32, error) {
+func (q *Queries) CreateAlbum(ctx context.Context, arg CreateAlbumParams) (Album, error) {
 	row := q.queryRow(ctx, q.createAlbumStmt, createAlbum,
 		arg.Slug,
 		arg.Title,
@@ -61,9 +55,22 @@ func (q *Queries) CreateAlbum(ctx context.Context, arg CreateAlbumParams) (int32
 		arg.CreatedAt,
 		arg.UpdatedAt,
 	)
-	var id int32
-	err := row.Scan(&id)
-	return id, err
+	var i Album
+	err := row.Scan(
+		&i.ID,
+		&i.Slug,
+		&i.Title,
+		&i.Body,
+		&i.PublishedAt,
+		&i.Private,
+		&i.UserID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.NotifyUsersOnPublished,
+		&i.MetaDescription,
+		&i.SsoID,
+	)
+	return i, err
 }
 
 const deleteAlbum = `-- name: DeleteAlbum :exec
@@ -77,38 +84,27 @@ func (q *Queries) DeleteAlbum(ctx context.Context, slug string) error {
 }
 
 const getAlbumBySlug = `-- name: GetAlbumBySlug :one
-SELECT a.id, a.slug, a.title, a.body, a.private, a.meta_description, a.sso_id, a.published_at, a.created_at, a.updated_at
+SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
 FROM albums a
 WHERE a.slug = $1
 `
 
-type GetAlbumBySlugRow struct {
-	ID              int32
-	Slug            string
-	Title           string
-	Body            sql.NullString
-	Private         bool
-	MetaDescription string
-	SsoID           uuid.NullUUID
-	PublishedAt     sql.NullTime
-	CreatedAt       sql.NullTime
-	UpdatedAt       sql.NullTime
-}
-
-func (q *Queries) GetAlbumBySlug(ctx context.Context, slug string) (GetAlbumBySlugRow, error) {
+func (q *Queries) GetAlbumBySlug(ctx context.Context, slug string) (Album, error) {
 	row := q.queryRow(ctx, q.getAlbumBySlugStmt, getAlbumBySlug, slug)
-	var i GetAlbumBySlugRow
+	var i Album
 	err := row.Scan(
 		&i.ID,
 		&i.Slug,
 		&i.Title,
 		&i.Body,
-		&i.Private,
-		&i.MetaDescription,
-		&i.SsoID,
 		&i.PublishedAt,
+		&i.Private,
+		&i.UserID,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.NotifyUsersOnPublished,
+		&i.MetaDescription,
+		&i.SsoID,
 	)
 	return i, err
 }
@@ -238,51 +234,35 @@ func (q *Queries) GetMediasByAlbumIds(ctx context.Context, dollar_1 []int32) ([]
 }
 
 const getPublishedAlbums = `-- name: GetPublishedAlbums :many
-SELECT a.id, a.slug, a.title, a.body, a.private, a.meta_description, a.sso_id, a.published_at, a.created_at, a.updated_at
+SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
 FROM albums a
-WHERE a.published_at < $1 AND private = false
+WHERE a.published_at < now() AND private = false
 ORDER BY a.published_at DESC
-LIMIT $2
+LIMIT $1
 `
 
-type GetPublishedAlbumsParams struct {
-	PublishedAt sql.NullTime
-	Limit       int32
-}
-
-type GetPublishedAlbumsRow struct {
-	ID              int32
-	Slug            string
-	Title           string
-	Body            sql.NullString
-	Private         bool
-	MetaDescription string
-	SsoID           uuid.NullUUID
-	PublishedAt     sql.NullTime
-	CreatedAt       sql.NullTime
-	UpdatedAt       sql.NullTime
-}
-
-func (q *Queries) GetPublishedAlbums(ctx context.Context, arg GetPublishedAlbumsParams) ([]GetPublishedAlbumsRow, error) {
-	rows, err := q.query(ctx, q.getPublishedAlbumsStmt, getPublishedAlbums, arg.PublishedAt, arg.Limit)
+func (q *Queries) GetPublishedAlbums(ctx context.Context, limit int32) ([]Album, error) {
+	rows, err := q.query(ctx, q.getPublishedAlbumsStmt, getPublishedAlbums, limit)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []GetPublishedAlbumsRow{}
+	items := []Album{}
 	for rows.Next() {
-		var i GetPublishedAlbumsRow
+		var i Album
 		if err := rows.Scan(
 			&i.ID,
 			&i.Slug,
 			&i.Title,
 			&i.Body,
-			&i.Private,
-			&i.MetaDescription,
-			&i.SsoID,
 			&i.PublishedAt,
+			&i.Private,
+			&i.UserID,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.NotifyUsersOnPublished,
+			&i.MetaDescription,
+			&i.SsoID,
 		); err != nil {
 			return nil, err
 		}
@@ -298,52 +278,40 @@ func (q *Queries) GetPublishedAlbums(ctx context.Context, arg GetPublishedAlbums
 }
 
 const getPublishedAlbumsAfterID = `-- name: GetPublishedAlbumsAfterID :many
-SELECT a.id, a.slug, a.title, a.body, a.private, a.meta_description, a.sso_id, a.published_at, a.created_at, a.updated_at
+SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
 FROM albums a
-WHERE a.published_at < $1 AND private = false AND a.id > $2
+WHERE a.published_at < now() AND private = false AND a.id > $1
 ORDER BY a.published_at DESC
-LIMIT $3
+LIMIT $2
 `
 
 type GetPublishedAlbumsAfterIDParams struct {
-	PublishedAt sql.NullTime
-	ID          int32
-	Limit       int32
+	ID    int32
+	Limit int32
 }
 
-type GetPublishedAlbumsAfterIDRow struct {
-	ID              int32
-	Slug            string
-	Title           string
-	Body            sql.NullString
-	Private         bool
-	MetaDescription string
-	SsoID           uuid.NullUUID
-	PublishedAt     sql.NullTime
-	CreatedAt       sql.NullTime
-	UpdatedAt       sql.NullTime
-}
-
-func (q *Queries) GetPublishedAlbumsAfterID(ctx context.Context, arg GetPublishedAlbumsAfterIDParams) ([]GetPublishedAlbumsAfterIDRow, error) {
-	rows, err := q.query(ctx, q.getPublishedAlbumsAfterIDStmt, getPublishedAlbumsAfterID, arg.PublishedAt, arg.ID, arg.Limit)
+func (q *Queries) GetPublishedAlbumsAfterID(ctx context.Context, arg GetPublishedAlbumsAfterIDParams) ([]Album, error) {
+	rows, err := q.query(ctx, q.getPublishedAlbumsAfterIDStmt, getPublishedAlbumsAfterID, arg.ID, arg.Limit)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []GetPublishedAlbumsAfterIDRow{}
+	items := []Album{}
 	for rows.Next() {
-		var i GetPublishedAlbumsAfterIDRow
+		var i Album
 		if err := rows.Scan(
 			&i.ID,
 			&i.Slug,
 			&i.Title,
 			&i.Body,
-			&i.Private,
-			&i.MetaDescription,
-			&i.SsoID,
 			&i.PublishedAt,
+			&i.Private,
+			&i.UserID,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.NotifyUsersOnPublished,
+			&i.MetaDescription,
+			&i.SsoID,
 		); err != nil {
 			return nil, err
 		}
