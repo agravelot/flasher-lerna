@@ -9,10 +9,11 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+	"strconv"
 	"testing"
 	"time"
 
-	"github.com/CezarGarrido/sqllogs"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
@@ -89,8 +90,6 @@ func authAsAdmin(ctx context.Context) (context.Context, auth.Claims) {
 }
 
 func TestMain(m *testing.M) {
-	sqllogs.SetDebug(true)
-
 	config := config.LoadDotEnv("../")
 	db, _ = database2.Init(config)
 	database2.ClearDB(db)
@@ -112,8 +111,6 @@ func TestMain(m *testing.M) {
 	exitVal := m.Run() // Run tests
 	// Do stuff after test
 
-	log := sqllogs.ExecLogs()
-	fmt.Println("All logs ->", log)
 	os.Exit(exitVal)
 }
 
@@ -164,85 +161,144 @@ func TestShouldBeOrderedByDateOfPublication(t *testing.T) {
 	args := []tutorial.CreateAlbumParams{
 		{
 			Title:       "A good Title",
+			Slug:        "a-good-title",
 			PublishedAt: sql.NullTime{Time: time.Now().Add(-100 * time.Minute), Valid: true},
 			Private:     false,
 			SsoID:       uuid.NullUUID{UUID: id, Valid: true},
 		},
 		{
 			Title:       "A good Title 2",
+			Slug:        "a-good-title-2",
 			PublishedAt: sql.NullTime{Time: time.Now().Add(-10 * time.Minute), Valid: true},
 			Private:     false,
 			SsoID:       uuid.NullUUID{UUID: id, Valid: true},
 		},
 		{
 			Title:       "A good Title 3",
+			Slug:        "a-good-title-3",
 			PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
 			Private:     false,
 			SsoID:       uuid.NullUUID{UUID: id, Valid: true},
 		},
 	}
 
-	var albums []tutorial.Album
-
 	for _, arg := range args {
-		a, err := db.CreateAlbum(context.Background(), arg)
+		_, err := db.CreateAlbum(context.Background(), arg)
 		if err != nil {
-			t.Error(err)
+			t.Error(fmt.Errorf("Error creating album: %w", err))
 		}
-		albums = append(albums, a)
 	}
 
 	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{0, 10}})
 
 	assert.Equal(t, int64(3), r.Meta.Total)
-	assert.Equal(t, 10, r.Meta.Limit)
+	assert.Equal(t, int32(10), r.Meta.Limit)
 	assert.Equal(t, 3, len(r.Data))
-	assert.Equal(t, albums[0].Slug, r.Data[0].Slug)
-	assert.Equal(t, albums[1].Slug, r.Data[1].Slug)
-	assert.Equal(t, albums[2].Slug, r.Data[2].Slug)
+	assert.Equal(t, "a-good-title-3", r.Data[0].Slug)
+	assert.Equal(t, "a-good-title-2", r.Data[1].Slug)
+	assert.Equal(t, "a-good-title", r.Data[2].Slug)
 }
 
-// func TestShouldOnlyShowPublicAlbums(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	albums := []AlbumModel{
-// 		{Title: "A good Title", PublishedAt: null.NewTime(time.Now().Add(-10*time.Minute), true), Private: boolPtr(false), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"},
-// 		{Title: "A good Title 2", PublishedAt: null.NewTime(time.Now().Add(-10*time.Minute), true), Private: boolPtr(true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"},
-// 		{Title: "A good Title 3", Private: boolPtr(true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"},
-// 		{Title: "A good Title 4", Private: boolPtr(false), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"},
-// 	}
+func TestShouldOnlyShowPublicAlbums(t *testing.T) {
+	database2.ClearDB(db)
 
-// 	for _, a := range albums {
-// 		err := db.Create(&a).Error
-// 		if err != nil {
-// 			t.Error(err)
-// 		}
-// 	}
+	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
+	if err != nil {
+		t.Error(err)
+	}
+	args := []tutorial.CreateAlbumParams{
+		{
+			Title:       "A good Title",
+			Slug:        "a-good-title",
+			PublishedAt: sql.NullTime{Time: time.Now().Add(-100 * time.Minute), Valid: true},
+			Private:     false,
+			SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+		},
+		{
+			Title:       "A good Title 2",
+			Slug:        "a-good-title-2",
+			PublishedAt: sql.NullTime{Time: time.Now().Add(-10 * time.Minute), Valid: true},
+			Private:     true,
+			SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+		},
+		{
+			Title:   "A good Title 3",
+			Slug:    "a-good-title-3",
+			Private: true,
+			SsoID:   uuid.NullUUID{UUID: id, Valid: true},
+		},
+		{
+			Title:   "A good Title 4",
+			Slug:    "a-good-title-4",
+			Private: false,
+			SsoID:   uuid.NullUUID{UUID: id, Valid: true},
+		},
+	}
 
-// 	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{0, 10}})
+	for _, arg := range args {
+		_, err := db.CreateAlbum(context.Background(), arg)
+		if err != nil {
+			t.Error(fmt.Errorf("Error creating album: %w", err))
+		}
+	}
 
-// 	assert.Equal(t, int64(1), r.Meta.Total)
-// 	assert.Equal(t, 10, r.Meta.Limit)
-// 	assert.Equal(t, 1, len(r.Data))
-// }
+	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{0, 10}})
 
-// func TestShouldBeAbleToListPublishedAlbumsOnSecondPage(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	var albums []AlbumModel
-// 	for i := 0; i < 10; i++ {
-// 		tmp := AlbumModel{Title: "A good Title " + strconv.Itoa(i), PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
-// 		db.Create(&tmp)
-// 		albums = append(albums, tmp)
-// 	}
-// 	a := AlbumModel{Title: "On second page", PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
-// 	db.Create(&a)
+	spew.Dump(r.Data)
 
-// 	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{Next: albums[9].ID, Limit: 10}})
+	assert.Equal(t, int64(1), r.Meta.Total)
+	assert.Equal(t, int32(10), r.Meta.Limit)
+	assert.Equal(t, 1, len(r.Data))
+}
 
-// 	assert.Equal(t, int64(11), r.Meta.Total)
-// 	assert.Equal(t, 10, r.Meta.Limit)
-// 	assert.Equal(t, 1, len(r.Data))
-// 	assert.Equal(t, a.Title, r.Data[0].Title)
-// }
+func TestShouldBeAbleToListPublishedAlbumsOnSecondPage(t *testing.T) {
+	database2.ClearDB(db)
+
+	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
+	if err != nil {
+		t.Error(err)
+	}
+
+	var lastPageID int32
+
+	for i := 0; i < 10; i++ {
+		arg := tutorial.CreateAlbumParams{
+			Title:       "A good Title " + strconv.Itoa(i),
+			Slug:        "a-good-title-" + strconv.Itoa(i),
+			PublishedAt: sql.NullTime{Time: time.Now().Add(-100 * time.Minute), Valid: true},
+			Private:     false,
+			SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+		}
+
+		a, err := db.CreateAlbum(context.Background(), arg)
+		if i == 9 {
+			lastPageID = a.ID
+		}
+		if err != nil {
+			t.Error(fmt.Errorf("Error creating album: %w", err))
+		}
+	}
+
+	arg := tutorial.CreateAlbumParams{
+		Title:       "On second page",
+		Slug:        "on-second-page",
+		PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+		Private:     false,
+		SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+	}
+
+	_, err = db.CreateAlbum(context.Background(), arg)
+	if err != nil {
+		t.Error(fmt.Errorf("Error creating album: %w", err))
+	}
+
+	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{Next: uint(lastPageID), Limit: 10}})
+
+	assert.Equal(t, int64(11), r.Meta.Total)
+	assert.Equal(t, int32(10), r.Meta.Limit)
+	assert.Equal(t, 1, len(r.Data))
+	assert.Equal(t, arg.Title, r.Data[0].Title)
+}
 
 // func TestShouldBeAbleToListPublishedAlbumsOnSecondPageWithCustomPerPage(t *testing.T) {
 // 	var albums []AlbumModel

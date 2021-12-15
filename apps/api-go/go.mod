@@ -3,7 +3,6 @@ module api-go
 go 1.16
 
 require (
-	github.com/CezarGarrido/sqllogs v0.0.0-20190808212246-f0542ec7db5a
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/davecgh/go-spew v1.1.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible

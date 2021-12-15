@@ -76,10 +76,25 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 	// 	return PaginatedAlbums{}, fmt.Errorf("error list albums: %w", err)
 	// }
 
-	albums, err := s.db.GetPublishedAlbums(ctx, params.Limit)
-	if err != nil {
-		return PaginatedAlbums{}, fmt.Errorf("error list albums: %w", err)
+	var albums []tutorial.Album
+	if params.Next != 0 {
+		arg := tutorial.GetPublishedAlbumsAfterIDParams{
+			ID:    int32(params.Next),
+			Limit: int32(params.Limit),
+		}
+		a, err := s.db.GetPublishedAlbumsAfterID(ctx, arg)
+		albums = a
+		if err != nil {
+			return PaginatedAlbums{}, fmt.Errorf("error list albums after id: %d %w", params.Next, err)
+		}
+	} else {
+		a, err := s.db.GetPublishedAlbums(ctx, params.Limit)
+		albums = a
+		if err != nil {
+			return PaginatedAlbums{}, fmt.Errorf("error list albums: %w", err)
+		}
 	}
+
 	total, err := s.db.CountPublishedAlbums(ctx)
 	if err != nil {
 		return PaginatedAlbums{}, fmt.Errorf("error counting albums: %w", err)

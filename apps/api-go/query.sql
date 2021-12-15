@@ -22,8 +22,7 @@ WHERE ci.categorizable_id = ANY($1::int[]) AND ci.categorizable_type = 'App\Mode
 -- name: CountPublishedAlbums :one
 SELECT count(a.id)
 FROM albums a
-WHERE a.published_at < now() AND private = false
-LIMIT 1;
+WHERE a.published_at < now() AND private = false;
 
 -- name: GetPublishedAlbums :many
 SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
@@ -42,7 +41,7 @@ LIMIT $2;
 
 -- name: CreateAlbum :one
 INSERT INTO albums (slug, title, body, private, meta_description, sso_id, published_at, created_at, updated_at)
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+VALUES ($1, $2, $3, $4, $5, $6, $7, now(), now())
 RETURNING *;
 
 -- name: UpdateAlbum :exec

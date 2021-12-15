@@ -15,7 +15,6 @@ const countPublishedAlbums = `-- name: CountPublishedAlbums :one
 SELECT count(a.id)
 FROM albums a
 WHERE a.published_at < now() AND private = false
-LIMIT 1
 `
 
 func (q *Queries) CountPublishedAlbums(ctx context.Context) (int64, error) {
@@ -27,7 +26,7 @@ func (q *Queries) CountPublishedAlbums(ctx context.Context) (int64, error) {
 
 const createAlbum = `-- name: CreateAlbum :one
 INSERT INTO albums (slug, title, body, private, meta_description, sso_id, published_at, created_at, updated_at)
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+VALUES ($1, $2, $3, $4, $5, $6, $7, now(), now())
 RETURNING id, slug, title, body, published_at, private, user_id, created_at, updated_at, notify_users_on_published, meta_description, sso_id
 `
 
@@ -39,8 +38,6 @@ type CreateAlbumParams struct {
 	MetaDescription string
 	SsoID           uuid.NullUUID
 	PublishedAt     sql.NullTime
-	CreatedAt       sql.NullTime
-	UpdatedAt       sql.NullTime
 }
 
 func (q *Queries) CreateAlbum(ctx context.Context, arg CreateAlbumParams) (Album, error) {
@@ -52,8 +49,6 @@ func (q *Queries) CreateAlbum(ctx context.Context, arg CreateAlbumParams) (Album
 		arg.MetaDescription,
 		arg.SsoID,
 		arg.PublishedAt,
-		arg.CreatedAt,
-		arg.UpdatedAt,
 	)
 	var i Album
 	err := row.Scan(
