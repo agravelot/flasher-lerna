@@ -22,6 +22,9 @@ func New(db DBTX) *Queries {
 func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	q := Queries{db: db}
 	var err error
+	if q.countAlbumsStmt, err = db.PrepareContext(ctx, countAlbums); err != nil {
+		return nil, fmt.Errorf("error preparing query CountAlbums: %w", err)
+	}
 	if q.countPublishedAlbumsStmt, err = db.PrepareContext(ctx, countPublishedAlbums); err != nil {
 		return nil, fmt.Errorf("error preparing query CountPublishedAlbums: %w", err)
 	}
@@ -33,6 +36,12 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	}
 	if q.getAlbumBySlugStmt, err = db.PrepareContext(ctx, getAlbumBySlug); err != nil {
 		return nil, fmt.Errorf("error preparing query GetAlbumBySlug: %w", err)
+	}
+	if q.getAlbumsStmt, err = db.PrepareContext(ctx, getAlbums); err != nil {
+		return nil, fmt.Errorf("error preparing query GetAlbums: %w", err)
+	}
+	if q.getAlbumsAfterIDStmt, err = db.PrepareContext(ctx, getAlbumsAfterID); err != nil {
+		return nil, fmt.Errorf("error preparing query GetAlbumsAfterID: %w", err)
 	}
 	if q.getCategoriesByAlbumIdsStmt, err = db.PrepareContext(ctx, getCategoriesByAlbumIds); err != nil {
 		return nil, fmt.Errorf("error preparing query GetCategoriesByAlbumIds: %w", err)
@@ -57,6 +66,11 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 
 func (q *Queries) Close() error {
 	var err error
+	if q.countAlbumsStmt != nil {
+		if cerr := q.countAlbumsStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing countAlbumsStmt: %w", cerr)
+		}
+	}
 	if q.countPublishedAlbumsStmt != nil {
 		if cerr := q.countPublishedAlbumsStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing countPublishedAlbumsStmt: %w", cerr)
@@ -75,6 +89,16 @@ func (q *Queries) Close() error {
 	if q.getAlbumBySlugStmt != nil {
 		if cerr := q.getAlbumBySlugStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing getAlbumBySlugStmt: %w", cerr)
+		}
+	}
+	if q.getAlbumsStmt != nil {
+		if cerr := q.getAlbumsStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing getAlbumsStmt: %w", cerr)
+		}
+	}
+	if q.getAlbumsAfterIDStmt != nil {
+		if cerr := q.getAlbumsAfterIDStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing getAlbumsAfterIDStmt: %w", cerr)
 		}
 	}
 	if q.getCategoriesByAlbumIdsStmt != nil {
@@ -146,10 +170,13 @@ func (q *Queries) queryRow(ctx context.Context, stmt *sql.Stmt, query string, ar
 type Queries struct {
 	db                            DBTX
 	tx                            *sql.Tx
+	countAlbumsStmt               *sql.Stmt
 	countPublishedAlbumsStmt      *sql.Stmt
 	createAlbumStmt               *sql.Stmt
 	deleteAlbumStmt               *sql.Stmt
 	getAlbumBySlugStmt            *sql.Stmt
+	getAlbumsStmt                 *sql.Stmt
+	getAlbumsAfterIDStmt          *sql.Stmt
 	getCategoriesByAlbumIdsStmt   *sql.Stmt
 	getCategoryBySlugStmt         *sql.Stmt
 	getMediasByAlbumIdsStmt       *sql.Stmt
@@ -162,10 +189,13 @@ func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 	return &Queries{
 		db:                            tx,
 		tx:                            tx,
+		countAlbumsStmt:               q.countAlbumsStmt,
 		countPublishedAlbumsStmt:      q.countPublishedAlbumsStmt,
 		createAlbumStmt:               q.createAlbumStmt,
 		deleteAlbumStmt:               q.deleteAlbumStmt,
 		getAlbumBySlugStmt:            q.getAlbumBySlugStmt,
+		getAlbumsStmt:                 q.getAlbumsStmt,
+		getAlbumsAfterIDStmt:          q.getAlbumsAfterIDStmt,
 		getCategoriesByAlbumIdsStmt:   q.getCategoriesByAlbumIdsStmt,
 		getCategoryBySlugStmt:         q.getCategoryBySlugStmt,
 		getMediasByAlbumIdsStmt:       q.getMediasByAlbumIdsStmt,

@@ -24,6 +24,10 @@ SELECT count(a.id)
 FROM albums a
 WHERE a.published_at < now() AND private = false;
 
+-- name: CountAlbums :one
+SELECT count(a.id)
+FROM albums a;
+
 -- name: GetPublishedAlbums :many
 SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
 FROM albums a
@@ -38,6 +42,18 @@ WHERE a.published_at < now() AND private = false AND a.id > $1
 ORDER BY a.published_at DESC
 LIMIT $2;
 
+-- name: GetAlbums :many
+SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
+FROM albums a
+ORDER BY a.published_at DESC
+LIMIT $1;
+
+-- name: GetAlbumsAfterID :many
+SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
+FROM albums a
+WHERE a.id > $1
+ORDER BY a.published_at DESC
+LIMIT $2;
 
 -- name: CreateAlbum :one
 INSERT INTO albums (slug, title, body, private, meta_description, sso_id, published_at, created_at, updated_at)

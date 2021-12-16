@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/google/uuid"
 )
 
@@ -45,18 +44,6 @@ func NewService(db *tutorial.Queries) Service {
 
 func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (PaginatedAlbums, error) {
 	user := auth.GetUserClaims(ctx)
-	println(user)
-
-	spew.Dump(params.Limit)
-
-	// albums := []AlbumModel{}
-	// var total int64
-
-	// query := s.db.Model(&albums)
-
-	// if user == nil || (user != nil && !user.IsAdmin()) {
-	// 	query = query.Scopes(Published)
-	// }
 
 	// if params.Joins.Categories {
 	// 	query = query.Preload("Categories")
@@ -77,7 +64,28 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 	// }
 
 	var albums []tutorial.Album
-	if params.Next != 0 {
+
+	// TODO Refactor
+	// Admin
+	if user != nil && user.IsAdmin() {
+		if params.Next != 0 {
+			arg := tutorial.GetAlbumsAfterIDParams{
+				ID:    int32(params.Next),
+				Limit: params.Limit,
+			}
+			a, err := s.db.GetAlbumsAfterID(ctx, arg)
+			albums = a
+			if err != nil {
+				return PaginatedAlbums{}, fmt.Errorf("error list albums after id: %d %w", params.Next, err)
+			}
+		} else {
+			a, err := s.db.GetAlbums(ctx, params.Limit)
+			albums = a
+			if err != nil {
+				return PaginatedAlbums{}, fmt.Errorf("error list albums after id: %d %w", params.Next, err)
+			}
+		}
+	} else if params.Next != 0 { // Guest
 		arg := tutorial.GetPublishedAlbumsAfterIDParams{
 			ID:    int32(params.Next),
 			Limit: int32(params.Limit),
@@ -95,9 +103,19 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 		}
 	}
 
-	total, err := s.db.CountPublishedAlbums(ctx)
-	if err != nil {
-		return PaginatedAlbums{}, fmt.Errorf("error counting albums: %w", err)
+	var total int64
+	if user != nil && user.IsAdmin() {
+		t, err := s.db.CountAlbums(ctx)
+		total = t
+		if err != nil {
+			return PaginatedAlbums{}, fmt.Errorf("error counting albums: %w", err)
+		}
+	} else {
+		t, err := s.db.CountPublishedAlbums(ctx)
+		total = t
+		if err != nil {
+			return PaginatedAlbums{}, fmt.Errorf("error counting albums: %w", err)
+		}
 	}
 
 	data := make([]AlbumResponse, len(albums))

@@ -300,37 +300,91 @@ func TestShouldBeAbleToListPublishedAlbumsOnSecondPage(t *testing.T) {
 	assert.Equal(t, arg.Title, r.Data[0].Title)
 }
 
-// func TestShouldBeAbleToListPublishedAlbumsOnSecondPageWithCustomPerPage(t *testing.T) {
-// 	var albums []AlbumModel
-// 	database2.ClearDB(db)
-// 	for i := 0; i < 2; i++ {
-// 		tmp := AlbumModel{Title: "A good Title " + strconv.Itoa(i), PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
-// 		db.Create(&tmp)
-// 		albums = append(albums, tmp)
-// 	}
-// 	a := AlbumModel{Title: "On second page", PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
-// 	db.Create(&a)
+func TestShouldBeAbleToListPublishedAlbumsOnSecondPageWithCustomPerPage(t *testing.T) {
+	database2.ClearDB(db)
 
-// 	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{Next: albums[1].ID, Limit: 2}})
+	var albums []tutorial.Album
+	var lastPageID int32
 
-// 	assert.Equal(t, int64(3), r.Meta.Total)
-// 	assert.Equal(t, 2, r.Meta.Limit)
-// 	assert.Equal(t, 1, len(r.Data))
-// 	assert.Equal(t, a.Title, r.Data[0].Title)
-// }
+	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
+	if err != nil {
+		t.Error(err)
+	}
 
-// func TestShouldBeAbleToListNonPublishedAlbumAsAdmin(t *testing.T) {
-// 	ctx, _ := authAsAdmin(context.Background())
-// 	database2.ClearDB(db)
-// 	a := AlbumModel{Title: "A good Title", SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-// 	db.Create(&a)
+	for i := 0; i < 2; i++ {
+		// tmp := AlbumModel{Title: "A good Title " + strconv.Itoa(i), PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
+		// db.Create(&tmp)
 
-// 	r, _ := s.GetAlbumList(ctx, AlbumListParams{PaginationParams: PaginationParams{0, 10}})
+		arg := tutorial.CreateAlbumParams{
+			Title:       "On second page " + strconv.Itoa(i),
+			Slug:        "on-second-page " + strconv.Itoa(i),
+			PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+			Private:     false,
+			SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+		}
 
-// 	assert.Equal(t, int64(1), r.Meta.Total)
-// 	assert.Equal(t, 10, r.Meta.Limit)
-// 	assert.Equal(t, 1, len(r.Data))
-// }
+		a, err := db.CreateAlbum(context.Background(), arg)
+		if err != nil {
+			t.Error(fmt.Errorf("Error creating album: %w", err))
+		}
+
+		if i == 1 {
+			lastPageID = a.ID
+		}
+
+		albums = append(albums, a)
+
+	}
+	// a := AlbumModel{Title: "On second page", PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
+	// db.Create(&a)
+
+	arg := tutorial.CreateAlbumParams{
+		Title:       "On second page",
+		Slug:        "on-second-page",
+		PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+		Private:     false,
+		SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+	}
+
+	a, err := db.CreateAlbum(context.Background(), arg)
+	if err != nil {
+		t.Error(fmt.Errorf("Error creating album: %w", err))
+	}
+
+	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{Next: uint(lastPageID), Limit: 2}})
+
+	assert.Equal(t, int64(3), r.Meta.Total)
+	assert.Equal(t, int32(2), r.Meta.Limit)
+	assert.Equal(t, 1, len(r.Data))
+	assert.Equal(t, a.Title, r.Data[0].Title)
+}
+
+func TestShouldBeAbleToListNonPublishedAlbumAsAdmin(t *testing.T) {
+	ctx, _ := authAsAdmin(context.Background())
+	database2.ClearDB(db)
+
+	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
+	if err != nil {
+		t.Error(err)
+	}
+
+	arg := tutorial.CreateAlbumParams{
+		Title: "On second page",
+		Slug:  "on-second-page",
+		SsoID: uuid.NullUUID{UUID: id, Valid: true},
+	}
+
+	_, err = db.CreateAlbum(context.Background(), arg)
+	if err != nil {
+		t.Error(fmt.Errorf("Error creating album: %w", err))
+	}
+
+	r, _ := s.GetAlbumList(ctx, AlbumListParams{PaginationParams: PaginationParams{0, 10}})
+
+	assert.Equal(t, int64(1), r.Meta.Total)
+	assert.Equal(t, int32(10), r.Meta.Limit)
+	assert.Equal(t, 1, len(r.Data))
+}
 
 // func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 // 	database2.ClearDB(db)
