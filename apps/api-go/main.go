@@ -24,6 +24,7 @@ func main() {
 	}
 
 	db, _ := database2.Init(config)
+
 	// db.AutoMigrate(&article.Article{})
 	// db.AutoMigrate(&album.MediaModel{})
 	// db.AutoMigrate(&album.AlbumModel{})

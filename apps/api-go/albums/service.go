@@ -66,6 +66,8 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 	var albums []tutorial.Album
 
 	// TODO Refactor
+	// https://github.com/kyleconroy/sqlc/issues/1062
+	// https://github.com/kyleconroy/sqlc/discussions/451 <<<<<<<<<<<<<<<<<<<
 	// Admin
 	if user != nil && user.IsAdmin() {
 		if params.Next != 0 {
@@ -144,6 +146,7 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, err
 	// if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 	// 	return AlbumRequest{}, ErrNotFound
 	// }
+	// TODO https://github.com/jackc/pgerrcode/blob/master/errcode.go
 
 	a, err := s.db.GetAlbumBySlug(ctx, slug)
 
@@ -198,6 +201,8 @@ func (s *service) PostAlbum(ctx context.Context, a AlbumResponse) (AlbumResponse
 	// 	}
 	// 	return AlbumRequest{}, err
 	// }
+
+	// TODO https://github.com/jackc/pgerrcode/blob/master/errcode.go
 
 	return AlbumResponse(a2), nil
 }

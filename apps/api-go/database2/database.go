@@ -4,17 +4,15 @@ import (
 	"api-go/config"
 	"api-go/tutorial"
 	"context"
-	"database/sql"
 	"fmt"
-	"log"
+	"os"
 	"time"
 
-	"github.com/lib/pq"
-	"github.com/qustavo/sqlhooks/v2"
+	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 var db *tutorial.Queries
-var db2 *sql.DB
+var conn *pgxpool.Pool
 var err error
 
 // Hooks satisfies the sqlhook.Hooks interface
@@ -44,16 +42,25 @@ func Init(c config.Configurations) (*tutorial.Queries, error) {
 	// 	},
 	// )
 
-	sql.Register("postgresWithHooks", sqlhooks.Wrap(&pq.Driver{}, &Hooks{}))
+	// sql.Register("postgresWithHooks", sqlhooks.Wrap(&pq.Driver{}, &Hooks{}))
 
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable", c.DbHost, c.DbUser, c.DbPassword, c.DbName, c.DbPort)
 
-	db2, err = sql.Open("postgresWithHooks", dsn)
+	// db2, err = sql.Open("postgresWithHooks", dsn)
+	// if err != nil {
+	// 	log.Fatalf("Got error when connect database, the error is '%v'", err)
+	// }
+
+	conn, err = pgxpool.Connect(context.Background(), dsn)
 	if err != nil {
-		log.Fatalf("Got error when connect database, the error is '%v'", err)
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		os.Exit(1)
 	}
 
-	queries := tutorial.New(db2)
+	// TODO Add defer close somewhere
+	// defer conn.Close(context.Background())
+
+	queries := tutorial.New(conn)
 
 	// db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{Logger: newLogger})
 	// if err != nil {
@@ -72,30 +79,26 @@ func DbManager() *tutorial.Queries {
 	return db
 }
 
-//TODO
 func ClearDB(db *tutorial.Queries) {
-	rows, err := db2.Query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY length(table_name) desc;")
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
+	rows, err := conn.Query(context.Background(), "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY length(table_name) desc;")
 
 	var tables []string
-
 	for rows.Next() {
-		var t string
-		if err := rows.Scan(&t); err != nil {
-			panic(err)
+		var table string
+		err = rows.Scan(&table)
+		if err != nil {
+			panic(fmt.Errorf("error reading rows on querying tables listing : %w", err))
 		}
-		tables = append(tables, t)
+		tables = append(tables, table)
 	}
-	if err = rows.Err(); err != nil {
-		panic(err)
+
+	if err != nil {
+		panic(fmt.Errorf("error querying tables listing : %w", err))
 	}
 
 	for _, table := range tables {
 		// println("Deleting table: " + table)
-		_, err := db2.Exec("DELETE FROM " + table + " WHERE 1 = 1")
+		_, err := conn.Exec(context.Background(), "DELETE FROM "+table+" WHERE 1 = 1")
 		if err != nil {
 			panic(fmt.Errorf("error deleting table %s: %w", table, err))
 		}

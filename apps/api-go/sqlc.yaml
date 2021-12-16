@@ -7,4 +7,5 @@ packages:
     queries: "query.sql"
     emit_empty_slices: true
     emit_prepared_queries: true
+    sql_package: "pgx/v4"
     # output_files_suffix: "_albums"

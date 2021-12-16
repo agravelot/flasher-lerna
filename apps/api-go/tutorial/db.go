@@ -4,203 +4,27 @@ package tutorial
 
 import (
 	"context"
-	"database/sql"
-	"fmt"
+
+	"github.com/jackc/pgconn"
+	"github.com/jackc/pgx/v4"
 )
 
 type DBTX interface {
-	ExecContext(context.Context, string, ...interface{}) (sql.Result, error)
-	PrepareContext(context.Context, string) (*sql.Stmt, error)
-	QueryContext(context.Context, string, ...interface{}) (*sql.Rows, error)
-	QueryRowContext(context.Context, string, ...interface{}) *sql.Row
+	Exec(context.Context, string, ...interface{}) (pgconn.CommandTag, error)
+	Query(context.Context, string, ...interface{}) (pgx.Rows, error)
+	QueryRow(context.Context, string, ...interface{}) pgx.Row
 }
 
 func New(db DBTX) *Queries {
 	return &Queries{db: db}
 }
 
-func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
-	q := Queries{db: db}
-	var err error
-	if q.countAlbumsStmt, err = db.PrepareContext(ctx, countAlbums); err != nil {
-		return nil, fmt.Errorf("error preparing query CountAlbums: %w", err)
-	}
-	if q.countPublishedAlbumsStmt, err = db.PrepareContext(ctx, countPublishedAlbums); err != nil {
-		return nil, fmt.Errorf("error preparing query CountPublishedAlbums: %w", err)
-	}
-	if q.createAlbumStmt, err = db.PrepareContext(ctx, createAlbum); err != nil {
-		return nil, fmt.Errorf("error preparing query CreateAlbum: %w", err)
-	}
-	if q.deleteAlbumStmt, err = db.PrepareContext(ctx, deleteAlbum); err != nil {
-		return nil, fmt.Errorf("error preparing query DeleteAlbum: %w", err)
-	}
-	if q.getAlbumBySlugStmt, err = db.PrepareContext(ctx, getAlbumBySlug); err != nil {
-		return nil, fmt.Errorf("error preparing query GetAlbumBySlug: %w", err)
-	}
-	if q.getAlbumsStmt, err = db.PrepareContext(ctx, getAlbums); err != nil {
-		return nil, fmt.Errorf("error preparing query GetAlbums: %w", err)
-	}
-	if q.getAlbumsAfterIDStmt, err = db.PrepareContext(ctx, getAlbumsAfterID); err != nil {
-		return nil, fmt.Errorf("error preparing query GetAlbumsAfterID: %w", err)
-	}
-	if q.getCategoriesByAlbumIdsStmt, err = db.PrepareContext(ctx, getCategoriesByAlbumIds); err != nil {
-		return nil, fmt.Errorf("error preparing query GetCategoriesByAlbumIds: %w", err)
-	}
-	if q.getCategoryBySlugStmt, err = db.PrepareContext(ctx, getCategoryBySlug); err != nil {
-		return nil, fmt.Errorf("error preparing query GetCategoryBySlug: %w", err)
-	}
-	if q.getMediasByAlbumIdsStmt, err = db.PrepareContext(ctx, getMediasByAlbumIds); err != nil {
-		return nil, fmt.Errorf("error preparing query GetMediasByAlbumIds: %w", err)
-	}
-	if q.getPublishedAlbumsStmt, err = db.PrepareContext(ctx, getPublishedAlbums); err != nil {
-		return nil, fmt.Errorf("error preparing query GetPublishedAlbums: %w", err)
-	}
-	if q.getPublishedAlbumsAfterIDStmt, err = db.PrepareContext(ctx, getPublishedAlbumsAfterID); err != nil {
-		return nil, fmt.Errorf("error preparing query GetPublishedAlbumsAfterID: %w", err)
-	}
-	if q.updateAlbumStmt, err = db.PrepareContext(ctx, updateAlbum); err != nil {
-		return nil, fmt.Errorf("error preparing query UpdateAlbum: %w", err)
-	}
-	return &q, nil
-}
-
-func (q *Queries) Close() error {
-	var err error
-	if q.countAlbumsStmt != nil {
-		if cerr := q.countAlbumsStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing countAlbumsStmt: %w", cerr)
-		}
-	}
-	if q.countPublishedAlbumsStmt != nil {
-		if cerr := q.countPublishedAlbumsStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing countPublishedAlbumsStmt: %w", cerr)
-		}
-	}
-	if q.createAlbumStmt != nil {
-		if cerr := q.createAlbumStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing createAlbumStmt: %w", cerr)
-		}
-	}
-	if q.deleteAlbumStmt != nil {
-		if cerr := q.deleteAlbumStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing deleteAlbumStmt: %w", cerr)
-		}
-	}
-	if q.getAlbumBySlugStmt != nil {
-		if cerr := q.getAlbumBySlugStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing getAlbumBySlugStmt: %w", cerr)
-		}
-	}
-	if q.getAlbumsStmt != nil {
-		if cerr := q.getAlbumsStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing getAlbumsStmt: %w", cerr)
-		}
-	}
-	if q.getAlbumsAfterIDStmt != nil {
-		if cerr := q.getAlbumsAfterIDStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing getAlbumsAfterIDStmt: %w", cerr)
-		}
-	}
-	if q.getCategoriesByAlbumIdsStmt != nil {
-		if cerr := q.getCategoriesByAlbumIdsStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing getCategoriesByAlbumIdsStmt: %w", cerr)
-		}
-	}
-	if q.getCategoryBySlugStmt != nil {
-		if cerr := q.getCategoryBySlugStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing getCategoryBySlugStmt: %w", cerr)
-		}
-	}
-	if q.getMediasByAlbumIdsStmt != nil {
-		if cerr := q.getMediasByAlbumIdsStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing getMediasByAlbumIdsStmt: %w", cerr)
-		}
-	}
-	if q.getPublishedAlbumsStmt != nil {
-		if cerr := q.getPublishedAlbumsStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing getPublishedAlbumsStmt: %w", cerr)
-		}
-	}
-	if q.getPublishedAlbumsAfterIDStmt != nil {
-		if cerr := q.getPublishedAlbumsAfterIDStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing getPublishedAlbumsAfterIDStmt: %w", cerr)
-		}
-	}
-	if q.updateAlbumStmt != nil {
-		if cerr := q.updateAlbumStmt.Close(); cerr != nil {
-			err = fmt.Errorf("error closing updateAlbumStmt: %w", cerr)
-		}
-	}
-	return err
-}
-
-func (q *Queries) exec(ctx context.Context, stmt *sql.Stmt, query string, args ...interface{}) (sql.Result, error) {
-	switch {
-	case stmt != nil && q.tx != nil:
-		return q.tx.StmtContext(ctx, stmt).ExecContext(ctx, args...)
-	case stmt != nil:
-		return stmt.ExecContext(ctx, args...)
-	default:
-		return q.db.ExecContext(ctx, query, args...)
-	}
-}
-
-func (q *Queries) query(ctx context.Context, stmt *sql.Stmt, query string, args ...interface{}) (*sql.Rows, error) {
-	switch {
-	case stmt != nil && q.tx != nil:
-		return q.tx.StmtContext(ctx, stmt).QueryContext(ctx, args...)
-	case stmt != nil:
-		return stmt.QueryContext(ctx, args...)
-	default:
-		return q.db.QueryContext(ctx, query, args...)
-	}
-}
-
-func (q *Queries) queryRow(ctx context.Context, stmt *sql.Stmt, query string, args ...interface{}) *sql.Row {
-	switch {
-	case stmt != nil && q.tx != nil:
-		return q.tx.StmtContext(ctx, stmt).QueryRowContext(ctx, args...)
-	case stmt != nil:
-		return stmt.QueryRowContext(ctx, args...)
-	default:
-		return q.db.QueryRowContext(ctx, query, args...)
-	}
-}
-
 type Queries struct {
-	db                            DBTX
-	tx                            *sql.Tx
-	countAlbumsStmt               *sql.Stmt
-	countPublishedAlbumsStmt      *sql.Stmt
-	createAlbumStmt               *sql.Stmt
-	deleteAlbumStmt               *sql.Stmt
-	getAlbumBySlugStmt            *sql.Stmt
-	getAlbumsStmt                 *sql.Stmt
-	getAlbumsAfterIDStmt          *sql.Stmt
-	getCategoriesByAlbumIdsStmt   *sql.Stmt
-	getCategoryBySlugStmt         *sql.Stmt
-	getMediasByAlbumIdsStmt       *sql.Stmt
-	getPublishedAlbumsStmt        *sql.Stmt
-	getPublishedAlbumsAfterIDStmt *sql.Stmt
-	updateAlbumStmt               *sql.Stmt
+	db DBTX
 }
 
-func (q *Queries) WithTx(tx *sql.Tx) *Queries {
+func (q *Queries) WithTx(tx pgx.Tx) *Queries {
 	return &Queries{
-		db:                            tx,
-		tx:                            tx,
-		countAlbumsStmt:               q.countAlbumsStmt,
-		countPublishedAlbumsStmt:      q.countPublishedAlbumsStmt,
-		createAlbumStmt:               q.createAlbumStmt,
-		deleteAlbumStmt:               q.deleteAlbumStmt,
-		getAlbumBySlugStmt:            q.getAlbumBySlugStmt,
-		getAlbumsStmt:                 q.getAlbumsStmt,
-		getAlbumsAfterIDStmt:          q.getAlbumsAfterIDStmt,
-		getCategoriesByAlbumIdsStmt:   q.getCategoriesByAlbumIdsStmt,
-		getCategoryBySlugStmt:         q.getCategoryBySlugStmt,
-		getMediasByAlbumIdsStmt:       q.getMediasByAlbumIdsStmt,
-		getPublishedAlbumsStmt:        q.getPublishedAlbumsStmt,
-		getPublishedAlbumsAfterIDStmt: q.getPublishedAlbumsAfterIDStmt,
-		updateAlbumStmt:               q.updateAlbumStmt,
+		db: tx,
 	}
 }

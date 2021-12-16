@@ -4,10 +4,10 @@ package tutorial
 
 import (
 	"database/sql"
-	"encoding/json"
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgtype"
 )
 
 type Album struct {
@@ -137,9 +137,9 @@ type Medium struct {
 	MimeType         sql.NullString
 	Disk             string
 	Size             int64
-	Manipulations    json.RawMessage
-	CustomProperties json.RawMessage
-	ResponsiveImages json.RawMessage
+	Manipulations    pgtype.JSON
+	CustomProperties pgtype.JSON
+	ResponsiveImages pgtype.JSON
 	OrderColumn      sql.NullInt32
 	CreatedAt        sql.NullTime
 	UpdatedAt        sql.NullTime
