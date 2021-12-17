@@ -13,23 +13,11 @@ import (
 const countAlbums = `-- name: CountAlbums :one
 SELECT count(a.id)
 FROM albums a
+WHERE ($1::boolean OR published_at < now()) AND ($1::boolean OR private = false)
 `
 
-func (q *Queries) CountAlbums(ctx context.Context) (int64, error) {
-	row := q.db.QueryRow(ctx, countAlbums)
-	var count int64
-	err := row.Scan(&count)
-	return count, err
-}
-
-const countPublishedAlbums = `-- name: CountPublishedAlbums :one
-SELECT count(a.id)
-FROM albums a
-WHERE a.published_at < now() AND private = false
-`
-
-func (q *Queries) CountPublishedAlbums(ctx context.Context) (int64, error) {
-	row := q.db.QueryRow(ctx, countPublishedAlbums)
+func (q *Queries) CountAlbums(ctx context.Context, isAdmin bool) (int64, error) {
+	row := q.db.QueryRow(ctx, countAlbums, isAdmin)
 	var count int64
 	err := row.Scan(&count)
 	return count, err
@@ -116,60 +104,21 @@ func (q *Queries) GetAlbumBySlug(ctx context.Context, slug string) (Album, error
 }
 
 const getAlbums = `-- name: GetAlbums :many
-SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
-FROM albums a
-ORDER BY a.published_at DESC
+SELECT id, slug, title, body, published_at,private, user_id, created_at, updated_at, notify_users_on_published, meta_description, sso_id
+FROM albums
+WHERE ($2::boolean OR published_at < now()) AND ($2::boolean OR private = false) AND ($3::int = 0 OR id > $3)
+ORDER BY published_at DESC
 LIMIT $1
 `
 
-func (q *Queries) GetAlbums(ctx context.Context, limit int32) ([]Album, error) {
-	rows, err := q.db.Query(ctx, getAlbums, limit)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []Album{}
-	for rows.Next() {
-		var i Album
-		if err := rows.Scan(
-			&i.ID,
-			&i.Slug,
-			&i.Title,
-			&i.Body,
-			&i.PublishedAt,
-			&i.Private,
-			&i.UserID,
-			&i.CreatedAt,
-			&i.UpdatedAt,
-			&i.NotifyUsersOnPublished,
-			&i.MetaDescription,
-			&i.SsoID,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
+type GetAlbumsParams struct {
+	Limit   int32
+	IsAdmin bool
+	ID      int32
 }
 
-const getAlbumsAfterID = `-- name: GetAlbumsAfterID :many
-SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
-FROM albums a
-WHERE a.id > $1
-ORDER BY a.published_at DESC
-LIMIT $2
-`
-
-type GetAlbumsAfterIDParams struct {
-	ID    int32
-	Limit int32
-}
-
-func (q *Queries) GetAlbumsAfterID(ctx context.Context, arg GetAlbumsAfterIDParams) ([]Album, error) {
-	rows, err := q.db.Query(ctx, getAlbumsAfterID, arg.ID, arg.Limit)
+func (q *Queries) GetAlbums(ctx context.Context, arg GetAlbumsParams) ([]Album, error) {
+	rows, err := q.db.Query(ctx, getAlbums, arg.Limit, arg.IsAdmin, arg.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -308,93 +257,6 @@ func (q *Queries) GetMediasByAlbumIds(ctx context.Context, dollar_1 []int32) ([]
 			&i.Size,
 			&i.CreatedAt,
 			&i.UpdatedAt,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
-const getPublishedAlbums = `-- name: GetPublishedAlbums :many
-SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
-FROM albums a
-WHERE a.published_at < now() AND private = false
-ORDER BY a.published_at DESC
-LIMIT $1
-`
-
-func (q *Queries) GetPublishedAlbums(ctx context.Context, limit int32) ([]Album, error) {
-	rows, err := q.db.Query(ctx, getPublishedAlbums, limit)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []Album{}
-	for rows.Next() {
-		var i Album
-		if err := rows.Scan(
-			&i.ID,
-			&i.Slug,
-			&i.Title,
-			&i.Body,
-			&i.PublishedAt,
-			&i.Private,
-			&i.UserID,
-			&i.CreatedAt,
-			&i.UpdatedAt,
-			&i.NotifyUsersOnPublished,
-			&i.MetaDescription,
-			&i.SsoID,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
-const getPublishedAlbumsAfterID = `-- name: GetPublishedAlbumsAfterID :many
-SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
-FROM albums a
-WHERE a.published_at < now() AND private = false AND a.id > $1
-ORDER BY a.published_at DESC
-LIMIT $2
-`
-
-type GetPublishedAlbumsAfterIDParams struct {
-	ID    int32
-	Limit int32
-}
-
-func (q *Queries) GetPublishedAlbumsAfterID(ctx context.Context, arg GetPublishedAlbumsAfterIDParams) ([]Album, error) {
-	rows, err := q.db.Query(ctx, getPublishedAlbumsAfterID, arg.ID, arg.Limit)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []Album{}
-	for rows.Next() {
-		var i Album
-		if err := rows.Scan(
-			&i.ID,
-			&i.Slug,
-			&i.Title,
-			&i.Body,
-			&i.PublishedAt,
-			&i.Private,
-			&i.UserID,
-			&i.CreatedAt,
-			&i.UpdatedAt,
-			&i.NotifyUsersOnPublished,
-			&i.MetaDescription,
-			&i.SsoID,
 		); err != nil {
 			return nil, err
 		}

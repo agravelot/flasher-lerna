@@ -53,71 +53,30 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 	// 	query = query.Preload("Medias")
 	// }
 
-	// // TODO Can run in goroutines ?
-	// err := query.Count(&total).Error
-	// if err != nil {
-	// 	return PaginatedAlbums{}, fmt.Errorf("error counting albums: %w", err)
-	// }
-	// err = query.Scopes(api.Paginate(params.Next, params.Limit)).Order("published_at DESC").Find(&albums).Error
-	// if err != nil {
-	// 	return PaginatedAlbums{}, fmt.Errorf("error list albums: %w", err)
-	// }
-
-	var albums []tutorial.Album
-
-	// TODO Refactor
 	// https://github.com/kyleconroy/sqlc/issues/1062
-	// https://github.com/kyleconroy/sqlc/discussions/451 <<<<<<<<<<<<<<<<<<<
+	// https://github.com/kyleconroy/sqlc/discussions/451
 	// Admin
-	if user != nil && user.IsAdmin() {
-		if params.Next != 0 {
-			arg := tutorial.GetAlbumsAfterIDParams{
-				ID:    int32(params.Next),
-				Limit: params.Limit,
-			}
-			a, err := s.db.GetAlbumsAfterID(ctx, arg)
-			albums = a
-			if err != nil {
-				return PaginatedAlbums{}, fmt.Errorf("error list albums after id: %d %w", params.Next, err)
-			}
-		} else {
-			a, err := s.db.GetAlbums(ctx, params.Limit)
-			albums = a
-			if err != nil {
-				return PaginatedAlbums{}, fmt.Errorf("error list albums after id: %d %w", params.Next, err)
-			}
-		}
-	} else if params.Next != 0 { // Guest
-		arg := tutorial.GetPublishedAlbumsAfterIDParams{
-			ID:    int32(params.Next),
-			Limit: int32(params.Limit),
-		}
-		a, err := s.db.GetPublishedAlbumsAfterID(ctx, arg)
-		albums = a
-		if err != nil {
-			return PaginatedAlbums{}, fmt.Errorf("error list albums after id: %d %w", params.Next, err)
-		}
-	} else {
-		a, err := s.db.GetPublishedAlbums(ctx, params.Limit)
-		albums = a
-		if err != nil {
-			return PaginatedAlbums{}, fmt.Errorf("error list albums: %w", err)
-		}
+
+	arg := tutorial.GetAlbumsParams{
+		Limit: params.Limit,
 	}
 
-	var total int64
+	if params.Next != 0 {
+		arg.ID = int32(params.Next)
+	}
+
 	if user != nil && user.IsAdmin() {
-		t, err := s.db.CountAlbums(ctx)
-		total = t
-		if err != nil {
-			return PaginatedAlbums{}, fmt.Errorf("error counting albums: %w", err)
-		}
-	} else {
-		t, err := s.db.CountPublishedAlbums(ctx)
-		total = t
-		if err != nil {
-			return PaginatedAlbums{}, fmt.Errorf("error counting albums: %w", err)
-		}
+		arg.IsAdmin = true
+	}
+
+	albums, err := s.db.GetAlbums(ctx, arg)
+	if err != nil {
+		return PaginatedAlbums{}, fmt.Errorf("error list albums : %d %w", params.Next, err)
+	}
+
+	total, err := s.db.CountAlbums(ctx, user != nil && user.IsAdmin())
+	if err != nil {
+		return PaginatedAlbums{}, fmt.Errorf("error counting albums: %w", err)
 	}
 
 	data := make([]AlbumResponse, len(albums))

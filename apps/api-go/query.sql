@@ -19,41 +19,18 @@ FROM categories c
 INNER JOIN categorizables ci ON ci.category_id = c.id
 WHERE ci.categorizable_id = ANY($1::int[]) AND ci.categorizable_type = 'App\Models\Album';
 
--- name: CountPublishedAlbums :one
-SELECT count(a.id)
-FROM albums a
-WHERE a.published_at < now() AND private = false;
-
 -- name: CountAlbums :one
 SELECT count(a.id)
-FROM albums a;
-
--- name: GetPublishedAlbums :many
-SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
 FROM albums a
-WHERE a.published_at < now() AND private = false
-ORDER BY a.published_at DESC
-LIMIT $1;
+WHERE (@is_admin::boolean OR published_at < now()) AND (@is_admin::boolean OR private = false);
 
--- name: GetPublishedAlbumsAfterID :many
-SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
-FROM albums a
-WHERE a.published_at < now() AND private = false AND a.id > $1
-ORDER BY a.published_at DESC
-LIMIT $2;
 
 -- name: GetAlbums :many
-SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
-FROM albums a
-ORDER BY a.published_at DESC
+SELECT id, slug, title, body, published_at,private, user_id, created_at, updated_at, notify_users_on_published, meta_description, sso_id
+FROM albums
+WHERE (@is_admin::boolean OR published_at < now()) AND (@is_admin::boolean OR private = false) AND (@id::int = 0 OR id > @id)
+ORDER BY published_at DESC
 LIMIT $1;
-
--- name: GetAlbumsAfterID :many
-SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
-FROM albums a
-WHERE a.id > $1
-ORDER BY a.published_at DESC
-LIMIT $2;
 
 -- name: CreateAlbum :one
 INSERT INTO albums (slug, title, body, private, meta_description, sso_id, published_at, created_at, updated_at)
