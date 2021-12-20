@@ -386,47 +386,94 @@ func TestShouldBeAbleToListNonPublishedAlbumAsAdmin(t *testing.T) {
 	assert.Equal(t, 1, len(r.Data))
 }
 
-// func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	a := AlbumModel{Title: "A good Title", PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
-// 	db.Create(&a)
+func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
+	database2.ClearDB(db)
 
-// 	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{0, 15}})
+	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
+	if err != nil {
+		t.Error(err)
+	}
 
-// 	assert.Equal(t, int64(1), r.Meta.Total)
-// 	assert.Equal(t, 15, r.Meta.Limit)
-// 	assert.Equal(t, 1, len(r.Data))
-// }
+	arg := tutorial.CreateAlbumParams{
+		Title:       "On second page",
+		Slug:        "on-second-page",
+		PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+		SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+		Private:     false,
+	}
 
-// func TestShouldBeAbleToListWithCategories(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	categories := []CategoryModel{
-// 		{Name: "A good Category"},
-// 	}
-// 	a := AlbumModel{
-// 		Title:       "A good Title",
-// 		PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true),
-// 		SsoID:       "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
-// 		Private:     boolPtr(false),
-// 		Categories:  &categories,
-// 	}
-// 	err := db.Create(&a).Error
-// 	if err != nil {
-// 		t.Error(err)
-// 	}
+	_, err = db.CreateAlbum(context.Background(), arg)
+	if err != nil {
+		t.Error(fmt.Errorf("Error creating album: %w", err))
+	}
 
-// 	r, err := s.GetAlbumList(context.Background(), AlbumListParams{Joins: AlbumListJoinsParams{Categories: true}, PaginationParams: PaginationParams{0, 10}})
-// 	if err != nil {
-// 		t.Error(err)
-// 	}
+	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{0, 15}})
 
-// 	spew.Dump(r)
+	assert.Equal(t, int64(1), r.Meta.Total)
+	assert.Equal(t, int32(15), r.Meta.Limit)
+	assert.Equal(t, 1, len(r.Data))
+}
 
-// 	assert.Equal(t, int64(1), r.Meta.Total)
-// 	assert.Equal(t, 10, r.Meta.Limit)
-// 	assert.Equal(t, 1, len(r.Data))
-// 	assert.Equal(t, 1, len(*r.Data[0].Categories))
-// }
+func TestShouldBeAbleToListWithCategories(t *testing.T) {
+	database2.ClearDB(db)
+
+	// categories := []CategoryModel{
+	// 	{Name: "A good Category"},
+	// }
+	// a := AlbumModel{
+	// 	Title:       "A good Title",
+	// 	PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true),
+	// 	SsoID:       "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+	// 	Private:     boolPtr(false),
+	// 	Categories:  &categories,
+	// }
+
+	arg1 := tutorial.CreateCategoryParams{
+		Name: "A good Category",
+	}
+	c, err := db.CreateCategory(context.Background(), arg1)
+	spew.Dump(c)
+
+	// TODO Link album category
+
+	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
+	if err != nil {
+		t.Error(err)
+	}
+
+	arg := tutorial.CreateAlbumParams{
+		Title:       "A good Title",
+		PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+		SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+		Private:     false,
+		// Categories:  &categories,
+	}
+
+	a, err := db.CreateAlbum(context.Background(), arg)
+	if err != nil {
+		t.Error(fmt.Errorf("Error creating album: %w", err))
+	}
+
+	err = db.LinkCategoryToAlbum(context.Background(), tutorial.LinkCategoryToAlbumParams{
+		AlbumID:    a.ID,
+		CategoryID: c.ID,
+	})
+	if err != nil {
+		t.Error(fmt.Errorf("Error linking album with category : %w", err))
+	}
+
+	r, err := s.GetAlbumList(context.Background(), AlbumListParams{Joins: AlbumListJoinsParams{Categories: true}, PaginationParams: PaginationParams{0, 10}})
+	if err != nil {
+		t.Error(err)
+	}
+
+	spew.Dump(r)
+
+	assert.Equal(t, int64(1), r.Meta.Total)
+	assert.Equal(t, int32(10), r.Meta.Limit)
+	assert.Equal(t, 1, len(r.Data))
+	assert.Equal(t, 1, len(*r.Data[0].Categories))
+}
 
 // func TestShouldBeAbleToListWithoutCategories(t *testing.T) {
 // 	database2.ClearDB(db)

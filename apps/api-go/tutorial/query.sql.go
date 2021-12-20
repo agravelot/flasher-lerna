@@ -67,6 +67,39 @@ func (q *Queries) CreateAlbum(ctx context.Context, arg CreateAlbumParams) (Album
 	return i, err
 }
 
+const createCategory = `-- name: CreateCategory :one
+INSERT INTO categories (slug, name, description, meta_description, created_at, updated_at)
+VALUES ($1, $2, $3, $4, now(), now())
+RETURNING id, name, slug, description, created_at, updated_at, meta_description
+`
+
+type CreateCategoryParams struct {
+	Slug            string
+	Name            string
+	Description     sql.NullString
+	MetaDescription string
+}
+
+func (q *Queries) CreateCategory(ctx context.Context, arg CreateCategoryParams) (Category, error) {
+	row := q.db.QueryRow(ctx, createCategory,
+		arg.Slug,
+		arg.Name,
+		arg.Description,
+		arg.MetaDescription,
+	)
+	var i Category
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Slug,
+		&i.Description,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.MetaDescription,
+	)
+	return i, err
+}
+
 const deleteAlbum = `-- name: DeleteAlbum :exec
 DELETE FROM albums
 WHERE slug = $1
@@ -151,20 +184,25 @@ func (q *Queries) GetAlbums(ctx context.Context, arg GetAlbumsParams) ([]Album, 
 }
 
 const getCategoriesByAlbumIds = `-- name: GetCategoriesByAlbumIds :many
-SELECT c.id, c.slug, c.name, c.description, c.meta_description, c.created_at, c.updated_at
+SELECT c.id, name, slug, description, c.created_at, c.updated_at, meta_description, ac.id, album_id, category_id, ac.created_at, ac.updated_at
 FROM categories c
-INNER JOIN categorizables ci ON ci.category_id = c.id
-WHERE ci.categorizable_id = ANY($1::int[]) AND ci.categorizable_type = 'App\Models\Album'
+INNER JOIN album_category ac ON ac.category_id = c.id
+WHERE ac.album_id = ANY($1::int[])
 `
 
 type GetCategoriesByAlbumIdsRow struct {
 	ID              int32
-	Slug            string
 	Name            string
+	Slug            string
 	Description     sql.NullString
-	MetaDescription string
 	CreatedAt       sql.NullTime
 	UpdatedAt       sql.NullTime
+	MetaDescription string
+	ID_2            int32
+	AlbumID         int32
+	CategoryID      int32
+	CreatedAt_2     sql.NullTime
+	UpdatedAt_2     sql.NullTime
 }
 
 func (q *Queries) GetCategoriesByAlbumIds(ctx context.Context, dollar_1 []int32) ([]GetCategoriesByAlbumIdsRow, error) {
@@ -178,12 +216,17 @@ func (q *Queries) GetCategoriesByAlbumIds(ctx context.Context, dollar_1 []int32)
 		var i GetCategoriesByAlbumIdsRow
 		if err := rows.Scan(
 			&i.ID,
-			&i.Slug,
 			&i.Name,
+			&i.Slug,
 			&i.Description,
-			&i.MetaDescription,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.MetaDescription,
+			&i.ID_2,
+			&i.AlbumID,
+			&i.CategoryID,
+			&i.CreatedAt_2,
+			&i.UpdatedAt_2,
 		); err != nil {
 			return nil, err
 		}
@@ -266,6 +309,21 @@ func (q *Queries) GetMediasByAlbumIds(ctx context.Context, dollar_1 []int32) ([]
 		return nil, err
 	}
 	return items, nil
+}
+
+const linkCategoryToAlbum = `-- name: LinkCategoryToAlbum :exec
+INSERT INTO album_category (album_id, category_id, created_at, updated_at)
+VALUES ($1, $2, now(), now())
+`
+
+type LinkCategoryToAlbumParams struct {
+	AlbumID    int32
+	CategoryID int32
+}
+
+func (q *Queries) LinkCategoryToAlbum(ctx context.Context, arg LinkCategoryToAlbumParams) error {
+	_, err := q.db.Exec(ctx, linkCategoryToAlbum, arg.AlbumID, arg.CategoryID)
+	return err
 }
 
 const updateAlbum = `-- name: UpdateAlbum :exec

@@ -65,7 +65,9 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 		arg.ID = int32(params.Next)
 	}
 
-	if user != nil && user.IsAdmin() {
+	isAdmin := user != nil && user.IsAdmin()
+
+	if isAdmin {
 		arg.IsAdmin = true
 	}
 
@@ -74,14 +76,49 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 		return PaginatedAlbums{}, fmt.Errorf("error list albums : %d %w", params.Next, err)
 	}
 
-	total, err := s.db.CountAlbums(ctx, user != nil && user.IsAdmin())
+	total, err := s.db.CountAlbums(ctx, isAdmin)
 	if err != nil {
 		return PaginatedAlbums{}, fmt.Errorf("error counting albums: %w", err)
 	}
 
+	var categories []CategoryReponse
+
+	if params.Joins.Categories {
+		var ids []int32
+
+		for _, a := range albums {
+			ids = append(ids, a.ID)
+		}
+
+		categs, err := s.db.GetCategoriesByAlbumIds(ctx, ids)
+		if err != nil {
+			return PaginatedAlbums{}, fmt.Errorf("error getting categories for albums: %w", err)
+		}
+		for _, c := range categs {
+			categories = append(categories, CategoryReponse{
+				ID:   c.ID,
+				Name: c.Name,
+			})
+		}
+	}
+
 	data := make([]AlbumResponse, len(albums))
 	for i, a := range albums {
-		data[i] = AlbumResponse(a)
+		data[i] = AlbumResponse{
+			ID:                     a.ID,
+			Slug:                   a.Slug,
+			Title:                  a.Title,
+			MetaDescription:        a.MetaDescription,
+			Body:                   a.Body,
+			PublishedAt:            a.PublishedAt,
+			Private:                a.Private,
+			SsoID:                  a.SsoID,
+			UserID:                 a.UserID,
+			CreatedAt:              a.CreatedAt,
+			UpdatedAt:              a.UpdatedAt,
+			NotifyUsersOnPublished: a.NotifyUsersOnPublished,
+			Categories:             &categories,
+		}
 	}
 
 	return PaginatedAlbums{
@@ -110,10 +147,23 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, err
 	a, err := s.db.GetAlbumBySlug(ctx, slug)
 
 	if err != nil {
-		return AlbumResponse{}, err
+		return AlbumResponse{}, fmt.Errorf("error get album by slug: %w", err)
 	}
 
-	return AlbumResponse(a), err
+	return AlbumResponse{
+		ID:                     a.ID,
+		Slug:                   a.Slug,
+		Title:                  a.Title,
+		MetaDescription:        a.MetaDescription,
+		Body:                   a.Body,
+		PublishedAt:            a.PublishedAt,
+		Private:                a.Private,
+		SsoID:                  a.SsoID,
+		UserID:                 a.UserID,
+		CreatedAt:              a.CreatedAt,
+		UpdatedAt:              a.UpdatedAt,
+		NotifyUsersOnPublished: a.NotifyUsersOnPublished,
+	}, err
 }
 
 func (s *service) PostAlbum(ctx context.Context, a AlbumResponse) (AlbumResponse, error) {
@@ -163,7 +213,20 @@ func (s *service) PostAlbum(ctx context.Context, a AlbumResponse) (AlbumResponse
 
 	// TODO https://github.com/jackc/pgerrcode/blob/master/errcode.go
 
-	return AlbumResponse(a2), nil
+	return AlbumResponse{
+		ID:                     a2.ID,
+		Slug:                   a2.Slug,
+		Title:                  a2.Title,
+		MetaDescription:        a2.MetaDescription,
+		Body:                   a2.Body,
+		PublishedAt:            a2.PublishedAt,
+		Private:                a2.Private,
+		SsoID:                  a2.SsoID,
+		UserID:                 a2.UserID,
+		CreatedAt:              a2.CreatedAt,
+		UpdatedAt:              a2.UpdatedAt,
+		NotifyUsersOnPublished: a2.NotifyUsersOnPublished,
+	}, nil
 }
 
 func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumResponse) (AlbumResponse, error) {
@@ -205,7 +268,20 @@ func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumResponse) (A
 	// albumModel := AlbumModel(a)
 	// s.db.Save(albumModel)
 
-	return AlbumResponse(a), nil
+	return AlbumResponse{
+		ID:                     a.ID,
+		Slug:                   a.Slug,
+		Title:                  a.Title,
+		MetaDescription:        a.MetaDescription,
+		Body:                   a.Body,
+		PublishedAt:            a.PublishedAt,
+		Private:                a.Private,
+		SsoID:                  a.SsoID,
+		UserID:                 a.UserID,
+		CreatedAt:              a.CreatedAt,
+		UpdatedAt:              a.UpdatedAt,
+		NotifyUsersOnPublished: a.NotifyUsersOnPublished,
+	}, nil
 }
 
 func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumResponse) (AlbumResponse, error) {

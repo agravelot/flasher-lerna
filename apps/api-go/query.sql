@@ -14,10 +14,10 @@ FROM categories c
 WHERE c.slug = $1;
 
 -- name: GetCategoriesByAlbumIds :many
-SELECT c.id, c.slug, c.name, c.description, c.meta_description, c.created_at, c.updated_at
+SELECT *
 FROM categories c
-INNER JOIN categorizables ci ON ci.category_id = c.id
-WHERE ci.categorizable_id = ANY($1::int[]) AND ci.categorizable_type = 'App\Models\Album';
+INNER JOIN album_category ac ON ac.category_id = c.id
+WHERE ac.album_id = ANY($1::int[]);
 
 -- name: CountAlbums :one
 SELECT count(a.id)
@@ -45,3 +45,12 @@ WHERE slug = $8;
 -- name: DeleteAlbum :exec
 DELETE FROM albums
 WHERE slug = $1;
+
+-- name: CreateCategory :one
+INSERT INTO categories (slug, name, description, meta_description, created_at, updated_at)
+VALUES ($1, $2, $3, $4, now(), now())
+RETURNING *;
+
+-- name: LinkCategoryToAlbum :exec
+INSERT INTO album_category (album_id, category_id, created_at, updated_at)
+VALUES ($1, $2, now(), now());

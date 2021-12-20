@@ -37,6 +37,11 @@ func (a *AlbumResponse) Validate() error {
 	return err
 }
 
+type CategoryReponse struct {
+	ID   int32  `json:"id" example:"1"`
+	Name string `json:"name" example:"A good category"`
+}
+
 type AlbumResponse struct {
 	ID                     int32          `json:"id" example:"1"`
 	Slug                   string         `json:"slug" example:"a-good-album"`
@@ -51,6 +56,6 @@ type AlbumResponse struct {
 	MetaDescription        string         `json:"meta_description" example:"A good meta" validate:"required,gt=1,lt=60"`
 	SsoID                  uuid.NullUUID  `json:"sso_id" swaggertype:"string" example:"123e4567-e89b-12d3-a456-426614174000"`
 
-	// Categories *[]CategoryModel `json:"categories"`
+	Categories *[]CategoryReponse `json:"categories"`
 	// Medias     *[]MediaModel    `json:"medias"`
 }
