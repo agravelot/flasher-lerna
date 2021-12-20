@@ -13,7 +13,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
@@ -244,8 +243,6 @@ func TestShouldOnlyShowPublicAlbums(t *testing.T) {
 
 	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{0, 10}})
 
-	spew.Dump(r.Data)
-
 	assert.Equal(t, int64(1), r.Meta.Total)
 	assert.Equal(t, int32(10), r.Meta.Limit)
 	assert.Equal(t, 1, len(r.Data))
@@ -417,24 +414,10 @@ func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 func TestShouldBeAbleToListWithCategories(t *testing.T) {
 	database2.ClearDB(db)
 
-	// categories := []CategoryModel{
-	// 	{Name: "A good Category"},
-	// }
-	// a := AlbumModel{
-	// 	Title:       "A good Title",
-	// 	PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true),
-	// 	SsoID:       "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
-	// 	Private:     boolPtr(false),
-	// 	Categories:  &categories,
-	// }
-
 	arg1 := tutorial.CreateCategoryParams{
 		Name: "A good Category",
 	}
 	c, err := db.CreateCategory(context.Background(), arg1)
-	spew.Dump(c)
-
-	// TODO Link album category
 
 	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
 	if err != nil {
@@ -467,43 +450,58 @@ func TestShouldBeAbleToListWithCategories(t *testing.T) {
 		t.Error(err)
 	}
 
-	spew.Dump(r)
-
 	assert.Equal(t, int64(1), r.Meta.Total)
 	assert.Equal(t, int32(10), r.Meta.Limit)
 	assert.Equal(t, 1, len(r.Data))
 	assert.Equal(t, 1, len(*r.Data[0].Categories))
 }
 
-// func TestShouldBeAbleToListWithoutCategories(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	categories := []CategoryModel{
-// 		{Name: "A good Category"},
-// 	}
-// 	a := AlbumModel{
-// 		Title:       "A good Title",
-// 		PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true),
-// 		SsoID:       "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
-// 		Private:     boolPtr(false),
-// 		Categories:  &categories,
-// 	}
-// 	err := db.Create(&a).Error
-// 	if err != nil {
-// 		t.Error(err)
-// 	}
+func TestShouldBeAbleToListWithoutCategories(t *testing.T) {
+	database2.ClearDB(db)
 
-// 	r, err := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{0, 10}})
-// 	if err != nil {
-// 		t.Error(err)
-// 	}
+	arg1 := tutorial.CreateCategoryParams{
+		Name: "A good Category",
+	}
+	c, err := db.CreateCategory(context.Background(), arg1)
 
-// 	var nilCategories *[]CategoryModel
+	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
+	if err != nil {
+		t.Error(err)
+	}
 
-// 	assert.Equal(t, int64(1), r.Meta.Total)
-// 	assert.Equal(t, 10, r.Meta.Limit)
-// 	assert.Equal(t, 1, len(r.Data))
-// 	assert.Equal(t, nilCategories, r.Data[0].Categories)
-// }
+	arg := tutorial.CreateAlbumParams{
+		Title:       "A good Title",
+		PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+		SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+		Private:     false,
+		// Categories:  &categories,
+	}
+
+	a, err := db.CreateAlbum(context.Background(), arg)
+	if err != nil {
+		t.Error(fmt.Errorf("Error creating album: %w", err))
+	}
+
+	err = db.LinkCategoryToAlbum(context.Background(), tutorial.LinkCategoryToAlbumParams{
+		AlbumID:    a.ID,
+		CategoryID: c.ID,
+	})
+	if err != nil {
+		t.Error(fmt.Errorf("Error linking album with category : %w", err))
+	}
+
+	r, err := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{0, 10}})
+	if err != nil {
+		t.Error(err)
+	}
+
+	var nilCategories *[]CategoryReponse
+
+	assert.Equal(t, int64(1), r.Meta.Total)
+	assert.Equal(t, int32(10), r.Meta.Limit)
+	assert.Equal(t, 1, len(r.Data))
+	assert.Equal(t, nilCategories, r.Data[0].Categories)
+}
 
 // func TestShouldBeAbleToListWithMedias(t *testing.T) {
 // 	database2.ClearDB(db)

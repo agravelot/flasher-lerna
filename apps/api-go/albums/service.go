@@ -45,10 +45,6 @@ func NewService(db *tutorial.Queries) Service {
 func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (PaginatedAlbums, error) {
 	user := auth.GetUserClaims(ctx)
 
-	// if params.Joins.Categories {
-	// 	query = query.Preload("Categories")
-	// }
-
 	// if params.Joins.Medias {
 	// 	query = query.Preload("Medias")
 	// }
@@ -81,10 +77,11 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 		return PaginatedAlbums{}, fmt.Errorf("error counting albums: %w", err)
 	}
 
-	var categories []CategoryReponse
+	var categories *[]CategoryReponse
 
 	if params.Joins.Categories {
 		var ids []int32
+		var tmp []CategoryReponse
 
 		for _, a := range albums {
 			ids = append(ids, a.ID)
@@ -95,11 +92,13 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 			return PaginatedAlbums{}, fmt.Errorf("error getting categories for albums: %w", err)
 		}
 		for _, c := range categs {
-			categories = append(categories, CategoryReponse{
+			tmp = append(tmp, CategoryReponse{
 				ID:   c.ID,
 				Name: c.Name,
 			})
 		}
+		categories = &tmp
+		// TODO Filter categories by album ids
 	}
 
 	data := make([]AlbumResponse, len(albums))
@@ -117,7 +116,7 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 			CreatedAt:              a.CreatedAt,
 			UpdatedAt:              a.UpdatedAt,
 			NotifyUsersOnPublished: a.NotifyUsersOnPublished,
-			Categories:             &categories,
+			Categories:             categories,
 		}
 	}
 
