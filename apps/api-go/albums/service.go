@@ -8,7 +8,9 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v4"
 )
 
 // Service is a simple CRUD interface for user albums.
@@ -127,7 +129,7 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 }
 
 func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, error) {
-	// user := auth.GetUserClaims(ctx)
+	user := auth.GetUserClaims(ctx)
 
 	// query := s.db.Where("slug = ?", slug)
 
@@ -143,7 +145,18 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, err
 	// }
 	// TODO https://github.com/jackc/pgerrcode/blob/master/errcode.go
 
-	a, err := s.db.GetAlbumBySlug(ctx, slug)
+	isAdmin := user != nil && user.IsAdmin()
+
+	a, err := s.db.GetAlbumBySlug(ctx, tutorial.GetAlbumBySlugParams{
+		Slug:    slug,
+		IsAdmin: isAdmin,
+	})
+
+	if err == pgx.ErrNoRows {
+		return AlbumResponse{}, ErrNotFound
+	}
+
+	spew.Dump(err)
 
 	if err != nil {
 		return AlbumResponse{}, fmt.Errorf("error get album by slug: %w", err)
@@ -289,7 +302,10 @@ func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumResponse) 
 
 func (s *service) DeleteAlbum(ctx context.Context, slug string) error {
 
-	if _, err := s.db.GetAlbumBySlug(ctx, slug); err != nil {
+	if _, err := s.db.GetAlbumBySlug(ctx, tutorial.GetAlbumBySlugParams{
+		Slug:    slug,
+		IsAdmin: false, // TODO check if user is admin
+	}); err != nil {
 		return ErrNotFound
 	}
 

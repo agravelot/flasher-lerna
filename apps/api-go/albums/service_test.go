@@ -558,59 +558,109 @@ func TestShouldBeAbleToListWithoutCategories(t *testing.T) {
 // 	assert.Equal(t, nilMedias, r.Data[0].Medias)
 // }
 
-// func TestShouldNotListNonPublishedAlbums(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	a := AlbumModel{Title: "A good Title", SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-// 	err := db.Create(&a).Error
-// 	if err != nil {
-// 		t.Error(err)
-// 	}
+func TestShouldNotListNonPublishedAlbums(t *testing.T) {
+	database2.ClearDB(db)
+	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
+	if err != nil {
+		t.Error(err)
+	}
 
-// 	r, err2 := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{0, 10}})
-// 	if err2 != nil {
-// 		t.Error(err)
-// 	}
+	arg := tutorial.CreateAlbumParams{
+		Title:   "A good Title",
+		SsoID:   uuid.NullUUID{UUID: id, Valid: true},
+		Private: false,
+	}
 
-// 	assert.Equal(t, int64(0), r.Meta.Total)
-// 	assert.Equal(t, 10, r.Meta.Limit)
-// 	assert.Equal(t, 0, len(r.Data))
-// }
+	_, err = db.CreateAlbum(context.Background(), arg)
+	if err != nil {
+		t.Error(fmt.Errorf("Error creating album: %w", err))
+	}
+
+	r, err2 := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{0, 10}})
+	if err2 != nil {
+		t.Error(err)
+	}
+
+	assert.Equal(t, int64(0), r.Meta.Total)
+	assert.Equal(t, int32(10), r.Meta.Limit)
+	assert.Equal(t, 0, len(r.Data))
+}
 
 ///////// SHOW  ///////////
 
-// func TestShouldBeAbleToGetPublishedAlbumAsGuest(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	a := AlbumModel{Title: "A good Title", Slug: "a-good-title", PublishedAt: null.NewTime(time.Now().Add(-10*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
-// 	db.Create(&a)
+func TestShouldBeAbleToGetPublishedAlbumAsGuest(t *testing.T) {
+	database2.ClearDB(db)
+	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
+	if err != nil {
+		t.Error(err)
+	}
 
-// 	r, err := s.GetAlbum(context.Background(), a.Slug)
+	arg := tutorial.CreateAlbumParams{
+		Title:       "A good Title",
+		PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+		SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+		Private:     false,
+	}
 
-// 	assert.NoError(t, err)
-// 	assert.Equal(t, a.Slug, r.Slug)
-// }
+	a, err := db.CreateAlbum(context.Background(), arg)
+	if err != nil {
+		t.Error(fmt.Errorf("Error creating album: %w", err))
+	}
 
-// func TestShouldBeAbleToGetPublishedAlbumAsUser(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	ctx, _ := authAsUser(context.Background())
-// 	a := AlbumModel{Title: "A good Title", Slug: "a-good-title", PublishedAt: null.NewTime(time.Now().Add(-5*time.Minute), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", Private: boolPtr(false)}
-// 	db.Create(&a)
+	r, err := s.GetAlbum(context.Background(), a.Slug)
 
-// 	r, err := s.GetAlbum(ctx, a.Slug)
+	assert.NoError(t, err)
+	assert.Equal(t, a.Slug, r.Slug)
+}
 
-// 	assert.NoError(t, err)
-// 	assert.Equal(t, a.Slug, r.Slug)
-// }
+func TestShouldBeAbleToGetPublishedAlbumAsUser(t *testing.T) {
+	database2.ClearDB(db)
+	ctx, _ := authAsUser(context.Background())
+	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
+	if err != nil {
+		t.Error(err)
+	}
 
-// func TestShouldNotBeAbleToGetNonPublishedAlbumAsGuest(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	a := AlbumModel{Title: "A good Title", Slug: "a-good-title"}
-// 	db.Create(&a)
+	arg := tutorial.CreateAlbumParams{
+		Title:       "A good Title",
+		PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+		SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+		Private:     false,
+	}
 
-// 	_, err := s.GetAlbum(context.Background(), a.Slug)
+	a, err := db.CreateAlbum(context.Background(), arg)
+	if err != nil {
+		t.Error(fmt.Errorf("Error creating album: %w", err))
+	}
 
-// 	assert.Error(t, err)
-// 	assert.Equal(t, ErrNotFound, err)
-// }
+	r, err := s.GetAlbum(ctx, a.Slug)
+
+	assert.NoError(t, err)
+	assert.Equal(t, a.Slug, r.Slug)
+}
+
+func TestShouldNotBeAbleToGetNonPublishedAlbumAsGuest(t *testing.T) {
+	database2.ClearDB(db)
+	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
+	if err != nil {
+		t.Error(err)
+	}
+
+	arg := tutorial.CreateAlbumParams{
+		Title: "A good Title",
+		SsoID: uuid.NullUUID{UUID: id, Valid: true},
+	}
+
+	a, err := db.CreateAlbum(context.Background(), arg)
+	if err != nil {
+		t.Error(fmt.Errorf("Error creating album: %w", err))
+	}
+
+	_, err = s.GetAlbum(context.Background(), a.Slug)
+
+	assert.Error(t, err)
+	assert.Equal(t, ErrNotFound, err)
+}
 
 // func TestShouldNotBeAbleToGetNonPublishedAlbumAsUser(t *testing.T) {
 // 	database2.ClearDB(db)

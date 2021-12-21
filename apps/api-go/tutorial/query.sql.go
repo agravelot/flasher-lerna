@@ -113,11 +113,16 @@ func (q *Queries) DeleteAlbum(ctx context.Context, slug string) error {
 const getAlbumBySlug = `-- name: GetAlbumBySlug :one
 SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
 FROM albums a
-WHERE a.slug = $1
+WHERE a.slug = $1 AND ($2::boolean OR published_at < now()) AND ($2::boolean OR private = false)
 `
 
-func (q *Queries) GetAlbumBySlug(ctx context.Context, slug string) (Album, error) {
-	row := q.db.QueryRow(ctx, getAlbumBySlug, slug)
+type GetAlbumBySlugParams struct {
+	Slug    string
+	IsAdmin bool
+}
+
+func (q *Queries) GetAlbumBySlug(ctx context.Context, arg GetAlbumBySlugParams) (Album, error) {
+	row := q.db.QueryRow(ctx, getAlbumBySlug, arg.Slug, arg.IsAdmin)
 	var i Album
 	err := row.Scan(
 		&i.ID,

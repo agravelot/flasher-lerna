@@ -1,7 +1,7 @@
 -- name: GetAlbumBySlug :one
 SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.created_at, a.updated_at, a.notify_users_on_published, a.meta_description, a.sso_id
 FROM albums a
-WHERE a.slug = $1;
+WHERE a.slug = $1 AND (@is_admin::boolean OR published_at < now()) AND (@is_admin::boolean OR private = false);
 
 -- name: GetMediasByAlbumIds :many
 SELECT m.id, m.model_id, m.name, m.size, m.created_at, m.updated_at
