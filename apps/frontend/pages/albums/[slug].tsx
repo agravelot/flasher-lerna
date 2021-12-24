@@ -20,6 +20,7 @@ import Layout from "../../components/Layout";
 import Header from "../../components/Header";
 import AlbumMediaList from "../../components/album/AlbumMediaList";
 import { useAuthentication } from "hooks/useAuthentication";
+import { ContactSection } from "../../components/ContactSection";
 
 type Props = {
   album: Album;
@@ -175,6 +176,7 @@ const ShowAlbum: NextPage<Props> = ({
           </div>
         </div>
       )}
+      <ContactSection />
 
       {isAdmin && <DynamicAdminOverlay />}
     </Layout>

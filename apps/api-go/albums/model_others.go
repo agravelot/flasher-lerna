@@ -1,6 +1,7 @@
 package album
 
 import (
+	"database/sql"
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
@@ -77,8 +78,8 @@ type MediaModel struct {
 	CustomProperties *CustomProperties `gorm:"type:json;" json:"custom_properties"`
 	ResponsiveImages *ResponsiveImages `gorm:"type:json;" json:"responsive_images"`
 	OrderColumn      null.Int          `gorm:"column:order_column;type:INT4;" json:"order_column"`
-	CreatedAt        null.Time         `gorm:"column:created_at;type:TIMESTAMP;" json:"created_at"`
-	UpdatedAt        null.Time         `gorm:"column:updated_at;type:TIMESTAMP;" json:"updated_at"`
+	CreatedAt        sql.NullTime      `gorm:"column:created_at;type:TIMESTAMP;" json:"created_at"`
+	UpdatedAt        sql.NullTime      `gorm:"column:updated_at;type:TIMESTAMP;" json:"updated_at"`
 	UUID             null.String       `gorm:"column:uuid;type:UUID;" json:"uuid"`
 	ConversionsDisk  null.String       `gorm:"column:conversions_disk;type:VARCHAR;size:255;" json:"conversions_disk"`
 }
@@ -88,13 +89,13 @@ func (MediaModel) TableName() string {
 }
 
 type CategoryModel struct {
-	ID              uint        `gorm:"type:bigserial;primaryKey;autoIncrement" json:"id" example:"1"`
-	Name            string      `gorm:"column:name;type:VARCHAR;size:255;" json:"name"`
-	Slug            string      `gorm:"column:slug;type:VARCHAR;size:255;" json:"slug"`
-	Description     null.String `gorm:"column:description;type:TEXT;" json:"description"`
-	MetaDescription string      `gorm:"column:meta_description;type:VARCHAR;size:155;" json:"meta_description"`
-	CreatedAt       time.Time   `gorm:"type:TIMESTAMP;" json:"created_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
-	UpdatedAt       null.Time   `gorm:"type:TIMESTAMP;" json:"updated_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
+	ID              uint         `gorm:"type:bigserial;primaryKey;autoIncrement" json:"id" example:"1"`
+	Name            string       `gorm:"column:name;type:VARCHAR;size:255;" json:"name"`
+	Slug            string       `gorm:"column:slug;type:VARCHAR;size:255;" json:"slug"`
+	Description     null.String  `gorm:"column:description;type:TEXT;" json:"description"`
+	MetaDescription string       `gorm:"column:meta_description;type:VARCHAR;size:155;" json:"meta_description"`
+	CreatedAt       time.Time    `gorm:"type:TIMESTAMP;" json:"created_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
+	UpdatedAt       sql.NullTime `gorm:"type:TIMESTAMP;" json:"updated_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
 
 	Albums []*AlbumModel `gorm:"many2many:album_category;joinForeignKey:CategoryID;joinReferences:AlbumID" json:"albums"`
 }
@@ -104,10 +105,10 @@ func (CategoryModel) TableName() string {
 }
 
 type AlbumCategoryModel struct {
-	AlbumID    int       `gorm:"primaryKey"`
-	CategoryID int       `gorm:"primaryKey"`
-	CreatedAt  time.Time `gorm:"type:TIMESTAMP;" json:"created_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
-	UpdatedAt  null.Time `gorm:"type:TIMESTAMP;" json:"updated_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
+	AlbumID    int          `gorm:"primaryKey"`
+	CategoryID int          `gorm:"primaryKey"`
+	CreatedAt  time.Time    `gorm:"type:TIMESTAMP;" json:"created_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
+	UpdatedAt  sql.NullTime `gorm:"type:TIMESTAMP;" json:"updated_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
 }
 
 func (AlbumCategoryModel) TableName() string {

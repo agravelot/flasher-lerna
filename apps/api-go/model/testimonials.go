@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/guregu/null"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 )
 
 var (
@@ -51,13 +51,13 @@ type Testimonials struct {
 	//[ 3] body                                           TEXT                 null: false  primary: false  isArray: false  auto: false  col: TEXT            len: -1      default: []
 	Body string `gorm:"column:body;type:TEXT;" json:"body"`
 	//[ 4] published_at                                   TIMESTAMP            null: true   primary: false  isArray: false  auto: false  col: TIMESTAMP       len: -1      default: []
-	PublishedAt null.Time `gorm:"column:published_at;type:TIMESTAMP;" json:"published_at"`
+	PublishedAt sql.NullTime `gorm:"column:published_at;type:TIMESTAMP;" json:"published_at"`
 	//[ 5] user_id                                        INT8                 null: true   primary: false  isArray: false  auto: false  col: INT8            len: -1      default: []
 	UserID null.Int `gorm:"column:user_id;type:INT8;" json:"user_id"`
 	//[ 6] created_at                                     TIMESTAMP            null: true   primary: false  isArray: false  auto: false  col: TIMESTAMP       len: -1      default: []
-	CreatedAt null.Time `gorm:"column:created_at;type:TIMESTAMP;" json:"created_at"`
+	CreatedAt sql.NullTime `gorm:"column:created_at;type:TIMESTAMP;" json:"created_at"`
 	//[ 7] updated_at                                     TIMESTAMP            null: true   primary: false  isArray: false  auto: false  col: TIMESTAMP       len: -1      default: []
-	UpdatedAt null.Time `gorm:"column:updated_at;type:TIMESTAMP;" json:"updated_at"`
+	UpdatedAt sql.NullTime `gorm:"column:updated_at;type:TIMESTAMP;" json:"updated_at"`
 	//[ 8] sso_id                                         UUID                 null: true   primary: false  isArray: false  auto: false  col: UUID            len: -1      default: []
 	SsoID null.String `gorm:"column:sso_id;type:UUID;" json:"sso_id"`
 }
@@ -164,7 +164,7 @@ var testimonialsTableInfo = &TableInfo{
 			ColumnType:         "TIMESTAMP",
 			ColumnLength:       -1,
 			GoFieldName:        "PublishedAt",
-			GoFieldType:        "null.Time",
+			GoFieldType:        "sql.NullTime",
 			JSONFieldName:      "published_at",
 			ProtobufFieldName:  "published_at",
 			ProtobufType:       "uint64",
@@ -206,7 +206,7 @@ var testimonialsTableInfo = &TableInfo{
 			ColumnType:         "TIMESTAMP",
 			ColumnLength:       -1,
 			GoFieldName:        "CreatedAt",
-			GoFieldType:        "null.Time",
+			GoFieldType:        "sql.NullTime",
 			JSONFieldName:      "created_at",
 			ProtobufFieldName:  "created_at",
 			ProtobufType:       "uint64",
@@ -227,7 +227,7 @@ var testimonialsTableInfo = &TableInfo{
 			ColumnType:         "TIMESTAMP",
 			ColumnLength:       -1,
 			GoFieldName:        "UpdatedAt",
-			GoFieldType:        "null.Time",
+			GoFieldType:        "sql.NullTime",
 			JSONFieldName:      "updated_at",
 			ProtobufFieldName:  "updated_at",
 			ProtobufType:       "uint64",

@@ -9,6 +9,7 @@ services:
       POSTGRES_DB: flasher
       POSTGRES_USER: flasher
       POSTGRES_PASSWORD: flasher
+      TZ: "Europe/Paris"
     ports:
       - "5432:5432"
     volumes:

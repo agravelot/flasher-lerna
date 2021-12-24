@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/guregu/null"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 )
 
 var (
@@ -50,9 +50,9 @@ type Settings struct {
 	//[ 3] description                                    VARCHAR(255)         null: true   primary: false  isArray: false  auto: false  col: VARCHAR         len: 255     default: []
 	Description null.String `gorm:"column:description;type:VARCHAR;size:255;" json:"description"`
 	//[ 4] created_at                                     TIMESTAMP            null: true   primary: false  isArray: false  auto: false  col: TIMESTAMP       len: -1      default: []
-	CreatedAt null.Time `gorm:"column:created_at;type:TIMESTAMP;" json:"created_at"`
+	CreatedAt sql.NullTime `gorm:"column:created_at;type:TIMESTAMP;" json:"created_at"`
 	//[ 5] updated_at                                     TIMESTAMP            null: true   primary: false  isArray: false  auto: false  col: TIMESTAMP       len: -1      default: []
-	UpdatedAt null.Time `gorm:"column:updated_at;type:TIMESTAMP;" json:"updated_at"`
+	UpdatedAt sql.NullTime `gorm:"column:updated_at;type:TIMESTAMP;" json:"updated_at"`
 	//[ 6] type                                           VARCHAR(255)         null: false  primary: false  isArray: false  auto: false  col: VARCHAR         len: 255     default: []
 	Type string `gorm:"column:type;type:VARCHAR;size:255;" json:"type"`
 	//[ 7] id                                             INT8                 null: false  primary: true   isArray: false  auto: false  col: INT8            len: -1      default: []
@@ -161,7 +161,7 @@ var settingsTableInfo = &TableInfo{
 			ColumnType:         "TIMESTAMP",
 			ColumnLength:       -1,
 			GoFieldName:        "CreatedAt",
-			GoFieldType:        "null.Time",
+			GoFieldType:        "sql.NullTime",
 			JSONFieldName:      "created_at",
 			ProtobufFieldName:  "created_at",
 			ProtobufType:       "uint64",
@@ -182,7 +182,7 @@ var settingsTableInfo = &TableInfo{
 			ColumnType:         "TIMESTAMP",
 			ColumnLength:       -1,
 			GoFieldName:        "UpdatedAt",
-			GoFieldType:        "null.Time",
+			GoFieldType:        "sql.NullTime",
 			JSONFieldName:      "updated_at",
 			ProtobufFieldName:  "updated_at",
 			ProtobufType:       "uint64",

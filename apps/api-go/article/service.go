@@ -25,8 +25,8 @@ type PaginationParams struct {
 }
 
 type PaginatedArticles struct {
-	Data []Article `json:"data"`
-	Meta api.Meta  `json:"meta"`
+	Data []Article   `json:"data"`
+	Meta api.MetaOld `json:"meta"`
 }
 
 var (
@@ -68,7 +68,7 @@ func (s *service) GetArticleList(ctx context.Context, params PaginationParams) (
 
 	return PaginatedArticles{
 		Data: articles,
-		Meta: api.Meta{Total: total, Limit: params.Limit},
+		Meta: api.MetaOld{Total: total, Limit: params.Limit},
 	}, nil
 }
 

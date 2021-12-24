@@ -58,8 +58,8 @@ func MakeGetAlbumListEndpoint(s Service) endpoint.Endpoint {
 func MakePostAlbumEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(postAlbumRequest)
-		a, e := s.PostAlbum(ctx, req.AlbumRequest)
-		return postAlbumResponse{AlbumRequest: a, Err: e}, nil
+		a, e := s.PostAlbum(ctx, req.AlbumResponse)
+		return postAlbumResponse{AlbumResponse: a, Err: e}, nil
 	}
 }
 
@@ -69,7 +69,7 @@ func MakeGetAlbumEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(getAlbumRequest)
 		p, e := s.GetAlbum(ctx, req.ID)
-		return getAlbumResponse{AlbumRequest: p, Err: e}, nil
+		return getAlbumResponse{AlbumResponse: p, Err: e}, nil
 	}
 }
 
@@ -78,8 +78,8 @@ func MakeGetAlbumEndpoint(s Service) endpoint.Endpoint {
 func MakePutAlbumEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(putAlbumRequest)
-		a, e := s.PutAlbum(ctx, req.ID, req.AlbumRequest)
-		return putAlbumResponse{AlbumRequest: a, Err: e}, nil
+		a, e := s.PutAlbum(ctx, req.ID, req.AlbumResponse)
+		return putAlbumResponse{AlbumResponse: a, Err: e}, nil
 	}
 }
 
@@ -88,8 +88,8 @@ func MakePutAlbumEndpoint(s Service) endpoint.Endpoint {
 func MakePatchAlbumEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(patchAlbumRequest)
-		a, e := s.PatchAlbum(ctx, req.Slug, req.AlbumRequest)
-		return patchAlbumResponse{AlbumRequest: a, Err: e}, nil
+		a, e := s.PatchAlbum(ctx, req.Slug, req.AlbumResponse)
+		return patchAlbumResponse{AlbumResponse: a, Err: e}, nil
 	}
 }
 
@@ -120,7 +120,7 @@ func MakeDeleteAlbumEndpoint(s Service) endpoint.Endpoint {
 
 type PaginationParams struct {
 	Next  uint
-	Limit int
+	Limit int32
 }
 
 type AlbumListJoinsParams struct {
@@ -134,16 +134,16 @@ type AlbumListParams struct {
 }
 
 type PaginatedAlbums struct {
-	Data []AlbumRequest `json:"data"`
-	Meta api.Meta       `json:"meta"`
+	Data []AlbumResponse `json:"data"`
+	Meta api.Meta        `json:"meta"`
 }
 
 type postAlbumRequest struct {
-	AlbumRequest
+	AlbumResponse
 }
 
 type postAlbumResponse struct {
-	AlbumRequest
+	AlbumResponse
 	Err error `json:"err,omitempty"`
 }
 
@@ -166,7 +166,7 @@ type getAlbumRequest struct {
 func (r getAlbumListResponse) error() error { return r.Err }
 
 type getAlbumResponse struct {
-	AlbumRequest
+	AlbumResponse
 	Err error `json:"err,omitempty"`
 }
 
@@ -174,11 +174,11 @@ func (r getAlbumResponse) error() error { return r.Err }
 
 type putAlbumRequest struct {
 	ID string
-	AlbumRequest
+	AlbumResponse
 }
 
 type putAlbumResponse struct {
-	AlbumRequest
+	AlbumResponse
 	Err error `json:"err,omitempty"`
 }
 
@@ -186,11 +186,11 @@ func (r putAlbumResponse) error() error { return nil }
 
 type patchAlbumRequest struct {
 	Slug string
-	AlbumRequest
+	AlbumResponse
 }
 
 type patchAlbumResponse struct {
-	AlbumRequest
+	AlbumResponse
 	Err error `json:"err,omitempty"`
 }
 

@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/guregu/null"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 )
 
 var (
@@ -49,9 +49,9 @@ type Categories struct {
 	//[ 3] description                                    TEXT                 null: true   primary: false  isArray: false  auto: false  col: TEXT            len: -1      default: []
 	Description null.String `gorm:"column:description;type:TEXT;" json:"description"`
 	//[ 4] created_at                                     TIMESTAMP            null: true   primary: false  isArray: false  auto: false  col: TIMESTAMP       len: -1      default: []
-	CreatedAt null.Time `gorm:"column:created_at;type:TIMESTAMP;" json:"created_at"`
+	CreatedAt sql.NullTime `gorm:"column:created_at;type:TIMESTAMP;" json:"created_at"`
 	//[ 5] updated_at                                     TIMESTAMP            null: true   primary: false  isArray: false  auto: false  col: TIMESTAMP       len: -1      default: []
-	UpdatedAt null.Time `gorm:"column:updated_at;type:TIMESTAMP;" json:"updated_at"`
+	UpdatedAt sql.NullTime `gorm:"column:updated_at;type:TIMESTAMP;" json:"updated_at"`
 	//[ 6] meta_description                               VARCHAR(155)         null: false  primary: false  isArray: false  auto: false  col: VARCHAR         len: 155     default: []
 	MetaDescription string `gorm:"column:meta_description;type:VARCHAR;size:155;" json:"meta_description"`
 }
@@ -158,7 +158,7 @@ var categoriesTableInfo = &TableInfo{
 			ColumnType:         "TIMESTAMP",
 			ColumnLength:       -1,
 			GoFieldName:        "CreatedAt",
-			GoFieldType:        "null.Time",
+			GoFieldType:        "sql.NullTime",
 			JSONFieldName:      "created_at",
 			ProtobufFieldName:  "created_at",
 			ProtobufType:       "uint64",
@@ -179,7 +179,7 @@ var categoriesTableInfo = &TableInfo{
 			ColumnType:         "TIMESTAMP",
 			ColumnLength:       -1,
 			GoFieldName:        "UpdatedAt",
-			GoFieldType:        "null.Time",
+			GoFieldType:        "sql.NullTime",
 			JSONFieldName:      "updated_at",
 			ProtobufFieldName:  "updated_at",
 			ProtobufType:       "uint64",
