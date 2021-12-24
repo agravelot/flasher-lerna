@@ -10,7 +10,8 @@ import { configuration } from "utils/configuration";
 import Header from "components/Header";
 import { MDXRemote } from "next-mdx-remote";
 import { generateNextImageUrl } from "utils/util";
-import { useRouter } from "next/dist/client/router";
+import { useRouter } from "next/router";
+import { ContactSection } from "components/ContactSection";
 
 type Props = {
   post: BlogPost;
@@ -92,6 +93,8 @@ const Post: NextPage<Props> = ({ post, appName, estimatedReadingInMinutes, socia
           </article>
         </div>
       </div>
+
+      <ContactSection />
     </Layout>
   );
 };
