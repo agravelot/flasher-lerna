@@ -128,15 +128,11 @@ const IndexPage: NextPage<Props> = ({
                 </p>
               </div>
             </div>
-            <div className="text-gray-700 body-font">
-              <div className="pt-12">
-                <div className="flex flex-nowrap overflow-x-auto w-full">
+            <div className="body-font">
                   <TestimonialList
                     testimonials={testimonials}
                     appName={appName}
                   />
-                </div>
-              </div>
             </div>
             <div className="flex items-center">
               <button
