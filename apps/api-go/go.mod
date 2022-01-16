@@ -15,6 +15,7 @@ require (
 	github.com/gosimple/slug v1.12.0
 	github.com/guregu/null v4.0.0+incompatible
 	github.com/jackc/pgconn v1.10.1
+	github.com/jackc/pgerrcode v0.0.0-20201024163028-a0d42d470451 // indirect
 	github.com/jackc/pgtype v1.9.1
 	github.com/jackc/pgx/v4 v4.14.1
 	github.com/jinzhu/now v1.1.4 // indirect

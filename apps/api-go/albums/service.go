@@ -17,9 +17,9 @@ import (
 type Service interface {
 	GetAlbumList(ctx context.Context, params AlbumListParams) (PaginatedAlbums, error)
 	GetAlbum(ctx context.Context, slug string) (AlbumResponse, error)
-	PostAlbum(ctx context.Context, p AlbumResponse) (AlbumResponse, error)
-	PutAlbum(ctx context.Context, slug string, p AlbumResponse) (AlbumResponse, error)
-	PatchAlbum(ctx context.Context, slug string, p AlbumResponse) (AlbumResponse, error)
+	PostAlbum(ctx context.Context, p AlbumRequest) (AlbumResponse, error)
+	PutAlbum(ctx context.Context, slug string, p AlbumRequest) (AlbumResponse, error)
+	PatchAlbum(ctx context.Context, slug string, p AlbumRequest) (AlbumResponse, error)
 	DeleteAlbum(ctx context.Context, slug string) error
 }
 
@@ -178,7 +178,7 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, err
 	}, err
 }
 
-func (s *service) PostAlbum(ctx context.Context, a AlbumResponse) (AlbumResponse, error) {
+func (s *service) PostAlbum(ctx context.Context, a AlbumRequest) (AlbumResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
 	if user == nil {
@@ -241,7 +241,7 @@ func (s *service) PostAlbum(ctx context.Context, a AlbumResponse) (AlbumResponse
 	}, nil
 }
 
-func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumResponse) (AlbumResponse, error) {
+func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumRequest) (AlbumResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
 	if user == nil {
@@ -296,7 +296,7 @@ func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumResponse) (A
 	}, nil
 }
 
-func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumResponse) (AlbumResponse, error) {
+func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumRequest) (AlbumResponse, error) {
 	return AlbumResponse{}, nil
 }
 

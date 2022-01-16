@@ -7,6 +7,7 @@ import (
 	"api-go/tutorial"
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -14,6 +15,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgconn"
+	"github.com/jackc/pgerrcode"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -662,81 +665,142 @@ func TestShouldNotBeAbleToGetNonPublishedAlbumAsGuest(t *testing.T) {
 	assert.Equal(t, ErrNotFound, err)
 }
 
-// func TestShouldNotBeAbleToGetNonPublishedAlbumAsUser(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	ctx, _ := authAsUser(context.Background())
-// 	a := AlbumModel{Title: "A good Title", Slug: "a-good-title", SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-// 	db.Create(&a)
+func TestShouldNotBeAbleToGetNonPublishedAlbumAsUser(t *testing.T) {
+	database2.ClearDB(db)
+	ctx, _ := authAsUser(context.Background())
 
-// 	_, err := s.GetAlbum(ctx, a.Slug)
+	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
+	if err != nil {
+		t.Error(err)
+	}
 
-// 	assert.Error(t, err)
-// 	assert.Equal(t, ErrNotFound, err)
-// }
+	arg := tutorial.CreateAlbumParams{
+		Title: "A good Title",
+		SsoID: uuid.NullUUID{UUID: id, Valid: true},
+	}
 
-// func TestShouldBeAbleToGetNonPublishedAlbumAsAdmin(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	ctx, _ := authAsAdmin(context.Background())
-// 	a := AlbumModel{Title: "A good Title", Slug: "a-good-title", SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-// 	db.Create(&a)
+	a, err := db.CreateAlbum(context.Background(), arg)
+	if err != nil {
+		t.Error(fmt.Errorf("Error creating album: %w", err))
+	}
 
-// 	r, err := s.GetAlbum(ctx, a.Slug)
+	_, err = s.GetAlbum(ctx, a.Slug)
 
-// 	assert.NoError(t, err)
-// 	assert.Equal(t, a.Slug, r.Slug)
-// }
+	assert.Error(t, err)
+	assert.Equal(t, ErrNotFound, err)
+}
+
+func TestShouldBeAbleToGetNonPublishedAlbumAsAdmin(t *testing.T) {
+	database2.ClearDB(db)
+	ctx, _ := authAsAdmin(context.Background())
+
+	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
+	if err != nil {
+		t.Error(err)
+	}
+
+	arg := tutorial.CreateAlbumParams{
+		Title: "A good Title",
+		SsoID: uuid.NullUUID{UUID: id, Valid: true},
+	}
+
+	a, err := db.CreateAlbum(context.Background(), arg)
+	if err != nil {
+		t.Error(fmt.Errorf("Error creating album: %w", err))
+	}
+
+	r, err := s.GetAlbum(ctx, a.Slug)
+
+	assert.NoError(t, err)
+	assert.Equal(t, a.Slug, r.Slug)
+}
 
 // ///////// POST  ///////////
 
-// func TestShouldBeAbleToCreateAnAlbumAndGenerateSlugAsAdmin(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	a := AlbumRequest{Title: "A good Title", MetaDescription: "a meta decription", SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-// 	ctx, claims := authAsAdmin(context.Background())
+func TestShouldBeAbleToCreateAnAlbumAsAdmin(t *testing.T) {
+	database2.ClearDB(db)
+	ctx, claims := authAsAdmin(context.Background())
 
-// 	res, err := s.PostAlbum(ctx, a)
+	id, err := uuid.Parse(claims.Sub)
+	if err != nil {
+		t.Error(err)
+	}
 
-// 	assert.NoError(t, err)
-// 	var total int64
-// 	db.Model(&AlbumModel{}).Count(&total)
-// 	assert.Equal(t, 1, int(total))
-// 	assert.Equal(t, a.Title, res.Title)
-// 	assert.Equal(t, "a-good-title", res.Slug)
-// 	assert.Equal(t, claims.Sub, res.SsoID)
-// 	assert.False(t, res.PublishedAt.Valid)
-// }
+	arg := AlbumRequest{
+		Title:           "A good Title",
+		MetaDescription: "meta",
+		Slug:            "a-good-title",
+	}
 
-// func TestShouldBeAbleToCreateAnPublishedAlbumAndGenerateSlugAsAdmin(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	a := AlbumRequest{Title: "A good Title", MetaDescription: "a meta decription", PublishedAt: null.NewTime(time.Now(), true), SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-// 	ctx, claims := authAsAdmin(context.Background())
+	res, err := s.PostAlbum(ctx, arg)
 
-// 	res, err := s.PostAlbum(ctx, a)
+	assert.NoError(t, err)
+	total, err := db.CountAlbums(ctx, true)
+	if err != nil {
+		t.Error(fmt.Errorf("Error counting albums: %w", err))
+	}
+	assert.Equal(t, 1, int(total))
+	assert.Equal(t, arg.Title, res.Title)
+	assert.Equal(t, "a-good-title", res.Slug)
+	assert.Equal(t, uuid.NullUUID{UUID: id, Valid: true}, res.SsoID)
+	assert.False(t, res.PublishedAt.Valid)
+}
 
-// 	assert.NoError(t, err)
-// 	var total int64
-// 	db.Model(&AlbumModel{}).Count(&total)
-// 	assert.Equal(t, 1, int(total))
-// 	assert.Equal(t, a.Title, res.Title)
-// 	assert.Equal(t, "a-good-title", res.Slug)
-// 	assert.Equal(t, claims.Sub, res.SsoID)
-// 	assert.True(t, res.PublishedAt.Valid)
-// }
+func TestShouldBeAbleToCreateAnPublishedAlbumAsAdmin(t *testing.T) {
+	database2.ClearDB(db)
+	ctx, claims := authAsAdmin(context.Background())
 
-// func TestShouldBeAbleToCreateAnAlbumWithASpecifiedSlug(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	a := AlbumRequest{Title: "A good Title", Slug: "wtf-is-this-slug", MetaDescription: "a meta decription", SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-// 	ctx, claims := authAsAdmin(context.Background())
+	id, err := uuid.Parse(claims.Sub)
+	if err != nil {
+		t.Error(err)
+	}
 
-// 	res, err := s.PostAlbum(ctx, a)
+	arg := AlbumRequest{
+		Title:           "A good Title",
+		MetaDescription: "meta",
+		Slug:            "a-good-title",
+		PublishedAt:     sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+	}
 
-// 	assert.NoError(t, err)
-// 	var total int64
-// 	db.Model(&AlbumModel{}).Count(&total)
-// 	assert.Equal(t, 1, int(total))
-// 	assert.Equal(t, a.Title, res.Title)
-// 	assert.Equal(t, a.Slug, res.Slug)
-// 	assert.Equal(t, claims.Sub, res.SsoID)
-// }
+	res, err := s.PostAlbum(ctx, arg)
+
+	assert.NoError(t, err)
+	total, err := db.CountAlbums(ctx, true)
+	if err != nil {
+		t.Error(fmt.Errorf("Error counting albums: %w", err))
+	}
+	assert.Equal(t, 1, int(total))
+	assert.Equal(t, arg.Title, res.Title)
+	assert.Equal(t, "a-good-title", res.Slug)
+	assert.Equal(t, uuid.NullUUID{UUID: id, Valid: true}, res.SsoID)
+	assert.True(t, res.PublishedAt.Valid)
+}
+
+func TestShouldNotBeAbleToCreateAnAlbumWithSameSlug(t *testing.T) {
+	database2.ClearDB(db)
+	ctx, _ := authAsAdmin(context.Background())
+
+	arg := AlbumRequest{
+		Title:           "A good Title",
+		MetaDescription: "meta",
+		Slug:            "a-good-title",
+		PublishedAt:     sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+	}
+
+	_, err := s.PostAlbum(ctx, arg)
+	assert.NoError(t, err)
+
+	_, err = s.PostAlbum(ctx, arg)
+
+	var pgErr *pgconn.PgError
+	assert.Error(t, err)
+	assert.True(t, errors.As(err, &pgErr))
+	assert.Equal(t, pgerrcode.UniqueViolation, pgErr.Code)
+
+	total, err := db.CountAlbums(ctx, true)
+	assert.NoError(t, err)
+	assert.Equal(t, 1, int(total))
+}
 
 // func TestShouldNotBeAbleToCreateAnAlbumWithSameSlug(t *testing.T) {
 // 	database2.ClearDB(db)

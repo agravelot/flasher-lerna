@@ -24,7 +24,7 @@ type loggingMiddleware struct {
 	logger log.Logger
 }
 
-func (mw loggingMiddleware) PostAlbum(ctx context.Context, ar AlbumResponse) (a AlbumResponse, err error) {
+func (mw loggingMiddleware) PostAlbum(ctx context.Context, ar AlbumRequest) (a AlbumResponse, err error) {
 	defer func(begin time.Time) {
 		mw.logger.Log("method", "PostAlbum", "id", a.ID, "took", time.Since(begin), "err", err)
 	}(time.Now())
@@ -45,14 +45,14 @@ func (mw loggingMiddleware) GetAlbum(ctx context.Context, slug string) (p AlbumR
 	return mw.next.GetAlbum(ctx, slug)
 }
 
-func (mw loggingMiddleware) PutAlbum(ctx context.Context, id string, ar AlbumResponse) (a AlbumResponse, err error) {
+func (mw loggingMiddleware) PutAlbum(ctx context.Context, id string, ar AlbumRequest) (a AlbumResponse, err error) {
 	defer func(begin time.Time) {
 		mw.logger.Log("method", "PutAlbum", "id", id, "took", time.Since(begin), "err", err)
 	}(time.Now())
 	return mw.next.PutAlbum(ctx, id, ar)
 }
 
-func (mw loggingMiddleware) PatchAlbum(ctx context.Context, slug string, p AlbumResponse) (a AlbumResponse, err error) {
+func (mw loggingMiddleware) PatchAlbum(ctx context.Context, slug string, p AlbumRequest) (a AlbumResponse, err error) {
 	defer func(begin time.Time) {
 		mw.logger.Log("method", "PatchAlbum", "slug", slug, "took", time.Since(begin), "err", err)
 	}(time.Now())

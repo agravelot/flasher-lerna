@@ -29,7 +29,7 @@ type AlbumRequest struct {
 // use a single instance of Validate, it caches struct info
 var validate *validator.Validate
 
-func (a *AlbumResponse) Validate() error {
+func (a *AlbumRequest) Validate() error {
 	validate = validator.New()
 
 	err := validate.Struct(a)

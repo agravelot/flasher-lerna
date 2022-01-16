@@ -58,7 +58,7 @@ func MakeGetAlbumListEndpoint(s Service) endpoint.Endpoint {
 func MakePostAlbumEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(postAlbumRequest)
-		a, e := s.PostAlbum(ctx, req.AlbumResponse)
+		a, e := s.PostAlbum(ctx, req.AlbumRequest)
 		return postAlbumResponse{AlbumResponse: a, Err: e}, nil
 	}
 }
@@ -78,7 +78,7 @@ func MakeGetAlbumEndpoint(s Service) endpoint.Endpoint {
 func MakePutAlbumEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(putAlbumRequest)
-		a, e := s.PutAlbum(ctx, req.ID, req.AlbumResponse)
+		a, e := s.PutAlbum(ctx, req.ID, req.AlbumRequest)
 		return putAlbumResponse{AlbumResponse: a, Err: e}, nil
 	}
 }
@@ -88,7 +88,7 @@ func MakePutAlbumEndpoint(s Service) endpoint.Endpoint {
 func MakePatchAlbumEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(patchAlbumRequest)
-		a, e := s.PatchAlbum(ctx, req.Slug, req.AlbumResponse)
+		a, e := s.PatchAlbum(ctx, req.Slug, req.AlbumRequest)
 		return patchAlbumResponse{AlbumResponse: a, Err: e}, nil
 	}
 }
@@ -139,7 +139,7 @@ type PaginatedAlbums struct {
 }
 
 type postAlbumRequest struct {
-	AlbumResponse
+	AlbumRequest
 }
 
 type postAlbumResponse struct {
@@ -174,7 +174,7 @@ func (r getAlbumResponse) error() error { return r.Err }
 
 type putAlbumRequest struct {
 	ID string
-	AlbumResponse
+	AlbumRequest
 }
 
 type putAlbumResponse struct {
@@ -186,7 +186,7 @@ func (r putAlbumResponse) error() error { return nil }
 
 type patchAlbumRequest struct {
 	Slug string
-	AlbumResponse
+	AlbumRequest
 }
 
 type patchAlbumResponse struct {
