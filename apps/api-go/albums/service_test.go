@@ -14,9 +14,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
 	"github.com/jackc/pgconn"
 	"github.com/jackc/pgerrcode"
+	"github.com/jackc/pgtype"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -506,6 +508,56 @@ func TestShouldBeAbleToListWithoutCategories(t *testing.T) {
 	assert.Equal(t, nilCategories, r.Data[0].Categories)
 }
 
+func TestShouldBeAbleToListWithMedias(t *testing.T) {
+	database2.ClearDB(db)
+
+	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
+	if err != nil {
+		t.Error(err)
+	}
+
+	arg := tutorial.CreateAlbumParams{
+		Title:       "A good Title",
+		PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+		SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+		Private:     false,
+	}
+
+	a, err := db.CreateAlbum(context.Background(), arg)
+	if err != nil {
+		t.Error(fmt.Errorf("Error creating album: %w", err))
+	}
+
+	arg1 := tutorial.CreateMediaParams{
+		Name:             "A good Media",
+		ModelID:          int64(a.ID),
+		Size:             int64(1),
+		ModelType:        "App\\Models\\Album",
+		CollectionName:   "albums",
+		Disk:             "dummy",
+		MimeType:         sql.NullString{String: "image/jpeg", Valid: true},
+		Manipulations:    pgtype.JSON{Bytes: []byte(`{"resize":{"width":100,"height":100}}`), Status: pgtype.Present},
+		CustomProperties: pgtype.JSON{Bytes: []byte(`{}`), Status: pgtype.Present},
+		ResponsiveImages: pgtype.JSON{Bytes: []byte(`[]`), Status: pgtype.Present},
+	}
+	_, err = db.CreateMedia(context.Background(), arg1)
+	if err != nil {
+		t.Error(err)
+		t.Error(fmt.Errorf("Error saving media for given album : %w", err))
+	}
+
+	r, err := s.GetAlbumList(context.Background(), AlbumListParams{Joins: AlbumListJoinsParams{Categories: true}, PaginationParams: PaginationParams{0, 10}})
+	if err != nil {
+		t.Error(err)
+	}
+
+	assert.Equal(t, int64(1), r.Meta.Total)
+	assert.Equal(t, int32(10), r.Meta.Limit)
+	assert.Equal(t, 1, len(r.Data))
+	assert.NotNil(t, r.Data[0].Medias)
+	assert.Equal(t, 1, len(*r.Data[0].Medias))
+}
+
 // func TestShouldBeAbleToListWithMedias(t *testing.T) {
 // 	database2.ClearDB(db)
 // 	medias := []MediaModel{
@@ -802,111 +854,134 @@ func TestShouldNotBeAbleToCreateAnAlbumWithSameSlug(t *testing.T) {
 	assert.Equal(t, 1, int(total))
 }
 
-// func TestShouldNotBeAbleToCreateAnAlbumWithSameSlug(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	a := AlbumModel{Title: "A good Title", Slug: "a-good-slug", MetaDescription: "a meta decription", SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-// 	db.Create(&a)
-// 	dup := AlbumRequest{Title: "A good Title", Slug: "a-good-slug", MetaDescription: "a meta decription", SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-// 	ctx, _ := authAsAdmin(context.Background())
+func TestShouldNotBeAbleToSaveAlbumWithEmptyTitle(t *testing.T) {
+	database2.ClearDB(db)
+	ctx, _ := authAsAdmin(context.Background())
 
-// 	_, err := s.PostAlbum(ctx, dup)
+	arg := AlbumRequest{
+		Title:           "",
+		MetaDescription: "meta",
+		Slug:            "a-good-title",
+		PublishedAt:     sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+	}
 
-// 	assert.Error(t, err)
-// 	var total int64
-// 	db.Model(&AlbumModel{}).Count(&total)
-// 	assert.Equal(t, 1, int(total))
-// }
+	_, err := s.PostAlbum(ctx, arg)
 
-// func TestShouldNotBeAbleToSaveAlbumWithEmptyTitle(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	a := AlbumRequest{Title: ""}
-// 	ctx, _ := authAsAdmin(context.Background())
+	assert.Error(t, err)
+	assert.Equal(t, "Key: 'AlbumRequest.Title' Error:Field validation for 'Title' failed on the 'required' tag", err.Error())
 
-// 	_, err := s.PostAlbum(ctx, a)
+	total, err := db.CountAlbums(ctx, true)
+	assert.NoError(t, err)
+	assert.Equal(t, 0, int(total))
+}
 
-// 	assert.Error(t, err)
-// 	validationErrors := err.(validator.ValidationErrors)
-// 	assert.Equal(t, "AlbumRequest.Title", validationErrors[0].Namespace())
-// 	assert.Equal(t, "required", validationErrors[0].ActualTag())
-// 	var total int64
-// 	db.Model(&AlbumModel{}).Count(&total)
-// 	assert.Equal(t, 0, int(total))
-// }
+func TestShouldNotBeAbleToSaveAlbumWithTooLongTitle(t *testing.T) {
+	database2.ClearDB(db)
+	ctx, _ := authAsAdmin(context.Background())
 
-// func TestShouldNotBeAbleToSaveAlbumWithTooLongTitle(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	a := AlbumRequest{Title: "a very too long big enormous title that will never fit in any screen...", SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-// 	ctx, _ := authAsAdmin(context.Background())
+	arg := AlbumRequest{
+		Title:           "a very too long big enormous title that will never fit in any screen...",
+		MetaDescription: "meta",
+		Slug:            "a-good-title",
+		PublishedAt:     sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+	}
 
-// 	_, err := s.PostAlbum(ctx, a)
+	_, err := s.PostAlbum(ctx, arg)
 
-// 	assert.Error(t, err)
-// 	validationErrors := err.(validator.ValidationErrors)
-// 	assert.Equal(t, "AlbumRequest.Title", validationErrors[0].Namespace())
-// 	assert.Equal(t, "lt", validationErrors[0].ActualTag())
-// 	var total int64
-// 	db.Model(&AlbumModel{}).Count(&total)
-// 	assert.Equal(t, 0, int(total))
-// }
+	assert.Error(t, err)
+	validationErrors := err.(validator.ValidationErrors)
+	assert.Equal(t, "AlbumRequest.Title", validationErrors[0].Namespace())
+	assert.Equal(t, "lt", validationErrors[0].ActualTag())
 
-// func TestShouldNotBeAbleToSaveAlbumWithEmptyMetaDescription(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	a := AlbumRequest{Title: "a good Title", MetaDescription: "", SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-// 	ctx, _ := authAsAdmin(context.Background())
+	total, err := db.CountAlbums(ctx, true)
+	assert.NoError(t, err)
+	assert.Equal(t, 0, int(total))
+}
 
-// 	_, err := s.PostAlbum(ctx, a)
+func TestShouldNotBeAbleToSaveAlbumWithEmptyMetaDescription(t *testing.T) {
+	database2.ClearDB(db)
+	ctx, _ := authAsAdmin(context.Background())
 
-// 	assert.Error(t, err)
-// 	validationErrors := err.(validator.ValidationErrors)
-// 	assert.Equal(t, "AlbumRequest.MetaDescription", validationErrors[0].Namespace())
-// 	assert.Equal(t, "required", validationErrors[0].ActualTag())
-// 	var total int64
-// 	db.Model(&AlbumModel{}).Count(&total)
-// 	assert.Equal(t, 0, int(total))
-// }
+	arg := AlbumRequest{
+		Title:           "a good title",
+		MetaDescription: "",
+		Slug:            "a-good-title",
+		PublishedAt:     sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+	}
 
-// func TestShouldNotBeAbleToSaveAlbumWithTooLongMetaDescription(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	a := AlbumRequest{Title: "A good Title", MetaDescription: "a very too long big enormous title that will never fit in any screen...", SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-// 	ctx, _ := authAsAdmin(context.Background())
+	_, err := s.PostAlbum(ctx, arg)
 
-// 	_, err := s.PostAlbum(ctx, a)
+	assert.Error(t, err)
+	validationErrors := err.(validator.ValidationErrors)
+	assert.Equal(t, "AlbumRequest.MetaDescription", validationErrors[0].Namespace())
+	assert.Equal(t, "required", validationErrors[0].ActualTag())
 
-// 	assert.Error(t, err)
-// 	validationErrors := err.(validator.ValidationErrors)
-// 	assert.Equal(t, "AlbumRequest.MetaDescription", validationErrors[0].Namespace())
-// 	assert.Equal(t, "lt", validationErrors[0].ActualTag())
-// 	var total int64
-// 	db.Model(&AlbumModel{}).Count(&total)
-// 	assert.Equal(t, 0, int(total))
-// }
+	total, err := db.CountAlbums(ctx, true)
+	assert.NoError(t, err)
+	assert.Equal(t, 0, int(total))
+}
 
-// func TestShouldNotBeAbleToPostAlbumAsUser(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	a := AlbumRequest{Title: "A good Title", Slug: "a-good-slug", MetaDescription: "a meta decription", SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-// 	ctx, _ := authAsUser(context.Background())
+func TestShouldNotBeAbleToSaveAlbumWithTooLongMetaDescription(t *testing.T) {
+	database2.ClearDB(db)
+	ctx, _ := authAsAdmin(context.Background())
 
-// 	_, err := s.PostAlbum(ctx, a)
+	arg := AlbumRequest{
+		Title:           "a good title",
+		MetaDescription: "a very too long big enormous meta description that will never fit in any screen...",
+		Slug:            "a-good-title",
+		PublishedAt:     sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+	}
 
-// 	assert.Error(t, err)
-// 	assert.Equal(t, ErrNotAdmin, err)
-// 	var total int64
-// 	db.Model(&AlbumModel{}).Count(&total)
-// 	assert.Equal(t, 0, int(total))
-// }
+	_, err := s.PostAlbum(ctx, arg)
 
-// func TestShouldNotBeAbleToPostAlbumAsGuest(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	a := AlbumRequest{Title: "A good Title", Slug: "a-good-slug", MetaDescription: "a meta decription", SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
+	assert.Error(t, err)
+	validationErrors := err.(validator.ValidationErrors)
+	assert.Equal(t, "AlbumRequest.MetaDescription", validationErrors[0].Namespace())
+	assert.Equal(t, "lt", validationErrors[0].ActualTag())
 
-// 	_, err := s.PostAlbum(context.Background(), a)
+	total, err := db.CountAlbums(ctx, true)
+	assert.NoError(t, err)
+	assert.Equal(t, 0, int(total))
+}
 
-// 	assert.Error(t, err)
-// 	assert.Equal(t, ErrNoAuth, err)
-// 	var total int64
-// 	db.Model(&AlbumModel{}).Count(&total)
-// 	assert.Equal(t, 0, int(total))
-// }
+func TestShouldNotBeAbleToPostAlbumAsUser(t *testing.T) {
+	database2.ClearDB(db)
+	ctx, _ := authAsUser(context.Background())
+
+	arg := AlbumRequest{
+		Title:           "a good title",
+		MetaDescription: "meta",
+		Slug:            "a-good-title",
+		PublishedAt:     sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+	}
+
+	_, err := s.PostAlbum(ctx, arg)
+
+	assert.Error(t, err)
+	assert.Equal(t, ErrNotAdmin, err)
+	total, err := db.CountAlbums(ctx, true)
+	assert.NoError(t, err)
+	assert.Equal(t, 0, int(total))
+}
+
+func TestShouldNotBeAbleToPostAlbumAsGuest(t *testing.T) {
+	database2.ClearDB(db)
+
+	arg := AlbumRequest{
+		Title:           "a good title",
+		MetaDescription: "meta",
+		Slug:            "a-good-title",
+		PublishedAt:     sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+	}
+
+	_, err := s.PostAlbum(context.Background(), arg)
+
+	assert.Error(t, err)
+	assert.Equal(t, ErrNoAuth, err)
+	total, err := db.CountAlbums(context.Background(), true)
+	assert.NoError(t, err)
+	assert.Equal(t, 0, int(total))
+}
 
 // //////// UPDATE //////////
 

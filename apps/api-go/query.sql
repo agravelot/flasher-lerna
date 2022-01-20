@@ -54,3 +54,9 @@ RETURNING *;
 -- name: LinkCategoryToAlbum :exec
 INSERT INTO album_category (album_id, category_id, created_at, updated_at)
 VALUES ($1, $2, now(), now());
+
+
+-- name: CreateMedia :one
+INSERT INTO media (model_id, model_type, name, size, collection_name, file_name, disk, mime_type, manipulations, custom_properties, responsive_images, created_at, updated_at)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, now(), now())
+RETURNING *;

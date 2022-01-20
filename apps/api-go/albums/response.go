@@ -57,5 +57,5 @@ type AlbumResponse struct {
 	SsoID                  uuid.NullUUID  `json:"sso_id" swaggertype:"string" example:"123e4567-e89b-12d3-a456-426614174000"`
 
 	Categories *[]CategoryReponse `json:"categories"`
-	// Medias     *[]MediaModel    `json:"medias"`
+	Medias     *[]MediaModel      `json:"medias"`
 }

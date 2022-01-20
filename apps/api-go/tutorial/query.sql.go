@@ -8,6 +8,7 @@ import (
 	"database/sql"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgtype"
 )
 
 const countAlbums = `-- name: CountAlbums :one
@@ -96,6 +97,63 @@ func (q *Queries) CreateCategory(ctx context.Context, arg CreateCategoryParams) 
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.MetaDescription,
+	)
+	return i, err
+}
+
+const createMedia = `-- name: CreateMedia :one
+INSERT INTO media (model_id, model_type, name, size, collection_name, file_name, disk, mime_type, manipulations, custom_properties, responsive_images, created_at, updated_at)
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, now(), now())
+RETURNING id, model_type, model_id, collection_name, name, file_name, mime_type, disk, size, manipulations, custom_properties, responsive_images, order_column, created_at, updated_at, uuid, conversions_disk
+`
+
+type CreateMediaParams struct {
+	ModelID          int64
+	ModelType        string
+	Name             string
+	Size             int64
+	CollectionName   string
+	FileName         string
+	Disk             string
+	MimeType         sql.NullString
+	Manipulations    pgtype.JSON
+	CustomProperties pgtype.JSON
+	ResponsiveImages pgtype.JSON
+}
+
+func (q *Queries) CreateMedia(ctx context.Context, arg CreateMediaParams) (Medium, error) {
+	row := q.db.QueryRow(ctx, createMedia,
+		arg.ModelID,
+		arg.ModelType,
+		arg.Name,
+		arg.Size,
+		arg.CollectionName,
+		arg.FileName,
+		arg.Disk,
+		arg.MimeType,
+		arg.Manipulations,
+		arg.CustomProperties,
+		arg.ResponsiveImages,
+	)
+	var i Medium
+	err := row.Scan(
+		&i.ID,
+		&i.ModelType,
+		&i.ModelID,
+		&i.CollectionName,
+		&i.Name,
+		&i.FileName,
+		&i.MimeType,
+		&i.Disk,
+		&i.Size,
+		&i.Manipulations,
+		&i.CustomProperties,
+		&i.ResponsiveImages,
+		&i.OrderColumn,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.Uuid,
+		&i.ConversionsDisk,
 	)
 	return i, err
 }
