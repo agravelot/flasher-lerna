@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
+	"github.com/jackc/pgtype"
 )
 
 // AlbumModel represents a single album.
@@ -42,6 +43,26 @@ type CategoryReponse struct {
 	Name string `json:"name" example:"A good category"`
 }
 
+type MediaReponse struct {
+	ID               int32  `json:"id" example:"1"`
+	Name             string `json:"name" example:"A good media"`
+	ModelType        string
+	ModelID          int64
+	CollectionName   string
+	FileName         string
+	MimeType         sql.NullString
+	Disk             string
+	Size             int64
+	Manipulations    pgtype.JSON
+	CustomProperties pgtype.JSON
+	ResponsiveImages pgtype.JSON
+	OrderColumn      sql.NullInt32
+	CreatedAt        sql.NullTime
+	UpdatedAt        sql.NullTime
+	Uuid             uuid.NullUUID
+	ConversionsDisk  sql.NullString
+}
+
 type AlbumResponse struct {
 	ID                     int32          `json:"id" example:"1"`
 	Slug                   string         `json:"slug" example:"a-good-album"`
@@ -57,5 +78,5 @@ type AlbumResponse struct {
 	SsoID                  uuid.NullUUID  `json:"sso_id" swaggertype:"string" example:"123e4567-e89b-12d3-a456-426614174000"`
 
 	Categories *[]CategoryReponse `json:"categories"`
-	Medias     *[]MediaModel      `json:"medias"`
+	Medias     *[]MediaReponse    `json:"medias"`
 }

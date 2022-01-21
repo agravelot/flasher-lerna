@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v4"
 )
@@ -103,6 +102,30 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 		// TODO Filter categories by album ids
 	}
 
+	var medias *[]MediaReponse
+
+	if params.Joins.Medias {
+		var ids []int32
+		var tmp []MediaReponse
+
+		for _, a := range albums {
+			ids = append(ids, a.ID)
+		}
+
+		m, err := s.db.GetMediasByAlbumIds(ctx, ids)
+		if err != nil {
+			return PaginatedAlbums{}, fmt.Errorf("error getting medias for albums: %w", err)
+		}
+		for _, c := range m {
+			tmp = append(tmp, MediaReponse{
+				ID:   c.ID,
+				Name: c.Name,
+			})
+		}
+		medias = &tmp
+		// TODO Filter categories by album ids
+	}
+
 	data := make([]AlbumResponse, len(albums))
 	for i, a := range albums {
 		data[i] = AlbumResponse{
@@ -119,6 +142,7 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 			UpdatedAt:              a.UpdatedAt,
 			NotifyUsersOnPublished: a.NotifyUsersOnPublished,
 			Categories:             categories,
+			Medias:                 medias,
 		}
 	}
 
@@ -155,8 +179,6 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, err
 	if err == pgx.ErrNoRows {
 		return AlbumResponse{}, ErrNotFound
 	}
-
-	spew.Dump(err)
 
 	if err != nil {
 		return AlbumResponse{}, fmt.Errorf("error get album by slug: %w", err)

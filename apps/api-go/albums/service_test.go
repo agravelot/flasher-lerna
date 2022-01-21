@@ -540,13 +540,13 @@ func TestShouldBeAbleToListWithMedias(t *testing.T) {
 		CustomProperties: pgtype.JSON{Bytes: []byte(`{}`), Status: pgtype.Present},
 		ResponsiveImages: pgtype.JSON{Bytes: []byte(`[]`), Status: pgtype.Present},
 	}
-	_, err = db.CreateMedia(context.Background(), arg1)
+	m, err := db.CreateMedia(context.Background(), arg1)
 	if err != nil {
 		t.Error(err)
 		t.Error(fmt.Errorf("Error saving media for given album : %w", err))
 	}
 
-	r, err := s.GetAlbumList(context.Background(), AlbumListParams{Joins: AlbumListJoinsParams{Categories: true}, PaginationParams: PaginationParams{0, 10}})
+	r, err := s.GetAlbumList(context.Background(), AlbumListParams{Joins: AlbumListJoinsParams{Medias: true}, PaginationParams: PaginationParams{0, 10}})
 	if err != nil {
 		t.Error(err)
 	}
@@ -556,6 +556,7 @@ func TestShouldBeAbleToListWithMedias(t *testing.T) {
 	assert.Equal(t, 1, len(r.Data))
 	assert.NotNil(t, r.Data[0].Medias)
 	assert.Equal(t, 1, len(*r.Data[0].Medias))
+	assert.Equal(t, m.Name, (*r.Data[0].Medias)[0].Name)
 }
 
 // func TestShouldBeAbleToListWithMedias(t *testing.T) {

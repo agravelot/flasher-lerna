@@ -333,36 +333,38 @@ func (q *Queries) GetCategoryBySlug(ctx context.Context, slug string) (GetCatego
 }
 
 const getMediasByAlbumIds = `-- name: GetMediasByAlbumIds :many
-SELECT m.id, m.model_id, m.name, m.size, m.created_at, m.updated_at
+SELECT id, model_type, model_id, collection_name, name, file_name, mime_type, disk, size, manipulations, custom_properties, responsive_images, order_column, created_at, updated_at, uuid, conversions_disk
 FROM media m
-WHERE m.model_id = ANY($1::int[]) and m.model_type = 'App\Models\Album'
+WHERE m.model_id = ANY($1::int[]) AND m.model_type = 'App\Models\Album'
 `
 
-type GetMediasByAlbumIdsRow struct {
-	ID        int32
-	ModelID   int64
-	Name      string
-	Size      int64
-	CreatedAt sql.NullTime
-	UpdatedAt sql.NullTime
-}
-
-func (q *Queries) GetMediasByAlbumIds(ctx context.Context, dollar_1 []int32) ([]GetMediasByAlbumIdsRow, error) {
+func (q *Queries) GetMediasByAlbumIds(ctx context.Context, dollar_1 []int32) ([]Medium, error) {
 	rows, err := q.db.Query(ctx, getMediasByAlbumIds, dollar_1)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []GetMediasByAlbumIdsRow{}
+	items := []Medium{}
 	for rows.Next() {
-		var i GetMediasByAlbumIdsRow
+		var i Medium
 		if err := rows.Scan(
 			&i.ID,
+			&i.ModelType,
 			&i.ModelID,
+			&i.CollectionName,
 			&i.Name,
+			&i.FileName,
+			&i.MimeType,
+			&i.Disk,
 			&i.Size,
+			&i.Manipulations,
+			&i.CustomProperties,
+			&i.ResponsiveImages,
+			&i.OrderColumn,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.Uuid,
+			&i.ConversionsDisk,
 		); err != nil {
 			return nil, err
 		}

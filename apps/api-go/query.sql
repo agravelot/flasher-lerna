@@ -3,11 +3,6 @@ SELECT a.id, a.slug, a.title, a.body, a.published_at,a.private, a.user_id, a.cre
 FROM albums a
 WHERE a.slug = $1 AND (@is_admin::boolean OR published_at < now()) AND (@is_admin::boolean OR private = false);
 
--- name: GetMediasByAlbumIds :many
-SELECT m.id, m.model_id, m.name, m.size, m.created_at, m.updated_at
-FROM media m
-WHERE m.model_id = ANY($1::int[]) and m.model_type = 'App\Models\Album';
-
 -- name: GetCategoryBySlug :one
 SELECT c.id, c.slug, c.name, c.description, c.meta_description, c.created_at, c.updated_at
 FROM categories c
@@ -60,3 +55,8 @@ VALUES ($1, $2, now(), now());
 INSERT INTO media (model_id, model_type, name, size, collection_name, file_name, disk, mime_type, manipulations, custom_properties, responsive_images, created_at, updated_at)
 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, now(), now())
 RETURNING *;
+
+-- name: GetMediasByAlbumIds :many
+SELECT *
+FROM media m
+WHERE m.model_id = ANY($1::int[]) AND m.model_type = 'App\Models\Album';
