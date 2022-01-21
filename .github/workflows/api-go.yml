@@ -14,7 +14,7 @@ on:
 
 jobs:
   docker:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       -
         name: Checkout
@@ -63,7 +63,7 @@ jobs:
           cache-to: type=inline
   test:
     # runs-on: self-hosted
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
     - name: Update docker-compose version
       if: ${{ env.ACT }}
@@ -88,6 +88,7 @@ jobs:
     -
       name: Test
       run: |
+        go install github.com/pressly/goose/v3/cmd/goose@latest
         cd apps/api-go/migration
         goose postgres "user=flasher password=flasher dbname=flasher sslmode=disable" up
         cd apps/api-go
