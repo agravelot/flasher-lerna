@@ -91,6 +91,7 @@ jobs:
         go install github.com/pressly/goose/v3/cmd/goose@latest
         cd apps/api-go/migration
         goose postgres "user=flasher password=flasher dbname=flasher sslmode=disable" up
+        cd -
         cd apps/api-go
         go test ./...
       env:
