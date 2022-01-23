@@ -1,4 +1,4 @@
-FROM jboss/keycloak:15.0.0
+FROM jboss/keycloak:16.1.0
 RUN mkdir -p /opt/jboss/keycloak/modules/at/favre/lib/jbcrypt/main/
 COPY --chown=1000:0 realm-export.json /tmp/realm.json
 ADD --chown=1000:0 https://repo1.maven.org/maven2/at/favre/lib/bcrypt/0.9.0/bcrypt-0.9.0.jar /opt/jboss/keycloak/modules/at/favre/lib/jbcrypt/main/
