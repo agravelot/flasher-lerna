@@ -134,7 +134,7 @@ const IndexPage: NextPage<Props> = ({
                     appName={appName}
                   />
             </div>
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <button
                 className="my-8 bg-gradient-to-r mx-auto from-blue-700 to-red-700 hover:from-pink-500 hover:to-orange-500 text-white font-semibold py-3 px-10 rounded-lg"
                 onClick={() => toggleTestimonialModal()}
@@ -142,7 +142,7 @@ const IndexPage: NextPage<Props> = ({
               >
                 Ajouter mon message
               </button>
-            </div>
+            </div> */}
           </div>
         </section>
         <ContactSection />
