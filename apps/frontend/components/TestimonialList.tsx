@@ -27,9 +27,9 @@ export const TestimonialList: FunctionComponent<Props> = ({
 
   return (
     <div className="relative">
-      <div className="absolute -top-4 -left-8 w-72 h-72 bg-blue-700 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob"></div>
+      {/* <div className="absolute -top-4 -left-8 w-72 h-72 bg-blue-700 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob"></div>
       <div className="absolute top-8 -right-8 w-72 h-72 bg-pink-700 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-2000"></div>
-      <div className="absolute -bottom-8 left-20 w-72 h-72 bg-yellow-400 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-4000 hidden md:block"></div>
+      <div className="absolute -bottom-8 left-20 w-72 h-72 bg-yellow-400 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob animation-delay-4000 hidden md:block"></div> */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -37,7 +37,7 @@ export const TestimonialList: FunctionComponent<Props> = ({
         }}
       ></script>
       <div className="relative">
-        <div className="flex flex-nowrap overflow-x-auto w-full pt-12 items-center">
+        <div className="flex flex-nowrap overflow-x-auto w-full pt-12 items-center mb-8">
 
         {testimonials.map((testimonial) => (
           <div
