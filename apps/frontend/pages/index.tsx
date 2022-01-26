@@ -85,7 +85,7 @@ const IndexPage: NextPage<Props> = ({
                   // quality={95}
                 />
               </div>}
-              <div className="w-full lg:w-8²/12 ml-auto mr-auto px-4">
+              <div className="w-full lg:w-8/12 ml-auto mr-auto px-4">
                 <div className="md:pr-12">
                   <h2 className="text-3xl font-semibold">
                     Photographe passionnée sur Lyon
