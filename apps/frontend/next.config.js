@@ -35,6 +35,11 @@ module.exports = withTM(
             destination: "/cosplayers/page/1",
             permanent: true,
           },
+          {
+            source: "/blog/ae",
+            destination: "/blog/le-respect-en-convention-ou-est-il-passe",
+            permanent: true,
+          },
         ];
       },
       pwa: {
