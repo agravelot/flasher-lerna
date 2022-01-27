@@ -8,7 +8,9 @@ import (
 	"os"
 	"time"
 
+	"github.com/jackc/pgx/v4/log/logrusadapter"
 	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/sirupsen/logrus"
 )
 
 var db *tutorial.Queries
@@ -46,12 +48,20 @@ func Init(c config.Configurations) (*tutorial.Queries, error) {
 
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable", c.DbHost, c.DbUser, c.DbPassword, c.DbName, c.DbPort)
 
-	// db2, err = sql.Open("postgresWithHooks", dsn)
-	// if err != nil {
-	// 	log.Fatalf("Got error when connect database, the error is '%v'", err)
-	// }
+	config, err := pgxpool.ParseConfig(dsn)
 
-	conn, err = pgxpool.Connect(context.Background(), dsn)
+	logrusLogger := &logrus.Logger{
+		Out:          os.Stderr,
+		Formatter:    new(logrus.JSONFormatter),
+		Hooks:        make(logrus.LevelHooks),
+		Level:        logrus.InfoLevel,
+		ExitFunc:     os.Exit,
+		ReportCaller: false,
+	}
+
+	config.ConnConfig.Logger = logrusadapter.NewLogger(logrusLogger)
+
+	conn, err = pgxpool.ConnectConfig(context.Background(), config)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)

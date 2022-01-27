@@ -48,7 +48,7 @@ func MakeServerEndpoints(s Service) Endpoints {
 func MakeGetAlbumListEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(getAlbumListRequest)
-		pa, e := s.GetAlbumList(ctx, AlbumListParams{PaginationParams: PaginationParams{Next: req.Next, Limit: req.Limit}})
+		pa, e := s.GetAlbumList(ctx, AlbumListParams{Joins: req.Joins, PaginationParams: PaginationParams{Next: req.Next, Limit: req.Limit}})
 		return getAlbumListResponse{PaginatedAlbums: pa, Err: e}, nil
 	}
 }

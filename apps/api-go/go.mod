@@ -27,6 +27,7 @@ require (
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/satori/go.uuid v1.2.0
+	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.7.0
 	github.com/swaggo/echo-swagger v1.1.4
 	github.com/swaggo/swag v1.7.6

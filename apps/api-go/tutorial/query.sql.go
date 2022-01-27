@@ -395,6 +395,7 @@ const updateAlbum = `-- name: UpdateAlbum :exec
 UPDATE albums
 SET slug = $1, title = $2, body = $3, private = $4, meta_description = $5, sso_id = $6, published_at = $7, updated_at = NOW()
 WHERE slug = $8
+RETURNING id, slug, title, body, published_at, private, user_id, created_at, updated_at, notify_users_on_published, meta_description, sso_id
 `
 
 type UpdateAlbumParams struct {

@@ -5,8 +5,10 @@ import (
 	"api-go/auth"
 	"api-go/tutorial"
 	"context"
+	"database/sql"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v4"
@@ -46,14 +48,6 @@ func NewService(db *tutorial.Queries) Service {
 func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (PaginatedAlbums, error) {
 	user := auth.GetUserClaims(ctx)
 
-	// if params.Joins.Medias {
-	// 	query = query.Preload("Medias")
-	// }
-
-	// https://github.com/kyleconroy/sqlc/issues/1062
-	// https://github.com/kyleconroy/sqlc/discussions/451
-	// Admin
-
 	arg := tutorial.GetAlbumsParams{
 		Limit: params.Limit,
 	}
@@ -78,35 +72,28 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 		return PaginatedAlbums{}, fmt.Errorf("error counting albums: %w", err)
 	}
 
-	var categories *[]CategoryReponse
+	var categories *[]tutorial.GetCategoriesByAlbumIdsRow
 
 	if params.Joins.Categories {
 		var ids []int32
-		var tmp []CategoryReponse
 
 		for _, a := range albums {
 			ids = append(ids, a.ID)
 		}
 
-		categs, err := s.db.GetCategoriesByAlbumIds(ctx, ids)
+		c, err := s.db.GetCategoriesByAlbumIds(ctx, ids)
 		if err != nil {
 			return PaginatedAlbums{}, fmt.Errorf("error getting categories for albums: %w", err)
 		}
-		for _, c := range categs {
-			tmp = append(tmp, CategoryReponse{
-				ID:   c.ID,
-				Name: c.Name,
-			})
-		}
-		categories = &tmp
+		categories = &c
+
 		// TODO Filter categories by album ids
 	}
 
-	var medias *[]MediaReponse
+	var medias *[]tutorial.Medium
 
 	if params.Joins.Medias {
 		var ids []int32
-		var tmp []MediaReponse
 
 		for _, a := range albums {
 			ids = append(ids, a.ID)
@@ -116,40 +103,85 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 		if err != nil {
 			return PaginatedAlbums{}, fmt.Errorf("error getting medias for albums: %w", err)
 		}
-		for _, c := range m {
-			tmp = append(tmp, MediaReponse{
-				ID:   c.ID,
-				Name: c.Name,
-			})
-		}
-		medias = &tmp
+		medias = &m
 		// TODO Filter categories by album ids
 	}
 
 	data := make([]AlbumResponse, len(albums))
 	for i, a := range albums {
-		data[i] = AlbumResponse{
-			ID:                     a.ID,
-			Slug:                   a.Slug,
-			Title:                  a.Title,
-			MetaDescription:        a.MetaDescription,
-			Body:                   a.Body,
-			PublishedAt:            a.PublishedAt,
-			Private:                a.Private,
-			SsoID:                  a.SsoID,
-			UserID:                 a.UserID,
-			CreatedAt:              a.CreatedAt,
-			UpdatedAt:              a.UpdatedAt,
-			NotifyUsersOnPublished: a.NotifyUsersOnPublished,
-			Categories:             categories,
-			Medias:                 medias,
-		}
+		data[i] = transform(a, medias, categories)
 	}
 
 	return PaginatedAlbums{
 		Data: data,
 		Meta: api.Meta{Total: total, Limit: params.Limit},
 	}, nil
+}
+
+func transform(a tutorial.Album, medias *[]tutorial.Medium, categories *[]tutorial.GetCategoriesByAlbumIdsRow) AlbumResponse {
+	var body *string
+	var userID *int64
+	var ssoID uuid.UUID
+	var publishedAt, createdAt, updatedAt *time.Time
+	if a.Body.Valid {
+		body = &a.Body.String
+	}
+	if a.SsoID.Valid {
+		ssoID = a.SsoID.UUID
+	}
+	if a.UserID.Valid {
+		userID = &a.UserID.Int64
+	}
+	if a.PublishedAt.Valid {
+		publishedAt = &a.PublishedAt.Time
+	}
+	if a.CreatedAt.Valid {
+		createdAt = &a.CreatedAt.Time
+	}
+	if a.UpdatedAt.Valid {
+		updatedAt = &a.UpdatedAt.Time
+	}
+
+	var mediasResponse *[]MediaReponse
+	if medias != nil {
+		var tmp []MediaReponse
+		for _, c := range *medias {
+			tmp = append(tmp, MediaReponse{
+				ID:   c.ID,
+				Name: c.Name,
+			})
+		}
+		mediasResponse = &tmp
+	}
+
+	var categoriesResponse *[]CategoryReponse
+	if categories != nil {
+		var tmp2 []CategoryReponse
+		for _, c := range *categories {
+			tmp2 = append(tmp2, CategoryReponse{
+				ID:   c.ID,
+				Name: c.Name,
+			})
+		}
+		categoriesResponse = &tmp2
+	}
+
+	return AlbumResponse{
+		ID:                     a.ID,
+		Slug:                   a.Slug,
+		Title:                  a.Title,
+		MetaDescription:        a.MetaDescription,
+		Body:                   body,
+		PublishedAt:            publishedAt,
+		Private:                a.Private,
+		SsoID:                  ssoID,
+		UserID:                 userID,
+		CreatedAt:              createdAt,
+		UpdatedAt:              updatedAt,
+		NotifyUsersOnPublished: a.NotifyUsersOnPublished,
+		Categories:             categoriesResponse,
+		Medias:                 mediasResponse,
+	}
 }
 
 func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, error) {
@@ -184,20 +216,8 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, err
 		return AlbumResponse{}, fmt.Errorf("error get album by slug: %w", err)
 	}
 
-	return AlbumResponse{
-		ID:                     a.ID,
-		Slug:                   a.Slug,
-		Title:                  a.Title,
-		MetaDescription:        a.MetaDescription,
-		Body:                   a.Body,
-		PublishedAt:            a.PublishedAt,
-		Private:                a.Private,
-		SsoID:                  a.SsoID,
-		UserID:                 a.UserID,
-		CreatedAt:              a.CreatedAt,
-		UpdatedAt:              a.UpdatedAt,
-		NotifyUsersOnPublished: a.NotifyUsersOnPublished,
-	}, err
+	// TODO add medias and categes
+	return transform(a, nil, nil), err
 }
 
 func (s *service) PostAlbum(ctx context.Context, a AlbumRequest) (AlbumResponse, error) {
@@ -207,7 +227,8 @@ func (s *service) PostAlbum(ctx context.Context, a AlbumRequest) (AlbumResponse,
 		return AlbumResponse{}, ErrNoAuth
 	}
 
-	if !user.IsAdmin() {
+	isAdmin := user != nil && user.IsAdmin()
+	if !isAdmin {
 		return AlbumResponse{}, ErrNotAdmin
 	}
 
@@ -216,20 +237,38 @@ func (s *service) PostAlbum(ctx context.Context, a AlbumRequest) (AlbumResponse,
 		return AlbumResponse{}, err
 	}
 
-	a.SsoID = uuid.NullUUID{UUID: uid, Valid: true}
+	a.SsoID = &uid
 
 	if err := a.Validate(); err != nil {
 		return AlbumResponse{}, err
+	}
+
+	var body sql.NullString
+	if a.Body != nil {
+		body.String = *a.Body
+		body.Valid = true
+	}
+
+	var ssoID uuid.NullUUID
+	if a.SsoID != nil {
+		ssoID.UUID = *a.SsoID
+		ssoID.Valid = true
+	}
+
+	var publishedAt sql.NullTime
+	if a.PublishedAt != nil {
+		publishedAt.Time = *a.PublishedAt
+		publishedAt.Valid = true
 	}
 
 	arg := tutorial.CreateAlbumParams{
 		Slug:            a.Slug,
 		Title:           a.Title,
 		MetaDescription: a.MetaDescription,
-		Body:            a.Body,
-		PublishedAt:     a.PublishedAt,
+		Body:            body,
+		PublishedAt:     publishedAt,
 		Private:         a.Private,
-		SsoID:           a.SsoID,
+		SsoID:           ssoID,
 	}
 	a2, err := s.db.CreateAlbum(ctx, arg)
 	if err != nil {
@@ -247,20 +286,7 @@ func (s *service) PostAlbum(ctx context.Context, a AlbumRequest) (AlbumResponse,
 
 	// TODO https://github.com/jackc/pgerrcode/blob/master/errcode.go
 
-	return AlbumResponse{
-		ID:                     a2.ID,
-		Slug:                   a2.Slug,
-		Title:                  a2.Title,
-		MetaDescription:        a2.MetaDescription,
-		Body:                   a2.Body,
-		PublishedAt:            a2.PublishedAt,
-		Private:                a2.Private,
-		SsoID:                  a2.SsoID,
-		UserID:                 a2.UserID,
-		CreatedAt:              a2.CreatedAt,
-		UpdatedAt:              a2.UpdatedAt,
-		NotifyUsersOnPublished: a2.NotifyUsersOnPublished,
-	}, nil
+	return transform(a2, nil, nil), nil
 }
 
 func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumRequest) (AlbumResponse, error) {
@@ -270,7 +296,8 @@ func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumRequest) (Al
 		return AlbumResponse{}, ErrNoAuth
 	}
 
-	if !user.IsAdmin() {
+	isAdmin := user != nil && user.IsAdmin()
+	if isAdmin {
 		return AlbumResponse{}, ErrNotAdmin
 	}
 
@@ -279,21 +306,45 @@ func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumRequest) (Al
 		return AlbumResponse{}, err
 	}
 
-	a.SsoID = uuid.NullUUID{UUID: uid, Valid: true}
+	a.SsoID = &uid
 
 	if err := a.Validate(); err != nil {
 		return AlbumResponse{}, err
 	}
 
+	var body sql.NullString
+	if a.Body != nil {
+		body = sql.NullString{String: *a.Body, Valid: true}
+	}
+
+	var publishedAt sql.NullTime
+	if a.PublishedAt != nil {
+		publishedAt = sql.NullTime{Time: *a.PublishedAt, Valid: true}
+	}
+
+	var ssoID uuid.NullUUID
+	if a.SsoID != nil {
+		ssoID = uuid.NullUUID{UUID: *a.SsoID, Valid: true}
+	}
 	arg := tutorial.UpdateAlbumParams{
 		Slug:            a.Slug,
 		Title:           a.Title,
 		MetaDescription: a.MetaDescription,
-		Body:            a.Body,
-		PublishedAt:     a.PublishedAt,
+		Body:            body,
+		PublishedAt:     publishedAt,
 		Private:         a.Private,
-		SsoID:           a.SsoID,
+		SsoID:           ssoID,
 	}
+
+	a2, err := s.db.GetAlbumBySlug(ctx, tutorial.GetAlbumBySlugParams{
+		Slug:    slug,
+		IsAdmin: isAdmin,
+	})
+
+	if err == pgx.ErrNoRows {
+		return AlbumResponse{}, ErrNotFound
+	}
+
 	err = s.db.UpdateAlbum(ctx, arg)
 	if err != nil {
 		return AlbumResponse{}, err
@@ -302,20 +353,7 @@ func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumRequest) (Al
 	// albumModel := AlbumModel(a)
 	// s.db.Save(albumModel)
 
-	return AlbumResponse{
-		ID:                     a.ID,
-		Slug:                   a.Slug,
-		Title:                  a.Title,
-		MetaDescription:        a.MetaDescription,
-		Body:                   a.Body,
-		PublishedAt:            a.PublishedAt,
-		Private:                a.Private,
-		SsoID:                  a.SsoID,
-		UserID:                 a.UserID,
-		CreatedAt:              a.CreatedAt,
-		UpdatedAt:              a.UpdatedAt,
-		NotifyUsersOnPublished: a.NotifyUsersOnPublished,
-	}, nil
+	return transform(a2, nil, nil), nil
 }
 
 func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumRequest) (AlbumResponse, error) {
