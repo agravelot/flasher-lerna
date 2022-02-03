@@ -46,7 +46,7 @@ func Init(c config.Configurations) (*tutorial.Queries, error) {
 
 	// sql.Register("postgresWithHooks", sqlhooks.Wrap(&pq.Driver{}, &Hooks{}))
 
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable", c.DbHost, c.DbUser, c.DbPassword, c.DbName, c.DbPort)
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d", c.DbHost, c.DbUser, c.DbPassword, c.DbName, c.DbPort)
 
 	config, err := pgxpool.ParseConfig(dsn)
 
