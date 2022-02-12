@@ -3,6 +3,8 @@ module api-go
 go 1.16
 
 require (
+	ariga.io/entimport v0.0.0-20220210125259-1f826bcfb794 // indirect
+	entgo.io/ent v0.10.0 // indirect
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/davecgh/go-spew v1.1.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
@@ -28,7 +30,7 @@ require (
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/satori/go.uuid v1.2.0
 	github.com/sirupsen/logrus v1.8.1
-	github.com/stretchr/testify v1.7.0
+	github.com/stretchr/testify v1.7.1-0.20210427113832-6241f9ab9942
 	github.com/swaggo/echo-swagger v1.1.4
 	github.com/swaggo/swag v1.7.6
 	golang.org/x/crypto v0.0.0-20211215153901-e495a2d5b3d3 // indirect
