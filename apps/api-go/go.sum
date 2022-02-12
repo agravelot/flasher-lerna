@@ -744,6 +744,8 @@ github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/
 github.com/stretchr/testify v1.7.0 h1:nwc3DEeHmmLAfoZucVR881uASk0Mfjw8xYJ99tb5CcY=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.7.1-0.20210427113832-6241f9ab9942/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
+github.com/stretchr/testify v1.7.1-0.20220210100905-7bcf74e94f95 h1:OQ7mnKR6Y5IwFAmdJDLCYUyIpTPVHo/XGXohS5VW9rc=
+github.com/stretchr/testify v1.7.1-0.20220210100905-7bcf74e94f95/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/subosito/gotenv v1.2.0/go.mod h1:N0PQaV/YGNqwC0u51sEeR/aUtSLEXKX9iv69rRypqCw=
 github.com/swaggo/echo-swagger v1.1.4 h1:uC5s/ynSwl0iJZTOMfSUGwHPRr0jLChMxb1YRMMWjfk=
 github.com/swaggo/echo-swagger v1.1.4/go.mod h1:JaipWDPqOBMwM40W6qz0o07lnPOxrhDkpjA2OaqfzL8=

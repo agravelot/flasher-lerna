@@ -3,6 +3,9 @@ package album
 import (
 	"api-go/api"
 	"api-go/auth"
+	"api-go/ent"
+	"api-go/ent/album"
+	"api-go/ent/predicate"
 	"api-go/tutorial"
 	"context"
 	"database/sql"
@@ -32,12 +35,14 @@ var (
 )
 
 type service struct {
-	db *tutorial.Queries
+	db  *tutorial.Queries
+	orm *ent.Client
 }
 
-func NewService(db *tutorial.Queries) Service {
+func NewService(db *tutorial.Queries, orm *ent.Client) Service {
 	return &service{
-		db: db,
+		db:  db,
+		orm: orm,
 	}
 }
 
@@ -187,28 +192,17 @@ func transform(a tutorial.Album, medias *[]tutorial.Medium, categories *[]tutori
 func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
-	// query := s.db.Where("slug = ?", slug)
-
-	// if user == nil || (user != nil && !user.IsAdmin()) {
-	// 	query = query.Scopes(Published)
-	// }
-
-	// a := AlbumModel{}
-	// err := query.First(&a).Error
-
-	// if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
-	// 	return AlbumRequest{}, ErrNotFound
-	// }
-	// TODO https://github.com/jackc/pgerrcode/blob/master/errcode.go
-
 	isAdmin := user != nil && user.IsAdmin()
 
-	a, err := s.db.GetAlbumBySlug(ctx, tutorial.GetAlbumBySlugParams{
-		Slug:    slug,
-		IsAdmin: isAdmin,
-	})
+	where := []predicate.Album{album.Slug(slug)}
 
-	if err == pgx.ErrNoRows {
+	if !isAdmin {
+		where = append(where, album.Private(false), album.PublishedAtLT(time.Now()))
+	}
+
+	a, err := s.orm.Album.Query().Where(where...).First(ctx)
+
+	if ent.IsNotFound(err) {
 		return AlbumResponse{}, ErrNotFound
 	}
 
@@ -217,7 +211,15 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, err
 	}
 
 	// TODO add medias and categes
-	return transform(a, nil, nil), err
+	return AlbumResponse{
+		ID:          a.ID,
+		Slug:        a.Slug,
+		Title:       a.Title,
+		Body:        &a.Body,
+		PublishedAt: &a.PublishedAt,
+		Private:     a.Private,
+		// UserID:      int64(a.UserID),
+	}, err
 }
 
 func (s *service) PostAlbum(ctx context.Context, a AlbumRequest) (AlbumResponse, error) {
