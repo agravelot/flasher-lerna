@@ -31,6 +31,8 @@ const (
 	EdgeAlbumCategories = "album_categories"
 	// EdgeAlbumCosplayers holds the string denoting the album_cosplayers edge name in mutations.
 	EdgeAlbumCosplayers = "album_cosplayers"
+	// EdgeCategories holds the string denoting the categories edge name in mutations.
+	EdgeCategories = "categories"
 	// Table holds the table name of the album in the database.
 	Table = "albums"
 	// AlbumCategoriesTable is the table that holds the album_categories relation/edge.
@@ -47,6 +49,13 @@ const (
 	AlbumCosplayersInverseTable = "album_cosplayer"
 	// AlbumCosplayersColumn is the table column denoting the album_cosplayers relation/edge.
 	AlbumCosplayersColumn = "album_id"
+	// CategoriesTable is the table that holds the categories relation/edge.
+	CategoriesTable = "categories"
+	// CategoriesInverseTable is the table name for the Category entity.
+	// It exists in this package in order to avoid circular dependency with the "category" package.
+	CategoriesInverseTable = "categories"
+	// CategoriesColumn is the table column denoting the categories relation/edge.
+	CategoriesColumn = "album_categories"
 )
 
 // Columns holds all SQL columns for album fields.

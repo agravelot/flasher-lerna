@@ -94,12 +94,21 @@ var (
 		{Name: "created_at", Type: field.TypeTime, Nullable: true},
 		{Name: "updated_at", Type: field.TypeTime, Nullable: true},
 		{Name: "meta_description", Type: field.TypeString},
+		{Name: "album_categories", Type: field.TypeInt32, Nullable: true},
 	}
 	// CategoriesTable holds the schema information for the "categories" table.
 	CategoriesTable = &schema.Table{
 		Name:       "categories",
 		Columns:    CategoriesColumns,
 		PrimaryKey: []*schema.Column{CategoriesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "categories_albums_categories",
+				Columns:    []*schema.Column{CategoriesColumns[7]},
+				RefColumns: []*schema.Column{AlbumsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// CosplayersColumns holds the columns for the "cosplayers" table.
 	CosplayersColumns = []*schema.Column{
@@ -157,4 +166,5 @@ func init() {
 	AlbumCosplayerTable.Annotation = &entsql.Annotation{
 		Table: "album_cosplayer",
 	}
+	CategoriesTable.ForeignKeys[0].RefTable = AlbumsTable
 }

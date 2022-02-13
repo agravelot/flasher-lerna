@@ -275,6 +275,22 @@ func (c *AlbumClient) QueryAlbumCosplayers(a *Album) *AlbumCosplayerQuery {
 	return query
 }
 
+// QueryCategories queries the categories edge of a Album.
+func (c *AlbumClient) QueryCategories(a *Album) *CategoryQuery {
+	query := &CategoryQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := a.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(album.Table, album.FieldID, id),
+			sqlgraph.To(category.Table, category.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, album.CategoriesTable, album.CategoriesColumn),
+		)
+		fromV = sqlgraph.Neighbors(a.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *AlbumClient) Hooks() []Hook {
 	return c.hooks.Album

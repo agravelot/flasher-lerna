@@ -30,7 +30,8 @@ type Category struct {
 	MetaDescription string `json:"meta_description,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CategoryQuery when eager-loading is set.
-	Edges CategoryEdges `json:"edges"`
+	Edges            CategoryEdges `json:"edges"`
+	album_categories *int32
 }
 
 // CategoryEdges holds the relations/edges for other nodes in the graph.
@@ -62,6 +63,8 @@ func (*Category) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullString)
 		case category.FieldCreatedAt, category.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
+		case category.ForeignKeys[0]: // album_categories
+			values[i] = new(sql.NullInt64)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Category", columns[i])
 		}
@@ -118,6 +121,13 @@ func (c *Category) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field meta_description", values[i])
 			} else if value.Valid {
 				c.MetaDescription = value.String
+			}
+		case category.ForeignKeys[0]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field album_categories", value)
+			} else if value.Valid {
+				c.album_categories = new(int32)
+				*c.album_categories = int32(value.Int64)
 			}
 		}
 	}

@@ -1065,6 +1065,34 @@ func HasAlbumCosplayersWith(preds ...predicate.AlbumCosplayer) predicate.Album {
 	})
 }
 
+// HasCategories applies the HasEdge predicate on the "categories" edge.
+func HasCategories() predicate.Album {
+	return predicate.Album(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(CategoriesTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, CategoriesTable, CategoriesColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasCategoriesWith applies the HasEdge predicate on the "categories" edge with a given conditions (other predicates).
+func HasCategoriesWith(preds ...predicate.Category) predicate.Album {
+	return predicate.Album(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(CategoriesInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, CategoriesTable, CategoriesColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // And groups predicates with the AND operator between them.
 func And(predicates ...predicate.Album) predicate.Album {
 	return predicate.Album(func(s *sql.Selector) {

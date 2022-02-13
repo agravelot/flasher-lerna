@@ -60,6 +60,9 @@ type AlbumMutation struct {
 	album_cosplayers          map[int32]struct{}
 	removedalbum_cosplayers   map[int32]struct{}
 	clearedalbum_cosplayers   bool
+	categories                map[int32]struct{}
+	removedcategories         map[int32]struct{}
+	clearedcategories         bool
 	done                      bool
 	oldValue                  func(context.Context) (*Album, error)
 	predicates                []predicate.Album
@@ -723,6 +726,60 @@ func (m *AlbumMutation) ResetAlbumCosplayers() {
 	m.removedalbum_cosplayers = nil
 }
 
+// AddCategoryIDs adds the "categories" edge to the Category entity by ids.
+func (m *AlbumMutation) AddCategoryIDs(ids ...int32) {
+	if m.categories == nil {
+		m.categories = make(map[int32]struct{})
+	}
+	for i := range ids {
+		m.categories[ids[i]] = struct{}{}
+	}
+}
+
+// ClearCategories clears the "categories" edge to the Category entity.
+func (m *AlbumMutation) ClearCategories() {
+	m.clearedcategories = true
+}
+
+// CategoriesCleared reports if the "categories" edge to the Category entity was cleared.
+func (m *AlbumMutation) CategoriesCleared() bool {
+	return m.clearedcategories
+}
+
+// RemoveCategoryIDs removes the "categories" edge to the Category entity by IDs.
+func (m *AlbumMutation) RemoveCategoryIDs(ids ...int32) {
+	if m.removedcategories == nil {
+		m.removedcategories = make(map[int32]struct{})
+	}
+	for i := range ids {
+		delete(m.categories, ids[i])
+		m.removedcategories[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedCategories returns the removed IDs of the "categories" edge to the Category entity.
+func (m *AlbumMutation) RemovedCategoriesIDs() (ids []int32) {
+	for id := range m.removedcategories {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// CategoriesIDs returns the "categories" edge IDs in the mutation.
+func (m *AlbumMutation) CategoriesIDs() (ids []int32) {
+	for id := range m.categories {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetCategories resets all changes to the "categories" edge.
+func (m *AlbumMutation) ResetCategories() {
+	m.categories = nil
+	m.clearedcategories = false
+	m.removedcategories = nil
+}
+
 // Where appends a list predicates to the AlbumMutation builder.
 func (m *AlbumMutation) Where(ps ...predicate.Album) {
 	m.predicates = append(m.predicates, ps...)
@@ -1042,12 +1099,15 @@ func (m *AlbumMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *AlbumMutation) AddedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.album_categories != nil {
 		edges = append(edges, album.EdgeAlbumCategories)
 	}
 	if m.album_cosplayers != nil {
 		edges = append(edges, album.EdgeAlbumCosplayers)
+	}
+	if m.categories != nil {
+		edges = append(edges, album.EdgeCategories)
 	}
 	return edges
 }
@@ -1068,18 +1128,27 @@ func (m *AlbumMutation) AddedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case album.EdgeCategories:
+		ids := make([]ent.Value, 0, len(m.categories))
+		for id := range m.categories {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *AlbumMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.removedalbum_categories != nil {
 		edges = append(edges, album.EdgeAlbumCategories)
 	}
 	if m.removedalbum_cosplayers != nil {
 		edges = append(edges, album.EdgeAlbumCosplayers)
+	}
+	if m.removedcategories != nil {
+		edges = append(edges, album.EdgeCategories)
 	}
 	return edges
 }
@@ -1100,18 +1169,27 @@ func (m *AlbumMutation) RemovedIDs(name string) []ent.Value {
 			ids = append(ids, id)
 		}
 		return ids
+	case album.EdgeCategories:
+		ids := make([]ent.Value, 0, len(m.removedcategories))
+		for id := range m.removedcategories {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *AlbumMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 2)
+	edges := make([]string, 0, 3)
 	if m.clearedalbum_categories {
 		edges = append(edges, album.EdgeAlbumCategories)
 	}
 	if m.clearedalbum_cosplayers {
 		edges = append(edges, album.EdgeAlbumCosplayers)
+	}
+	if m.clearedcategories {
+		edges = append(edges, album.EdgeCategories)
 	}
 	return edges
 }
@@ -1124,6 +1202,8 @@ func (m *AlbumMutation) EdgeCleared(name string) bool {
 		return m.clearedalbum_categories
 	case album.EdgeAlbumCosplayers:
 		return m.clearedalbum_cosplayers
+	case album.EdgeCategories:
+		return m.clearedcategories
 	}
 	return false
 }
@@ -1145,6 +1225,9 @@ func (m *AlbumMutation) ResetEdge(name string) error {
 		return nil
 	case album.EdgeAlbumCosplayers:
 		m.ResetAlbumCosplayers()
+		return nil
+	case album.EdgeCategories:
+		m.ResetCategories()
 		return nil
 	}
 	return fmt.Errorf("unknown Album edge %s", name)

@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v4"
 )
@@ -53,73 +54,43 @@ func NewService(db *tutorial.Queries, orm *ent.Client) Service {
 func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (PaginatedAlbums, error) {
 	user := auth.GetUserClaims(ctx)
 
-	arg := tutorial.GetAlbumsParams{
-		Limit: params.Limit,
-	}
+	query := s.orm.Album.Query().Limit(int(params.Limit))
+
+	// arg := tutorial.GetAlbumsParams{
+	// 	Limit: params.Limit,
+	// }
 
 	if params.Next != 0 {
-		arg.ID = int32(params.Next)
+		// arg.ID = int32(params.Next)
+		query.Where(album.IDGT(int32(params.Next)))
 	}
 
 	isAdmin := user != nil && user.IsAdmin()
 
-	if isAdmin {
-		arg.IsAdmin = true
+	if !isAdmin {
+		// arg.IsAdmin = true
+		query.Where(album.Private(false), album.PublishedAtLT(time.Now()))
 	}
 
-	albums, err := s.db.GetAlbums(ctx, arg)
+	albums, err := query.WithCategories().All(ctx)
+	spew.Dump(albums)
 	if err != nil {
 		return PaginatedAlbums{}, fmt.Errorf("error list albums : %d %w", params.Next, err)
 	}
 
-	total, err := s.db.CountAlbums(ctx, isAdmin)
+	total, err := query.Count(ctx)
 	if err != nil {
 		return PaginatedAlbums{}, fmt.Errorf("error counting albums: %w", err)
 	}
 
-	var categories *[]tutorial.GetCategoriesByAlbumIdsRow
-
-	if params.Joins.Categories {
-		var ids []int32
-
-		for _, a := range albums {
-			ids = append(ids, a.ID)
-		}
-
-		c, err := s.db.GetCategoriesByAlbumIds(ctx, ids)
-		if err != nil {
-			return PaginatedAlbums{}, fmt.Errorf("error getting categories for albums: %w", err)
-		}
-		categories = &c
-
-		// TODO Filter categories by album ids
-	}
-
-	var medias *[]tutorial.Medium
-
-	if params.Joins.Medias {
-		var ids []int32
-
-		for _, a := range albums {
-			ids = append(ids, a.ID)
-		}
-
-		m, err := s.db.GetMediasByAlbumIds(ctx, ids)
-		if err != nil {
-			return PaginatedAlbums{}, fmt.Errorf("error getting medias for albums: %w", err)
-		}
-		medias = &m
-		// TODO Filter categories by album ids
-	}
-
 	data := make([]AlbumResponse, len(albums))
-	for i, a := range albums {
-		data[i] = transform(a, medias, categories)
-	}
+	// for i, a := range albums {
+	// 	data[i] = transform(a, medias, categories)
+	// }
 
 	return PaginatedAlbums{
 		Data: data,
-		Meta: api.Meta{Total: total, Limit: params.Limit},
+		Meta: api.Meta{Total: int64(total), Limit: params.Limit},
 	}, nil
 }
 

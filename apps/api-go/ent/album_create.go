@@ -6,6 +6,7 @@ import (
 	"api-go/ent/album"
 	"api-go/ent/albumcategory"
 	"api-go/ent/albumcosplayer"
+	"api-go/ent/category"
 	"context"
 	"errors"
 	"fmt"
@@ -156,6 +157,21 @@ func (ac *AlbumCreate) AddAlbumCosplayers(a ...*AlbumCosplayer) *AlbumCreate {
 		ids[i] = a[i].ID
 	}
 	return ac.AddAlbumCosplayerIDs(ids...)
+}
+
+// AddCategoryIDs adds the "categories" edge to the Category entity by IDs.
+func (ac *AlbumCreate) AddCategoryIDs(ids ...int32) *AlbumCreate {
+	ac.mutation.AddCategoryIDs(ids...)
+	return ac
+}
+
+// AddCategories adds the "categories" edges to the Category entity.
+func (ac *AlbumCreate) AddCategories(c ...*Category) *AlbumCreate {
+	ids := make([]int32, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return ac.AddCategoryIDs(ids...)
 }
 
 // Mutation returns the AlbumMutation object of the builder.
@@ -386,6 +402,25 @@ func (ac *AlbumCreate) createSpec() (*Album, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt32,
 					Column: albumcosplayer.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := ac.mutation.CategoriesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   album.CategoriesTable,
+			Columns: []string{album.CategoriesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt32,
+					Column: category.FieldID,
 				},
 			},
 		}

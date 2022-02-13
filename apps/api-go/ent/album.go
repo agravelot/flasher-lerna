@@ -47,9 +47,11 @@ type AlbumEdges struct {
 	AlbumCategories []*AlbumCategory `json:"album_categories,omitempty"`
 	// AlbumCosplayers holds the value of the album_cosplayers edge.
 	AlbumCosplayers []*AlbumCosplayer `json:"album_cosplayers,omitempty"`
+	// Categories holds the value of the categories edge.
+	Categories []*Category `json:"categories,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [2]bool
+	loadedTypes [3]bool
 }
 
 // AlbumCategoriesOrErr returns the AlbumCategories value or an error if the edge
@@ -68,6 +70,15 @@ func (e AlbumEdges) AlbumCosplayersOrErr() ([]*AlbumCosplayer, error) {
 		return e.AlbumCosplayers, nil
 	}
 	return nil, &NotLoadedError{edge: "album_cosplayers"}
+}
+
+// CategoriesOrErr returns the Categories value or an error if the edge
+// was not loaded in eager-loading.
+func (e AlbumEdges) CategoriesOrErr() ([]*Category, error) {
+	if e.loadedTypes[2] {
+		return e.Categories, nil
+	}
+	return nil, &NotLoadedError{edge: "categories"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -177,6 +188,11 @@ func (a *Album) QueryAlbumCategories() *AlbumCategoryQuery {
 // QueryAlbumCosplayers queries the "album_cosplayers" edge of the Album entity.
 func (a *Album) QueryAlbumCosplayers() *AlbumCosplayerQuery {
 	return (&AlbumClient{config: a.config}).QueryAlbumCosplayers(a)
+}
+
+// QueryCategories queries the "categories" edge of the Album entity.
+func (a *Album) QueryCategories() *CategoryQuery {
+	return (&AlbumClient{config: a.config}).QueryCategories(a)
 }
 
 // Update returns a builder for updating this Album.

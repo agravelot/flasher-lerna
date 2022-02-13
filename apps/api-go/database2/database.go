@@ -8,9 +8,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/jackc/pgx/v4/log/logrusadapter"
 	"github.com/jackc/pgx/v4/pgxpool"
-	"github.com/sirupsen/logrus"
 )
 
 var db *tutorial.Queries
@@ -50,16 +48,16 @@ func Init(c config.Configurations) (*tutorial.Queries, error) {
 
 	config, err := pgxpool.ParseConfig(dsn)
 
-	logrusLogger := &logrus.Logger{
-		Out:          os.Stderr,
-		Formatter:    new(logrus.JSONFormatter),
-		Hooks:        make(logrus.LevelHooks),
-		Level:        logrus.InfoLevel,
-		ExitFunc:     os.Exit,
-		ReportCaller: false,
-	}
+	// logrusLogger := &logrus.Logger{
+	// 	Out:          os.Stderr,
+	// 	Formatter:    new(logrus.JSONFormatter),
+	// 	Hooks:        make(logrus.LevelHooks),
+	// 	Level:        logrus.InfoLevel,
+	// 	ExitFunc:     os.Exit,
+	// 	ReportCaller: false,
+	// }
 
-	config.ConnConfig.Logger = logrusadapter.NewLogger(logrusLogger)
+	// config.ConnConfig.Logger = logrusadapter.NewLogger(logrusLogger)
 
 	conn, err = pgxpool.ConnectConfig(context.Background(), config)
 	if err != nil {

@@ -6,6 +6,7 @@ import (
 	"api-go/ent/album"
 	"api-go/ent/albumcategory"
 	"api-go/ent/albumcosplayer"
+	"api-go/ent/category"
 	"api-go/ent/predicate"
 	"context"
 	"errors"
@@ -197,6 +198,21 @@ func (au *AlbumUpdate) AddAlbumCosplayers(a ...*AlbumCosplayer) *AlbumUpdate {
 	return au.AddAlbumCosplayerIDs(ids...)
 }
 
+// AddCategoryIDs adds the "categories" edge to the Category entity by IDs.
+func (au *AlbumUpdate) AddCategoryIDs(ids ...int32) *AlbumUpdate {
+	au.mutation.AddCategoryIDs(ids...)
+	return au
+}
+
+// AddCategories adds the "categories" edges to the Category entity.
+func (au *AlbumUpdate) AddCategories(c ...*Category) *AlbumUpdate {
+	ids := make([]int32, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return au.AddCategoryIDs(ids...)
+}
+
 // Mutation returns the AlbumMutation object of the builder.
 func (au *AlbumUpdate) Mutation() *AlbumMutation {
 	return au.mutation
@@ -242,6 +258,27 @@ func (au *AlbumUpdate) RemoveAlbumCosplayers(a ...*AlbumCosplayer) *AlbumUpdate 
 		ids[i] = a[i].ID
 	}
 	return au.RemoveAlbumCosplayerIDs(ids...)
+}
+
+// ClearCategories clears all "categories" edges to the Category entity.
+func (au *AlbumUpdate) ClearCategories() *AlbumUpdate {
+	au.mutation.ClearCategories()
+	return au
+}
+
+// RemoveCategoryIDs removes the "categories" edge to Category entities by IDs.
+func (au *AlbumUpdate) RemoveCategoryIDs(ids ...int32) *AlbumUpdate {
+	au.mutation.RemoveCategoryIDs(ids...)
+	return au
+}
+
+// RemoveCategories removes "categories" edges to Category entities.
+func (au *AlbumUpdate) RemoveCategories(c ...*Category) *AlbumUpdate {
+	ids := make([]int32, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return au.RemoveCategoryIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -531,6 +568,60 @@ func (au *AlbumUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if au.mutation.CategoriesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   album.CategoriesTable,
+			Columns: []string{album.CategoriesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt32,
+					Column: category.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := au.mutation.RemovedCategoriesIDs(); len(nodes) > 0 && !au.mutation.CategoriesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   album.CategoriesTable,
+			Columns: []string{album.CategoriesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt32,
+					Column: category.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := au.mutation.CategoriesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   album.CategoriesTable,
+			Columns: []string{album.CategoriesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt32,
+					Column: category.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, au.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{album.Label}
@@ -717,6 +808,21 @@ func (auo *AlbumUpdateOne) AddAlbumCosplayers(a ...*AlbumCosplayer) *AlbumUpdate
 	return auo.AddAlbumCosplayerIDs(ids...)
 }
 
+// AddCategoryIDs adds the "categories" edge to the Category entity by IDs.
+func (auo *AlbumUpdateOne) AddCategoryIDs(ids ...int32) *AlbumUpdateOne {
+	auo.mutation.AddCategoryIDs(ids...)
+	return auo
+}
+
+// AddCategories adds the "categories" edges to the Category entity.
+func (auo *AlbumUpdateOne) AddCategories(c ...*Category) *AlbumUpdateOne {
+	ids := make([]int32, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return auo.AddCategoryIDs(ids...)
+}
+
 // Mutation returns the AlbumMutation object of the builder.
 func (auo *AlbumUpdateOne) Mutation() *AlbumMutation {
 	return auo.mutation
@@ -762,6 +868,27 @@ func (auo *AlbumUpdateOne) RemoveAlbumCosplayers(a ...*AlbumCosplayer) *AlbumUpd
 		ids[i] = a[i].ID
 	}
 	return auo.RemoveAlbumCosplayerIDs(ids...)
+}
+
+// ClearCategories clears all "categories" edges to the Category entity.
+func (auo *AlbumUpdateOne) ClearCategories() *AlbumUpdateOne {
+	auo.mutation.ClearCategories()
+	return auo
+}
+
+// RemoveCategoryIDs removes the "categories" edge to Category entities by IDs.
+func (auo *AlbumUpdateOne) RemoveCategoryIDs(ids ...int32) *AlbumUpdateOne {
+	auo.mutation.RemoveCategoryIDs(ids...)
+	return auo
+}
+
+// RemoveCategories removes "categories" edges to Category entities.
+func (auo *AlbumUpdateOne) RemoveCategories(c ...*Category) *AlbumUpdateOne {
+	ids := make([]int32, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return auo.RemoveCategoryIDs(ids...)
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -1067,6 +1194,60 @@ func (auo *AlbumUpdateOne) sqlSave(ctx context.Context) (_node *Album, err error
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt32,
 					Column: albumcosplayer.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if auo.mutation.CategoriesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   album.CategoriesTable,
+			Columns: []string{album.CategoriesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt32,
+					Column: category.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := auo.mutation.RemovedCategoriesIDs(); len(nodes) > 0 && !auo.mutation.CategoriesCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   album.CategoriesTable,
+			Columns: []string{album.CategoriesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt32,
+					Column: category.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := auo.mutation.CategoriesIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   album.CategoriesTable,
+			Columns: []string{album.CategoriesColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt32,
+					Column: category.FieldID,
 				},
 			},
 		}

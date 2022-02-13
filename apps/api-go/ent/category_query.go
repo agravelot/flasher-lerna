@@ -28,6 +28,7 @@ type CategoryQuery struct {
 	predicates []predicate.Category
 	// eager-loading edges.
 	withAlbumCategories *AlbumCategoryQuery
+	withFKs             bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -349,11 +350,15 @@ func (cq *CategoryQuery) prepareQuery(ctx context.Context) error {
 func (cq *CategoryQuery) sqlAll(ctx context.Context) ([]*Category, error) {
 	var (
 		nodes       = []*Category{}
+		withFKs     = cq.withFKs
 		_spec       = cq.querySpec()
 		loadedTypes = [1]bool{
 			cq.withAlbumCategories != nil,
 		}
 	)
+	if withFKs {
+		_spec.Node.Columns = append(_spec.Node.Columns, category.ForeignKeys...)
+	}
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		node := &Category{config: cq.config}
 		nodes = append(nodes, node)

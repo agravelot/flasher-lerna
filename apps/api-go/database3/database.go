@@ -26,7 +26,7 @@ func Open(url string) *ent.Client {
 
 	// Create an ent.Driver from `db`.
 	drv := entsql.OpenDB(dialect.Postgres, db)
-	return ent.NewClient(ent.Driver(drv))
+	return ent.NewClient(ent.Driver(drv), ent.Debug())
 }
 
 func Init(c config.Configurations) (*ent.Client, error) {

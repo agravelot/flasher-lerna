@@ -6,6 +6,7 @@ import (
 	"api-go/ent/album"
 	"api-go/ent/albumcategory"
 	"api-go/ent/albumcosplayer"
+	"api-go/ent/category"
 	"api-go/ent/predicate"
 	"context"
 	"database/sql/driver"
@@ -30,6 +31,7 @@ type AlbumQuery struct {
 	// eager-loading edges.
 	withAlbumCategories *AlbumCategoryQuery
 	withAlbumCosplayers *AlbumCosplayerQuery
+	withCategories      *CategoryQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -103,6 +105,28 @@ func (aq *AlbumQuery) QueryAlbumCosplayers() *AlbumCosplayerQuery {
 			sqlgraph.From(album.Table, album.FieldID, selector),
 			sqlgraph.To(albumcosplayer.Table, albumcosplayer.FieldID),
 			sqlgraph.Edge(sqlgraph.O2M, false, album.AlbumCosplayersTable, album.AlbumCosplayersColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(aq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryCategories chains the current query on the "categories" edge.
+func (aq *AlbumQuery) QueryCategories() *CategoryQuery {
+	query := &CategoryQuery{config: aq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := aq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := aq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(album.Table, album.FieldID, selector),
+			sqlgraph.To(category.Table, category.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, album.CategoriesTable, album.CategoriesColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(aq.driver.Dialect(), step)
 		return fromU, nil
@@ -293,6 +317,7 @@ func (aq *AlbumQuery) Clone() *AlbumQuery {
 		predicates:          append([]predicate.Album{}, aq.predicates...),
 		withAlbumCategories: aq.withAlbumCategories.Clone(),
 		withAlbumCosplayers: aq.withAlbumCosplayers.Clone(),
+		withCategories:      aq.withCategories.Clone(),
 		// clone intermediate query.
 		sql:  aq.sql.Clone(),
 		path: aq.path,
@@ -318,6 +343,17 @@ func (aq *AlbumQuery) WithAlbumCosplayers(opts ...func(*AlbumCosplayerQuery)) *A
 		opt(query)
 	}
 	aq.withAlbumCosplayers = query
+	return aq
+}
+
+// WithCategories tells the query-builder to eager-load the nodes that are connected to
+// the "categories" edge. The optional arguments are used to configure the query builder of the edge.
+func (aq *AlbumQuery) WithCategories(opts ...func(*CategoryQuery)) *AlbumQuery {
+	query := &CategoryQuery{config: aq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	aq.withCategories = query
 	return aq
 }
 
@@ -386,9 +422,10 @@ func (aq *AlbumQuery) sqlAll(ctx context.Context) ([]*Album, error) {
 	var (
 		nodes       = []*Album{}
 		_spec       = aq.querySpec()
-		loadedTypes = [2]bool{
+		loadedTypes = [3]bool{
 			aq.withAlbumCategories != nil,
 			aq.withAlbumCosplayers != nil,
+			aq.withCategories != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
@@ -458,6 +495,35 @@ func (aq *AlbumQuery) sqlAll(ctx context.Context) ([]*Album, error) {
 				return nil, fmt.Errorf(`unexpected foreign-key "album_id" returned %v for node %v`, fk, n.ID)
 			}
 			node.Edges.AlbumCosplayers = append(node.Edges.AlbumCosplayers, n)
+		}
+	}
+
+	if query := aq.withCategories; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[int32]*Album)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+			nodes[i].Edges.Categories = []*Category{}
+		}
+		query.withFKs = true
+		query.Where(predicate.Category(func(s *sql.Selector) {
+			s.Where(sql.InValues(album.CategoriesColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.album_categories
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "album_categories" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "album_categories" returned %v for node %v`, *fk, n.ID)
+			}
+			node.Edges.Categories = append(node.Edges.Categories, n)
 		}
 	}
 
