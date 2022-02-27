@@ -10,9 +10,20 @@ const withTM = require("next-transpile-modules")([
   "@flasher/models",
 ]); // pass the modules you would like to see transpiled
 
-module.exports = withTM(
+const withMDX = require("@next/mdx")({
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+    // If you use `MDXProvider`, uncomment the following line.
+    // providerImportSource: "@mdx-js/react",
+  },
+});
+
+module.exports = withMDX((withTM(
   (module.exports = withBundleAnalyzer(
     (module.exports = withPWA({
+      pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
       async redirects() {
         return [
           {
@@ -64,4 +75,4 @@ module.exports = withTM(
       compress: false,
     }))
   ))
-);
+)));
