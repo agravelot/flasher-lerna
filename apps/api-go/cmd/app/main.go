@@ -3,6 +3,7 @@ package main
 import (
 	album "api-go/albums"
 	"api-go/config"
+	"api-go/database"
 	"api-go/database2"
 	"fmt"
 	"net/http"
@@ -24,6 +25,7 @@ func main() {
 	}
 
 	db, _ := database2.Init(config)
+	orm, _ := database.Init(config)
 
 	// db.AutoMigrate(&article.Article{})
 	// db.AutoMigrate(&album.MediaModel{})
@@ -47,7 +49,7 @@ func main() {
 
 	var sa album.Service
 	{
-		sa = album.NewService(db)
+		sa = album.NewService(db, orm)
 		sa = album.LoggingMiddleware(logger)(sa)
 	}
 

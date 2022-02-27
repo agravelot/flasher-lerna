@@ -25,18 +25,29 @@ func newAlbum(db *gorm.DB) album {
 
 	tableName := _album.albumDo.TableName()
 	_album.ALL = field.NewField(tableName, "*")
-	_album.ID = field.NewString(tableName, "id")
+	_album.ID = field.NewInt64(tableName, "id")
 	_album.Slug = field.NewString(tableName, "slug")
 	_album.Title = field.NewString(tableName, "title")
 	_album.Body = field.NewString(tableName, "body")
 	_album.PublishedAt = field.NewTime(tableName, "published_at")
-	_album.Private = field.NewString(tableName, "private")
-	_album.UserID = field.NewString(tableName, "user_id")
+	_album.Private = field.NewBool(tableName, "private")
+	_album.UserID = field.NewInt64(tableName, "user_id")
 	_album.CreatedAt = field.NewTime(tableName, "created_at")
 	_album.UpdatedAt = field.NewTime(tableName, "updated_at")
-	_album.NotifyUsersOnPublished = field.NewString(tableName, "notify_users_on_published")
+	_album.NotifyUsersOnPublished = field.NewBool(tableName, "notify_users_on_published")
 	_album.MetaDescription = field.NewString(tableName, "meta_description")
 	_album.SsoID = field.NewString(tableName, "sso_id")
+	_album.Categories = albumHasManyCategories{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("Categories", "model.Category"),
+	}
+
+	_album.Medias = albumHasManyMedias{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("Medias", "model.Medium"),
+	}
 
 	_album.fillFieldMap()
 
@@ -47,18 +58,21 @@ type album struct {
 	albumDo albumDo
 
 	ALL                    field.Field
-	ID                     field.String
+	ID                     field.Int64
 	Slug                   field.String
 	Title                  field.String
 	Body                   field.String
 	PublishedAt            field.Time
-	Private                field.String
-	UserID                 field.String
+	Private                field.Bool
+	UserID                 field.Int64
 	CreatedAt              field.Time
 	UpdatedAt              field.Time
-	NotifyUsersOnPublished field.String
+	NotifyUsersOnPublished field.Bool
 	MetaDescription        field.String
 	SsoID                  field.String
+	Categories             albumHasManyCategories
+
+	Medias albumHasManyMedias
 
 	fieldMap map[string]field.Expr
 }
@@ -75,16 +89,16 @@ func (a album) As(alias string) *album {
 
 func (a *album) updateTableName(table string) *album {
 	a.ALL = field.NewField(table, "*")
-	a.ID = field.NewString(table, "id")
+	a.ID = field.NewInt64(table, "id")
 	a.Slug = field.NewString(table, "slug")
 	a.Title = field.NewString(table, "title")
 	a.Body = field.NewString(table, "body")
 	a.PublishedAt = field.NewTime(table, "published_at")
-	a.Private = field.NewString(table, "private")
-	a.UserID = field.NewString(table, "user_id")
+	a.Private = field.NewBool(table, "private")
+	a.UserID = field.NewInt64(table, "user_id")
 	a.CreatedAt = field.NewTime(table, "created_at")
 	a.UpdatedAt = field.NewTime(table, "updated_at")
-	a.NotifyUsersOnPublished = field.NewString(table, "notify_users_on_published")
+	a.NotifyUsersOnPublished = field.NewBool(table, "notify_users_on_published")
 	a.MetaDescription = field.NewString(table, "meta_description")
 	a.SsoID = field.NewString(table, "sso_id")
 
@@ -107,7 +121,7 @@ func (a *album) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (a *album) fillFieldMap() {
-	a.fieldMap = make(map[string]field.Expr, 12)
+	a.fieldMap = make(map[string]field.Expr, 14)
 	a.fieldMap["id"] = a.ID
 	a.fieldMap["slug"] = a.Slug
 	a.fieldMap["title"] = a.Title
@@ -120,11 +134,144 @@ func (a *album) fillFieldMap() {
 	a.fieldMap["notify_users_on_published"] = a.NotifyUsersOnPublished
 	a.fieldMap["meta_description"] = a.MetaDescription
 	a.fieldMap["sso_id"] = a.SsoID
+
 }
 
 func (a album) clone(db *gorm.DB) album {
 	a.albumDo.ReplaceDB(db)
 	return a
+}
+
+type albumHasManyCategories struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a albumHasManyCategories) Where(conds ...field.Expr) *albumHasManyCategories {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a albumHasManyCategories) WithContext(ctx context.Context) *albumHasManyCategories {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a albumHasManyCategories) Model(m *model.Album) *albumHasManyCategoriesTx {
+	return &albumHasManyCategoriesTx{a.db.Model(m).Association(a.Name())}
+}
+
+type albumHasManyCategoriesTx struct{ tx *gorm.Association }
+
+func (a albumHasManyCategoriesTx) Find() (result []*model.Category, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a albumHasManyCategoriesTx) Append(values ...*model.Category) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a albumHasManyCategoriesTx) Replace(values ...*model.Category) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a albumHasManyCategoriesTx) Delete(values ...*model.Category) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a albumHasManyCategoriesTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a albumHasManyCategoriesTx) Count() int64 {
+	return a.tx.Count()
+}
+
+type albumHasManyMedias struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a albumHasManyMedias) Where(conds ...field.Expr) *albumHasManyMedias {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a albumHasManyMedias) WithContext(ctx context.Context) *albumHasManyMedias {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a albumHasManyMedias) Model(m *model.Album) *albumHasManyMediasTx {
+	return &albumHasManyMediasTx{a.db.Model(m).Association(a.Name())}
+}
+
+type albumHasManyMediasTx struct{ tx *gorm.Association }
+
+func (a albumHasManyMediasTx) Find() (result []*model.Medium, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a albumHasManyMediasTx) Append(values ...*model.Medium) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a albumHasManyMediasTx) Replace(values ...*model.Medium) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a albumHasManyMediasTx) Delete(values ...*model.Medium) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a albumHasManyMediasTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a albumHasManyMediasTx) Count() int64 {
+	return a.tx.Count()
 }
 
 type albumDo struct{ gen.DO }
@@ -305,6 +452,7 @@ func (a albumDo) FirstOrCreate() (*model.Album, error) {
 
 func (a albumDo) FindByPage(offset int, limit int) (result []*model.Album, count int64, err error) {
 	if limit <= 0 {
+		count, err = a.Count()
 		return
 	}
 

@@ -25,19 +25,19 @@ func newMedium(db *gorm.DB) medium {
 
 	tableName := _medium.mediumDo.TableName()
 	_medium.ALL = field.NewField(tableName, "*")
-	_medium.ID = field.NewString(tableName, "id")
+	_medium.ID = field.NewInt32(tableName, "id")
 	_medium.ModelType = field.NewString(tableName, "model_type")
-	_medium.ModelID = field.NewString(tableName, "model_id")
+	_medium.ModelID = field.NewInt64(tableName, "model_id")
 	_medium.CollectionName = field.NewString(tableName, "collection_name")
 	_medium.Name = field.NewString(tableName, "name")
 	_medium.FileName = field.NewString(tableName, "file_name")
 	_medium.MimeType = field.NewString(tableName, "mime_type")
 	_medium.Disk = field.NewString(tableName, "disk")
-	_medium.Size = field.NewString(tableName, "size")
+	_medium.Size = field.NewInt64(tableName, "size")
 	_medium.Manipulations = field.NewString(tableName, "manipulations")
 	_medium.CustomProperties = field.NewString(tableName, "custom_properties")
 	_medium.ResponsiveImages = field.NewString(tableName, "responsive_images")
-	_medium.OrderColumn = field.NewString(tableName, "order_column")
+	_medium.OrderColumn = field.NewInt32(tableName, "order_column")
 	_medium.CreatedAt = field.NewTime(tableName, "created_at")
 	_medium.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_medium.UUID = field.NewString(tableName, "uuid")
@@ -52,19 +52,19 @@ type medium struct {
 	mediumDo mediumDo
 
 	ALL              field.Field
-	ID               field.String
+	ID               field.Int32
 	ModelType        field.String
-	ModelID          field.String
+	ModelID          field.Int64
 	CollectionName   field.String
 	Name             field.String
 	FileName         field.String
 	MimeType         field.String
 	Disk             field.String
-	Size             field.String
+	Size             field.Int64
 	Manipulations    field.String
 	CustomProperties field.String
 	ResponsiveImages field.String
-	OrderColumn      field.String
+	OrderColumn      field.Int32
 	CreatedAt        field.Time
 	UpdatedAt        field.Time
 	UUID             field.String
@@ -85,19 +85,19 @@ func (m medium) As(alias string) *medium {
 
 func (m *medium) updateTableName(table string) *medium {
 	m.ALL = field.NewField(table, "*")
-	m.ID = field.NewString(table, "id")
+	m.ID = field.NewInt32(table, "id")
 	m.ModelType = field.NewString(table, "model_type")
-	m.ModelID = field.NewString(table, "model_id")
+	m.ModelID = field.NewInt64(table, "model_id")
 	m.CollectionName = field.NewString(table, "collection_name")
 	m.Name = field.NewString(table, "name")
 	m.FileName = field.NewString(table, "file_name")
 	m.MimeType = field.NewString(table, "mime_type")
 	m.Disk = field.NewString(table, "disk")
-	m.Size = field.NewString(table, "size")
+	m.Size = field.NewInt64(table, "size")
 	m.Manipulations = field.NewString(table, "manipulations")
 	m.CustomProperties = field.NewString(table, "custom_properties")
 	m.ResponsiveImages = field.NewString(table, "responsive_images")
-	m.OrderColumn = field.NewString(table, "order_column")
+	m.OrderColumn = field.NewInt32(table, "order_column")
 	m.CreatedAt = field.NewTime(table, "created_at")
 	m.UpdatedAt = field.NewTime(table, "updated_at")
 	m.UUID = field.NewString(table, "uuid")
@@ -325,6 +325,7 @@ func (m mediumDo) FirstOrCreate() (*model.Medium, error) {
 
 func (m mediumDo) FindByPage(offset int, limit int) (result []*model.Medium, count int64, err error) {
 	if limit <= 0 {
+		count, err = m.Count()
 		return
 	}
 

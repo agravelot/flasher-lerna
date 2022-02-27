@@ -39,7 +39,7 @@ func (a *AlbumRequest) Validate() error {
 }
 
 type CategoryReponse struct {
-	ID   int32  `json:"id" example:"1"`
+	ID   int64  `json:"id" example:"1"`
 	Name string `json:"name" example:"A good category"`
 }
 
@@ -64,7 +64,7 @@ type MediaReponse struct {
 }
 
 type AlbumResponse struct {
-	ID                     int32      `json:"id" example:"1"`
+	ID                     int64      `json:"id" example:"1"`
 	Slug                   string     `json:"slug" example:"a-good-album"`
 	Title                  string     `json:"title" example:"A good album" validate:"required,lt=60"`
 	Body                   *string    `json:"body" swaggertype:"string" example:"<p>Hello world</p>"`
@@ -75,7 +75,7 @@ type AlbumResponse struct {
 	UpdatedAt              *time.Time `json:"updated_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
 	NotifyUsersOnPublished bool       `json:"notify_users_on_published" example:"true"`
 	MetaDescription        string     `json:"meta_description" example:"A good meta" validate:"required,gt=1,lt=60"`
-	SsoID                  uuid.UUID  `json:"sso_id" swaggertype:"string" example:"123e4567-e89b-12d3-a456-426614174000"`
+	SsoID                  *string    `json:"sso_id" swaggertype:"string" example:"123e4567-e89b-12d3-a456-426614174000"`
 
 	Categories *[]CategoryReponse `json:"categories"`
 	Medias     *[]MediaReponse    `json:"medias"`

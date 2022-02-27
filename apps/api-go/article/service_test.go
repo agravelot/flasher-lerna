@@ -3,7 +3,7 @@ package article
 import (
 	"api-go/auth"
 	"api-go/config"
-	database "api-go/db"
+	"api-go/database"
 	"context"
 	"os"
 	"strconv"

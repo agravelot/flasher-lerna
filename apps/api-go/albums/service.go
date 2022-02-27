@@ -3,6 +3,8 @@ package album
 import (
 	"api-go/api"
 	"api-go/auth"
+	"api-go/gormQuery"
+	"api-go/model"
 	"api-go/tutorial"
 	"context"
 	"database/sql"
@@ -12,6 +14,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v4"
+	"gorm.io/gorm"
 )
 
 // Service is a simple CRUD interface for user albums.
@@ -32,12 +35,14 @@ var (
 )
 
 type service struct {
-	db *tutorial.Queries
+	db  *tutorial.Queries
+	orm *gorm.DB
 }
 
-func NewService(db *tutorial.Queries) Service {
+func NewService(db *tutorial.Queries, orm *gorm.DB) Service {
 	return &service{
-		db: db,
+		db:  db,
+		orm: orm,
 	}
 }
 
@@ -47,69 +52,40 @@ func NewService(db *tutorial.Queries) Service {
 
 func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (PaginatedAlbums, error) {
 	user := auth.GetUserClaims(ctx)
-
-	arg := tutorial.GetAlbumsParams{
-		Limit: params.Limit,
-	}
-
-	if params.Next != 0 {
-		arg.ID = int32(params.Next)
-	}
-
 	isAdmin := user != nil && user.IsAdmin()
 
-	if isAdmin {
-		arg.IsAdmin = true
+	qb := gormQuery.Use(s.orm).Album
+	query := qb.WithContext(ctx).Order(qb.PublishedAt.Desc())
+
+	if !isAdmin {
+		query = query.Where(qb.PublishedAt.Lt(time.Now()), qb.Private.Is(false))
 	}
 
-	albums, err := s.db.GetAlbums(ctx, arg)
-	if err != nil {
-		return PaginatedAlbums{}, fmt.Errorf("error list albums : %d %w", params.Next, err)
-	}
-
-	total, err := s.db.CountAlbums(ctx, isAdmin)
+	total, err := query.WithContext(ctx).Count()
 	if err != nil {
 		return PaginatedAlbums{}, fmt.Errorf("error counting albums: %w", err)
 	}
 
-	var categories *[]tutorial.GetCategoriesByAlbumIdsRow
-
-	if params.Joins.Categories {
-		var ids []int32
-
-		for _, a := range albums {
-			ids = append(ids, a.ID)
-		}
-
-		c, err := s.db.GetCategoriesByAlbumIds(ctx, ids)
-		if err != nil {
-			return PaginatedAlbums{}, fmt.Errorf("error getting categories for albums: %w", err)
-		}
-		categories = &c
-
-		// TODO Filter categories by album ids
+	if params.Next != 0 {
+		query.Where(qb.ID.Gt(int64(params.Next)))
 	}
 
-	var medias *[]tutorial.Medium
+	if params.Joins.Categories {
+		query.Preload(qb.Categories)
+	}
 
 	if params.Joins.Medias {
-		var ids []int32
+		query.Preload(qb.Medias)
+	}
 
-		for _, a := range albums {
-			ids = append(ids, a.ID)
-		}
-
-		m, err := s.db.GetMediasByAlbumIds(ctx, ids)
-		if err != nil {
-			return PaginatedAlbums{}, fmt.Errorf("error getting medias for albums: %w", err)
-		}
-		medias = &m
-		// TODO Filter categories by album ids
+	albums, err := query.Limit(int(params.Limit)).Find()
+	if err != nil {
+		return PaginatedAlbums{}, fmt.Errorf("error list albums : %d %w", params.Next, err)
 	}
 
 	data := make([]AlbumResponse, len(albums))
 	for i, a := range albums {
-		data[i] = transform(a, medias, categories)
+		data[i] = transform(*a)
 	}
 
 	return PaginatedAlbums{
@@ -118,34 +94,35 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 	}, nil
 }
 
-func transform(a tutorial.Album, medias *[]tutorial.Medium, categories *[]tutorial.GetCategoriesByAlbumIdsRow) AlbumResponse {
-	var body *string
+// TODO bool incluce relation
+func transform(a model.Album) AlbumResponse {
+	// var body *string
 	var userID *int64
-	var ssoID uuid.UUID
+	// var ssoID uuid.UUID
 	var publishedAt, createdAt, updatedAt *time.Time
-	if a.Body.Valid {
-		body = &a.Body.String
-	}
-	if a.SsoID.Valid {
-		ssoID = a.SsoID.UUID
-	}
-	if a.UserID.Valid {
-		userID = &a.UserID.Int64
-	}
-	if a.PublishedAt.Valid {
-		publishedAt = &a.PublishedAt.Time
-	}
-	if a.CreatedAt.Valid {
-		createdAt = &a.CreatedAt.Time
-	}
-	if a.UpdatedAt.Valid {
-		updatedAt = &a.UpdatedAt.Time
-	}
+	// if a.Body.Valid {
+	// 	body = &a.Body.String
+	// }
+	// if a.SsoID.Valid {
+	// 	ssoID = a.SsoID.UUID
+	// }
+	// if a.UserID.Valid {
+	// 	userID = &a.UserID.Int64
+	// }
+	// if a.PublishedAt.Valid {
+	// 	publishedAt = &a.PublishedAt.Time
+	// }
+	// if a.CreatedAt.Valid {
+	// 	createdAt = &a.CreatedAt.Time
+	// }
+	// if a.UpdatedAt.Valid {
+	// 	updatedAt = &a.UpdatedAt.Time
+	// }
 
 	var mediasResponse *[]MediaReponse
-	if medias != nil {
+	if a.Medias != nil {
 		var tmp []MediaReponse
-		for _, c := range *medias {
+		for _, c := range a.Medias {
 			tmp = append(tmp, MediaReponse{
 				ID:   c.ID,
 				Name: c.Name,
@@ -155,9 +132,9 @@ func transform(a tutorial.Album, medias *[]tutorial.Medium, categories *[]tutori
 	}
 
 	var categoriesResponse *[]CategoryReponse
-	if categories != nil {
+	if a.Categories != nil {
 		var tmp2 []CategoryReponse
-		for _, c := range *categories {
+		for _, c := range a.Categories {
 			tmp2 = append(tmp2, CategoryReponse{
 				ID:   c.ID,
 				Name: c.Name,
@@ -167,20 +144,21 @@ func transform(a tutorial.Album, medias *[]tutorial.Medium, categories *[]tutori
 	}
 
 	return AlbumResponse{
-		ID:                     a.ID,
-		Slug:                   a.Slug,
-		Title:                  a.Title,
-		MetaDescription:        a.MetaDescription,
-		Body:                   body,
-		PublishedAt:            publishedAt,
-		Private:                a.Private,
-		SsoID:                  ssoID,
-		UserID:                 userID,
-		CreatedAt:              createdAt,
-		UpdatedAt:              updatedAt,
-		NotifyUsersOnPublished: a.NotifyUsersOnPublished,
-		Categories:             categoriesResponse,
-		Medias:                 mediasResponse,
+		ID:              a.ID,
+		Slug:            a.Slug,
+		Title:           a.Title,
+		MetaDescription: a.MetaDescription,
+		Body:            a.Body,
+		PublishedAt:     publishedAt,
+		// Private:                a.Private,
+		SsoID:     a.SsoID,
+		UserID:    userID,
+		CreatedAt: createdAt,
+		UpdatedAt: updatedAt,
+		// NotifyUsersOnPublished: a.NotifyUsersOnPublished,
+		// Categories:             categoriesResponse,
+		Medias:     mediasResponse,
+		Categories: categoriesResponse,
 	}
 }
 
@@ -201,14 +179,30 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, err
 	// }
 	// TODO https://github.com/jackc/pgerrcode/blob/master/errcode.go
 
+	// TODO isAdmin
 	isAdmin := user != nil && user.IsAdmin()
+	println(isAdmin)
 
-	a, err := s.db.GetAlbumBySlug(ctx, tutorial.GetAlbumBySlugParams{
-		Slug:    slug,
-		IsAdmin: isAdmin,
-	})
+	qb := gormQuery.Use(s.orm).Album
 
-	if err == pgx.ErrNoRows {
+	query := qb.WithContext(ctx)
+
+	if !isAdmin {
+		query = query.Where(qb.PublishedAt.Lt(time.Now()), qb.Private.Is(false))
+	}
+	query.Preload(qb.Categories)
+	query.Preload(qb.Medias)
+
+	a, err := query.Where(qb.Slug.Eq(slug)).First()
+	// .Preload(qb.Categories)
+	// .Preload(qb.Medias)
+
+	// a, err := s.db.GetAlbumBySlug(ctx, tutorial.GetAlbumBySlugParams{
+	// 	Slug:    slug,
+	// 	IsAdmin: isAdmin,
+	// })
+
+	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return AlbumResponse{}, ErrNotFound
 	}
 
@@ -217,7 +211,7 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, err
 	}
 
 	// TODO add medias and categes
-	return transform(a, nil, nil), err
+	return transform(*a), err
 }
 
 func (s *service) PostAlbum(ctx context.Context, a AlbumRequest) (AlbumResponse, error) {
@@ -261,19 +255,19 @@ func (s *service) PostAlbum(ctx context.Context, a AlbumRequest) (AlbumResponse,
 		publishedAt.Valid = true
 	}
 
-	arg := tutorial.CreateAlbumParams{
-		Slug:            a.Slug,
-		Title:           a.Title,
-		MetaDescription: a.MetaDescription,
-		Body:            body,
-		PublishedAt:     publishedAt,
-		Private:         a.Private,
-		SsoID:           ssoID,
-	}
-	a2, err := s.db.CreateAlbum(ctx, arg)
-	if err != nil {
-		return AlbumResponse{}, err
-	}
+	// arg := tutorial.CreateAlbumParams{
+	// 	Slug:            a.Slug,
+	// 	Title:           a.Title,
+	// 	MetaDescription: a.MetaDescription,
+	// 	Body:            body,
+	// 	PublishedAt:     publishedAt,
+	// 	Private:         a.Private,
+	// 	SsoID:           ssoID,
+	// }
+	// a2, err := s.db.CreateAlbum(ctx, arg)
+	// if err != nil {
+	// 	return AlbumResponse{}, err
+	// }
 
 	// albumModel := AlbumModel(a)
 	// if err := s.db.Create(&albumModel).Error; err != nil {
@@ -286,7 +280,9 @@ func (s *service) PostAlbum(ctx context.Context, a AlbumRequest) (AlbumResponse,
 
 	// TODO https://github.com/jackc/pgerrcode/blob/master/errcode.go
 
-	return transform(a2, nil, nil), nil
+	// return transform(a2), nil
+	return AlbumResponse{}, nil
+
 }
 
 func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumRequest) (AlbumResponse, error) {
@@ -336,10 +332,10 @@ func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumRequest) (Al
 		SsoID:           ssoID,
 	}
 
-	a2, err := s.db.GetAlbumBySlug(ctx, tutorial.GetAlbumBySlugParams{
-		Slug:    slug,
-		IsAdmin: isAdmin,
-	})
+	// a2, err := s.db.GetAlbumBySlug(ctx, tutorial.GetAlbumBySlugParams{
+	// 	Slug:    slug,
+	// 	IsAdmin: isAdmin,
+	// })
 
 	if err == pgx.ErrNoRows {
 		return AlbumResponse{}, ErrNotFound
@@ -353,7 +349,8 @@ func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumRequest) (Al
 	// albumModel := AlbumModel(a)
 	// s.db.Save(albumModel)
 
-	return transform(a2, nil, nil), nil
+	// return transform(a2), nil
+	return AlbumResponse{}, nil
 }
 
 func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumRequest) (AlbumResponse, error) {

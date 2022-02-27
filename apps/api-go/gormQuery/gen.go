@@ -13,143 +13,43 @@ import (
 
 func Use(db *gorm.DB) *Query {
 	return &Query{
-		db:                  db,
-		Album:               newAlbum(db),
-		AlbumCategory:       newAlbumCategory(db),
-		AlbumCosplayer:      newAlbumCosplayer(db),
-		Article:             newArticle(db),
-		Categorizable:       newCategorizable(db),
-		Category:            newCategory(db),
-		Comment:             newComment(db),
-		Contact:             newContact(db),
-		Cosplayer:           newCosplayer(db),
-		FailedJob:           newFailedJob(db),
-		Invitation:          newInvitation(db),
-		Medium:              newMedium(db),
-		Migration:           newMigration(db),
-		Page:                newPage(db),
-		Post:                newPost(db),
-		Setting:             newSetting(db),
-		SocialMedium:        newSocialMedium(db),
-		TelescopeEntriesTag: newTelescopeEntriesTag(db),
-		TelescopeEntry:      newTelescopeEntry(db),
-		TelescopeMonitoring: newTelescopeMonitoring(db),
-		Testimonial:         newTestimonial(db),
-		User:                newUser(db),
-		UsersSave:           newUsersSave(db),
+		db:       db,
+		Album:    newAlbum(db),
+		Category: newCategory(db),
+		Medium:   newMedium(db),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	Album               album
-	AlbumCategory       albumCategory
-	AlbumCosplayer      albumCosplayer
-	Article             article
-	Categorizable       categorizable
-	Category            category
-	Comment             comment
-	Contact             contact
-	Cosplayer           cosplayer
-	FailedJob           failedJob
-	Invitation          invitation
-	Medium              medium
-	Migration           migration
-	Page                page
-	Post                post
-	Setting             setting
-	SocialMedium        socialMedium
-	TelescopeEntriesTag telescopeEntriesTag
-	TelescopeEntry      telescopeEntry
-	TelescopeMonitoring telescopeMonitoring
-	Testimonial         testimonial
-	User                user
-	UsersSave           usersSave
+	Album    album
+	Category category
+	Medium   medium
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:                  db,
-		Album:               q.Album.clone(db),
-		AlbumCategory:       q.AlbumCategory.clone(db),
-		AlbumCosplayer:      q.AlbumCosplayer.clone(db),
-		Article:             q.Article.clone(db),
-		Categorizable:       q.Categorizable.clone(db),
-		Category:            q.Category.clone(db),
-		Comment:             q.Comment.clone(db),
-		Contact:             q.Contact.clone(db),
-		Cosplayer:           q.Cosplayer.clone(db),
-		FailedJob:           q.FailedJob.clone(db),
-		Invitation:          q.Invitation.clone(db),
-		Medium:              q.Medium.clone(db),
-		Migration:           q.Migration.clone(db),
-		Page:                q.Page.clone(db),
-		Post:                q.Post.clone(db),
-		Setting:             q.Setting.clone(db),
-		SocialMedium:        q.SocialMedium.clone(db),
-		TelescopeEntriesTag: q.TelescopeEntriesTag.clone(db),
-		TelescopeEntry:      q.TelescopeEntry.clone(db),
-		TelescopeMonitoring: q.TelescopeMonitoring.clone(db),
-		Testimonial:         q.Testimonial.clone(db),
-		User:                q.User.clone(db),
-		UsersSave:           q.UsersSave.clone(db),
+		db:       db,
+		Album:    q.Album.clone(db),
+		Category: q.Category.clone(db),
+		Medium:   q.Medium.clone(db),
 	}
 }
 
 type queryCtx struct {
-	Album               albumDo
-	AlbumCategory       albumCategoryDo
-	AlbumCosplayer      albumCosplayerDo
-	Article             articleDo
-	Categorizable       categorizableDo
-	Category            categoryDo
-	Comment             commentDo
-	Contact             contactDo
-	Cosplayer           cosplayerDo
-	FailedJob           failedJobDo
-	Invitation          invitationDo
-	Medium              mediumDo
-	Migration           migrationDo
-	Page                pageDo
-	Post                postDo
-	Setting             settingDo
-	SocialMedium        socialMediumDo
-	TelescopeEntriesTag telescopeEntriesTagDo
-	TelescopeEntry      telescopeEntryDo
-	TelescopeMonitoring telescopeMonitoringDo
-	Testimonial         testimonialDo
-	User                userDo
-	UsersSave           usersSaveDo
+	Album    albumDo
+	Category categoryDo
+	Medium   mediumDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		Album:               *q.Album.WithContext(ctx),
-		AlbumCategory:       *q.AlbumCategory.WithContext(ctx),
-		AlbumCosplayer:      *q.AlbumCosplayer.WithContext(ctx),
-		Article:             *q.Article.WithContext(ctx),
-		Categorizable:       *q.Categorizable.WithContext(ctx),
-		Category:            *q.Category.WithContext(ctx),
-		Comment:             *q.Comment.WithContext(ctx),
-		Contact:             *q.Contact.WithContext(ctx),
-		Cosplayer:           *q.Cosplayer.WithContext(ctx),
-		FailedJob:           *q.FailedJob.WithContext(ctx),
-		Invitation:          *q.Invitation.WithContext(ctx),
-		Medium:              *q.Medium.WithContext(ctx),
-		Migration:           *q.Migration.WithContext(ctx),
-		Page:                *q.Page.WithContext(ctx),
-		Post:                *q.Post.WithContext(ctx),
-		Setting:             *q.Setting.WithContext(ctx),
-		SocialMedium:        *q.SocialMedium.WithContext(ctx),
-		TelescopeEntriesTag: *q.TelescopeEntriesTag.WithContext(ctx),
-		TelescopeEntry:      *q.TelescopeEntry.WithContext(ctx),
-		TelescopeMonitoring: *q.TelescopeMonitoring.WithContext(ctx),
-		Testimonial:         *q.Testimonial.WithContext(ctx),
-		User:                *q.User.WithContext(ctx),
-		UsersSave:           *q.UsersSave.WithContext(ctx),
+		Album:    *q.Album.WithContext(ctx),
+		Category: *q.Category.WithContext(ctx),
+		Medium:   *q.Medium.WithContext(ctx),
 	}
 }
 

@@ -12,13 +12,13 @@ const TableNameCategory = "categories"
 
 // Category mapped from table <categories>
 type Category struct {
-	ID              string     `gorm:"column:id;type:;primaryKey;autoIncrement:true" json:"id"`
-	Name            string     `gorm:"column:name;type:;not null" json:"name"`
-	Slug            string     `gorm:"column:slug;type:;not null" json:"slug"`
-	Description     *string    `gorm:"column:description;type:" json:"description"`
-	CreatedAt       *time.Time `gorm:"column:created_at;type:" json:"created_at"`
-	UpdatedAt       *time.Time `gorm:"column:updated_at;type:" json:"updated_at"`
-	MetaDescription string     `gorm:"column:meta_description;type:;not null" json:"meta_description"`
+	ID              int64      `gorm:"column:id;type:int4;primaryKey;autoIncrement:true" json:"id"`
+	Name            string     `gorm:"column:name;type:varchar;not null" json:"name"`
+	Slug            string     `gorm:"column:slug;type:varchar;not null" json:"slug"`
+	Description     *string    `gorm:"column:description;type:text" json:"description"`
+	CreatedAt       *time.Time `gorm:"column:created_at;type:timestamp" json:"created_at"`
+	UpdatedAt       *time.Time `gorm:"column:updated_at;type:timestamp" json:"updated_at"`
+	MetaDescription string     `gorm:"column:meta_description;type:varchar;not null" json:"meta_description"`
 }
 
 // TableName Category's table name
