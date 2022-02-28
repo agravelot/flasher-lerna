@@ -11,7 +11,7 @@ import (
 // AlbumModel represents a single album.
 type AlbumRequest struct {
 	ID                     int32      `json:"id" example:"1"`
-	Slug                   string     `json:"slug" example:"a-good-album"`
+	Slug                   *string    `json:"slug" example:"a-good-album"`
 	Title                  string     `json:"title" example:"A good album" validate:"required,lt=60"`
 	Body                   *string    `json:"body" swaggertype:"string" example:"<p>Hello world</p>"`
 	PublishedAt            *time.Time `json:"published_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`

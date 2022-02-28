@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/gosimple/slug"
 	"github.com/jackc/pgx/v4"
 	"gorm.io/gorm"
 )
@@ -45,10 +46,6 @@ func NewService(db *tutorial.Queries, orm *gorm.DB) Service {
 		orm: orm,
 	}
 }
-
-// func Published(db *tutorial.Queries) *tutorial.Queries {
-// 	return db.Where("published_at < ?", time.Now()).Where("private = ?", false)
-// }
 
 func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (PaginatedAlbums, error) {
 	user := auth.GetUserClaims(ctx)
@@ -96,29 +93,6 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 
 // TODO bool incluce relation
 func transform(a model.Album) AlbumResponse {
-	// var body *string
-	var userID *int64
-	// var ssoID uuid.UUID
-	var publishedAt, createdAt, updatedAt *time.Time
-	// if a.Body.Valid {
-	// 	body = &a.Body.String
-	// }
-	// if a.SsoID.Valid {
-	// 	ssoID = a.SsoID.UUID
-	// }
-	// if a.UserID.Valid {
-	// 	userID = &a.UserID.Int64
-	// }
-	// if a.PublishedAt.Valid {
-	// 	publishedAt = &a.PublishedAt.Time
-	// }
-	// if a.CreatedAt.Valid {
-	// 	createdAt = &a.CreatedAt.Time
-	// }
-	// if a.UpdatedAt.Valid {
-	// 	updatedAt = &a.UpdatedAt.Time
-	// }
-
 	var mediasResponse *[]MediaReponse
 	if a.Medias != nil {
 		var tmp []MediaReponse
@@ -144,44 +118,26 @@ func transform(a model.Album) AlbumResponse {
 	}
 
 	return AlbumResponse{
-		ID:              a.ID,
-		Slug:            a.Slug,
-		Title:           a.Title,
-		MetaDescription: a.MetaDescription,
-		Body:            a.Body,
-		PublishedAt:     publishedAt,
-		// Private:                a.Private,
-		SsoID:     a.SsoID,
-		UserID:    userID,
-		CreatedAt: createdAt,
-		UpdatedAt: updatedAt,
-		// NotifyUsersOnPublished: a.NotifyUsersOnPublished,
-		// Categories:             categoriesResponse,
-		Medias:     mediasResponse,
-		Categories: categoriesResponse,
+		ID:                     a.ID,
+		Slug:                   a.Slug,
+		Title:                  a.Title,
+		MetaDescription:        a.MetaDescription,
+		Body:                   a.Body,
+		PublishedAt:            a.PublishedAt,
+		Private:                a.Private,
+		SsoID:                  a.SsoID,
+		UserID:                 a.UserID,
+		CreatedAt:              a.CreatedAt,
+		UpdatedAt:              a.UpdatedAt,
+		NotifyUsersOnPublished: a.NotifyUsersOnPublished,
+		Medias:                 mediasResponse,
+		Categories:             categoriesResponse,
 	}
 }
 
 func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, error) {
 	user := auth.GetUserClaims(ctx)
-
-	// query := s.db.Where("slug = ?", slug)
-
-	// if user == nil || (user != nil && !user.IsAdmin()) {
-	// 	query = query.Scopes(Published)
-	// }
-
-	// a := AlbumModel{}
-	// err := query.First(&a).Error
-
-	// if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
-	// 	return AlbumRequest{}, ErrNotFound
-	// }
-	// TODO https://github.com/jackc/pgerrcode/blob/master/errcode.go
-
-	// TODO isAdmin
 	isAdmin := user != nil && user.IsAdmin()
-	println(isAdmin)
 
 	qb := gormQuery.Use(s.orm).Album
 
@@ -190,17 +146,10 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, err
 	if !isAdmin {
 		query = query.Where(qb.PublishedAt.Lt(time.Now()), qb.Private.Is(false))
 	}
-	query.Preload(qb.Categories)
-	query.Preload(qb.Medias)
+
+	query.Preload(qb.Categories).Preload(qb.Medias)
 
 	a, err := query.Where(qb.Slug.Eq(slug)).First()
-	// .Preload(qb.Categories)
-	// .Preload(qb.Medias)
-
-	// a, err := s.db.GetAlbumBySlug(ctx, tutorial.GetAlbumBySlugParams{
-	// 	Slug:    slug,
-	// 	IsAdmin: isAdmin,
-	// })
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return AlbumResponse{}, ErrNotFound
@@ -214,7 +163,7 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, err
 	return transform(*a), err
 }
 
-func (s *service) PostAlbum(ctx context.Context, a AlbumRequest) (AlbumResponse, error) {
+func (s *service) PostAlbum(ctx context.Context, r AlbumRequest) (AlbumResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
 	if user == nil {
@@ -226,62 +175,34 @@ func (s *service) PostAlbum(ctx context.Context, a AlbumRequest) (AlbumResponse,
 		return AlbumResponse{}, ErrNotAdmin
 	}
 
-	uid, err := uuid.Parse(user.Sub)
+	if err := r.Validate(); err != nil {
+		return AlbumResponse{}, err
+	}
+
+	if r.Slug == nil {
+		s := slug.Make(r.Title)
+		r.Slug = &s
+	}
+
+	album := model.Album{
+		Title:       r.Title,
+		Slug:        *r.Slug,
+		SsoID:       &user.Sub,
+		Body:        r.Body,
+		PublishedAt: r.PublishedAt,
+	}
+
+	qb := gormQuery.Use(s.orm).Album
+
+	query := qb.WithContext(ctx)
+
+	err := query.WithContext(ctx).Create(&album)
+	// TODO Check duplicate
 	if err != nil {
 		return AlbumResponse{}, err
 	}
 
-	a.SsoID = &uid
-
-	if err := a.Validate(); err != nil {
-		return AlbumResponse{}, err
-	}
-
-	var body sql.NullString
-	if a.Body != nil {
-		body.String = *a.Body
-		body.Valid = true
-	}
-
-	var ssoID uuid.NullUUID
-	if a.SsoID != nil {
-		ssoID.UUID = *a.SsoID
-		ssoID.Valid = true
-	}
-
-	var publishedAt sql.NullTime
-	if a.PublishedAt != nil {
-		publishedAt.Time = *a.PublishedAt
-		publishedAt.Valid = true
-	}
-
-	// arg := tutorial.CreateAlbumParams{
-	// 	Slug:            a.Slug,
-	// 	Title:           a.Title,
-	// 	MetaDescription: a.MetaDescription,
-	// 	Body:            body,
-	// 	PublishedAt:     publishedAt,
-	// 	Private:         a.Private,
-	// 	SsoID:           ssoID,
-	// }
-	// a2, err := s.db.CreateAlbum(ctx, arg)
-	// if err != nil {
-	// 	return AlbumResponse{}, err
-	// }
-
-	// albumModel := AlbumModel(a)
-	// if err := s.db.Create(&albumModel).Error; err != nil {
-	// 	// TODO Cast pg error to have clean check
-	// 	if err.Error() == "ERROR: duplicate key value violates unique constraint \"idx_albums_slug\" (SQLSTATE 23505)" {
-	// 		return AlbumRequest{}, ErrAlreadyExists
-	// 	}
-	// 	return AlbumRequest{}, err
-	// }
-
-	// TODO https://github.com/jackc/pgerrcode/blob/master/errcode.go
-
-	// return transform(a2), nil
-	return AlbumResponse{}, nil
+	return transform(album), nil
 
 }
 
@@ -323,7 +244,7 @@ func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumRequest) (Al
 		ssoID = uuid.NullUUID{UUID: *a.SsoID, Valid: true}
 	}
 	arg := tutorial.UpdateAlbumParams{
-		Slug:            a.Slug,
+		Slug:            *a.Slug,
 		Title:           a.Title,
 		MetaDescription: a.MetaDescription,
 		Body:            body,

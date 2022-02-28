@@ -15,7 +15,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
 	"github.com/jackc/pgconn"
@@ -179,7 +178,6 @@ func TestShouldBeOrderedByDateOfPublication(t *testing.T) {
 	}
 
 	for _, arg := range args {
-		spew.Dump(arg.Slug)
 		_, err := db.CreateAlbum(context.Background(), arg)
 		if err != nil {
 			t.Error(fmt.Errorf("Error creating album: %w", err))
@@ -709,15 +707,11 @@ func TestShouldBeAbleToCreateAnAlbumAsAdmin(t *testing.T) {
 	database2.ClearDB(db)
 	ctx, claims := authAsAdmin(context.Background())
 
-	id, err := uuid.Parse(claims.Sub)
-	if err != nil {
-		t.Error(err)
-	}
-
+	slug := "a-good-title"
 	arg := AlbumRequest{
 		Title:           "A good Title",
 		MetaDescription: "meta",
-		Slug:            "a-good-title",
+		Slug:            &slug,
 	}
 
 	res, err := s.PostAlbum(ctx, arg)
@@ -730,7 +724,7 @@ func TestShouldBeAbleToCreateAnAlbumAsAdmin(t *testing.T) {
 	assert.Equal(t, 1, int(total))
 	assert.Equal(t, arg.Title, res.Title)
 	assert.Equal(t, "a-good-title", res.Slug)
-	assert.Equal(t, id, res.SsoID)
+	assert.Equal(t, &claims.Sub, res.SsoID)
 	assert.Equal(t, arg.PublishedAt, res.PublishedAt)
 }
 
@@ -738,16 +732,12 @@ func TestShouldBeAbleToCreateAnPublishedAlbumAsAdmin(t *testing.T) {
 	database2.ClearDB(db)
 	ctx, claims := authAsAdmin(context.Background())
 
-	id, err := uuid.Parse(claims.Sub)
-	if err != nil {
-		t.Error(err)
-	}
-
+	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute).UTC()
 	arg := AlbumRequest{
 		Title:           "A good Title",
 		MetaDescription: "meta",
-		Slug:            "a-good-title",
+		Slug:            &slug,
 		PublishedAt:     &pub,
 	}
 
@@ -761,7 +751,7 @@ func TestShouldBeAbleToCreateAnPublishedAlbumAsAdmin(t *testing.T) {
 	assert.Equal(t, 1, int(total))
 	assert.Equal(t, arg.Title, res.Title)
 	assert.Equal(t, "a-good-title", res.Slug)
-	assert.Equal(t, id, res.SsoID)
+	assert.Equal(t, &claims.Sub, res.SsoID)
 	assert.Equal(t, arg.PublishedAt.Hour(), res.PublishedAt.Hour())
 	assert.Equal(t, arg.PublishedAt.Minute(), res.PublishedAt.Minute())
 	assert.Equal(t, arg.PublishedAt.Day(), res.PublishedAt.Day())
@@ -771,11 +761,12 @@ func TestShouldNotBeAbleToCreateAnAlbumWithSameSlug(t *testing.T) {
 	database2.ClearDB(db)
 	ctx, _ := authAsAdmin(context.Background())
 
+	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
 	arg := AlbumRequest{
 		Title:           "A good Title",
 		MetaDescription: "meta",
-		Slug:            "a-good-title",
+		Slug:            &slug,
 		PublishedAt:     &pub,
 	}
 
@@ -798,11 +789,12 @@ func TestShouldNotBeAbleToSaveAlbumWithEmptyTitle(t *testing.T) {
 	database2.ClearDB(db)
 	ctx, _ := authAsAdmin(context.Background())
 
+	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
 	arg := AlbumRequest{
 		Title:           "",
 		MetaDescription: "meta",
-		Slug:            "a-good-title",
+		Slug:            &slug,
 		PublishedAt:     &pub,
 	}
 
@@ -820,11 +812,12 @@ func TestShouldNotBeAbleToSaveAlbumWithTooLongTitle(t *testing.T) {
 	database2.ClearDB(db)
 	ctx, _ := authAsAdmin(context.Background())
 
+	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
 	arg := AlbumRequest{
 		Title:           "a very too long big enormous title that will never fit in any screen...",
 		MetaDescription: "meta",
-		Slug:            "a-good-title",
+		Slug:            &slug,
 		PublishedAt:     &pub,
 	}
 
@@ -844,11 +837,12 @@ func TestShouldNotBeAbleToSaveAlbumWithEmptyMetaDescription(t *testing.T) {
 	database2.ClearDB(db)
 	ctx, _ := authAsAdmin(context.Background())
 
+	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
 	arg := AlbumRequest{
 		Title:           "a good title",
 		MetaDescription: "",
-		Slug:            "a-good-title",
+		Slug:            &slug,
 		PublishedAt:     &pub,
 	}
 
@@ -868,11 +862,12 @@ func TestShouldNotBeAbleToSaveAlbumWithTooLongMetaDescription(t *testing.T) {
 	database2.ClearDB(db)
 	ctx, _ := authAsAdmin(context.Background())
 
+	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
 	arg := AlbumRequest{
 		Title:           "a good title",
 		MetaDescription: "a very too long big enormous meta description that will never fit in any screen...",
-		Slug:            "a-good-title",
+		Slug:            &slug,
 		PublishedAt:     &pub,
 	}
 
@@ -892,11 +887,12 @@ func TestShouldNotBeAbleToPostAlbumAsUser(t *testing.T) {
 	database2.ClearDB(db)
 	ctx, _ := authAsUser(context.Background())
 
+	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
 	arg := AlbumRequest{
 		Title:           "a good title",
 		MetaDescription: "meta",
-		Slug:            "a-good-title",
+		Slug:            &slug,
 		PublishedAt:     &pub,
 	}
 
@@ -912,11 +908,12 @@ func TestShouldNotBeAbleToPostAlbumAsUser(t *testing.T) {
 func TestShouldNotBeAbleToPostAlbumAsGuest(t *testing.T) {
 	database2.ClearDB(db)
 
+	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
 	arg := AlbumRequest{
 		Title:           "a good title",
 		MetaDescription: "meta",
-		Slug:            "a-good-title",
+		Slug:            &slug,
 		PublishedAt:     &pub,
 	}
 
