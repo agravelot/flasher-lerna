@@ -88,7 +88,7 @@ func MakePutAlbumEndpoint(s Service) endpoint.Endpoint {
 func MakePatchAlbumEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(patchAlbumRequest)
-		a, e := s.PatchAlbum(ctx, req.Slug, req.AlbumRequest)
+		a, e := s.PatchAlbum(ctx, req.Slug, req.AlbumUpdateRequest)
 		return patchAlbumResponse{AlbumResponse: a, Err: e}, nil
 	}
 }
@@ -186,7 +186,7 @@ func (r putAlbumResponse) error() error { return nil }
 
 type patchAlbumRequest struct {
 	Slug string
-	AlbumRequest
+	AlbumUpdateRequest
 }
 
 type patchAlbumResponse struct {

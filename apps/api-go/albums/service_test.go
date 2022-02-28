@@ -5,6 +5,7 @@ import (
 	"api-go/config"
 	"api-go/database"
 	"api-go/database2"
+	"api-go/model"
 	"api-go/tutorial"
 	"context"
 	"database/sql"
@@ -928,65 +929,112 @@ func TestShouldNotBeAbleToPostAlbumAsGuest(t *testing.T) {
 
 // //////// UPDATE //////////
 
-// func TestShouldBeAbleToUpdateAlbumTitleAsAdmin(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	ctx, _ := authAsAdmin(context.Background())
+func TestShouldBeAbleToUpdateAlbumTitleAsAdmin(t *testing.T) {
+	database2.ClearDB(db)
+	ctx, _ := authAsAdmin(context.Background())
 
-// 	a := AlbumModel{Title: "A good Title", Slug: "a-good-slug", MetaDescription: "a meta decription", SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-// 	db.Create(&a)
+	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	a := model.Album{
+		Title:           "A good Title",
+		Slug:            "a-good-slug",
+		MetaDescription: "a meta decription",
+		SsoID:           &id,
+	}
+	orm.Create(&a)
 
-// 	a.Title = "A new Title"
-// 	new, err := s.PutAlbum(ctx, a.Slug, AlbumRequest(a))
+	expectedTitle := "A new Title"
+	new, err := s.PutAlbum(ctx, a.Slug, AlbumRequest{
+		ID:              a.ID,
+		Slug:            &a.Slug,
+		Title:           expectedTitle,
+		MetaDescription: a.MetaDescription,
+	})
 
-// 	assert.NoError(t, err)
-// 	assert.Equal(t, "A new Title", new.Title)
-// 	var total int64
-// 	db.Model(&AlbumModel{}).Count(&total)
-// 	assert.Equal(t, 1, int(total))
-// }
+	assert.NoError(t, err)
+	assert.Equal(t, expectedTitle, new.Title)
+	var total int64
+	orm.Model(&model.Album{}).Count(&total)
+	assert.Equal(t, 1, int(total))
+}
 
-// func TestShouldNotBeAbleToUpdateAlbumTooShortTitleAsAdmin(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	a := AlbumModel{Title: "A good Title", Slug: "a-good-slug", MetaDescription: "a meta decription", SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-// 	db.Create(&a)
+func TestShouldNotBeAbleToUpdateAlbumTooShortTitleAsAdmin(t *testing.T) {
+	database2.ClearDB(db)
+	ctx, _ := authAsAdmin(context.Background())
 
-// 	a.Title = ""
-// 	_, err := s.PutAlbum(context.Background(), a.Slug, AlbumRequest(a))
+	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	a := model.Album{
+		Title:           "A good Title",
+		Slug:            "a-good-slug",
+		MetaDescription: "a meta decription",
+		SsoID:           &id,
+	}
+	orm.Create(&a)
 
-// 	assert.Error(t, err)
-// 	var total int64
-// 	db.Model(&AlbumModel{}).Count(&total)
-// 	assert.Equal(t, 1, int(total))
-// }
+	_, err := s.PutAlbum(ctx, a.Slug, AlbumRequest{
+		ID:              a.ID,
+		Slug:            &a.Slug,
+		Title:           "",
+		MetaDescription: a.MetaDescription,
+	})
 
-// func TestShouldNotBeAbleToUpdateAlbumAsUser(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	a := AlbumModel{Title: "A good Title", Slug: "a-good-slug", MetaDescription: "a meta decription", SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-// 	ctx, _ := authAsUser(context.Background())
-// 	db.Create(&a)
+	assert.Error(t, err)
+	assert.IsType(t, validator.ValidationErrors{}, err)
+	var total int64
+	orm.Model(&model.Album{}).Count(&total)
+	assert.Equal(t, 1, int(total))
+}
 
-// 	_, err := s.PutAlbum(ctx, a.Slug, AlbumRequest(a))
+func TestShouldNotBeAbleToUpdateAlbumAsUser(t *testing.T) {
+	database2.ClearDB(db)
+	ctx, _ := authAsUser(context.Background())
 
-// 	assert.Error(t, err)
-// 	assert.Equal(t, ErrNotAdmin, err)
-// 	var total int64
-// 	db.Model(&AlbumModel{}).Count(&total)
-// 	assert.Equal(t, 1, int(total))
-// }
+	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	a := model.Album{
+		Title:           "A good Title",
+		Slug:            "a-good-slug",
+		MetaDescription: "a meta decription",
+		SsoID:           &id,
+	}
+	orm.Create(&a)
 
-// func TestShouldNotBeAbleToUpdateAlbumAsGuest(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	a := AlbumModel{Title: "A good Title", Slug: "a-good-slug", MetaDescription: "a meta decription", SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-// 	db.Create(&a)
+	_, err := s.PutAlbum(ctx, a.Slug, AlbumRequest{
+		ID:              a.ID,
+		Slug:            &a.Slug,
+		Title:           "A new Title",
+		MetaDescription: a.MetaDescription,
+	})
 
-// 	_, err := s.PutAlbum(context.Background(), a.Slug, AlbumRequest(a))
+	assert.Error(t, err)
+	assert.Equal(t, ErrNotAdmin, err)
+	var total int64
+	orm.Model(&model.Album{}).Count(&total)
+	assert.Equal(t, 1, int(total))
+}
 
-// 	assert.Error(t, err)
-// 	assert.Equal(t, ErrNoAuth, err)
-// 	var total int64
-// 	db.Model(&AlbumModel{}).Count(&total)
-// 	assert.Equal(t, 1, int(total))
-// }
+func TestShouldNotBeAbleToUpdateAlbumAsGuest(t *testing.T) {
+	database2.ClearDB(db)
+	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	a := model.Album{
+		Title:           "A good Title",
+		Slug:            "a-good-slug",
+		MetaDescription: "a meta decription",
+		SsoID:           &id,
+	}
+	orm.Create(&a)
+
+	_, err := s.PutAlbum(context.Background(), a.Slug, AlbumRequest{
+		ID:              a.ID,
+		Slug:            &a.Slug,
+		Title:           "A new Title",
+		MetaDescription: a.MetaDescription,
+	})
+
+	assert.Error(t, err)
+	assert.Equal(t, ErrNoAuth, err)
+	var total int64
+	orm.Model(&model.Album{}).Count(&total)
+	assert.Equal(t, 1, int(total))
+}
 
 // //////// DELETE //////////
 

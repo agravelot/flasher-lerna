@@ -168,13 +168,13 @@ func decodePatchAlbumRequest(_ context.Context, r *http.Request) (request interf
 	if !ok {
 		return nil, ErrBadRouting
 	}
-	var album AlbumRequest
+	var album AlbumUpdateRequest
 	if err := json.NewDecoder(r.Body).Decode(&album); err != nil {
 		return nil, err
 	}
 	return patchAlbumRequest{
-		Slug:         slug,
-		AlbumRequest: album,
+		Slug:               slug,
+		AlbumUpdateRequest: album,
 	}, nil
 }
 

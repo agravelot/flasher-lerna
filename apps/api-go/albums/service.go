@@ -7,14 +7,12 @@ import (
 	"api-go/model"
 	"api-go/tutorial"
 	"context"
-	"database/sql"
 	"errors"
 	"fmt"
 	"time"
 
-	"github.com/google/uuid"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/gosimple/slug"
-	"github.com/jackc/pgx/v4"
 	"gorm.io/gorm"
 )
 
@@ -24,7 +22,7 @@ type Service interface {
 	GetAlbum(ctx context.Context, slug string) (AlbumResponse, error)
 	PostAlbum(ctx context.Context, p AlbumRequest) (AlbumResponse, error)
 	PutAlbum(ctx context.Context, slug string, p AlbumRequest) (AlbumResponse, error)
-	PatchAlbum(ctx context.Context, slug string, p AlbumRequest) (AlbumResponse, error)
+	PatchAlbum(ctx context.Context, slug string, p AlbumUpdateRequest) (AlbumResponse, error)
 	DeleteAlbum(ctx context.Context, slug string) error
 }
 
@@ -206,75 +204,56 @@ func (s *service) PostAlbum(ctx context.Context, r AlbumRequest) (AlbumResponse,
 
 }
 
-func (s *service) PutAlbum(ctx context.Context, slug string, a AlbumRequest) (AlbumResponse, error) {
+func (s *service) PutAlbum(ctx context.Context, slug string, r AlbumRequest) (AlbumResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
 	if user == nil {
 		return AlbumResponse{}, ErrNoAuth
 	}
 
+	spew.Dump(user)
+
 	isAdmin := user != nil && user.IsAdmin()
-	if isAdmin {
+	if !isAdmin {
 		return AlbumResponse{}, ErrNotAdmin
 	}
 
-	uid, err := uuid.Parse(user.Sub)
+	if err := r.Validate(); err != nil {
+		return AlbumResponse{}, err
+	}
+
+	qb := gormQuery.Use(s.orm).Album
+
+	query := qb.WithContext(ctx)
+
+	// TODO Check duplicate
+	// TODO Check row count update
+	// YODO UpdatedAt
+	_, err := query.Updates(model.Album{
+		ID:          r.ID,
+		Slug:        slug,
+		Title:       r.Title,
+		Body:        r.Body,
+		PublishedAt: r.PublishedAt,
+		Private:     r.Private,
+		SsoID:       &user.Sub,
+	})
 	if err != nil {
-		return AlbumResponse{}, err
+		return AlbumResponse{}, fmt.Errorf("error update album: %w", err)
 	}
 
-	a.SsoID = &uid
+	query.Preload(qb.Categories).Preload(qb.Medias)
 
-	if err := a.Validate(); err != nil {
-		return AlbumResponse{}, err
-	}
+	a, err := query.Where(qb.Slug.Eq(slug)).First()
 
-	var body sql.NullString
-	if a.Body != nil {
-		body = sql.NullString{String: *a.Body, Valid: true}
-	}
-
-	var publishedAt sql.NullTime
-	if a.PublishedAt != nil {
-		publishedAt = sql.NullTime{Time: *a.PublishedAt, Valid: true}
-	}
-
-	var ssoID uuid.NullUUID
-	if a.SsoID != nil {
-		ssoID = uuid.NullUUID{UUID: *a.SsoID, Valid: true}
-	}
-	arg := tutorial.UpdateAlbumParams{
-		Slug:            *a.Slug,
-		Title:           a.Title,
-		MetaDescription: a.MetaDescription,
-		Body:            body,
-		PublishedAt:     publishedAt,
-		Private:         a.Private,
-		SsoID:           ssoID,
-	}
-
-	// a2, err := s.db.GetAlbumBySlug(ctx, tutorial.GetAlbumBySlugParams{
-	// 	Slug:    slug,
-	// 	IsAdmin: isAdmin,
-	// })
-
-	if err == pgx.ErrNoRows {
+	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return AlbumResponse{}, ErrNotFound
 	}
 
-	err = s.db.UpdateAlbum(ctx, arg)
-	if err != nil {
-		return AlbumResponse{}, err
-	}
-
-	// albumModel := AlbumModel(a)
-	// s.db.Save(albumModel)
-
-	// return transform(a2), nil
-	return AlbumResponse{}, nil
+	return transform(*a), nil
 }
 
-func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumRequest) (AlbumResponse, error) {
+func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumUpdateRequest) (AlbumResponse, error) {
 	return AlbumResponse{}, nil
 }
 

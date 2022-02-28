@@ -33,9 +33,10 @@ require (
 	github.com/swaggo/echo-swagger v1.3.0
 	github.com/swaggo/swag v1.8.0
 	golang.org/x/crypto v0.0.0-20220214200702-86341886e292 // indirect
-	golang.org/x/sys v0.0.0-20220224120231-95c6836cb0e7 // indirect
+	golang.org/x/net v0.0.0-20220225172249-27dd8689420f // indirect
+	golang.org/x/sys v0.0.0-20220227234510-4e6760a101f9 // indirect
 	google.golang.org/genproto v0.0.0-20220222213610-43724f9ea8cf // indirect
 	gorm.io/driver/postgres v1.3.1
 	gorm.io/gen v0.2.41
-	gorm.io/gorm v1.23.1
+	gorm.io/gorm v1.23.2-0.20220227161657-43a72b369e67
 )
