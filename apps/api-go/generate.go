@@ -45,11 +45,13 @@ func main() {
 	db, _ := gorm.Open(postgres.Open("host=localhost user=flasher password=flasher dbname=flasher port=5432 sslmode=disable"))
 	g.UseDB(db)
 
-	medias := g.GenerateModel("media")
+	medias := g.GenerateModel(
+		"media",
+		gen.FieldType("custom_properties", "*CustomProperties"),
+	)
 	categories := g.GenerateModel("categories", gen.FieldType("id", "int64"))
 	albums := g.GenerateModel(
 		"albums",
-		gen.FieldType("id", "int64"),
 		gen.FieldRelate(field.HasMany, "Categories", categories,
 			&field.RelateConfig{
 				GORMTag: "many2many:album_category;joinForeignKey:AlbumID;joinReferences:CategoryID",

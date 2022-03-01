@@ -35,7 +35,7 @@ func newMedium(db *gorm.DB) medium {
 	_medium.Disk = field.NewString(tableName, "disk")
 	_medium.Size = field.NewInt64(tableName, "size")
 	_medium.Manipulations = field.NewString(tableName, "manipulations")
-	_medium.CustomProperties = field.NewString(tableName, "custom_properties")
+	_medium.CustomProperties = field.NewField(tableName, "custom_properties")
 	_medium.ResponsiveImages = field.NewString(tableName, "responsive_images")
 	_medium.OrderColumn = field.NewInt32(tableName, "order_column")
 	_medium.CreatedAt = field.NewTime(tableName, "created_at")
@@ -62,7 +62,7 @@ type medium struct {
 	Disk             field.String
 	Size             field.Int64
 	Manipulations    field.String
-	CustomProperties field.String
+	CustomProperties field.Field
 	ResponsiveImages field.String
 	OrderColumn      field.Int32
 	CreatedAt        field.Time
@@ -95,7 +95,7 @@ func (m *medium) updateTableName(table string) *medium {
 	m.Disk = field.NewString(table, "disk")
 	m.Size = field.NewInt64(table, "size")
 	m.Manipulations = field.NewString(table, "manipulations")
-	m.CustomProperties = field.NewString(table, "custom_properties")
+	m.CustomProperties = field.NewField(table, "custom_properties")
 	m.ResponsiveImages = field.NewString(table, "responsive_images")
 	m.OrderColumn = field.NewInt32(table, "order_column")
 	m.CreatedAt = field.NewTime(table, "created_at")

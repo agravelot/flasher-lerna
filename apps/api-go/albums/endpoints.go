@@ -119,7 +119,7 @@ func MakeDeleteAlbumEndpoint(s Service) endpoint.Endpoint {
 // interface.
 
 type PaginationParams struct {
-	Next  uint
+	Next  int32
 	Limit int32
 }
 

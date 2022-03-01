@@ -58,7 +58,7 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 	}
 
 	if params.Next != 0 {
-		query.Where(qb.ID.Gt(int64(params.Next)))
+		query.Where(qb.ID.Gt(params.Next))
 	}
 
 	if params.Joins.Categories {
@@ -76,7 +76,7 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 
 	data := make([]AlbumResponse, len(albums))
 	for i, a := range albums {
-		data[i] = transform(*a)
+		data[i] = transformAlbumFromDB(*a)
 	}
 
 	return PaginatedAlbums{
@@ -86,48 +86,6 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 }
 
 // TODO bool incluce relation
-func transform(a model.Album) AlbumResponse {
-	var mediasResponse *[]MediaReponse
-	if a.Medias != nil {
-		var tmp []MediaReponse
-		for _, c := range a.Medias {
-			tmp = append(tmp, MediaReponse{
-				ID:   c.ID,
-				Name: c.Name,
-			})
-		}
-		mediasResponse = &tmp
-	}
-
-	var categoriesResponse *[]CategoryReponse
-	if a.Categories != nil {
-		var tmp []CategoryReponse
-		for _, c := range a.Categories {
-			tmp = append(tmp, CategoryReponse{
-				ID:   c.ID,
-				Name: c.Name,
-			})
-		}
-		categoriesResponse = &tmp
-	}
-
-	return AlbumResponse{
-		ID:                     a.ID,
-		Slug:                   a.Slug,
-		Title:                  a.Title,
-		MetaDescription:        a.MetaDescription,
-		Body:                   a.Body,
-		PublishedAt:            a.PublishedAt,
-		Private:                a.Private,
-		SsoID:                  a.SsoID,
-		UserID:                 a.UserID,
-		CreatedAt:              a.CreatedAt,
-		UpdatedAt:              a.UpdatedAt,
-		NotifyUsersOnPublished: a.NotifyUsersOnPublished,
-		Medias:                 mediasResponse,
-		Categories:             categoriesResponse,
-	}
-}
 
 func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, error) {
 	user := auth.GetUserClaims(ctx)
@@ -156,7 +114,7 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, err
 	}
 
 	// TODO add medias and categes
-	return transform(*a), err
+	return transformAlbumFromDB(*a), err
 }
 
 func (s *service) PostAlbum(ctx context.Context, r AlbumRequest) (AlbumResponse, error) {
@@ -196,7 +154,7 @@ func (s *service) PostAlbum(ctx context.Context, r AlbumRequest) (AlbumResponse,
 		return AlbumResponse{}, err
 	}
 
-	return transform(album), nil
+	return transformAlbumFromDB(album), nil
 
 }
 
@@ -244,7 +202,7 @@ func (s *service) PutAlbum(ctx context.Context, slug string, r AlbumRequest) (Al
 		return AlbumResponse{}, ErrNotFound
 	}
 
-	return transform(*a), nil
+	return transformAlbumFromDB(*a), nil
 }
 
 func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumUpdateRequest) (AlbumResponse, error) {

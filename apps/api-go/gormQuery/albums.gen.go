@@ -25,7 +25,7 @@ func newAlbum(db *gorm.DB) album {
 
 	tableName := _album.albumDo.TableName()
 	_album.ALL = field.NewField(tableName, "*")
-	_album.ID = field.NewInt64(tableName, "id")
+	_album.ID = field.NewInt32(tableName, "id")
 	_album.Slug = field.NewString(tableName, "slug")
 	_album.Title = field.NewString(tableName, "title")
 	_album.Body = field.NewString(tableName, "body")
@@ -58,7 +58,7 @@ type album struct {
 	albumDo albumDo
 
 	ALL                    field.Field
-	ID                     field.Int64
+	ID                     field.Int32
 	Slug                   field.String
 	Title                  field.String
 	Body                   field.String
@@ -89,7 +89,7 @@ func (a album) As(alias string) *album {
 
 func (a *album) updateTableName(table string) *album {
 	a.ALL = field.NewField(table, "*")
-	a.ID = field.NewInt64(table, "id")
+	a.ID = field.NewInt32(table, "id")
 	a.Slug = field.NewString(table, "slug")
 	a.Title = field.NewString(table, "title")
 	a.Body = field.NewString(table, "body")

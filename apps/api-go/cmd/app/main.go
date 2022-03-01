@@ -4,7 +4,6 @@ import (
 	album "api-go/albums"
 	"api-go/config"
 	"api-go/database"
-	"api-go/database2"
 	"fmt"
 	"net/http"
 	"os"
@@ -24,7 +23,7 @@ func main() {
 		logger = log.With(logger, "caller", log.DefaultCaller)
 	}
 
-	db, _ := database2.Init(config)
+	// db, _ := database2.Init(config)
 	orm, _ := database.Init(config)
 
 	// db.AutoMigrate(&article.Article{})
