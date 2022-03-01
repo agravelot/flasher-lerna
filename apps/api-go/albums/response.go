@@ -74,6 +74,14 @@ type CustomPropertiesResponse struct {
 	Width  int `json:"width"`
 }
 
+type ResponsiveImagesResponse struct {
+	Responsive ResponsiveResponse `gorm:"" json:"responsive"`
+}
+type ResponsiveResponse struct {
+	Urls      []string `gorm:"type:text[];" json:"urls"`
+	Base64Svg string   `json:"base64svg"`
+}
+
 type MediaReponse struct {
 	ID       int32   `json:"id" example:"1"`
 	Name     string  `json:"name" example:"A good media"`
@@ -82,9 +90,9 @@ type MediaReponse struct {
 	Size     int64   `json:"size" example:"1"`
 	// Manipulations    pgtype.JSON
 	CustomProperties CustomPropertiesResponse `json:"custom_properties"`
-	// ResponsiveImages pgtype.JSON
-	CreatedAt *time.Time `json:"created_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
-	UpdatedAt *time.Time `json:"updated_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
+	ResponsiveImages ResponsiveImagesResponse `json:"responsive_images"`
+	CreatedAt        *time.Time               `json:"created_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
+	UpdatedAt        *time.Time               `json:"updated_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
 }
 
 func transformMediaFromDB(media model.Medium) MediaReponse {
@@ -99,6 +107,12 @@ func transformMediaFromDB(media model.Medium) MediaReponse {
 		CustomProperties: CustomPropertiesResponse{
 			Height: media.CustomProperties.Height,
 			Width:  media.CustomProperties.Width,
+		},
+		ResponsiveImages: ResponsiveImagesResponse{
+			Responsive: ResponsiveResponse{
+				Urls:      media.ResponsiveImages.Responsive.Urls,
+				Base64Svg: media.ResponsiveImages.Responsive.Base64Svg,
+			},
 		},
 	}
 }

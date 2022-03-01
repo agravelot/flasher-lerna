@@ -48,6 +48,7 @@ func main() {
 	medias := g.GenerateModel(
 		"media",
 		gen.FieldType("custom_properties", "*CustomProperties"),
+		gen.FieldType("responsive_images", "*ResponsiveImages"),
 	)
 	categories := g.GenerateModel("categories", gen.FieldType("id", "int64"))
 	albums := g.GenerateModel(

@@ -1,12 +1,11 @@
 package model
 
 import (
+	"bytes"
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
 	"fmt"
-
-	"github.com/lib/pq"
 )
 
 type CustomProperties struct {
@@ -39,20 +38,24 @@ func (ri ResponsiveImages) Value() (driver.Value, error) {
 }
 
 func (ri *ResponsiveImages) Scan(value interface{}) error {
-	bytes, ok := value.([]byte)
+	b, ok := value.([]byte)
+	// Defaults value is []
+	if bytes.Equal(b, []byte("[]")) {
+		return nil
+	}
 	if !ok {
 		return errors.New(fmt.Sprint("Failed to unmarshal JSONB value:", value))
 	}
 
 	result := ResponsiveImages{}
-	err := json.Unmarshal(bytes, &result)
+	err := json.Unmarshal(b, &result)
 	*ri = result
 	return err
 }
 
 type Responsive struct {
-	Urls      pq.StringArray `gorm:"type:text[];" json:"urls"`
-	Base64Svg string         `json:"base64svg"`
+	Urls      []string `gorm:"type:text[];" json:"urls"`
+	Base64Svg string   `json:"base64svg"`
 }
 
 type GeneratedConversions struct {
