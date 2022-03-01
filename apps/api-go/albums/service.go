@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gosimple/slug"
 	"gorm.io/gorm"
 )
@@ -210,8 +209,6 @@ func (s *service) PutAlbum(ctx context.Context, slug string, r AlbumRequest) (Al
 	if user == nil {
 		return AlbumResponse{}, ErrNoAuth
 	}
-
-	spew.Dump(user)
 
 	isAdmin := user != nil && user.IsAdmin()
 	if !isAdmin {

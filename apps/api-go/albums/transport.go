@@ -14,7 +14,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gorilla/mux"
 
 	"github.com/go-kit/kit/auth/jwt"
@@ -131,8 +130,6 @@ func decodeGetAlbumListRequest(_ context.Context, r *http.Request) (request inte
 			}
 		}
 	}
-
-	spew.Dump(getAlbumListRequest{Joins: joins, PaginationParams: PaginationParams{Next: next, Limit: limit}})
 
 	return getAlbumListRequest{Joins: joins, PaginationParams: PaginationParams{Next: next, Limit: limit}}, nil
 }
