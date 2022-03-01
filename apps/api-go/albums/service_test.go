@@ -636,17 +636,19 @@ func TestShouldNotBeAbleToGetNonPublishedAlbumAsGuest(t *testing.T) {
 		t.Error(err)
 	}
 
+	slug := "a-good-title"
 	arg := tutorial.CreateAlbumParams{
 		Title: "A good Title",
 		SsoID: uuid.NullUUID{UUID: id, Valid: true},
+		Slug:  slug,
 	}
 
-	a, err := db.CreateAlbum(context.Background(), arg)
+	_, err = db.CreateAlbum(context.Background(), arg)
 	if err != nil {
 		t.Error(fmt.Errorf("Error creating album: %w", err))
 	}
 
-	_, err = s.GetAlbum(context.Background(), a.Slug)
+	_, err = s.GetAlbum(context.Background(), slug)
 
 	assert.Error(t, err)
 	assert.Equal(t, ErrNotFound, err)

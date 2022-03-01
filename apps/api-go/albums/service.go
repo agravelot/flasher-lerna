@@ -101,14 +101,14 @@ func transform(a model.Album) AlbumResponse {
 
 	var categoriesResponse *[]CategoryReponse
 	if a.Categories != nil {
-		var tmp2 []CategoryReponse
+		var tmp []CategoryReponse
 		for _, c := range a.Categories {
-			tmp2 = append(tmp2, CategoryReponse{
+			tmp = append(tmp, CategoryReponse{
 				ID:   c.ID,
 				Name: c.Name,
 			})
 		}
-		categoriesResponse = &tmp2
+		categoriesResponse = &tmp
 	}
 
 	return AlbumResponse{
@@ -141,9 +141,11 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, err
 		query = query.Where(qb.PublishedAt.Lt(time.Now()), qb.Private.Is(false))
 	}
 
-	query.Preload(qb.Categories).Preload(qb.Medias)
-
-	a, err := query.Where(qb.Slug.Eq(slug)).First()
+	a, err := query.
+		Preload(qb.Categories).
+		Preload(qb.Medias).
+		Where(qb.Slug.Eq(slug)).
+		First()
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return AlbumResponse{}, ErrNotFound
@@ -186,9 +188,7 @@ func (s *service) PostAlbum(ctx context.Context, r AlbumRequest) (AlbumResponse,
 		PublishedAt: r.PublishedAt,
 	}
 
-	qb := gormQuery.Use(s.orm).Album
-
-	query := qb.WithContext(ctx)
+	query := gormQuery.Use(s.orm).Album.WithContext(ctx)
 
 	err := query.WithContext(ctx).Create(&album)
 	// TODO Check duplicate
