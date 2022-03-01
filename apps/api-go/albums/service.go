@@ -5,7 +5,6 @@ import (
 	"api-go/auth"
 	"api-go/gormQuery"
 	"api-go/model"
-	"api-go/tutorial"
 	"context"
 	"errors"
 	"fmt"
@@ -33,13 +32,11 @@ var (
 )
 
 type service struct {
-	db  *tutorial.Queries
 	orm *gorm.DB
 }
 
-func NewService(db *tutorial.Queries, orm *gorm.DB) Service {
+func NewService(orm *gorm.DB) Service {
 	return &service{
-		db:  db,
 		orm: orm,
 	}
 }

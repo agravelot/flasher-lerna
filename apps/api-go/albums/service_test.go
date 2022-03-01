@@ -102,7 +102,7 @@ func TestMain(m *testing.M) {
 	db, _ = database2.Init(config)
 	orm, _ = database.Init(config)
 	database2.ClearDB(db)
-	s = NewService(db, orm)
+	s = NewService(orm)
 
 	exitVal := m.Run() // Run tests
 	// Do stuff after test

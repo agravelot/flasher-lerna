@@ -49,7 +49,7 @@ func main() {
 
 	var sa album.Service
 	{
-		sa = album.NewService(db, orm)
+		sa = album.NewService(orm)
 		sa = album.LoggingMiddleware(logger)(sa)
 	}
 
