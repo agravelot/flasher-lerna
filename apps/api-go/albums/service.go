@@ -256,14 +256,24 @@ func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumUpdateRequ
 
 func (s *service) DeleteAlbum(ctx context.Context, slug string) error {
 
-	if _, err := s.db.GetAlbumBySlug(ctx, tutorial.GetAlbumBySlugParams{
-		Slug:    slug,
-		IsAdmin: false, // TODO check if user is admin
-	}); err != nil {
-		return ErrNotFound
+	user := auth.GetUserClaims(ctx)
+	if user == nil {
+		return ErrNoAuth
 	}
 
-	err := s.db.DeleteAlbum(ctx, slug)
+	isAdmin := user != nil && user.IsAdmin()
+	if !isAdmin {
+		return ErrNotAdmin
+	}
+
+	qb := gormQuery.Use(s.orm).Album
+
+	query := qb.WithContext(ctx)
+
+	r, err := query.Where(qb.Slug.Eq(slug)).Delete()
+	if r.RowsAffected == 0 {
+		return ErrNotFound
+	}
 	if err != nil {
 		return err
 	}

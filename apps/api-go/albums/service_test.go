@@ -1038,28 +1038,68 @@ func TestShouldNotBeAbleToUpdateAlbumAsGuest(t *testing.T) {
 
 // //////// DELETE //////////
 
-// func TestShouldBeAbleToDeleteAlbumAndNotSoftDeleted(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	a := AlbumModel{Title: "A good Title", Slug: "a-good-slug", MetaDescription: "a meta decription", SsoID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}
-// 	err := db.Create(&a).Error
-// 	if err != nil {
-// 		t.Error(err)
-// 	}
+func TestAdminShouldBeAbleToDeleteAlbumAndNotSoftDeleted(t *testing.T) {
+	database2.ClearDB(db)
+	ctx, _ := authAsAdmin(context.Background())
+	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	a := model.Album{
+		Title:           "A good Title",
+		Slug:            "a-good-slug",
+		MetaDescription: "a meta decription",
+		SsoID:           &id,
+	}
+	err := orm.Create(&a).Error
+	if err != nil {
+		t.Error(err)
+	}
 
-// 	err = s.DeleteAlbum(context.Background(), a.Slug)
+	err = s.DeleteAlbum(ctx, a.Slug)
 
-// 	var total, totalScopeless int64
-// 	db.Model(&a).Count(&total)
-// 	db.Model(&a).Unscoped().Count(&totalScopeless)
-// 	assert.NoError(t, err)
-// 	assert.Equal(t, 0, int(total))
-// 	assert.Equal(t, 0, int(totalScopeless))
-// }
+	var total, totalScopeless int64
+	orm.Model(&a).Count(&total)
+	orm.Model(&a).Unscoped().Count(&totalScopeless)
+	assert.NoError(t, err)
+	assert.Equal(t, 0, int(total))
+	assert.Equal(t, 0, int(totalScopeless))
+}
 
-// func TestShouldNotBeAbleToDeleteAnNonExistantAlbum(t *testing.T) {
-// 	database2.ClearDB(db)
-// 	err := s.DeleteAlbum(context.Background(), "a-random-slug")
+func TestAdminShouldNotBeAbleToDeleteAnNonExistantAlbum(t *testing.T) {
+	database2.ClearDB(db)
+	ctx, _ := authAsAdmin(context.Background())
 
-// 	assert.Error(t, err)
-// 	assert.EqualError(t, err, ErrNotFound.Error())
-// }
+	err := s.DeleteAlbum(ctx, "non-existant-slug")
+
+	assert.Error(t, err)
+	assert.EqualError(t, err, ErrNotFound.Error())
+}
+
+func TestUserShouldNotBeAbleToDelete(t *testing.T) {
+	database2.ClearDB(db)
+	ctx, _ := authAsUser(context.Background())
+	slug := "a-good-slug"
+	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	a := model.Album{
+		Title:           "A good Title",
+		Slug:            slug,
+		MetaDescription: "a meta decription",
+		SsoID:           &id,
+	}
+	err := orm.Create(&a).Error
+	if err != nil {
+		t.Error(err)
+	}
+
+	err = s.DeleteAlbum(ctx, slug)
+
+	assert.Error(t, err)
+	assert.EqualError(t, err, ErrNotAdmin.Error())
+}
+
+func TestGuestShouldNotBeAbleToDelete(t *testing.T) {
+	database2.ClearDB(db)
+
+	err := s.DeleteAlbum(context.Background(), "a-random-slug")
+
+	assert.Error(t, err)
+	assert.EqualError(t, err, ErrNoAuth.Error())
+}
