@@ -52,7 +52,7 @@ func NewService(db *gorm.DB) Service {
 
 func Published(q *gormQuery.Query) func(db gen.Dao) gen.Dao {
 	return func(db gen.Dao) gen.Dao {
-		return db.Where(q.Album.PublishedAt.IsNotNull())
+		return db.Where(q.Article.PublishedAt.IsNotNull())
 	}
 }
 
