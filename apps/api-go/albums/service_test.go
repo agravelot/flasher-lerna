@@ -288,7 +288,7 @@ func TestShouldBeAbleToListPublishedAlbumsOnSecondPage(t *testing.T) {
 		t.Error(fmt.Errorf("Error creating album: %w", err))
 	}
 
-	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{Next: uint(lastPageID), Limit: 10}})
+	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{Next: lastPageID, Limit: 10}})
 
 	assert.Equal(t, int64(11), r.Meta.Total)
 	assert.Equal(t, int32(10), r.Meta.Limit)
@@ -341,7 +341,7 @@ func TestShouldBeAbleToListPublishedAlbumsOnSecondPageWithCustomPerPage(t *testi
 		t.Error(fmt.Errorf("Error creating album: %w", err))
 	}
 
-	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{Next: uint(lastPageID), Limit: 2}})
+	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{Next: lastPageID, Limit: 2}})
 
 	assert.Equal(t, int64(3), r.Meta.Total)
 	assert.Equal(t, int32(2), r.Meta.Limit)

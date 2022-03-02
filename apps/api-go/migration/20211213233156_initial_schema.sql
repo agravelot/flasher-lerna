@@ -1,14 +1,14 @@
 -- +goose Up
 CREATE TABLE articles (
     id bigint NOT NULL,
-    slug text,
-    name text,
-    meta_description text,
-    content text,
-    author_uuid text,
+    slug text NOT NULL,
+    name text NOT NULL,
+    meta_description text NOT NULL,
+    content text NOT NULL,
+    author_uuid text NOT NULL,
     published_at timestamp with time zone,
-    created_at timestamp with time zone,
-    updated_at timestamp with time zone,
+    created_at timestamp with time zone NOT NULL,
+    updated_at timestamp with time zone NOT NULL,
     deleted_at timestamp with time zone
 );
 

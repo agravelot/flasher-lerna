@@ -1,10 +1,9 @@
 package api
 
 import (
-	"strconv"
+	"api-go/gormQuery"
 
-	"github.com/labstack/echo/v4"
-	"gorm.io/gorm"
+	"gorm.io/gen"
 )
 
 type MetaOld struct {
@@ -22,44 +21,10 @@ type Paginated struct {
 	Meta Meta        `json:"meta"`
 }
 
-func Paginatee(c echo.Context) func(db *gorm.DB) *gorm.DB {
-	return func(db *gorm.DB) *gorm.DB {
-		page, _ := strconv.Atoi(c.QueryParam("page"))
-		if page == 0 {
-			page = 1
-		}
-
-		pageSize, _ := strconv.Atoi(c.QueryParam("per_page"))
-		switch {
-		case pageSize > 100:
-			pageSize = 100
-		case pageSize <= 0:
-			pageSize = 10
-		}
-
-		offset := (page - 1) * pageSize
-		return db.Offset(offset).Limit(pageSize)
-	}
-}
-
-func GetPaginationFromRequest(c echo.Context) (string, int) {
-	page := c.QueryParam("page")
-
-	pageSize, _ := strconv.Atoi(c.QueryParam("per_page"))
-
-	switch {
-	case pageSize > 100:
-		pageSize = 100
-	case pageSize <= 0:
-		pageSize = 10
-	}
-	return page, pageSize
-}
-
-func Paginate(next uint, pageSize int) func(db *gorm.DB) *gorm.DB {
-	return func(db *gorm.DB) *gorm.DB {
+func Paginate(q *gormQuery.Query, next int32, pageSize int) func(db gen.Dao) gen.Dao {
+	return func(db gen.Dao) gen.Dao {
 		if next != 0 {
-			db = db.Where("id > ?", next)
+			db = db.Where(q.Album.ID.Gt(next))
 		}
 		return db.Limit(pageSize)
 	}

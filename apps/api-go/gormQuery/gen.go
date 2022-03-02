@@ -15,6 +15,7 @@ func Use(db *gorm.DB) *Query {
 	return &Query{
 		db:       db,
 		Album:    newAlbum(db),
+		Article:  newArticle(db),
 		Category: newCategory(db),
 		Medium:   newMedium(db),
 	}
@@ -24,6 +25,7 @@ type Query struct {
 	db *gorm.DB
 
 	Album    album
+	Article  article
 	Category category
 	Medium   medium
 }
@@ -34,6 +36,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
 		db:       db,
 		Album:    q.Album.clone(db),
+		Article:  q.Article.clone(db),
 		Category: q.Category.clone(db),
 		Medium:   q.Medium.clone(db),
 	}
@@ -41,6 +44,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 
 type queryCtx struct {
 	Album    albumDo
+	Article  articleDo
 	Category categoryDo
 	Medium   mediumDo
 }
@@ -48,6 +52,7 @@ type queryCtx struct {
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
 		Album:    *q.Album.WithContext(ctx),
+		Article:  *q.Article.WithContext(ctx),
 		Category: *q.Category.WithContext(ctx),
 		Medium:   *q.Medium.WithContext(ctx),
 	}

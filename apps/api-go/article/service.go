@@ -3,30 +3,33 @@ package article
 import (
 	"api-go/api"
 	"api-go/auth"
+	"api-go/gormQuery"
+	"api-go/model"
 	"context"
 	"errors"
 
+	"gorm.io/gen"
 	"gorm.io/gorm"
 )
 
 // Service is a simple CRUD interface for user articles.
 type Service interface {
-	PostArticle(ctx context.Context, p Article) (Article, error)
 	GetArticleList(ctx context.Context, params PaginationParams) (PaginatedArticles, error)
-	GetArticle(ctx context.Context, slug string) (Article, error)
-	PutArticle(ctx context.Context, slug string, p Article) (Article, error)
-	PatchArticle(ctx context.Context, slug string, p Article) (Article, error)
+	GetArticle(ctx context.Context, slug string) (model.Article, error)
+	PostArticle(ctx context.Context, r ArticleRequest) (model.Article, error)
+	PutArticle(ctx context.Context, slug string, r ArticleRequest) (model.Article, error)
+	PatchArticle(ctx context.Context, slug string, r ArticleRequest) (model.Article, error)
 	DeleteArticle(ctx context.Context, slug string) error
 }
 
 type PaginationParams struct {
-	Next  uint
+	Next  int32
 	Limit int
 }
 
 type PaginatedArticles struct {
-	Data []Article   `json:"data"`
-	Meta api.MetaOld `json:"meta"`
+	Data []*model.Article `json:"data"`
+	Meta api.MetaOld      `json:"meta"`
 }
 
 var (
@@ -46,25 +49,31 @@ func NewService(db *gorm.DB) Service {
 	}
 }
 
-func Published(db *gorm.DB) *gorm.DB {
-	return db.Where("published_at is not null")
+func Published(q *gormQuery.Query) func(db gen.Dao) gen.Dao {
+	return func(db gen.Dao) gen.Dao {
+		return db.Where(q.Album.PublishedAt.IsNotNull())
+	}
 }
 
 func (s *service) GetArticleList(ctx context.Context, params PaginationParams) (PaginatedArticles, error) {
 	user := auth.GetUserClaims(ctx)
 
-	articles := []Article{}
-	var total int64
-
-	query := s.db.Model(&articles)
+	qb := gormQuery.Use(s.db).Article
+	query := qb.WithContext(ctx)
 
 	if user == nil || (user != nil && user.IsAdmin() == false) {
-		query = query.Scopes(Published)
+		query = query.Scopes(Published(gormQuery.Use(s.db)))
 	}
 
 	// TODO Can run in goroutines ?
-	query.Count(&total)
-	query.Scopes(api.Paginate(params.Next, params.Limit)).Find(&articles)
+	total, err := query.Count()
+	if err != nil {
+		return PaginatedArticles{}, err
+	}
+	articles, err := query.Scopes(api.Paginate(gormQuery.Use(s.db), params.Next, params.Limit)).Find()
+	if err != nil {
+		return PaginatedArticles{}, err
+	}
 
 	return PaginatedArticles{
 		Data: articles,
@@ -72,68 +81,88 @@ func (s *service) GetArticleList(ctx context.Context, params PaginationParams) (
 	}, nil
 }
 
-func (s *service) PostArticle(ctx context.Context, a Article) (Article, error) {
+func (s *service) PostArticle(ctx context.Context, r ArticleRequest) (model.Article, error) {
 	user := auth.GetUserClaims(ctx)
+	qb := gormQuery.Use(s.db).Article
+	query := qb.WithContext(ctx)
 
 	if user == nil {
-		return Article{}, ErrNoAuth
+		return model.Article{}, ErrNoAuth
 	}
 
 	if user.IsAdmin() == false {
-		return Article{}, ErrNotAdmin
+		return model.Article{}, ErrNotAdmin
 	}
 
-	a.AuthorUUID = user.Sub
-
-	if err := a.Validate(); err != nil {
-		return Article{}, err
+	if err := r.Validate(); err != nil {
+		return model.Article{}, err
 	}
 
-	if err := s.db.Create(&a).Error; err != nil {
+	a := model.Article{
+		ID:              r.ID,
+		Slug:            r.Slug,
+		Name:            r.Name,
+		MetaDescription: r.MetaDescription,
+		Content:         r.Content,
+		PublishedAt:     r.PublishedAt,
+		AuthorUUID:      user.Sub,
+	}
+	err := query.Create(&a)
+	if err != nil {
 		// TODO Cast pg error to have clean check
 		if err.Error() == "ERROR: duplicate key value violates unique constraint \"idx_articles_slug\" (SQLSTATE 23505)" {
-			return Article{}, ErrAlreadyExists
+			return model.Article{}, ErrAlreadyExists
 		}
-		return Article{}, err
+		return model.Article{}, err
 	}
 
 	return a, nil
 }
 
-func (s *service) GetArticle(ctx context.Context, slug string) (Article, error) {
+func (s *service) GetArticle(ctx context.Context, slug string) (model.Article, error) {
 	user := auth.GetUserClaims(ctx)
 
-	query := s.db.Where("slug = ?", slug)
+	qb := gormQuery.Use(s.db).Article
+	query := qb.WithContext(ctx)
+
+	query.Where(qb.Slug.Eq(slug))
 
 	if user == nil || (user != nil && user.IsAdmin() == false) {
-		query = query.Scopes(Published)
+		query = query.Scopes(Published(gormQuery.Use(s.db)))
 	}
 
-	a := Article{}
-	err := query.First(&a).Error
+	a, err := query.First()
 
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
-		return Article{}, ErrNotFound
+		return model.Article{}, ErrNotFound
 	}
 
-	return a, err
+	return *a, err
 }
 
-func (s *service) PutArticle(ctx context.Context, slug string, a Article) (Article, error) {
+func (s *service) PutArticle(ctx context.Context, slug string, r ArticleRequest) (model.Article, error) {
 	user := auth.GetUserClaims(ctx)
 
 	if user == nil {
-		return Article{}, ErrNoAuth
+		return model.Article{}, ErrNoAuth
 	}
 
 	if user.IsAdmin() == false {
-		return Article{}, ErrNotAdmin
+		return model.Article{}, ErrNotAdmin
 	}
 
-	a.AuthorUUID = user.Sub
+	a := model.Article{
+		ID:              r.ID,
+		Slug:            r.Slug,
+		Name:            r.Name,
+		MetaDescription: r.MetaDescription,
+		Content:         r.Content,
+		PublishedAt:     r.PublishedAt,
+		AuthorUUID:      user.Sub,
+	}
 
-	if err := a.Validate(); err != nil {
-		return Article{}, err
+	if err := r.Validate(); err != nil {
+		return model.Article{}, err
 	}
 
 	s.db.Save(a)
@@ -141,16 +170,16 @@ func (s *service) PutArticle(ctx context.Context, slug string, a Article) (Artic
 	return a, nil
 }
 
-func (s *service) PatchArticle(ctx context.Context, slug string, a Article) (Article, error) {
-	return Article{}, nil
+func (s *service) PatchArticle(ctx context.Context, slug string, a ArticleRequest) (model.Article, error) {
+	return model.Article{}, nil
 }
 
 func (s *service) DeleteArticle(ctx context.Context, slug string) error {
-	if err := s.db.Where("slug = ?", slug).First(&Article{}).Error; err != nil {
+	if err := s.db.Where("slug = ?", slug).First(&model.Article{}).Error; err != nil {
 		return ErrNotFound
 	}
 
-	err := s.db.Where("slug = ?", slug).Delete(&Article{}).Error
+	err := s.db.Where("slug = ?", slug).Delete(&model.Article{}).Error
 	if err != nil {
 		return err
 	}

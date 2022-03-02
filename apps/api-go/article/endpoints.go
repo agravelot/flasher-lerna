@@ -66,8 +66,8 @@ func MakeGetArticleListEndpoint(s Service) endpoint.Endpoint {
 func MakePostArticleEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(postArticleRequest)
-		a, e := s.PostArticle(ctx, req.Article)
-		return postArticleResponse{Article: a, Err: e}, nil
+		a, e := s.PostArticle(ctx, req.ArticleRequest)
+		return postArticleResponse{ArticleRequest: a, Err: e}, nil
 	}
 }
 
@@ -77,7 +77,7 @@ func MakeGetArticleEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(getArticleRequest)
 		p, e := s.GetArticle(ctx, req.ID)
-		return getArticleResponse{Article: p, Err: e}, nil
+		return getArticleResponse{ArticleRequest: p, Err: e}, nil
 	}
 }
 
@@ -86,8 +86,8 @@ func MakeGetArticleEndpoint(s Service) endpoint.Endpoint {
 func MakePutArticleEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(putArticleRequest)
-		a, e := s.PutArticle(ctx, req.ID, req.Article)
-		return putArticleResponse{Article: a, Err: e}, nil
+		a, e := s.PutArticle(ctx, req.ID, req.ArticleRequest)
+		return putArticleResponse{ArticleRequest: a, Err: e}, nil
 	}
 }
 
@@ -96,8 +96,8 @@ func MakePutArticleEndpoint(s Service) endpoint.Endpoint {
 func MakePatchArticleEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(patchArticleRequest)
-		a, e := s.PatchArticle(ctx, req.Slug, req.Article)
-		return patchArticleResponse{Article: a, Err: e}, nil
+		a, e := s.PatchArticle(ctx, req.Slug, req.ArticleRequest)
+		return patchArticleResponse{ArticleRequest: a, Err: e}, nil
 	}
 }
 
@@ -127,18 +127,18 @@ func MakeDeleteArticleEndpoint(s Service) endpoint.Endpoint {
 // interface.
 
 type postArticleRequest struct {
-	Article
+	ArticleRequest
 }
 
 type postArticleResponse struct {
-	Article
+	ArticleRequest
 	Err error `json:"err,omitempty"`
 }
 
 func (r postArticleResponse) error() error { return r.Err }
 
 type getArticleListRequest struct {
-	Next  uint
+	Next  int32
 	Limit int
 }
 
@@ -154,7 +154,7 @@ type getArticleRequest struct {
 func (r getArticleListResponse) error() error { return r.Err }
 
 type getArticleResponse struct {
-	Article
+	ArticleRequest
 	Err error `json:"err,omitempty"`
 }
 
@@ -162,11 +162,11 @@ func (r getArticleResponse) error() error { return r.Err }
 
 type putArticleRequest struct {
 	ID string
-	Article
+	ArticleRequest
 }
 
 type putArticleResponse struct {
-	Article
+	ArticleRequest
 	Err error `json:"err,omitempty"`
 }
 
@@ -174,11 +174,11 @@ func (r putArticleResponse) error() error { return nil }
 
 type patchArticleRequest struct {
 	Slug string
-	Article
+	ArticleRequest
 }
 
 type patchArticleResponse struct {
-	Article
+	ArticleRequest
 	Err error `json:"err,omitempty"`
 }
 

@@ -72,6 +72,7 @@ func main() {
 		medias,
 		categories,
 		albums,
+		g.GenerateModel("articles"),
 	)
 
 	// apply diy interfaces on structs or table models
