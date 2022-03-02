@@ -38,13 +38,15 @@ func main() {
 		sArticle = article.LoggingMiddleware(logger)(sArticle)
 	}
 
-	var h http.Handler
-	{
-		h = article.MakeHTTPHandler(sArticle, log.With(logger, "component", "HTTP"))
-		h = album.MakeHTTPHandler(sAlbum, log.With(logger, "component", "HTTP"))
-	}
+	httpLogger := log.With(logger, "component", "http")
+	mux := http.NewServeMux()
 
-	errs := make(chan error)
+	mux.Handle("/articles", article.MakeHTTPHandler(sArticle, httpLogger))
+	mux.Handle("/albums", album.MakeHTTPHandler(sAlbum, httpLogger))
+
+	http.Handle("/", mux)
+
+	errs := make(chan error, 2)
 	go func() {
 		c := make(chan os.Signal)
 		signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
@@ -53,7 +55,7 @@ func main() {
 
 	go func() {
 		logger.Log("transport", "HTTP", "addr", config.Port)
-		errs <- http.ListenAndServe(fmt.Sprintf(":%d", config.Port), h)
+		errs <- http.ListenAndServe(fmt.Sprintf(":%d", config.Port), nil)
 	}()
 
 	logger.Log("exit", <-errs)
