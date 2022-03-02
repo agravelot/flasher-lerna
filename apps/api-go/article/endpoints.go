@@ -67,7 +67,7 @@ func MakePostArticleEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(postArticleRequest)
 		a, e := s.PostArticle(ctx, req.ArticleRequest)
-		return postArticleResponse{ArticleRequest: a, Err: e}, nil
+		return postArticleResponse{ArticleResponse: a, Err: e}, nil
 	}
 }
 
@@ -77,7 +77,7 @@ func MakeGetArticleEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(getArticleRequest)
 		p, e := s.GetArticle(ctx, req.ID)
-		return getArticleResponse{ArticleRequest: p, Err: e}, nil
+		return getArticleResponse{ArticleResponse: p, Err: e}, nil
 	}
 }
 
@@ -87,7 +87,7 @@ func MakePutArticleEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(putArticleRequest)
 		a, e := s.PutArticle(ctx, req.ID, req.ArticleRequest)
-		return putArticleResponse{ArticleRequest: a, Err: e}, nil
+		return putArticleResponse{ArticleResponse: a, Err: e}, nil
 	}
 }
 
@@ -97,7 +97,7 @@ func MakePatchArticleEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(patchArticleRequest)
 		a, e := s.PatchArticle(ctx, req.Slug, req.ArticleRequest)
-		return patchArticleResponse{ArticleRequest: a, Err: e}, nil
+		return patchArticleResponse{ArticleResponse: a, Err: e}, nil
 	}
 }
 
@@ -131,7 +131,7 @@ type postArticleRequest struct {
 }
 
 type postArticleResponse struct {
-	ArticleRequest
+	ArticleResponse
 	Err error `json:"err,omitempty"`
 }
 
@@ -154,7 +154,7 @@ type getArticleRequest struct {
 func (r getArticleListResponse) error() error { return r.Err }
 
 type getArticleResponse struct {
-	ArticleRequest
+	ArticleResponse
 	Err error `json:"err,omitempty"`
 }
 
@@ -166,7 +166,7 @@ type putArticleRequest struct {
 }
 
 type putArticleResponse struct {
-	ArticleRequest
+	ArticleResponse
 	Err error `json:"err,omitempty"`
 }
 
@@ -178,7 +178,7 @@ type patchArticleRequest struct {
 }
 
 type patchArticleResponse struct {
-	ArticleRequest
+	ArticleResponse
 	Err error `json:"err,omitempty"`
 }
 

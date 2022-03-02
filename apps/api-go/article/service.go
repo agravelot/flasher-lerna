@@ -7,6 +7,7 @@ import (
 	"api-go/model"
 	"context"
 	"errors"
+	"fmt"
 
 	"gorm.io/gen"
 	"gorm.io/gorm"
@@ -15,10 +16,10 @@ import (
 // Service is a simple CRUD interface for user articles.
 type Service interface {
 	GetArticleList(ctx context.Context, params PaginationParams) (PaginatedArticles, error)
-	GetArticle(ctx context.Context, slug string) (model.Article, error)
-	PostArticle(ctx context.Context, r ArticleRequest) (model.Article, error)
-	PutArticle(ctx context.Context, slug string, r ArticleRequest) (model.Article, error)
-	PatchArticle(ctx context.Context, slug string, r ArticleRequest) (model.Article, error)
+	GetArticle(ctx context.Context, slug string) (ArticleResponse, error)
+	PostArticle(ctx context.Context, r ArticleRequest) (ArticleResponse, error)
+	PutArticle(ctx context.Context, slug string, r ArticleRequest) (ArticleResponse, error)
+	PatchArticle(ctx context.Context, slug string, r ArticleRequest) (ArticleResponse, error)
 	DeleteArticle(ctx context.Context, slug string) error
 }
 
@@ -28,8 +29,8 @@ type PaginationParams struct {
 }
 
 type PaginatedArticles struct {
-	Data []*model.Article `json:"data"`
-	Meta api.MetaOld      `json:"meta"`
+	Data []ArticleResponse `json:"data"`
+	Meta api.MetaOld       `json:"meta"`
 }
 
 var (
@@ -75,27 +76,44 @@ func (s *service) GetArticleList(ctx context.Context, params PaginationParams) (
 		return PaginatedArticles{}, err
 	}
 
+	var articleResponse []ArticleResponse
+	for _, article := range articles {
+		// TODO add missing fields
+		articleResponse = append(articleResponse, tramsform(*article))
+	}
+
 	return PaginatedArticles{
-		Data: articles,
+		Data: articleResponse,
 		Meta: api.MetaOld{Total: total, Limit: params.Limit},
 	}, nil
 }
 
-func (s *service) PostArticle(ctx context.Context, r ArticleRequest) (model.Article, error) {
+func tramsform(a model.Article) ArticleResponse {
+	return ArticleResponse{
+		ID:              a.ID,
+		Slug:            a.Slug,
+		Name:            a.Name,
+		MetaDescription: a.MetaDescription,
+		Content:         a.Content,
+		PublishedAt:     a.PublishedAt,
+	}
+}
+
+func (s *service) PostArticle(ctx context.Context, r ArticleRequest) (ArticleResponse, error) {
 	user := auth.GetUserClaims(ctx)
 	qb := gormQuery.Use(s.db).Article
 	query := qb.WithContext(ctx)
 
 	if user == nil {
-		return model.Article{}, ErrNoAuth
+		return ArticleResponse{}, ErrNoAuth
 	}
 
 	if user.IsAdmin() == false {
-		return model.Article{}, ErrNotAdmin
+		return ArticleResponse{}, ErrNotAdmin
 	}
 
 	if err := r.Validate(); err != nil {
-		return model.Article{}, err
+		return ArticleResponse{}, err
 	}
 
 	a := model.Article{
@@ -111,15 +129,15 @@ func (s *service) PostArticle(ctx context.Context, r ArticleRequest) (model.Arti
 	if err != nil {
 		// TODO Cast pg error to have clean check
 		if err.Error() == "ERROR: duplicate key value violates unique constraint \"idx_articles_slug\" (SQLSTATE 23505)" {
-			return model.Article{}, ErrAlreadyExists
+			return ArticleResponse{}, ErrAlreadyExists
 		}
-		return model.Article{}, err
+		return ArticleResponse{}, err
 	}
 
-	return a, nil
+	return tramsform(a), nil
 }
 
-func (s *service) GetArticle(ctx context.Context, slug string) (model.Article, error) {
+func (s *service) GetArticle(ctx context.Context, slug string) (ArticleResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
 	qb := gormQuery.Use(s.db).Article
@@ -134,21 +152,23 @@ func (s *service) GetArticle(ctx context.Context, slug string) (model.Article, e
 	a, err := query.First()
 
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
-		return model.Article{}, ErrNotFound
+		return ArticleResponse{}, ErrNotFound
 	}
 
-	return *a, err
+	return tramsform(*a), err
 }
 
-func (s *service) PutArticle(ctx context.Context, slug string, r ArticleRequest) (model.Article, error) {
+func (s *service) PutArticle(ctx context.Context, slug string, r ArticleRequest) (ArticleResponse, error) {
 	user := auth.GetUserClaims(ctx)
+	qb := gormQuery.Use(s.db).Article
+	query := qb.WithContext(ctx)
 
 	if user == nil {
-		return model.Article{}, ErrNoAuth
+		return ArticleResponse{}, ErrNoAuth
 	}
 
 	if user.IsAdmin() == false {
-		return model.Article{}, ErrNotAdmin
+		return ArticleResponse{}, ErrNotAdmin
 	}
 
 	a := model.Article{
@@ -162,16 +182,19 @@ func (s *service) PutArticle(ctx context.Context, slug string, r ArticleRequest)
 	}
 
 	if err := r.Validate(); err != nil {
-		return model.Article{}, err
+		return ArticleResponse{}, err
 	}
 
-	s.db.Save(a)
+	err := query.Save(&a)
+	if err != nil {
+		return ArticleResponse{}, fmt.Errorf("unable update article: %w", err)
+	}
 
-	return a, nil
+	return tramsform(a), nil
 }
 
-func (s *service) PatchArticle(ctx context.Context, slug string, a ArticleRequest) (model.Article, error) {
-	return model.Article{}, nil
+func (s *service) PatchArticle(ctx context.Context, slug string, a ArticleRequest) (ArticleResponse, error) {
+	return ArticleResponse{}, nil
 }
 
 func (s *service) DeleteArticle(ctx context.Context, slug string) error {

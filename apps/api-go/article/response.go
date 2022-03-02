@@ -29,3 +29,16 @@ func (a *ArticleRequest) Validate() error {
 
 	return err
 }
+
+type ArticleResponse struct {
+	ID              int64  `gorm:"primarykey" json:"id"`
+	Slug            string `json:"slug" gorm:"uniqueIndex"`
+	Name            string `json:"name"`
+	MetaDescription string `json:"meta_description"`
+	Content         string `json:"content"`
+	// AuthorUUID      string     `json:"author_uuid"`
+	PublishedAt *time.Time `json:"published_at" swaggertype:"string" example:"2019-04-19T17:47:28Z" ts:"date,null"`
+
+	// Categories *[]CategoryModel `json:"categories"`
+	// Medias     *[]MediaModel    `json:"medias"`
+}
