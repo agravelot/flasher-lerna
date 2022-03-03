@@ -24,7 +24,7 @@ type Service interface {
 }
 
 type PaginationParams struct {
-	Next  int32
+	Next  int64
 	Limit int
 }
 
@@ -56,6 +56,15 @@ func Published(q *gormQuery.Query) func(db gen.Dao) gen.Dao {
 	}
 }
 
+func Paginate(q *gormQuery.Query, next int64, pageSize int) func(db gen.Dao) gen.Dao {
+	return func(db gen.Dao) gen.Dao {
+		if next != 0 {
+			db = db.Where(q.Article.ID.Gt(next))
+		}
+		return db.Limit(pageSize)
+	}
+}
+
 func (s *service) GetArticleList(ctx context.Context, params PaginationParams) (PaginatedArticles, error) {
 	user := auth.GetUserClaims(ctx)
 
@@ -71,7 +80,7 @@ func (s *service) GetArticleList(ctx context.Context, params PaginationParams) (
 	if err != nil {
 		return PaginatedArticles{}, err
 	}
-	articles, err := query.Scopes(api.Paginate(gormQuery.Use(s.db), params.Next, params.Limit)).Find()
+	articles, err := query.Scopes(Paginate(gormQuery.Use(s.db), params.Next, params.Limit)).Find()
 	if err != nil {
 		return PaginatedArticles{}, err
 	}

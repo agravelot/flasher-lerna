@@ -96,7 +96,7 @@ func decodePostArticleRequest(_ context.Context, r *http.Request) (request inter
 }
 
 func decodeGetArticleListRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
-	var next int32
+	var next int64
 	var limit int
 
 	nextString := r.URL.Query().Get("next")
@@ -105,7 +105,7 @@ func decodeGetArticleListRequest(_ context.Context, r *http.Request) (request in
 		if err != nil {
 			return nil, ErrBadRequest
 		}
-		next = int32(v)
+		next = int64(v)
 	}
 
 	limitString := r.URL.Query().Get("limit")

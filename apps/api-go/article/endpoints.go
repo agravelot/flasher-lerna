@@ -138,7 +138,7 @@ type postArticleResponse struct {
 func (r postArticleResponse) error() error { return r.Err }
 
 type getArticleListRequest struct {
-	Next  int32
+	Next  int64
 	Limit int
 }
 

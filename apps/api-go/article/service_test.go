@@ -4,6 +4,7 @@ import (
 	"api-go/auth"
 	"api-go/config"
 	"api-go/database"
+	"api-go/model"
 	"context"
 	"os"
 	"strconv"
@@ -11,7 +12,6 @@ import (
 	"time"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/guregu/null"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 )
@@ -112,7 +112,8 @@ func TestShouldBeAbleToListEmpty(t *testing.T) {
 
 func TestShouldBeAbleToListWithOnePublishedArticle(t *testing.T) {
 	database.ClearDB(db)
-	a := Article{Name: "A good name", PublishedAt: null.NewTime(time.Now(), true)}
+	n := time.Now()
+	a := model.Article{Name: "A good name", PublishedAt: &n}
 	db.Create(&a)
 
 	r, _ := s.GetArticleList(context.Background(), PaginationParams{0, 10})
@@ -123,14 +124,15 @@ func TestShouldBeAbleToListWithOnePublishedArticle(t *testing.T) {
 }
 
 func TestShouldBeAbleToListPublishedArticlesOnSecondPage(t *testing.T) {
-	var articles []Article
+	var articles []model.Article
 	database.ClearDB(db)
+	n := time.Now()
 	for i := 0; i < 10; i++ {
-		tmp := Article{Name: "A good name " + strconv.Itoa(i), PublishedAt: null.NewTime(time.Now(), true)}
+		tmp := model.Article{Name: "A good name " + strconv.Itoa(i), PublishedAt: &n}
 		db.Create(&tmp)
 		articles = append(articles, tmp)
 	}
-	a := Article{Name: "On second page", PublishedAt: null.NewTime(time.Now(), true)}
+	a := model.Article{Name: "On second page", PublishedAt: &n}
 	db.Create(&a)
 
 	r, _ := s.GetArticleList(context.Background(), PaginationParams{Next: articles[9].ID, Limit: 10})
@@ -142,14 +144,15 @@ func TestShouldBeAbleToListPublishedArticlesOnSecondPage(t *testing.T) {
 }
 
 func TestShouldBeAbleToListPublishedArticlesOnSecondPageWithCustomPerPage(t *testing.T) {
-	var articles []Article
+	var articles []model.Article
+	n := time.Now()
 	database.ClearDB(db)
 	for i := 0; i < 2; i++ {
-		tmp := Article{Name: "A good name " + strconv.Itoa(i), PublishedAt: null.NewTime(time.Now(), true)}
+		tmp := model.Article{Name: "A good name " + strconv.Itoa(i), PublishedAt: &n}
 		db.Create(&tmp)
 		articles = append(articles, tmp)
 	}
-	a := Article{Name: "On second page", PublishedAt: null.NewTime(time.Now(), true)}
+	a := model.Article{Name: "On second page", PublishedAt: &n}
 	db.Create(&a)
 
 	r, _ := s.GetArticleList(context.Background(), PaginationParams{Next: articles[1].ID, Limit: 2})
@@ -163,7 +166,7 @@ func TestShouldBeAbleToListPublishedArticlesOnSecondPageWithCustomPerPage(t *tes
 func TestShouldBeAbleToListNonPublishedArticleAsAdmin(t *testing.T) {
 	ctx, _ := authAsAdmin(context.Background())
 	database.ClearDB(db)
-	a := Article{Name: "A good name"}
+	a := model.Article{Name: "A good name"}
 	db.Create(&a)
 
 	r, _ := s.GetArticleList(ctx, PaginationParams{0, 10})
@@ -175,7 +178,8 @@ func TestShouldBeAbleToListNonPublishedArticleAsAdmin(t *testing.T) {
 
 func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 	database.ClearDB(db)
-	a := Article{Name: "A good name", PublishedAt: null.NewTime(time.Now(), true)}
+	n := time.Now()
+	a := model.Article{Name: "A good name", PublishedAt: &n}
 	db.Create(&a)
 
 	r, _ := s.GetArticleList(context.Background(), PaginationParams{0, 15})
@@ -187,8 +191,9 @@ func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 
 func TestShouldNotListSoftDeletedArticles(t *testing.T) {
 	database.ClearDB(db)
+	n := time.Now()
 
-	a := Article{Name: "A good name", PublishedAt: null.NewTime(time.Now(), true)}
+	a := model.Article{Name: "A good name", PublishedAt: &n}
 	db.Create(&a)
 	db.Delete(&a)
 
@@ -201,7 +206,7 @@ func TestShouldNotListSoftDeletedArticles(t *testing.T) {
 
 func TestShouldNotListNonPublishedArticles(t *testing.T) {
 	database.ClearDB(db)
-	a := Article{Name: "A good name"}
+	a := model.Article{Name: "A good name"}
 	db.Create(&a)
 
 	r, _ := s.GetArticleList(context.Background(), PaginationParams{0, 10})
@@ -215,7 +220,8 @@ func TestShouldNotListNonPublishedArticles(t *testing.T) {
 
 func TestShouldBeAbleToGetPublishedArticleAsGuest(t *testing.T) {
 	database.ClearDB(db)
-	a := Article{Name: "A good name", Slug: "a-good-name", PublishedAt: null.NewTime(time.Now(), true)}
+	n := time.Now()
+	a := model.Article{Name: "A good name", Slug: "a-good-name", PublishedAt: &n}
 	db.Create(&a)
 
 	r, err := s.GetArticle(context.Background(), a.Slug)
@@ -227,7 +233,8 @@ func TestShouldBeAbleToGetPublishedArticleAsGuest(t *testing.T) {
 func TestShouldBeAbleToGetPublishedArticleAsUser(t *testing.T) {
 	database.ClearDB(db)
 	ctx, _ := authAsUser(context.Background())
-	a := Article{Name: "A good name", Slug: "a-good-name", PublishedAt: null.NewTime(time.Now(), true)}
+	n := time.Now()
+	a := model.Article{Name: "A good name", Slug: "a-good-name", PublishedAt: &n}
 	db.Create(&a)
 
 	r, err := s.GetArticle(ctx, a.Slug)
@@ -238,7 +245,7 @@ func TestShouldBeAbleToGetPublishedArticleAsUser(t *testing.T) {
 
 func TestShouldNotBeAbleToGetNonPublishedArticleAsGuest(t *testing.T) {
 	database.ClearDB(db)
-	a := Article{Name: "A good name", Slug: "a-good-name"}
+	a := model.Article{Name: "A good name", Slug: "a-good-name"}
 	db.Create(&a)
 
 	_, err := s.GetArticle(context.Background(), a.Slug)
@@ -250,7 +257,7 @@ func TestShouldNotBeAbleToGetNonPublishedArticleAsGuest(t *testing.T) {
 func TestShouldNotBeAbleToGetNonPublishedArticleAsUser(t *testing.T) {
 	database.ClearDB(db)
 	ctx, _ := authAsUser(context.Background())
-	a := Article{Name: "A good name", Slug: "a-good-name"}
+	a := model.Article{Name: "A good name", Slug: "a-good-name"}
 	db.Create(&a)
 
 	_, err := s.GetArticle(ctx, a.Slug)
@@ -262,7 +269,7 @@ func TestShouldNotBeAbleToGetNonPublishedArticleAsUser(t *testing.T) {
 func TestShouldBeAbleToGetNonPublishedArticleAsAdmin(t *testing.T) {
 	database.ClearDB(db)
 	ctx, _ := authAsAdmin(context.Background())
-	a := Article{Name: "A good name", Slug: "a-good-name"}
+	a := model.Article{Name: "A good name", Slug: "a-good-name"}
 	db.Create(&a)
 
 	r, err := s.GetArticle(ctx, a.Slug)
@@ -275,48 +282,49 @@ func TestShouldBeAbleToGetNonPublishedArticleAsAdmin(t *testing.T) {
 
 func TestShouldBeAbleToCreateAnArticleAndGenerateSlugAsAdmin(t *testing.T) {
 	database.ClearDB(db)
-	a := Article{Name: "A good name", MetaDescription: "a meta decription"}
+	a := ArticleRequest{Name: "A good name", MetaDescription: "a meta decription"}
 	ctx, claims := authAsAdmin(context.Background())
 
 	res, err := s.PostArticle(ctx, a)
 
 	assert.NoError(t, err)
 	var total int64
-	db.Model(&Article{}).Count(&total)
+	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 1, int(total))
 	assert.Equal(t, a.Name, res.Name)
 	assert.Equal(t, "a-good-name", res.Slug)
 	assert.Equal(t, claims.Sub, res.AuthorUUID)
-	assert.False(t, res.PublishedAt.Valid)
+	assert.NotNil(t, res.PublishedAt)
 }
 
 func TestShouldBeAbleToCreateAnPublishedArticleAndGenerateSlugAsAdmin(t *testing.T) {
 	database.ClearDB(db)
-	a := Article{Name: "A good name", MetaDescription: "a meta decription", PublishedAt: null.NewTime(time.Now(), true)}
+	n := time.Now()
+	a := ArticleRequest{Name: "A good name", MetaDescription: "a meta decription", PublishedAt: &n}
 	ctx, claims := authAsAdmin(context.Background())
 
 	res, err := s.PostArticle(ctx, a)
 
 	assert.NoError(t, err)
 	var total int64
-	db.Model(&Article{}).Count(&total)
+	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 1, int(total))
 	assert.Equal(t, a.Name, res.Name)
 	assert.Equal(t, "a-good-name", res.Slug)
 	assert.Equal(t, claims.Sub, res.AuthorUUID)
-	assert.True(t, res.PublishedAt.Valid)
+	assert.NotNil(t, res.PublishedAt)
 }
 
 func TestShouldBeAbleToCreateAnArticleWithASpecifiedSlug(t *testing.T) {
 	database.ClearDB(db)
-	a := Article{Name: "A good name", Slug: "wtf-is-this-slug", MetaDescription: "a meta decription"}
+	a := ArticleRequest{Name: "A good name", Slug: "wtf-is-this-slug", MetaDescription: "a meta decription"}
 	ctx, claims := authAsAdmin(context.Background())
 
 	res, err := s.PostArticle(ctx, a)
 
 	assert.NoError(t, err)
 	var total int64
-	db.Model(&Article{}).Count(&total)
+	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 1, int(total))
 	assert.Equal(t, a.Name, res.Name)
 	assert.Equal(t, a.Slug, res.Slug)
@@ -325,22 +333,22 @@ func TestShouldBeAbleToCreateAnArticleWithASpecifiedSlug(t *testing.T) {
 
 func TestShouldNotBeAbleToCreateAnArticleWithSameSlug(t *testing.T) {
 	database.ClearDB(db)
-	a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	db.Create(&a)
-	dup := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	dup := ArticleRequest{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	ctx, _ := authAsAdmin(context.Background())
 
 	_, err := s.PostArticle(ctx, dup)
 
 	assert.Error(t, err)
 	var total int64
-	db.Model(&Article{}).Count(&total)
+	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 1, int(total))
 }
 
 func TestShouldNotBeAbleToSaveArticleWithEmptyName(t *testing.T) {
 	database.ClearDB(db)
-	a := Article{Name: ""}
+	a := ArticleRequest{Name: ""}
 	ctx, _ := authAsAdmin(context.Background())
 
 	_, err := s.PostArticle(ctx, a)
@@ -350,13 +358,13 @@ func TestShouldNotBeAbleToSaveArticleWithEmptyName(t *testing.T) {
 	assert.Equal(t, "Article.Name", validationErrors[0].Namespace())
 	assert.Equal(t, "required", validationErrors[0].ActualTag())
 	var total int64
-	db.Model(&Article{}).Count(&total)
+	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 0, int(total))
 }
 
 func TestShouldNotBeAbleToSaveArticleWithTooLongName(t *testing.T) {
 	database.ClearDB(db)
-	a := Article{Name: "a very too long big enormous title that will never fit in any screen..."}
+	a := ArticleRequest{Name: "a very too long big enormous title that will never fit in any screen..."}
 	ctx, _ := authAsAdmin(context.Background())
 
 	_, err := s.PostArticle(ctx, a)
@@ -366,13 +374,13 @@ func TestShouldNotBeAbleToSaveArticleWithTooLongName(t *testing.T) {
 	assert.Equal(t, "Article.Name", validationErrors[0].Namespace())
 	assert.Equal(t, "lt", validationErrors[0].ActualTag())
 	var total int64
-	db.Model(&Article{}).Count(&total)
+	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 0, int(total))
 }
 
 func TestShouldNotBeAbleToSaveArticleWithEmptyMetaDescription(t *testing.T) {
 	database.ClearDB(db)
-	a := Article{Name: "a good name", MetaDescription: ""}
+	a := ArticleRequest{Name: "a good name", MetaDescription: ""}
 	ctx, _ := authAsAdmin(context.Background())
 
 	_, err := s.PostArticle(ctx, a)
@@ -382,13 +390,13 @@ func TestShouldNotBeAbleToSaveArticleWithEmptyMetaDescription(t *testing.T) {
 	assert.Equal(t, "Article.MetaDescription", validationErrors[0].Namespace())
 	assert.Equal(t, "required", validationErrors[0].ActualTag())
 	var total int64
-	db.Model(&Article{}).Count(&total)
+	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 0, int(total))
 }
 
 func TestShouldNotBeAbleToSaveArticleWithTooLongMetaDescription(t *testing.T) {
 	database.ClearDB(db)
-	a := Article{Name: "A good name", MetaDescription: "a very too long big enormous title that will never fit in any screen..."}
+	a := ArticleRequest{Name: "A good name", MetaDescription: "a very too long big enormous title that will never fit in any screen..."}
 	ctx, _ := authAsAdmin(context.Background())
 
 	_, err := s.PostArticle(ctx, a)
@@ -398,13 +406,13 @@ func TestShouldNotBeAbleToSaveArticleWithTooLongMetaDescription(t *testing.T) {
 	assert.Equal(t, "Article.MetaDescription", validationErrors[0].Namespace())
 	assert.Equal(t, "lt", validationErrors[0].ActualTag())
 	var total int64
-	db.Model(&Article{}).Count(&total)
+	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 0, int(total))
 }
 
 func TestShouldNotBeAbleToPostArticleAsUser(t *testing.T) {
 	database.ClearDB(db)
-	a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	a := ArticleRequest{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	ctx, _ := authAsUser(context.Background())
 
 	_, err := s.PostArticle(ctx, a)
@@ -412,20 +420,20 @@ func TestShouldNotBeAbleToPostArticleAsUser(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(t, ErrNotAdmin, err)
 	var total int64
-	db.Model(&Article{}).Count(&total)
+	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 0, int(total))
 }
 
 func TestShouldNotBeAbleToPostArticleAsGuest(t *testing.T) {
 	database.ClearDB(db)
-	a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	a := ArticleRequest{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 
 	_, err := s.PostArticle(context.Background(), a)
 
 	assert.Error(t, err)
 	assert.Equal(t, ErrNoAuth, err)
 	var total int64
-	db.Model(&Article{}).Count(&total)
+	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 0, int(total))
 }
 
@@ -435,59 +443,62 @@ func TestShouldBeAbleToUpdateArticleNameAsAdmin(t *testing.T) {
 	database.ClearDB(db)
 	ctx, _ := authAsAdmin(context.Background())
 
-	a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	db.Create(&a)
 
 	a.Name = "A new name"
-	new, err := s.PutArticle(ctx, a.Slug, a)
+	u := ArticleRequest{Name: a.Name}
+	new, err := s.PutArticle(ctx, a.Slug, u)
 
 	assert.NoError(t, err)
 	assert.Equal(t, "A new name", new.Name)
 	var total int64
-	db.Model(&Article{}).Count(&total)
+	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 1, int(total))
 }
 
 func TestShouldNotBeAbleToUpdateArticleTooShortNameAsAdmin(t *testing.T) {
 	database.ClearDB(db)
-	a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	db.Create(&a)
 
-	a.Name = ""
-	_, err := s.PutArticle(context.Background(), a.Slug, a)
+	u := ArticleRequest{Name: "", Slug: a.Slug, MetaDescription: a.MetaDescription}
+	_, err := s.PutArticle(context.Background(), a.Slug, u)
 
 	assert.Error(t, err)
 	var total int64
-	db.Model(&Article{}).Count(&total)
+	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 1, int(total))
 }
 
 func TestShouldNotBeAbleToUpdateArticleAsUser(t *testing.T) {
 	database.ClearDB(db)
-	a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	ctx, _ := authAsUser(context.Background())
 	db.Create(&a)
 
-	_, err := s.PutArticle(ctx, a.Slug, a)
+	u := ArticleRequest{Name: a.Name, Slug: a.Slug, MetaDescription: a.MetaDescription}
+	_, err := s.PutArticle(ctx, a.Slug, u)
 
 	assert.Error(t, err)
 	assert.Equal(t, ErrNotAdmin, err)
 	var total int64
-	db.Model(&Article{}).Count(&total)
+	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 1, int(total))
 }
 
 func TestShouldNotBeAbleToUpdateArticleAsGuest(t *testing.T) {
 	database.ClearDB(db)
-	a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	db.Create(&a)
 
-	_, err := s.PutArticle(context.Background(), a.Slug, a)
+	u := ArticleRequest{Name: a.Name, Slug: a.Slug, MetaDescription: a.MetaDescription}
+	_, err := s.PutArticle(context.Background(), a.Slug, u)
 
 	assert.Error(t, err)
 	assert.Equal(t, ErrNoAuth, err)
 	var total int64
-	db.Model(&Article{}).Count(&total)
+	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 1, int(total))
 }
 
@@ -495,7 +506,7 @@ func TestShouldNotBeAbleToUpdateArticleAsGuest(t *testing.T) {
 
 func TestShouldBeAbleToDeleteArticleAndIsSoftDeleted(t *testing.T) {
 	database.ClearDB(db)
-	a := Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	db.Create(&a)
 
 	err := s.DeleteArticle(context.Background(), a.Slug)
