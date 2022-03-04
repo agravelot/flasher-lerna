@@ -134,13 +134,13 @@ func decodePutArticleRequest(_ context.Context, r *http.Request) (request interf
 	if !ok {
 		return nil, ErrBadRouting
 	}
-	var ar ArticleRequest
+	var ar ArticleUpdateRequest
 	if err := json.NewDecoder(r.Body).Decode(&ar); err != nil {
 		return nil, err
 	}
 	return putArticleRequest{
-		ID:             id,
-		ArticleRequest: ar,
+		ID:                   id,
+		ArticleUpdateRequest: ar,
 	}, nil
 }
 

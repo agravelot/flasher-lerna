@@ -86,7 +86,7 @@ func MakeGetArticleEndpoint(s Service) endpoint.Endpoint {
 func MakePutArticleEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(putArticleRequest)
-		a, e := s.PutArticle(ctx, req.ID, req.ArticleRequest)
+		a, e := s.PutArticle(ctx, req.ID, req.ArticleUpdateRequest)
 		return putArticleResponse{ArticleResponse: a, Err: e}, nil
 	}
 }
@@ -162,7 +162,7 @@ func (r getArticleResponse) error() error { return r.Err }
 
 type putArticleRequest struct {
 	ID string
-	ArticleRequest
+	ArticleUpdateRequest
 }
 
 type putArticleResponse struct {

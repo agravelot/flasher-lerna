@@ -45,7 +45,7 @@ func (mw loggingMiddleware) GetArticle(ctx context.Context, slug string) (p Arti
 	return mw.next.GetArticle(ctx, slug)
 }
 
-func (mw loggingMiddleware) PutArticle(ctx context.Context, id string, ar ArticleRequest) (a ArticleResponse, err error) {
+func (mw loggingMiddleware) PutArticle(ctx context.Context, id string, ar ArticleUpdateRequest) (a ArticleResponse, err error) {
 	defer func(begin time.Time) {
 		mw.logger.Log("method", "PutArticle", "id", id, "took", time.Since(begin), "err", err)
 	}(time.Now())

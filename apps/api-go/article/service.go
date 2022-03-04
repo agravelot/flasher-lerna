@@ -18,7 +18,7 @@ type Service interface {
 	GetArticleList(ctx context.Context, params PaginationParams) (PaginatedArticles, error)
 	GetArticle(ctx context.Context, slug string) (ArticleResponse, error)
 	PostArticle(ctx context.Context, r ArticleRequest) (ArticleResponse, error)
-	PutArticle(ctx context.Context, slug string, r ArticleRequest) (ArticleResponse, error)
+	PutArticle(ctx context.Context, slug string, r ArticleUpdateRequest) (ArticleResponse, error)
 	PatchArticle(ctx context.Context, slug string, r ArticleRequest) (ArticleResponse, error)
 	DeleteArticle(ctx context.Context, slug string) error
 }
@@ -71,15 +71,15 @@ func (s *service) GetArticleList(ctx context.Context, params PaginationParams) (
 	qb := gormQuery.Use(s.db).Article
 	query := qb.WithContext(ctx)
 
-	if user == nil || (user != nil && user.IsAdmin() == false) {
+	if user == nil || (user != nil && !user.IsAdmin()) {
 		query = query.Scopes(Published(gormQuery.Use(s.db)))
 	}
 
-	// TODO Can run in goroutines ?
 	total, err := query.Count()
 	if err != nil {
 		return PaginatedArticles{}, err
 	}
+
 	articles, err := query.Scopes(Paginate(gormQuery.Use(s.db), params.Next, params.Limit)).Find()
 	if err != nil {
 		return PaginatedArticles{}, err
@@ -105,6 +105,7 @@ func tramsform(a model.Article) ArticleResponse {
 		MetaDescription: a.MetaDescription,
 		Content:         a.Content,
 		PublishedAt:     a.PublishedAt,
+		AuthorUUID:      a.AuthorUUID,
 	}
 }
 
@@ -167,7 +168,7 @@ func (s *service) GetArticle(ctx context.Context, slug string) (ArticleResponse,
 	return tramsform(*a), err
 }
 
-func (s *service) PutArticle(ctx context.Context, slug string, r ArticleRequest) (ArticleResponse, error) {
+func (s *service) PutArticle(ctx context.Context, slug string, r ArticleUpdateRequest) (ArticleResponse, error) {
 	user := auth.GetUserClaims(ctx)
 	qb := gormQuery.Use(s.db).Article
 	query := qb.WithContext(ctx)
@@ -180,26 +181,29 @@ func (s *service) PutArticle(ctx context.Context, slug string, r ArticleRequest)
 		return ArticleResponse{}, ErrNotAdmin
 	}
 
-	a := model.Article{
-		ID:              r.ID,
-		Slug:            r.Slug,
-		Name:            r.Name,
-		MetaDescription: r.MetaDescription,
-		Content:         r.Content,
-		PublishedAt:     r.PublishedAt,
-		AuthorUUID:      user.Sub,
+	a, err := query.Where(qb.Slug.Eq(slug)).First()
+	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+		return ArticleResponse{}, ErrNotFound
 	}
+
+	a.ID = r.ID
+	a.Slug = r.Slug
+	a.Name = r.Name
+	a.MetaDescription = r.MetaDescription
+	a.Content = r.Content
+	a.PublishedAt = r.PublishedAt
+	// a.AuthorUUID = r.AuthorUUID
 
 	if err := r.Validate(); err != nil {
 		return ArticleResponse{}, err
 	}
 
-	err := query.Save(&a)
+	err = query.Save(a)
 	if err != nil {
 		return ArticleResponse{}, fmt.Errorf("unable update article: %w", err)
 	}
 
-	return tramsform(a), nil
+	return tramsform(*a), nil
 }
 
 func (s *service) PatchArticle(ctx context.Context, slug string, a ArticleRequest) (ArticleResponse, error) {
