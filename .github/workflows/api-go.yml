@@ -66,6 +66,20 @@ jobs:
           cache-from: type=registry,ref=registry.gitlab.com/flasher/flasher/flasher-api-go:latest
           cache-to: type=inline
   test:
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: flasher
+          POSTGRES_PASSWORD: flasher
+          POSTGRES_DB: flasher
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
     strategy:
         matrix:
           go-version: [1.17.x]
@@ -73,21 +87,11 @@ jobs:
     # runs-on: self-hosted
     runs-on: ubuntu-20.04
     steps:
-    - name: Update docker-compose version
-      if: ${{ env.ACT }}
-      run: |
-        sudo curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-        sudo chmod +x /usr/local/bin/docker-compose
-        docker-compose version
-        docker -v
     - 
       name: Checkout
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    -
-      name: Start docker stack
-      run: docker-compose -f apps/api-go/docker-compose.yml up -d
     - uses: actions/cache@v2
       with:
         path: |
@@ -102,7 +106,7 @@ jobs:
       name: Build api
       uses: actions/setup-go@v2
       with:
-        go-version: '^1.17.0'
+        go-version: ${{ matrix.go-version }}
     -
       name: Test
       run: |
