@@ -108,12 +108,14 @@ jobs:
       with:
         go-version: ${{ matrix.go-version }}
     -
-      name: Test
+      name: Init DB
       run: |
         go install github.com/pressly/goose/v3/cmd/goose@latest
         cd apps/api-go/migration
         goose postgres "user=flasher password=flasher dbname=flasher sslmode=disable" up
-        cd -
+    -
+      name: Test
+      run: |
         cd apps/api-go
         go test ./...
       env:
