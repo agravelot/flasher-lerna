@@ -1,8 +1,7 @@
 FROM golang:1.17 as builder
 WORKDIR /go/src/github.com/agravelot/api-go
 COPY . .
-RUN ls -lah && exit 12
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app ./cmd/api/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app ./cmd/app
 
 FROM alpine:latest  
 RUN apk --no-cache add ca-certificates
