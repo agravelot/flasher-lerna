@@ -89,14 +89,14 @@ func MakeHTTPHandler(s Service, logger log.Logger) http.Handler {
 
 func decodePostArticleRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
 	var req postArticleRequest
-	if e := json.NewDecoder(r.Body).Decode(&req.Article); e != nil {
+	if e := json.NewDecoder(r.Body).Decode(&req.ArticleRequest); e != nil {
 		return nil, e
 	}
 	return req, nil
 }
 
 func decodeGetArticleListRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
-	var next uint
+	var next int64
 	var limit int
 
 	nextString := r.URL.Query().Get("next")
@@ -105,7 +105,7 @@ func decodeGetArticleListRequest(_ context.Context, r *http.Request) (request in
 		if err != nil {
 			return nil, ErrBadRequest
 		}
-		next = uint(v)
+		next = int64(v)
 	}
 
 	limitString := r.URL.Query().Get("limit")
@@ -134,13 +134,13 @@ func decodePutArticleRequest(_ context.Context, r *http.Request) (request interf
 	if !ok {
 		return nil, ErrBadRouting
 	}
-	var article Article
-	if err := json.NewDecoder(r.Body).Decode(&article); err != nil {
+	var ar ArticleUpdateRequest
+	if err := json.NewDecoder(r.Body).Decode(&ar); err != nil {
 		return nil, err
 	}
 	return putArticleRequest{
-		ID:      id,
-		Article: article,
+		ID:                   id,
+		ArticleUpdateRequest: ar,
 	}, nil
 }
 
@@ -150,13 +150,13 @@ func decodePatchArticleRequest(_ context.Context, r *http.Request) (request inte
 	if !ok {
 		return nil, ErrBadRouting
 	}
-	var article Article
-	if err := json.NewDecoder(r.Body).Decode(&article); err != nil {
+	var ar ArticleRequest
+	if err := json.NewDecoder(r.Body).Decode(&ar); err != nil {
 		return nil, err
 	}
 	return patchArticleRequest{
-		Slug:    slug,
-		Article: article,
+		Slug:           slug,
+		ArticleRequest: ar,
 	}, nil
 }
 

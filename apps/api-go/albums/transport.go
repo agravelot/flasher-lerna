@@ -14,7 +14,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gorilla/mux"
 
 	"github.com/go-kit/kit/auth/jwt"
@@ -98,7 +97,7 @@ func decodePostAlbumRequest(_ context.Context, r *http.Request) (request interfa
 }
 
 func decodeGetAlbumListRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
-	var next uint
+	var next int32
 	limit := int32(10)
 
 	nextString := r.URL.Query().Get("next")
@@ -107,7 +106,7 @@ func decodeGetAlbumListRequest(_ context.Context, r *http.Request) (request inte
 		if err != nil {
 			return nil, ErrBadRequest
 		}
-		next = uint(v)
+		next = int32(v)
 	}
 
 	limitString := r.URL.Query().Get("limit")
@@ -131,8 +130,6 @@ func decodeGetAlbumListRequest(_ context.Context, r *http.Request) (request inte
 			}
 		}
 	}
-
-	spew.Dump(getAlbumListRequest{Joins: joins, PaginationParams: PaginationParams{Next: next, Limit: limit}})
 
 	return getAlbumListRequest{Joins: joins, PaginationParams: PaginationParams{Next: next, Limit: limit}}, nil
 }
@@ -168,13 +165,13 @@ func decodePatchAlbumRequest(_ context.Context, r *http.Request) (request interf
 	if !ok {
 		return nil, ErrBadRouting
 	}
-	var album AlbumRequest
+	var album AlbumUpdateRequest
 	if err := json.NewDecoder(r.Body).Decode(&album); err != nil {
 		return nil, err
 	}
 	return patchAlbumRequest{
-		Slug:         slug,
-		AlbumRequest: album,
+		Slug:               slug,
+		AlbumUpdateRequest: album,
 	}, nil
 }
 

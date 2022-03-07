@@ -52,7 +52,7 @@ func (mw loggingMiddleware) PutAlbum(ctx context.Context, id string, ar AlbumReq
 	return mw.next.PutAlbum(ctx, id, ar)
 }
 
-func (mw loggingMiddleware) PatchAlbum(ctx context.Context, slug string, p AlbumRequest) (a AlbumResponse, err error) {
+func (mw loggingMiddleware) PatchAlbum(ctx context.Context, slug string, p AlbumUpdateRequest) (a AlbumResponse, err error) {
 	defer func(begin time.Time) {
 		mw.logger.Log("method", "PatchAlbum", "slug", slug, "took", time.Since(begin), "err", err)
 	}(time.Now())
