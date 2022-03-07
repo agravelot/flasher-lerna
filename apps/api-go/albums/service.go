@@ -86,52 +86,6 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 }
 
 // TODO bool incluce relation
-func transform(a model.Album) AlbumResponse {
-	var mediasResponse *[]MediaReponse
-	if a.Medias != nil {
-		var tmp []MediaReponse
-		for _, c := range a.Medias {
-			tmp = append(tmp, MediaReponse{
-				ID:        c.ID,
-				Name:      c.Name,
-				FileName:  c.FileName,
-				Size:      c.Size,
-				CreatedAt: c.CreatedAt,
-				UpdatedAt: c.UpdatedAt,
-			})
-		}
-		mediasResponse = &tmp
-	}
-
-	var categoriesResponse *[]CategoryReponse
-	if a.Categories != nil {
-		var tmp2 []CategoryReponse
-		for _, c := range a.Categories {
-			tmp2 = append(tmp2, CategoryReponse{
-				ID:   c.ID,
-				Name: c.Name,
-			})
-		}
-		categoriesResponse = &tmp2
-	}
-
-	return AlbumResponse{
-		ID:                     a.ID,
-		Slug:                   a.Slug,
-		Title:                  a.Title,
-		MetaDescription:        a.MetaDescription,
-		Body:                   a.Body,
-		PublishedAt:            a.PublishedAt,
-		Private:                a.Private,
-		SsoID:                  a.SsoID,
-		UserID:                 a.UserID,
-		CreatedAt:              a.CreatedAt,
-		UpdatedAt:              a.UpdatedAt,
-		NotifyUsersOnPublished: a.NotifyUsersOnPublished,
-		Medias:                 mediasResponse,
-		Categories:             categoriesResponse,
-	}
-}
 
 func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, error) {
 	user := auth.GetUserClaims(ctx)
