@@ -15,6 +15,7 @@ type Configurations struct {
 	DbPassword string `envconfig:"DB_PASSWORD" required:"true"`
 	DbName     string `envconfig:"DB_NAME" required:"true"`
 	DbPort     int    `envconfig:"DB_PORT" required:"true"`
+	DbURL      string `envconfig:"DB_URL" required:"true"`
 }
 
 func LoadDotEnv(path string) Configurations {
@@ -27,7 +28,7 @@ func LoadDotEnv(path string) Configurations {
 	err := envconfig.Process("", &c)
 
 	if err != nil {
-		panic(err)
+		panic(fmt.Errorf("failed to process config: %w", err))
 	}
 
 	return c

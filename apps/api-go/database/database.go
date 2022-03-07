@@ -2,7 +2,6 @@ package database
 
 import (
 	"api-go/config"
-	"fmt"
 	"log"
 	"os"
 	"time"
@@ -26,8 +25,7 @@ func Init(c config.Configurations) (*gorm.DB, error) {
 		},
 	)
 
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable", c.DbHost, c.DbUser, c.DbPassword, c.DbName, c.DbPort)
-	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{Logger: newLogger})
+	db, err = gorm.Open(postgres.Open(c.DbURL), &gorm.Config{Logger: newLogger})
 	if err != nil {
 		log.Fatalf("Got error when connect database, the error is '%v'", err)
 	}
