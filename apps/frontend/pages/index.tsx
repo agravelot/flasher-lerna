@@ -13,10 +13,6 @@ import { api, PaginatedReponse } from "@flasher/common";
 import { configuration } from "utils/configuration";
 import { ContactSection } from "../components/ContactSection";
 
-const toggleTestimonialModal = () => {
-  return;
-};
-
 type Props = {
   albums: Album[];
   testimonials: Testimonial[];
