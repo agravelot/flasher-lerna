@@ -134,7 +134,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({
     return { props: { category, albums, ...global }, revalidate: 60 };
   } catch (e) {
     if (e instanceof HttpNotFound) {
-      return { notFound: true };
+      return { notFound: true, revalidate: 60 };
     }
     throw e;
   }

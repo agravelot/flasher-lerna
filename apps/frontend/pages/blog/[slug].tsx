@@ -111,7 +111,7 @@ export const getStaticProps: GetStaticProps = async ({
     : await getPostBySlug(params?.slug as string);
 
   if (!post) {
-    return { notFound: true };
+    return { notFound: true, revalidate: 60 };
   }
 
   const global = await getGlobalProps();

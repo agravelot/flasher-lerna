@@ -95,7 +95,7 @@ export const getStaticProps: GetStaticProps = async ({
   ).then((res) => res.json());
 
   if (body.data.length === 0) {
-    return { notFound: true };
+    return { notFound: true, revalidate: 60 };
   }
 
   const global = await getGlobalProps();
