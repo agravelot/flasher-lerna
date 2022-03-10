@@ -2,7 +2,6 @@ import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import React from "react";
 import { ArticleJsonLd, NextSeo } from "next-seo";
 import { serialize } from "next-mdx-remote/serialize";
-import { ImageProps } from "next/image";
 import { BlogPost, getAllPosts, getPostBySlug } from "utils/markdown";
 import { getGlobalProps, GlobalProps } from "stores";
 import Layout from "components/Layout";
@@ -18,16 +17,14 @@ type Props = {
   estimatedReadingInMinutes: number;
 } & GlobalProps;
 
-const ImageCustom = (props: ImageProps) => {
-  // return (
-  //   <Image layout="responsive" width="2000" height="2000" src={props.src} />
-  // );
-
+const ImageCustom = (props: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>) => {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
+      // eslint-disable-next-line react/prop-types
       src={generateNextImageUrl(props.src as string)}
       loading="lazy"
+      // eslint-disable-next-line react/prop-types
       alt={props.alt}
     />
   );
