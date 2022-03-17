@@ -1,18 +1,18 @@
-import fs from "fs";
+import { readdirSync, readFileSync } from "fs";
 import { join } from "path";
 import matter from "gray-matter";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 
-const postsDirectory = join(process.cwd(), "blog");
+const postsDirectory = join(process.cwd(), "content", "blog");
 
 export const getPostSlugs = (): string[] => {
-  return fs.readdirSync(postsDirectory);
+  return readdirSync(postsDirectory);
 };
 
 export async function getPostBySlug(slug: string): Promise<BlogPost> {
   const realSlug = slug.replace(/\.mdx$/, "");
   const fullPath = join(postsDirectory, `${realSlug}.mdx`);
-  const fileContents = fs.readFileSync(fullPath, "utf8");
+  const fileContents = readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
 
   return {
