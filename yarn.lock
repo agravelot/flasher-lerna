@@ -2565,14 +2565,6 @@
     npmlog "^4.1.2"
     write-file-atomic "^3.0.3"
 
-"@mdx-js/loader@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@mdx-js/loader/-/loader-2.0.0.tgz#4ff3278d341e7a15ecf87c4623a8ecd533cb3dbc"
-  integrity sha512-gPuzQQ19K9OUkgRVMUMRu8lYXgJPwSQaHcc6olvRxbdUMms4mtn6so3v4v8J+f58bAk0R98IzBbkvBenAOZu7g==
-  dependencies:
-    "@mdx-js/mdx" "^2.0.0"
-    source-map "^0.7.0"
-
 "@mdx-js/mdx@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@mdx-js/mdx/-/mdx-2.0.0.tgz#7f270df1e77c46f8338fc32089016b3ea383d023"
@@ -2622,11 +2614,6 @@
   integrity sha512-WFiyvSM2G5cQmh32t/SiQuJ+I2O+FHVlK/RFw5b1565O2kEM/36EXncjt88Pa+X5oSc+1SS+tWxowWJd1lqI+g==
   dependencies:
     glob "7.1.7"
-
-"@next/mdx@^12.1.0":
-  version "12.1.0"
-  resolved "https://registry.yarnpkg.com/@next/mdx/-/mdx-12.1.0.tgz#0100917865012b16adc6806f0b1b126e7fa6dd79"
-  integrity sha512-Y+VF6mMbm7pbiSj6c0YI0bD02aK0JUglWplHW48o65JYGhJSD7jzDfuIJG6/XdQ8fhTnDj/6+kYLnV+1QmXFRQ==
 
 "@next/swc-android-arm64@12.1.0":
   version "12.1.0"
@@ -3317,7 +3304,7 @@
 
 "@types/gtag.js@^0.0.10":
   version "0.0.10"
-  resolved "https://digischool-116104847542.d.codeartifact.eu-west-1.amazonaws.com:443/npm/npm/@types/gtag.js/-/gtag.js-0.0.10.tgz#ac90d9b79c00daac447725a4b78ec1c398796760"
+  resolved "https://registry.yarnpkg.com/@types/gtag.js/-/gtag.js-0.0.10.tgz#ac90d9b79c00daac447725a4b78ec1c398796760"
   integrity sha512-98Hy7woUb3jMAMXkZQwfIOYNyfxmI0+U4m0PpCGdnd/FHk0tDpQFCqgXdNkdEoXsKkcGya/2Gew1cAJjKJspVw==
 
 "@types/hast@^2.0.0":
@@ -16030,7 +16017,7 @@ source-map@^0.5.0, source-map@^0.5.6:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
   integrity sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w=
 
-source-map@^0.7.0, source-map@^0.7.3, source-map@~0.7.2:
+source-map@^0.7.3, source-map@~0.7.2:
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.7.3.tgz#5302f8169031735226544092e64981f751750383"
   integrity sha512-CkCj6giN3S+n9qrYiBTX5gystlENnRW5jZeNLHpe6aue+SrHcG5VYwujhW9s4dY31mEGsxBDrHR6oI69fTXsaQ==
