@@ -3,6 +3,13 @@ import { FunctionComponent, useContext, useState } from "react";
 import NavbarAccount from "./NavbarAccount";
 import { SearchContext } from "../contexts/AppContext";
 import { useAuthentication } from "hooks/useAuthentication";
+import {
+  SearchIcon,
+  MenuIcon,
+  XIcon,
+  LoginIcon,
+} from "@heroicons/react/outline";
+import { Transition } from "@headlessui/react";
 
 const Navbar: FunctionComponent = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -36,9 +43,7 @@ const Navbar: FunctionComponent = () => {
             </Link>
           </li>
           <li className="hidden lg:flex items-center">
-            <Link
-              href={{ pathname: "/galerie" }}
-            >
+            <Link href={{ pathname: "/galerie" }}>
               <a
                 role="menuitem"
                 tabIndex={0}
@@ -75,16 +80,6 @@ const Navbar: FunctionComponent = () => {
             </Link>
           </li>
           <li className="hidden lg:flex items-center">
-            <button
-              role="menuitem"
-              tabIndex={0}
-              className="text-white hover:text-gray-300 px-3 py-4 text-xs uppercase font-bold"
-              onClick={() => open()}
-            >
-              Rechercher
-            </button>
-          </li>
-          <li className="hidden lg:flex items-center">
             <Link href={{ pathname: "/", hash: "contact" }}>
               <a
                 role="menuitem"
@@ -106,6 +101,17 @@ const Navbar: FunctionComponent = () => {
               </a>
             </Link>
           </li>
+          <li className="hidden lg:flex items-center">
+            <button
+              role="menuitem"
+              tabIndex={0}
+              className="inline-flex text-white hover:text-gray-300 px-3 py-4 text-xs uppercase font-bold"
+              onClick={() => open()}
+            >
+              <SearchIcon className="w-5 h-5 mx-2" aria-hidden="true" />
+              Rechercher
+            </button>
+          </li>
 
           {/* Right */}
           <li className="flex items-center ml-auto">
@@ -119,89 +125,66 @@ const Navbar: FunctionComponent = () => {
               aria-label="Ouvrir menu déroulant"
               onClick={() => toggleNavbar()}
             >
-              {!showMenu && (
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-              )}
-              {showMenu && (
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
+              {showMenu ? (
+                <XIcon className="w-6 h-6  text-white" aria-hidden="true" />
+              ) : (
+                <MenuIcon className="w-6 h-6  text-white" aria-hidden="true" />
               )}
             </button>
           </li>
         </ul>
-
-        {/* <transition
-            enter-active-className="transition ease-out duration-100"
-            enter-className="transform opacity-0 scale-95"
-            enter-to-className="transform opacity-100 scale-100"
-            leave-active-className="transition ease-in duration-75"
-            leave-className="transform opacity-100 scale-100"
-            leave-to-className="transform opacity-0 scale-95"
-          > */}
-        {showMenu && (
-          <div
-            aria-expanded={showMenu ? true : false}
-            className="lg:flex flex-grow items-center bg-white lg:bg-transparent rounded"
-          >
+        <Transition
+          show={showMenu}
+          className="lg:flex flex-grow items-center bg-white lg:bg-transparent rounded"
+          enter="transition ease-out duration-100"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-100"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
+        >
+          <div aria-haspopup="menu" aria-expanded={showMenu}>
             <ul className="flex flex-col lg:flex-row list-none mr-auto">
               <li>
-                <Link
-                  href={{ pathname: "/galerie"}}
-                >
+                <Link href={{ pathname: "/galerie" }}>
                   <a
-                    aria-haspopup="true"
                     role="menuitem"
                     tabIndex={0}
                     className="text-gray-800 px-3 py-4 flex items-center justify-center text-xs uppercase font-bold w-full"
                   >
-                    <div>Albums</div>
+                    Albums
                   </a>
                 </Link>
               </li>
               <li>
                 <Link
-                  href={{ pathname: "/categories/page/1", query: { page: 1 } }}
+                  href={{
+                    pathname: "/categories/page/1",
+                    query: { page: 1 },
+                  }}
                 >
                   <a
-                    aria-haspopup="true"
                     tabIndex={0}
                     role="menuitem"
                     className="text-gray-800 px-3 py-4 flex items-center justify-center text-xs uppercase font-bold w-full"
                   >
-                    <span>Categories</span>
+                    Categories
                   </a>
                 </Link>
               </li>
               <li>
                 <Link
-                  href={{ pathname: "/cosplayers/page/1", query: { page: 1 } }}
+                  href={{
+                    pathname: "/cosplayers/page/1",
+                    query: { page: 1 },
+                  }}
                 >
                   <a
                     tabIndex={0}
-                    aria-haspopup="true"
                     role="menuitem"
                     className="text-gray-800 px-3 py-4 flex items-center justify-center text-xs uppercase font-bold w-full"
                   >
-                    <span>Cosplayers</span>
+                    Cosplayers
                   </a>
                 </Link>
               </li>
@@ -209,11 +192,10 @@ const Navbar: FunctionComponent = () => {
                 <Link href={{ pathname: "/", hash: "contact" }}>
                   <a
                     tabIndex={0}
-                    aria-haspopup="true"
                     role="menuitem"
                     className="text-gray-800 px-3 py-4 flex items-center justify-center text-xs uppercase font-bold w-full"
                   >
-                    <span>Contact</span>
+                    Contact
                   </a>
                 </Link>
               </li>
@@ -221,22 +203,21 @@ const Navbar: FunctionComponent = () => {
                 <Link href={{ pathname: "/blog" }}>
                   <a
                     tabIndex={0}
-                    aria-haspopup="true"
                     role="menuitem"
                     className="text-gray-800 px-3 py-4 flex items-center justify-center text-xs uppercase font-bold w-full"
                   >
-                    <span>Blog</span>
+                    Blog
                   </a>
                 </Link>
               </li>
               <li>
                 <button
                   tabIndex={0}
-                  aria-haspopup="true"
                   role="menuitem"
                   className="text-gray-800 px-3 py-4 flex items-center justify-center text-xs uppercase font-bold w-full"
                   onClick={() => open()}
                 >
+                  <SearchIcon className="w-5 h-5 mx-2" aria-hidden="true" />
                   Rechercher
                 </button>
               </li>
@@ -244,21 +225,19 @@ const Navbar: FunctionComponent = () => {
               {initialized && keycloak.authenticated === false && (
                 <li>
                   <button
-                    aria-haspopup="true"
                     tabIndex={0}
                     role="menuitem"
                     className="text-gray-800 px-3 py-4 flex items-center justify-center text-xs uppercase font-bold w-full"
                     onClick={() => login()}
                   >
-                    <i className="lg:text-gray-300 text-gray-500 fab fa-github text-lg leading-lg"></i>
-                    <span>Se connecter</span>
+                    <LoginIcon className="w-5 h-5 mx-2" aria-hidden="true" />
+                    Se connecter
                   </button>
                 </li>
               )}
             </ul>
           </div>
-        )}
-        {/* </transition> */}
+        </Transition>
       </div>
     </nav>
   );

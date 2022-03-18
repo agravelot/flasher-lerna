@@ -4,6 +4,7 @@ import { FC, useState } from "react";
 import { configuration } from "../utils/configuration";
 import { Transition, Menu } from "@headlessui/react";
 import {
+  LoginIcon,
   LogoutIcon,
   PhotographIcon,
   UserIcon,
@@ -36,12 +37,13 @@ const NavbarAccount: FC = () => {
         </li>
         <li className="hidden md:flex items-center" role="menuitem">
           <button
-            className="text-white hover:text-gray-300 text-xs font-bold uppercase rounded p-2"
+            className="inline-flex text-white hover:text-gray-300 text-xs font-bold uppercase rounded p-2"
             type="button"
             tabIndex={0}
             onClick={() => login()}
           >
-            {"Se connecter"}
+            <LoginIcon className="w-5 h-5 mx-2" aria-hidden="true" />
+            Se connecter
           </button>
         </li>
       </ul>
