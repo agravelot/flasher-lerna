@@ -37,14 +37,14 @@ const Navbar: FunctionComponent = () => {
           </li>
           <li className="hidden lg:flex items-center">
             <Link
-              href={{ pathname: "/albums/page/[page]", query: { page: 1 } }}
+              href={{ pathname: "/galerie" }}
             >
               <a
                 role="menuitem"
                 tabIndex={0}
                 className="text-white hover:text-gray-300 px-3 py-4 text-xs uppercase font-bold"
               >
-                Albums
+                Galerie
               </a>
             </Link>
           </li>
@@ -165,7 +165,7 @@ const Navbar: FunctionComponent = () => {
             <ul className="flex flex-col lg:flex-row list-none mr-auto">
               <li>
                 <Link
-                  href={{ pathname: "/albums/page/[page]", query: { page: 1 } }}
+                  href={{ pathname: "/galerie"}}
                 >
                   <a
                     aria-haspopup="true"

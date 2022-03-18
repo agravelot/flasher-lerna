@@ -33,8 +33,18 @@ module.exports = withMDX((withTM(
           },
           {
             source: "/albums",
-            destination: "/albums/page/1",
+            destination: "/galerie",
             permanent: true,
+          },
+          {
+            source: "/albums/page/1",
+            destination: "/galerie",
+            permanent: true,
+          },
+          {
+            source: "/albums/:slug",
+            destination: "/galerie/:slug",
+            permanent: false
           },
           {
             source: "/categories",

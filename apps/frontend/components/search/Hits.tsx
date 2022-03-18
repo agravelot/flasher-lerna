@@ -99,7 +99,7 @@ export const AlbumHits = connectHits(({ hits }) => (
         key={hit.id}
       >
         <Link
-          href={{ pathname: "/albums/[slug]", query: { slug: hit.slug } }}
+          href={{ pathname: "/galerie/[slug]", query: { slug: hit.slug } }}
           prefetch={false}
         >
           <a>
@@ -118,7 +118,7 @@ export const AlbumHits = connectHits(({ hits }) => (
           </a>
         </Link>
         <Link
-          href={{ pathname: "/albums/[slug]", query: { slug: hit.slug } }}
+          href={{ pathname: "/galerie/[slug]", query: { slug: hit.slug } }}
           prefetch={false}
         >
           <a className="p-4">
