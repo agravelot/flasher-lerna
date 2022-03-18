@@ -1,8 +1,4 @@
-import {
-  GetStaticProps,
-  GetStaticPropsResult,
-  NextPage,
-} from "next";
+import { GetStaticProps, GetStaticPropsResult, NextPage } from "next";
 import Layout from "../../components/Layout";
 import Header from "../../components/Header";
 import AlbumList from "../../components/album/AlbumList";
@@ -44,31 +40,31 @@ const IndexAlbum: NextPage<Props> = ({
   const description =
     "Venez plonger dans mes différents univers à travers des albums divers et variés ! Entre balade, cosplay, et portrait.";
 
-    const [currentPage, setCurrentPage] = useState(1);
-    const [hasNextPage, setHasNextPage] = useState(initialHasNextPage);
-    const [albums, setAlbums] = useState(initialAlbums);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasNextPage, setHasNextPage] = useState(initialHasNextPage);
+  const [albums, setAlbums] = useState(initialAlbums);
 
-    const { observe, unobserve } = useInView({
-      // For better UX, we can grow the root margin so the data will be loaded earlier
-      rootMargin: "50px 0px",
-      onEnter: () => {
-        setCurrentPage(cp => cp + 1);
-      },
-    });
+  const { observe, unobserve } = useInView({
+    // For better UX, we can grow the root margin so the data will be loaded earlier
+    rootMargin: "50px 0px",
+    onEnter: () => {
+      setCurrentPage((cp) => cp + 1);
+    },
+  });
 
-    useEffect(() => {
-      if (currentPage === 1) {
-        return;
-      }
-      const url = getApiUrl(currentPage, perPage);
-      api<PaginatedReponse<Album[]>>(url)
-        .then((res) => res.json())
-        .then((res) => {
-          setAlbums(previous => [...previous, ...res.data]);
-          setCurrentPage(currentPage);
-          setHasNextPage(currentPage < res.meta.last_page);
-        });
-    }, [currentPage]);
+  useEffect(() => {
+    if (currentPage === 1) {
+      return;
+    }
+    const url = getApiUrl(currentPage, perPage);
+    api<PaginatedReponse<Album[]>>(url)
+      .then((res) => res.json())
+      .then((res) => {
+        setAlbums((previous) => [...previous, ...res.data]);
+        setCurrentPage(currentPage);
+        setHasNextPage(currentPage < res.meta.last_page);
+      });
+  }, [currentPage]);
 
   useEffect(() => {
     if (!hasNextPage) {
@@ -109,7 +105,7 @@ const IndexAlbum: NextPage<Props> = ({
         </p>
       </Header>
       <AlbumList albums={albums} />
-      {hasNextPage && <span ref={observe}/>}
+      {hasNextPage && <span ref={observe} />}
       {isAdmin && <DynamicAdminOverlay path="/galerie" />}
       <div className="pb-16"></div>
     </Layout>
@@ -118,12 +114,15 @@ const IndexAlbum: NextPage<Props> = ({
 
 export default IndexAlbum;
 
-const getApiUrl = (page: number, perPage: number) => `/albums?page=${page}&limit=${perPage}`;
+const getApiUrl = (page: number, perPage: number) =>
+  `/albums?page=${page}&limit=${perPage}`;
 
-export const getStaticProps: GetStaticProps = async (): Promise<GetStaticPropsResult<Props>> => {
-  const res = await api<PaginatedReponse<Album[]>>(
-    getApiUrl(1, perPage)
-  ).then((res) => res.json());
+export const getStaticProps: GetStaticProps = async (): Promise<
+  GetStaticPropsResult<Props>
+> => {
+  const res = await api<PaginatedReponse<Album[]>>(getApiUrl(1, perPage)).then(
+    (res) => res.json()
+  );
 
   const global = await getGlobalProps();
 
@@ -131,7 +130,7 @@ export const getStaticProps: GetStaticProps = async (): Promise<GetStaticPropsRe
     props: {
       ...global,
       albums: res.data,
-      hasNextPage: res.meta.current_page < res.meta.last_page
+      hasNextPage: res.meta.current_page < res.meta.last_page,
     },
     revalidate: 60,
   };

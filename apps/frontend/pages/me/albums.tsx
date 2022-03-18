@@ -128,7 +128,8 @@ const MyAlbums: FunctionComponent<Props> = ({
               </span>
               <br />
               {/*  eslint-disable-next-line prettier/prettier */}
-              Pour remédier à cela, n&apos;hésitez à me <Link
+              Pour remédier à cela, n&apos;hésitez à me{" "}
+              <Link
                 href={{
                   pathname: "/",
                   hash: "contact",
@@ -138,7 +139,8 @@ const MyAlbums: FunctionComponent<Props> = ({
                   contacter
                 </a>
                 {/*  eslint-disable-next-line prettier/prettier */}
-              </Link> !
+              </Link>{" "}
+              !
               <br />
               Je me ferais un plaisir à vous répondre.
             </div>
