@@ -135,17 +135,20 @@ const ShowAlbum: NextPage<Props> = ({
       )}
 
       <div className="container mx-auto">
-          <article>
-            <div className="flex justify-center py-16 px-4 text-justify">
-              <div className="content-center prose max-w-none" dangerouslySetInnerHTML={{ __html: album.body ?? "" }}/>
-            </div>
+        <article>
+          <div className="flex justify-center py-16 px-4 text-justify">
             <div
-              className="container mx-auto py-4 overflow-hidden mb-16"
-              // :style="galleryContentVisibility"
-            >
-              <AlbumMediaList album={album} openGalleryAt={openGalleryAt} />
-            </div>
-          </article>
+              className="content-center prose max-w-none"
+              dangerouslySetInnerHTML={{ __html: album.body ?? "" }}
+            />
+          </div>
+          <div
+            className="container mx-auto py-4 overflow-hidden mb-16"
+            // :style="galleryContentVisibility"
+          >
+            <AlbumMediaList album={album} openGalleryAt={openGalleryAt} />
+          </div>
+        </article>
       </div>
 
       {album.cosplayers?.length && (
@@ -211,7 +214,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       await api<WrappedResponse<Album[]>>("/albums")
         .then((res) => res.json())
         .then((json) => {
-          recommendedAlbums.push(...json.data.filter(a => a.id !== album.id).slice(0, 3-recommendedAlbums.length));
+          recommendedAlbums.push(
+            ...json.data
+              .filter((a) => a.id !== album.id)
+              .slice(0, 3 - recommendedAlbums.length)
+          );
         });
     }
 

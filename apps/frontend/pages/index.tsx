@@ -38,16 +38,20 @@ const IndexPage: NextPage<Props> = ({
         title={defaultPageTitle}
         description={seoDescription}
         canonical={`${configuration.appUrl}`}
-        openGraph={profilePictureHomepage ? {
-          images: [
-            {
-              url: profilePictureHomepage.url,
-              width: profilePictureHomepage.width ?? 0,
-              height: profilePictureHomepage.height ?? 0,
-              alt: appName,
-            },
-          ],
-        }: undefined}
+        openGraph={
+          profilePictureHomepage
+            ? {
+                images: [
+                  {
+                    url: profilePictureHomepage.url,
+                    width: profilePictureHomepage.width ?? 0,
+                    height: profilePictureHomepage.height ?? 0,
+                    alt: appName,
+                  },
+                ],
+              }
+            : undefined
+        }
       />
       <div>
         <Header title={appName} separatorClass="text-gray-300" />
@@ -70,17 +74,19 @@ const IndexPage: NextPage<Props> = ({
           <Separator separatorClass="text-white" position="top" />
           <div className="container mx-auto px-4">
             <div className="items-center block lg:flex flex-wrap">
-              {profilePictureHomepage && <div className="mx-auto w-3/5 lg:w-4/12 lg:order-2">
-                <Image
-                  className="shadow-lg object-cover w-full p-8 md:p-16 mb-8 lg:mb-0"
-                  alt={appName}
-                  src={profilePictureHomepage.url}
-                  width={2000}
-                  draggable={false}
-                  height={2000}
-                  // quality={95}
-                />
-              </div>}
+              {profilePictureHomepage && (
+                <div className="mx-auto w-3/5 lg:w-4/12 lg:order-2">
+                  <Image
+                    className="shadow-lg object-cover w-full p-8 md:p-16 mb-8 lg:mb-0"
+                    alt={appName}
+                    src={profilePictureHomepage.url}
+                    width={2000}
+                    draggable={false}
+                    height={2000}
+                    // quality={95}
+                  />
+                </div>
+              )}
               <div className="w-full lg:w-8/12 ml-auto mr-auto px-4">
                 <div className="md:pr-12">
                   <h2 className="text-3xl font-semibold">
@@ -125,10 +131,7 @@ const IndexPage: NextPage<Props> = ({
               </div>
             </div>
             <div className="body-font">
-                  <TestimonialList
-                    testimonials={testimonials}
-                    appName={appName}
-                  />
+              <TestimonialList testimonials={testimonials} appName={appName} />
             </div>
             {/* <div className="flex items-center">
               <button

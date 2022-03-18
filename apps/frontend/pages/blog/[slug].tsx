@@ -17,7 +17,12 @@ type Props = {
   estimatedReadingInMinutes: number;
 } & GlobalProps;
 
-const ImageCustom = (props: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>) => {
+const ImageCustom = (
+  props: React.DetailedHTMLProps<
+    React.ImgHTMLAttributes<HTMLImageElement>,
+    HTMLImageElement
+  >
+) => {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
@@ -37,7 +42,12 @@ const components = {
   // p: (props) => <p style={{ color: "tomato" }} {...props} />,
 };
 
-const Post: NextPage<Props> = ({ post, appName, estimatedReadingInMinutes, socialMedias }: Props) => {
+const Post: NextPage<Props> = ({
+  post,
+  appName,
+  estimatedReadingInMinutes,
+  socialMedias,
+}: Props) => {
   const { asPath } = useRouter();
 
   return (
@@ -112,16 +122,18 @@ export const getStaticProps: GetStaticProps = async ({
   }
 
   const global = await getGlobalProps();
-  
+
   post.contentSerialized = await serialize(post.content);
 
-  const estimatedReadingInMinutes = (post.content.split(" ").length / 200).toFixed();
+  const estimatedReadingInMinutes = (
+    post.content.split(" ").length / 200
+  ).toFixed();
 
   return {
     props: {
       ...global,
       post,
-      estimatedReadingInMinutes
+      estimatedReadingInMinutes,
     },
   };
 };

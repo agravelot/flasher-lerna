@@ -42,10 +42,11 @@ const MyAlbumItem: FunctionComponent<Props> = ({
 
   return (
     <div className="w-full lg:max-w-full lg:flex">
-      <div className="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden">
+      <div className="lg:w-64 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden">
         {album.media && (
           <Image
-            className="h-64 w-full object-cover"
+            className="h-64 w-full rounded-t lg:rounded-t-none lg:rounded-l"
+            objectFit="cover"
             src={album.media.url}
             alt={album.title}
             width={album.media.width}
@@ -58,10 +59,7 @@ const MyAlbumItem: FunctionComponent<Props> = ({
       <div className="w-full border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
         <div className="mb-8">
           {album.private && (
-            <p
-              v-if="album.private"
-              className="text-sm text-gray-600 flex items-center"
-            >
+            <p className="text-sm text-gray-600 flex items-center">
               <svg
                 className="fill-current text-gray-500 w-3 h-3 mr-2"
                 xmlns="http://www.w3.org/2000/svg"
