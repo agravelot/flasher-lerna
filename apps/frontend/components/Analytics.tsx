@@ -1,5 +1,4 @@
-import GA4React from "ga-4-react";
-import { useEffect } from "react";
+import Script from "next/script";
 
 interface Config {
   ua: string;
@@ -8,20 +7,30 @@ interface Config {
 
 const config: Config = {
   ua: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_UA ?? "",
-  debug: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_DEBUG  === "true",
+  debug: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_DEBUG === "true",
 };
 
-export const Analytics = (): null => {
-  useEffect(() => {
-    if (!config.ua) {
-      console.error("Google Analytics UA not set");
-      return;
-    }
-
-    const ga4react = new GA4React(config.ua);
-
-    ga4react.initialize();
-  }, []);
-
-  return null;
+export const Analytics = (): JSX.Element => {
+  return (
+    <>
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${config.ua}`}
+      />
+      <Script
+        id="ga-script"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${config.ua}', {
+              page_path: window.location.pathname,
+            });
+          `,
+        }}
+      />
+    </>
+  );
 };
