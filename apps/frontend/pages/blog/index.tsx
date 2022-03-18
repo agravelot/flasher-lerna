@@ -15,6 +15,10 @@ type Props = {
   posts: BlogPost[];
 } & GlobalProps;
 
+const truncate = (str: string, n: number): string => {
+  return str.length > n ? str.substring(0, n - 1) + "..." : str;
+};
+
 const IndexAlbum: NextPage<Props> = ({
   posts,
   socialMedias,
@@ -79,7 +83,9 @@ const IndexAlbum: NextPage<Props> = ({
                     </h3>
                   </a>
                 </Link>
-                <p className="text-gray-600 mt-4">{post.metaDescription}</p>
+                <p className="text-gray-600 mt-4">
+                  {truncate(post.metaDescription, 200)}
+                </p>
                 <Link href={`/blog/${post.slug}`}>
                   <a className="inline-block w-full">
                     <span
