@@ -7,6 +7,7 @@ import { generateNextImageUrl } from "@flasher/common/src";
 import { serialize } from "next-mdx-remote/serialize";
 import { join } from "path";
 import { readFileSync } from "fs";
+import Link from "next/link";
 
 type Props = GlobalProps & {
   content: MDXRemoteSerializeResult
@@ -27,6 +28,22 @@ const ImageCustom = (props: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTML
 
 const components = {
   img: ImageCustom,
+  a: (a: React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>) => {
+    if (!a.href) {
+      throw new Error("no href");
+    }
+    const isInternal = a.href.startsWith(process.env.NEXT_PUBLIC_APP_URL ?? "");
+
+    if (!isInternal) {
+      return (
+        <a href={a.href} target="_blank" rel="noreferrer">{a.children}</a>
+      );
+    }
+
+    return (
+      <Link href={a.href}>{a.children}</Link>
+    );
+  }
   // h1: (props) => <h1 style={{ color: "tomato" }} {...props} />,
   // h2: (props) => <h2 style={{ color: "tomato" }} {...props} />,
   // p: (props) => <p style={{ color: "tomato" }} {...props} />,
