@@ -2,6 +2,7 @@ import { GetStaticProps } from "next";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import Header from "../../components/Header";
+import Image from "next/image";
 import Link from "next/link";
 import Pagination, { PaginationProps } from "../../components/Pagination";
 import { getGlobalProps, GlobalProps } from "../../stores";
@@ -12,6 +13,7 @@ import { Album } from "@flasher/models";
 import { useAuthentication } from "hooks/useAuthentication";
 import { configuration } from "utils/configuration";
 import { useRouter } from "next/dist/client/router";
+import pictureLogo from "../../public/photo.svg";
 
 type Props = GlobalProps;
 
@@ -76,24 +78,34 @@ const MyAlbums: FunctionComponent<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialized]);
 
+  const pictureLogoComponent = (
+    <Image
+      className="mx-auto h-64 w-64"
+      src={pictureLogo}
+      height={"264px"}
+      width={"264px"}
+      alt="logo image"
+    />
+  );
+
   return (
     <Layout socialMedias={socialMedias} appName={appName}>
       <NextSeo
-        title={`Mes albums | ${appName}`}
+        title={`Ma galerie | ${appName}`}
         description="Découvrir les albums dans lesquels j'apparais"
         canonical={`${configuration.appUrl}${asPath}`}
         openGraph={{
-          title: `Mes albums | ${appName}`,
+          title: `Ma galerie | ${appName}`,
           description: "Découvrir les albums dans lesquels j'apparais",
         }}
       />
-      <Header title="Mes albums" />
+      <Header title="Ma galerie" />
       {albums.length > 0 && (
         <div>
           <div className="container mx-auto py-8">
             <div className="flex flex-wrap -mx-2">
               {albums.map((album) => (
-                <div key={album.id} className="w-full p-1 flex-auto md:w-1/2">
+                <div key={album.id} className="w-full p-1 flex md:w-1/2">
                   <MyAlbumItem showDownload={true} album={album} />
                 </div>
               ))}
@@ -119,12 +131,12 @@ const MyAlbums: FunctionComponent<Props> = ({
       {status !== State.Loading && albums.length === 0 && (
         <div className="mb-32">
           <section className="container mx-auto">
-            <img src="/photo.svg" alt="" className="h-64 w-64 mx-auto" />
+            <div className="text-center">{pictureLogoComponent}</div>
             <div className="text-center">
               <span className="font-bold text-black">
                 {status === State.Completed &&
                   "Vous n'avez aucun album pour le moment."}
-                {status === State.Failed && "Une erreur a eu lieu."}
+                {status === State.Failed && "Impossible de charger vos images."}
               </span>
               <br />
               {/*  eslint-disable-next-line prettier/prettier */}
@@ -149,16 +161,14 @@ const MyAlbums: FunctionComponent<Props> = ({
       )}
 
       {status === State.Loading && (
-        <div className="container mx-auto py-8 p-64">
+        <section className="container mx-auto py-8 p-64">
           <div className="mb-32">
-            <section className="container mx-auto">
-              <img src="/photo.svg" alt="" className="h-64 w-64 mx-auto" />
-              <div className="text-center">
-                <span className="font-bold text-black">Chargement...</span>
-              </div>
-            </section>
+            <div className="text-center">{pictureLogoComponent}</div>
+            <div className="text-center">
+              <span className="font-bold text-black">Chargement...</span>
+            </div>
           </div>
-        </div>
+        </section>
       )}
     </Layout>
   );
