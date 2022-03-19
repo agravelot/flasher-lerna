@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useKeycloak } from "@react-keycloak/ssr";
 import { Album } from "@flasher/models";
 import { api } from "@flasher/common";
+import { sizes } from "utils/util";
 
 export interface Props {
   album: Album;
@@ -60,6 +61,7 @@ const MyAlbumItem: FunctionComponent<Props> = ({
             alt={album.title}
             width={album.media.width}
             height={album.media.height}
+            sizes={sizes(2, "container")}
             draggable={false}
             layout="responsive"
           />
