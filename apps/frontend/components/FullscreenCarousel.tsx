@@ -24,20 +24,20 @@ const FullscreenCarousel: FunctionComponent<Props> = ({
 
   if (openned) {
     return (
-      <div className="h-full w-full bg-black fixed z-50 top-0 left-0">
+      <div className="fixed top-0 left-0 z-50 h-full w-full bg-black">
         <div
-          className="fixed text-white z-10"
+          className="fixed z-10 text-white"
           style={{ top: "20px", right: "20px" }}
         >
           <button
-            className="w-6 h-6 focus:outline-none"
+            className="h-6 w-6 focus:outline-none"
             onClick={() => close()}
           >
             <i>
               <svg
                 viewBox="0 0 20 20"
                 fill="currentColor"
-                className="x w-6 h-6"
+                className="x h-6 w-6"
               >
                 <path
                   fillRule="evenodd"

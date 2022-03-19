@@ -103,9 +103,9 @@ const MyAlbums: FunctionComponent<Props> = ({
       {albums.length > 0 && (
         <div>
           <div className="container mx-auto py-8">
-            <div className="flex flex-wrap -mx-2">
+            <div className="-mx-2 flex flex-wrap">
               {albums.map((album) => (
-                <div key={album.id} className="w-full p-1 flex md:w-1/2">
+                <div key={album.id} className="flex w-full p-1 md:w-1/2">
                   <MyAlbumItem showDownload={true} album={album} />
                 </div>
               ))}
@@ -147,7 +147,7 @@ const MyAlbums: FunctionComponent<Props> = ({
                   hash: "contact",
                 }}
               >
-                <a className="underline text-pink-600 hover:text-pink-800">
+                <a className="text-pink-600 underline hover:text-pink-800">
                   contacter
                 </a>
                 {/*  eslint-disable-next-line prettier/prettier */}
@@ -161,7 +161,7 @@ const MyAlbums: FunctionComponent<Props> = ({
       )}
 
       {status === State.Loading && (
-        <section className="container mx-auto py-8 p-64">
+        <section className="container mx-auto p-64 py-8">
           <div className="mb-32">
             <div className="text-center">{pictureLogoComponent}</div>
             <div className="text-center">

@@ -37,17 +37,16 @@ export const TestimonialList: FunctionComponent<Props> = ({
         }}
       ></script>
       <div className="relative">
-        <div className="flex flex-nowrap overflow-x-auto w-full pt-12 items-center mb-8">
-
-        {testimonials.map((testimonial) => (
-          <div
-            className="flex-none items-center content-center w-full md:w-1/2 lg:w-1/3 px-4"
-            key={testimonial.id}
-          >
-            <TestimonialItem testimonial={testimonial} />
-          </div>
-        ))}
-      </div>
+        <div className="mb-8 flex w-full flex-nowrap items-center overflow-x-auto pt-12">
+          {testimonials.map((testimonial) => (
+            <div
+              className="w-full flex-none content-center items-center px-4 md:w-1/2 lg:w-1/3"
+              key={testimonial.id}
+            >
+              <TestimonialItem testimonial={testimonial} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

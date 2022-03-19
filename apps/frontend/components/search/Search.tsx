@@ -19,26 +19,26 @@ const Search: FunctionComponent = () => {
   return (
     <InstantSearch searchClient={client} indexName="albums-production">
       <CustomSearchBox />
-      <span className="inline-block h-1 w-full rounded bg-gradient-to-r from-blue-700 to-red-700 mb-4" />
+      <span className="mb-4 inline-block h-1 w-full rounded bg-gradient-to-r from-blue-700 to-red-700" />
 
-      <div className="text-white text-2xl">Albums</div>
-      <span className="mx-auto inline-block h-1 w-8 rounded bg-gradient-to-r from-blue-700 to-red-700 mb-4" />
+      <div className="text-2xl text-white">Albums</div>
+      <span className="mx-auto mb-4 inline-block h-1 w-8 rounded bg-gradient-to-r from-blue-700 to-red-700" />
       <Index indexName="albums-production">
         <IndexResults>
           <AlbumHits />
         </IndexResults>
       </Index>
 
-      <div className="text-white text-2xl">Catégories</div>
-      <span className="mx-auto inline-block h-1 w-8 rounded bg-gradient-to-r from-blue-700 to-red-700 mb-4" />
+      <div className="text-2xl text-white">Catégories</div>
+      <span className="mx-auto mb-4 inline-block h-1 w-8 rounded bg-gradient-to-r from-blue-700 to-red-700" />
       <Index indexName="categories-production">
         <IndexResults>
           <CategoryHits />
         </IndexResults>
       </Index>
 
-      <div className="text-white text-2xl">Cosplayers</div>
-      <span className="mx-auto inline-block h-1 w-8 rounded bg-gradient-to-r from-blue-700 to-red-700 mb-4" />
+      <div className="text-2xl text-white">Cosplayers</div>
+      <span className="mx-auto mb-4 inline-block h-1 w-8 rounded bg-gradient-to-r from-blue-700 to-red-700" />
       <Index indexName="cosplayers-production">
         <IndexResults>
           <CosplayerHits />

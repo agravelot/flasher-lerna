@@ -92,7 +92,7 @@ const Post: NextPage<Props> = ({
       <Header title={post.title} />
       <div className="container mx-auto">
         <div className="flex justify-center py-16 px-4 text-justify">
-          <article className="content-center max-w-none prose prose-sm sm:prose lg:prose-lg xl:prose-xl">
+          <article className="prose prose-sm max-w-none content-center sm:prose lg:prose-lg xl:prose-xl">
             <i>Temps de lecture estimé : {estimatedReadingInMinutes} min.</i>
             {post.contentSerialized && (
               <MDXRemote {...post.contentSerialized} components={components} />

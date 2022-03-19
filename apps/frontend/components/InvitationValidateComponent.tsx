@@ -109,7 +109,7 @@ const InvitationValidateComponent: FunctionComponent = () => {
   return (
     <div className="mb-8 text-center">
       {status === Status.Success && (
-        <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:h-10 sm:w-10 mb-4">
+        <div className="mx-auto mb-4 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:h-10 sm:w-10">
           {/* <!-- Heroicon name: badge-check --> */}
           <svg
             className="h-6 w-6 text-green-600"
@@ -129,7 +129,7 @@ const InvitationValidateComponent: FunctionComponent = () => {
       )}
 
       {status >= 2 && (
-        <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:h-10 sm:w-10 mb-4">
+        <div className="mx-auto mb-4 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:h-10 sm:w-10">
           {/* <!-- Heroicon name: exclamation --> */}
           <svg
             className="h-6 w-6 text-red-600"
@@ -148,14 +148,14 @@ const InvitationValidateComponent: FunctionComponent = () => {
         </div>
       )}
 
-      <h1 className="text-gray-900 font-bold text-xl mb-2">{message()}</h1>
+      <h1 className="mb-2 text-xl font-bold text-gray-900">{message()}</h1>
 
       {status === Status.Success && (
         <div>
           <span>Vous pouvez dorénavant accéder à toutes vos photos.</span>
           <div className="mt-8">
             <Link href={{ pathname: "/me/albums" }}>
-              <a className="mt-12 bg-gradient-to-r mx-auto from-blue-700 to-red-700 hover:from-pink-500 hover:to-orange-500 text-white font-semibold py-3 px-10 rounded-lg">
+              <a className="mx-auto mt-12 rounded-lg bg-gradient-to-r from-blue-700 to-red-700 py-3 px-10 font-semibold text-white hover:from-pink-500 hover:to-orange-500">
                 Accéder à mes albums
               </a>
             </Link>
@@ -163,11 +163,11 @@ const InvitationValidateComponent: FunctionComponent = () => {
         </div>
       )}
       {status >= 2 && (
-        <div className="text-gray-700 text-base">
+        <div className="text-base text-gray-700">
           <span>N&apos;hésitez pas à me contarter pour remédier à cela.</span>
           <div className="mt-8">
             <Link href={{ pathname: "/", hash: "#contact" }}>
-              <a className="mt-12 bg-gradient-to-r mx-auto from-blue-700 to-red-700 hover:from-pink-500 hover:to-orange-500 text-white font-semibold py-3 px-10 rounded-lg">
+              <a className="mx-auto mt-12 rounded-lg bg-gradient-to-r from-blue-700 to-red-700 py-3 px-10 font-semibold text-white hover:from-pink-500 hover:to-orange-500">
                 Prendre contact
               </a>
             </Link>

@@ -32,11 +32,11 @@ const Header: FunctionComponent<Props> = ({
   altDescription = defaultMedia.name,
 }: Props) => (
   <div
-    className="relative pt-16 pb-32 flex content-center items-center justify-center"
+    className="relative flex content-center items-center justify-center pt-16 pb-32"
     style={{ minHeight: "75vh" }}
   >
     <div
-      className="absolute top-0 w-full h-full bg-center bg-cover bg-black"
+      className="absolute top-0 h-full w-full bg-black bg-cover bg-center"
       style={{ filter: "brightness(80%)" }}
     >
       <Image
@@ -49,9 +49,9 @@ const Header: FunctionComponent<Props> = ({
       />
     </div>
     <div className="container relative mx-auto">
-      <div className="items-center flex flex-wrap">
-        <div className="w-full lg:w-6/12 px-4 ml-auto mr-auto text-center">
-          <h1 className="text-white font-semibold text-5xl">{title}</h1>
+      <div className="flex flex-wrap items-center">
+        <div className="ml-auto mr-auto w-full px-4 text-center lg:w-6/12">
+          <h1 className="text-5xl font-semibold text-white">{title}</h1>
           <p className="mt-4 text-lg text-gray-300">{description}</p>
           {children}
         </div>

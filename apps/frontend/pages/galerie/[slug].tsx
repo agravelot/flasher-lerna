@@ -116,7 +116,7 @@ const ShowAlbum: NextPage<Props> = ({
               key={category.id}
             >
               <a tabIndex={0}>
-                <span className="inline-block rounded-full px-3 py-1 text-sm text-white m-1">
+                <span className="m-1 inline-block rounded-full px-3 py-1 text-sm text-white">
                   {category.name}
                 </span>
               </a>
@@ -138,12 +138,12 @@ const ShowAlbum: NextPage<Props> = ({
         <article>
           <div className="flex justify-center py-16 px-4 text-justify">
             <div
-              className="content-center prose max-w-none"
+              className="prose max-w-none content-center"
               dangerouslySetInnerHTML={{ __html: album.body ?? "" }}
             />
           </div>
           <div
-            className="container mx-auto py-4 overflow-hidden mb-16"
+            className="container mx-auto mb-16 overflow-hidden py-4"
             // :style="galleryContentVisibility"
           >
             <AlbumMediaList album={album} openGalleryAt={openGalleryAt} />
@@ -152,14 +152,14 @@ const ShowAlbum: NextPage<Props> = ({
       </div>
 
       {album.cosplayers?.length && (
-        <div className="container mx-auto py-4 overflow-hidden">
-          <h2 className="text-3xl text-center my-8 font-semibold">
+        <div className="container mx-auto overflow-hidden py-4">
+          <h2 className="my-8 text-center text-3xl font-semibold">
             {album.cosplayers?.length === 1 ? "Modèle" : "Modèles"}
           </h2>
           <div className="flex flex-wrap">
             {album.cosplayers?.map((cosplayer) => (
               <div
-                className="w-1/2 lg:w-1/3 flex justify-center"
+                className="flex w-1/2 justify-center lg:w-1/3"
                 key={cosplayer.id}
               >
                 <CosplayerItem cosplayer={cosplayer} />
@@ -171,10 +171,10 @@ const ShowAlbum: NextPage<Props> = ({
 
       {recommendedAlbums.length && (
         <div className="container mx-auto mb-16 lg:mb-24">
-          <h2 className="text-3xl text-center my-8 font-semibold">
+          <h2 className="my-8 text-center text-3xl font-semibold">
             Découvrez en plus
           </h2>
-          <div className="md:flex flex-wrap md:-mx-3">
+          <div className="flex-wrap md:-mx-3 md:flex">
             <AlbumList albums={recommendedAlbums} />
           </div>
         </div>

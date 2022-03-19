@@ -88,18 +88,18 @@ const ShowCategory: NextPage<Props> = ({
         <div className="container mx-auto px-4">
           <div className="justify-center py-16 text-justify">
             <article
-              className="content-center prose max-w-none"
+              className="prose max-w-none content-center"
               dangerouslySetInnerHTML={{ __html: category.description ?? "" }}
             />
           </div>
         </div>
 
-        <div className="container mx-auto py-8 mb-8">
-          <div className="flex flex-wrap -mx-2">
+        <div className="container mx-auto mb-8 py-8">
+          <div className="-mx-2 flex flex-wrap">
             {albums.map((album) => (
               <div
                 key={album.id}
-                className="w-full p-1 flex-grow-0 md:w-1/2 lg:w-1/3"
+                className="w-full flex-grow-0 p-1 md:w-1/2 lg:w-1/3"
               >
                 <AlbumItem album={album} />
               </div>

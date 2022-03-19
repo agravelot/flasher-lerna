@@ -83,7 +83,7 @@ export const SwiperCarousel: FunctionComponent<Props> = ({
       {medias.map((m, index) => {
         return (
           <SwiperSlide key={m.id} zoom>
-            <div className="flex items-center align-middle justify-center h-screen">
+            <div className="flex h-screen items-center justify-center align-middle">
               <Image
                 objectFit="contain"
                 className="max-h-screen"

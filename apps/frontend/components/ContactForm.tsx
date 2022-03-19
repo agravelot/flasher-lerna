@@ -57,9 +57,9 @@ const ContactForm: FunctionComponent = () => {
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
       {({ isSubmitting, isValid }) => (
         <Form>
-          <div className="relative w-full mb-3">
+          <div className="relative mb-3 w-full">
             <label
-              className="block uppercase text-gray-700 text-xs font-bold mb-2"
+              className="mb-2 block text-xs font-bold uppercase text-gray-700"
               htmlFor="contact_name"
             >
               Nom
@@ -70,19 +70,19 @@ const ContactForm: FunctionComponent = () => {
               id="contact_name"
               required={true}
               autoComplete={"true"}
-              className="px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
+              className="w-full rounded bg-white px-3 py-3 text-sm text-gray-700 placeholder-gray-400 shadow focus:outline-none focus:ring"
               placeholder="Nom ou pseudonyme"
             />
 
-            <ErrorMessage className="text-red-800 text-xs italic" name="name">
+            <ErrorMessage className="text-xs italic text-red-800" name="name">
               {(msg) => (
-                <span className="text-red-800 text-xs italic">{msg}</span>
+                <span className="text-xs italic text-red-800">{msg}</span>
               )}
             </ErrorMessage>
           </div>
-          <div className="relative w-full mb-3">
+          <div className="relative mb-3 w-full">
             <label
-              className="block uppercase text-gray-700 text-xs font-bold mb-2"
+              className="mb-2 block text-xs font-bold uppercase text-gray-700"
               htmlFor="contact_email"
             >
               Email
@@ -93,20 +93,20 @@ const ContactForm: FunctionComponent = () => {
               id="contact_email"
               required={true}
               autoComplete={"true"}
-              className="px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
+              className="w-full rounded bg-white px-3 py-3 text-sm text-gray-700 placeholder-gray-400 shadow focus:outline-none focus:ring"
               placeholder="email@example.com"
               style={{ transition: "all 0.15s ease 0s" }}
             />
 
-            <ErrorMessage className="text-red-800 text-xs italic" name="email">
+            <ErrorMessage className="text-xs italic text-red-800" name="email">
               {(msg) => (
-                <span className="text-red-800 text-xs italic">{msg}</span>
+                <span className="text-xs italic text-red-800">{msg}</span>
               )}
             </ErrorMessage>
           </div>
-          <div className="relative w-full mb-3">
+          <div className="relative mb-3 w-full">
             <label
-              className="block uppercase text-gray-700 text-xs font-bold mb-2"
+              className="mb-2 block text-xs font-bold uppercase text-gray-700"
               htmlFor="contact_message"
             >
               Message
@@ -119,22 +119,22 @@ const ContactForm: FunctionComponent = () => {
               required={true}
               rows={4}
               cols={80}
-              className="px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
+              className="w-full rounded bg-white px-3 py-3 text-sm text-gray-700 placeholder-gray-400 shadow focus:outline-none focus:ring"
               placeholder="Ecrivez votre message..."
             />
 
             <ErrorMessage
-              className="text-red-800 text-xs italic"
+              className="text-xs italic text-red-800"
               name="message"
             >
               {(msg) => (
-                <span className="text-red-800 text-xs italic">{msg}</span>
+                <span className="text-xs italic text-red-800">{msg}</span>
               )}
             </ErrorMessage>
           </div>
-          <div className="text-center mt-6">
+          <div className="mt-6 text-center">
             <button
-              className={`inline-flex bg-gradient-to-r from-blue-700 to-red-700 hover:from-pink-500 hover:to-orange-500 text-white active:bg-gray-700 text-sm font-semibold px-12 py-3 rounded-lg shadow hover:shadow-lg ${
+              className={`inline-flex rounded-lg bg-gradient-to-r from-blue-700 to-red-700 px-12 py-3 text-sm font-semibold text-white shadow hover:from-pink-500 hover:to-orange-500 hover:shadow-lg active:bg-gray-700 ${
                 (isSubmitting && isValid) || isCompleted
                   ? "cursor-not-allowed"
                   : null
@@ -144,7 +144,7 @@ const ContactForm: FunctionComponent = () => {
             >
               {isSubmitting && isValid && (
                 <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  className="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"

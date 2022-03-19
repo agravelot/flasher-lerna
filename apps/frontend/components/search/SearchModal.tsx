@@ -25,7 +25,7 @@ export const SearchModal: FunctionComponent = () => {
 
   return (
     <Transition
-      className="fixed z-50 inset-0 overflow-y-auto"
+      className="fixed inset-0 z-50 overflow-y-auto"
       appear={true} // Transitioning on initial mount
       show={status === SearchStatus.Opened}
       enter="transition ease-out duration-100"
@@ -35,7 +35,7 @@ export const SearchModal: FunctionComponent = () => {
       leaveFrom="transform opacity-100 scale-100"
       leaveTo="transform opacity-0 scale-95"
     >
-      <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div className="flex min-h-screen items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
         <div className="fixed inset-0 transition-opacity">
           <div
             className="absolute inset-0 z-50"
@@ -43,13 +43,13 @@ export const SearchModal: FunctionComponent = () => {
           />
         </div>
         <div
-          className="absolute text-white z-50 h-10 w-10 rounded-full bg-gray-600"
+          className="absolute z-50 h-10 w-10 rounded-full bg-gray-600 text-white"
           style={{ top: "2.5rem", right: "3.125rem" }}
         >
           <button
             role="menuitem"
             tabIndex={0}
-            className="focus:outline-none h-10 w-10 p-1"
+            className="h-10 w-10 p-1 focus:outline-none"
             onClick={() => close()}
           >
             <i>
@@ -64,10 +64,10 @@ export const SearchModal: FunctionComponent = () => {
           </button>
         </div>
         {/* This element is to trick the browser into centering the modal contents. */}
-        <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
+        <span className="hidden sm:inline-block sm:h-screen sm:align-middle"></span>
         &#8203;
         <div
-          className="inline-block align-bottom rounded-lg text-left overflow-hidden transform transition-all sm:my-8 sm:align-middle sm:w-full"
+          className="inline-block transform overflow-hidden rounded-lg text-left align-bottom transition-all sm:my-8 sm:w-full sm:align-middle"
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-headline"

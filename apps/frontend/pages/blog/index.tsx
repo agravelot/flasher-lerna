@@ -68,8 +68,8 @@ const IndexAlbum: NextPage<Props> = ({
 
           return (
             <div className="w-full p-3" key={post.slug}>
-              <div className="max-w-2xl mx-auto mb-10">
-                <span className="text-gray-600 text-sm font-light">
+              <div className="mx-auto mb-10 max-w-2xl">
+                <span className="text-sm font-light text-gray-600">
                   Il y a{" "}
                   {formatDistance(createdAt, new Date(), {
                     locale: fr,
@@ -78,18 +78,18 @@ const IndexAlbum: NextPage<Props> = ({
                 </span>
                 <Link href={`/blog/${post.slug}`}>
                   <a className="block">
-                    <h3 className=" text-gray-800 text-3xl font-bold mt-2 hover:underline hover:text-blue-500">
+                    <h3 className=" mt-2 text-3xl font-bold text-gray-800 hover:text-blue-500 hover:underline">
                       {post.title}
                     </h3>
                   </a>
                 </Link>
-                <p className="text-gray-600 mt-4">
+                <p className="mt-4 text-gray-600">
                   {truncate(post.metaDescription, 200)}
                 </p>
                 <Link href={`/blog/${post.slug}`}>
                   <a className="inline-block w-full">
                     <span
-                      className="bg-gradient-to-r from-blue-700 to-red-700 mx-4 shadow-none bg-clip-text text-transparent float-right font-semibold hover:underline"
+                      className="float-right mx-4 bg-gradient-to-r from-blue-700 to-red-700 bg-clip-text font-semibold text-transparent shadow-none hover:underline"
                       style={{
                         WebkitBackgroundClip: "text",
                       }}

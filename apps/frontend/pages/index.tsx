@@ -55,13 +55,13 @@ const IndexPage: NextPage<Props> = ({
       />
       <div>
         <Header title={appName} separatorClass="text-gray-300" />
-        <section className="pb-20 bg-gray-300">
+        <section className="bg-gray-300 pb-20">
           <div className="container mx-auto">
-            <div className="flex flex-wrap -mt-24 md:-mx-3 overflow-x-hidden">
+            <div className="-mt-24 flex flex-wrap overflow-x-hidden md:-mx-3">
               <Link href="/albums/page/1">
                 <a
                   tabIndex={0}
-                  className="order-last mt-12 mx-auto bg-gradient-to-r from-blue-700 to-red-700 hover:from-pink-500 hover:to-orange-500 text-white font-semibold py-3 px-10 rounded-lg"
+                  className="order-last mx-auto mt-12 rounded-lg bg-gradient-to-r from-blue-700 to-red-700 py-3 px-10 font-semibold text-white hover:from-pink-500 hover:to-orange-500"
                 >
                   <h2>Découvrez mes derniers albums</h2>
                 </a>
@@ -73,11 +73,11 @@ const IndexPage: NextPage<Props> = ({
         <section className="relative py-20">
           <Separator separatorClass="text-white" position="top" />
           <div className="container mx-auto px-4">
-            <div className="items-center block lg:flex flex-wrap">
+            <div className="block flex-wrap items-center lg:flex">
               {profilePictureHomepage && (
-                <div className="mx-auto w-3/5 lg:w-4/12 lg:order-2">
+                <div className="mx-auto w-3/5 lg:order-2 lg:w-4/12">
                   <Image
-                    className="shadow-lg object-cover w-full p-8 md:p-16 mb-8 lg:mb-0"
+                    className="mb-8 w-full object-cover p-8 shadow-lg md:p-16 lg:mb-0"
                     alt={appName}
                     src={profilePictureHomepage.url}
                     width={2000}
@@ -87,16 +87,16 @@ const IndexPage: NextPage<Props> = ({
                   />
                 </div>
               )}
-              <div className="w-full lg:w-8/12 ml-auto mr-auto px-4">
+              <div className="ml-auto mr-auto w-full px-4 lg:w-8/12">
                 <div className="md:pr-12">
                   <h2 className="text-3xl font-semibold">
                     Photographe passionnée sur Lyon
                   </h2>
                   <div className="mt-2">
-                    <span className="mx-auto inline-block h-1 w-16 rounded bg-gradient-to-r from-blue-700 to-red-700 mb-4"></span>
+                    <span className="mx-auto mb-4 inline-block h-1 w-16 rounded bg-gradient-to-r from-blue-700 to-red-700"></span>
                   </div>
                   <div
-                    className="mt-4 leading-relaxed prose max-w-none text-justify"
+                    className="prose mt-4 max-w-none text-justify leading-relaxed"
                     dangerouslySetInnerHTML={{
                       __html: homepageDescription,
                     }}
@@ -109,12 +109,12 @@ const IndexPage: NextPage<Props> = ({
         <section id="testimonials" className="p-12 lg:pb-24">
           <div className="container mx-auto">
             <div className="flex flex-wrap justify-center text-center">
-              <div className="w-full lg:w-6/12 px-4">
+              <div className="w-full px-4 lg:w-6/12">
                 <h2 className="text-4xl font-semibold">
                   <span>
                     {"Ils sont "}
                     <span
-                      className="bg-clip-text bg-gradient-to-r from-blue-700 to-red-700 shadow-none text-transparent"
+                      className="bg-gradient-to-r from-blue-700 to-red-700 bg-clip-text text-transparent shadow-none"
                       style={{
                         WebkitBackgroundClip: "text",
                       }}
@@ -123,8 +123,8 @@ const IndexPage: NextPage<Props> = ({
                     </span>
                   </span>
                 </h2>
-                <span className="inline-block h-1 w-10 rounded bg-gradient-to-r from-blue-700 to-red-700 mb-4" />
-                <p className="text-lg leading-relaxed m-4">
+                <span className="mb-4 inline-block h-1 w-10 rounded bg-gradient-to-r from-blue-700 to-red-700" />
+                <p className="m-4 text-lg leading-relaxed">
                   Vous avez aimer partager cette aventure avec moi ? N’hésitez
                   pas à en laisser une trace, cela fait toujours plaisir.
                 </p>

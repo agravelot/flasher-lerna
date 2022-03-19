@@ -10,8 +10,8 @@ interface Props {
 
 const CategoryItem: FunctionComponent<Props> = ({ category }: Props) => {
   return (
-    <div className="rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition duration-200 ease-in-out h-full">
-      <div className="bg-gradient-to-r from-blue-700 to-red-700 mb- shadow-none bg-opacity-50 h-full">
+    <div className="h-full transform overflow-hidden rounded-xl shadow-lg transition duration-200 ease-in-out hover:scale-105">
+      <div className="mb- h-full bg-opacity-50 bg-gradient-to-r from-blue-700 to-red-700 shadow-none">
         <Link
           href={{
             pathname: "/categories/[slug]",
@@ -20,10 +20,10 @@ const CategoryItem: FunctionComponent<Props> = ({ category }: Props) => {
         >
           <a>
             {category.cover && (
-              <div className="absolute top-0 w-full h-full bg-center bg-cover">
-                <span className="w-full h-full absolute opacity-50 bg-black" />
+              <div className="absolute top-0 h-full w-full bg-cover bg-center">
+                <span className="absolute h-full w-full bg-black opacity-50" />
                 <Image
-                  className="opacity-75 h-full"
+                  className="h-full opacity-75"
                   src={category.cover.url}
                   objectFit="cover"
                   layout="fill"
@@ -35,7 +35,7 @@ const CategoryItem: FunctionComponent<Props> = ({ category }: Props) => {
             )}
 
             <div className="relative h-full">
-              <div className="flex align-middle justify-center items-center h-full">
+              <div className="flex h-full items-center justify-center align-middle">
                 <div>
                   <Link
                     href={{
@@ -44,7 +44,7 @@ const CategoryItem: FunctionComponent<Props> = ({ category }: Props) => {
                     }}
                   >
                     <a
-                      className="text-white font-semibold text-5xl"
+                      className="text-5xl font-semibold text-white"
                       tabIndex={0}
                     >
                       <h2 className="p-8 py-32 text-center">{category.name}</h2>

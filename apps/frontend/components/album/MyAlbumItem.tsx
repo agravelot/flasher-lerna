@@ -51,8 +51,8 @@ const MyAlbumItem: FunctionComponent<Props> = ({
   };
 
   return (
-    <div className="w-full lg:max-w-full lg:flex">
-      <div className="lg:w-64 flex-none rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden">
+    <div className="w-full lg:flex lg:max-w-full">
+      <div className="flex-none overflow-hidden rounded-t text-center lg:w-64 lg:rounded-t-none lg:rounded-l">
         {album.media && (
           <Image
             className="h-64 w-full rounded-t lg:rounded-t-none lg:rounded-l"
@@ -67,12 +67,12 @@ const MyAlbumItem: FunctionComponent<Props> = ({
           />
         )}
       </div>
-      <div className="w-full border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+      <div className="flex w-full flex-col justify-between rounded-b border-r border-b border-l border-gray-400 bg-white p-4 leading-normal lg:rounded-b-none lg:rounded-r lg:border-l-0 lg:border-t lg:border-gray-400">
         <div className="mb-8">
           {album.private && (
-            <p className="text-sm text-gray-600 flex items-center">
+            <p className="flex items-center text-sm text-gray-600">
               <svg
-                className="fill-current text-gray-500 w-3 h-3 mr-2"
+                className="mr-2 h-3 w-3 fill-current text-gray-500"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
               >
@@ -81,7 +81,7 @@ const MyAlbumItem: FunctionComponent<Props> = ({
               Privé
             </p>
           )}
-          <div className="text-gray-900 font-bold text-xl mb-2">
+          <div className="mb-2 text-xl font-bold text-gray-900">
             {album.title}
           </div>
         </div>
@@ -94,7 +94,7 @@ const MyAlbumItem: FunctionComponent<Props> = ({
                   query: { slug: album.slug },
                 }}
               >
-                <a className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded inline-flex items-center mx-3 flex-grow">
+                <a className="mx-3 inline-flex flex-grow items-center rounded bg-gray-300 py-2 px-4 text-gray-800 hover:bg-gray-400">
                   Voir l&apos;album
                 </a>
               </Link>
@@ -104,11 +104,11 @@ const MyAlbumItem: FunctionComponent<Props> = ({
           <div className="w-1/2">
             {showDownload && (
               <button
-                className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded inline-flex items-center mx-3 flex-grow"
+                className="mx-3 inline-flex flex-grow items-center rounded bg-gray-300 py-2 px-4 text-gray-800 hover:bg-gray-400"
                 onClick={() => downloadAlbum()}
               >
                 <svg
-                  className="fill-current w-4 h-4 mr-2"
+                  className="mr-2 h-4 w-4 fill-current"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                 >

@@ -24,118 +24,118 @@ const Navbar: FunctionComponent = () => {
   return (
     <nav
       aria-label="Barre de navigation"
-      className="top-0 absolute z-10 w-full flex items-center justify-between px-2 py-3 navbar-expand-lg"
+      className="navbar-expand-lg absolute top-0 z-10 flex w-full items-center justify-between px-2 py-3"
     >
       <div className="container mx-auto flex flex-wrap items-center justify-between">
         <ul
           role="menubar"
-          className="w-full relative flex justify-between lg:static lg:justify-start"
+          className="relative flex w-full justify-between lg:static lg:justify-start"
         >
           {/* Left */}
           <li className="flex items-center" role="menuitem">
             <Link href={{ pathname: "/" }}>
               <a
                 tabIndex={0}
-                className="text-sm font-bold leading-relaxed inline-block mr-4 whitespace-no-wrap uppercase text-white p-2"
+                className="whitespace-no-wrap mr-4 inline-block p-2 text-sm font-bold uppercase leading-relaxed text-white"
               >
                 JKanda
               </a>
             </Link>
           </li>
-          <li className="hidden lg:flex items-center">
+          <li className="hidden items-center lg:flex">
             <Link href={{ pathname: "/galerie" }}>
               <a
                 role="menuitem"
                 tabIndex={0}
-                className="text-white hover:text-gray-300 px-3 py-4 text-xs uppercase font-bold"
+                className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
               >
                 Galerie
               </a>
             </Link>
           </li>
-          <li className="hidden lg:flex items-center">
+          <li className="hidden items-center lg:flex">
             <Link
               href={{ pathname: "/categories/page/[page]", query: { page: 1 } }}
             >
               <a
                 role="menuitem"
                 tabIndex={0}
-                className="text-white hover:text-gray-300 px-3 py-4 text-xs uppercase font-bold"
+                className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
               >
                 Catégories
               </a>
             </Link>
           </li>
-          <li className="hidden lg:flex items-center">
+          <li className="hidden items-center lg:flex">
             <Link
               href={{ pathname: "/cosplayers/page/[page]", query: { page: 1 } }}
             >
               <a
                 role="menuitem"
                 tabIndex={0}
-                className="text-white hover:text-gray-300 px-3 py-4 text-xs uppercase font-bold"
+                className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
               >
                 Cosplayers
               </a>
             </Link>
           </li>
-          <li className="hidden lg:flex items-center">
+          <li className="hidden items-center lg:flex">
             <Link href={{ pathname: "/", hash: "contact" }}>
               <a
                 role="menuitem"
                 tabIndex={0}
-                className="text-white hover:text-gray-300 px-3 py-4 text-xs uppercase font-bold"
+                className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
               >
                 Contact
               </a>
             </Link>
           </li>
-          <li className="hidden lg:flex items-center">
+          <li className="hidden items-center lg:flex">
             <Link href={{ pathname: "/blog" }}>
               <a
                 role="menuitem"
                 tabIndex={0}
-                className="text-white hover:text-gray-300 px-3 py-4 text-xs uppercase font-bold"
+                className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
               >
                 Blog
               </a>
             </Link>
           </li>
-          <li className="hidden lg:flex items-center">
+          <li className="hidden items-center lg:flex">
             <button
               role="menuitem"
               tabIndex={0}
-              className="inline-flex text-white hover:text-gray-300 px-3 py-4 text-xs uppercase font-bold"
+              className="inline-flex px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
               onClick={() => open()}
             >
-              <SearchIcon className="w-5 h-5 mx-2" aria-hidden="true" />
+              <SearchIcon className="mx-2 h-5 w-5" aria-hidden="true" />
               Rechercher
             </button>
           </li>
 
           {/* Right */}
-          <li className="flex items-center ml-auto">
+          <li className="ml-auto flex items-center">
             <NavbarAccount />
           </li>
           {/* Mobile */}
           <li className="flex items-center">
             <button
-              className="cursor-pointer text-xl leading-none p-2 block lg:hidden"
+              className="block cursor-pointer p-2 text-xl leading-none lg:hidden"
               type="button"
               aria-label="Ouvrir menu déroulant"
               onClick={() => toggleNavbar()}
             >
               {showMenu ? (
-                <XIcon className="w-6 h-6  text-white" aria-hidden="true" />
+                <XIcon className="h-6 w-6  text-white" aria-hidden="true" />
               ) : (
-                <MenuIcon className="w-6 h-6  text-white" aria-hidden="true" />
+                <MenuIcon className="h-6 w-6  text-white" aria-hidden="true" />
               )}
             </button>
           </li>
         </ul>
         <Transition
           show={showMenu}
-          className="lg:flex flex-grow items-center bg-white lg:bg-transparent rounded"
+          className="flex-grow items-center rounded bg-white lg:flex lg:bg-transparent"
           enter="transition ease-out duration-100"
           enterFrom="transform opacity-0 scale-95"
           enterTo="transform opacity-100 scale-100"
@@ -144,13 +144,13 @@ const Navbar: FunctionComponent = () => {
           leaveTo="transform opacity-0 scale-95"
         >
           <div aria-haspopup="menu" aria-expanded={showMenu}>
-            <ul className="flex flex-col lg:flex-row list-none mr-auto">
+            <ul className="mr-auto flex list-none flex-col lg:flex-row">
               <li>
                 <Link href={{ pathname: "/galerie" }}>
                   <a
                     role="menuitem"
                     tabIndex={0}
-                    className="text-gray-800 px-3 py-4 flex items-center justify-center text-xs uppercase font-bold w-full"
+                    className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
                   >
                     Albums
                   </a>
@@ -166,7 +166,7 @@ const Navbar: FunctionComponent = () => {
                   <a
                     tabIndex={0}
                     role="menuitem"
-                    className="text-gray-800 px-3 py-4 flex items-center justify-center text-xs uppercase font-bold w-full"
+                    className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
                   >
                     Categories
                   </a>
@@ -182,7 +182,7 @@ const Navbar: FunctionComponent = () => {
                   <a
                     tabIndex={0}
                     role="menuitem"
-                    className="text-gray-800 px-3 py-4 flex items-center justify-center text-xs uppercase font-bold w-full"
+                    className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
                   >
                     Cosplayers
                   </a>
@@ -193,7 +193,7 @@ const Navbar: FunctionComponent = () => {
                   <a
                     tabIndex={0}
                     role="menuitem"
-                    className="text-gray-800 px-3 py-4 flex items-center justify-center text-xs uppercase font-bold w-full"
+                    className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
                   >
                     Contact
                   </a>
@@ -204,7 +204,7 @@ const Navbar: FunctionComponent = () => {
                   <a
                     tabIndex={0}
                     role="menuitem"
-                    className="text-gray-800 px-3 py-4 flex items-center justify-center text-xs uppercase font-bold w-full"
+                    className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
                   >
                     Blog
                   </a>
@@ -214,10 +214,10 @@ const Navbar: FunctionComponent = () => {
                 <button
                   tabIndex={0}
                   role="menuitem"
-                  className="text-gray-800 px-3 py-4 flex items-center justify-center text-xs uppercase font-bold w-full"
+                  className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
                   onClick={() => open()}
                 >
-                  <SearchIcon className="w-5 h-5 mx-2" aria-hidden="true" />
+                  <SearchIcon className="mx-2 h-5 w-5" aria-hidden="true" />
                   Rechercher
                 </button>
               </li>
@@ -227,10 +227,10 @@ const Navbar: FunctionComponent = () => {
                   <button
                     tabIndex={0}
                     role="menuitem"
-                    className="text-gray-800 px-3 py-4 flex items-center justify-center text-xs uppercase font-bold w-full"
+                    className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
                     onClick={() => login()}
                   >
-                    <LoginIcon className="w-5 h-5 mx-2" aria-hidden="true" />
+                    <LoginIcon className="mx-2 h-5 w-5" aria-hidden="true" />
                     Se connecter
                   </button>
                 </li>

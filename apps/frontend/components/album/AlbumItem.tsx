@@ -10,12 +10,10 @@ interface Props {
 
 const AlbumItem: FunctionComponent<Props> = ({ album }: Props) => {
   return (
-    <div className="rounded overflow-hidden shadow-lg bg-white transform hover:scale-105 transition duration-200 ease-in-out motion-reduce:transition-none motion-reduce:transform-none">
-      <Link
-        href={`/galerie/${album.slug}`}
-      >
+    <div className="transform overflow-hidden rounded bg-white shadow-lg transition duration-200 ease-in-out hover:scale-105 motion-reduce:transform-none motion-reduce:transition-none">
+      <Link href={`/galerie/${album.slug}`}>
         <a
-          className="font-bold text-xl mb-2"
+          className="mb-2 text-xl font-bold"
           tabIndex={-1}
           aria-label={album.title}
         >
@@ -41,7 +39,7 @@ const AlbumItem: FunctionComponent<Props> = ({ album }: Props) => {
           //  :to="{ name: 'albums-slug', params: { slug: album.slug } }"
         >
           <a tabIndex={0} aria-label={album.title}>
-            <h3 className="font-bold text-xl mb-2 leading-tight">
+            <h3 className="mb-2 text-xl font-bold leading-tight">
               {album.title}
             </h3>
           </a>
@@ -51,7 +49,7 @@ const AlbumItem: FunctionComponent<Props> = ({ album }: Props) => {
         {album.categories?.map((category) => (
           <Link key={category.id} href={`/categories/${category.slug}`}>
             <a tabIndex={0}>
-              <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm text-gray-700 m-1">
+              <span className="m-1 inline-block rounded-full bg-gray-200 px-3 py-1 text-sm text-gray-700">
                 {category.name}
               </span>
             </a>

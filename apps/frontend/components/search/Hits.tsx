@@ -17,7 +17,7 @@ export const CustomSearchBox = connectSearchBox(
       <div className="ais-SearchBox">
         <form className="ais-SearchBox-form" noValidate>
           <input
-            className="ais-SearchBox-input w-full text-white bg-transparent focus:outline-none text-4xl md:text-6xl font-bold"
+            className="ais-SearchBox-input w-full bg-transparent text-4xl font-bold text-white focus:outline-none md:text-6xl"
             autoComplete="off"
             autoCorrect="off"
             autoCapitalize="off"
@@ -72,7 +72,7 @@ export const CustomHighlight = connectHighlight(
         {parsedHit.map((part, index) =>
           part.isHighlighted ? (
             <em
-              className="bg-gradient-to-r from-blue-700 to-red-700 mb- shadow-none bg-clip-text text-transparent"
+              className="mb- bg-gradient-to-r from-blue-700 to-red-700 bg-clip-text text-transparent shadow-none"
               style={{
                 WebkitBackgroundClip: "text",
               }}
@@ -95,7 +95,7 @@ export const AlbumHits = connectHits(({ hits }) => (
   <ol className="flex flex-wrap md:-mx-3">
     {hits.map((hit) => (
       <div
-        className="w-full lg:w-1/2 xl:w-1/3 my-4 items-center p-2"
+        className="my-4 w-full items-center p-2 lg:w-1/2 xl:w-1/3"
         key={hit.id}
       >
         <Link
@@ -122,10 +122,10 @@ export const AlbumHits = connectHits(({ hits }) => (
           prefetch={false}
         >
           <a className="p-4">
-            <h3 className="font-bold text-xl mb-2">
+            <h3 className="mb-2 text-xl font-bold">
               <CustomHighlight hit={hit} attribute="title" />
             </h3>
-            <p className="hidden md:block text-gray-200">
+            <p className="hidden text-gray-200 md:block">
               {hit.meta_description}
             </p>
           </a>
@@ -138,7 +138,7 @@ export const AlbumHits = connectHits(({ hits }) => (
 export const CategoryHits = connectHits(({ hits }) => (
   <ol className="flex flex-col md:-mx-3">
     {hits.map((hit) => (
-      <li className="flex my-4" key={hit.id}>
+      <li className="my-4 flex" key={hit.id}>
         <Link
           href={{ pathname: "/categories/[slug]", query: { slug: hit.slug } }}
           prefetch={false}
@@ -152,7 +152,7 @@ export const CategoryHits = connectHits(({ hits }) => (
             href={{ pathname: "/categories/[slug]", query: { slug: hit.slug } }}
             prefetch={false}
           >
-            <a className="font-bold text-xl mb-2">
+            <a className="mb-2 text-xl font-bold">
               <h3>
                 <CustomHighlight hit={hit} attribute="name" />
               </h3>
@@ -167,7 +167,7 @@ export const CategoryHits = connectHits(({ hits }) => (
 export const CosplayerHits = connectHits(({ hits }) => (
   <ol>
     {hits.map((hit) => (
-      <div className="flex my-4" key={hit.id}>
+      <div className="my-4 flex" key={hit.id}>
         <Link
           href={{ pathname: "/cosplayers/[slug]", query: { slug: hit.slug } }}
           prefetch={false}
@@ -180,7 +180,7 @@ export const CosplayerHits = connectHits(({ hits }) => (
             href={{ pathname: "/cosplayers/[slug]", query: { slug: hit.slug } }}
             prefetch={false}
           >
-            <a className="font-bold text-xl mb-2">
+            <a className="mb-2 text-xl font-bold">
               <h3>
                 <CustomHighlight hit={hit} attribute="name" />
               </h3>

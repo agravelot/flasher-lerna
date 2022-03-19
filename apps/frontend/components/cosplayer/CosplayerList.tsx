@@ -15,7 +15,7 @@ const CosplayerList: FunctionComponent<Props> = ({
     <div className={"container mx-auto py-8" + className}>
       <div className="flex flex-wrap md:-mx-3">
         {cosplayers.map((cosplayer) => (
-          <div className="w-full md:w-1/3 p-3" key={cosplayer.id}>
+          <div className="w-full p-3 md:w-1/3" key={cosplayer.id}>
             <CosplayerItem cosplayer={cosplayer} />
           </div>
         ))}

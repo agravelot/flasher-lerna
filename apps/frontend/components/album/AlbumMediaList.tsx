@@ -55,7 +55,7 @@ const AlbumMediaList: FunctionComponent<Props> = ({
   };
 
   return (
-    <div className="flex flex-wrap -mx-2 items-center">
+    <div className="-mx-2 flex flex-wrap items-center">
       <div>
         <script
           type="application/ld+json"
@@ -68,12 +68,12 @@ const AlbumMediaList: FunctionComponent<Props> = ({
       {album.medias?.map((media, index) => (
         <div
           key={media.id}
-          className="flex-auto w-full md:w-1/2 cursor-pointer flex-grow-0"
+          className="w-full flex-auto flex-grow-0 cursor-pointer md:w-1/2"
           onClick={() => openGalleryAt(index)}
           tabIndex={0}
         >
           <Image
-            className="w-full p-1 object-contain"
+            className="w-full object-contain p-1"
             src={media.url}
             alt={media.name}
             layout="responsive"

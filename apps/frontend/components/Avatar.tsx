@@ -27,14 +27,14 @@ const Avatar: FunctionComponent<Props> = ({
   return (
     <div className={size === 16 ? "h-16 w-16" : "h-24 w-24"}>
       <div
-        className={`flex items-center justify-center uppercase text-white font-medium shadow mx-auto sm:mx-0 sm:flex-shrink-0 rounded-full text-xl w-full h-full ${color} ${
-          border ? "border-white border-2" : null
+        className={`mx-auto flex h-full w-full items-center justify-center rounded-full text-xl font-medium uppercase text-white shadow sm:mx-0 sm:flex-shrink-0 ${color} ${
+          border ? "border-2 border-white" : null
         }`}
       >
         {src && (
           <Image
             draggable={false}
-            className={`w-full h-full overflow-hidden ${roundClasses} ${className}`}
+            className={`h-full w-full overflow-hidden ${roundClasses} ${className}`}
             src={src}
             height={96}
             width={96}
@@ -42,7 +42,7 @@ const Avatar: FunctionComponent<Props> = ({
           />
         )}
         {!src && (
-          <div className="flex content-center items-center text-center flex-wrap h-full">
+          <div className="flex h-full flex-wrap content-center items-center text-center">
             <div>{avatarText(name)}</div>
           </div>
         )}

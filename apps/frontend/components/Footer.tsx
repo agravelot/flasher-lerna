@@ -22,9 +22,9 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
         <Separator separatorClass={"text-gray-300"} position={"top"} />
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap">
-            <div className="w-full lg:w-6/12 px-4">
+            <div className="w-full px-4 lg:w-6/12">
               <p className="text-3xl font-semibold">Restons en contact !</p>
-              <p className="text-lg mt-0 mb-2">
+              <p className="mt-0 mb-2 text-lg">
                 {
                   "Vous pouvez me retrouver sur l'une de ces plateformes, je vous répondrai dans un délai de 24 heures."
                 }
@@ -33,7 +33,7 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                 {socialMedias &&
                   socialMedias.map((sm) => (
                     <div
-                      className="bg-white text-blue-400 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full"
+                      className="align-center h-10 w-10 items-center justify-center rounded-full bg-white font-normal text-blue-400 shadow-lg"
                       key={sm.id}
                     >
                       <SocialMediaItem socialMedia={sm} />
@@ -41,10 +41,10 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                   ))}
               </div>
             </div>
-            <div className="w-full lg:w-6/12 px-4">
-              <div className="flex flex-wrap items-top mb-6">
-                <div className="w-full lg:w-4/12 px-4 ml-auto">
-                  <span className="block uppercase text-sm font-semibold mb-2">
+            <div className="w-full px-4 lg:w-6/12">
+              <div className="items-top mb-6 flex flex-wrap">
+                <div className="ml-auto w-full px-4 lg:w-4/12">
+                  <span className="mb-2 block text-sm font-semibold uppercase">
                     Liens utiles
                   </span>
                   <ul className="list-unstyled">
@@ -104,8 +104,8 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                     </li>
                   </ul>
                 </div>
-                <div className="w-full lg:w-4/12 px-4">
-                  <span className="block uppercase text-sm font-semibold mb-2">
+                <div className="w-full px-4 lg:w-4/12">
+                  <span className="mb-2 block text-sm font-semibold uppercase">
                     Mon compte
                   </span>
                   {/* Logged */}
@@ -142,7 +142,7 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                         </a>
                       </Link>
 
-                      <li className="md:flex items-center">
+                      <li className="items-center md:flex">
                         <a
                           tabIndex={0}
                           className="block py-2 text-sm"
@@ -166,7 +166,7 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                           S&apos;inscrire
                         </button>
                       </li>
-                      <li className="md:flex items-center">
+                      <li className="items-center md:flex">
                         <button
                           tabIndex={0}
                           className="block py-2 text-sm"
@@ -179,8 +179,8 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                     </ul>
                   )}
                 </div>
-                <div className="w-full lg:w-4/12 px-4">
-                  <span className="block uppercase text-sm font-semibold mb-2">
+                <div className="w-full px-4 lg:w-4/12">
+                  <span className="mb-2 block text-sm font-semibold uppercase">
                     Autres
                   </span>
                   <ul className="list-unstyled">
@@ -204,9 +204,9 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
             </div>
           </div>
           <hr className="my-6 border-gray-400" />
-          <div className="flex flex-wrap items-center md:justify-between justify-center">
-            <div className="w-full md:w-4/12 px-4 mx-auto text-center">
-              <div className="text-sm py-1">
+          <div className="flex flex-wrap items-center justify-center md:justify-between">
+            <div className="mx-auto w-full px-4 text-center md:w-4/12">
+              <div className="py-1 text-sm">
                 Copyright © 2018-{date} jkanda.fr, Tous droits réservés
                 <br />
                 {"Réalisation : "}

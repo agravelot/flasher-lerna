@@ -60,7 +60,7 @@ const ShowCosplayer: NextPage<Props> = ({
       <div>
         <section className="relative block" style={{ height: "500px" }}>
           <div
-            className="absolute top-0 w-full h-full bg-center bg-cover"
+            className="absolute top-0 h-full w-full bg-cover bg-center"
             style={{
               backgroundImage:
                 "url('https://images.unsplash.com/photo-1499336315816-097655dcfbda?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=2710&amp;q=80')",
@@ -68,7 +68,7 @@ const ShowCosplayer: NextPage<Props> = ({
           >
             <span
               id="blackOverlay"
-              className="w-full h-full absolute opacity-50 bg-black"
+              className="absolute h-full w-full bg-black opacity-50"
             ></span>
           </div>
 
@@ -76,10 +76,10 @@ const ShowCosplayer: NextPage<Props> = ({
         </section>
         <section className="relative py-16">
           <div className="container mx-auto px-4">
-            <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
+            <div className="relative mb-6 -mt-64 flex w-full min-w-0 flex-col break-words rounded-lg bg-white shadow-xl">
               <div className="px-6">
                 <div className="flex flex-wrap justify-center">
-                  <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
+                  <div className="flex w-full justify-center px-4 lg:order-2 lg:w-3/12">
                     <div className="relative">
                       <div className="-mt-16">
                         <Avatar
@@ -92,18 +92,18 @@ const ShowCosplayer: NextPage<Props> = ({
                     </div>
                   </div>
                 </div>
-                <div className="text-center mt-12">
-                  <h1 className="text-4xl font-semibold leading-normal mb-2 text-gray-800">
+                <div className="mt-12 text-center">
+                  <h1 className="mb-2 text-4xl font-semibold leading-normal text-gray-800">
                     {cosplayer.name}
                   </h1>
-                  <div className="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold uppercase">
+                  <div className="mt-0 mb-2 text-sm font-bold uppercase leading-normal text-gray-500">
                     <i className="fas fa-map-marker-alt mr-2 text-lg text-gray-500"></i>
                     Cosplayer
                   </div>
                 </div>
-                <div className="mt-10 py-10 border-t border-gray-300 text-center">
+                <div className="mt-10 border-t border-gray-300 py-10 text-center">
                   <div className="flex flex-wrap justify-center">
-                    <div className="w-full lg:w-9/12 px-4">
+                    <div className="w-full px-4 lg:w-9/12">
                       <div className="mb-4 text-lg leading-relaxed text-gray-800">
                         <div
                           className="prose max-w-none"
@@ -122,13 +122,13 @@ const ShowCosplayer: NextPage<Props> = ({
         <section className="pb-24">
           <div className="container mx-auto">
             <div className="flex justify-center">
-              <h2 className="text-2xl font-bold pb-12">
+              <h2 className="pb-12 text-2xl font-bold">
                 Retrouvez les albums de {cosplayer.name}
               </h2>
             </div>
             <div className="flex flex-wrap md:-mx-3">
               {albums.map((album) => (
-                <div className="w-full md:w-1/3 p-3" key={album.id}>
+                <div className="w-full p-3 md:w-1/3" key={album.id}>
                   <AlbumItem album={album} />
                 </div>
               ))}

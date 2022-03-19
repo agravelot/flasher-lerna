@@ -21,8 +21,8 @@ const Pagination: FunctionComponent<PaginationProps> = ({
   to,
   totalItems,
 }: PaginationProps) => (
-  <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-    <div className="flex-1 flex justify-between sm:hidden">
+  <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+    <div className="flex flex-1 justify-between sm:hidden">
       <Link
         href={{
           pathname: routeName,
@@ -34,7 +34,7 @@ const Pagination: FunctionComponent<PaginationProps> = ({
           tabIndex={0}
           aria-label="Précédent"
           rel="prev"
-          className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:ring-blue focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150"
+          className="focus:ring-blue relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium leading-5 text-gray-700 transition duration-150 ease-in-out hover:text-gray-500 focus:border-blue-300 focus:outline-none active:bg-gray-100 active:text-gray-700"
         >
           Précédent
         </a>
@@ -50,13 +50,13 @@ const Pagination: FunctionComponent<PaginationProps> = ({
           tabIndex={0}
           aria-label="Suivant"
           rel="next"
-          className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:ring-blue focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150"
+          className="focus:ring-blue relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium leading-5 text-gray-700 transition duration-150 ease-in-out hover:text-gray-500 focus:border-blue-300 focus:outline-none active:bg-gray-100 active:text-gray-700"
         >
           Suivant
         </a>
       </Link>
     </div>
-    <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+    <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
       <div v-if="showInfo">
         <span className="text-sm leading-5 text-gray-700">
           {"Affichage de "}
@@ -81,7 +81,7 @@ const Pagination: FunctionComponent<PaginationProps> = ({
               tabIndex={0}
               aria-label="Précédent"
               rel="prev"
-              className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:ring-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150"
+              className="focus:ring-blue relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium leading-5 text-gray-500 transition duration-150 ease-in-out hover:text-gray-400 focus:z-10 focus:border-blue-300 focus:outline-none active:bg-gray-100 active:text-gray-500"
             >
               <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path
@@ -101,7 +101,7 @@ const Pagination: FunctionComponent<PaginationProps> = ({
             >
               <a
                 tabIndex={0}
-                className="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:ring-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150"
+                className="focus:ring-blue relative -ml-px inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium leading-5 text-gray-700 transition duration-150 ease-in-out hover:text-gray-500 focus:z-10 focus:border-blue-300 focus:outline-none active:bg-gray-100 active:text-gray-700"
               >
                 {page}
               </a>
@@ -121,7 +121,7 @@ const Pagination: FunctionComponent<PaginationProps> = ({
               aria-label="Suivant"
               rel="next"
               tabIndex={0}
-              className="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:ring-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150"
+              className="focus:ring-blue relative -ml-px inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium leading-5 text-gray-500 transition duration-150 ease-in-out hover:text-gray-400 focus:z-10 focus:border-blue-300 focus:outline-none active:bg-gray-100 active:text-gray-500"
             >
               <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path

@@ -13,9 +13,9 @@ const AdminOverlay: FunctionComponent<Props> = ({
   const router = useRouter();
 
   return (
-    <div className="fixed bottom-0 right-0 p-8 z-30">
+    <div className="fixed bottom-0 right-0 z-30 p-8">
       <a
-        className="h-12 w-12 bg-black rounded-full flex items-center text-white text-center"
+        className="flex h-12 w-12 items-center rounded-full bg-black text-center text-white"
         target={targetBlank ? "_blank" : "_self"}
         href={`https://admin.jkanda.fr${path ?? router.asPath}`}
         rel="noreferrer"
