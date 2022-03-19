@@ -14,6 +14,15 @@ interface GenerateDownloakLink {
   url: string;
 }
 
+function downloadURI(uri: string, fileName: string) {
+  const link = document.createElement("a");
+  link.download = fileName;
+  link.href = uri;
+  document.body.appendChild(link); // Needed for Firefox
+  link.click();
+  document.body.removeChild(link);
+}
+
 const MyAlbumItem: FunctionComponent<Props> = ({
   album,
   showDownload,
@@ -37,7 +46,7 @@ const MyAlbumItem: FunctionComponent<Props> = ({
       })
       .then((data) => data);
 
-    window.open(response.url, "_blank");
+    downloadURI(response.url, `${album.slug}.zip`);
   };
 
   return (
