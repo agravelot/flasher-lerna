@@ -11,8 +11,7 @@ const withTM = require("next-transpile-modules")([
   "@flasher/models",
 ]); // pass the modules you would like to see transpiled
 
-
-module.exports = (withTM(
+module.exports = withTM(
   (module.exports = withBundleAnalyzer(
     (module.exports = withPWA({
       pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
@@ -36,7 +35,7 @@ module.exports = (withTM(
           {
             source: "/albums/:slug",
             destination: "/galerie/:slug",
-            permanent: false
+            permanent: false,
           },
           {
             source: "/categories",
@@ -55,6 +54,9 @@ module.exports = (withTM(
           },
         ];
       },
+      experimental: {
+        nextScriptWorkers: true,
+      },
       pwa: {
         dest: "public",
         runtimeCaching,
@@ -71,10 +73,10 @@ module.exports = (withTM(
           "assets-jkanda.s3.fr-par.scw.cloud",
           "assets.blog.jkanda.s3.fr-par.scw.cloud",
         ],
-        formats: ["image/avif", "image/webp"]
+        formats: ["image/avif", "image/webp"],
       },
       poweredByHeader: false,
       compress: false,
     }))
   ))
-));
+);

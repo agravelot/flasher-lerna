@@ -1,4 +1,6 @@
+import { useRouter } from "next/router";
 import Script from "next/script";
+import { useEffect } from "react";
 
 interface Config {
   ua: string;
@@ -11,15 +13,28 @@ const config: Config = {
 };
 
 export const Analytics = (): JSX.Element => {
+  const router = useRouter();
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      window.gtag("config", config.ua, {
+        page_path: url,
+      });
+    };
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
+
   return (
     <>
       <Script
-        strategy="afterInteractive"
+        strategy="worker"
         src={`https://www.googletagmanager.com/gtag/js?id=${config.ua}`}
       />
       <Script
         id="ga-script"
-        strategy="afterInteractive"
+        strategy="worker"
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];

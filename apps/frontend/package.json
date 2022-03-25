@@ -13,6 +13,7 @@
     "favicon": "real-favicon generate faviconDescription.json faviconData.json public"
   },
   "dependencies": {
+    "@builder.io/partytown": "^0.5.1",
     "@flasher/common": "^0.1.0",
     "@flasher/models": "^0.1.0",
     "@headlessui/react": "^1.5.0",
