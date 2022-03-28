@@ -4,11 +4,9 @@ import (
 	"api-go/auth"
 	"api-go/config"
 	"api-go/database"
-	"api-go/database2"
+	"api-go/gormQuery"
 	"api-go/model"
-	"api-go/tutorial"
 	"context"
-	"database/sql"
 	"errors"
 	"fmt"
 	"os"
@@ -17,20 +15,18 @@ import (
 	"time"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/google/uuid"
 	"github.com/jackc/pgconn"
 	"github.com/jackc/pgerrcode"
-	"github.com/jackc/pgtype"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 )
 
 var (
 	s   Service
-	db  *tutorial.Queries
 	orm *gorm.DB
 )
 
+var	ssoId = "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 var token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIxamVHNzFZSHlUd25GUEVSb2NJeEVzS21lbjlWN1NjanRIZXFzak1KUXlZIn0.eyJleHAiOjE2MTExNjQ3MTAsImlhdCI6MTYxMTE2NDQxMCwiYXV0aF90aW1lIjoxNjExMTY0MzY0LCJqdGkiOiJlMThlMWNlOC05OTc5LTQ3NmQtOWYxMC1mOTk5OWJhMDQwZjgiLCJpc3MiOiJodHRwczovL2FjY291bnRzLmFncmF2ZWxvdC5ldS9hdXRoL3JlYWxtcy9hbnljbG91ZCIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiIzMDE1MWFlNS0yOGI0LTRjNmMtYjBhZS1lYTJlNmE0OWVmNjciLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJmcm9udGVuZCIsIm5vbmNlIjoiMTkyOWEwZGEtMTU2ZS00NWZmLTgzM2YtYTU2MGIwNmI1YWNkIiwic2Vzc2lvbl9zdGF0ZSI6IjRlMWYxOWYzLTFhMmMtNGUxNS1iMWFhLTNlY2ZhMTkxMGRiOCIsImFjciI6IjAiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIn0.PkfxSmIiG4lLE9hCjICcRPNpXC0X2QtVzYeUwAUwwe2G_6ArmMdZOkRVOKx3jiRO7PYu-D0NR9tAiv7yN9SDMDrIhtNoosgChB4PQ4wBf_YvHsJaAHwyK8Hu6h_8gxJIl3UYCKWTSYgLRK-IOE9E6FNlMdJK9UXAO_y2IBEZBO9QV-QxZH7SlYkm8VfoZzNzRMy82SgWLsQGDvwAAGCxHFRgTZdFNKPoqJylDyANBEuWanLwDohQKdNGqz6PlhtopmXo1v8kcHwBHxyMQ3mtRNCXBV6TOXo7oAWW3XeXGWjTtAiTY85Wr7R6IJ74WKpMrG-3PDL6Sx6n4JxOuurpLg"
 
 func authAsUser(ctx context.Context) (context.Context, auth.Claims) {
@@ -99,9 +95,8 @@ func authAsAdmin(ctx context.Context) (context.Context, auth.Claims) {
 
 func TestMain(m *testing.M) {
 	config := config.LoadDotEnv("../")
-	db, _ = database2.Init(config)
 	orm, _ = database.Init(config)
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	s = NewService(orm)
 
 	exitVal := m.Run() // Run tests
@@ -113,7 +108,7 @@ func TestMain(m *testing.M) {
 /////// LIST ////////
 
 func TestShouldBeAbleToListEmpty(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	r, err := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{0, 10}})
 
 	assert.Nil(t, err)
@@ -123,20 +118,18 @@ func TestShouldBeAbleToListEmpty(t *testing.T) {
 }
 
 func TestShouldBeAbleToListWithOnePublishedAlbum(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
+	sub10Min := time.Now().Add(-10 * time.Minute)
+	a := gormQuery.Use(orm).Album
 
-	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
-	if err != nil {
-		t.Error(err)
-	}
 
-	arg := tutorial.CreateAlbumParams{
+	arg := model.Album{
 		Title:       "A good Title aze",
-		PublishedAt: sql.NullTime{Time: time.Now().Add(-10 * time.Minute), Valid: true},
+		PublishedAt: &sub10Min,
 		Private:     false,
-		SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+		SsoID:       &ssoId,
 	}
-	_, err = db.CreateAlbum(context.Background(), arg)
+	err := a.WithContext(context.Background()).Create(&arg)
 	if err != nil {
 		t.Error(err)
 	}
@@ -149,39 +142,41 @@ func TestShouldBeAbleToListWithOnePublishedAlbum(t *testing.T) {
 }
 
 func TestShouldBeOrderedByDateOfPublication(t *testing.T) {
-	database2.ClearDB(db)
-	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
-	if err != nil {
-		t.Error(err)
-	}
-	args := []tutorial.CreateAlbumParams{
+	database.ClearDB(orm)
+	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	sub100Min := time.Now().Add(-100 * time.Minute)
+	sub10Min := time.Now().Add(-10 * time.Minute)
+	sub5Min := time.Now().Add(-5 * time.Minute)
+	a := gormQuery.Use(orm).Album
+
+	args := []model.Album{
 		{
 			Title:       "A good Title",
 			Slug:        "a-good-title",
-			PublishedAt: sql.NullTime{Time: time.Now().Add(-100 * time.Minute), Valid: true},
+			PublishedAt: &sub100Min,
 			Private:     false,
-			SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+			SsoID:        &ssoId,
 		},
 		{
 			Title:       "A good Title 2",
 			Slug:        "a-good-title-2",
-			PublishedAt: sql.NullTime{Time: time.Now().Add(-10 * time.Minute), Valid: true},
+			PublishedAt: &sub10Min,
 			Private:     false,
-			SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+			SsoID:       &ssoId,
 		},
 		{
 			Title:       "A good Title 3",
 			Slug:        "a-good-title-3",
-			PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+			PublishedAt: &sub5Min,
 			Private:     false,
-			SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+			SsoID:       &ssoId,
 		},
 	}
 
 	for _, arg := range args {
-		_, err := db.CreateAlbum(context.Background(), arg)
+		err := a.WithContext(context.Background()).Create(&arg)
 		if err != nil {
-			t.Error(fmt.Errorf("Error creating album: %w", err))
+			t.Error(fmt.Errorf("unable create album: %w", err))
 		}
 	}
 
@@ -196,44 +191,43 @@ func TestShouldBeOrderedByDateOfPublication(t *testing.T) {
 }
 
 func TestShouldOnlyShowPublicAlbums(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
+	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	sub100Min := time.Now().Add(-100 * time.Minute)
+	sub10Min := time.Now().Add(-10 * time.Minute)
+	a := gormQuery.Use(orm).Album
 
-	idStr := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
-	id, err := uuid.Parse(idStr)
-	if err != nil {
-		t.Error(err)
-	}
-	args := []tutorial.CreateAlbumParams{
+	args := []model.Album{
 		{
 			Title:       "A good Title",
 			Slug:        "a-good-title",
-			PublishedAt: sql.NullTime{Time: time.Now().Add(-100 * time.Minute), Valid: true},
+			PublishedAt: &sub100Min,
 			Private:     false,
-			SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+			SsoID:       &ssoId,
 		},
 		{
 			Title:       "A good Title 2",
 			Slug:        "a-good-title-2",
-			PublishedAt: sql.NullTime{Time: time.Now().Add(-10 * time.Minute), Valid: true},
+			PublishedAt: &sub10Min,
 			Private:     true,
-			SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+			SsoID:       &ssoId,
 		},
 		{
 			Title:   "A good Title 3",
 			Slug:    "a-good-title-3",
 			Private: true,
-			SsoID:   uuid.NullUUID{UUID: id, Valid: true},
+			SsoID:   &ssoId,
 		},
 		{
 			Title:   "A good Title 4",
 			Slug:    "a-good-title-4",
 			Private: false,
-			SsoID:   uuid.NullUUID{UUID: id, Valid: true},
+			SsoID:   &ssoId,
 		},
 	}
 
 	for _, arg := range args {
-		_, err := db.CreateAlbum(context.Background(), arg)
+		err := a.WithContext(context.Background()).Create(&arg)
 		if err != nil {
 			t.Error(fmt.Errorf("Error creating album: %w", err))
 		}
@@ -244,46 +238,45 @@ func TestShouldOnlyShowPublicAlbums(t *testing.T) {
 	assert.Equal(t, int64(1), r.Meta.Total)
 	assert.Equal(t, int32(10), r.Meta.Limit)
 	assert.Equal(t, 1, len(r.Data))
-	assert.Equal(t, &idStr, r.Data[0].SsoID)
+	assert.Equal(t, &ssoId, r.Data[0].SsoID)
 }
 
 func TestShouldBeAbleToListPublishedAlbumsOnSecondPage(t *testing.T) {
-	database2.ClearDB(db)
-
-	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
-	if err != nil {
-		t.Error(err)
-	}
+	database.ClearDB(orm)
+	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	sub100Min := time.Now().Add(-100 * time.Minute)
+	sub5Min := time.Now().Add(-5 * time.Minute)
+	a := gormQuery.Use(orm).Album
 
 	var lastPageID int32
 
 	for i := 0; i < 10; i++ {
-		arg := tutorial.CreateAlbumParams{
+		arg := model.Album{
 			Title:       "A good Title " + strconv.Itoa(i),
 			Slug:        "a-good-title-" + strconv.Itoa(i),
-			PublishedAt: sql.NullTime{Time: time.Now().Add(-100 * time.Minute), Valid: true},
+			PublishedAt: &sub100Min,
 			Private:     false,
-			SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+			SsoID:       &ssoId,
 		}
 
-		a, err := db.CreateAlbum(context.Background(), arg)
+		err := a.WithContext(context.Background()).Create(&arg)
 		if i == 9 {
-			lastPageID = a.ID
+			lastPageID = arg.ID
 		}
 		if err != nil {
 			t.Error(fmt.Errorf("Error creating album: %w", err))
 		}
 	}
 
-	arg := tutorial.CreateAlbumParams{
+	arg := model.Album{
 		Title:       "On second page",
 		Slug:        "on-second-page",
-		PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+		PublishedAt: &sub5Min,
 		Private:     false,
-		SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+		SsoID:       &ssoId,
 	}
 
-	_, err = db.CreateAlbum(context.Background(), arg)
+	err := a.WithContext(context.Background()).Create(&arg)
 	if err != nil {
 		t.Error(fmt.Errorf("Error creating album: %w", err))
 	}
@@ -297,46 +290,44 @@ func TestShouldBeAbleToListPublishedAlbumsOnSecondPage(t *testing.T) {
 }
 
 func TestShouldBeAbleToListPublishedAlbumsOnSecondPageWithCustomPerPage(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 
-	var albums []tutorial.Album
+	var albums []model.Album
 	var lastPageID int32
-
-	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
-	if err != nil {
-		t.Error(err)
-	}
+	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	sub5Min := time.Now().Add(-5 * time.Minute)
+	a := gormQuery.Use(orm).Album
 
 	for i := 0; i < 2; i++ {
-		arg := tutorial.CreateAlbumParams{
+		arg := model.Album{
 			Title:       "On second page " + strconv.Itoa(i),
 			Slug:        "on-second-page " + strconv.Itoa(i),
-			PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+			PublishedAt: &sub5Min,
 			Private:     false,
-			SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+			SsoID:       &ssoId,
 		}
 
-		a, err := db.CreateAlbum(context.Background(), arg)
+	    err := a.WithContext(context.Background()).Create(&arg)
 		if err != nil {
 			t.Error(fmt.Errorf("Error creating album: %w", err))
 		}
 
 		if i == 1 {
-			lastPageID = a.ID
+			lastPageID = arg.ID
 		}
 
-		albums = append(albums, a)
+		albums = append(albums, arg)
 	}
 
-	arg := tutorial.CreateAlbumParams{
+	arg := model.Album{
 		Title:       "On second page",
 		Slug:        "on-second-page",
-		PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
+		PublishedAt: &sub5Min,
 		Private:     false,
-		SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+		SsoID:       &ssoId,
 	}
 
-	a, err := db.CreateAlbum(context.Background(), arg)
+	err := a.WithContext(context.Background()).Create(&arg)
 	if err != nil {
 		t.Error(fmt.Errorf("Error creating album: %w", err))
 	}
@@ -351,20 +342,16 @@ func TestShouldBeAbleToListPublishedAlbumsOnSecondPageWithCustomPerPage(t *testi
 
 func TestShouldBeAbleToListNonPublishedAlbumAsAdmin(t *testing.T) {
 	ctx, _ := authAsAdmin(context.Background())
-	database2.ClearDB(db)
+	database.ClearDB(orm)
+	a := gormQuery.Use(orm).Album
 
-	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
-	if err != nil {
-		t.Error(err)
-	}
-
-	arg := tutorial.CreateAlbumParams{
+	arg := model.Album{
 		Title: "On second page",
 		Slug:  "on-second-page",
-		SsoID: uuid.NullUUID{UUID: id, Valid: true},
+		SsoID: &ssoId,
 	}
 
-	_, err = db.CreateAlbum(context.Background(), arg)
+	err := a.WithContext(context.Background()).Create(&arg)
 	if err != nil {
 		t.Error(fmt.Errorf("Error creating album: %w", err))
 	}
@@ -377,22 +364,20 @@ func TestShouldBeAbleToListNonPublishedAlbumAsAdmin(t *testing.T) {
 }
 
 func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
+	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	sub5Min := time.Now().Add(-5 * time.Minute)
+	a := gormQuery.Use(orm).Album
 
-	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
-	if err != nil {
-		t.Error(err)
-	}
-
-	arg := tutorial.CreateAlbumParams{
+	arg := model.Album{
 		Title:       "On second page",
 		Slug:        "on-second-page",
-		PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
-		SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+		PublishedAt: &sub5Min,
+		SsoID:       &ssoId,
 		Private:     false,
 	}
 
-	_, err = db.CreateAlbum(context.Background(), arg)
+	err := a.WithContext(context.Background()).Create(&arg)
 	if err != nil {
 		t.Error(fmt.Errorf("Error creating album: %w", err))
 	}
@@ -405,37 +390,37 @@ func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 }
 
 func TestShouldBeAbleToListWithCategories(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
+	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	sub5Min := time.Now().Add(-5 * time.Minute)
+	a := gormQuery.Use(orm).Album
+	c := gormQuery.Use(orm).Category
 
-	arg1 := tutorial.CreateCategoryParams{
+	arg1 := model.Category{
 		Name: "A good Category",
 	}
-	c, err := db.CreateCategory(context.Background(), arg1)
-
-	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
+	err := c.WithContext(context.Background()).Create(&arg1)
 	if err != nil {
-		t.Error(err)
+		t.Error(fmt.Errorf("unable create category: %w", err))
 	}
 
-	arg := tutorial.CreateAlbumParams{
+
+	arg := model.Album{
 		Title:       "A good Title",
-		PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
-		SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+		PublishedAt: &sub5Min,
+		SsoID:       &ssoId,
 		Private:     false,
 		// Categories:  &categories,
 	}
 
-	a, err := db.CreateAlbum(context.Background(), arg)
+	err = a.WithContext(context.Background()).Create(&arg)
 	if err != nil {
 		t.Error(fmt.Errorf("Error creating album: %w", err))
 	}
 
-	err = db.LinkCategoryToAlbum(context.Background(), tutorial.LinkCategoryToAlbumParams{
-		AlbumID:    a.ID,
-		CategoryID: c.ID,
-	})
+	err = a.Categories.Model(&arg).Append(&arg1)
 	if err != nil {
-		t.Error(fmt.Errorf("Error linking album with category : %w", err))
+		t.Error(fmt.Errorf("error linking album with category : %w", err))
 	}
 
 	r, err := s.GetAlbumList(context.Background(), AlbumListParams{Joins: AlbumListJoinsParams{Categories: true}, PaginationParams: PaginationParams{0, 10}})
@@ -451,37 +436,33 @@ func TestShouldBeAbleToListWithCategories(t *testing.T) {
 }
 
 func TestShouldBeAbleToListWithoutCategories(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
+	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	sub5Min := time.Now().Add(-5 * time.Minute)
+	a := gormQuery.Use(orm).Album
+	c := gormQuery.Use(orm).Category
 
-	arg1 := tutorial.CreateCategoryParams{
+	arg1 := model.Category{
 		Name: "A good Category",
 	}
-	c, err := db.CreateCategory(context.Background(), arg1)
+	err := c.WithContext(context.Background()).Create(&arg1)
 
-	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
-	if err != nil {
-		t.Error(err)
-	}
-
-	arg := tutorial.CreateAlbumParams{
+	arg := model.Album{
 		Title:       "A good Title",
-		PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
-		SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+		PublishedAt: &sub5Min,
+		SsoID:       &ssoId,
 		Private:     false,
 		// Categories:  &categories,
 	}
 
-	a, err := db.CreateAlbum(context.Background(), arg)
+	err = a.WithContext(context.Background()).Create(&arg)
 	if err != nil {
 		t.Error(fmt.Errorf("Error creating album: %w", err))
 	}
 
-	err = db.LinkCategoryToAlbum(context.Background(), tutorial.LinkCategoryToAlbumParams{
-		AlbumID:    a.ID,
-		CategoryID: c.ID,
-	})
+	err = a.Categories.Model(&arg).Append(&arg1)
 	if err != nil {
-		t.Error(fmt.Errorf("Error linking album with category : %w", err))
+		t.Error(fmt.Errorf("error linking album with category : %w", err))
 	}
 
 	r, err := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{0, 10}})
@@ -498,38 +479,38 @@ func TestShouldBeAbleToListWithoutCategories(t *testing.T) {
 }
 
 func TestShouldBeAbleToListWithMedias(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
+	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	sub5Min := time.Now().Add(-5 * time.Minute)
+	a := gormQuery.Use(orm).Album
+	m := gormQuery.Use(orm).Medium
 
-	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
-	if err != nil {
-		t.Error(err)
-	}
-
-	arg := tutorial.CreateAlbumParams{
+	arg := model.Album{
 		Title:       "A good Title",
-		PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
-		SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+		PublishedAt: &sub5Min,
+		SsoID:       &ssoId,
 		Private:     false,
 	}
 
-	a, err := db.CreateAlbum(context.Background(), arg)
+	err := a.WithContext(context.Background()).Create(&arg)
 	if err != nil {
 		t.Error(fmt.Errorf("Error creating album: %w", err))
 	}
 
-	arg1 := tutorial.CreateMediaParams{
+	mimeType := "image/jpeg"
+	arg1 := model.Medium{
 		Name:             "A good Media",
-		ModelID:          int64(a.ID),
+		ModelID:          int64(arg.ID),
 		Size:             int64(1),
 		ModelType:        "App\\Models\\Album",
 		CollectionName:   "albums",
 		Disk:             "dummy",
-		MimeType:         sql.NullString{String: "image/jpeg", Valid: true},
-		Manipulations:    pgtype.JSON{Bytes: []byte(`{"resize":{"width":100,"height":100}}`), Status: pgtype.Present},
-		CustomProperties: pgtype.JSON{Bytes: []byte(`{}`), Status: pgtype.Present},
-		ResponsiveImages: pgtype.JSON{Bytes: []byte(`[]`), Status: pgtype.Present},
+		MimeType:         &mimeType,
+		Manipulations:    `{"resize":{"width":100,"height":100}}`,
+		// CustomProperties: pgtype.JSON{Bytes: []byte(`{}`), Status: pgtype.Present},
+		// ResponsiveImages: pgtype.JSON{Bytes: []byte(`[]`), Status: pgtype.Present},
 	}
-	m, err := db.CreateMedia(context.Background(), arg1)
+	err = m.WithContext(context.Background()).Create(&arg1)
 	if err != nil {
 		t.Error(err)
 		t.Error(fmt.Errorf("Error saving media for given album : %w", err))
@@ -549,19 +530,16 @@ func TestShouldBeAbleToListWithMedias(t *testing.T) {
 }
 
 func TestShouldNotListNonPublishedAlbums(t *testing.T) {
-	database2.ClearDB(db)
-	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
-	if err != nil {
-		t.Error(err)
-	}
+	database.ClearDB(orm)
+	a := gormQuery.Use(orm).Album
 
-	arg := tutorial.CreateAlbumParams{
+	arg := model.Album{
 		Title:   "A good Title",
-		SsoID:   uuid.NullUUID{UUID: id, Valid: true},
+		SsoID:   &ssoId,
 		Private: false,
 	}
 
-	_, err = db.CreateAlbum(context.Background(), arg)
+	err := a.WithContext(context.Background()).Create(&arg)
 	if err != nil {
 		t.Error(fmt.Errorf("Error creating album: %w", err))
 	}
@@ -579,71 +557,67 @@ func TestShouldNotListNonPublishedAlbums(t *testing.T) {
 ///////// SHOW  ///////////
 
 func TestShouldBeAbleToGetPublishedAlbumAsGuest(t *testing.T) {
-	database2.ClearDB(db)
-	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
-	if err != nil {
-		t.Error(err)
-	}
+	database.ClearDB(orm)
+	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	sub5Min := time.Now().Add(-5 * time.Minute)
+	a := gormQuery.Use(orm).Album
 
-	arg := tutorial.CreateAlbumParams{
+	arg := model.Album{
 		Title:       "A good Title",
-		PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
-		SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+		PublishedAt: &sub5Min,
+		SsoID:       &ssoId,
 		Private:     false,
 	}
 
-	a, err := db.CreateAlbum(context.Background(), arg)
+	err := a.WithContext(context.Background()).Create(&arg)
 	if err != nil {
 		t.Error(fmt.Errorf("Error creating album: %w", err))
 	}
 
-	r, err := s.GetAlbum(context.Background(), a.Slug)
+	r, err := s.GetAlbum(context.Background(), arg.Slug)
 
 	assert.NoError(t, err)
 	assert.Equal(t, a.Slug, r.Slug)
 }
 
 func TestShouldBeAbleToGetPublishedAlbumAsUser(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	ctx, _ := authAsUser(context.Background())
-	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
-	if err != nil {
-		t.Error(err)
-	}
+	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	sub5Min := time.Now().Add(-5 * time.Minute)
+	a := gormQuery.Use(orm).Album
 
-	arg := tutorial.CreateAlbumParams{
+	arg := model.Album{
 		Title:       "A good Title",
-		PublishedAt: sql.NullTime{Time: time.Now().Add(-5 * time.Minute), Valid: true},
-		SsoID:       uuid.NullUUID{UUID: id, Valid: true},
+		PublishedAt: &sub5Min,
+		SsoID:       &ssoId,
 		Private:     false,
 	}
 
-	a, err := db.CreateAlbum(context.Background(), arg)
+	err := a.WithContext(context.Background()).Create(&arg)
 	if err != nil {
 		t.Error(fmt.Errorf("Error creating album: %w", err))
 	}
 
-	r, err := s.GetAlbum(ctx, a.Slug)
+	r, err := s.GetAlbum(ctx, arg.Slug)
 
 	assert.NoError(t, err)
 	assert.Equal(t, a.Slug, r.Slug)
 }
 
 func TestShouldNotBeAbleToGetNonPublishedAlbumAsGuest(t *testing.T) {
-	database2.ClearDB(db)
-	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
-	if err != nil {
-		t.Error(err)
-	}
+	database.ClearDB(orm)
+	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	a := gormQuery.Use(orm).Album
 
 	slug := "a-good-title"
-	arg := tutorial.CreateAlbumParams{
+	arg := model.Album{
 		Title: "A good Title",
-		SsoID: uuid.NullUUID{UUID: id, Valid: true},
+		SsoID: &ssoId,
 		Slug:  slug,
 	}
 
-	_, err = db.CreateAlbum(context.Background(), arg)
+	err := a.WithContext(context.Background()).Create(&arg)
 	if err != nil {
 		t.Error(fmt.Errorf("Error creating album: %w", err))
 	}
@@ -655,50 +629,43 @@ func TestShouldNotBeAbleToGetNonPublishedAlbumAsGuest(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToGetNonPublishedAlbumAsUser(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	ctx, _ := authAsUser(context.Background())
+	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	a := gormQuery.Use(orm).Album
 
-	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
-	if err != nil {
-		t.Error(err)
-	}
-
-	arg := tutorial.CreateAlbumParams{
+	arg := model.Album{
 		Title: "A good Title",
-		SsoID: uuid.NullUUID{UUID: id, Valid: true},
+		SsoID: &ssoId,
 	}
 
-	a, err := db.CreateAlbum(context.Background(), arg)
+	err := a.WithContext(context.Background()).Create(&arg)
 	if err != nil {
 		t.Error(fmt.Errorf("Error creating album: %w", err))
 	}
 
-	_, err = s.GetAlbum(ctx, a.Slug)
+	_, err = s.GetAlbum(ctx, arg.Slug)
 
 	assert.Error(t, err)
 	assert.Equal(t, ErrNotFound, err)
 }
 
 func TestShouldBeAbleToGetNonPublishedAlbumAsAdmin(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	ctx, _ := authAsAdmin(context.Background())
+	a := gormQuery.Use(orm).Album
 
-	id, err := uuid.Parse("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
-	if err != nil {
-		t.Error(err)
-	}
-
-	arg := tutorial.CreateAlbumParams{
+	arg := model.Album{
 		Title: "A good Title",
-		SsoID: uuid.NullUUID{UUID: id, Valid: true},
+		SsoID: &ssoId,
 	}
 
-	a, err := db.CreateAlbum(context.Background(), arg)
+	err := a.WithContext(context.Background()).Create(&arg)
 	if err != nil {
 		t.Error(fmt.Errorf("Error creating album: %w", err))
 	}
 
-	r, err := s.GetAlbum(ctx, a.Slug)
+	r, err := s.GetAlbum(ctx, arg.Slug)
 
 	assert.NoError(t, err)
 	assert.Equal(t, a.Slug, r.Slug)
@@ -707,8 +674,9 @@ func TestShouldBeAbleToGetNonPublishedAlbumAsAdmin(t *testing.T) {
 // ///////// POST  ///////////
 
 func TestShouldBeAbleToCreateAnAlbumAsAdmin(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	ctx, claims := authAsAdmin(context.Background())
+	a := gormQuery.Use(orm).Album
 
 	slug := "a-good-title"
 	arg := AlbumRequest{
@@ -720,7 +688,7 @@ func TestShouldBeAbleToCreateAnAlbumAsAdmin(t *testing.T) {
 	res, err := s.PostAlbum(ctx, arg)
 
 	assert.NoError(t, err)
-	total, err := db.CountAlbums(ctx, true)
+	total,	err := a.WithContext(context.Background()).Count()
 	if err != nil {
 		t.Error(fmt.Errorf("Error counting albums: %w", err))
 	}
@@ -732,8 +700,9 @@ func TestShouldBeAbleToCreateAnAlbumAsAdmin(t *testing.T) {
 }
 
 func TestShouldBeAbleToCreateAnPublishedAlbumAsAdmin(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	ctx, claims := authAsAdmin(context.Background())
+	a := gormQuery.Use(orm).Album
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute).UTC()
@@ -747,7 +716,8 @@ func TestShouldBeAbleToCreateAnPublishedAlbumAsAdmin(t *testing.T) {
 	res, err := s.PostAlbum(ctx, arg)
 
 	assert.NoError(t, err)
-	total, err := db.CountAlbums(ctx, true)
+		total,	err := a.WithContext(context.Background()).Count()
+
 	if err != nil {
 		t.Error(fmt.Errorf("Error counting albums: %w", err))
 	}
@@ -761,8 +731,9 @@ func TestShouldBeAbleToCreateAnPublishedAlbumAsAdmin(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToCreateAnAlbumWithSameSlug(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	ctx, _ := authAsAdmin(context.Background())
+	a := gormQuery.Use(orm).Album
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
@@ -783,14 +754,16 @@ func TestShouldNotBeAbleToCreateAnAlbumWithSameSlug(t *testing.T) {
 	assert.True(t, errors.As(err, &pgErr))
 	assert.Equal(t, pgerrcode.UniqueViolation, pgErr.Code)
 
-	total, err := db.CountAlbums(ctx, true)
+		total,	err := a.WithContext(context.Background()).Count()
+
 	assert.NoError(t, err)
 	assert.Equal(t, 1, int(total))
 }
 
 func TestShouldNotBeAbleToSaveAlbumWithEmptyTitle(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	ctx, _ := authAsAdmin(context.Background())
+	a := gormQuery.Use(orm).Album
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
@@ -806,14 +779,16 @@ func TestShouldNotBeAbleToSaveAlbumWithEmptyTitle(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(t, "Key: 'AlbumRequest.Title' Error:Field validation for 'Title' failed on the 'required' tag", err.Error())
 
-	total, err := db.CountAlbums(ctx, true)
+		total,	err := a.WithContext(context.Background()).Count()
+
 	assert.NoError(t, err)
 	assert.Equal(t, 0, int(total))
 }
 
 func TestShouldNotBeAbleToSaveAlbumWithTooLongTitle(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	ctx, _ := authAsAdmin(context.Background())
+	a := gormQuery.Use(orm).Album
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
@@ -831,14 +806,16 @@ func TestShouldNotBeAbleToSaveAlbumWithTooLongTitle(t *testing.T) {
 	assert.Equal(t, "AlbumRequest.Title", validationErrors[0].Namespace())
 	assert.Equal(t, "lt", validationErrors[0].ActualTag())
 
-	total, err := db.CountAlbums(ctx, true)
+		total,	err := a.WithContext(context.Background()).Count()
+
 	assert.NoError(t, err)
 	assert.Equal(t, 0, int(total))
 }
 
 func TestShouldNotBeAbleToSaveAlbumWithEmptyMetaDescription(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	ctx, _ := authAsAdmin(context.Background())
+	a := gormQuery.Use(orm).Album
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
@@ -856,14 +833,16 @@ func TestShouldNotBeAbleToSaveAlbumWithEmptyMetaDescription(t *testing.T) {
 	assert.Equal(t, "AlbumRequest.MetaDescription", validationErrors[0].Namespace())
 	assert.Equal(t, "required", validationErrors[0].ActualTag())
 
-	total, err := db.CountAlbums(ctx, true)
+		total,	err := a.WithContext(context.Background()).Count()
+
 	assert.NoError(t, err)
 	assert.Equal(t, 0, int(total))
 }
 
 func TestShouldNotBeAbleToSaveAlbumWithTooLongMetaDescription(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	ctx, _ := authAsAdmin(context.Background())
+	a := gormQuery.Use(orm).Album
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
@@ -881,14 +860,16 @@ func TestShouldNotBeAbleToSaveAlbumWithTooLongMetaDescription(t *testing.T) {
 	assert.Equal(t, "AlbumRequest.MetaDescription", validationErrors[0].Namespace())
 	assert.Equal(t, "lt", validationErrors[0].ActualTag())
 
-	total, err := db.CountAlbums(ctx, true)
+		total,	err := a.WithContext(context.Background()).Count()
+
 	assert.NoError(t, err)
 	assert.Equal(t, 0, int(total))
 }
 
 func TestShouldNotBeAbleToPostAlbumAsUser(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	ctx, _ := authAsUser(context.Background())
+	a := gormQuery.Use(orm).Album
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
@@ -903,13 +884,15 @@ func TestShouldNotBeAbleToPostAlbumAsUser(t *testing.T) {
 
 	assert.Error(t, err)
 	assert.Equal(t, ErrNotAdmin, err)
-	total, err := db.CountAlbums(ctx, true)
+		total,	err := a.WithContext(context.Background()).Count()
+
 	assert.NoError(t, err)
 	assert.Equal(t, 0, int(total))
 }
 
 func TestShouldNotBeAbleToPostAlbumAsGuest(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
+	a := gormQuery.Use(orm).Album
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
@@ -924,7 +907,7 @@ func TestShouldNotBeAbleToPostAlbumAsGuest(t *testing.T) {
 
 	assert.Error(t, err)
 	assert.Equal(t, ErrNoAuth, err)
-	total, err := db.CountAlbums(context.Background(), true)
+	total,	err := a.WithContext(context.Background()).Count() // TODO Add filter published to pass test
 	assert.NoError(t, err)
 	assert.Equal(t, 0, int(total))
 }
@@ -932,7 +915,7 @@ func TestShouldNotBeAbleToPostAlbumAsGuest(t *testing.T) {
 // //////// UPDATE //////////
 
 func TestShouldBeAbleToUpdateAlbumTitleAsAdmin(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	ctx, _ := authAsAdmin(context.Background())
 
 	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
@@ -960,7 +943,7 @@ func TestShouldBeAbleToUpdateAlbumTitleAsAdmin(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToUpdateAlbumTooShortTitleAsAdmin(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	ctx, _ := authAsAdmin(context.Background())
 
 	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
@@ -987,7 +970,7 @@ func TestShouldNotBeAbleToUpdateAlbumTooShortTitleAsAdmin(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToUpdateAlbumAsUser(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	ctx, _ := authAsUser(context.Background())
 
 	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
@@ -1014,7 +997,7 @@ func TestShouldNotBeAbleToUpdateAlbumAsUser(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToUpdateAlbumAsGuest(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	a := model.Album{
 		Title:           "A good Title",
@@ -1041,7 +1024,7 @@ func TestShouldNotBeAbleToUpdateAlbumAsGuest(t *testing.T) {
 // //////// DELETE //////////
 
 func TestAdminShouldBeAbleToDeleteAlbumAndNotSoftDeleted(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	ctx, _ := authAsAdmin(context.Background())
 	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	a := model.Album{
@@ -1066,7 +1049,7 @@ func TestAdminShouldBeAbleToDeleteAlbumAndNotSoftDeleted(t *testing.T) {
 }
 
 func TestAdminShouldNotBeAbleToDeleteAnNonExistantAlbum(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	ctx, _ := authAsAdmin(context.Background())
 
 	err := s.DeleteAlbum(ctx, "non-existant-slug")
@@ -1076,7 +1059,7 @@ func TestAdminShouldNotBeAbleToDeleteAnNonExistantAlbum(t *testing.T) {
 }
 
 func TestUserShouldNotBeAbleToDelete(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 	ctx, _ := authAsUser(context.Background())
 	slug := "a-good-slug"
 	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
@@ -1098,7 +1081,7 @@ func TestUserShouldNotBeAbleToDelete(t *testing.T) {
 }
 
 func TestGuestShouldNotBeAbleToDelete(t *testing.T) {
-	database2.ClearDB(db)
+	database.ClearDB(orm)
 
 	err := s.DeleteAlbum(context.Background(), "a-random-slug")
 
