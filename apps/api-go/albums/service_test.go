@@ -26,7 +26,7 @@ var (
 	orm *gorm.DB
 )
 
-var	ssoId = "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+var ssoId = "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 var token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIxamVHNzFZSHlUd25GUEVSb2NJeEVzS21lbjlWN1NjanRIZXFzak1KUXlZIn0.eyJleHAiOjE2MTExNjQ3MTAsImlhdCI6MTYxMTE2NDQxMCwiYXV0aF90aW1lIjoxNjExMTY0MzY0LCJqdGkiOiJlMThlMWNlOC05OTc5LTQ3NmQtOWYxMC1mOTk5OWJhMDQwZjgiLCJpc3MiOiJodHRwczovL2FjY291bnRzLmFncmF2ZWxvdC5ldS9hdXRoL3JlYWxtcy9hbnljbG91ZCIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiIzMDE1MWFlNS0yOGI0LTRjNmMtYjBhZS1lYTJlNmE0OWVmNjciLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJmcm9udGVuZCIsIm5vbmNlIjoiMTkyOWEwZGEtMTU2ZS00NWZmLTgzM2YtYTU2MGIwNmI1YWNkIiwic2Vzc2lvbl9zdGF0ZSI6IjRlMWYxOWYzLTFhMmMtNGUxNS1iMWFhLTNlY2ZhMTkxMGRiOCIsImFjciI6IjAiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIn0.PkfxSmIiG4lLE9hCjICcRPNpXC0X2QtVzYeUwAUwwe2G_6ArmMdZOkRVOKx3jiRO7PYu-D0NR9tAiv7yN9SDMDrIhtNoosgChB4PQ4wBf_YvHsJaAHwyK8Hu6h_8gxJIl3UYCKWTSYgLRK-IOE9E6FNlMdJK9UXAO_y2IBEZBO9QV-QxZH7SlYkm8VfoZzNzRMy82SgWLsQGDvwAAGCxHFRgTZdFNKPoqJylDyANBEuWanLwDohQKdNGqz6PlhtopmXo1v8kcHwBHxyMQ3mtRNCXBV6TOXo7oAWW3XeXGWjTtAiTY85Wr7R6IJ74WKpMrG-3PDL6Sx6n4JxOuurpLg"
 
 func authAsUser(ctx context.Context) (context.Context, auth.Claims) {
@@ -122,11 +122,10 @@ func TestShouldBeAbleToListWithOnePublishedAlbum(t *testing.T) {
 	sub10Min := time.Now().Add(-10 * time.Minute)
 	a := gormQuery.Use(orm).Album
 
-
 	arg := model.Album{
-		Title:       "A good Title aze",
+		Title:       "A good Title",
 		PublishedAt: &sub10Min,
-		Private:     false,
+		Private:     false, // todo is true wtf
 		SsoID:       &ssoId,
 	}
 	err := a.WithContext(context.Background()).Create(&arg)
@@ -155,7 +154,7 @@ func TestShouldBeOrderedByDateOfPublication(t *testing.T) {
 			Slug:        "a-good-title",
 			PublishedAt: &sub100Min,
 			Private:     false,
-			SsoID:        &ssoId,
+			SsoID:       &ssoId,
 		},
 		{
 			Title:       "A good Title 2",
@@ -307,7 +306,7 @@ func TestShouldBeAbleToListPublishedAlbumsOnSecondPageWithCustomPerPage(t *testi
 			SsoID:       &ssoId,
 		}
 
-	    err := a.WithContext(context.Background()).Create(&arg)
+		err := a.WithContext(context.Background()).Create(&arg)
 		if err != nil {
 			t.Error(fmt.Errorf("Error creating album: %w", err))
 		}
@@ -337,7 +336,7 @@ func TestShouldBeAbleToListPublishedAlbumsOnSecondPageWithCustomPerPage(t *testi
 	assert.Equal(t, int64(3), r.Meta.Total)
 	assert.Equal(t, int32(2), r.Meta.Limit)
 	assert.Equal(t, 1, len(r.Data))
-	assert.Equal(t, a.Title, r.Data[0].Title)
+	assert.Equal(t, arg.Title, r.Data[0].Title)
 }
 
 func TestShouldBeAbleToListNonPublishedAlbumAsAdmin(t *testing.T) {
@@ -403,7 +402,6 @@ func TestShouldBeAbleToListWithCategories(t *testing.T) {
 	if err != nil {
 		t.Error(fmt.Errorf("unable create category: %w", err))
 	}
-
 
 	arg := model.Album{
 		Title:       "A good Title",
@@ -507,8 +505,8 @@ func TestShouldBeAbleToListWithMedias(t *testing.T) {
 		Disk:             "dummy",
 		MimeType:         &mimeType,
 		Manipulations:    `{"resize":{"width":100,"height":100}}`,
-		// CustomProperties: pgtype.JSON{Bytes: []byte(`{}`), Status: pgtype.Present},
-		// ResponsiveImages: pgtype.JSON{Bytes: []byte(`[]`), Status: pgtype.Present},
+		CustomProperties: &model.CustomProperties{},
+		ResponsiveImages: &model.ResponsiveImages{},
 	}
 	err = m.WithContext(context.Background()).Create(&arg1)
 	if err != nil {
@@ -526,7 +524,7 @@ func TestShouldBeAbleToListWithMedias(t *testing.T) {
 	assert.Equal(t, 1, len(r.Data))
 	assert.NotNil(t, r.Data[0].Medias)
 	assert.Equal(t, 1, len(*r.Data[0].Medias))
-	assert.Equal(t, m.Name, (*r.Data[0].Medias)[0].Name)
+	assert.Equal(t, arg1.Name, (*r.Data[0].Medias)[0].Name)
 }
 
 func TestShouldNotListNonPublishedAlbums(t *testing.T) {
@@ -577,7 +575,7 @@ func TestShouldBeAbleToGetPublishedAlbumAsGuest(t *testing.T) {
 	r, err := s.GetAlbum(context.Background(), arg.Slug)
 
 	assert.NoError(t, err)
-	assert.Equal(t, a.Slug, r.Slug)
+	assert.Equal(t, arg.Slug, r.Slug)
 }
 
 func TestShouldBeAbleToGetPublishedAlbumAsUser(t *testing.T) {
@@ -602,7 +600,7 @@ func TestShouldBeAbleToGetPublishedAlbumAsUser(t *testing.T) {
 	r, err := s.GetAlbum(ctx, arg.Slug)
 
 	assert.NoError(t, err)
-	assert.Equal(t, a.Slug, r.Slug)
+	assert.Equal(t, arg.Slug, r.Slug)
 }
 
 func TestShouldNotBeAbleToGetNonPublishedAlbumAsGuest(t *testing.T) {
@@ -668,7 +666,7 @@ func TestShouldBeAbleToGetNonPublishedAlbumAsAdmin(t *testing.T) {
 	r, err := s.GetAlbum(ctx, arg.Slug)
 
 	assert.NoError(t, err)
-	assert.Equal(t, a.Slug, r.Slug)
+	assert.Equal(t, arg.Slug, r.Slug)
 }
 
 // ///////// POST  ///////////
@@ -688,7 +686,7 @@ func TestShouldBeAbleToCreateAnAlbumAsAdmin(t *testing.T) {
 	res, err := s.PostAlbum(ctx, arg)
 
 	assert.NoError(t, err)
-	total,	err := a.WithContext(context.Background()).Count()
+	total, err := a.WithContext(context.Background()).Count()
 	if err != nil {
 		t.Error(fmt.Errorf("Error counting albums: %w", err))
 	}
@@ -716,7 +714,7 @@ func TestShouldBeAbleToCreateAnPublishedAlbumAsAdmin(t *testing.T) {
 	res, err := s.PostAlbum(ctx, arg)
 
 	assert.NoError(t, err)
-		total,	err := a.WithContext(context.Background()).Count()
+	total, err := a.WithContext(context.Background()).Count()
 
 	if err != nil {
 		t.Error(fmt.Errorf("Error counting albums: %w", err))
@@ -754,7 +752,7 @@ func TestShouldNotBeAbleToCreateAnAlbumWithSameSlug(t *testing.T) {
 	assert.True(t, errors.As(err, &pgErr))
 	assert.Equal(t, pgerrcode.UniqueViolation, pgErr.Code)
 
-		total,	err := a.WithContext(context.Background()).Count()
+	total, err := a.WithContext(context.Background()).Count()
 
 	assert.NoError(t, err)
 	assert.Equal(t, 1, int(total))
@@ -779,7 +777,7 @@ func TestShouldNotBeAbleToSaveAlbumWithEmptyTitle(t *testing.T) {
 	assert.Error(t, err)
 	assert.Equal(t, "Key: 'AlbumRequest.Title' Error:Field validation for 'Title' failed on the 'required' tag", err.Error())
 
-		total,	err := a.WithContext(context.Background()).Count()
+	total, err := a.WithContext(context.Background()).Count()
 
 	assert.NoError(t, err)
 	assert.Equal(t, 0, int(total))
@@ -806,7 +804,7 @@ func TestShouldNotBeAbleToSaveAlbumWithTooLongTitle(t *testing.T) {
 	assert.Equal(t, "AlbumRequest.Title", validationErrors[0].Namespace())
 	assert.Equal(t, "lt", validationErrors[0].ActualTag())
 
-		total,	err := a.WithContext(context.Background()).Count()
+	total, err := a.WithContext(context.Background()).Count()
 
 	assert.NoError(t, err)
 	assert.Equal(t, 0, int(total))
@@ -833,7 +831,7 @@ func TestShouldNotBeAbleToSaveAlbumWithEmptyMetaDescription(t *testing.T) {
 	assert.Equal(t, "AlbumRequest.MetaDescription", validationErrors[0].Namespace())
 	assert.Equal(t, "required", validationErrors[0].ActualTag())
 
-		total,	err := a.WithContext(context.Background()).Count()
+	total, err := a.WithContext(context.Background()).Count()
 
 	assert.NoError(t, err)
 	assert.Equal(t, 0, int(total))
@@ -860,7 +858,7 @@ func TestShouldNotBeAbleToSaveAlbumWithTooLongMetaDescription(t *testing.T) {
 	assert.Equal(t, "AlbumRequest.MetaDescription", validationErrors[0].Namespace())
 	assert.Equal(t, "lt", validationErrors[0].ActualTag())
 
-		total,	err := a.WithContext(context.Background()).Count()
+	total, err := a.WithContext(context.Background()).Count()
 
 	assert.NoError(t, err)
 	assert.Equal(t, 0, int(total))
@@ -884,7 +882,7 @@ func TestShouldNotBeAbleToPostAlbumAsUser(t *testing.T) {
 
 	assert.Error(t, err)
 	assert.Equal(t, ErrNotAdmin, err)
-		total,	err := a.WithContext(context.Background()).Count()
+	total, err := a.WithContext(context.Background()).Count()
 
 	assert.NoError(t, err)
 	assert.Equal(t, 0, int(total))
@@ -907,7 +905,7 @@ func TestShouldNotBeAbleToPostAlbumAsGuest(t *testing.T) {
 
 	assert.Error(t, err)
 	assert.Equal(t, ErrNoAuth, err)
-	total,	err := a.WithContext(context.Background()).Count() // TODO Add filter published to pass test
+	total, err := a.WithContext(context.Background()).Count() // TODO Add filter published to pass test
 	assert.NoError(t, err)
 	assert.Equal(t, 0, int(total))
 }

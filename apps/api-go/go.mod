@@ -15,15 +15,18 @@ require (
 	github.com/jackc/pgconn v1.11.0
 	github.com/jackc/pgerrcode v0.0.0-20201024163028-a0d42d470451
 	github.com/jackc/pgx/v4 v4.15.0 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/joho/godotenv v1.4.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/lib/pq v1.10.4
 	github.com/stretchr/testify v1.7.0
 	golang.org/x/crypto v0.0.0-20220214200702-86341886e292 // indirect
 	golang.org/x/net v0.0.0-20220225172249-27dd8689420f // indirect
-	golang.org/x/sys v0.0.0-20220227234510-4e6760a101f9 // indirect
+	golang.org/x/sys v0.0.0-20220329152356-43be30ef3008 // indirect
+	golang.org/x/tools v0.1.10 // indirect
 	google.golang.org/genproto v0.0.0-20220222213610-43724f9ea8cf // indirect
+	gorm.io/datatypes v1.0.6 // indirect
 	gorm.io/driver/postgres v1.3.1
-	gorm.io/gen v0.2.41
-	gorm.io/gorm v1.23.2-0.20220227161657-43a72b369e67
+	gorm.io/gen v0.2.43
+	gorm.io/gorm v1.23.3
 )

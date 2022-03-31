@@ -49,7 +49,7 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 	query := qb.WithContext(ctx).Order(qb.PublishedAt.Desc())
 
 	if !isAdmin {
-		query = query.Where(qb.PublishedAt.Lt(time.Now()), qb.Private.Is(false))
+		query = query.Where(qb.PublishedAt.Lt(time.Now()), qb.IsPublishedPublicly.Is(true))
 	}
 
 	total, err := query.WithContext(ctx).Count()
@@ -96,7 +96,7 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, err
 	query := qb.WithContext(ctx)
 
 	if !isAdmin {
-		query = query.Where(qb.PublishedAt.Lt(time.Now()), qb.Private.Is(false))
+		query = query.Where(qb.PublishedAt.Lt(time.Now()), qb.IsPublishedPublicly.Is(true))
 	}
 
 	a, err := query.
@@ -188,6 +188,7 @@ func (s *service) PutAlbum(ctx context.Context, slug string, r AlbumRequest) (Al
 		Body:        r.Body,
 		PublishedAt: r.PublishedAt,
 		Private:     r.Private,
+		IsPublishedPublicly: !r.Private,
 		SsoID:       &user.Sub,
 	})
 	if err != nil {

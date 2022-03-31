@@ -121,6 +121,10 @@ func (c categoryDo) Clauses(conds ...clause.Expression) *categoryDo {
 	return c.withDO(c.DO.Clauses(conds...))
 }
 
+func (c categoryDo) Returning(value interface{}, columns ...string) *categoryDo {
+	return c.withDO(c.DO.Returning(value, columns...))
+}
+
 func (c categoryDo) Not(conds ...gen.Condition) *categoryDo {
 	return c.withDO(c.DO.Not(conds...))
 }
@@ -299,7 +303,7 @@ func (c categoryDo) FindByPage(offset int, limit int) (result []*model.Category,
 		return
 	}
 
-	count, err = c.Count()
+	count, err = c.Offset(-1).Limit(-1).Count()
 	return
 }
 

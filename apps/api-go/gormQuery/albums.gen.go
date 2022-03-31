@@ -37,6 +37,7 @@ func newAlbum(db *gorm.DB) album {
 	_album.NotifyUsersOnPublished = field.NewBool(tableName, "notify_users_on_published")
 	_album.MetaDescription = field.NewString(tableName, "meta_description")
 	_album.SsoID = field.NewString(tableName, "sso_id")
+	_album.IsPublishedPublicly = field.NewBool(tableName, "is_published_publicly")
 	_album.Categories = albumHasManyCategories{
 		db: db.Session(&gorm.Session{}),
 
@@ -70,6 +71,7 @@ type album struct {
 	NotifyUsersOnPublished field.Bool
 	MetaDescription        field.String
 	SsoID                  field.String
+	IsPublishedPublicly    field.Bool
 	Categories             albumHasManyCategories
 
 	Medias albumHasManyMedias
@@ -101,6 +103,7 @@ func (a *album) updateTableName(table string) *album {
 	a.NotifyUsersOnPublished = field.NewBool(table, "notify_users_on_published")
 	a.MetaDescription = field.NewString(table, "meta_description")
 	a.SsoID = field.NewString(table, "sso_id")
+	a.IsPublishedPublicly = field.NewBool(table, "is_published_publicly")
 
 	a.fillFieldMap()
 
@@ -121,7 +124,7 @@ func (a *album) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (a *album) fillFieldMap() {
-	a.fieldMap = make(map[string]field.Expr, 14)
+	a.fieldMap = make(map[string]field.Expr, 15)
 	a.fieldMap["id"] = a.ID
 	a.fieldMap["slug"] = a.Slug
 	a.fieldMap["title"] = a.Title
@@ -134,6 +137,7 @@ func (a *album) fillFieldMap() {
 	a.fieldMap["notify_users_on_published"] = a.NotifyUsersOnPublished
 	a.fieldMap["meta_description"] = a.MetaDescription
 	a.fieldMap["sso_id"] = a.SsoID
+	a.fieldMap["is_published_publicly"] = a.IsPublishedPublicly
 
 }
 
@@ -286,6 +290,10 @@ func (a albumDo) WithContext(ctx context.Context) *albumDo {
 
 func (a albumDo) Clauses(conds ...clause.Expression) *albumDo {
 	return a.withDO(a.DO.Clauses(conds...))
+}
+
+func (a albumDo) Returning(value interface{}, columns ...string) *albumDo {
+	return a.withDO(a.DO.Returning(value, columns...))
 }
 
 func (a albumDo) Not(conds ...gen.Condition) *albumDo {
@@ -466,7 +474,7 @@ func (a albumDo) FindByPage(offset int, limit int) (result []*model.Album, count
 		return
 	}
 
-	count, err = a.Count()
+	count, err = a.Offset(-1).Limit(-1).Count()
 	return
 }
 

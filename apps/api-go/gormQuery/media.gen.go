@@ -161,6 +161,10 @@ func (m mediumDo) Clauses(conds ...clause.Expression) *mediumDo {
 	return m.withDO(m.DO.Clauses(conds...))
 }
 
+func (m mediumDo) Returning(value interface{}, columns ...string) *mediumDo {
+	return m.withDO(m.DO.Returning(value, columns...))
+}
+
 func (m mediumDo) Not(conds ...gen.Condition) *mediumDo {
 	return m.withDO(m.DO.Not(conds...))
 }
@@ -339,7 +343,7 @@ func (m mediumDo) FindByPage(offset int, limit int) (result []*model.Medium, cou
 		return
 	}
 
-	count, err = m.Count()
+	count, err = m.Offset(-1).Limit(-1).Count()
 	return
 }
 

@@ -16,19 +16,19 @@ type CustomProperties struct {
 	Width  int `json:"width"`
 }
 
-func (ri CustomProperties) Value() (driver.Value, error) {
-	return nil, nil
+func (cp CustomProperties) Value() (driver.Value, error) {
+	return json.Marshal(cp)
 }
 
-func (ri *CustomProperties) Scan(value interface{}) error {
+func (cp *CustomProperties) Scan(value interface{}) error {
 	bytes, ok := value.([]byte)
 	if !ok {
-		return errors.New(fmt.Sprint("Failed to unmarshal JSONB value:", value))
+		return errors.New(fmt.Sprint("failed to unmarshal JSONB value:", value))
 	}
 
 	result := CustomProperties{}
 	err := json.Unmarshal(bytes, &result)
-	*ri = result
+	*cp = result
 	return err
 }
 
@@ -37,7 +37,7 @@ type ResponsiveImages struct {
 }
 
 func (ri ResponsiveImages) Value() (driver.Value, error) {
-	return nil, nil
+	return json.Marshal(ri)
 }
 
 func (ri *ResponsiveImages) Scan(value interface{}) error {
@@ -47,7 +47,7 @@ func (ri *ResponsiveImages) Scan(value interface{}) error {
 		return nil
 	}
 	if !ok {
-		return errors.New(fmt.Sprint("Failed to unmarshal JSONB value:", value))
+		return errors.New(fmt.Sprint("failed to unmarshal JSONB value:", value))
 	}
 
 	result := ResponsiveImages{}

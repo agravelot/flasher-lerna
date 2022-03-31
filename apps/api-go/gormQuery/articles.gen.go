@@ -133,6 +133,10 @@ func (a articleDo) Clauses(conds ...clause.Expression) *articleDo {
 	return a.withDO(a.DO.Clauses(conds...))
 }
 
+func (a articleDo) Returning(value interface{}, columns ...string) *articleDo {
+	return a.withDO(a.DO.Returning(value, columns...))
+}
+
 func (a articleDo) Not(conds ...gen.Condition) *articleDo {
 	return a.withDO(a.DO.Not(conds...))
 }
@@ -311,7 +315,7 @@ func (a articleDo) FindByPage(offset int, limit int) (result []*model.Article, c
 		return
 	}
 
-	count, err = a.Count()
+	count, err = a.Offset(-1).Limit(-1).Count()
 	return
 }
 
