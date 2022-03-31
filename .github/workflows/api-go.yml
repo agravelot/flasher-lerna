@@ -94,6 +94,10 @@ jobs:
           key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-${{ matrix.go-version }}-
+      - name: Set up gotestfmt
+        uses: haveyoudebuggedit/gotestfmt-action@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build api
         uses: actions/setup-go@v2
         with:
@@ -106,7 +110,8 @@ jobs:
       - name: Test
         run: |
           cd apps/api-go
-          go test ./...
+          set -euo pipefail
+          go test -json -v ./... 2>&1 | tee /tmp/gotest.log | gotestfmt
         env:
           DB_HOST: localhost
           DB_USER: flasher
@@ -115,3 +120,10 @@ jobs:
           DB_PORT: 5432
           PORT: 8080
           DB_SSL_MODE: disable
+      - name: Upload test log
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: test-log
+          path: /tmp/gotest.log
+          if-no-files-found: error
