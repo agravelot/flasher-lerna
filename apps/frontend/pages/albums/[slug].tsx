@@ -27,7 +27,6 @@ const Comments = dynamic(() => import("../../components/Comments"), { ssr: false
 type Props = {
   album: Album;
   recommendedAlbums: Album[];
-  estimatedReadingInMinutes: number;
 } & GlobalProps;
 
 const DynamicFullscreenCarousel = dynamic(
@@ -45,7 +44,6 @@ const DynamicAdminOverlay = dynamic(
 const ShowAlbum: NextPage<Props> = ({
   album,
   recommendedAlbums,
-  estimatedReadingInMinutes,
   socialMedias,
   appName,
 }: Props) => {
@@ -205,13 +203,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     //   .then((res) => res.json())
     //   .then((res) => res.data);
 
-    const {album, estimatedReadingInMinutes} = await api<WrappedResponse<Album>>(`/albums/${params?.slug}`)
+    const {album } = await api<WrappedResponse<Album>>(`/albums/${params?.slug}`)
       .then((res) => res.json())
       .then((res) => {
           const albumAPI: Album | undefined = res.data;
-          const bodyWithoutHtml: string | undefined = albumAPI.body?.replace(/<[^>]*>?/gm, "");
-          const estimatedReadingInMinutes: string | undefined = (bodyWithoutHtml.split(" ").length/200).toFixed();
-          return {album: albumAPI, estimatedReadingInMinutes: estimatedReadingInMinutes};
+          return {album: albumAPI};
       });
 
     const albumCategories = album.categories
@@ -246,7 +242,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     const global = await getGlobalProps();
 
-    return { props: { album, recommendedAlbums, estimatedReadingInMinutes, ...global }, revalidate: 60 };
+    return { props: { album, recommendedAlbums, ...global }, revalidate: 60 };
   } catch (e) {
     if (e instanceof HttpNotFound) {
       return { notFound: true };
