@@ -15,7 +15,6 @@ import ReadingTime from "components/ReadingTime";
 
 type Props = {
   post: BlogPost;
-  estimatedReadingInMinutes: number;
 } & GlobalProps;
 
 const ImageCustom = (
@@ -43,12 +42,10 @@ const components = {
   // p: (props) => <p style={{ color: "tomato" }} {...props} />,
 };
 
-const Post: NextPage<Props> = ({
-  post,
-  appName,
-  estimatedReadingInMinutes,
-  socialMedias,
-}: Props) => {
+const Post: NextPage<Props> = ({ post, appName, socialMedias }: Props) => {
+  const { observe, inView } = useInView({
+    onEnter: ({ unobserve }) => unobserve(), // only run once
+  });
   const { asPath } = useRouter();
 
   return (
@@ -127,15 +124,10 @@ export const getStaticProps: GetStaticProps = async ({
 
   post.contentSerialized = await serialize(post.content);
 
-  const estimatedReadingInMinutes = (
-    post.content.split(" ").length / 200
-  ).toFixed();
-
   return {
     props: {
       ...global,
       post,
-      estimatedReadingInMinutes,
     },
   };
 };
