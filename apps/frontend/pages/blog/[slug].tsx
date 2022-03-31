@@ -11,6 +11,7 @@ import { MDXRemote } from "next-mdx-remote";
 import { generateNextImageUrl } from "utils/util";
 import { useRouter } from "next/router";
 import { ContactSection } from "components/ContactSection";
+import ReadingTime from "components/ReadingTime";
 
 type Props = {
   post: BlogPost;
@@ -90,10 +91,11 @@ const Post: NextPage<Props> = ({
         description={post.metaDescription}
       />
       <Header title={post.title} />
-      <div className="container mx-auto">
-        <div className="flex justify-center py-16 px-4 text-justify">
-          <article className="prose prose-sm max-w-none content-center sm:prose lg:prose-lg xl:prose-xl">
-            <i>Temps de lecture estimé : {estimatedReadingInMinutes} min.</i>
+      <div className="container mx-auto py-16 px-4 max-w-none prose prose-sm sm:prose lg:prose-lg xl:prose-xl">
+          <ReadingTime body={post.content}/>
+        <div className="flex justify-center text-justify">
+
+          <article className="content-center max-w-none">
             {post.contentSerialized && (
               <MDXRemote {...post.contentSerialized} components={components} />
             )}

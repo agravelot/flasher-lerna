@@ -20,6 +20,7 @@ import Layout from "../../components/Layout";
 import Header from "../../components/Header";
 import AlbumMediaList from "../../components/album/AlbumMediaList";
 import { useAuthentication } from "hooks/useAuthentication";
+import ReadingTime from "components/ReadingTime";
 import { ContactSection } from "../../components/ContactSection";
 
 type Props = {
@@ -137,12 +138,12 @@ const ShowAlbum: NextPage<Props> = ({
       )}
 
       <div className="container mx-auto">
+          <div className="pt-8 px-4 prose max-w-none">
+              <ReadingTime body={album.body}/>
+          </div>
           <article>
-            <div className="flex justify-center py-16 px-4 text-justify">
-              <div className="content-center prose max-w-none">
-                <i className="pb-4">Temps de lecture estimé : {estimatedReadingInMinutes} min.</i>
-                <div dangerouslySetInnerHTML={{ __html: album.body ?? "" }}/>
-              </div>
+            <div className="flex justify-center pb-16 px-4 text-justify content-center prose max-w-none">
+              <div dangerouslySetInnerHTML={{ __html: album.body ?? "" }}/>
             </div>
             <div
               className="container mx-auto py-4 overflow-hidden mb-16"
