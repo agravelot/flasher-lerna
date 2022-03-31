@@ -3,59 +3,52 @@ name: api-go
 on:
   push:
     paths:
-      - 'apps/api-go/**'
-      - '.github/workflows/api-go.yml'
+      - "apps/api-go/**"
+      - ".github/workflows/api-go.yml"
     branches:
-      - '**'
+      - "**"
     tags:
-      - 'v*'
+      - "v*"
   pull_request:
-
 
 jobs:
   docker:
     runs-on: ubuntu-20.04
     strategy:
-        matrix:
-          go-version: [1.17.x]
-          os: [ubuntu-20.04]
+      matrix:
+        go-version: [1.17.x]
+        os: [ubuntu-20.04]
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
-      - 
-         uses: actions/cache@v2
-         with:
-           path: |
-             ~/go/pkg/mod
-             ~/.cache/go-build
-             ~/Library/Caches/go-build
-             %LocalAppData%\go-build
-           key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
-           restore-keys: |
-              ${{ runner.os }}-go-${{ matrix.go-version }}-
-      - 
-        name: Set up Docker Buildx
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+            ~/Library/Caches/go-build
+            %LocalAppData%\go-build
+          key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ matrix.go-version }}-
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      -
-        name: Login to Gitlab
+      - name: Login to Gitlab
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         with:
           registry: registry.gitlab.com
           username: ${{ secrets.CI_REGISTRY_USER }}
           password: ${{ secrets.CI_REGISTRY_PASSWORD }}
-      -
-          name: Docker meta
-          id: docker_meta
-          uses: crazy-max/ghaction-docker-meta@v1
-          with:
-            images: registry.gitlab.com/flasher/flasher/flasher-api-go # list of Docker images to use as base name for tags
-            tag-semver: |
-              {{version}}
-              {{major}}.{{minor}}
-      -
-        name: Build and push base
+      - name: Docker meta
+        id: docker_meta
+        uses: crazy-max/ghaction-docker-meta@v1
+        with:
+          images: registry.gitlab.com/flasher/flasher/flasher-api-go # list of Docker images to use as base name for tags
+          tag-semver: |
+            {{version}}
+            {{major}}.{{minor}}
+      - name: Build and push base
         uses: docker/build-push-action@v2
         with:
           context: ./apps/api-go
@@ -81,48 +74,44 @@ jobs:
         ports:
           - 5432:5432
     strategy:
-        matrix:
-          go-version: [1.17.x]
-          os: [ubuntu-20.04]
+      matrix:
+        go-version: [1.17.x]
+        os: [ubuntu-20.04]
     # runs-on: self-hosted
     runs-on: ubuntu-20.04
     steps:
-    - 
-      name: Checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - uses: actions/cache@v2
-      with:
-        path: |
-          ~/go/pkg/mod
-          ~/.cache/go-build
-          ~/Library/Caches/go-build
-          %LocalAppData%\go-build
-        key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
-        restore-keys: |
-          ${{ runner.os }}-go-${{ matrix.go-version }}-
-    -
-      name: Build api
-      uses: actions/setup-go@v2
-      with:
-        go-version: ${{ matrix.go-version }}
-    -
-      name: Init DB
-      run: |
-        go install github.com/pressly/goose/v3/cmd/goose@latest
-        cd apps/api-go/migration
-        goose postgres "user=flasher password=flasher dbname=flasher sslmode=disable" up
-    -
-      name: Test
-      run: |
-        cd apps/api-go
-        go test ./...
-      env:
-        DB_HOST: localhost
-        DB_USER: flasher
-        DB_PASSWORD: flasher
-        DB_NAME: flasher
-        DB_PORT: 5432
-        PORT: 8080
-        DB_SSL_MODE: disable
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+            ~/Library/Caches/go-build
+            %LocalAppData%\go-build
+          key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ matrix.go-version }}-
+      - name: Build api
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go-version }}
+      - name: Init DB
+        run: |
+          go install github.com/pressly/goose/v3/cmd/goose@latest
+          cd apps/api-go/migration
+          goose postgres "user=flasher password=flasher dbname=flasher sslmode=disable" up
+      - name: Test
+        run: |
+          cd apps/api-go
+          go test ./...
+        env:
+          DB_HOST: localhost
+          DB_USER: flasher
+          DB_PASSWORD: flasher
+          DB_NAME: flasher
+          DB_PORT: 5432
+          PORT: 8080
+          DB_SSL_MODE: disable
