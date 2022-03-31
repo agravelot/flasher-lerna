@@ -6,9 +6,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-
-	"github.com/gosimple/slug"
-	"gorm.io/gorm"
 )
 
 type CustomProperties struct {
@@ -64,11 +61,4 @@ type Responsive struct {
 type GeneratedConversions struct {
 	Thumb      bool `json:"thumb"`
 	Responsive bool `json:"responsive"`
-}
-
-func (a *Article) BeforeCreate(tx *gorm.DB) (err error) {
-	if a.Slug == "" {
-		a.Slug = slug.Make(a.Name)
-	}
-	return
 }
