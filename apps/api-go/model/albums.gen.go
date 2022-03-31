@@ -17,7 +17,7 @@ type Album struct {
 	Title                  string     `gorm:"column:title;type:varchar;not null" json:"title"`
 	Body                   *string    `gorm:"column:body;type:text" json:"body"`
 	PublishedAt            *time.Time `gorm:"column:published_at;type:timestamp" json:"published_at"`
-	Private                bool       `gorm:"column:private;type:bool;not null;default:true" json:"private"`
+	Private                bool       `gorm:"column:private;type:bool;not null;default:false" json:"private"`
 	UserID                 *int64     `gorm:"column:user_id;type:int8" json:"user_id"`
 	CreatedAt              *time.Time `gorm:"column:created_at;type:timestamp" json:"created_at"`
 	UpdatedAt              *time.Time `gorm:"column:updated_at;type:timestamp" json:"updated_at"`

@@ -4,8 +4,8 @@ import (
 	"api-go/auth"
 	"api-go/config"
 	"api-go/database"
-	"api-go/gormQuery"
 	"api-go/model"
+	"api-go/query"
 	"context"
 	"errors"
 	"fmt"
@@ -120,7 +120,7 @@ func TestShouldBeAbleToListEmpty(t *testing.T) {
 func TestShouldBeAbleToListWithOnePublishedAlbum(t *testing.T) {
 	database.ClearDB(orm)
 	sub10Min := time.Now().Add(-10 * time.Minute)
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	arg := model.Album{
 		Title:       "A good Title",
@@ -146,7 +146,7 @@ func TestShouldBeOrderedByDateOfPublication(t *testing.T) {
 	sub100Min := time.Now().Add(-100 * time.Minute)
 	sub10Min := time.Now().Add(-10 * time.Minute)
 	sub5Min := time.Now().Add(-5 * time.Minute)
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	args := []model.Album{
 		{
@@ -194,7 +194,7 @@ func TestShouldOnlyShowPublicAlbums(t *testing.T) {
 	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	sub100Min := time.Now().Add(-100 * time.Minute)
 	sub10Min := time.Now().Add(-10 * time.Minute)
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	args := []model.Album{
 		{
@@ -245,7 +245,7 @@ func TestShouldBeAbleToListPublishedAlbumsOnSecondPage(t *testing.T) {
 	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	sub100Min := time.Now().Add(-100 * time.Minute)
 	sub5Min := time.Now().Add(-5 * time.Minute)
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	var lastPageID int32
 
@@ -295,7 +295,7 @@ func TestShouldBeAbleToListPublishedAlbumsOnSecondPageWithCustomPerPage(t *testi
 	var lastPageID int32
 	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	sub5Min := time.Now().Add(-5 * time.Minute)
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	for i := 0; i < 2; i++ {
 		arg := model.Album{
@@ -342,7 +342,7 @@ func TestShouldBeAbleToListPublishedAlbumsOnSecondPageWithCustomPerPage(t *testi
 func TestShouldBeAbleToListNonPublishedAlbumAsAdmin(t *testing.T) {
 	ctx, _ := authAsAdmin(context.Background())
 	database.ClearDB(orm)
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	arg := model.Album{
 		Title: "On second page",
@@ -366,7 +366,7 @@ func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 	database.ClearDB(orm)
 	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	sub5Min := time.Now().Add(-5 * time.Minute)
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	arg := model.Album{
 		Title:       "On second page",
@@ -392,8 +392,8 @@ func TestShouldBeAbleToListWithCategories(t *testing.T) {
 	database.ClearDB(orm)
 	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	sub5Min := time.Now().Add(-5 * time.Minute)
-	a := gormQuery.Use(orm).Album
-	c := gormQuery.Use(orm).Category
+	a := query.Use(orm).Album
+	c := query.Use(orm).Category
 
 	arg1 := model.Category{
 		Name: "A good Category",
@@ -437,8 +437,8 @@ func TestShouldBeAbleToListWithoutCategories(t *testing.T) {
 	database.ClearDB(orm)
 	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	sub5Min := time.Now().Add(-5 * time.Minute)
-	a := gormQuery.Use(orm).Album
-	c := gormQuery.Use(orm).Category
+	a := query.Use(orm).Album
+	c := query.Use(orm).Category
 
 	arg1 := model.Category{
 		Name: "A good Category",
@@ -480,8 +480,8 @@ func TestShouldBeAbleToListWithMedias(t *testing.T) {
 	database.ClearDB(orm)
 	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	sub5Min := time.Now().Add(-5 * time.Minute)
-	a := gormQuery.Use(orm).Album
-	m := gormQuery.Use(orm).Medium
+	a := query.Use(orm).Album
+	m := query.Use(orm).Medium
 
 	arg := model.Album{
 		Title:       "A good Title",
@@ -529,7 +529,7 @@ func TestShouldBeAbleToListWithMedias(t *testing.T) {
 
 func TestShouldNotListNonPublishedAlbums(t *testing.T) {
 	database.ClearDB(orm)
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	arg := model.Album{
 		Title:   "A good Title",
@@ -558,7 +558,7 @@ func TestShouldBeAbleToGetPublishedAlbumAsGuest(t *testing.T) {
 	database.ClearDB(orm)
 	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	sub5Min := time.Now().Add(-5 * time.Minute)
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	arg := model.Album{
 		Title:       "A good Title",
@@ -583,7 +583,7 @@ func TestShouldBeAbleToGetPublishedAlbumAsUser(t *testing.T) {
 	ctx, _ := authAsUser(context.Background())
 	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	sub5Min := time.Now().Add(-5 * time.Minute)
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	arg := model.Album{
 		Title:       "A good Title",
@@ -606,7 +606,7 @@ func TestShouldBeAbleToGetPublishedAlbumAsUser(t *testing.T) {
 func TestShouldNotBeAbleToGetNonPublishedAlbumAsGuest(t *testing.T) {
 	database.ClearDB(orm)
 	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	slug := "a-good-title"
 	arg := model.Album{
@@ -630,7 +630,7 @@ func TestShouldNotBeAbleToGetNonPublishedAlbumAsUser(t *testing.T) {
 	database.ClearDB(orm)
 	ctx, _ := authAsUser(context.Background())
 	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	arg := model.Album{
 		Title: "A good Title",
@@ -651,7 +651,7 @@ func TestShouldNotBeAbleToGetNonPublishedAlbumAsUser(t *testing.T) {
 func TestShouldBeAbleToGetNonPublishedAlbumAsAdmin(t *testing.T) {
 	database.ClearDB(orm)
 	ctx, _ := authAsAdmin(context.Background())
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	arg := model.Album{
 		Title: "A good Title",
@@ -674,7 +674,7 @@ func TestShouldBeAbleToGetNonPublishedAlbumAsAdmin(t *testing.T) {
 func TestShouldBeAbleToCreateAnAlbumAsAdmin(t *testing.T) {
 	database.ClearDB(orm)
 	ctx, claims := authAsAdmin(context.Background())
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	slug := "a-good-title"
 	arg := AlbumRequest{
@@ -700,7 +700,7 @@ func TestShouldBeAbleToCreateAnAlbumAsAdmin(t *testing.T) {
 func TestShouldBeAbleToCreateAnPublishedAlbumAsAdmin(t *testing.T) {
 	database.ClearDB(orm)
 	ctx, claims := authAsAdmin(context.Background())
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute).UTC()
@@ -731,7 +731,7 @@ func TestShouldBeAbleToCreateAnPublishedAlbumAsAdmin(t *testing.T) {
 func TestShouldNotBeAbleToCreateAnAlbumWithSameSlug(t *testing.T) {
 	database.ClearDB(orm)
 	ctx, _ := authAsAdmin(context.Background())
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
@@ -761,7 +761,7 @@ func TestShouldNotBeAbleToCreateAnAlbumWithSameSlug(t *testing.T) {
 func TestShouldNotBeAbleToSaveAlbumWithEmptyTitle(t *testing.T) {
 	database.ClearDB(orm)
 	ctx, _ := authAsAdmin(context.Background())
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
@@ -786,7 +786,7 @@ func TestShouldNotBeAbleToSaveAlbumWithEmptyTitle(t *testing.T) {
 func TestShouldNotBeAbleToSaveAlbumWithTooLongTitle(t *testing.T) {
 	database.ClearDB(orm)
 	ctx, _ := authAsAdmin(context.Background())
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
@@ -813,7 +813,7 @@ func TestShouldNotBeAbleToSaveAlbumWithTooLongTitle(t *testing.T) {
 func TestShouldNotBeAbleToSaveAlbumWithEmptyMetaDescription(t *testing.T) {
 	database.ClearDB(orm)
 	ctx, _ := authAsAdmin(context.Background())
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
@@ -840,7 +840,7 @@ func TestShouldNotBeAbleToSaveAlbumWithEmptyMetaDescription(t *testing.T) {
 func TestShouldNotBeAbleToSaveAlbumWithTooLongMetaDescription(t *testing.T) {
 	database.ClearDB(orm)
 	ctx, _ := authAsAdmin(context.Background())
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
@@ -867,7 +867,7 @@ func TestShouldNotBeAbleToSaveAlbumWithTooLongMetaDescription(t *testing.T) {
 func TestShouldNotBeAbleToPostAlbumAsUser(t *testing.T) {
 	database.ClearDB(orm)
 	ctx, _ := authAsUser(context.Background())
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
@@ -890,7 +890,7 @@ func TestShouldNotBeAbleToPostAlbumAsUser(t *testing.T) {
 
 func TestShouldNotBeAbleToPostAlbumAsGuest(t *testing.T) {
 	database.ClearDB(orm)
-	a := gormQuery.Use(orm).Album
+	a := query.Use(orm).Album
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)

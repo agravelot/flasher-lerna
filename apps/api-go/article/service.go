@@ -3,8 +3,8 @@ package article
 import (
 	"api-go/api"
 	"api-go/auth"
-	"api-go/gormQuery"
 	"api-go/model"
+	"api-go/query"
 	"context"
 	"errors"
 	"fmt"
@@ -50,13 +50,13 @@ func NewService(db *gorm.DB) Service {
 	}
 }
 
-func Published(q *gormQuery.Query) func(db gen.Dao) gen.Dao {
+func Published(q *query.Query) func(db gen.Dao) gen.Dao {
 	return func(db gen.Dao) gen.Dao {
 		return db.Where(q.Article.PublishedAt.IsNotNull())
 	}
 }
 
-func Paginate(q *gormQuery.Query, next int64, pageSize int) func(db gen.Dao) gen.Dao {
+func Paginate(q *query.Query, next int64, pageSize int) func(db gen.Dao) gen.Dao {
 	return func(db gen.Dao) gen.Dao {
 		if next != 0 {
 			db = db.Where(q.Article.ID.Gt(next))
@@ -68,19 +68,19 @@ func Paginate(q *gormQuery.Query, next int64, pageSize int) func(db gen.Dao) gen
 func (s *service) GetArticleList(ctx context.Context, params PaginationParams) (PaginatedArticles, error) {
 	user := auth.GetUserClaims(ctx)
 
-	qb := gormQuery.Use(s.db).Article
-	query := qb.WithContext(ctx)
+	qb := query.Use(s.db).Article
+	q := qb.WithContext(ctx)
 
 	if user == nil || (user != nil && !user.IsAdmin()) {
-		query = query.Scopes(Published(gormQuery.Use(s.db)))
+		q = q.Scopes(Published(query.Use(s.db)))
 	}
 
-	total, err := query.Count()
+	total, err := q.Count()
 	if err != nil {
 		return PaginatedArticles{}, err
 	}
 
-	articles, err := query.Scopes(Paginate(gormQuery.Use(s.db), params.Next, params.Limit)).Find()
+	articles, err := q.Scopes(Paginate(query.Use(s.db), params.Next, params.Limit)).Find()
 	if err != nil {
 		return PaginatedArticles{}, err
 	}
@@ -111,7 +111,7 @@ func tramsform(a model.Article) ArticleResponse {
 
 func (s *service) PostArticle(ctx context.Context, r ArticleRequest) (ArticleResponse, error) {
 	user := auth.GetUserClaims(ctx)
-	qb := gormQuery.Use(s.db).Article
+	qb := query.Use(s.db).Article
 	query := qb.WithContext(ctx)
 
 	if user == nil {
@@ -150,16 +150,16 @@ func (s *service) PostArticle(ctx context.Context, r ArticleRequest) (ArticleRes
 func (s *service) GetArticle(ctx context.Context, slug string) (ArticleResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
-	qb := gormQuery.Use(s.db).Article
-	query := qb.WithContext(ctx)
+	qb := query.Use(s.db).Article
+	q := qb.WithContext(ctx)
 
-	query.Where(qb.Slug.Eq(slug))
+	q.Where(qb.Slug.Eq(slug))
 
 	if user == nil || (user != nil && user.IsAdmin() == false) {
-		query = query.Scopes(Published(gormQuery.Use(s.db)))
+		q = q.Scopes(Published(query.Use(s.db)))
 	}
 
-	a, err := query.First()
+	a, err := q.First()
 
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		return ArticleResponse{}, ErrNotFound
@@ -170,7 +170,7 @@ func (s *service) GetArticle(ctx context.Context, slug string) (ArticleResponse,
 
 func (s *service) PutArticle(ctx context.Context, slug string, r ArticleUpdateRequest) (ArticleResponse, error) {
 	user := auth.GetUserClaims(ctx)
-	qb := gormQuery.Use(s.db).Article
+	qb := query.Use(s.db).Article
 	query := qb.WithContext(ctx)
 
 	if user == nil {
