@@ -11,6 +11,7 @@ import { MDXRemote } from "next-mdx-remote";
 import { generateNextImageUrl } from "utils/util";
 import { useRouter } from "next/router";
 import { ContactSection } from "components/ContactSection";
+import useInView from "react-cool-inview";
 import ReadingTime from "components/ReadingTime";
 
 type Props = {
