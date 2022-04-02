@@ -1,9 +1,0 @@
-resources:
-  - deployment.yml
-  - service.yml
-  - virtualservice.yml
-
-configMapGenerator:
-  - name: realm-import-config
-    files:
-      - realm.json

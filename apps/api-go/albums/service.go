@@ -3,8 +3,8 @@ package album
 import (
 	"api-go/api"
 	"api-go/auth"
-	"api-go/gormQuery"
 	"api-go/model"
+	"api-go/query"
 	"context"
 	"errors"
 	"fmt"
@@ -45,11 +45,11 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 	user := auth.GetUserClaims(ctx)
 	isAdmin := user != nil && user.IsAdmin()
 
-	qb := gormQuery.Use(s.orm).Album
+	qb := query.Use(s.orm).Album
 	query := qb.WithContext(ctx).Order(qb.PublishedAt.Desc())
 
 	if !isAdmin {
-		query = query.Where(qb.PublishedAt.Lt(time.Now()), qb.Private.Is(false))
+		query = query.Where(qb.PublishedAt.Lte(time.Now()), qb.IsPublishedPublicly.Is(true))
 	}
 
 	total, err := query.WithContext(ctx).Count()
@@ -91,12 +91,12 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, err
 	user := auth.GetUserClaims(ctx)
 	isAdmin := user != nil && user.IsAdmin()
 
-	qb := gormQuery.Use(s.orm).Album
+	qb := query.Use(s.orm).Album
 
 	query := qb.WithContext(ctx)
 
 	if !isAdmin {
-		query = query.Where(qb.PublishedAt.Lt(time.Now()), qb.Private.Is(false))
+		query = query.Where(qb.PublishedAt.Lt(time.Now()), qb.IsPublishedPublicly.Is(true))
 	}
 
 	a, err := query.
@@ -146,7 +146,7 @@ func (s *service) PostAlbum(ctx context.Context, r AlbumRequest) (AlbumResponse,
 		PublishedAt: r.PublishedAt,
 	}
 
-	query := gormQuery.Use(s.orm).Album.WithContext(ctx)
+	query := query.Use(s.orm).Album.WithContext(ctx)
 
 	err := query.WithContext(ctx).Create(&album)
 	// TODO Check duplicate
@@ -174,7 +174,7 @@ func (s *service) PutAlbum(ctx context.Context, slug string, r AlbumRequest) (Al
 		return AlbumResponse{}, err
 	}
 
-	qb := gormQuery.Use(s.orm).Album
+	qb := query.Use(s.orm).Album
 
 	query := qb.WithContext(ctx)
 
@@ -182,13 +182,14 @@ func (s *service) PutAlbum(ctx context.Context, slug string, r AlbumRequest) (Al
 	// TODO Check row count update
 	// YODO UpdatedAt
 	_, err := query.Updates(model.Album{
-		ID:          r.ID,
-		Slug:        slug,
-		Title:       r.Title,
-		Body:        r.Body,
-		PublishedAt: r.PublishedAt,
-		Private:     r.Private,
-		SsoID:       &user.Sub,
+		ID:                  r.ID,
+		Slug:                slug,
+		Title:               r.Title,
+		Body:                r.Body,
+		PublishedAt:         r.PublishedAt,
+		Private:             r.Private,
+		IsPublishedPublicly: !r.Private,
+		SsoID:               &user.Sub,
 	})
 	if err != nil {
 		return AlbumResponse{}, fmt.Errorf("error update album: %w", err)
@@ -221,7 +222,7 @@ func (s *service) DeleteAlbum(ctx context.Context, slug string) error {
 		return ErrNotAdmin
 	}
 
-	qb := gormQuery.Use(s.orm).Album
+	qb := query.Use(s.orm).Album
 
 	query := qb.WithContext(ctx)
 

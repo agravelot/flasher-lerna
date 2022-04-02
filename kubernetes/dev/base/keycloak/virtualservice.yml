@@ -1,7 +1,0 @@
-apiVersion: networking.istio.io/v1beta1
-kind: VirtualService
-metadata:
-  name: keycloak-virtualservice
-spec:
-  hosts:
-    - "accounts.127.0.0.1.nip.io"

@@ -17,13 +17,14 @@ type Album struct {
 	Title                  string     `gorm:"column:title;type:varchar;not null" json:"title"`
 	Body                   *string    `gorm:"column:body;type:text" json:"body"`
 	PublishedAt            *time.Time `gorm:"column:published_at;type:timestamp" json:"published_at"`
-	Private                bool       `gorm:"column:private;type:bool;not null;default:true" json:"private"`
+	Private                bool       `gorm:"column:private;type:bool;not null;default:false" json:"private"`
 	UserID                 *int64     `gorm:"column:user_id;type:int8" json:"user_id"`
 	CreatedAt              *time.Time `gorm:"column:created_at;type:timestamp" json:"created_at"`
 	UpdatedAt              *time.Time `gorm:"column:updated_at;type:timestamp" json:"updated_at"`
 	NotifyUsersOnPublished bool       `gorm:"column:notify_users_on_published;type:bool;not null;default:true" json:"notify_users_on_published"`
 	MetaDescription        string     `gorm:"column:meta_description;type:varchar;not null" json:"meta_description"`
 	SsoID                  *string    `gorm:"column:sso_id;type:uuid" json:"sso_id"`
+	IsPublishedPublicly    bool       `gorm:"column:is_published_publicly;type:bool;not null;default:false" json:"is_published_publicly"`
 	Categories             []Category `gorm:"many2many:album_category;joinForeignKey:AlbumID;joinReferences:CategoryID" json:"categories"`
 	Medias                 []Medium   `gorm:"polymorphic:Model;polymorphicValue:App\\Models\\Album" json:"medias"`
 }

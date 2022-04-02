@@ -1,5 +1,0 @@
-resources:
-  - deployment.yml
-  - persistant-volume-claim.yml
-  - service.yml
-

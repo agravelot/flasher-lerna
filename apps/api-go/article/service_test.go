@@ -11,7 +11,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/go-playground/validator/v10"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
@@ -498,8 +497,6 @@ func TestShouldBeAbleToUpdateArticleNameAsAdmin(t *testing.T) {
 	a.Name = "A new name"
 	u := ArticleUpdateRequest{ID: a.ID, Name: a.Name, Slug: a.Slug, MetaDescription: a.MetaDescription}
 	new, err := s.PutArticle(ctx, a.Slug, u)
-
-	spew.Dump(err)
 
 	assert.NoError(t, err)
 	assert.Equal(t, "A new name", new.Name)
