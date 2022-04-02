@@ -1,7 +1,0 @@
-apiVersion: networking.istio.io/v1beta1
-kind: VirtualService
-metadata:
-  name: admin-virtualservice
-spec:
-  hosts:
-    - "admin.127.0.0.1.nip.io"

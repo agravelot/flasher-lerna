@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: flasher-production
-  labels:
-    istio-injection: enabled

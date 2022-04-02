@@ -1,9 +1,0 @@
-apiVersion: security.istio.io/v1beta1
-kind: RequestAuthentication
-metadata:
-  name: tusd-request-authentication
-spec:
-  jwtRules:
-    - issuer: https://accounts.jkanda.fr/auth/realms/jkanda
-      jwksUri: https://accounts.jkanda.fr/auth/realms/jkanda/protocol/openid-connect/certs
-      forwardOriginalToken: true
