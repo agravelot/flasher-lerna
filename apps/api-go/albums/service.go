@@ -49,7 +49,7 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 	query := qb.WithContext(ctx).Order(qb.PublishedAt.Desc())
 
 	if !isAdmin {
-		query = query.Where(qb.PublishedAt.Lt(time.Now()), qb.IsPublishedPublicly.Is(true))
+		query = query.Where(qb.PublishedAt.Lte(time.Now()), qb.IsPublishedPublicly.Is(true))
 	}
 
 	total, err := query.WithContext(ctx).Count()

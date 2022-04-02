@@ -96,7 +96,6 @@ func authAsAdmin(ctx context.Context) (context.Context, auth.Claims) {
 func TestMain(m *testing.M) {
 	config := config.LoadDotEnv("../")
 	orm, _ = database.Init(config)
-	database.ClearDB(orm)
 	s = NewService(orm)
 
 	exitVal := m.Run() // Run tests
@@ -196,7 +195,7 @@ func TestShouldOnlyShowPublicAlbums(t *testing.T) {
 	sub10Min := time.Now().Add(-10 * time.Minute)
 	a := query.Use(orm).Album
 
-	args := []model.Album{
+	args := []*model.Album{
 		{
 			Title:       "A good Title",
 			Slug:        "a-good-title",
@@ -225,11 +224,9 @@ func TestShouldOnlyShowPublicAlbums(t *testing.T) {
 		},
 	}
 
-	for _, arg := range args {
-		err := a.WithContext(context.Background()).Create(&arg)
-		if err != nil {
-			t.Error(fmt.Errorf("Error creating album: %w", err))
-		}
+	err := a.WithContext(context.Background()).Create(args...)
+	if err != nil {
+		t.Error(fmt.Errorf("unable create album: %w", err))
 	}
 
 	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{0, 10}})
@@ -249,54 +246,49 @@ func TestShouldBeAbleToListPublishedAlbumsOnSecondPage(t *testing.T) {
 
 	var lastPageID int32
 
+	albums := []*model.Album{}
+
 	for i := 0; i < 10; i++ {
-		arg := model.Album{
+		albums = append(albums, &model.Album{
 			Title:       "A good Title " + strconv.Itoa(i),
 			Slug:        "a-good-title-" + strconv.Itoa(i),
 			PublishedAt: &sub100Min,
 			Private:     false,
 			SsoID:       &ssoId,
-		}
-
-		err := a.WithContext(context.Background()).Create(&arg)
-		if i == 9 {
-			lastPageID = arg.ID
-		}
-		if err != nil {
-			t.Error(fmt.Errorf("Error creating album: %w", err))
-		}
+		})
 	}
 
-	arg := model.Album{
+	albums = append(albums, &model.Album{
 		Title:       "On second page",
 		Slug:        "on-second-page",
 		PublishedAt: &sub5Min,
 		Private:     false,
 		SsoID:       &ssoId,
-	}
+	})
 
-	err := a.WithContext(context.Background()).Create(&arg)
+	err := a.WithContext(context.Background()).Create(albums...)
 	if err != nil {
-		t.Error(fmt.Errorf("Error creating album: %w", err))
+		t.Error(fmt.Errorf("unable create album: %w", err))
 	}
+	lastPageID = albums[9].ID
 
 	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{Next: lastPageID, Limit: 10}})
 
 	assert.Equal(t, int64(11), r.Meta.Total)
 	assert.Equal(t, int32(10), r.Meta.Limit)
 	assert.Equal(t, 1, len(r.Data))
-	assert.Equal(t, arg.Title, r.Data[0].Title)
+	assert.Equal(t, albums[10].Title, r.Data[0].Title)
 }
 
 func TestShouldBeAbleToListPublishedAlbumsOnSecondPageWithCustomPerPage(t *testing.T) {
 	database.ClearDB(orm)
 
-	var albums []model.Album
 	var lastPageID int32
 	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	sub5Min := time.Now().Add(-5 * time.Minute)
 	a := query.Use(orm).Album
 
+	var albums []*model.Album
 	for i := 0; i < 2; i++ {
 		arg := model.Album{
 			Title:       "On second page " + strconv.Itoa(i),
@@ -306,37 +298,29 @@ func TestShouldBeAbleToListPublishedAlbumsOnSecondPageWithCustomPerPage(t *testi
 			SsoID:       &ssoId,
 		}
 
-		err := a.WithContext(context.Background()).Create(&arg)
-		if err != nil {
-			t.Error(fmt.Errorf("Error creating album: %w", err))
-		}
-
-		if i == 1 {
-			lastPageID = arg.ID
-		}
-
-		albums = append(albums, arg)
+		albums = append(albums, &arg)
 	}
 
-	arg := model.Album{
+	albums = append(albums, &model.Album{
 		Title:       "On second page",
 		Slug:        "on-second-page",
 		PublishedAt: &sub5Min,
 		Private:     false,
 		SsoID:       &ssoId,
-	}
+	})
 
-	err := a.WithContext(context.Background()).Create(&arg)
+	err := a.WithContext(context.Background()).Create(albums...)
 	if err != nil {
 		t.Error(fmt.Errorf("Error creating album: %w", err))
 	}
+	lastPageID = albums[1].ID
 
 	r, _ := s.GetAlbumList(context.Background(), AlbumListParams{PaginationParams: PaginationParams{Next: lastPageID, Limit: 2}})
 
 	assert.Equal(t, int64(3), r.Meta.Total)
 	assert.Equal(t, int32(2), r.Meta.Limit)
 	assert.Equal(t, 1, len(r.Data))
-	assert.Equal(t, arg.Title, r.Data[0].Title)
+	assert.Equal(t, albums[2].Title, r.Data[0].Title)
 }
 
 func TestShouldBeAbleToListNonPublishedAlbumAsAdmin(t *testing.T) {
