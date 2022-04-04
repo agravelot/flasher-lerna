@@ -1,4 +1,4 @@
-import { CustomError } from 'ts-custom-error'
+import { CustomError } from "ts-custom-error";
 
 export class HttpRequestError extends CustomError {
   public response: Response;
@@ -23,7 +23,12 @@ class ApiResponse<T> {
   json = (): Promise<T> => this.response.json();
 }
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? process.env.REACT_APP_API_URL ?? '';
+let baseUrl = "";
+
+export const setBaseUrl = (url: string) => {
+  console.log("setBaseUrl " + url);
+  baseUrl = url;
+};
 
 export async function api<T>(
   url: string,
@@ -33,7 +38,7 @@ export async function api<T>(
     ...init,
     headers: {
       ...init?.headers,
-      Accept: 'application/json',
+      Accept: "application/json",
     },
   };
 

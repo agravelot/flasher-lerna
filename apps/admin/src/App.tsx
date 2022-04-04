@@ -9,13 +9,14 @@ import ArticleList from "./pages/ArticleList";
 import ArticleCreate from "./pages/ArticleCreate";
 import AlbumCreate from "./pages/AlbumCreate";
 import AlbumEdit from "./pages/AlbumEdit";
+import { setBaseUrl } from "@flasher/common/src";
 
 // Setup Keycloak instance as needed
 // Pass initialization options as required or leave blank to load from 'keycloak.json'
 const keycloak = Keycloak({
-  url: process.env.REACT_APP_KEYCLOAK_URL,
-  realm: process.env.REACT_APP_KEYCLOAK_REALM ?? "",
-  clientId: process.env.REACT_APP_KEYCLOAK_CLIENT_ID ?? "",
+  url: import.meta.env.VITE_KEYCLOAK_URL,
+  realm: import.meta.env.VITE_KEYCLOAK_REALM,
+  clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
 });
 
 const eventLogger = (event: unknown, error: unknown) => {
@@ -27,6 +28,8 @@ const tokenLogger = (tokens: unknown) => {
 };
 
 function App() {
+  void setBaseUrl(import.meta.env.VITE_API_URL);
+
   return (
     <ReactKeycloakProvider
       authClient={keycloak}
