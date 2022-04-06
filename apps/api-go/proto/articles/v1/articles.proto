@@ -1,0 +1,110 @@
+syntax = "proto3";
+
+package proto.articles.v1;
+option go_package = "api-go/articlesgrpc";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+// These annotations are used when generating the OpenAPI file.
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    version: "1.0";
+  };
+  external_docs: {
+    url: "https://github.com/agravelot/flasher-lerna/apps/api-go";
+    description: "gRPC-gateway flasher api";
+  }
+  schemes: HTTPS;
+};
+
+
+message AricleRequest {
+  int64 id = 1;
+	string slug = 2;
+	string name = 3;
+	string meta_description = 4;
+	string content = 5;
+	optional google.protobuf.Timestamp published_at = 6;
+}
+
+message ArticleReponse {
+  int64 id = 1;
+	string slug = 2;
+	string name = 3;
+	string meta_description = 4;
+	string content = 5;
+	optional google.protobuf.Timestamp published_at = 6;
+  string author_uuid = 7;
+}
+
+message GetBySlugRequest {
+  string slug = 1;
+}
+
+message IndexRequest {
+  string limit = 1;
+}
+
+message DeleteRequest {
+  string slug = 1;
+}
+
+message IndexResponse {
+  repeated ArticleReponse articles = 1;
+}
+
+message GetBySlugResponse {
+  ArticleReponse article = 1;
+}
+
+message DeleteResponse {
+  bool deleted = 1;
+}
+
+message CreateResponse {
+  ArticleReponse article = 1;
+}
+
+message CreateRequest {
+  AricleRequest article = 1;
+}
+
+service ArticleService {
+
+  rpc Index(IndexRequest) returns (IndexResponse) {
+    option (google.api.http) = {
+      get: "/v1/articles"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "List articles"
+      description: "List articles to the server."
+      tags: "Articles"
+    };
+  }
+
+  rpc GetBySlug(GetBySlugRequest) returns (GetBySlugResponse) {
+    option (google.api.http) = {
+      get: "/v1/articles/{slug}"
+    };
+  }
+
+  rpc Create(CreateRequest) returns (CreateResponse) {
+    option (google.api.http) = {
+      post: "/v1/articles"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Add a article"
+      description: "Add a article to the server."
+      tags: "Articles"
+    };
+  }
+
+  rpc Delete(DeleteRequest) returns (DeleteResponse) {
+    option (google.api.http) = {
+      delete: "/v1/articles/{slug}"
+    };
+  }
+}
