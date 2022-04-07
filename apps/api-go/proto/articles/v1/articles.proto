@@ -16,7 +16,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     url: "https://github.com/agravelot/flasher-lerna/apps/api-go";
     description: "gRPC-gateway flasher api";
   }
-  schemes: HTTPS;
+  schemes: HTTP;
 };
 
 
@@ -75,7 +75,7 @@ service ArticleService {
 
   rpc Index(IndexRequest) returns (IndexResponse) {
     option (google.api.http) = {
-      get: "/v1/articles"
+      get: "/api/v1/articles"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "List articles"
@@ -86,13 +86,13 @@ service ArticleService {
 
   rpc GetBySlug(GetBySlugRequest) returns (GetBySlugResponse) {
     option (google.api.http) = {
-      get: "/v1/articles/{slug}"
+      get: "/api/v1/articles/{slug}"
     };
   }
 
   rpc Create(CreateRequest) returns (CreateResponse) {
     option (google.api.http) = {
-      post: "/v1/articles"
+      post: "/api/v1/articles"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -104,7 +104,7 @@ service ArticleService {
 
   rpc Delete(DeleteRequest) returns (DeleteResponse) {
     option (google.api.http) = {
-      delete: "/v1/articles/{slug}"
+      delete: "/api/v1/articles/{slug}"
     };
   }
 }

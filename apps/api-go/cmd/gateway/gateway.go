@@ -2,11 +2,14 @@ package main
 
 import (
 	"context"
+	"io/fs"
 	"io/ioutil"
 	"log"
+	"mime"
 	"net"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
@@ -14,6 +17,7 @@ import (
 	"google.golang.org/grpc/grpclog"
 
 	articlespb "api-go/gen/go/proto/articles/v1"
+	"api-go/third_party"
 )
 
 type server struct {
@@ -28,6 +32,26 @@ func (s *server) Index(ctx context.Context, in *articlespb.IndexRequest) (*artic
 	return &articlespb.IndexResponse{Articles: []*articlespb.ArticleReponse{
 		{Id: 1, Name: "Article 1", Content: "Content 1"},
 	}}, nil
+}
+
+// GetBySlug(context.Context, *GetBySlugRequest) (*GetBySlugResponse, error)
+// 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
+// 	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
+
+func (s *server) GetBySlug(ctx context.Context, in *articlespb.GetBySlugRequest) (*articlespb.GetBySlugResponse, error) {
+	return &articlespb.GetBySlugResponse{Article: &articlespb.ArticleReponse{Name: "asdsad"}}, nil
+}
+
+// getOpenAPIHandler serves an OpenAPI UI.
+// Adapted from https://github.com/philips/grpc-gateway-example/blob/a269bcb5931ca92be0ceae6130ac27ae89582ecc/cmd/serve.go#L63
+func getOpenAPIHandler() http.Handler {
+	mime.AddExtensionType(".svg", "image/svg+xml")
+	// Use subdirectory in embedded files
+	subFS, err := fs.Sub(third_party.OpenAPI, "OpenAPI")
+	if err != nil {
+		panic("couldn't create sub filesystem: " + err.Error())
+	}
+	return http.FileServer(http.FS(subFS))
 }
 
 func main() {
@@ -70,9 +94,21 @@ func main() {
 		log.Fatalln("Failed to register article gateway:", err)
 	}
 
+	// gwServer := &http.Server{
+	// 	Addr:    ":8090",
+	// 	Handler: gwmux,
+	// }
+	oa := getOpenAPIHandler()
+
 	gwServer := &http.Server{
-		Addr:    ":8090",
-		Handler: gwmux,
+		Addr: ":8090",
+		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if strings.HasPrefix(r.URL.Path, "/api") {
+				gwmux.ServeHTTP(w, r)
+				return
+			}
+			oa.ServeHTTP(w, r)
+		}),
 	}
 
 	log.Println("Serving gRPC-Gateway on http://0.0.0.0:8090")

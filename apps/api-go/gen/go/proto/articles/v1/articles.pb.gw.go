@@ -218,7 +218,7 @@ func RegisterArticleServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.articles.v1.ArticleService/Index", runtime.WithHTTPPathPattern("/v1/articles"))
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.articles.v1.ArticleService/Index", runtime.WithHTTPPathPattern("/api/v1/articles"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -242,7 +242,7 @@ func RegisterArticleServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.articles.v1.ArticleService/GetBySlug", runtime.WithHTTPPathPattern("/v1/articles/{slug}"))
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.articles.v1.ArticleService/GetBySlug", runtime.WithHTTPPathPattern("/api/v1/articles/{slug}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -266,7 +266,7 @@ func RegisterArticleServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.articles.v1.ArticleService/Create", runtime.WithHTTPPathPattern("/v1/articles"))
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.articles.v1.ArticleService/Create", runtime.WithHTTPPathPattern("/api/v1/articles"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -290,7 +290,7 @@ func RegisterArticleServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.articles.v1.ArticleService/Delete", runtime.WithHTTPPathPattern("/v1/articles/{slug}"))
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.articles.v1.ArticleService/Delete", runtime.WithHTTPPathPattern("/api/v1/articles/{slug}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -353,7 +353,7 @@ func RegisterArticleServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/proto.articles.v1.ArticleService/Index", runtime.WithHTTPPathPattern("/v1/articles"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/proto.articles.v1.ArticleService/Index", runtime.WithHTTPPathPattern("/api/v1/articles"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -374,7 +374,7 @@ func RegisterArticleServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/proto.articles.v1.ArticleService/GetBySlug", runtime.WithHTTPPathPattern("/v1/articles/{slug}"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/proto.articles.v1.ArticleService/GetBySlug", runtime.WithHTTPPathPattern("/api/v1/articles/{slug}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -395,7 +395,7 @@ func RegisterArticleServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/proto.articles.v1.ArticleService/Create", runtime.WithHTTPPathPattern("/v1/articles"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/proto.articles.v1.ArticleService/Create", runtime.WithHTTPPathPattern("/api/v1/articles"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -416,7 +416,7 @@ func RegisterArticleServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/proto.articles.v1.ArticleService/Delete", runtime.WithHTTPPathPattern("/v1/articles/{slug}"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/proto.articles.v1.ArticleService/Delete", runtime.WithHTTPPathPattern("/api/v1/articles/{slug}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -436,13 +436,13 @@ func RegisterArticleServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 }
 
 var (
-	pattern_ArticleService_Index_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "articles"}, ""))
+	pattern_ArticleService_Index_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "articles"}, ""))
 
-	pattern_ArticleService_GetBySlug_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "articles", "slug"}, ""))
+	pattern_ArticleService_GetBySlug_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "articles", "slug"}, ""))
 
-	pattern_ArticleService_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "articles"}, ""))
+	pattern_ArticleService_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "articles"}, ""))
 
-	pattern_ArticleService_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "articles", "slug"}, ""))
+	pattern_ArticleService_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "articles", "slug"}, ""))
 )
 
 var (
