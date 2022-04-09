@@ -25,6 +25,7 @@ type ArticleServiceClient interface {
 	Index(ctx context.Context, in *IndexRequest, opts ...grpc.CallOption) (*IndexResponse, error)
 	GetBySlug(ctx context.Context, in *GetBySlugRequest, opts ...grpc.CallOption) (*GetBySlugResponse, error)
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
+	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
 	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
 }
 
@@ -63,6 +64,15 @@ func (c *articleServiceClient) Create(ctx context.Context, in *CreateRequest, op
 	return out, nil
 }
 
+func (c *articleServiceClient) Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error) {
+	out := new(UpdateResponse)
+	err := c.cc.Invoke(ctx, "/proto.articles.v1.ArticleService/Update", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *articleServiceClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
 	out := new(DeleteResponse)
 	err := c.cc.Invoke(ctx, "/proto.articles.v1.ArticleService/Delete", in, out, opts...)
@@ -73,17 +83,17 @@ func (c *articleServiceClient) Delete(ctx context.Context, in *DeleteRequest, op
 }
 
 // ArticleServiceServer is the server API for ArticleService service.
-// All implementations must embed UnimplementedArticleServiceServer
+// All implementations should embed UnimplementedArticleServiceServer
 // for forward compatibility
 type ArticleServiceServer interface {
 	Index(context.Context, *IndexRequest) (*IndexResponse, error)
 	GetBySlug(context.Context, *GetBySlugRequest) (*GetBySlugResponse, error)
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
+	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
 	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
-	mustEmbedUnimplementedArticleServiceServer()
 }
 
-// UnimplementedArticleServiceServer must be embedded to have forward compatible implementations.
+// UnimplementedArticleServiceServer should be embedded to have forward compatible implementations.
 type UnimplementedArticleServiceServer struct {
 }
 
@@ -96,10 +106,12 @@ func (UnimplementedArticleServiceServer) GetBySlug(context.Context, *GetBySlugRe
 func (UnimplementedArticleServiceServer) Create(context.Context, *CreateRequest) (*CreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
+func (UnimplementedArticleServiceServer) Update(context.Context, *UpdateRequest) (*UpdateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
 func (UnimplementedArticleServiceServer) Delete(context.Context, *DeleteRequest) (*DeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
-func (UnimplementedArticleServiceServer) mustEmbedUnimplementedArticleServiceServer() {}
 
 // UnsafeArticleServiceServer may be embedded to opt out of forward compatibility for this service.
 // Use of this interface is not recommended, as added methods to ArticleServiceServer will
@@ -166,6 +178,24 @@ func _ArticleService_Create_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ArticleService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ArticleServiceServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.articles.v1.ArticleService/Update",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ArticleServiceServer).Update(ctx, req.(*UpdateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ArticleService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteRequest)
 	if err := dec(in); err != nil {
@@ -202,6 +232,10 @@ var ArticleService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Create",
 			Handler:    _ArticleService_Create_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _ArticleService_Update_Handler,
 		},
 		{
 			MethodName: "Delete",

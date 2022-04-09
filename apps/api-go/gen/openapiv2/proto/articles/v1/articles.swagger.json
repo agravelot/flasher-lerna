@@ -43,7 +43,15 @@
             "name": "limit",
             "in": "query",
             "required": false,
-            "type": "string"
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "next",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
           }
         ],
         "tags": [
@@ -51,8 +59,8 @@
         ]
       },
       "post": {
-        "summary": "Add a article",
-        "description": "Add a article to the server.",
+        "summary": "Add an article",
+        "description": "Add an article to the server.",
         "operationId": "ArticleService_Create",
         "responses": {
           "200": {
@@ -81,16 +89,16 @@
         "tags": [
           "Articles"
         ]
-      }
-    },
-    "/api/v1/articles/{slug}": {
-      "get": {
-        "operationId": "ArticleService_GetBySlug",
+      },
+      "put": {
+        "summary": "Update an article",
+        "description": "Update an article to the server.",
+        "operationId": "ArticleService_Update",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1GetBySlugResponse"
+              "$ref": "#/definitions/v1UpdateResponse"
             }
           },
           "default": {
@@ -102,7 +110,39 @@
         },
         "parameters": [
           {
-            "name": "slug",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Articles"
+        ]
+      }
+    },
+    "/api/v1/articles/{id}": {
+      "delete": {
+        "operationId": "ArticleService_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -111,14 +151,16 @@
         "tags": [
           "ArticleService"
         ]
-      },
-      "delete": {
-        "operationId": "ArticleService_Delete",
+      }
+    },
+    "/api/v1/articles/{slug}": {
+      "get": {
+        "operationId": "ArticleService_GetBySlug",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1DeleteResponse"
+              "$ref": "#/definitions/v1GetBySlugResponse"
             }
           },
           "default": {
@@ -240,12 +282,7 @@
       }
     },
     "v1DeleteResponse": {
-      "type": "object",
-      "properties": {
-        "deleted": {
-          "type": "boolean"
-        }
-      }
+      "type": "object"
     },
     "v1GetBySlugResponse": {
       "type": "object",
@@ -258,11 +295,27 @@
     "v1IndexResponse": {
       "type": "object",
       "properties": {
-        "articles": {
+        "data": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/v1ArticleReponse"
           }
+        }
+      }
+    },
+    "v1UpdateRequest": {
+      "type": "object",
+      "properties": {
+        "article": {
+          "$ref": "#/definitions/v1AricleRequest"
+        }
+      }
+    },
+    "v1UpdateResponse": {
+      "type": "object",
+      "properties": {
+        "article": {
+          "$ref": "#/definitions/v1ArticleReponse"
         }
       }
     }
