@@ -26,7 +26,6 @@ class ApiResponse<T> {
 let baseUrl = "";
 
 export const setBaseUrl = (url: string) => {
-  console.log("setBaseUrl " + url);
   baseUrl = url;
 };
 
