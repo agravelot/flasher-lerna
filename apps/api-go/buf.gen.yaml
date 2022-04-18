@@ -7,6 +7,7 @@ plugins:
   - name: go-grpc
     out: gen/go
     opt:
+      - require_unimplemented_servers=false
       - paths=source_relative
   - name: grpc-gateway
     out: gen/go

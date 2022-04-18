@@ -4,6 +4,7 @@ import (
 	"api-go/auth"
 	"api-go/config"
 	"api-go/database"
+	articlesgrpc "api-go/gen/go/proto/articles/v1"
 	"api-go/model"
 	"context"
 	"os"
@@ -13,6 +14,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/stretchr/testify/assert"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 )
 
@@ -103,11 +105,11 @@ func TestMain(m *testing.M) {
 
 func TestShouldBeAbleToListEmpty(t *testing.T) {
 	database.ClearDB(db)
-	r, _ := s.GetArticleList(context.Background(), PaginationParams{0, 10})
+	r, _ := s.Index(context.Background(), &articlesgrpc.IndexRequest{})
 
 	assert.Equal(t, 0, len(r.Data))
-	assert.Equal(t, int64(0), r.Meta.Total)
-	assert.Equal(t, 10, r.Meta.Limit)
+	// assert.Equal(t, int64(0), r.Meta.Total)
+	// assert.Equal(t, 10, r.Meta.Limit)
 }
 
 func TestShouldBeAbleToListWithOnePublishedArticle(t *testing.T) {
@@ -119,10 +121,10 @@ func TestShouldBeAbleToListWithOnePublishedArticle(t *testing.T) {
 		t.Error(err)
 	}
 
-	r, _ := s.GetArticleList(context.Background(), PaginationParams{0, 10})
+	r, _ := s.Index(context.Background(), &articlesgrpc.IndexRequest{})
 
-	assert.Equal(t, int64(1), r.Meta.Total)
-	assert.Equal(t, 10, r.Meta.Limit)
+	// assert.Equal(t, int64(1), r.Meta.Total)
+	// assert.Equal(t, 10, r.Meta.Limit)
 	assert.Equal(t, 1, len(r.Data))
 }
 
@@ -147,10 +149,11 @@ func TestShouldBeAbleToListPublishedArticlesOnSecondPage(t *testing.T) {
 		t.Error(err)
 	}
 
-	r, _ := s.GetArticleList(context.Background(), PaginationParams{Next: articles[9].ID, Limit: 10})
+	p := int32(articles[9].ID)
+	r, _ := s.Index(context.Background(), &articlesgrpc.IndexRequest{Next: &p})
 
-	assert.Equal(t, int64(11), r.Meta.Total)
-	assert.Equal(t, 10, r.Meta.Limit)
+	// assert.Equal(t, int64(11), r.Meta.Total)
+	// assert.Equal(t, 10, r.Meta.Limit)
 	assert.Equal(t, 1, len(r.Data))
 	assert.Equal(t, a.Name, r.Data[0].Name)
 }
@@ -173,10 +176,12 @@ func TestShouldBeAbleToListPublishedArticlesOnSecondPageWithCustomPerPage(t *tes
 		t.Error(err)
 	}
 
-	r, _ := s.GetArticleList(context.Background(), PaginationParams{Next: articles[1].ID, Limit: 2})
+	c := int32(articles[1].ID)
+	l := int32(2)
+	r, _ := s.Index(context.Background(), &articlesgrpc.IndexRequest{Next: &c, Limit: &l})
 
-	assert.Equal(t, int64(3), r.Meta.Total)
-	assert.Equal(t, 2, r.Meta.Limit)
+	// assert.Equal(t, int64(3), r.Meta.Total)
+	// assert.Equal(t, 2, r.Meta.Limit)
 	assert.Equal(t, 1, len(r.Data))
 	assert.Equal(t, a.Name, r.Data[0].Name)
 }
@@ -190,10 +195,10 @@ func TestShouldBeAbleToListNonPublishedArticleAsAdmin(t *testing.T) {
 		t.Error(err)
 	}
 
-	r, _ := s.GetArticleList(ctx, PaginationParams{0, 10})
+	r, _ := s.Index(ctx, &articlesgrpc.IndexRequest{})
 
-	assert.Equal(t, int64(1), r.Meta.Total)
-	assert.Equal(t, 10, r.Meta.Limit)
+	// assert.Equal(t, int64(1), r.Meta.Total)
+	// assert.Equal(t, 10, r.Meta.Limit)
 	assert.Equal(t, 1, len(r.Data))
 }
 
@@ -206,10 +211,11 @@ func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 		t.Error(err)
 	}
 
-	r, _ := s.GetArticleList(context.Background(), PaginationParams{0, 15})
+	l := int32(2)
+	r, _ := s.Index(context.Background(), &articlesgrpc.IndexRequest{Limit: &l})
 
-	assert.Equal(t, int64(1), r.Meta.Total)
-	assert.Equal(t, 15, r.Meta.Limit)
+	// assert.Equal(t, int64(1), r.Meta.Total)
+	// assert.Equal(t, 15, r.Meta.Limit)
 	assert.Equal(t, 1, len(r.Data))
 }
 
@@ -224,10 +230,10 @@ func TestShouldNotListSoftDeletedArticles(t *testing.T) {
 	}
 	db.Delete(&a)
 
-	r, _ := s.GetArticleList(context.Background(), PaginationParams{0, 10})
+	r, _ := s.Index(context.Background(), &articlesgrpc.IndexRequest{})
 
-	assert.Equal(t, int64(0), r.Meta.Total)
-	assert.Equal(t, 10, r.Meta.Limit)
+	// assert.Equal(t, int64(0), r.Meta.Total)
+	// assert.Equal(t, 10, r.Meta.Limit)
 	assert.Equal(t, 0, len(r.Data))
 }
 
@@ -239,10 +245,10 @@ func TestShouldNotListNonPublishedArticles(t *testing.T) {
 		t.Error(err)
 	}
 
-	r, _ := s.GetArticleList(context.Background(), PaginationParams{0, 10})
+	r, _ := s.Index(context.Background(), &articlesgrpc.IndexRequest{})
 
-	assert.Equal(t, int64(0), r.Meta.Total)
-	assert.Equal(t, 10, r.Meta.Limit)
+	// assert.Equal(t, int64(0), r.Meta.Total)
+	// assert.Equal(t, 10, r.Meta.Limit)
 	assert.Equal(t, 0, len(r.Data))
 }
 
@@ -257,10 +263,10 @@ func TestShouldBeAbleToGetPublishedArticleAsGuest(t *testing.T) {
 		t.Error(err)
 	}
 
-	r, err := s.GetArticle(context.Background(), a.Slug)
+	r, err := s.GetBySlug(context.Background(), &articlesgrpc.GetBySlugRequest{Slug: a.Slug})
 
 	assert.NoError(t, err)
-	assert.Equal(t, a.Slug, r.Slug)
+	assert.Equal(t, a.Slug, r.Article.Slug)
 }
 
 func TestShouldBeAbleToGetPublishedArticleAsUser(t *testing.T) {
@@ -273,10 +279,10 @@ func TestShouldBeAbleToGetPublishedArticleAsUser(t *testing.T) {
 		t.Error(err)
 	}
 
-	r, err := s.GetArticle(ctx, a.Slug)
+	r, err := s.GetBySlug(ctx, &articlesgrpc.GetBySlugRequest{Slug: a.Slug})
 
 	assert.NoError(t, err)
-	assert.Equal(t, a.Slug, r.Slug)
+	assert.Equal(t, a.Slug, r.Article.Slug)
 }
 
 func TestShouldNotBeAbleToGetNonPublishedArticleAsGuest(t *testing.T) {
@@ -287,7 +293,7 @@ func TestShouldNotBeAbleToGetNonPublishedArticleAsGuest(t *testing.T) {
 		t.Error(err)
 	}
 
-	_, err = s.GetArticle(context.Background(), a.Slug)
+	_, err = s.GetBySlug(context.Background(), &articlesgrpc.GetBySlugRequest{Slug: a.Slug})
 
 	assert.Error(t, err)
 	assert.Equal(t, ErrNotFound, err)
@@ -302,7 +308,7 @@ func TestShouldNotBeAbleToGetNonPublishedArticleAsUser(t *testing.T) {
 		t.Error(err)
 	}
 
-	_, err = s.GetArticle(ctx, a.Slug)
+	_, err = s.GetBySlug(ctx, &articlesgrpc.GetBySlugRequest{Slug: a.Slug})
 
 	assert.Error(t, err)
 	assert.Equal(t, ErrNotFound, err)
@@ -317,73 +323,73 @@ func TestShouldBeAbleToGetNonPublishedArticleAsAdmin(t *testing.T) {
 		t.Error(err)
 	}
 
-	r, err := s.GetArticle(ctx, a.Slug)
+	r, err := s.GetBySlug(ctx, &articlesgrpc.GetBySlugRequest{Slug: a.Slug})
 
 	assert.NoError(t, err)
-	assert.Equal(t, a.Slug, r.Slug)
+	assert.Equal(t, a.Slug, r.Article.Slug)
 }
 
 ///////// POST  ///////////
 
 func TestShouldBeAbleToCreateAnArticleAndGenerateSlugAsAdmin(t *testing.T) {
 	database.ClearDB(db)
-	a := ArticleRequest{Name: "A good name", MetaDescription: "a meta decription"}
+	a := articlesgrpc.AricleRequest{Name: "A good name", MetaDescription: "a meta decription"}
 	ctx, claims := authAsAdmin(context.Background())
 
-	res, err := s.PostArticle(ctx, a)
+	res, err := s.Create(ctx, &articlesgrpc.CreateRequest{Article: &a})
 
 	assert.NoError(t, err)
 	var total int64
 	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 1, int(total))
-	assert.Equal(t, a.Name, res.Name)
-	assert.Equal(t, "a-good-name", res.Slug)
-	assert.Equal(t, claims.Sub, res.AuthorUUID)
-	assert.Nil(t, res.PublishedAt)
+	assert.Equal(t, a.Name, res.Article.Name)
+	assert.Equal(t, "a-good-name", res.Article.Slug)
+	assert.Equal(t, claims.Sub, res.Article.AuthorUuid)
+	assert.Nil(t, res.Article.PublishedAt)
 }
 
 func TestShouldBeAbleToCreateAnPublishedArticleAndGenerateSlugAsAdmin(t *testing.T) {
 	database.ClearDB(db)
 	n := time.Now()
-	a := ArticleRequest{Name: "A good name", MetaDescription: "a meta decription", PublishedAt: &n}
+	a := articlesgrpc.AricleRequest{Name: "A good name", MetaDescription: "a meta decription", PublishedAt: &timestamppb.Timestamp{Seconds: n.Unix()}}
 	ctx, claims := authAsAdmin(context.Background())
 
-	res, err := s.PostArticle(ctx, a)
+	res, err := s.Create(ctx, &articlesgrpc.CreateRequest{Article: &a})
 
 	assert.NoError(t, err)
 	var total int64
 	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 1, int(total))
-	assert.Equal(t, a.Name, res.Name)
-	assert.Equal(t, "a-good-name", res.Slug)
-	assert.Equal(t, claims.Sub, res.AuthorUUID)
-	assert.NotNil(t, res.PublishedAt)
+	assert.Equal(t, a.Name, res.Article.Name)
+	assert.Equal(t, "a-good-name", res.Article.Slug)
+	assert.Equal(t, claims.Sub, res.Article.AuthorUuid)
+	assert.NotNil(t, res.Article.PublishedAt)
 }
 
 func TestShouldBeAbleToCreateAnArticleWithASpecifiedSlug(t *testing.T) {
 	database.ClearDB(db)
-	a := ArticleRequest{Name: "A good name", Slug: "wtf-is-this-slug", MetaDescription: "a meta decription"}
+	a := articlesgrpc.AricleRequest{Name: "A good name", Slug: "wtf-is-this-slug", MetaDescription: "a meta decription"}
 	ctx, claims := authAsAdmin(context.Background())
 
-	res, err := s.PostArticle(ctx, a)
+	res, err := s.Create(ctx, &articlesgrpc.CreateRequest{Article: &a})
 
 	assert.NoError(t, err)
 	var total int64
 	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 1, int(total))
-	assert.Equal(t, a.Name, res.Name)
-	assert.Equal(t, a.Slug, res.Slug)
-	assert.Equal(t, claims.Sub, res.AuthorUUID)
+	assert.Equal(t, a.Name, res.Article.Name)
+	assert.Equal(t, a.Slug, res.Article.Slug)
+	assert.Equal(t, claims.Sub, res.Article.AuthorUuid)
 }
 
 func TestShouldNotBeAbleToCreateAnArticleWithSameSlug(t *testing.T) {
 	database.ClearDB(db)
 	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	db.Create(&a)
-	dup := ArticleRequest{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	dup := articlesgrpc.AricleRequest{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	ctx, _ := authAsAdmin(context.Background())
 
-	_, err := s.PostArticle(ctx, dup)
+	_, err := s.Create(ctx, &articlesgrpc.CreateRequest{Article: &dup})
 
 	assert.Error(t, err)
 	var total int64
@@ -393,10 +399,10 @@ func TestShouldNotBeAbleToCreateAnArticleWithSameSlug(t *testing.T) {
 
 func TestShouldNotBeAbleToSaveArticleWithEmptyName(t *testing.T) {
 	database.ClearDB(db)
-	a := ArticleRequest{Name: ""}
+	a := articlesgrpc.AricleRequest{Name: ""}
 	ctx, _ := authAsAdmin(context.Background())
 
-	_, err := s.PostArticle(ctx, a)
+	_, err := s.Create(ctx, &articlesgrpc.CreateRequest{Article: &a})
 
 	assert.Error(t, err)
 	validationErrors := err.(validator.ValidationErrors)
@@ -409,10 +415,10 @@ func TestShouldNotBeAbleToSaveArticleWithEmptyName(t *testing.T) {
 
 func TestShouldNotBeAbleToSaveArticleWithTooLongName(t *testing.T) {
 	database.ClearDB(db)
-	a := ArticleRequest{Name: "a very too long big enormous title that will never fit in any screen..."}
+	a := articlesgrpc.AricleRequest{Name: "a very too long big enormous title that will never fit in any screen..."}
 	ctx, _ := authAsAdmin(context.Background())
 
-	_, err := s.PostArticle(ctx, a)
+	_, err := s.Create(ctx, &articlesgrpc.CreateRequest{Article: &a})
 
 	assert.Error(t, err)
 	validationErrors := err.(validator.ValidationErrors)
@@ -425,10 +431,10 @@ func TestShouldNotBeAbleToSaveArticleWithTooLongName(t *testing.T) {
 
 func TestShouldNotBeAbleToSaveArticleWithEmptyMetaDescription(t *testing.T) {
 	database.ClearDB(db)
-	a := ArticleRequest{Name: "a good name", MetaDescription: ""}
+	a := articlesgrpc.AricleRequest{Name: "a good name", MetaDescription: ""}
 	ctx, _ := authAsAdmin(context.Background())
 
-	_, err := s.PostArticle(ctx, a)
+	_, err := s.Create(ctx, &articlesgrpc.CreateRequest{Article: &a})
 
 	assert.Error(t, err)
 	validationErrors := err.(validator.ValidationErrors)
@@ -441,10 +447,10 @@ func TestShouldNotBeAbleToSaveArticleWithEmptyMetaDescription(t *testing.T) {
 
 func TestShouldNotBeAbleToSaveArticleWithTooLongMetaDescription(t *testing.T) {
 	database.ClearDB(db)
-	a := ArticleRequest{Name: "A good name", MetaDescription: "a very too long big enormous title that will never fit in any screen..."}
+	a := articlesgrpc.AricleRequest{Name: "A good name", MetaDescription: "a very too long big enormous title that will never fit in any screen..."}
 	ctx, _ := authAsAdmin(context.Background())
 
-	_, err := s.PostArticle(ctx, a)
+	_, err := s.Create(ctx, &articlesgrpc.CreateRequest{Article: &a})
 
 	assert.Error(t, err)
 	validationErrors := err.(validator.ValidationErrors)
@@ -455,12 +461,12 @@ func TestShouldNotBeAbleToSaveArticleWithTooLongMetaDescription(t *testing.T) {
 	assert.Equal(t, 0, int(total))
 }
 
-func TestShouldNotBeAbleToPostArticleAsUser(t *testing.T) {
+func TestShouldNotBeAbleToCreateAsUser(t *testing.T) {
 	database.ClearDB(db)
-	a := ArticleRequest{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	a := articlesgrpc.AricleRequest{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	ctx, _ := authAsUser(context.Background())
 
-	_, err := s.PostArticle(ctx, a)
+	_, err := s.Create(ctx, &articlesgrpc.CreateRequest{Article: &a})
 
 	assert.Error(t, err)
 	assert.Equal(t, ErrNotAdmin, err)
@@ -469,11 +475,11 @@ func TestShouldNotBeAbleToPostArticleAsUser(t *testing.T) {
 	assert.Equal(t, 0, int(total))
 }
 
-func TestShouldNotBeAbleToPostArticleAsGuest(t *testing.T) {
+func TestShouldNotBeAbleToCreateAsGuest(t *testing.T) {
 	database.ClearDB(db)
-	a := ArticleRequest{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
+	a := articlesgrpc.AricleRequest{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 
-	_, err := s.PostArticle(context.Background(), a)
+	_, err := s.Create(context.Background(), &articlesgrpc.CreateRequest{Article: &a})
 
 	assert.Error(t, err)
 	assert.Equal(t, ErrNoAuth, err)
@@ -495,11 +501,11 @@ func TestShouldBeAbleToUpdateArticleNameAsAdmin(t *testing.T) {
 	}
 
 	a.Name = "A new name"
-	u := ArticleUpdateRequest{ID: a.ID, Name: a.Name, Slug: a.Slug, MetaDescription: a.MetaDescription}
-	new, err := s.PutArticle(ctx, a.Slug, u)
+	u := articlesgrpc.AricleRequest{Id: a.ID, Name: a.Name, Slug: a.Slug, MetaDescription: a.MetaDescription}
+	new, err := s.Update(ctx, &articlesgrpc.UpdateRequest{Article: &u})
 
 	assert.NoError(t, err)
-	assert.Equal(t, "A new name", new.Name)
+	assert.Equal(t, "A new name", new.Article.Name)
 	var total int64
 	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 1, int(total))
@@ -510,8 +516,8 @@ func TestShouldNotBeAbleToUpdateArticleTooShortNameAsAdmin(t *testing.T) {
 	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	db.Create(&a)
 
-	u := ArticleUpdateRequest{Name: "", Slug: a.Slug, MetaDescription: a.MetaDescription}
-	_, err := s.PutArticle(context.Background(), a.Slug, u)
+	u := &articlesgrpc.AricleRequest{Name: "", Slug: a.Slug, MetaDescription: a.MetaDescription}
+	_, err := s.Update(context.Background(), &articlesgrpc.UpdateRequest{Article: u})
 
 	assert.Error(t, err)
 	var total int64
@@ -525,8 +531,8 @@ func TestShouldNotBeAbleToUpdateArticleAsUser(t *testing.T) {
 	ctx, _ := authAsUser(context.Background())
 	db.Create(&a)
 
-	u := ArticleUpdateRequest{Name: a.Name, Slug: a.Slug, MetaDescription: a.MetaDescription}
-	_, err := s.PutArticle(ctx, a.Slug, u)
+	u := articlesgrpc.AricleRequest{Name: a.Name, Slug: a.Slug, MetaDescription: a.MetaDescription}
+	_, err := s.Update(ctx, &articlesgrpc.UpdateRequest{Article: &u})
 
 	assert.Error(t, err)
 	assert.Equal(t, ErrNotAdmin, err)
@@ -540,8 +546,8 @@ func TestShouldNotBeAbleToUpdateArticleAsGuest(t *testing.T) {
 	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	db.Create(&a)
 
-	u := ArticleUpdateRequest{Name: a.Name, Slug: a.Slug, MetaDescription: a.MetaDescription}
-	_, err := s.PutArticle(context.Background(), a.Slug, u)
+	u := articlesgrpc.AricleRequest{Name: a.Name, Slug: a.Slug, MetaDescription: a.MetaDescription}
+	_, err := s.Update(context.Background(), &articlesgrpc.UpdateRequest{Article: &u})
 
 	assert.Error(t, err)
 	assert.Equal(t, ErrNoAuth, err)
@@ -557,7 +563,7 @@ func TestShouldBeAbleToDeleteArticleAndIsSoftDeleted(t *testing.T) {
 	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	db.Create(&a)
 
-	err := s.DeleteArticle(context.Background(), a.Slug)
+	_, err := s.Delete(context.Background(), &articlesgrpc.DeleteRequest{Id: strconv.FormatInt(a.ID, 10)})
 
 	var total, totalScopeless int64
 	db.Model(&a).Count(&total)
@@ -569,7 +575,7 @@ func TestShouldBeAbleToDeleteArticleAndIsSoftDeleted(t *testing.T) {
 
 func TestShouldNotBeAbleToDeleteAnNonExistantArticle(t *testing.T) {
 	database.ClearDB(db)
-	err := s.DeleteArticle(context.Background(), "a-random-slug")
+	_, err := s.Delete(context.Background(), &articlesgrpc.DeleteRequest{Id: string("123123123")})
 
 	assert.Error(t, err)
 	assert.EqualError(t, err, ErrNotFound.Error())

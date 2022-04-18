@@ -44,24 +44,23 @@ message GetBySlugRequest {
 }
 
 message IndexRequest {
-  string limit = 1;
+  optional int32 limit = 1;
+  optional int32 next = 2;
 }
 
 message DeleteRequest {
-  string slug = 1;
+  string id = 1;
 }
 
 message IndexResponse {
-  repeated ArticleReponse articles = 1;
+  repeated ArticleReponse data = 1;
 }
 
 message GetBySlugResponse {
   ArticleReponse article = 1;
 }
 
-message DeleteResponse {
-  bool deleted = 1;
-}
+message DeleteResponse {}
 
 message CreateResponse {
   ArticleReponse article = 1;
@@ -71,8 +70,15 @@ message CreateRequest {
   AricleRequest article = 1;
 }
 
-service ArticleService {
+message UpdateRequest {
+  AricleRequest article = 1;
+}
 
+message UpdateResponse {
+  ArticleReponse article = 1;
+}
+
+service ArticleService {
   rpc Index(IndexRequest) returns (IndexResponse) {
     option (google.api.http) = {
       get: "/api/v1/articles"
@@ -96,15 +102,27 @@ service ArticleService {
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Add a article"
-      description: "Add a article to the server."
+      summary: "Add an article"
+      description: "Add an article to the server."
+      tags: "Articles"
+    };
+  }
+
+  rpc Update(UpdateRequest) returns (UpdateResponse) {
+    option (google.api.http) = {
+      put: "/api/v1/articles"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Update an article"
+      description: "Update an article to the server."
       tags: "Articles"
     };
   }
 
   rpc Delete(DeleteRequest) returns (DeleteResponse) {
     option (google.api.http) = {
-      delete: "/api/v1/articles/{slug}"
+      delete: "/api/v1/articles/{id}"
     };
   }
 }
