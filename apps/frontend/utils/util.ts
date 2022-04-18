@@ -20,3 +20,6 @@ export const resolveOriginalImage = (url: string): string =>
 
 export const generateNextImageUrl = (imageUrl: string): string =>
   "/_next/image?url=" + encodeURIComponent(imageUrl) + "&w=828&q=75";
+
+export const calculateReadingTime = (text: string): number =>
+    text.replace(/<[^>]*>?/gm, "").split(" ").length/200;

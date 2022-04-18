@@ -5,6 +5,9 @@ import "../styles/main.css";
 import { ReactElement } from "react";
 import { Analytics } from "components/Analytics";
 import { Clarity } from "components/Clarity";
+import { setBaseUrl } from "@flasher/common";
+
+setBaseUrl(configuration.baseUrl);
 
 function App({ Component, pageProps }: AppProps): ReactElement {
   return (

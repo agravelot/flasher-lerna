@@ -11,10 +11,10 @@ import { MDXRemote } from "next-mdx-remote";
 import { generateNextImageUrl } from "utils/util";
 import { useRouter } from "next/router";
 import { ContactSection } from "components/ContactSection";
+import ReadingTime from "components/ReadingTime";
 
 type Props = {
   post: BlogPost;
-  estimatedReadingInMinutes: number;
 } & GlobalProps;
 
 const ImageCustom = (
@@ -45,7 +45,6 @@ const components = {
 const Post: NextPage<Props> = ({
   post,
   appName,
-  estimatedReadingInMinutes,
   socialMedias,
 }: Props) => {
   const { asPath } = useRouter();
@@ -90,10 +89,13 @@ const Post: NextPage<Props> = ({
         description={post.metaDescription}
       />
       <Header title={post.title} />
-      <div className="container mx-auto">
-        <div className="flex justify-center py-16 px-4 text-justify">
-          <article className="prose prose-sm max-w-none content-center sm:prose lg:prose-lg xl:prose-xl">
-            <i>Temps de lecture estimé : {estimatedReadingInMinutes} min.</i>
+      <div className="container mx-auto py-16 px-4 max-w-none prose prose-sm sm:prose lg:prose-lg xl:prose-xl">
+          {(post.content && post.content.length === 0) &&
+              <ReadingTime body={post.content}/>
+          }
+        <div className="flex justify-center text-justify">
+
+          <article className="content-center max-w-none">
             {post.contentSerialized && (
               <MDXRemote {...post.contentSerialized} components={components} />
             )}
@@ -125,15 +127,10 @@ export const getStaticProps: GetStaticProps = async ({
 
   post.contentSerialized = await serialize(post.content);
 
-  const estimatedReadingInMinutes = (
-    post.content.split(" ").length / 200
-  ).toFixed();
-
   return {
     props: {
       ...global,
       post,
-      estimatedReadingInMinutes,
     },
   };
 };
