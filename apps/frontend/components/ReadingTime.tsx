@@ -12,7 +12,6 @@ const ReadingTime: FunctionComponent<Props> = ({
     <div className="flex italic pb-8 content-end">
         <span>Temps de lecture estimé : {estimatedReadingInMinutes} minutes.</span>
     </div>
-    // </div>
   );
 };
 

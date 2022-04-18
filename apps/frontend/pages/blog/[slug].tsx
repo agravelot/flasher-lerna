@@ -43,10 +43,11 @@ const components = {
   // p: (props) => <p style={{ color: "tomato" }} {...props} />,
 };
 
-const Post: NextPage<Props> = ({ post, appName, socialMedias }: Props) => {
-  const { observe, inView } = useInView({
-    onEnter: ({ unobserve }) => unobserve(), // only run once
-  });
+const Post: NextPage<Props> = ({
+                                   post,
+                                   appName,
+                                   socialMedias,
+                               }: Props) => {
   const { asPath } = useRouter();
 
   return (
