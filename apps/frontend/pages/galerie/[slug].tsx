@@ -191,28 +191,15 @@ export default ShowAlbum;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
-    // const album = await api<WrappedResponse<Album>>(`/albums/${params?.slug}`)
-    //   .then((res) => res.json())
-    //   .then((res) => res.data);
-
-    const {album } = await api<WrappedResponse<Album>>(`/albums/${params?.slug}`)
+    const album = await api<WrappedResponse<Album>>(`/albums/${params?.slug}`)
       .then((res) => res.json())
-      .then((res) => {
-          const albumAPI: Album | undefined = res.data;
-          return {album: albumAPI};
-      });
+      .then((res) => res.data);
 
     const albumCategories = album.categories
       ?.map((c) => c.id)
       .flat()
       .join(",");
 
-    // const estimatedReadingInMinutes = await api<WrappedResponse<Album>>(`/albums/${params?.slug}`)
-    //               .then((res) => res.json())
-    //               .then((res) => res.data.body)
-    //               .then((res) => res?.replace(/<[^>]*>?/gm, ""))
-    //               .then((res) => (res?.split(" ").length/200).toFixed());
-    
     const recommendedAlbums = await api<PaginatedReponse<Album[]>>(
       `/albums?filter[categories.id]=${albumCategories}`
     )
