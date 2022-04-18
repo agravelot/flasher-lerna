@@ -137,7 +137,9 @@ const ShowAlbum: NextPage<Props> = ({
 
       <div className="container mx-auto">
           <div className="pt-8 px-4 prose max-w-none">
-              <ReadingTime body={album.body}/>
+              {album.body &&
+                  <ReadingTime body={album.body}/>
+              }
           </div>
           <article>
             <div className="flex justify-center pb-16 px-4 text-justify content-center prose max-w-none">
