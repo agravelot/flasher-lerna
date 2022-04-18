@@ -11,7 +11,6 @@ import { MDXRemote } from "next-mdx-remote";
 import { generateNextImageUrl } from "utils/util";
 import { useRouter } from "next/router";
 import { ContactSection } from "components/ContactSection";
-import useInView from "react-cool-inview";
 import ReadingTime from "components/ReadingTime";
 
 type Props = {
@@ -44,10 +43,10 @@ const components = {
 };
 
 const Post: NextPage<Props> = ({
-                                   post,
-                                   appName,
-                                   socialMedias,
-                               }: Props) => {
+  post,
+  appName,
+  socialMedias,
+}: Props) => {
   const { asPath } = useRouter();
 
   return (
