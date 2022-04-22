@@ -133,13 +133,26 @@ const getDefaultRoutes = (): Page[] => {
       )
     );
     const paths = Object.keys(manifest.routes);
-    return paths.map((p) => ({
-      url: p,
-      lastMod: new Date().toISOString(),
-      changefreq: "monthly",
-      priority: "0.7",
-      images: [],
-    }));
+    return paths.map(function(p){
+      if(p != "https://jkanda.fr/invitations/validate" && p != "https://jkanda.fr/me/albums"){
+        return {
+          url: p,
+          lastMod: new Date().toISOString(),
+          changefreq: "monthly",
+          priority: "0.7",
+          images: [],
+        };
+      }
+      else{
+        return {
+          url: "",
+          lastMod: new Date().toISOString(),
+          changefreq: "monthly",
+          priority: "0.7",
+          images: []
+        };
+      }
+    });
   } catch (err) {
     console.error(err);
   }
