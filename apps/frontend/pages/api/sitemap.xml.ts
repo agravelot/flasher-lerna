@@ -36,7 +36,7 @@ const getGaleries = async (): Promise<Page[]> => {
 
     for (const galerie of galeries.data) {
       pages.push({
-        url: `/albums/${galerie.slug}`,
+        url: `/galerie/${galerie.slug}`,
         lastMod: galerie.updated_at ?? (galerie.published_at as string),
         changefreq: "monthly",
         priority: "0.8",
