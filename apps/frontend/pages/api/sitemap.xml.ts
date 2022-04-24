@@ -13,7 +13,7 @@ interface Image {
 interface Page {
   url: string;
   lastMod: string;
-  changefreq: "monthly";
+  changefreq: string;
   priority: string;
   images: Image[];
 }
@@ -133,26 +133,15 @@ const getDefaultRoutes = (): Page[] => {
       )
     );
     const paths = Object.keys(manifest.routes);
-    return paths.map(function(p){
-      if(p != "https://jkanda.fr/invitations/validate" && p != "https://jkanda.fr/me/albums"){
-        return {
-          url: p,
-          lastMod: new Date().toISOString(),
-          changefreq: "monthly",
-          priority: "0.7",
-          images: [],
-        };
-      }
-      else{
-        return {
-          url: "",
-          lastMod: new Date().toISOString(),
-          changefreq: "monthly",
-          priority: "0.7",
-          images: []
-        };
-      }
-    });
+    const mapPaths = paths.map((p) => ({
+      url: p,
+      lastMod: new Date().toISOString(),
+      changefreq: "monthly",
+      priority: "0.7",
+      images: [],
+    }));
+    const regExpProfilePaths = "/(/invitations/validate|/me/albums)/gm";
+    return mapPaths.filter(map => !(map.url.match(regExpProfilePaths)));
   } catch (err) {
     console.error(err);
   }
