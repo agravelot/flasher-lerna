@@ -1,37 +1,20 @@
 package article
 
 import (
-	"api-go/api"
 	"api-go/auth"
+	articlespb "api-go/gen/go/proto/articles/v1"
 	"api-go/model"
 	"api-go/query"
 	"context"
 	"errors"
 	"fmt"
 
+	"github.com/davecgh/go-spew/spew"
+	"google.golang.org/protobuf/types/known/timestamppb"
+
 	"gorm.io/gen"
 	"gorm.io/gorm"
 )
-
-// Service is a simple CRUD interface for user articles.
-type Service interface {
-	GetArticleList(ctx context.Context, params PaginationParams) (PaginatedArticles, error)
-	GetArticle(ctx context.Context, slug string) (ArticleResponse, error)
-	PostArticle(ctx context.Context, r ArticleRequest) (ArticleResponse, error)
-	PutArticle(ctx context.Context, slug string, r ArticleUpdateRequest) (ArticleResponse, error)
-	PatchArticle(ctx context.Context, slug string, r ArticleRequest) (ArticleResponse, error)
-	DeleteArticle(ctx context.Context, slug string) error
-}
-
-type PaginationParams struct {
-	Next  int64
-	Limit int
-}
-
-type PaginatedArticles struct {
-	Data []ArticleResponse `json:"data"`
-	Meta api.MetaOld       `json:"meta"`
-}
 
 var (
 	ErrAlreadyExists = errors.New("already exists")
@@ -40,12 +23,12 @@ var (
 	ErrNotAdmin      = errors.New("not admin")
 )
 
-type service struct {
+type Service struct {
 	db *gorm.DB
 }
 
 func NewService(db *gorm.DB) Service {
-	return &service{
+	return Service{
 		db: db,
 	}
 }
@@ -56,17 +39,34 @@ func Published(q *query.Query) func(db gen.Dao) gen.Dao {
 	}
 }
 
-func Paginate(q *query.Query, next int64, pageSize int) func(db gen.Dao) gen.Dao {
+func Paginate(q *query.Query, next *int32, pageSize *int32) func(db gen.Dao) gen.Dao {
 	return func(db gen.Dao) gen.Dao {
-		if next != 0 {
-			db = db.Where(q.Article.ID.Gt(next))
+		if next != nil && *next != 0 {
+			db = db.Where(q.Article.ID.Gt(int64(*next)))
 		}
-		return db.Limit(pageSize)
+		s := 10
+		if pageSize != nil {
+			s = int(*pageSize)
+		}
+		return db.Limit(int(s))
 	}
 }
 
-func (s *service) GetArticleList(ctx context.Context, params PaginationParams) (PaginatedArticles, error) {
-	user := auth.GetUserClaims(ctx)
+func tramsform(a model.Article) *articlespb.ArticleReponse {
+	return &articlespb.ArticleReponse{
+		Id:              a.ID,
+		Slug:            a.Slug,
+		Name:            a.Name,
+		MetaDescription: a.MetaDescription,
+		Content:         a.Content,
+		PublishedAt:     &timestamppb.Timestamp{Seconds: int64(a.PublishedAt.Second())},
+		AuthorUuid:      a.AuthorUUID,
+	}
+}
+
+func (s Service) Index(ctx context.Context, request *articlespb.IndexRequest) (*articlespb.IndexResponse, error) {
+	user, err := auth.GetUserClaims(ctx)
+	spew.Dump(user, err)
 
 	qb := query.Use(s.db).Article
 	q := qb.WithContext(ctx)
@@ -75,150 +75,149 @@ func (s *service) GetArticleList(ctx context.Context, params PaginationParams) (
 		q = q.Scopes(Published(query.Use(s.db)))
 	}
 
-	total, err := q.Count()
+	//total, err := q.Count()
+	//if err != nil {
+	//	return &articlespb.IndexResponse{}, err
+	//}
+
+	articles, err := q.Scopes(Paginate(query.Use(s.db), request.Next, request.Limit)).Find()
 	if err != nil {
-		return PaginatedArticles{}, err
+		return &articlespb.IndexResponse{}, err
 	}
 
-	articles, err := q.Scopes(Paginate(query.Use(s.db), params.Next, params.Limit)).Find()
-	if err != nil {
-		return PaginatedArticles{}, err
-	}
-
-	var articleResponse []ArticleResponse
+	var articleResponse []*articlespb.ArticleReponse
 	for _, article := range articles {
 		// TODO add missing fields
 		articleResponse = append(articleResponse, tramsform(*article))
 	}
 
-	return PaginatedArticles{
+	return &articlespb.IndexResponse{
 		Data: articleResponse,
-		Meta: api.MetaOld{Total: total, Limit: params.Limit},
+		//Meta: api.MetaOld{Total: total, Limit: params.Limit},
 	}, nil
 }
 
-func tramsform(a model.Article) ArticleResponse {
-	return ArticleResponse{
-		ID:              a.ID,
-		Slug:            a.Slug,
-		Name:            a.Name,
-		MetaDescription: a.MetaDescription,
-		Content:         a.Content,
-		PublishedAt:     a.PublishedAt,
-		AuthorUUID:      a.AuthorUUID,
-	}
-}
-
-func (s *service) PostArticle(ctx context.Context, r ArticleRequest) (ArticleResponse, error) {
-	user := auth.GetUserClaims(ctx)
-	qb := query.Use(s.db).Article
-	query := qb.WithContext(ctx)
-
-	if user == nil {
-		return ArticleResponse{}, ErrNoAuth
-	}
-
-	if user.IsAdmin() == false {
-		return ArticleResponse{}, ErrNotAdmin
-	}
-
-	if err := r.Validate(); err != nil {
-		return ArticleResponse{}, err
-	}
-
-	a := model.Article{
-		ID:              r.ID,
-		Slug:            r.Slug,
-		Name:            r.Name,
-		MetaDescription: r.MetaDescription,
-		Content:         r.Content,
-		PublishedAt:     r.PublishedAt,
-		AuthorUUID:      user.Sub,
-	}
-	err := query.Create(&a)
+func (s Service) GetBySlug(ctx context.Context, request *articlespb.GetBySlugRequest) (*articlespb.GetBySlugResponse, error) {
+	user, err := auth.GetUserClaims(ctx)
 	if err != nil {
-		// TODO Cast pg error to have clean check
-		if err.Error() == "ERROR: duplicate key value violates unique constraint \"idx_articles_slug\" (SQLSTATE 23505)" {
-			return ArticleResponse{}, ErrAlreadyExists
-		}
-		return ArticleResponse{}, err
+		return nil, ErrNoAuth
 	}
-
-	return tramsform(a), nil
-}
-
-func (s *service) GetArticle(ctx context.Context, slug string) (ArticleResponse, error) {
-	user := auth.GetUserClaims(ctx)
 
 	qb := query.Use(s.db).Article
 	q := qb.WithContext(ctx)
 
-	q.Where(qb.Slug.Eq(slug))
+	q.Where(qb.Slug.Eq(request.Slug))
 
-	if user == nil || (user != nil && user.IsAdmin() == false) {
+	if user == nil || (user != nil && !user.IsAdmin()) {
 		q = q.Scopes(Published(query.Use(s.db)))
 	}
 
 	a, err := q.First()
 
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
-		return ArticleResponse{}, ErrNotFound
+		return &articlespb.GetBySlugResponse{}, ErrNotFound
 	}
 
-	return tramsform(*a), err
+	return &articlespb.GetBySlugResponse{
+		Article: tramsform(*a),
+	}, err
 }
 
-func (s *service) PutArticle(ctx context.Context, slug string, r ArticleUpdateRequest) (ArticleResponse, error) {
-	user := auth.GetUserClaims(ctx)
+func (s Service) Create(ctx context.Context, request *articlespb.CreateRequest) (*articlespb.CreateResponse, error) {
+	user, err := auth.GetUserClaims(ctx)
+	if err != nil {
+		return nil, ErrNoAuth
+	}
+
 	qb := query.Use(s.db).Article
 	query := qb.WithContext(ctx)
 
 	if user == nil {
-		return ArticleResponse{}, ErrNoAuth
+		return &articlespb.CreateResponse{}, ErrNoAuth
 	}
 
-	if user.IsAdmin() == false {
-		return ArticleResponse{}, ErrNotAdmin
+	if !user.IsAdmin() {
+		return &articlespb.CreateResponse{}, ErrNotAdmin
 	}
 
-	a, err := query.Where(qb.Slug.Eq(slug)).First()
+	// if err := r.Validate(); err != nil {
+	// 	return ArticleResponse{}, err
+	// }
+
+	p := request.Article.PublishedAt.AsTime()
+	a := model.Article{
+		ID:              request.Article.Id,
+		Slug:            request.Article.Slug,
+		Name:            request.Article.Name,
+		MetaDescription: request.Article.MetaDescription,
+		Content:         request.Article.Content,
+		PublishedAt:     &p,
+		AuthorUUID:      user.Sub,
+	}
+	err = query.Create(&a)
+	if err != nil {
+		// TODO Cast pg error to have clean check
+		if err.Error() == "ERROR: duplicate key value violates unique constraint \"idx_articles_slug\" (SQLSTATE 23505)" {
+			return &articlespb.CreateResponse{}, ErrAlreadyExists
+		}
+		return &articlespb.CreateResponse{}, err
+	}
+
+	return &articlespb.CreateResponse{
+		Article: tramsform(a),
+	}, nil
+}
+
+func (s Service) Update(ctx context.Context, request *articlespb.UpdateRequest) (*articlespb.UpdateResponse, error) {
+	user, err := auth.GetUserClaims(ctx)
+	if err != nil {
+		return nil, ErrNoAuth
+	}
+
+	qb := query.Use(s.db).Article
+	query := qb.WithContext(ctx)
+
+	if user == nil {
+		return &articlespb.UpdateResponse{}, ErrNoAuth
+	}
+
+	if !user.IsAdmin() {
+		return &articlespb.UpdateResponse{}, ErrNotAdmin
+	}
+
+	a, err := query.Where(qb.Slug.Eq(request.Article.Slug)).First()
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
-		return ArticleResponse{}, ErrNotFound
+		return &articlespb.UpdateResponse{}, ErrNotFound
 	}
 
-	a.ID = r.ID
-	a.Slug = r.Slug
-	a.Name = r.Name
-	a.MetaDescription = r.MetaDescription
-	a.Content = r.Content
-	a.PublishedAt = r.PublishedAt
-	// a.AuthorUUID = r.AuthorUUID
+	p := request.Article.PublishedAt.AsTime()
+	a.ID = request.Article.Id
+	a.Slug = request.Article.Slug
+	a.Name = request.Article.Name
+	a.MetaDescription = request.Article.MetaDescription
+	a.Content = request.Article.Content
+	a.PublishedAt = &p
+	// a.AuthorUUID = request.Article.AuthorUUID
 
-	if err := r.Validate(); err != nil {
-		return ArticleResponse{}, err
-	}
+	// if err := r.Validate(); err != nil {
+	// 	return &articlespb.UpdateResponse{}, err
+	// }
 
 	err = query.Save(a)
 	if err != nil {
-		return ArticleResponse{}, fmt.Errorf("unable update article: %w", err)
+		return &articlespb.UpdateResponse{}, fmt.Errorf("unable update article: %w", err)
 	}
 
-	return tramsform(*a), nil
+	return &articlespb.UpdateResponse{
+		Article: tramsform(*a),
+	}, nil
 }
 
-func (s *service) PatchArticle(ctx context.Context, slug string, a ArticleRequest) (ArticleResponse, error) {
-	return ArticleResponse{}, nil
-}
-
-func (s *service) DeleteArticle(ctx context.Context, slug string) error {
-	if err := s.db.Where("slug = ?", slug).First(&model.Article{}).Error; err != nil {
-		return ErrNotFound
+func (s Service) Delete(ctx context.Context, request *articlespb.DeleteRequest) (*articlespb.DeleteResponse, error) {
+	if err := s.db.Where("id = ?", request.Id).First(&model.Article{}).Error; err != nil {
+		return &articlespb.DeleteResponse{}, ErrNotFound
 	}
 
-	err := s.db.Where("slug = ?", slug).Delete(&model.Article{}).Error
-	if err != nil {
-		return err
-	}
-
-	return nil
+	err := s.db.Where("id = ?", request.Id).Delete(&model.Article{}).Error
+	return nil, err
 }
