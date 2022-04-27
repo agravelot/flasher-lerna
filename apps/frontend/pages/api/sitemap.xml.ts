@@ -13,7 +13,7 @@ interface Image {
 interface Page {
   url: string;
   lastMod: string;
-  changefreq: "monthly";
+  changefreq: string;
   priority: string;
   images: Image[];
 }
@@ -24,7 +24,7 @@ const prefix =
 const suffix = "</urlset>";
 const perPage = 10;
 
-const getAlbums = async (): Promise<Page[]> => {
+const getGaleries = async (): Promise<Page[]> => {
   const repo = apiRepository();
   const pages: Page[] = [];
   for (
@@ -32,18 +32,18 @@ const getAlbums = async (): Promise<Page[]> => {
     page < (await repo.albums.list({ page: 1, perPage: 10 })).meta.last_page;
     page++
   ) {
-    const albums = await repo.albums.list({ page, perPage });
+    const galeries = await repo.albums.list({ page, perPage });
 
-    for (const album of albums.data) {
+    for (const galerie of galeries.data) {
       pages.push({
-        url: `/albums/${album.slug}`,
-        lastMod: album.updated_at ?? (album.published_at as string),
+        url: `/galerie/${galerie.slug}`,
+        lastMod: galerie.updated_at ?? (galerie.published_at as string),
         changefreq: "monthly",
         priority: "0.8",
         images:
-          album.medias?.map((m) => ({ loc: generateNextImageUrl(m.url) })) ??
-          (album.media?.url
-            ? [{ loc: generateNextImageUrl(album.media?.url) }]
+          galerie.medias?.map((m) => ({ loc: generateNextImageUrl(m.url) })) ??
+          (galerie.media?.url
+            ? [{ loc: generateNextImageUrl(galerie.media?.url) }]
             : []),
       });
     }
@@ -133,13 +133,15 @@ const getDefaultRoutes = (): Page[] => {
       )
     );
     const paths = Object.keys(manifest.routes);
-    return paths.map((p) => ({
+    const mapPaths = paths.map((p) => ({
       url: p,
       lastMod: new Date().toISOString(),
       changefreq: "monthly",
       priority: "0.7",
       images: [],
     }));
+    const regExpProfilePaths = "/(/invitations/validate|/me/albums)/gm";
+    return mapPaths.filter(map => !(map.url.match(regExpProfilePaths)));
   } catch (err) {
     console.error(err);
   }
@@ -152,7 +154,7 @@ const generateSitemap = async (
 ): Promise<NextApiResponse | void> => {
   const resources = await Promise.all([
     getBlogs(),
-    getAlbums(),
+    getGaleries(),
     getCategories(),
     getCosplayers(),
     getDefaultRoutes(),
