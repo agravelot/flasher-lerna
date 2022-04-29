@@ -144,7 +144,7 @@ export const CategoryHits = connectHits(({ hits }) => (
           prefetch={false}
         >
           <a className="">
-            <Avatar name={hit.title} src={hit.cover} />
+            <Avatar name={hit.name} src={hit.cover} />
           </a>
         </Link>
         <div className="p-4">
