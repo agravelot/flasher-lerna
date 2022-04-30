@@ -159,7 +159,7 @@ const ShowAlbum: NextPage<Props> = ({
           <h2 className="my-8 text-center text-3xl font-semibold">
             {album.cosplayers?.length === 1 ? "Modèle" : "Modèles"}
           </h2>
-          <div className="flex flex-wrap">
+          <div className="flex flex-wrap justify-center">
             {album.cosplayers?.map((cosplayer) => (
               <div
                 className="flex w-1/2 justify-center lg:w-1/3"
