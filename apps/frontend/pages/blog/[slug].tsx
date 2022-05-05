@@ -90,11 +90,10 @@ const Post: NextPage<Props> = ({
       />
       <Header title={post.title} />
       <div className="container mx-auto py-16 px-4 max-w-none prose prose-sm sm:prose lg:prose-lg xl:prose-xl">
-          {(post.content && post.content.length === 0) &&
+          {(post.content && post.content.length !== 0) &&
               <ReadingTime body={post.content}/>
           }
         <div className="flex justify-center text-justify">
-
           <article className="content-center max-w-none">
             {post.contentSerialized && (
               <MDXRemote {...post.contentSerialized} components={components} />
