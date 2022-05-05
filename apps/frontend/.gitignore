@@ -40,3 +40,5 @@ public/robots.txt
 
 faviconData.json
 .env
+# Sentry
+.sentryclirc
