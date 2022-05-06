@@ -58,6 +58,9 @@ jobs:
             "NEXT_PUBLIC_KEYCLOAK_URL=https://accounts.agravelot.eu/auth"
             "NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=flasher"
             "NEXT_PUBLIC_ADMINISTRATION_URL=https://admin.agravelot.eu"
+            "NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}"
+            "SENTRY_ORG=${{ secrets.SENTRY_ORG }}"
+            "SENTRY_PROJECT=${{ secrets.SENTRY_PROJECT }}"
             "NODE_ENV=production"
       - name: Build and push base production
         if: contains(github.ref, '-rc.') == false
@@ -84,3 +87,6 @@ jobs:
             "NEXT_PUBLIC_GOOGLE_ANALYTICS_UA=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS_UA }}"
             "NEXT_PUBLIC_CLARITY_ENABLE=true"
             "NEXT_PUBLIC_CLARITY_ID=${{ secrets.NEXT_PUBLIC_CLARITY_ID }}"
+            "NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}"
+            "SENTRY_ORG=${{ secrets.SENTRY_ORG }}"
+            "SENTRY_PROJECT=${{ secrets.SENTRY_PROJECT }}"
