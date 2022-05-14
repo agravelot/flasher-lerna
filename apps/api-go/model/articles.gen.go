@@ -14,16 +14,16 @@ const TableNameArticle = "articles"
 
 // Article mapped from table <articles>
 type Article struct {
-	ID              int64          `gorm:"column:id;type:int8;primaryKey;autoIncrement:true" json:"id"`
+	ID              int64          `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true" json:"id"`
 	Slug            string         `gorm:"column:slug;type:text;not null" json:"slug"`
 	Name            string         `gorm:"column:name;type:text;not null" json:"name"`
 	MetaDescription string         `gorm:"column:meta_description;type:text;not null" json:"meta_description"`
 	Content         string         `gorm:"column:content;type:text;not null" json:"content"`
 	AuthorUUID      string         `gorm:"column:author_uuid;type:text;not null" json:"author_uuid"`
-	PublishedAt     *time.Time     `gorm:"column:published_at;type:timestamptz" json:"published_at"`
-	CreatedAt       time.Time      `gorm:"column:created_at;type:timestamptz;not null" json:"created_at"`
-	UpdatedAt       time.Time      `gorm:"column:updated_at;type:timestamptz;not null" json:"updated_at"`
-	DeletedAt       gorm.DeletedAt `gorm:"column:deleted_at;type:timestamptz" json:"deleted_at"`
+	PublishedAt     *time.Time     `gorm:"column:published_at;type:timestamp with time zone" json:"published_at"`
+	CreatedAt       time.Time      `gorm:"column:created_at;type:timestamp with time zone;not null" json:"created_at"`
+	UpdatedAt       time.Time      `gorm:"column:updated_at;type:timestamp with time zone;not null" json:"updated_at"`
+	DeletedAt       gorm.DeletedAt `gorm:"column:deleted_at;type:timestamp with time zone" json:"deleted_at"`
 }
 
 // TableName Article's table name

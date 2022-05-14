@@ -11,10 +11,10 @@ import (
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
 
-	"api-go/model"
-
 	"gorm.io/gen"
 	"gorm.io/gen/field"
+
+	"api-go/model"
 )
 
 func newCategory(db *gorm.DB) category {
@@ -81,6 +81,8 @@ func (c *category) updateTableName(table string) *category {
 func (c *category) WithContext(ctx context.Context) *categoryDo { return c.categoryDo.WithContext(ctx) }
 
 func (c category) TableName() string { return c.categoryDo.TableName() }
+
+func (c category) Alias() string { return c.categoryDo.Alias() }
 
 func (c *category) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := c.fieldMap[fieldName]
@@ -263,12 +265,18 @@ func (c categoryDo) Assign(attrs ...field.AssignExpr) *categoryDo {
 	return c.withDO(c.DO.Assign(attrs...))
 }
 
-func (c categoryDo) Joins(field field.RelationField) *categoryDo {
-	return c.withDO(c.DO.Joins(field))
+func (c categoryDo) Joins(fields ...field.RelationField) *categoryDo {
+	for _, _f := range fields {
+		c = *c.withDO(c.DO.Joins(_f))
+	}
+	return &c
 }
 
-func (c categoryDo) Preload(field field.RelationField) *categoryDo {
-	return c.withDO(c.DO.Preload(field))
+func (c categoryDo) Preload(fields ...field.RelationField) *categoryDo {
+	for _, _f := range fields {
+		c = *c.withDO(c.DO.Preload(_f))
+	}
+	return &c
 }
 
 func (c categoryDo) FirstOrInit() (*model.Category, error) {
@@ -288,17 +296,12 @@ func (c categoryDo) FirstOrCreate() (*model.Category, error) {
 }
 
 func (c categoryDo) FindByPage(offset int, limit int) (result []*model.Category, count int64, err error) {
-	if limit <= 0 {
-		count, err = c.Count()
-		return
-	}
-
 	result, err = c.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
 	}
 
-	if size := len(result); 0 < size && size < limit {
+	if size := len(result); 0 < limit && 0 < size && size < limit {
 		count = int64(size + offset)
 		return
 	}

@@ -11,10 +11,10 @@ import (
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
 
-	"api-go/model"
-
 	"gorm.io/gen"
 	"gorm.io/gen/field"
+
+	"api-go/model"
 )
 
 func newArticle(db *gorm.DB) article {
@@ -90,6 +90,8 @@ func (a *article) updateTableName(table string) *article {
 func (a *article) WithContext(ctx context.Context) *articleDo { return a.articleDo.WithContext(ctx) }
 
 func (a article) TableName() string { return a.articleDo.TableName() }
+
+func (a article) Alias() string { return a.articleDo.Alias() }
 
 func (a *article) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := a.fieldMap[fieldName]
@@ -275,12 +277,18 @@ func (a articleDo) Assign(attrs ...field.AssignExpr) *articleDo {
 	return a.withDO(a.DO.Assign(attrs...))
 }
 
-func (a articleDo) Joins(field field.RelationField) *articleDo {
-	return a.withDO(a.DO.Joins(field))
+func (a articleDo) Joins(fields ...field.RelationField) *articleDo {
+	for _, _f := range fields {
+		a = *a.withDO(a.DO.Joins(_f))
+	}
+	return &a
 }
 
-func (a articleDo) Preload(field field.RelationField) *articleDo {
-	return a.withDO(a.DO.Preload(field))
+func (a articleDo) Preload(fields ...field.RelationField) *articleDo {
+	for _, _f := range fields {
+		a = *a.withDO(a.DO.Preload(_f))
+	}
+	return &a
 }
 
 func (a articleDo) FirstOrInit() (*model.Article, error) {
@@ -300,17 +308,12 @@ func (a articleDo) FirstOrCreate() (*model.Article, error) {
 }
 
 func (a articleDo) FindByPage(offset int, limit int) (result []*model.Article, count int64, err error) {
-	if limit <= 0 {
-		count, err = a.Count()
-		return
-	}
-
 	result, err = a.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
 	}
 
-	if size := len(result); 0 < size && size < limit {
+	if size := len(result); 0 < limit && 0 < size && size < limit {
 		count = int64(size + offset)
 		return
 	}

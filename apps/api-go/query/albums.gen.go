@@ -11,10 +11,10 @@ import (
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
 
-	"api-go/model"
-
 	"gorm.io/gen"
 	"gorm.io/gen/field"
+
+	"api-go/model"
 )
 
 func newAlbum(db *gorm.DB) album {
@@ -113,6 +113,8 @@ func (a *album) updateTableName(table string) *album {
 func (a *album) WithContext(ctx context.Context) *albumDo { return a.albumDo.WithContext(ctx) }
 
 func (a album) TableName() string { return a.albumDo.TableName() }
+
+func (a album) Alias() string { return a.albumDo.Alias() }
 
 func (a *album) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := a.fieldMap[fieldName]
@@ -434,12 +436,18 @@ func (a albumDo) Assign(attrs ...field.AssignExpr) *albumDo {
 	return a.withDO(a.DO.Assign(attrs...))
 }
 
-func (a albumDo) Joins(field field.RelationField) *albumDo {
-	return a.withDO(a.DO.Joins(field))
+func (a albumDo) Joins(fields ...field.RelationField) *albumDo {
+	for _, _f := range fields {
+		a = *a.withDO(a.DO.Joins(_f))
+	}
+	return &a
 }
 
-func (a albumDo) Preload(field field.RelationField) *albumDo {
-	return a.withDO(a.DO.Preload(field))
+func (a albumDo) Preload(fields ...field.RelationField) *albumDo {
+	for _, _f := range fields {
+		a = *a.withDO(a.DO.Preload(_f))
+	}
+	return &a
 }
 
 func (a albumDo) FirstOrInit() (*model.Album, error) {
@@ -459,17 +467,12 @@ func (a albumDo) FirstOrCreate() (*model.Album, error) {
 }
 
 func (a albumDo) FindByPage(offset int, limit int) (result []*model.Album, count int64, err error) {
-	if limit <= 0 {
-		count, err = a.Count()
-		return
-	}
-
 	result, err = a.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
 	}
 
-	if size := len(result); 0 < size && size < limit {
+	if size := len(result); 0 < limit && 0 < size && size < limit {
 		count = int64(size + offset)
 		return
 	}

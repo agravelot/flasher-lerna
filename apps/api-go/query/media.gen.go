@@ -11,10 +11,10 @@ import (
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
 
-	"api-go/model"
-
 	"gorm.io/gen"
 	"gorm.io/gen/field"
+
+	"api-go/model"
 )
 
 func newMedium(db *gorm.DB) medium {
@@ -111,6 +111,8 @@ func (m *medium) updateTableName(table string) *medium {
 func (m *medium) WithContext(ctx context.Context) *mediumDo { return m.mediumDo.WithContext(ctx) }
 
 func (m medium) TableName() string { return m.mediumDo.TableName() }
+
+func (m medium) Alias() string { return m.mediumDo.Alias() }
 
 func (m *medium) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := m.fieldMap[fieldName]
@@ -303,12 +305,18 @@ func (m mediumDo) Assign(attrs ...field.AssignExpr) *mediumDo {
 	return m.withDO(m.DO.Assign(attrs...))
 }
 
-func (m mediumDo) Joins(field field.RelationField) *mediumDo {
-	return m.withDO(m.DO.Joins(field))
+func (m mediumDo) Joins(fields ...field.RelationField) *mediumDo {
+	for _, _f := range fields {
+		m = *m.withDO(m.DO.Joins(_f))
+	}
+	return &m
 }
 
-func (m mediumDo) Preload(field field.RelationField) *mediumDo {
-	return m.withDO(m.DO.Preload(field))
+func (m mediumDo) Preload(fields ...field.RelationField) *mediumDo {
+	for _, _f := range fields {
+		m = *m.withDO(m.DO.Preload(_f))
+	}
+	return &m
 }
 
 func (m mediumDo) FirstOrInit() (*model.Medium, error) {
@@ -328,17 +336,12 @@ func (m mediumDo) FirstOrCreate() (*model.Medium, error) {
 }
 
 func (m mediumDo) FindByPage(offset int, limit int) (result []*model.Medium, count int64, err error) {
-	if limit <= 0 {
-		count, err = m.Count()
-		return
-	}
-
 	result, err = m.Offset(offset).Limit(limit).Find()
 	if err != nil {
 		return
 	}
 
-	if size := len(result); 0 < size && size < limit {
+	if size := len(result); 0 < limit && 0 < size && size < limit {
 		count = int64(size + offset)
 		return
 	}
