@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const withPWA = require("next-pwa");
 const runtimeCaching = require("next-pwa/cache");
+const { withSentryConfig } = require('@sentry/nextjs');
 
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
@@ -11,8 +12,12 @@ const withTM = require("next-transpile-modules")([
   "@flasher/models",
 ]); // pass the modules you would like to see transpiled
 
+const sentryWebpackPluginOptions = {
+  silent: true, 
+};
 
-module.exports = (withTM(
+const moduleExports = 
+  module.exports = (withTM(
   (module.exports = withBundleAnalyzer(
     (module.exports = withPWA({
       pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
@@ -78,3 +83,6 @@ module.exports = (withTM(
     }))
   ))
 ));
+
+    
+module.exports = withSentryConfig(moduleExports, sentryWebpackPluginOptions);
