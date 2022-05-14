@@ -1,5 +1,5 @@
 #!/bin/bash
-OUTPUT_FILE="./openapi.json"
+OUTPUT_FILE="./third_party/OpenAPI/flasher.swagger.json"
 
 echo "Listing all the available openapi specs"
 SPEC=$(find gen/ -type f -name "*.swagger.json")
