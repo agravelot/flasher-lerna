@@ -1,16 +1,13 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "proto/articles/v1/articles.proto",
-    "version": "1.0"
+    "title": "proto/albums/v1/albums.proto",
+    "version": "version not set"
   },
   "tags": [
     {
-      "name": "ArticleService"
+      "name": "AlbumService"
     }
-  ],
-  "schemes": [
-    "http"
   ],
   "consumes": [
     "application/json"
@@ -19,11 +16,11 @@
     "application/json"
   ],
   "paths": {
-    "/api/v1/articles": {
+    "/api/v1/albums": {
       "get": {
-        "summary": "List articles",
-        "description": "List articles to the server.",
-        "operationId": "ArticleService_Index",
+        "summary": "List albums",
+        "description": "List albums to the server.",
+        "operationId": "AlbumService_Index",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -43,25 +40,17 @@
             "name": "limit",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "next",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
-          "Articles"
+          "Albums"
         ]
       },
       "post": {
-        "summary": "Add an article",
-        "description": "Add an article to the server.",
-        "operationId": "ArticleService_Create",
+        "summary": "Add an album",
+        "description": "Add an album to the server.",
+        "operationId": "AlbumService_Create",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -87,79 +76,15 @@
           }
         ],
         "tags": [
-          "Articles"
-        ]
-      },
-      "put": {
-        "summary": "Update an article",
-        "description": "Update an article to the server.",
-        "operationId": "ArticleService_Update",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1UpdateResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1UpdateRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Articles"
+          "Albums"
         ]
       }
     },
-    "/api/v1/articles/{id}": {
-      "delete": {
-        "summary": "Delete an article",
-        "description": "Delete an article to the server.",
-        "operationId": "ArticleService_Delete",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1DeleteResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Articles"
-        ]
-      }
-    },
-    "/api/v1/articles/{slug}": {
+    "/api/v1/albums/{slug}": {
       "get": {
-        "summary": "Create an article",
-        "description": "Create an article to the server.",
-        "operationId": "ArticleService_GetBySlug",
+        "summary": "Create an album",
+        "description": "Create an album to the server.",
+        "operationId": "AlbumService_GetBySlug",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -183,7 +108,37 @@
           }
         ],
         "tags": [
-          "Articles"
+          "Albums"
+        ]
+      },
+      "delete": {
+        "summary": "Delete an album",
+        "description": "Delete an album to the server.",
+        "operationId": "AlbumService_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Albums"
         ]
       }
     }
@@ -216,32 +171,7 @@
         }
       }
     },
-    "v1AricleRequest": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "int64"
-        },
-        "slug": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "metaDescription": {
-          "type": "string"
-        },
-        "content": {
-          "type": "string"
-        },
-        "publishedAt": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
-    },
-    "v1ArticleReponse": {
+    "v1AlbumReponse": {
       "type": "object",
       "properties": {
         "id": {
@@ -269,63 +199,73 @@
         }
       }
     },
+    "v1AlbumRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "metaDescription": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
     "v1CreateRequest": {
       "type": "object",
       "properties": {
-        "article": {
-          "$ref": "#/definitions/v1AricleRequest"
+        "album": {
+          "$ref": "#/definitions/v1AlbumRequest"
         }
       }
     },
     "v1CreateResponse": {
       "type": "object",
       "properties": {
-        "article": {
-          "$ref": "#/definitions/v1ArticleReponse"
+        "album": {
+          "$ref": "#/definitions/v1AlbumReponse"
         }
       }
     },
     "v1DeleteResponse": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "deleted": {
+          "type": "boolean"
+        }
+      }
     },
     "v1GetBySlugResponse": {
       "type": "object",
       "properties": {
-        "article": {
-          "$ref": "#/definitions/v1ArticleReponse"
+        "album": {
+          "$ref": "#/definitions/v1AlbumReponse"
         }
       }
     },
     "v1IndexResponse": {
       "type": "object",
       "properties": {
-        "data": {
+        "albums": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v1ArticleReponse"
+            "$ref": "#/definitions/v1AlbumReponse"
           }
         }
       }
-    },
-    "v1UpdateRequest": {
-      "type": "object",
-      "properties": {
-        "article": {
-          "$ref": "#/definitions/v1AricleRequest"
-        }
-      }
-    },
-    "v1UpdateResponse": {
-      "type": "object",
-      "properties": {
-        "article": {
-          "$ref": "#/definitions/v1ArticleReponse"
-        }
-      }
     }
-  },
-  "externalDocs": {
-    "description": "gRPC-gateway flasher api",
-    "url": "https://github.com/agravelot/flasher-lerna/apps/api-go"
   }
 }

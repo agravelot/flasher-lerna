@@ -125,6 +125,8 @@
     },
     "/api/v1/articles/{id}": {
       "delete": {
+        "summary": "Delete an article",
+        "description": "Delete an article to the server.",
         "operationId": "ArticleService_Delete",
         "responses": {
           "200": {
@@ -149,12 +151,14 @@
           }
         ],
         "tags": [
-          "ArticleService"
+          "Articles"
         ]
       }
     },
     "/api/v1/articles/{slug}": {
       "get": {
+        "summary": "Create an article",
+        "description": "Create an article to the server.",
         "operationId": "ArticleService_GetBySlug",
         "responses": {
           "200": {
@@ -179,7 +183,7 @@
           }
         ],
         "tags": [
-          "ArticleService"
+          "Articles"
         ]
       }
     }

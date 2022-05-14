@@ -94,6 +94,11 @@ service ArticleService {
     option (google.api.http) = {
       get: "/api/v1/articles/{slug}"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Create an article"
+      description: "Create an article to the server."
+      tags: "Articles"
+    };
   }
 
   rpc Create(CreateRequest) returns (CreateResponse) {
@@ -123,6 +128,11 @@ service ArticleService {
   rpc Delete(DeleteRequest) returns (DeleteResponse) {
     option (google.api.http) = {
       delete: "/api/v1/articles/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Delete an article"
+      description: "Delete an article to the server."
+      tags: "Articles"
     };
   }
 }

@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+package proto.albums.v1;
+option go_package = "api-go/albumsgrpc";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+message AlbumRequest {
+  int64 id = 1;
+	string slug = 2;
+	string name = 3;
+	string meta_description = 4;
+	string content = 5;
+	optional google.protobuf.Timestamp published_at = 6;
+}
+
+message AlbumReponse {
+  int64 id = 1;
+	string slug = 2;
+	string name = 3;
+	string meta_description = 4;
+	string content = 5;
+	optional google.protobuf.Timestamp published_at = 6;
+  string author_uuid = 7;
+}
+
+message GetBySlugRequest {
+  string slug = 1;
+}
+
+message IndexRequest {
+  string limit = 1;
+}
+
+message DeleteRequest {
+  string slug = 1;
+}
+
+message IndexResponse {
+  repeated AlbumReponse albums = 1;
+}
+
+message GetBySlugResponse {
+  AlbumReponse album = 1;
+}
+
+message DeleteResponse {
+  bool deleted = 1;
+}
+
+message CreateResponse {
+  AlbumReponse album = 1;
+}
+
+message CreateRequest {
+  AlbumRequest album = 1;
+}
+
+service AlbumService {
+
+  rpc Index(IndexRequest) returns (IndexResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/albums"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "List albums"
+      description: "List albums to the server."
+      tags: "Albums"
+    };
+  }
+
+  rpc GetBySlug(GetBySlugRequest) returns (GetBySlugResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/albums/{slug}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Create an album"
+      description: "Create an album to the server."
+      tags: "Albums"
+    };
+  }
+
+  rpc Create(CreateRequest) returns (CreateResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/albums"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Add an album"
+      description: "Add an album to the server."
+      tags: "Albums"
+    };
+  }
+
+  rpc Delete(DeleteRequest) returns (DeleteResponse) {
+    option (google.api.http) = {
+      delete: "/api/v1/albums/{slug}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Delete an album"
+      description: "Delete an album to the server."
+      tags: "Albums"
+    };
+  }
+}
