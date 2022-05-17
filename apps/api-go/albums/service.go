@@ -42,7 +42,7 @@ func NewService(orm *gorm.DB) Service {
 }
 
 func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (PaginatedAlbums, error) {
-	user, _ := auth.GetUserClaims(ctx)
+	user := auth.GetUserClaims(ctx)
 	isAdmin := user != nil && user.IsAdmin()
 
 	qb := query.Use(s.orm).Album
@@ -88,7 +88,7 @@ func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (Pag
 // TODO bool incluce relation
 
 func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, error) {
-	user, _ := auth.GetUserClaims(ctx)
+	user := auth.GetUserClaims(ctx)
 	isAdmin := user != nil && user.IsAdmin()
 
 	qb := query.Use(s.orm).Album
@@ -118,7 +118,7 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, err
 }
 
 func (s *service) PostAlbum(ctx context.Context, r AlbumRequest) (AlbumResponse, error) {
-	user, _ := auth.GetUserClaims(ctx)
+	user := auth.GetUserClaims(ctx)
 
 	if user == nil {
 		return AlbumResponse{}, ErrNoAuth
@@ -159,7 +159,7 @@ func (s *service) PostAlbum(ctx context.Context, r AlbumRequest) (AlbumResponse,
 }
 
 func (s *service) PutAlbum(ctx context.Context, slug string, r AlbumRequest) (AlbumResponse, error) {
-	user, _ := auth.GetUserClaims(ctx)
+	user := auth.GetUserClaims(ctx)
 
 	if user == nil {
 		return AlbumResponse{}, ErrNoAuth
@@ -212,7 +212,7 @@ func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumUpdateRequ
 
 func (s *service) DeleteAlbum(ctx context.Context, slug string) error {
 
-	user, _ := auth.GetUserClaims(ctx)
+	user := auth.GetUserClaims(ctx)
 	if user == nil {
 		return ErrNoAuth
 	}

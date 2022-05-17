@@ -13,14 +13,20 @@ import (
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/grpclog"
+	"google.golang.org/grpc/status"
 
 	"api-go/article"
+	"api-go/auth"
 	"api-go/config"
 	"api-go/database"
 	articlespb "api-go/gen/go/proto/articles/v1"
 	"api-go/third_party"
+
+	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
+	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
 )
 
 // getOpenAPIHandler serves an OpenAPI UI.
@@ -33,6 +39,27 @@ func getOpenAPIHandler() http.Handler {
 		panic("couldn't create sub filesystem: " + err.Error())
 	}
 	return http.FileServer(http.FS(subFS))
+}
+
+// TODO Extract to a separate file
+// authFunc is used by a middleware to authenticate requests
+func authFunc(ctx context.Context) (context.Context, error) {
+	token, err := grpc_auth.AuthFromMD(ctx, "bearer")
+	if err != nil {
+		return nil, err
+	}
+
+	parsedToken, err := auth.ParseToken(token)
+	if err != nil {
+		return nil, status.Errorf(codes.Unauthenticated, "invalid auth token: %v", err)
+	}
+
+	grpc_ctxtags.Extract(ctx).Set("user", parsedToken)
+
+	// WARNING: in production define your own type to avoid context collisions
+	newCtx := context.WithValue(ctx, "user", parsedToken)
+
+	return newCtx, nil
 }
 
 func main() {
@@ -71,7 +98,10 @@ func main() {
 	}
 
 	// Create a gRPC server object
-	s := grpc.NewServer()
+	s := grpc.NewServer(
+		grpc.StreamInterceptor(grpc_auth.StreamServerInterceptor(authFunc)),
+		grpc.UnaryInterceptor(grpc_auth.UnaryServerInterceptor(authFunc)),
+	)
 	// Attach the Greeter service to the server
 	articlespb.RegisterArticleServiceServer(s, sArticle)
 	// Serve gRPC server

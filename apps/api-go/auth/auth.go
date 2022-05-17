@@ -54,45 +54,50 @@ func (c Claims) Valid() error {
 	return nil
 }
 
-// type UserClaimsKeyType string
+type UserClaimsKeyType string
 
-// const UserClaimsKey UserClaimsKeyType = "user"
+const UserClaimsKey UserClaimsKeyType = "user"
 
-// func GetUserClaims(ctx context.Context) *Claims {
-// 	claims, ok := ctx.Value("user").(*Claims)
+func GetUserClaims(ctx context.Context) *Claims {
+	claims, ok := ctx.Value("user").(*Claims)
 
-// 	if !ok {
-// 		return nil
-// 	}
+	if !ok {
+		return nil
+	}
 
-// 	return claims
-// }
+	return claims
+}
 
-func extractHeader(ctx context.Context, header string) (string, error) {
+func extractHeader(ctx context.Context, header string) (*string, error) {
 	md, ok := metadata.FromIncomingContext(ctx)
+	var h string
 	if !ok {
-		return "", status.Error(codes.Unauthenticated, "no headers in request")
+		return &h, status.Error(codes.Unauthenticated, "no headers in request")
 	}
 
-	authHeaders, ok := md[header]
-	if !ok {
-		return "", status.Error(codes.Unauthenticated, "no header in request")
-	}
+	authHeaders := md.Get(header)
 
 	if len(authHeaders) != 1 {
-		return "", status.Error(codes.Unauthenticated, "more than 1 header in request")
+		return &h, status.Error(codes.Unauthenticated, "more than 1 header in request")
 	}
 
-	return authHeaders[0], nil
+	return &authHeaders[0], nil
 }
 
-func GetUserClaims(ctx context.Context) (*Claims, error) {
-	h, err := extractHeader(ctx, "authorization")
-	if err != nil {
-		return nil, err
-	}
-	return ParseHeader(h)
-}
+// func GetUserClaims(ctx context.Context) (*Claims, error) {
+// 	// h, err := extractHeader(ctx, "authorization")
+// 	md, ok := metadata.FromIncomingContext(ctx)
+// 	if !ok {
+// 		return nil, nil
+// 	}
+// 	authHeaders := md.Get("authorization")
+
+// 	if len(authHeaders) != 1 {
+// 		return nil, nil
+// 	}
+
+// 	return ParseHeader(authHeaders[0])
+// }
 
 func ParseHeader(bearer string) (*Claims, error) {
 	return ParseToken(bearer[7:])

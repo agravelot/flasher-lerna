@@ -9,7 +9,6 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/davecgh/go-spew/spew"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"gorm.io/gen"
@@ -53,20 +52,23 @@ func Paginate(q *query.Query, next *int32, pageSize *int32) func(db gen.Dao) gen
 }
 
 func tramsform(a model.Article) *articlespb.ArticleReponse {
+	var publishedAt *timestamppb.Timestamp
+	if a.PublishedAt != nil {
+		publishedAt = &timestamppb.Timestamp{Seconds: int64(a.PublishedAt.Second())}
+	}
 	return &articlespb.ArticleReponse{
 		Id:              a.ID,
 		Slug:            a.Slug,
 		Name:            a.Name,
 		MetaDescription: a.MetaDescription,
 		Content:         a.Content,
-		PublishedAt:     &timestamppb.Timestamp{Seconds: int64(a.PublishedAt.Second())},
+		PublishedAt:     publishedAt,
 		AuthorUuid:      a.AuthorUUID,
 	}
 }
 
 func (s Service) Index(ctx context.Context, request *articlespb.IndexRequest) (*articlespb.IndexResponse, error) {
-	user, err := auth.GetUserClaims(ctx)
-	spew.Dump(user, err)
+	user := auth.GetUserClaims(ctx)
 
 	qb := query.Use(s.db).Article
 	q := qb.WithContext(ctx)
@@ -98,10 +100,7 @@ func (s Service) Index(ctx context.Context, request *articlespb.IndexRequest) (*
 }
 
 func (s Service) GetBySlug(ctx context.Context, request *articlespb.GetBySlugRequest) (*articlespb.GetBySlugResponse, error) {
-	user, err := auth.GetUserClaims(ctx)
-	if err != nil {
-		return nil, ErrNoAuth
-	}
+	user := auth.GetUserClaims(ctx)
 
 	qb := query.Use(s.db).Article
 	q := qb.WithContext(ctx)
@@ -124,10 +123,7 @@ func (s Service) GetBySlug(ctx context.Context, request *articlespb.GetBySlugReq
 }
 
 func (s Service) Create(ctx context.Context, request *articlespb.CreateRequest) (*articlespb.CreateResponse, error) {
-	user, err := auth.GetUserClaims(ctx)
-	if err != nil {
-		return nil, ErrNoAuth
-	}
+	user := auth.GetUserClaims(ctx)
 
 	qb := query.Use(s.db).Article
 	query := qb.WithContext(ctx)
@@ -154,7 +150,7 @@ func (s Service) Create(ctx context.Context, request *articlespb.CreateRequest) 
 		PublishedAt:     &p,
 		AuthorUUID:      user.Sub,
 	}
-	err = query.Create(&a)
+	err := query.Create(&a)
 	if err != nil {
 		// TODO Cast pg error to have clean check
 		if err.Error() == "ERROR: duplicate key value violates unique constraint \"idx_articles_slug\" (SQLSTATE 23505)" {
@@ -169,10 +165,7 @@ func (s Service) Create(ctx context.Context, request *articlespb.CreateRequest) 
 }
 
 func (s Service) Update(ctx context.Context, request *articlespb.UpdateRequest) (*articlespb.UpdateResponse, error) {
-	user, err := auth.GetUserClaims(ctx)
-	if err != nil {
-		return nil, ErrNoAuth
-	}
+	user := auth.GetUserClaims(ctx)
 
 	qb := query.Use(s.db).Article
 	query := qb.WithContext(ctx)

@@ -2,13 +2,14 @@ package config
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/joho/godotenv"
 	"github.com/kelseyhightower/envconfig"
 )
 
 type Configurations struct {
-	Debug      bool   `envconfig:"DEBUG"`
+	// Debug      bool   `envconfig:"DEBUG"`
 	Port       int    `envconfig:"PORT" required:"true"`
 	DbHost     string `envconfig:"DB_HOST" required:"true"`
 	DbUser     string `envconfig:"DB_USER" required:"true"`
@@ -21,7 +22,7 @@ type Configurations struct {
 func LoadDotEnv(path string) Configurations {
 
 	if err := godotenv.Load(path + ".env"); err != nil {
-		fmt.Println(err)
+		log.Println(err)
 	}
 
 	var c Configurations

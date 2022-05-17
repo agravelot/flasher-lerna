@@ -195,8 +195,9 @@ func TestShouldBeAbleToListNonPublishedArticleAsAdmin(t *testing.T) {
 		t.Error(err)
 	}
 
-	r, _ := s.Index(ctx, &articlesgrpc.IndexRequest{})
+	r, err := s.Index(ctx, &articlesgrpc.IndexRequest{})
 
+	assert.NoError(t, err)
 	// assert.Equal(t, int64(1), r.Meta.Total)
 	// assert.Equal(t, 10, r.Meta.Limit)
 	assert.Equal(t, 1, len(r.Data))
