@@ -1,4 +1,6 @@
 version: v1
+managed:
+  enabled: true
 plugins:
   - name: go
     out: gen/go
@@ -17,3 +19,9 @@ plugins:
       # - standalone=true
   - name: openapiv2
     out: gen/openapiv2
+  - name: validate
+    out: gen/go
+    opt:
+      - paths=source_relative
+      - lang=go
+      # - validate_out="lang=go:.gen/validate2"

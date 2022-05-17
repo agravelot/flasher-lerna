@@ -9,12 +9,8 @@
       "name": "ArticleService"
     }
   ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "paths": {
     "/api/v1/albums": {
       "get": {
@@ -43,9 +39,7 @@
             "type": "string"
           }
         ],
-        "tags": [
-          "Albums"
-        ]
+        "tags": ["Albums"]
       },
       "post": {
         "summary": "Add an album",
@@ -75,9 +69,7 @@
             }
           }
         ],
-        "tags": [
-          "Albums"
-        ]
+        "tags": ["Albums"]
       }
     },
     "/api/v1/albums/{slug}": {
@@ -107,9 +99,7 @@
             "type": "string"
           }
         ],
-        "tags": [
-          "Albums"
-        ]
+        "tags": ["Albums"]
       },
       "delete": {
         "summary": "Delete an album",
@@ -137,9 +127,7 @@
             "type": "string"
           }
         ],
-        "tags": [
-          "Albums"
-        ]
+        "tags": ["Albums"]
       }
     },
     "/api/v1/articles": {
@@ -177,9 +165,7 @@
             "format": "int32"
           }
         ],
-        "tags": [
-          "Articles"
-        ]
+        "tags": ["Articles"]
       },
       "post": {
         "summary": "Add an article",
@@ -209,9 +195,7 @@
             }
           }
         ],
-        "tags": [
-          "Articles"
-        ]
+        "tags": ["Articles"]
       },
       "put": {
         "summary": "Update an article",
@@ -241,9 +225,7 @@
             }
           }
         ],
-        "tags": [
-          "Articles"
-        ]
+        "tags": ["Articles"]
       }
     },
     "/api/v1/articles/{id}": {
@@ -273,9 +255,7 @@
             "type": "string"
           }
         ],
-        "tags": [
-          "Articles"
-        ]
+        "tags": ["Articles"]
       }
     },
     "/api/v1/articles/{slug}": {
@@ -305,9 +285,7 @@
             "type": "string"
           }
         ],
-        "tags": [
-          "Articles"
-        ]
+        "tags": ["Articles"]
       }
     }
   },
@@ -410,7 +388,7 @@
           "$ref": "#/definitions/v1AlbumReponse"
         },
         "article": {
-          "$ref": "#/definitions/v1ArticleReponse"
+          "$ref": "#/definitions/v1ArticleResponse"
         }
       }
     },
@@ -429,7 +407,7 @@
           "$ref": "#/definitions/v1AlbumReponse"
         },
         "article": {
-          "$ref": "#/definitions/v1ArticleReponse"
+          "$ref": "#/definitions/v1ArticleResponse"
         }
       }
     },
@@ -445,7 +423,7 @@
         "data": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v1ArticleReponse"
+            "$ref": "#/definitions/v1ArticleResponse"
           }
         }
       }
@@ -475,7 +453,7 @@
         }
       }
     },
-    "v1ArticleReponse": {
+    "v1ArticleResponse": {
       "type": "object",
       "properties": {
         "id": {
@@ -515,14 +493,12 @@
       "type": "object",
       "properties": {
         "article": {
-          "$ref": "#/definitions/v1ArticleReponse"
+          "$ref": "#/definitions/v1ArticleResponse"
         }
       }
     }
   },
-  "schemes": [
-    "http"
-  ],
+  "schemes": ["http"],
   "externalDocs": {
     "description": "gRPC-gateway flasher api",
     "url": "https://github.com/agravelot/flasher-lerna/apps/api-go"

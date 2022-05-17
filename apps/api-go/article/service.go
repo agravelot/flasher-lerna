@@ -8,6 +8,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
@@ -51,12 +52,13 @@ func Paginate(q *query.Query, next *int32, pageSize *int32) func(db gen.Dao) gen
 	}
 }
 
-func tramsform(a model.Article) *articlespb.ArticleReponse {
+func tramsform(a model.Article) *articlespb.ArticleResponse {
 	var publishedAt *timestamppb.Timestamp
 	if a.PublishedAt != nil {
 		publishedAt = &timestamppb.Timestamp{Seconds: int64(a.PublishedAt.Second())}
 	}
-	return &articlespb.ArticleReponse{
+
+	return &articlespb.ArticleResponse{
 		Id:              a.ID,
 		Slug:            a.Slug,
 		Name:            a.Name,
@@ -87,7 +89,7 @@ func (s Service) Index(ctx context.Context, request *articlespb.IndexRequest) (*
 		return &articlespb.IndexResponse{}, err
 	}
 
-	var articleResponse []*articlespb.ArticleReponse
+	var articleResponse []*articlespb.ArticleResponse
 	for _, article := range articles {
 		// TODO add missing fields
 		articleResponse = append(articleResponse, tramsform(*article))
@@ -136,9 +138,9 @@ func (s Service) Create(ctx context.Context, request *articlespb.CreateRequest) 
 		return &articlespb.CreateResponse{}, ErrNotAdmin
 	}
 
-	// if err := r.Validate(); err != nil {
-	// 	return ArticleResponse{}, err
-	// }
+	if err := request.Article.ValidateAll(); err != nil {
+		return &articlespb.CreateResponse{}, err
+	}
 
 	var p *time.Time
 	if request.Article.PublishedAt != nil {

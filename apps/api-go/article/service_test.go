@@ -12,7 +12,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/go-playground/validator/v10"
+	"github.com/kr/pretty"
+
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
@@ -337,7 +338,10 @@ func TestShouldBeAbleToCreateAnArticleAndGenerateSlugAsAdmin(t *testing.T) {
 	a := articlesgrpc.AricleRequest{Name: "A good name", MetaDescription: "a meta decription"}
 	ctx, claims := authAsAdmin(context.Background())
 
+	pretty.Log(a)
+
 	res, err := s.Create(ctx, &articlesgrpc.CreateRequest{Article: &a})
+	pretty.Log(res)
 
 	assert.NoError(t, err)
 	var total int64
@@ -406,9 +410,8 @@ func TestShouldNotBeAbleToSaveArticleWithEmptyName(t *testing.T) {
 	_, err := s.Create(ctx, &articlesgrpc.CreateRequest{Article: &a})
 
 	assert.Error(t, err)
-	validationErrors := err.(validator.ValidationErrors)
-	assert.Equal(t, "ArticleRequest.Name", validationErrors[0].Namespace())
-	assert.Equal(t, "required", validationErrors[0].ActualTag())
+	firstValidationError := err.(articlesgrpc.AricleRequestMultiError)[0].(articlesgrpc.AricleRequestValidationError)
+	assert.Equal(t, "Name", firstValidationError.Field())
 	var total int64
 	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 0, int(total))
@@ -422,9 +425,8 @@ func TestShouldNotBeAbleToSaveArticleWithTooLongName(t *testing.T) {
 	_, err := s.Create(ctx, &articlesgrpc.CreateRequest{Article: &a})
 
 	assert.Error(t, err)
-	validationErrors := err.(validator.ValidationErrors)
-	assert.Equal(t, "ArticleRequest.Name", validationErrors[0].Namespace())
-	assert.Equal(t, "lt", validationErrors[0].ActualTag())
+	firstValidationError := err.(articlesgrpc.AricleRequestMultiError)[0].(articlesgrpc.AricleRequestValidationError)
+	assert.Equal(t, "Name", firstValidationError.Field())
 	var total int64
 	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 0, int(total))
@@ -438,9 +440,8 @@ func TestShouldNotBeAbleToSaveArticleWithEmptyMetaDescription(t *testing.T) {
 	_, err := s.Create(ctx, &articlesgrpc.CreateRequest{Article: &a})
 
 	assert.Error(t, err)
-	validationErrors := err.(validator.ValidationErrors)
-	assert.Equal(t, "ArticleRequest.MetaDescription", validationErrors[0].Namespace())
-	assert.Equal(t, "required", validationErrors[0].ActualTag())
+	firstValidationError := err.(articlesgrpc.AricleRequestMultiError)[0].(articlesgrpc.AricleRequestValidationError)
+	assert.Equal(t, "MetaDescription", firstValidationError.Field())
 	var total int64
 	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 0, int(total))
@@ -448,15 +449,14 @@ func TestShouldNotBeAbleToSaveArticleWithEmptyMetaDescription(t *testing.T) {
 
 func TestShouldNotBeAbleToSaveArticleWithTooLongMetaDescription(t *testing.T) {
 	database.ClearDB(db)
-	a := articlesgrpc.AricleRequest{Name: "A good name", MetaDescription: "a very too long big enormous title that will never fit in any screen..."}
+	a := articlesgrpc.AricleRequest{Name: "A good name", MetaDescription: "a very too long big enormous title that will never fit in any screen...a very too long big enormous title that will never fit in any screen...a very too long big enormous title that will never fit in any screen..."}
 	ctx, _ := authAsAdmin(context.Background())
 
 	_, err := s.Create(ctx, &articlesgrpc.CreateRequest{Article: &a})
 
 	assert.Error(t, err)
-	validationErrors := err.(validator.ValidationErrors)
-	assert.Equal(t, "ArticleRequest.MetaDescription", validationErrors[0].Namespace())
-	assert.Equal(t, "lt", validationErrors[0].ActualTag())
+	firstValidationError := err.(articlesgrpc.AricleRequestMultiError)[0].(articlesgrpc.AricleRequestValidationError)
+	assert.Equal(t, "MetaDescription", firstValidationError.Field())
 	var total int64
 	db.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 0, int(total))

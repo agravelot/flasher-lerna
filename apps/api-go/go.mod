@@ -7,12 +7,12 @@ require (
 	github.com/go-kit/kit v0.12.0
 	github.com/go-playground/validator/v10 v10.11.0
 	github.com/google/uuid v1.3.0
-	github.com/gorilla/mux v1.8.0
 	github.com/gosimple/slug v1.12.0
 	github.com/jackc/pgconn v1.12.1
 	github.com/jackc/pgerrcode v0.0.0-20201024163028-a0d42d470451
 	github.com/joho/godotenv v1.4.0
 	github.com/kelseyhightower/envconfig v1.4.0
+	github.com/kr/pretty v0.3.0
 	github.com/stretchr/testify v1.7.0
 	github.com/tkrajina/typescriptify-golang-structs v0.1.7
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.2.0
@@ -22,7 +22,15 @@ require (
 )
 
 require (
+	github.com/envoyproxy/protoc-gen-validate v0.6.7 // indirect
 	github.com/golang/glog v1.0.0 // indirect
+	github.com/iancoleman/strcase v0.2.0 // indirect
+	github.com/kr/text v0.2.0 // indirect
+	github.com/lyft/protoc-gen-star v0.6.0 // indirect
+	github.com/rogpeppe/go-internal v1.8.0 // indirect
+	github.com/spf13/afero v1.6.0 // indirect
+	go.buf.build/protocolbuffers/go/envoyproxy/protoc-gen-validate v1.2.6 // indirect
+	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	sigs.k8s.io/yaml v1.3.0 // indirect
 )
@@ -34,7 +42,6 @@ require (
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
-	github.com/golang-jwt/jwt/v4 v4.4.1 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/gosimple/unidecode v1.0.1 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0

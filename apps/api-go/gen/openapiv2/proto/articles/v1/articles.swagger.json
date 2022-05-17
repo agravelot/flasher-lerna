@@ -241,7 +241,7 @@
         }
       }
     },
-    "v1ArticleReponse": {
+    "v1ArticleResponse": {
       "type": "object",
       "properties": {
         "id": {
@@ -281,7 +281,7 @@
       "type": "object",
       "properties": {
         "article": {
-          "$ref": "#/definitions/v1ArticleReponse"
+          "$ref": "#/definitions/v1ArticleResponse"
         }
       }
     },
@@ -292,7 +292,7 @@
       "type": "object",
       "properties": {
         "article": {
-          "$ref": "#/definitions/v1ArticleReponse"
+          "$ref": "#/definitions/v1ArticleResponse"
         }
       }
     },
@@ -302,7 +302,7 @@
         "data": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v1ArticleReponse"
+            "$ref": "#/definitions/v1ArticleResponse"
           }
         }
       }
@@ -319,7 +319,7 @@
       "type": "object",
       "properties": {
         "article": {
-          "$ref": "#/definitions/v1ArticleReponse"
+          "$ref": "#/definitions/v1ArticleResponse"
         }
       }
     }

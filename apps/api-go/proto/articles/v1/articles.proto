@@ -6,6 +6,7 @@ option go_package = "api-go/articlesgrpc";
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
+import "validate/validate.proto";
 
 // These annotations are used when generating the OpenAPI file.
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
@@ -23,13 +24,13 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 message AricleRequest {
   int64 id = 1;
 	string slug = 2;
-	string name = 3;
-	string meta_description = 4;
+	string name = 3 [(validate.rules).string.min_len = 5, (validate.rules).string.max_len = 60];
+	string meta_description = 4 [(validate.rules).string.min_len = 1, (validate.rules).string.max_len = 155];
 	string content = 5;
 	optional google.protobuf.Timestamp published_at = 6;
 }
 
-message ArticleReponse {
+message ArticleResponse {
   int64 id = 1;
 	string slug = 2;
 	string name = 3;
@@ -53,17 +54,17 @@ message DeleteRequest {
 }
 
 message IndexResponse {
-  repeated ArticleReponse data = 1;
+  repeated ArticleResponse data = 1;
 }
 
 message GetBySlugResponse {
-  ArticleReponse article = 1;
+  ArticleResponse article = 1;
 }
 
 message DeleteResponse {}
 
 message CreateResponse {
-  ArticleReponse article = 1;
+  ArticleResponse article = 1;
 }
 
 message CreateRequest {
@@ -75,7 +76,7 @@ message UpdateRequest {
 }
 
 message UpdateResponse {
-  ArticleReponse article = 1;
+  ArticleResponse article = 1;
 }
 
 service ArticleService {
