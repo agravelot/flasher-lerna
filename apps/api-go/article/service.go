@@ -140,14 +140,18 @@ func (s Service) Create(ctx context.Context, request *articlespb.CreateRequest) 
 	// 	return ArticleResponse{}, err
 	// }
 
-	p := request.Article.PublishedAt.AsTime()
+	var p *time.Time
+	if request.Article.PublishedAt != nil {
+		tmp := request.Article.PublishedAt.AsTime()
+		p = &tmp
+	}
 	a := model.Article{
 		ID:              request.Article.Id,
 		Slug:            request.Article.Slug,
 		Name:            request.Article.Name,
 		MetaDescription: request.Article.MetaDescription,
 		Content:         request.Article.Content,
-		PublishedAt:     &p,
+		PublishedAt:     p,
 		AuthorUUID:      user.Sub,
 	}
 	err := query.Create(&a)
