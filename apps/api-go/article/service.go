@@ -10,6 +10,8 @@ import (
 	"fmt"
 	"time"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"gorm.io/gen"
@@ -17,10 +19,10 @@ import (
 )
 
 var (
-	ErrAlreadyExists = errors.New("already exists")
-	ErrNotFound      = errors.New("not found")
-	ErrNoAuth        = errors.New("not authenticated")
-	ErrNotAdmin      = errors.New("not admin")
+	ErrAlreadyExists = status.Error(codes.AlreadyExists, "already exists")
+	ErrNotFound      = status.Error(codes.NotFound, "not found")
+	ErrNoAuth        = status.Error(codes.Unauthenticated, "not authenticated")
+	ErrNotAdmin      = status.Error(codes.PermissionDenied, "not admin")
 )
 
 type Service struct {
