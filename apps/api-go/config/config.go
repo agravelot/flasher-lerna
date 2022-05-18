@@ -19,7 +19,7 @@ type Configurations struct {
 	DbSslMode  string `envconfig:"DB_SSL_MODE" required:"true"`
 }
 
-func LoadDotEnv(path string) Configurations {
+func LoadDotEnv(path string) *Configurations {
 
 	if err := godotenv.Load(path + ".env"); err != nil {
 		log.Println(err)
@@ -32,5 +32,5 @@ func LoadDotEnv(path string) Configurations {
 		panic(fmt.Errorf("failed to process config: %w", err))
 	}
 
-	return c
+	return &c
 }

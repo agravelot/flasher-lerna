@@ -15,7 +15,7 @@ import (
 var db *gorm.DB
 var err error
 
-func Init(c config.Configurations) (*gorm.DB, error) {
+func Init(c *config.Configurations) (*gorm.DB, error) {
 
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
@@ -34,11 +34,7 @@ func Init(c config.Configurations) (*gorm.DB, error) {
 	}
 	db, err = gorm.Open(postgres.Open(dsn), config)
 	if err != nil {
-		log.Fatalf("Got error when connect database, the error is '%v'", err)
-	}
-	// defer db.Close()
-	if err != nil {
-		panic("DB Connection Error")
+		log.Fatalln("unable to connect to the database: %w", err)
 	}
 
 	return db, nil
