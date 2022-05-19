@@ -1,11 +1,13 @@
 package album
 
 import (
+	albumspb "api-go/gen/go/proto/albums/v1"
 	"api-go/model"
 	"time"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // use a single instance of Validate, it caches struct info
@@ -124,40 +126,45 @@ func transformCategoryFromDB(c model.Category) CategoryReponse {
 	}
 }
 
-func transformAlbumFromDB(a model.Album) AlbumResponse {
-	var mediasResponse *[]MediaReponse
-	if a.Medias != nil {
-		var tmp []MediaReponse
-		for _, m := range a.Medias {
-			tmp = append(tmp, transformMediaFromDB(m))
-		}
-		mediasResponse = &tmp
+func transformAlbumFromDB(a model.Album) *albumspb.AlbumResponse {
+	// var mediasResponse *[]MediaReponse
+	// if a.Medias != nil {
+	// 	var tmp []MediaReponse
+	// 	for _, m := range a.Medias {
+	// 		tmp = append(tmp, transformMediaFromDB(m))
+	// 	}
+	// 	mediasResponse = &tmp
+	// }
+
+	// var categoriesResponse *[]CategoryReponse
+	// if a.Categories != nil {
+	// 	var tmp []CategoryReponse
+	// 	for _, c := range a.Categories {
+	// 		tmp = append(tmp, transformCategoryFromDB(c))
+	// 	}
+	// 	categoriesResponse = &tmp
+	// }
+
+	var publishedAt *timestamppb.Timestamp
+	if a.PublishedAt != nil {
+		publishedAt = &timestamppb.Timestamp{Seconds: int64(a.PublishedAt.Second())}
 	}
 
-	var categoriesResponse *[]CategoryReponse
-	if a.Categories != nil {
-		var tmp []CategoryReponse
-		for _, c := range a.Categories {
-			tmp = append(tmp, transformCategoryFromDB(c))
-		}
-		categoriesResponse = &tmp
-	}
-
-	return AlbumResponse{
-		ID:                     a.ID,
+	return &albumspb.AlbumResponse{
+		Id:                     int64(a.ID),
 		Slug:                   a.Slug,
 		Title:                  a.Title,
 		MetaDescription:        a.MetaDescription,
-		Body:                   a.Body,
-		PublishedAt:            a.PublishedAt,
+		Content:                *a.Body,
+		PublishedAt:            publishedAt,
 		Private:                a.Private,
-		SsoID:                  a.SsoID,
-		UserID:                 a.UserID,
-		CreatedAt:              a.CreatedAt,
-		UpdatedAt:              a.UpdatedAt,
+		AuthorId:               *a.SsoID,
+		UserId:                 a.UserID,
+		CreatedAt:              &timestamppb.Timestamp{Seconds: int64(a.CreatedAt.Second())},
+		UpdatedAt:              &timestamppb.Timestamp{Seconds: int64(a.UpdatedAt.Second())},
 		NotifyUsersOnPublished: a.NotifyUsersOnPublished,
-		Medias:                 mediasResponse,
-		Categories:             categoriesResponse,
+		// Medias:                 mediasResponse,
+		// Categories:             categoriesResponse,
 	}
 }
 

@@ -228,7 +228,7 @@ func (m *ArticleResponse) validate(all bool) error {
 
 	// no validation rules for Content
 
-	// no validation rules for AuthorUuid
+	// no validation rules for AuthorId
 
 	if m.PublishedAt != nil {
 

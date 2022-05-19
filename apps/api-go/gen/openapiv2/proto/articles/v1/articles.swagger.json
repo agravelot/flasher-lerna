@@ -264,7 +264,7 @@
           "type": "string",
           "format": "date-time"
         },
-        "authorUuid": {
+        "authorId": {
           "type": "string"
         }
       }

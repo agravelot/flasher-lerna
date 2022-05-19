@@ -67,6 +67,8 @@ func (m *AlbumRequest) validate(all bool) error {
 
 	// no validation rules for Content
 
+	// no validation rules for Private
+
 	if m.PublishedAt != nil {
 
 		if all {
@@ -177,22 +179,22 @@ var _ interface {
 	ErrorName() string
 } = AlbumRequestValidationError{}
 
-// Validate checks the field values on AlbumReponse with the rules defined in
+// Validate checks the field values on AlbumResponse with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
-func (m *AlbumReponse) Validate() error {
+func (m *AlbumResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on AlbumReponse with the rules defined
+// ValidateAll checks the field values on AlbumResponse with the rules defined
 // in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in AlbumReponseMultiError, or
+// result is a list of violation errors wrapped in AlbumResponseMultiError, or
 // nil if none found.
-func (m *AlbumReponse) ValidateAll() error {
+func (m *AlbumResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *AlbumReponse) validate(all bool) error {
+func (m *AlbumResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -203,13 +205,75 @@ func (m *AlbumReponse) validate(all bool) error {
 
 	// no validation rules for Slug
 
-	// no validation rules for Name
+	// no validation rules for Title
 
 	// no validation rules for MetaDescription
 
 	// no validation rules for Content
 
-	// no validation rules for AuthorUuid
+	// no validation rules for AuthorId
+
+	// no validation rules for Private
+
+	if all {
+		switch v := interface{}(m.GetCreatedAt()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, AlbumResponseValidationError{
+					field:  "CreatedAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, AlbumResponseValidationError{
+					field:  "CreatedAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCreatedAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return AlbumResponseValidationError{
+				field:  "CreatedAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetUpdatedAt()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, AlbumResponseValidationError{
+					field:  "UpdatedAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, AlbumResponseValidationError{
+					field:  "UpdatedAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetUpdatedAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return AlbumResponseValidationError{
+				field:  "UpdatedAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for NotifyUsersOnPublished
 
 	if m.PublishedAt != nil {
 
@@ -217,7 +281,7 @@ func (m *AlbumReponse) validate(all bool) error {
 			switch v := interface{}(m.GetPublishedAt()).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, AlbumReponseValidationError{
+					errors = append(errors, AlbumResponseValidationError{
 						field:  "PublishedAt",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -225,7 +289,7 @@ func (m *AlbumReponse) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, AlbumReponseValidationError{
+					errors = append(errors, AlbumResponseValidationError{
 						field:  "PublishedAt",
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -234,7 +298,7 @@ func (m *AlbumReponse) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(m.GetPublishedAt()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return AlbumReponseValidationError{
+				return AlbumResponseValidationError{
 					field:  "PublishedAt",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -244,19 +308,24 @@ func (m *AlbumReponse) validate(all bool) error {
 
 	}
 
+	if m.UserId != nil {
+		// no validation rules for UserId
+	}
+
 	if len(errors) > 0 {
-		return AlbumReponseMultiError(errors)
+		return AlbumResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// AlbumReponseMultiError is an error wrapping multiple validation errors
-// returned by AlbumReponse.ValidateAll() if the designated constraints aren't met.
-type AlbumReponseMultiError []error
+// AlbumResponseMultiError is an error wrapping multiple validation errors
+// returned by AlbumResponse.ValidateAll() if the designated constraints
+// aren't met.
+type AlbumResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m AlbumReponseMultiError) Error() string {
+func (m AlbumResponseMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -265,11 +334,11 @@ func (m AlbumReponseMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m AlbumReponseMultiError) AllErrors() []error { return m }
+func (m AlbumResponseMultiError) AllErrors() []error { return m }
 
-// AlbumReponseValidationError is the validation error returned by
-// AlbumReponse.Validate if the designated constraints aren't met.
-type AlbumReponseValidationError struct {
+// AlbumResponseValidationError is the validation error returned by
+// AlbumResponse.Validate if the designated constraints aren't met.
+type AlbumResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -277,22 +346,22 @@ type AlbumReponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e AlbumReponseValidationError) Field() string { return e.field }
+func (e AlbumResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e AlbumReponseValidationError) Reason() string { return e.reason }
+func (e AlbumResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e AlbumReponseValidationError) Cause() error { return e.cause }
+func (e AlbumResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e AlbumReponseValidationError) Key() bool { return e.key }
+func (e AlbumResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e AlbumReponseValidationError) ErrorName() string { return "AlbumReponseValidationError" }
+func (e AlbumResponseValidationError) ErrorName() string { return "AlbumResponseValidationError" }
 
 // Error satisfies the builtin error interface
-func (e AlbumReponseValidationError) Error() string {
+func (e AlbumResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -304,14 +373,14 @@ func (e AlbumReponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sAlbumReponse.%s: %s%s",
+		"invalid %sAlbumResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = AlbumReponseValidationError{}
+var _ error = AlbumResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -319,7 +388,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = AlbumReponseValidationError{}
+} = AlbumResponseValidationError{}
 
 // Validate checks the field values on GetBySlugRequest with the rules defined
 // in the proto definition for this message. If any rules are violated, the
@@ -445,7 +514,13 @@ func (m *IndexRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Limit
+	if m.Limit != nil {
+		// no validation rules for Limit
+	}
+
+	if m.Next != nil {
+		// no validation rules for Next
+	}
 
 	if len(errors) > 0 {
 		return IndexRequestMultiError(errors)
@@ -648,7 +723,7 @@ func (m *IndexResponse) validate(all bool) error {
 
 	var errors []error
 
-	for idx, item := range m.GetAlbums() {
+	for idx, item := range m.GetData() {
 		_, _ = idx, item
 
 		if all {
@@ -656,7 +731,7 @@ func (m *IndexResponse) validate(all bool) error {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, IndexResponseValidationError{
-						field:  fmt.Sprintf("Albums[%v]", idx),
+						field:  fmt.Sprintf("Data[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -664,7 +739,7 @@ func (m *IndexResponse) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, IndexResponseValidationError{
-						field:  fmt.Sprintf("Albums[%v]", idx),
+						field:  fmt.Sprintf("Data[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -673,7 +748,7 @@ func (m *IndexResponse) validate(all bool) error {
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return IndexResponseValidationError{
-					field:  fmt.Sprintf("Albums[%v]", idx),
+					field:  fmt.Sprintf("Data[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -1250,3 +1325,263 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = CreateRequestValidationError{}
+
+// Validate checks the field values on UpdateResponse with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *UpdateResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on UpdateResponse with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in UpdateResponseMultiError,
+// or nil if none found.
+func (m *UpdateResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *UpdateResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetAlbum()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, UpdateResponseValidationError{
+					field:  "Album",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, UpdateResponseValidationError{
+					field:  "Album",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetAlbum()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return UpdateResponseValidationError{
+				field:  "Album",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return UpdateResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// UpdateResponseMultiError is an error wrapping multiple validation errors
+// returned by UpdateResponse.ValidateAll() if the designated constraints
+// aren't met.
+type UpdateResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m UpdateResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m UpdateResponseMultiError) AllErrors() []error { return m }
+
+// UpdateResponseValidationError is the validation error returned by
+// UpdateResponse.Validate if the designated constraints aren't met.
+type UpdateResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UpdateResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UpdateResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UpdateResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UpdateResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UpdateResponseValidationError) ErrorName() string { return "UpdateResponseValidationError" }
+
+// Error satisfies the builtin error interface
+func (e UpdateResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUpdateResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UpdateResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UpdateResponseValidationError{}
+
+// Validate checks the field values on UpdateRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *UpdateRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on UpdateRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in UpdateRequestMultiError, or
+// nil if none found.
+func (m *UpdateRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *UpdateRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Slug
+
+	if all {
+		switch v := interface{}(m.GetAlbum()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, UpdateRequestValidationError{
+					field:  "Album",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, UpdateRequestValidationError{
+					field:  "Album",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetAlbum()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return UpdateRequestValidationError{
+				field:  "Album",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return UpdateRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// UpdateRequestMultiError is an error wrapping multiple validation errors
+// returned by UpdateRequest.ValidateAll() if the designated constraints
+// aren't met.
+type UpdateRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m UpdateRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m UpdateRequestMultiError) AllErrors() []error { return m }
+
+// UpdateRequestValidationError is the validation error returned by
+// UpdateRequest.Validate if the designated constraints aren't met.
+type UpdateRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UpdateRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UpdateRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UpdateRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UpdateRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UpdateRequestValidationError) ErrorName() string { return "UpdateRequestValidationError" }
+
+// Error satisfies the builtin error interface
+func (e UpdateRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUpdateRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UpdateRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UpdateRequestValidationError{}

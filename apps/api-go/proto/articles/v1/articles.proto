@@ -37,7 +37,7 @@ message ArticleResponse {
 	string meta_description = 4;
 	string content = 5;
 	optional google.protobuf.Timestamp published_at = 6;
-  string author_uuid = 7;
+  string author_id = 7;
 }
 
 message GetBySlugRequest {

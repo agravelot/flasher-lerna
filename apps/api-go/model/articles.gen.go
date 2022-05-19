@@ -19,7 +19,7 @@ type Article struct {
 	Name            string         `gorm:"column:name;type:text;not null" json:"name"`
 	MetaDescription string         `gorm:"column:meta_description;type:text;not null" json:"meta_description"`
 	Content         string         `gorm:"column:content;type:text;not null" json:"content"`
-	AuthorUUID      string         `gorm:"column:author_uuid;type:text;not null" json:"author_uuid"`
+	AuthorId      string         `gorm:"column:author_uuid;type:text;not null" json:"author_uuid"`
 	PublishedAt     *time.Time     `gorm:"column:published_at;type:timestamp with time zone" json:"published_at"`
 	CreatedAt       time.Time      `gorm:"column:created_at;type:timestamp with time zone;not null" json:"created_at"`
 	UpdatedAt       time.Time      `gorm:"column:updated_at;type:timestamp with time zone;not null" json:"updated_at"`
