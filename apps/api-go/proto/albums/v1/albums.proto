@@ -14,16 +14,22 @@ message AlbumRequest {
 	string meta_description = 4;
 	string content = 5;
 	optional google.protobuf.Timestamp published_at = 6;
+  bool private = 8;
 }
 
-message AlbumReponse {
+message AlbumResponse {
   int64 id = 1;
 	string slug = 2;
-	string name = 3;
+	string title = 3;
 	string meta_description = 4;
 	string content = 5;
 	optional google.protobuf.Timestamp published_at = 6;
-  string author_uuid = 7;
+  string author_id = 7;
+  bool private = 8;
+  optional int64 user_id = 9;
+  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp updated_at = 11;
+  bool notify_users_on_published = 12;
 }
 
 message GetBySlugRequest {
@@ -31,7 +37,8 @@ message GetBySlugRequest {
 }
 
 message IndexRequest {
-  string limit = 1;
+  optional int32 limit = 1;
+  optional int32 next = 2;
 }
 
 message DeleteRequest {
@@ -39,11 +46,11 @@ message DeleteRequest {
 }
 
 message IndexResponse {
-  repeated AlbumReponse albums = 1;
+  repeated AlbumResponse data = 1;
 }
 
 message GetBySlugResponse {
-  AlbumReponse album = 1;
+  AlbumResponse album = 1;
 }
 
 message DeleteResponse {
@@ -51,11 +58,20 @@ message DeleteResponse {
 }
 
 message CreateResponse {
-  AlbumReponse album = 1;
+  AlbumResponse album = 1;
 }
 
 message CreateRequest {
   AlbumRequest album = 1;
+}
+
+message UpdateResponse {
+  AlbumResponse album = 1;
+}
+
+message UpdateRequest {
+  string slug = 1;
+  AlbumRequest album = 2;
 }
 
 service AlbumService {
@@ -90,6 +106,18 @@ service AlbumService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Add an album"
       description: "Add an album to the server."
+      tags: "Albums"
+    };
+  }
+
+  rpc Update(UpdateRequest) returns (UpdateResponse) {
+    option (google.api.http) = {
+      put: "/api/v1/albums/{slug}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Update an album"
+      description: "Update an album to the server."
       tags: "Albums"
     };
   }

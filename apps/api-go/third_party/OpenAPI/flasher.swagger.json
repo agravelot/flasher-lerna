@@ -317,7 +317,7 @@
         }
       }
     },
-    "v1AlbumReponse": {
+    "v1AlbumResponse": {
       "type": "object",
       "properties": {
         "id": {
@@ -340,7 +340,7 @@
           "type": "string",
           "format": "date-time"
         },
-        "authorUuid": {
+        "AuthorId": {
           "type": "string"
         }
       }
@@ -385,7 +385,7 @@
       "type": "object",
       "properties": {
         "album": {
-          "$ref": "#/definitions/v1AlbumReponse"
+          "$ref": "#/definitions/v1AlbumResponse"
         },
         "article": {
           "$ref": "#/definitions/v1ArticleResponse"
@@ -404,7 +404,7 @@
       "type": "object",
       "properties": {
         "album": {
-          "$ref": "#/definitions/v1AlbumReponse"
+          "$ref": "#/definitions/v1AlbumResponse"
         },
         "article": {
           "$ref": "#/definitions/v1ArticleResponse"
@@ -417,7 +417,7 @@
         "albums": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v1AlbumReponse"
+            "$ref": "#/definitions/v1AlbumResponse"
           }
         },
         "data": {
@@ -476,7 +476,7 @@
           "type": "string",
           "format": "date-time"
         },
-        "authorUuid": {
+        "AuthorId": {
           "type": "string"
         }
       }
