@@ -621,7 +621,7 @@ func (m *DeleteRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Slug
+	// no validation rules for Id
 
 	if len(errors) > 0 {
 		return DeleteRequestMultiError(errors)
@@ -1477,7 +1477,7 @@ func (m *UpdateRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Slug
+	// no validation rules for Id
 
 	if all {
 		switch v := interface{}(m.GetAlbum()).(type) {

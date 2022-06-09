@@ -17,15 +17,15 @@ import (
 	albums_pb "api-go/gen/go/proto/albums/v1"
 )
 
-// Service is a simple CRUD interface for user albums.
-type Service interface {
-	GetAlbumList(ctx context.Context, params albums_pb.IndexRequest) (albums_pb.IndexResponse, error)
-	GetAlbum(ctx context.Context, slug string) (AlbumResponse, error)
-	PostAlbum(ctx context.Context, p AlbumRequest) (AlbumResponse, error)
-	PutAlbum(ctx context.Context, slug string, p AlbumRequest) (AlbumResponse, error)
-	PatchAlbum(ctx context.Context, slug string, p AlbumUpdateRequest) (AlbumResponse, error)
-	DeleteAlbum(ctx context.Context, slug string) error
-}
+// // Service is a simple CRUD interface for user albums.
+// type Service interface {
+// 	Index(ctx context.Context, params albums_pb.IndexRequest) (albums_pb.IndexResponse, error)
+// 	GetBySlug(ctx context.Context, slug string) (AlbumResponse, error)
+// 	Create(ctx context.Context, p AlbumRequest) (AlbumResponse, error)
+// 	Update(ctx context.Context, slug string, p AlbumRequest) (AlbumResponse, error)
+// 	// PatchAlbum(ctx context.Context, slug string, p AlbumUpdateRequest) (AlbumResponse, error)
+// 	Delete(ctx context.Context, slug string) error
+// }
 
 var (
 	ErrAlreadyExists = status.Error(codes.AlreadyExists, "already exists")
@@ -35,6 +35,7 @@ var (
 )
 
 type service struct {
+	albums_pb.UnimplementedAlbumServiceServer
 	orm *gorm.DB
 }
 
@@ -215,8 +216,8 @@ func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albu
 	// TODO Check row count update
 	// TODO UpdatedAt
 	_, err := query.Updates(model.Album{
-		ID:                  int32(r.Album.Id),
-		Slug:                r.Slug,
+		// ID:                  r.Album.Id,
+		Slug:                r.Album.Slug,
 		Title:               r.Album.Name,
 		Body:                &r.Album.Content,
 		PublishedAt:         publishedAt,
@@ -230,7 +231,7 @@ func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albu
 
 	query.Preload(qb.Categories).Preload(qb.Medias)
 
-	a, err := query.Where(qb.Slug.Eq(r.Slug)).First()
+	a, err := query.Where(qb.ID.Eq(r.Id)).First()
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, ErrNotFound
@@ -259,7 +260,7 @@ func (s *service) Delete(ctx context.Context, r *albums_pb.DeleteRequest) (*albu
 
 	qb := query.Use(s.orm).Album
 
-	ri, err := qb.WithContext(ctx).Where(qb.Slug.Eq(r.Slug)).Delete()
+	ri, err := qb.WithContext(ctx).Where(qb.ID.Eq(r.Id)).Delete()
 	if ri.RowsAffected == 0 {
 		return nil, ErrNotFound
 	}

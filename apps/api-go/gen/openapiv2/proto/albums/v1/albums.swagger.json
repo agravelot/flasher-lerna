@@ -88,37 +88,7 @@
         ]
       }
     },
-    "/api/v1/albums/{slug}": {
-      "get": {
-        "summary": "Create an album",
-        "description": "Create an album to the server.",
-        "operationId": "AlbumService_GetBySlug",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetBySlugResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Albums"
-        ]
-      },
+    "/api/v1/albums/{id}": {
       "delete": {
         "summary": "Delete an album",
         "description": "Delete an album to the server.",
@@ -139,10 +109,11 @@
         },
         "parameters": [
           {
-            "name": "slug",
+            "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "format": "int32"
           }
         ],
         "tags": [
@@ -169,10 +140,11 @@
         },
         "parameters": [
           {
-            "name": "slug",
+            "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "format": "int32"
           },
           {
             "name": "body",
@@ -186,6 +158,38 @@
                 }
               }
             }
+          }
+        ],
+        "tags": [
+          "Albums"
+        ]
+      }
+    },
+    "/api/v1/albums/{slug}": {
+      "get": {
+        "summary": "Create an album",
+        "description": "Create an album to the server.",
+        "operationId": "AlbumService_GetBySlug",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetBySlugResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "tags": [
@@ -226,8 +230,8 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "string",
-          "format": "int64"
+          "type": "integer",
+          "format": "int32"
         },
         "slug": {
           "type": "string"
@@ -254,8 +258,8 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "string",
-          "format": "int64"
+          "type": "integer",
+          "format": "int32"
         },
         "slug": {
           "type": "string"

@@ -20,7 +20,7 @@ import (
 )
 
 var (
-	s  Service
+	s  articlesgrpc.ArticleServiceServer
 	db *gorm.DB
 )
 

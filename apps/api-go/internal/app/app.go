@@ -85,13 +85,13 @@ func Run(config *config.Configurations) {
 	}
 	defer db.Close()
 
-	var sAlbum album.Service
+	var sAlbum albumspb.AlbumServiceServer
 	{
 		sAlbum = album.NewService(orm)
 		// sAlbum = album.LoggingMiddleware(logger)(sAlbum)
 	}
 
-	var sArticle article.Service
+	var sArticle articlespb.ArticleServiceServer
 	{
 		sArticle = article.NewService(orm)
 		// sArticle = article.LoggingMiddleware(logger)(sArticle)

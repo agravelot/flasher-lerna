@@ -150,12 +150,17 @@ func transformAlbumFromDB(a model.Album) *albumspb.AlbumResponse {
 		publishedAt = &timestamppb.Timestamp{Seconds: int64(a.PublishedAt.Second())}
 	}
 
+	var body string
+	if a.Body != nil {
+		body = *a.Body
+	}
+
 	return &albumspb.AlbumResponse{
-		Id:                     int64(a.ID),
+		Id:                     a.ID,
 		Slug:                   a.Slug,
 		Title:                  a.Title,
 		MetaDescription:        a.MetaDescription,
-		Content:                *a.Body,
+		Content:                body,
 		PublishedAt:            publishedAt,
 		Private:                a.Private,
 		AuthorId:               *a.SsoID,

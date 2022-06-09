@@ -172,14 +172,14 @@ func request_AlbumService_Update_0(ctx context.Context, marshaler runtime.Marsha
 		_   = err
 	)
 
-	val, ok = pathParams["slug"]
+	val, ok = pathParams["id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "slug")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
 
-	protoReq.Slug, err = runtime.String(val)
+	protoReq.Id, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "slug", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
 
 	msg, err := client.Update(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -206,14 +206,14 @@ func local_request_AlbumService_Update_0(ctx context.Context, marshaler runtime.
 		_   = err
 	)
 
-	val, ok = pathParams["slug"]
+	val, ok = pathParams["id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "slug")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
 
-	protoReq.Slug, err = runtime.String(val)
+	protoReq.Id, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "slug", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
 
 	msg, err := server.Update(ctx, &protoReq)
@@ -232,14 +232,14 @@ func request_AlbumService_Delete_0(ctx context.Context, marshaler runtime.Marsha
 		_   = err
 	)
 
-	val, ok = pathParams["slug"]
+	val, ok = pathParams["id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "slug")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
 
-	protoReq.Slug, err = runtime.String(val)
+	protoReq.Id, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "slug", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
 
 	msg, err := client.Delete(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -258,14 +258,14 @@ func local_request_AlbumService_Delete_0(ctx context.Context, marshaler runtime.
 		_   = err
 	)
 
-	val, ok = pathParams["slug"]
+	val, ok = pathParams["id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "slug")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
 
-	protoReq.Slug, err = runtime.String(val)
+	protoReq.Id, err = runtime.Int32(val)
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "slug", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
 
 	msg, err := server.Delete(ctx, &protoReq)
@@ -358,7 +358,7 @@ func RegisterAlbumServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.albums.v1.AlbumService/Update", runtime.WithHTTPPathPattern("/api/v1/albums/{slug}"))
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.albums.v1.AlbumService/Update", runtime.WithHTTPPathPattern("/api/v1/albums/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -382,7 +382,7 @@ func RegisterAlbumServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.albums.v1.AlbumService/Delete", runtime.WithHTTPPathPattern("/api/v1/albums/{slug}"))
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.albums.v1.AlbumService/Delete", runtime.WithHTTPPathPattern("/api/v1/albums/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -508,7 +508,7 @@ func RegisterAlbumServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/proto.albums.v1.AlbumService/Update", runtime.WithHTTPPathPattern("/api/v1/albums/{slug}"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/proto.albums.v1.AlbumService/Update", runtime.WithHTTPPathPattern("/api/v1/albums/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -529,7 +529,7 @@ func RegisterAlbumServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/proto.albums.v1.AlbumService/Delete", runtime.WithHTTPPathPattern("/api/v1/albums/{slug}"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/proto.albums.v1.AlbumService/Delete", runtime.WithHTTPPathPattern("/api/v1/albums/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -555,9 +555,9 @@ var (
 
 	pattern_AlbumService_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "albums"}, ""))
 
-	pattern_AlbumService_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "albums", "slug"}, ""))
+	pattern_AlbumService_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "albums", "id"}, ""))
 
-	pattern_AlbumService_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "albums", "slug"}, ""))
+	pattern_AlbumService_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"api", "v1", "albums", "id"}, ""))
 )
 
 var (
