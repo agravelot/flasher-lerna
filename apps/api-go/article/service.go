@@ -26,6 +26,7 @@ var (
 )
 
 type Service struct {
+	articles_pb.UnimplementedArticleServiceServer
 	db *gorm.DB
 }
 
@@ -216,7 +217,7 @@ func (s Service) Update(ctx context.Context, request *articles_pb.UpdateRequest)
 
 func (s Service) Delete(ctx context.Context, request *articles_pb.DeleteRequest) (*articles_pb.DeleteResponse, error) {
 	if err := s.db.Where("id = ?", request.Id).First(&model.Article{}).Error; err != nil {
-		return &articles_pb.DeleteResponse{}, ErrNotFound
+		return nil, ErrNotFound
 	}
 
 	err := s.db.Where("id = ?", request.Id).Delete(&model.Article{}).Error
