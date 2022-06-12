@@ -15,7 +15,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/go-playground/validator/v10"
 	"github.com/jackc/pgconn"
 	"github.com/jackc/pgerrcode"
 	"github.com/stretchr/testify/assert"
@@ -661,13 +660,12 @@ func TestShouldBeAbleToCreateAnAlbumAsAdmin(t *testing.T) {
 	ctx, claims := authAsAdmin(context.Background())
 	a := query.Use(orm).Album
 
-	arg := albums_pb.AlbumRequest{
+	arg := &albums_pb.CreateRequest{
 		Name:            "A good Title",
 		MetaDescription: "meta",
 		Slug:            "a-good-title",
 	}
-
-	res, err := s.Create(ctx, &albums_pb.CreateRequest{Album: &arg})
+	res, err := s.Create(ctx, arg)
 
 	assert.NoError(t, err)
 	total, err := a.WithContext(context.Background()).Count()
@@ -675,10 +673,10 @@ func TestShouldBeAbleToCreateAnAlbumAsAdmin(t *testing.T) {
 		t.Error(fmt.Errorf("Error counting albums: %w", err))
 	}
 	assert.Equal(t, 1, int(total))
-	assert.Equal(t, arg.Name, res.Album.Title)
-	assert.Equal(t, "a-good-title", res.Album.Slug)
-	assert.Equal(t, claims.Sub, res.Album.AuthorId)
-	assert.Equal(t, arg.PublishedAt, res.Album.PublishedAt)
+	assert.Equal(t, arg.Name, res.Title)
+	assert.Equal(t, "a-good-title", res.Slug)
+	assert.Equal(t, claims.Sub, res.AuthorId)
+	assert.Equal(t, arg.PublishedAt, res.PublishedAt)
 }
 
 func TestShouldBeAbleToCreateAnPublishedAlbumAsAdmin(t *testing.T) {
@@ -688,14 +686,14 @@ func TestShouldBeAbleToCreateAnPublishedAlbumAsAdmin(t *testing.T) {
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute).UTC()
-	arg := albums_pb.AlbumRequest{
+	arg := albums_pb.CreateRequest{
 		Name:            "A good Title",
 		MetaDescription: "meta",
 		Slug:            slug,
 		PublishedAt:     &timestamppb.Timestamp{Seconds: int64(pub.Second())},
 	}
 
-	res, err := s.Create(ctx, &albums_pb.CreateRequest{Album: &arg})
+	res, err := s.Create(ctx, &arg)
 
 	assert.NoError(t, err)
 	total, err := a.WithContext(context.Background()).Count()
@@ -704,10 +702,10 @@ func TestShouldBeAbleToCreateAnPublishedAlbumAsAdmin(t *testing.T) {
 		t.Error(fmt.Errorf("Error counting albums: %w", err))
 	}
 	assert.Equal(t, 1, int(total))
-	assert.Equal(t, arg.Name, res.Album.Title)
-	assert.Equal(t, "a-good-title", res.Album.Slug)
-	assert.Equal(t, claims.Sub, res.Album.AuthorId)
-	assert.Equal(t, arg.PublishedAt.Seconds, res.Album.PublishedAt.Seconds)
+	assert.Equal(t, arg.Name, res.Title)
+	assert.Equal(t, "a-good-title", res.Slug)
+	assert.Equal(t, claims.Sub, res.AuthorId)
+	assert.Equal(t, arg.PublishedAt.Seconds, res.PublishedAt.Seconds)
 }
 
 func TestShouldNotBeAbleToCreateAnAlbumWithSameSlug(t *testing.T) {
@@ -717,17 +715,17 @@ func TestShouldNotBeAbleToCreateAnAlbumWithSameSlug(t *testing.T) {
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
-	arg := albums_pb.AlbumRequest{
+	arg := albums_pb.CreateRequest{
 		Name:            "A good Title",
 		MetaDescription: "meta",
 		Slug:            slug,
 		PublishedAt:     &timestamppb.Timestamp{Seconds: int64(pub.Second())},
 	}
 
-	_, err := s.Create(ctx, &albums_pb.CreateRequest{Album: &arg})
+	_, err := s.Create(ctx, &arg)
 	assert.NoError(t, err)
 
-	_, err = s.Create(ctx, &albums_pb.CreateRequest{Album: &arg})
+	_, err = s.Create(ctx, &arg)
 
 	var pgErr *pgconn.PgError
 	assert.Error(t, err)
@@ -747,20 +745,19 @@ func TestShouldNotBeAbleToSaveAlbumWithEmptyTitle(t *testing.T) {
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
-	arg := albums_pb.AlbumRequest{
+	arg := albums_pb.CreateRequest{
 		Name:            "",
 		MetaDescription: "meta",
 		Slug:            slug,
 		PublishedAt:     &timestamppb.Timestamp{Seconds: int64(pub.Second())},
 	}
 
-	_, err := s.Create(ctx, &albums_pb.CreateRequest{Album: &arg})
+	_, err := s.Create(ctx, &arg)
 
 	assert.Error(t, err)
-	assert.Equal(t, "Key: 'AlbumRequest.Title' Error:Field validation for 'Title' failed on the 'required' tag", err.Error())
-
+	firstValidationError := err.(albums_pb.CreateRequestMultiError)[0].(albums_pb.CreateRequestValidationError)
+	assert.Equal(t, "Name", firstValidationError.Field())
 	total, err := a.WithContext(context.Background()).Count()
-
 	assert.NoError(t, err)
 	assert.Equal(t, 0, int(total))
 }
@@ -772,22 +769,19 @@ func TestShouldNotBeAbleToSaveAlbumWithTooLongTitle(t *testing.T) {
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
-	arg := albums_pb.AlbumRequest{
+	arg := albums_pb.CreateRequest{
 		Name:            "a very too long big enormous title that will never fit in any screen...",
 		MetaDescription: "meta",
 		Slug:            slug,
 		PublishedAt:     &timestamppb.Timestamp{Seconds: int64(pub.Second())},
 	}
 
-	_, err := s.Create(ctx, &albums_pb.CreateRequest{Album: &arg})
+	_, err := s.Create(ctx, &arg)
 
 	assert.Error(t, err)
-	validationErrors := err.(validator.ValidationErrors)
-	assert.Equal(t, "AlbumRequest.Title", validationErrors[0].Namespace())
-	assert.Equal(t, "lt", validationErrors[0].ActualTag())
-
+	firstValidationError := err.(albums_pb.CreateRequestMultiError)[0].(albums_pb.CreateRequestValidationError)
+	assert.Equal(t, "Name", firstValidationError.Field())
 	total, err := a.WithContext(context.Background()).Count()
-
 	assert.NoError(t, err)
 	assert.Equal(t, 0, int(total))
 }
@@ -799,22 +793,19 @@ func TestShouldNotBeAbleToSaveAlbumWithEmptyMetaDescription(t *testing.T) {
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
-	arg := albums_pb.AlbumRequest{
+	arg := albums_pb.CreateRequest{
 		Name:            "a good title",
 		MetaDescription: "",
 		Slug:            slug,
 		PublishedAt:     &timestamppb.Timestamp{Seconds: int64(pub.Second())},
 	}
 
-	_, err := s.Create(ctx, &albums_pb.CreateRequest{Album: &arg})
+	_, err := s.Create(ctx, &arg)
 
 	assert.Error(t, err)
-	validationErrors := err.(validator.ValidationErrors)
-	assert.Equal(t, "AlbumRequest.MetaDescription", validationErrors[0].Namespace())
-	assert.Equal(t, "required", validationErrors[0].ActualTag())
-
+	firstValidationError := err.(albums_pb.CreateRequestMultiError)[0].(albums_pb.CreateRequestValidationError)
+	assert.Equal(t, "MetaDescription", firstValidationError.Field())
 	total, err := a.WithContext(context.Background()).Count()
-
 	assert.NoError(t, err)
 	assert.Equal(t, 0, int(total))
 }
@@ -826,22 +817,19 @@ func TestShouldNotBeAbleToSaveAlbumWithTooLongMetaDescription(t *testing.T) {
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
-	arg := albums_pb.AlbumRequest{
+	arg := albums_pb.CreateRequest{
 		Name:            "a good title",
-		MetaDescription: "a very too long big enormous meta description that will never fit in any screen...",
+		MetaDescription: "a very too long big enormous meta description that will never fit in any screen..a very too long big enormous meta description that will never fit in any screen..a very too long big enormous meta description that will never fit in any screen..a very too long big enormous meta description that will never fit in any screen..a very too long big enormous meta description that will never fit in any screen...",
 		Slug:            slug,
 		PublishedAt:     &timestamppb.Timestamp{Seconds: int64(pub.Second())},
 	}
 
-	_, err := s.Create(ctx, &albums_pb.CreateRequest{Album: &arg})
+	_, err := s.Create(ctx, &arg)
 
 	assert.Error(t, err)
-	validationErrors := err.(validator.ValidationErrors)
-	assert.Equal(t, "AlbumRequest.MetaDescription", validationErrors[0].Namespace())
-	assert.Equal(t, "lt", validationErrors[0].ActualTag())
-
+	firstValidationError := err.(albums_pb.CreateRequestMultiError)[0].(albums_pb.CreateRequestValidationError)
+	assert.Equal(t, "MetaDescription", firstValidationError.Field())
 	total, err := a.WithContext(context.Background()).Count()
-
 	assert.NoError(t, err)
 	assert.Equal(t, 0, int(total))
 }
@@ -853,14 +841,14 @@ func TestShouldNotBeAbleToCreateAsUser(t *testing.T) {
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
-	arg := albums_pb.AlbumRequest{
+	arg := albums_pb.CreateRequest{
 		Name:            "a good title",
 		MetaDescription: "meta",
 		Slug:            slug,
 		PublishedAt:     &timestamppb.Timestamp{Seconds: int64(pub.Second())},
 	}
 
-	_, err := s.Create(ctx, &albums_pb.CreateRequest{Album: &arg})
+	_, err := s.Create(ctx, &arg)
 
 	assert.Error(t, err)
 	assert.Equal(t, ErrNotAdmin, err)
@@ -876,14 +864,14 @@ func TestShouldNotBeAbleToCreateAsGuest(t *testing.T) {
 
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
-	arg := albums_pb.AlbumRequest{
+	arg := albums_pb.CreateRequest{
 		Name:            "a good title",
 		MetaDescription: "meta",
 		Slug:            slug,
 		PublishedAt:     &timestamppb.Timestamp{Seconds: int64(pub.Second())},
 	}
 
-	_, err := s.Create(context.Background(), &albums_pb.CreateRequest{Album: &arg})
+	_, err := s.Create(context.Background(), &arg)
 
 	assert.Error(t, err)
 	assert.Equal(t, ErrNoAuth, err)
@@ -909,16 +897,14 @@ func TestShouldBeAbleToUpdateAlbumTitleAsAdmin(t *testing.T) {
 
 	expectedTitle := "A new Title"
 	new, err := s.Update(ctx, &albums_pb.UpdateRequest{
-		Id: a.ID,
-		Album: &albums_pb.AlbumRequest{
-			Name:            expectedTitle,
-			Slug:            a.Slug,
-			MetaDescription: a.MetaDescription,
-		},
+		Id:              a.ID,
+		Name:            expectedTitle,
+		Slug:            a.Slug,
+		MetaDescription: a.MetaDescription,
 	})
 
 	assert.NoError(t, err)
-	assert.Equal(t, expectedTitle, new.Album.Title)
+	assert.Equal(t, expectedTitle, new.Title)
 	var total int64
 	orm.Model(&model.Album{}).Count(&total)
 	assert.Equal(t, 1, int(total))
@@ -938,16 +924,16 @@ func TestShouldNotBeAbleToUpdateAlbumTooShortTitleAsAdmin(t *testing.T) {
 	orm.Create(&a)
 
 	_, err := s.Update(ctx, &albums_pb.UpdateRequest{
-		Id: a.ID,
-		Album: &albums_pb.AlbumRequest{
-			Slug:            a.Slug,
-			Name:            "",
-			MetaDescription: a.MetaDescription,
-		},
+		Id:              a.ID,
+		Slug:            a.Slug,
+		Name:            "",
+		MetaDescription: a.MetaDescription,
 	})
 
 	assert.Error(t, err)
-	assert.IsType(t, validator.ValidationErrors{}, err)
+	assert.IsType(t, albums_pb.UpdateRequestMultiError{}, err)
+	firstValidationError := err.(albums_pb.UpdateRequestMultiError)[0].(albums_pb.UpdateRequestValidationError)
+	assert.Equal(t, "Name", firstValidationError.Field())
 	var total int64
 	orm.Model(&model.Album{}).Count(&total)
 	assert.Equal(t, 1, int(total))
@@ -967,10 +953,8 @@ func TestShouldNotBeAbleToUpdateAlbumAsUser(t *testing.T) {
 	orm.Create(&a)
 
 	_, err := s.Update(ctx, &albums_pb.UpdateRequest{
-		Id: a.ID,
-		Album: &albums_pb.AlbumRequest{
-			Name: "A new Title",
-		},
+		Id:   a.ID,
+		Name: "A new Title",
 	})
 
 	assert.Error(t, err)
@@ -992,10 +976,8 @@ func TestShouldNotBeAbleToUpdateAlbumAsGuest(t *testing.T) {
 	orm.Create(&a)
 
 	_, err := s.Update(context.Background(), &albums_pb.UpdateRequest{
-		Id: a.ID,
-		Album: &albums_pb.AlbumRequest{
-			Name: "A new Title",
-		},
+		Id:   a.ID,
+		Name: "A new Title",
 	})
 
 	assert.Error(t, err)

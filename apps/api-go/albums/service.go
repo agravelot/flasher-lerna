@@ -149,26 +149,26 @@ func (s *service) Create(ctx context.Context, r *albums_pb.CreateRequest) (*albu
 		return nil, ErrNotAdmin
 	}
 
-	if err := r.Validate(); err != nil {
+	if err := r.ValidateAll(); err != nil {
 		return nil, err
 	}
 
-	// if r.Album.Slug == nil {
+	// if r.Slug == nil {
 	// 	s := slug.Make(r.Title)
 	// 	r.Slug = &s
 	// }
 
 	var publishedAt *time.Time
-	if r.Album.PublishedAt != nil {
-		t := r.Album.PublishedAt.AsTime()
+	if r.PublishedAt != nil {
+		t := r.PublishedAt.AsTime()
 		publishedAt = &t
 	}
 
 	album := model.Album{
-		Title:       r.Album.Name,
-		Slug:        r.Album.Slug,
+		Title:       r.Name,
+		Slug:        r.Slug,
 		SsoID:       &user.Sub,
-		Body:        &r.Album.Content,
+		Body:        &r.Content,
 		PublishedAt: publishedAt,
 	}
 
@@ -180,10 +180,22 @@ func (s *service) Create(ctx context.Context, r *albums_pb.CreateRequest) (*albu
 		return nil, err
 	}
 
-	return &albums_pb.CreateResponse{
-		Album: transformAlbumFromDB(album),
-	}, nil
+	data := transformAlbumFromDB(album)
 
+	return &albums_pb.CreateResponse{
+		Id:                     data.Id,
+		Slug:                   data.Slug,
+		Title:                  data.Title,
+		Content:                data.Content,
+		MetaDescription:        data.MetaDescription,
+		PublishedAt:            data.PublishedAt,
+		AuthorId:               data.AuthorId,
+		Private:                data.Private,
+		UserId:                 data.UserId,
+		CreatedAt:              data.CreatedAt,
+		UpdatedAt:              data.UpdatedAt,
+		NotifyUsersOnPublished: data.NotifyUsersOnPublished,
+	}, nil
 }
 
 func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albums_pb.UpdateResponse, error) {
@@ -198,7 +210,7 @@ func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albu
 		return nil, ErrNotAdmin
 	}
 
-	if err := r.Validate(); err != nil {
+	if err := r.ValidateAll(); err != nil {
 		return nil, err
 	}
 
@@ -207,22 +219,21 @@ func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albu
 	query := qb.WithContext(ctx)
 
 	var publishedAt *time.Time
-	if r.Album.PublishedAt != nil {
-		t := r.Album.PublishedAt.AsTime()
+	if r.PublishedAt != nil {
+		t := r.PublishedAt.AsTime()
 		publishedAt = &t
 	}
 
 	// TODO Check duplicate
 	// TODO Check row count update
 	// TODO UpdatedAt
-	_, err := query.Updates(model.Album{
-		// ID:                  r.Album.Id,
-		Slug:                r.Album.Slug,
-		Title:               r.Album.Name,
-		Body:                &r.Album.Content,
+	_, err := query.Where(qb.ID.Eq(r.Id)).Updates(model.Album{
+		Slug:                r.Slug,
+		Title:               r.Name,
+		Body:                &r.Content,
 		PublishedAt:         publishedAt,
-		Private:             r.Album.Private,
-		IsPublishedPublicly: !r.Album.Private,
+		Private:             r.Private,
+		IsPublishedPublicly: !r.Private,
 		SsoID:               &user.Sub,
 	})
 	if err != nil {
@@ -237,8 +248,21 @@ func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albu
 		return nil, ErrNotFound
 	}
 
+	data := transformAlbumFromDB(*a)
+
 	return &albums_pb.UpdateResponse{
-		Album: transformAlbumFromDB(*a),
+		Id:                     data.Id,
+		Slug:                   data.Slug,
+		Title:                  data.Title,
+		Content:                data.Content,
+		MetaDescription:        data.MetaDescription,
+		PublishedAt:            data.PublishedAt,
+		AuthorId:               data.AuthorId,
+		Private:                data.Private,
+		UserId:                 data.UserId,
+		CreatedAt:              data.CreatedAt,
+		UpdatedAt:              data.UpdatedAt,
+		NotifyUsersOnPublished: data.NotifyUsersOnPublished,
 	}, nil
 }
 

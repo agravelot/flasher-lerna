@@ -92,7 +92,7 @@ func (s Service) Index(ctx context.Context, request *articles_pb.IndexRequest) (
 		return &articles_pb.IndexResponse{}, fmt.Errorf("unable list articles: %w", err)
 	}
 
-	data := make([]*articles_pb.ArticleResponse, len(articles))
+	data := make([]*articles_pb.ArticleResponse, 0, len(articles))
 	for _, article := range articles {
 		// TODO add missing fields
 		data = append(data, transform(*article))
@@ -122,8 +122,15 @@ func (s Service) GetBySlug(ctx context.Context, request *articles_pb.GetBySlugRe
 		return &articles_pb.GetBySlugResponse{}, ErrNotFound
 	}
 
+	data := transform(*a)
 	return &articles_pb.GetBySlugResponse{
-		Article: transform(*a),
+		Id:              data.Id,
+		Slug:            data.Slug,
+		Name:            data.Name,
+		MetaDescription: data.MetaDescription,
+		Content:         data.Content,
+		PublishedAt:     data.PublishedAt,
+		AuthorId:        data.AuthorId,
 	}, err
 }
 
@@ -141,21 +148,21 @@ func (s Service) Create(ctx context.Context, request *articles_pb.CreateRequest)
 		return &articles_pb.CreateResponse{}, ErrNotAdmin
 	}
 
-	if err := request.Article.ValidateAll(); err != nil {
+	if err := request.ValidateAll(); err != nil {
 		return &articles_pb.CreateResponse{}, err
 	}
 
 	var p *time.Time
-	if request.Article.PublishedAt != nil {
-		tmp := request.Article.PublishedAt.AsTime()
+	if request.PublishedAt != nil {
+		tmp := request.PublishedAt.AsTime()
 		p = &tmp
 	}
 	a := model.Article{
-		ID:              request.Article.Id,
-		Slug:            request.Article.Slug,
-		Name:            request.Article.Name,
-		MetaDescription: request.Article.MetaDescription,
-		Content:         request.Article.Content,
+		ID:              request.Id,
+		Slug:            request.Slug,
+		Name:            request.Name,
+		MetaDescription: request.MetaDescription,
+		Content:         request.Content,
 		PublishedAt:     p,
 		AuthorId:        user.Sub,
 	}
@@ -168,9 +175,16 @@ func (s Service) Create(ctx context.Context, request *articles_pb.CreateRequest)
 		return &articles_pb.CreateResponse{}, err
 	}
 
+	data := transform(a)
 	return &articles_pb.CreateResponse{
-		Article: transform(a),
-	}, nil
+		Id:              data.Id,
+		Slug:            data.Slug,
+		Name:            data.Name,
+		MetaDescription: data.MetaDescription,
+		Content:         data.Content,
+		PublishedAt:     data.PublishedAt,
+		AuthorId:        data.AuthorId,
+	}, err
 }
 
 func (s Service) Update(ctx context.Context, request *articles_pb.UpdateRequest) (*articles_pb.UpdateResponse, error) {
@@ -187,31 +201,38 @@ func (s Service) Update(ctx context.Context, request *articles_pb.UpdateRequest)
 		return &articles_pb.UpdateResponse{}, ErrNotAdmin
 	}
 
-	a, err := query.Where(qb.Slug.Eq(request.Article.Slug)).First()
+	if err := request.ValidateAll(); err != nil {
+		return nil, err
+	}
+
+	a, err := query.Where(qb.Slug.Eq(request.Slug)).First()
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		return &articles_pb.UpdateResponse{}, ErrNotFound
 	}
 
-	p := request.Article.PublishedAt.AsTime()
-	a.ID = request.Article.Id
-	a.Slug = request.Article.Slug
-	a.Name = request.Article.Name
-	a.MetaDescription = request.Article.MetaDescription
-	a.Content = request.Article.Content
+	p := request.PublishedAt.AsTime()
+	a.ID = request.Id
+	a.Slug = request.Slug
+	a.Name = request.Name
+	a.MetaDescription = request.MetaDescription
+	a.Content = request.Content
 	a.PublishedAt = &p
-	// a.AuthorId = request.Article.AuthorId
-
-	// if err := r.Validate(); err != nil {
-	// 	return &articlespb.UpdateResponse{}, err
-	// }
+	// a.AuthorId = request.AuthorId
 
 	err = query.Save(a)
 	if err != nil {
 		return &articles_pb.UpdateResponse{}, fmt.Errorf("unable update article: %w", err)
 	}
 
+	data := transform(*a)
 	return &articles_pb.UpdateResponse{
-		Article: transform(*a),
+		Id:              data.Id,
+		Slug:            data.Slug,
+		Name:            data.Name,
+		MetaDescription: data.MetaDescription,
+		Content:         data.Content,
+		PublishedAt:     data.PublishedAt,
+		AuthorId:        data.AuthorId,
 	}, nil
 }
 

@@ -21,15 +21,6 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 };
 
 
-message AricleRequest {
-  int64 id = 1;
-	string slug = 2;
-	string name = 3 [(validate.rules).string.min_len = 5, (validate.rules).string.max_len = 60];
-	string meta_description = 4 [(validate.rules).string.min_len = 1, (validate.rules).string.max_len = 155];
-	string content = 5;
-	optional google.protobuf.Timestamp published_at = 6;
-}
-
 message ArticleResponse {
   int64 id = 1;
 	string slug = 2;
@@ -58,25 +49,53 @@ message IndexResponse {
 }
 
 message GetBySlugResponse {
-  ArticleResponse article = 1;
+  int64 id = 1;
+	string slug = 2;
+	string name = 3;
+	string meta_description = 4;
+	string content = 5;
+	optional google.protobuf.Timestamp published_at = 6;
+  string author_id = 7;
 }
 
 message DeleteResponse {}
 
 message CreateResponse {
-  ArticleResponse article = 1;
+  int64 id = 1;
+	string slug = 2;
+	string name = 3;
+	string meta_description = 4;
+	string content = 5;
+	optional google.protobuf.Timestamp published_at = 6;
+  string author_id = 7;
 }
 
 message CreateRequest {
-  AricleRequest article = 1;
+  int64 id = 1;
+	string slug = 2;
+	string name = 3 [(validate.rules).string.min_len = 5, (validate.rules).string.max_len = 60];
+	string meta_description = 4 [(validate.rules).string.min_len = 1, (validate.rules).string.max_len = 155];
+	string content = 5;
+	optional google.protobuf.Timestamp published_at = 6;
 }
 
 message UpdateRequest {
-  AricleRequest article = 1;
+  int64 id = 1;
+	string slug = 2;
+	string name = 3 [(validate.rules).string.min_len = 5, (validate.rules).string.max_len = 60];
+	string meta_description = 4 [(validate.rules).string.min_len = 1, (validate.rules).string.max_len = 155];
+	string content = 5;
+	optional google.protobuf.Timestamp published_at = 6;
 }
 
 message UpdateResponse {
-  ArticleResponse article = 1;
+  int64 id = 1;
+	string slug = 2;
+	string name = 3;
+	string meta_description = 4;
+	string content = 5;
+	optional google.protobuf.Timestamp published_at = 6;
+  string author_id = 7;
 }
 
 service ArticleService {

@@ -216,31 +216,6 @@
         }
       }
     },
-    "v1AricleRequest": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "int64"
-        },
-        "slug": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "metaDescription": {
-          "type": "string"
-        },
-        "content": {
-          "type": "string"
-        },
-        "publishedAt": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
-    },
     "v1ArticleResponse": {
       "type": "object",
       "properties": {
@@ -272,16 +247,53 @@
     "v1CreateRequest": {
       "type": "object",
       "properties": {
-        "article": {
-          "$ref": "#/definitions/v1AricleRequest"
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "metaDescription": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     },
     "v1CreateResponse": {
       "type": "object",
       "properties": {
-        "article": {
-          "$ref": "#/definitions/v1ArticleResponse"
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "metaDescription": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "authorId": {
+          "type": "string"
         }
       }
     },
@@ -291,8 +303,28 @@
     "v1GetBySlugResponse": {
       "type": "object",
       "properties": {
-        "article": {
-          "$ref": "#/definitions/v1ArticleResponse"
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "metaDescription": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "authorId": {
+          "type": "string"
         }
       }
     },
@@ -310,16 +342,53 @@
     "v1UpdateRequest": {
       "type": "object",
       "properties": {
-        "article": {
-          "$ref": "#/definitions/v1AricleRequest"
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "metaDescription": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     },
     "v1UpdateResponse": {
       "type": "object",
       "properties": {
-        "article": {
-          "$ref": "#/definitions/v1ArticleResponse"
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "metaDescription": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "authorId": {
+          "type": "string"
         }
       }
     }
