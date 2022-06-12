@@ -6,16 +6,7 @@ option go_package = "api-go/albumsgrpc";
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
-
-message AlbumRequest {
-  int32 id = 1;
-	string slug = 2;
-	string name = 3;
-	string meta_description = 4;
-	string content = 5;
-	optional google.protobuf.Timestamp published_at = 6;
-  bool private = 8;
-}
+import "validate/validate.proto";
 
 message AlbumResponse {
   int32 id = 1;
@@ -58,20 +49,52 @@ message DeleteResponse {
 }
 
 message CreateResponse {
-  AlbumResponse album = 1;
+  int32 id = 1;
+	string slug = 2;
+	string title = 3;
+	string meta_description = 4;
+	string content = 5;
+	optional google.protobuf.Timestamp published_at = 6;
+  string author_id = 7;
+  bool private = 8;
+  optional int64 user_id = 9;
+  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp updated_at = 11;
+  bool notify_users_on_published = 12;
 }
 
 message CreateRequest {
-  AlbumRequest album = 1;
+	string slug = 2;
+	string name = 3 [(validate.rules).string.min_len = 5, (validate.rules).string.max_len = 60];
+	string meta_description = 4 [(validate.rules).string.min_len = 1, (validate.rules).string.max_len = 255];;
+	string content = 5;
+	optional google.protobuf.Timestamp published_at = 6;
+  bool private = 8;
 }
 
 message UpdateResponse {
-  AlbumResponse album = 1;
+  int32 id = 1;
+	string slug = 2;
+	string title = 3;
+	string meta_description = 4;
+	string content = 5;
+	optional google.protobuf.Timestamp published_at = 6;
+  string author_id = 7;
+  bool private = 8;
+  optional int64 user_id = 9;
+  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp updated_at = 11;
+  bool notify_users_on_published = 12;
 }
 
 message UpdateRequest {
   int32 id = 1;
-  AlbumRequest album = 2;
+	string slug = 2;
+	string name = 3 [(validate.rules).string.min_len = 5, (validate.rules).string.max_len = 60];
+	string meta_description = 4;
+	string content = 5;
+	optional google.protobuf.Timestamp published_at = 6;
+  bool private = 8;
 }
 
 service AlbumService {
