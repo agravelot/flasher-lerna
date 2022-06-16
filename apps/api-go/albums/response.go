@@ -2,6 +2,8 @@ package album
 
 import (
 	albumspb "api-go/gen/go/proto/albums/v1"
+	categoriespb "api-go/gen/go/proto/categories/v1"
+	mediaspb "api-go/gen/go/proto/medias/v1"
 	"api-go/model"
 	"time"
 
@@ -97,21 +99,21 @@ type MediaReponse struct {
 	UpdatedAt        *time.Time               `json:"updated_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
 }
 
-func transformMediaFromDB(media model.Medium) MediaReponse {
-	return MediaReponse{
-		ID:        media.ID,
+func transformMediaFromDB(media model.Medium) *mediaspb.Media {
+	return &mediaspb.Media{
+		Id:        media.ID,
 		Name:      media.Name,
 		FileName:  media.FileName,
 		MimeType:  media.MimeType,
 		Size:      media.Size,
-		CreatedAt: media.CreatedAt,
-		UpdatedAt: media.UpdatedAt,
-		CustomProperties: CustomPropertiesResponse{
+		CreatedAt: &timestamppb.Timestamp{Seconds: int64(media.CreatedAt.Second())},
+		UpdatedAt: &timestamppb.Timestamp{Seconds: int64(media.UpdatedAt.Second())},
+		CustomProperties: &mediaspb.Media_CustomProperties{
 			Height: media.CustomProperties.Height,
 			Width:  media.CustomProperties.Width,
 		},
-		ResponsiveImages: ResponsiveImagesResponse{
-			Responsive: ResponsiveResponse{
+		ResponsiveImages: &mediaspb.Media_ResponsiveImages{
+			Responsive: &mediaspb.Media_Responsive{
 				Urls:      media.ResponsiveImages.Responsive.Urls,
 				Base64Svg: media.ResponsiveImages.Responsive.Base64Svg,
 			},
@@ -119,31 +121,30 @@ func transformMediaFromDB(media model.Medium) MediaReponse {
 	}
 }
 
-func transformCategoryFromDB(c model.Category) CategoryReponse {
-	return CategoryReponse{
-		ID:   c.ID,
-		Name: c.Name,
+func transformCategoryFromDB(c model.Category) *categoriespb.Category {
+	return &categoriespb.Category{
+		Id: c.ID,
 	}
 }
 
 func transformAlbumFromDB(a model.Album) *albumspb.AlbumResponse {
-	// var mediasResponse *[]MediaReponse
-	// if a.Medias != nil {
-	// 	var tmp []MediaReponse
-	// 	for _, m := range a.Medias {
-	// 		tmp = append(tmp, transformMediaFromDB(m))
-	// 	}
-	// 	mediasResponse = &tmp
-	// }
+	var mediasResponse []*mediaspb.Media
+	if a.Medias != nil {
+		var tmp []*mediaspb.Media
+		for _, m := range a.Medias {
+			tmp = append(tmp, transformMediaFromDB(m))
+		}
+		mediasResponse = tmp
+	}
 
-	// var categoriesResponse *[]CategoryReponse
-	// if a.Categories != nil {
-	// 	var tmp []CategoryReponse
-	// 	for _, c := range a.Categories {
-	// 		tmp = append(tmp, transformCategoryFromDB(c))
-	// 	}
-	// 	categoriesResponse = &tmp
-	// }
+	var categoriesResponse []*categoriespb.Category
+	if a.Categories != nil {
+		var tmp []*categoriespb.Category
+		for _, c := range a.Categories {
+			tmp = append(tmp, transformCategoryFromDB(c))
+		}
+		categoriesResponse = tmp
+	}
 
 	var publishedAt *timestamppb.Timestamp
 	if a.PublishedAt != nil {
@@ -168,8 +169,8 @@ func transformAlbumFromDB(a model.Album) *albumspb.AlbumResponse {
 		CreatedAt:              &timestamppb.Timestamp{Seconds: int64(a.CreatedAt.Second())},
 		UpdatedAt:              &timestamppb.Timestamp{Seconds: int64(a.UpdatedAt.Second())},
 		NotifyUsersOnPublished: a.NotifyUsersOnPublished,
-		// Medias:                 mediasResponse,
-		// Categories:             categoriesResponse,
+		Categories:             categoriesResponse,
+		Medias:                 mediasResponse,
 	}
 }
 

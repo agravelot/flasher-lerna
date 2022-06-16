@@ -68,7 +68,7 @@ func transform(a model.Article) *articles_pb.ArticleResponse {
 		MetaDescription: a.MetaDescription,
 		Content:         a.Content,
 		PublishedAt:     publishedAt,
-		AuthorId:        a.AuthorId,
+		AuthorId:        a.AuthorUUID,
 	}
 }
 
@@ -164,7 +164,7 @@ func (s Service) Create(ctx context.Context, request *articles_pb.CreateRequest)
 		MetaDescription: request.MetaDescription,
 		Content:         request.Content,
 		PublishedAt:     p,
-		AuthorId:        user.Sub,
+		AuthorUUID:      user.Sub,
 	}
 	err := query.Create(&a)
 	if err != nil {

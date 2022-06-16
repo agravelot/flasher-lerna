@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package proto.medias.v1;
+// option go_package = "api-go/mediasgrpc";
+option go_package = "api-go/gen/go/proto/medias/v1;mediaspbv1";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "validate/validate.proto";
+
+message Media {
+  int32 id = 1;
+  string name = 2;
+	string file_name = 3;
+	optional string mime_type = 4;
+	int64 size = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+  message CustomProperties {
+    int32 height = 1;
+    int32 width = 2;
+  }
+  CustomProperties custom_properties = 8;
+  message Responsive {
+     repeated string urls = 1; 
+     string base64_svg = 2;
+  }
+  message ResponsiveImages {
+    Responsive responsive = 1;
+  }
+  ResponsiveImages responsive_images = 9;
+}
+
+service MediaService {
+
+}

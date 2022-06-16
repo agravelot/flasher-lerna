@@ -131,6 +131,74 @@ func (m *AlbumResponse) validate(all bool) error {
 
 	// no validation rules for NotifyUsersOnPublished
 
+	for idx, item := range m.GetCategories() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, AlbumResponseValidationError{
+						field:  fmt.Sprintf("Categories[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, AlbumResponseValidationError{
+						field:  fmt.Sprintf("Categories[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return AlbumResponseValidationError{
+					field:  fmt.Sprintf("Categories[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	for idx, item := range m.GetMedias() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, AlbumResponseValidationError{
+						field:  fmt.Sprintf("Medias[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, AlbumResponseValidationError{
+						field:  fmt.Sprintf("Medias[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return AlbumResponseValidationError{
+					field:  fmt.Sprintf("Medias[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
 	if m.PublishedAt != nil {
 
 		if all {
@@ -376,6 +444,39 @@ func (m *IndexRequest) validate(all bool) error {
 
 	if m.Next != nil {
 		// no validation rules for Next
+	}
+
+	if m.Joins != nil {
+
+		if all {
+			switch v := interface{}(m.GetJoins()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, IndexRequestValidationError{
+						field:  "Joins",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, IndexRequestValidationError{
+						field:  "Joins",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetJoins()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return IndexRequestValidationError{
+					field:  "Joins",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	}
 
 	if len(errors) > 0 {
@@ -1660,3 +1761,109 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = UpdateRequestValidationError{}
+
+// Validate checks the field values on IndexRequest_Joins with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *IndexRequest_Joins) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on IndexRequest_Joins with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// IndexRequest_JoinsMultiError, or nil if none found.
+func (m *IndexRequest_Joins) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *IndexRequest_Joins) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Categories
+
+	// no validation rules for Medias
+
+	if len(errors) > 0 {
+		return IndexRequest_JoinsMultiError(errors)
+	}
+
+	return nil
+}
+
+// IndexRequest_JoinsMultiError is an error wrapping multiple validation errors
+// returned by IndexRequest_Joins.ValidateAll() if the designated constraints
+// aren't met.
+type IndexRequest_JoinsMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m IndexRequest_JoinsMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m IndexRequest_JoinsMultiError) AllErrors() []error { return m }
+
+// IndexRequest_JoinsValidationError is the validation error returned by
+// IndexRequest_Joins.Validate if the designated constraints aren't met.
+type IndexRequest_JoinsValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e IndexRequest_JoinsValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e IndexRequest_JoinsValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e IndexRequest_JoinsValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e IndexRequest_JoinsValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e IndexRequest_JoinsValidationError) ErrorName() string {
+	return "IndexRequest_JoinsValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e IndexRequest_JoinsValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sIndexRequest_Joins.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = IndexRequest_JoinsValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = IndexRequest_JoinsValidationError{}

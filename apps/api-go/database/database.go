@@ -51,6 +51,9 @@ func ClearDB(db *gorm.DB) {
 		panic(err)
 	}
 	for _, table := range tables {
-		db.Exec("DELETE FROM " + table + " WHERE 1 = 1")
+		db.Exec("TRUNCATE " + table)
+	}
+	for _, table := range tables {
+		db.Exec("TRUNCATE " + table)
 	}
 }

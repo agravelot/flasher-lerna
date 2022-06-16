@@ -402,150 +402,183 @@ func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 	assert.Equal(t, 1, len(r.Data))
 }
 
-// func TestShouldBeAbleToListWithCategories(t *testing.T) {
-// 	tx := orm.Begin()
-// 	defer tx.Rollback()
-// 	s := NewService(tx)
+func TestShouldNotIncludeCategoriesByDefault(t *testing.T) {
+	tx := orm.Begin()
+	defer tx.Rollback()
+	s := NewService(tx)
 
-// 	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
-// 	sub5Min := time.Now().Add(-5 * time.Minute)
-// 	a := query.Use(tx).Album
-// 	// c := query.Use(tx).Category
+	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	sub5Min := time.Now().Add(-5 * time.Minute)
+	a := query.Use(tx).Album
+	// c := query.Use(tx).Category
 
-// 	arg1 := model.Category{
-// 		Name: "A good Category",
-// 	}
-// 	// err := c.WithContext(context.Background()).Create(&arg1)
-// 	// if err != nil {
-// 	// 	t.Error(fmt.Errorf("unable create category: %w", err))
-// 	// }
+	arg1 := model.Category{
+		Name: "A good Category",
+	}
 
-// 	arg := model.Album{
-// 		Title:       "A good Title",
-// 		PublishedAt: &sub5Min,
-// 		SsoID:       &ssoId,
-// 		Private:     false,
-// 		Categories:  []model.Category{arg1},
-// 	}
+	arg := model.Album{
+		Title:       "A good Title",
+		PublishedAt: &sub5Min,
+		SsoID:       &ssoId,
+		Private:     false,
+		Categories:  []model.Category{arg1},
+	}
 
-// 	err := a.WithContext(context.Background()).Create(&arg)
-// 	if err != nil {
-// 		t.Error(fmt.Errorf("Error creating album: %w", err))
-// 	}
+	err := a.WithContext(context.Background()).Create(&arg)
+	if err != nil {
+		t.Error(fmt.Errorf("Error creating album: %w", err))
+	}
 
-// 	// err = a.Categories.Model(&arg).Append(&arg1)
-// 	// if err != nil {
-// 	// 	t.Error(fmt.Errorf("error linking album with category : %w", err))
-// 	// }
+	r, err := s.Index(context.Background(), &albums_pb.IndexRequest{})
+	if err != nil {
+		t.Error(err)
+	}
 
-// 	r, err := s.Index(context.Background(), &albums_pb.IndexRequest{})
-// 	if err != nil {
-// 		t.Error(err)
-// 	}
+	assert.Equal(t, 1, len(r.Data))
+	assert.Nil(t, r.Data[0].Categories)
+}
 
-// 	spew.Dump(r.Data[0].Categories, len(r.Data[0].Categories))
-// 	assert.Equal(t, 1, len(r.Data))
-// 	assert.NotNil(t, r.Data[0].Categories)
-// 	assert.Equal(t, 1, len(r.Data[0].Categories))
-// }
+func TestShouldBeAbleToListWithCategories(t *testing.T) {
+	tx := orm.Begin()
+	defer tx.Rollback()
+	s := NewService(tx)
 
-// func TestShouldBeAbleToListWithoutCategories(t *testing.T) {
-// 	tx := orm.Begin()
-// defer tx.Rollback()
-// s := NewService(tx)
+	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	sub5Min := time.Now().Add(-5 * time.Minute)
+	a := query.Use(tx).Album
+	// c := query.Use(tx).Category
 
-// 	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
-// 	sub5Min := time.Now().Add(-5 * time.Minute)
-// 	a := query.Use(tx).Album
-// 	c := query.Use(tx).Category
+	arg1 := model.Category{
+		Name: "A good Category",
+	}
 
-// 	arg1 := model.Category{
-// 		Name: "A good Category",
-// 	}
-// 	err := c.WithContext(context.Background()).Create(&arg1)
+	arg := model.Album{
+		Title:       "A good Title",
+		PublishedAt: &sub5Min,
+		SsoID:       &ssoId,
+		Private:     false,
+		Categories:  []model.Category{arg1},
+	}
 
-// 	arg := model.Album{
-// 		Title:       "A good Title",
-// 		PublishedAt: &sub5Min,
-// 		SsoID:       &ssoId,
-// 		Private:     false,
-// 		// Categories:  &categories,
-// 	}
+	err := a.WithContext(context.Background()).Create(&arg)
+	if err != nil {
+		t.Error(fmt.Errorf("Error creating album: %w", err))
+	}
 
-// 	err = a.WithContext(context.Background()).Create(&arg)
-// 	if err != nil {
-// 		t.Error(fmt.Errorf("Error creating album: %w", err))
-// 	}
+	r, err := s.Index(context.Background(), &albums_pb.IndexRequest{
+		Joins: &albums_pb.IndexRequest_Joins{
+			Categories: true,
+		}})
+	if err != nil {
+		t.Error(err)
+	}
 
-// 	err = a.Categories.Model(&arg).Append(&arg1)
-// 	if err != nil {
-// 		t.Error(fmt.Errorf("error linking album with category : %w", err))
-// 	}
+	assert.Equal(t, 1, len(r.Data))
+	assert.NotNil(t, r.Data[0].Categories)
+	assert.Equal(t, 1, len(r.Data[0].Categories))
+}
 
-// 	r, err := s.Index(context.Background(), &albums_pb.IndexRequest{})
-// 	if err != nil {
-// 		t.Error(err)
-// 	}
+func TestShouldBeAbleToListWithMedias(t *testing.T) {
+	tx := orm.Begin()
+	defer tx.Rollback()
+	s := NewService(tx)
 
-// 	var nilCategories *[]CategoryReponse
+	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	sub5Min := time.Now().Add(-5 * time.Minute)
+	a := query.Use(tx).Album
+	m := query.Use(tx).Medium
 
-// 	// assert.Equal(t, int64(1), r.Meta.Total)
-// 	// assert.Equal(t, int32(10), r.Meta.Limit)
-// 	assert.Equal(t, 1, len(r.Data))
-// 	assert.Equal(t, nilCategories, r.Data[0].Categories)
-// }
+	arg := model.Album{
+		Title:       "A good Title",
+		PublishedAt: &sub5Min,
+		SsoID:       &ssoId,
+		Private:     false,
+	}
 
-// func TestShouldBeAbleToListWithMedias(t *testing.T) {
-// 	tx := orm.Begin()
-// defer tx.Rollback()
-// s := NewService(tx)
+	err := a.WithContext(context.Background()).Create(&arg)
+	if err != nil {
+		t.Error(fmt.Errorf("Error creating album: %w", err))
+	}
 
-// 	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
-// 	sub5Min := time.Now().Add(-5 * time.Minute)
-// 	a := query.Use(tx).Album
-// 	m := query.Use(tx).Medium
+	mimeType := "image/jpeg"
+	arg1 := model.Medium{
+		Name:             "A good Media",
+		ModelID:          int64(arg.ID),
+		Size:             int64(1),
+		ModelType:        "App\\Models\\Album",
+		CollectionName:   "albums",
+		Disk:             "dummy",
+		MimeType:         &mimeType,
+		Manipulations:    `{"resize":{"width":100,"height":100}}`,
+		CustomProperties: &model.CustomProperties{},
+		ResponsiveImages: &model.ResponsiveImages{},
+	}
+	err = m.WithContext(context.Background()).Create(&arg1)
+	if err != nil {
+		t.Error(err)
+		t.Error(fmt.Errorf("Error saving media for given album : %w", err))
+	}
 
-// 	arg := model.Album{
-// 		Title:       "A good Title",
-// 		PublishedAt: &sub5Min,
-// 		SsoID:       &ssoId,
-// 		Private:     false,
-// 	}
+	r, err := s.Index(context.Background(), &albums_pb.IndexRequest{Joins: &albums_pb.IndexRequest_Joins{Medias: true}})
+	if err != nil {
+		t.Error(err)
+	}
 
-// 	err := a.WithContext(context.Background()).Create(&arg)
-// 	if err != nil {
-// 		t.Error(fmt.Errorf("Error creating album: %w", err))
-// 	}
+	assert.Equal(t, 1, len(r.Data))
+	assert.NotNil(t, r.Data[0].Medias)
+	assert.Equal(t, 1, len(r.Data[0].Medias))
+	// assert.Equal(t, arg1.Name, (r.Data[0].Medias)[0].Name)
+}
 
-// 	mimeType := "image/jpeg"
-// 	arg1 := model.Medium{
-// 		Name:             "A good Media",
-// 		ModelID:          int64(arg.ID),
-// 		Size:             int64(1),
-// 		ModelType:        "App\\Models\\Album",
-// 		CollectionName:   "albums",
-// 		Disk:             "dummy",
-// 		MimeType:         &mimeType,
-// 		Manipulations:    `{"resize":{"width":100,"height":100}}`,
-// 		CustomProperties: &model.CustomProperties{},
-// 		ResponsiveImages: &model.ResponsiveImages{},
-// 	}
-// 	err = m.WithContext(context.Background()).Create(&arg1)
-// 	if err != nil {
-// 		t.Error(err)
-// 		t.Error(fmt.Errorf("Error saving media for given album : %w", err))
-// 	}
+func TestShouldNotIncludeMediasByDefault(t *testing.T) {
+	tx := orm.Begin()
+	defer tx.Rollback()
+	s := NewService(tx)
 
-// 	r, err := s.Index(context.Background(), &albums_pb.IndexRequest{Joins: AlbumListJoinsParams{Medias: true}})
-// 	if err != nil {
-// 		t.Error(err)
-// 	}
+	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	sub5Min := time.Now().Add(-5 * time.Minute)
+	a := query.Use(tx).Album
+	m := query.Use(tx).Medium
 
-// 	assert.Equal(t, 1, len(r.Data))
-// 	assert.NotNil(t, r.Data[0].Medias)
-// 	assert.Equal(t, 1, len(*r.Data[0].Medias))
-// 	assert.Equal(t, arg1.Name, (*r.Data[0].Medias)[0].Name)
-// }
+	arg := model.Album{
+		Title:       "A good Title",
+		PublishedAt: &sub5Min,
+		SsoID:       &ssoId,
+		Private:     false,
+	}
+
+	err := a.WithContext(context.Background()).Create(&arg)
+	if err != nil {
+		t.Error(fmt.Errorf("Error creating album: %w", err))
+	}
+
+	mimeType := "image/jpeg"
+	arg1 := model.Medium{
+		Name:             "A good Media",
+		ModelID:          int64(arg.ID),
+		Size:             int64(1),
+		ModelType:        "App\\Models\\Album",
+		CollectionName:   "albums",
+		Disk:             "dummy",
+		MimeType:         &mimeType,
+		Manipulations:    `{"resize":{"width":100,"height":100}}`,
+		CustomProperties: &model.CustomProperties{},
+		ResponsiveImages: &model.ResponsiveImages{},
+	}
+	err = m.WithContext(context.Background()).Create(&arg1)
+	if err != nil {
+		t.Error(err)
+		t.Error(fmt.Errorf("Error saving media for given album : %w", err))
+	}
+
+	r, err := s.Index(context.Background(), &albums_pb.IndexRequest{})
+	if err != nil {
+		t.Error(err)
+	}
+
+	assert.Equal(t, 1, len(r.Data))
+	assert.Nil(t, r.Data[0].Medias)
+}
 
 func TestShouldNotListNonPublishedAlbums(t *testing.T) {
 	tx := orm.Begin()

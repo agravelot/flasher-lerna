@@ -49,6 +49,18 @@
             "required": false,
             "type": "integer",
             "format": "int32"
+          },
+          {
+            "name": "joins.categories",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "joins.medias",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -215,6 +227,52 @@
     }
   },
   "definitions": {
+    "IndexRequestJoins": {
+      "type": "object",
+      "properties": {
+        "categories": {
+          "type": "boolean"
+        },
+        "medias": {
+          "type": "boolean"
+        }
+      }
+    },
+    "MediaCustomProperties": {
+      "type": "object",
+      "properties": {
+        "height": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "width": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "MediaResponsive": {
+      "type": "object",
+      "properties": {
+        "urls": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "base64Svg": {
+          "type": "string"
+        }
+      }
+    },
+    "MediaResponsiveImages": {
+      "type": "object",
+      "properties": {
+        "responsive": {
+          "$ref": "#/definitions/MediaResponsive"
+        }
+      }
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -285,6 +343,28 @@
         },
         "notifyUsersOnPublished": {
           "type": "boolean"
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Category"
+          },
+          "title": "TODO Can be optional"
+        },
+        "medias": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Media"
+          }
+        }
+      }
+    },
+    "v1Category": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -382,6 +462,42 @@
           "items": {
             "$ref": "#/definitions/v1AlbumResponse"
           }
+        }
+      }
+    },
+    "v1Media": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "fileName": {
+          "type": "string"
+        },
+        "mimeType": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string",
+          "format": "int64"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "customProperties": {
+          "$ref": "#/definitions/MediaCustomProperties"
+        },
+        "responsiveImages": {
+          "$ref": "#/definitions/MediaResponsiveImages"
         }
       }
     },

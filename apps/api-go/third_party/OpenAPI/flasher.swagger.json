@@ -9,8 +9,12 @@
       "name": "ArticleService"
     }
   ],
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "paths": {
     "/api/v1/albums": {
       "get": {
@@ -36,10 +40,20 @@
             "name": "limit",
             "in": "query",
             "required": false,
-            "type": "string"
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "next",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
           }
         ],
-        "tags": ["Albums"]
+        "tags": [
+          "Albums"
+        ]
       },
       "post": {
         "summary": "Add an album",
@@ -69,7 +83,102 @@
             }
           }
         ],
-        "tags": ["Albums"]
+        "tags": [
+          "Albums"
+        ]
+      }
+    },
+    "/api/v1/albums/{id}": {
+      "delete": {
+        "summary": "Delete an album",
+        "description": "Delete an album to the server.",
+        "operationId": "AlbumService_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Albums"
+        ]
+      },
+      "put": {
+        "summary": "Update an album",
+        "description": "Update an album to the server.",
+        "operationId": "AlbumService_Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "slug": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "metaDescription": {
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "publishedAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "private": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "Albums"
+        ]
       }
     },
     "/api/v1/albums/{slug}": {
@@ -99,35 +208,9 @@
             "type": "string"
           }
         ],
-        "tags": ["Albums"]
-      },
-      "delete": {
-        "summary": "Delete an album",
-        "description": "Delete an album to the server.",
-        "operationId": "AlbumService_Delete",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1DeleteResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": ["Albums"]
+        "tags": [
+          "Albums"
+        ]
       }
     },
     "/api/v1/articles": {
@@ -165,7 +248,9 @@
             "format": "int32"
           }
         ],
-        "tags": ["Articles"]
+        "tags": [
+          "Articles"
+        ]
       },
       "post": {
         "summary": "Add an article",
@@ -195,7 +280,9 @@
             }
           }
         ],
-        "tags": ["Articles"]
+        "tags": [
+          "Articles"
+        ]
       },
       "put": {
         "summary": "Update an article",
@@ -225,7 +312,9 @@
             }
           }
         ],
-        "tags": ["Articles"]
+        "tags": [
+          "Articles"
+        ]
       }
     },
     "/api/v1/articles/{id}": {
@@ -255,7 +344,9 @@
             "type": "string"
           }
         ],
-        "tags": ["Articles"]
+        "tags": [
+          "Articles"
+        ]
       }
     },
     "/api/v1/articles/{slug}": {
@@ -285,7 +376,9 @@
             "type": "string"
           }
         ],
-        "tags": ["Articles"]
+        "tags": [
+          "Articles"
+        ]
       }
     }
   },
@@ -321,9 +414,67 @@
       "type": "object",
       "properties": {
         "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "metaDescription": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "authorId": {
+          "type": "string"
+        },
+        "private": {
+          "type": "boolean"
+        },
+        "userId": {
           "type": "string",
           "format": "int64"
         },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "notifyUsersOnPublished": {
+          "type": "boolean"
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Category"
+          },
+          "title": "TODO Can be optional"
+        }
+      }
+    },
+    "v1Category": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1CreateRequest": {
+      "type": "object",
+      "properties": {
         "slug": {
           "type": "string"
         },
@@ -340,12 +491,16 @@
           "type": "string",
           "format": "date-time"
         },
-        "AuthorId": {
-          "type": "string"
+        "private": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
-    "v1AlbumRequest": {
+    "v1CreateResponse": {
       "type": "object",
       "properties": {
         "id": {
@@ -355,7 +510,7 @@
         "slug": {
           "type": "string"
         },
-        "name": {
+        "title": {
           "type": "string"
         },
         "metaDescription": {
@@ -367,28 +522,30 @@
         "publishedAt": {
           "type": "string",
           "format": "date-time"
-        }
-      }
-    },
-    "v1CreateRequest": {
-      "type": "object",
-      "properties": {
-        "album": {
-          "$ref": "#/definitions/v1AlbumRequest"
         },
-        "article": {
-          "$ref": "#/definitions/v1AricleRequest"
-        }
-      }
-    },
-    "v1CreateResponse": {
-      "type": "object",
-      "properties": {
-        "album": {
-          "$ref": "#/definitions/v1AlbumResponse"
+        "authorId": {
+          "type": "string"
         },
-        "article": {
-          "$ref": "#/definitions/v1ArticleResponse"
+        "private": {
+          "type": "boolean"
+        },
+        "userId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "notifyUsersOnPublished": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
         }
       }
     },
@@ -406,31 +563,6 @@
         "album": {
           "$ref": "#/definitions/v1AlbumResponse"
         },
-        "article": {
-          "$ref": "#/definitions/v1ArticleResponse"
-        }
-      }
-    },
-    "v1IndexResponse": {
-      "type": "object",
-      "properties": {
-        "albums": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/v1AlbumResponse"
-          }
-        },
-        "data": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/v1ArticleResponse"
-          }
-        }
-      }
-    },
-    "v1AricleRequest": {
-      "type": "object",
-      "properties": {
         "id": {
           "type": "string",
           "format": "int64"
@@ -450,6 +582,69 @@
         "publishedAt": {
           "type": "string",
           "format": "date-time"
+        },
+        "authorId": {
+          "type": "string"
+        }
+      }
+    },
+    "v1IndexResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1ArticleResponse"
+          }
+        }
+      }
+    },
+    "v1UpdateResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "metaDescription": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "authorId": {
+          "type": "string"
+        },
+        "private": {
+          "type": "boolean"
+        },
+        "userId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "notifyUsersOnPublished": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
         }
       }
     },
@@ -476,7 +671,7 @@
           "type": "string",
           "format": "date-time"
         },
-        "AuthorId": {
+        "authorId": {
           "type": "string"
         }
       }
@@ -484,21 +679,32 @@
     "v1UpdateRequest": {
       "type": "object",
       "properties": {
-        "article": {
-          "$ref": "#/definitions/v1AricleRequest"
-        }
-      }
-    },
-    "v1UpdateResponse": {
-      "type": "object",
-      "properties": {
-        "article": {
-          "$ref": "#/definitions/v1ArticleResponse"
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "metaDescription": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     }
   },
-  "schemes": ["http"],
+  "schemes": [
+    "http"
+  ],
   "externalDocs": {
     "description": "gRPC-gateway flasher api",
     "url": "https://github.com/agravelot/flasher-lerna/apps/api-go"

@@ -7,6 +7,8 @@ import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
+import "proto/categories/v1/categories.proto";
+import "proto/medias/v1/medias.proto";
 
 message AlbumResponse {
   int32 id = 1;
@@ -21,6 +23,9 @@ message AlbumResponse {
   google.protobuf.Timestamp created_at = 10;
   google.protobuf.Timestamp updated_at = 11;
   bool notify_users_on_published = 12;
+  // TODO Can be optional
+  repeated proto.categories.v1.Category categories = 13;
+  repeated proto.medias.v1.Media medias = 14;
 }
 
 message GetBySlugRequest {
@@ -30,6 +35,11 @@ message GetBySlugRequest {
 message IndexRequest {
   optional int32 limit = 1;
   optional int32 next = 2;
+  message Joins {
+    bool categories = 1;
+    bool medias = 2;
+  }
+  optional Joins joins = 3;
 }
 
 message DeleteRequest {
