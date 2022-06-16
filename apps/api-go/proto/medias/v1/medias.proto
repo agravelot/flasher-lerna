@@ -5,9 +5,6 @@ package proto.medias.v1;
 option go_package = "api-go/gen/go/proto/medias/v1;mediaspbv1";
 
 import "google/protobuf/timestamp.proto";
-import "google/api/annotations.proto";
-import "protoc-gen-openapiv2/options/annotations.proto";
-import "validate/validate.proto";
 
 message Media {
   int32 id = 1;
