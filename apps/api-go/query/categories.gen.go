@@ -25,7 +25,7 @@ func newCategory(db *gorm.DB) category {
 
 	tableName := _category.categoryDo.TableName()
 	_category.ALL = field.NewField(tableName, "*")
-	_category.ID = field.NewInt64(tableName, "id")
+	_category.ID = field.NewInt32(tableName, "id")
 	_category.Name = field.NewString(tableName, "name")
 	_category.Slug = field.NewString(tableName, "slug")
 	_category.Description = field.NewString(tableName, "description")
@@ -42,7 +42,7 @@ type category struct {
 	categoryDo categoryDo
 
 	ALL             field.Field
-	ID              field.Int64
+	ID              field.Int32
 	Name            field.String
 	Slug            field.String
 	Description     field.String
@@ -65,7 +65,7 @@ func (c category) As(alias string) *category {
 
 func (c *category) updateTableName(table string) *category {
 	c.ALL = field.NewField(table, "*")
-	c.ID = field.NewInt64(table, "id")
+	c.ID = field.NewInt32(table, "id")
 	c.Name = field.NewString(table, "name")
 	c.Slug = field.NewString(table, "slug")
 	c.Description = field.NewString(table, "description")

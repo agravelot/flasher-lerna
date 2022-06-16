@@ -30,7 +30,7 @@ func newArticle(db *gorm.DB) article {
 	_article.Name = field.NewString(tableName, "name")
 	_article.MetaDescription = field.NewString(tableName, "meta_description")
 	_article.Content = field.NewString(tableName, "content")
-	_article.AuthorId = field.NewString(tableName, "author_uuid")
+	_article.AuthorUUID = field.NewString(tableName, "author_uuid")
 	_article.PublishedAt = field.NewTime(tableName, "published_at")
 	_article.CreatedAt = field.NewTime(tableName, "created_at")
 	_article.UpdatedAt = field.NewTime(tableName, "updated_at")
@@ -50,7 +50,7 @@ type article struct {
 	Name            field.String
 	MetaDescription field.String
 	Content         field.String
-	AuthorId      field.String
+	AuthorUUID      field.String
 	PublishedAt     field.Time
 	CreatedAt       field.Time
 	UpdatedAt       field.Time
@@ -76,7 +76,7 @@ func (a *article) updateTableName(table string) *article {
 	a.Name = field.NewString(table, "name")
 	a.MetaDescription = field.NewString(table, "meta_description")
 	a.Content = field.NewString(table, "content")
-	a.AuthorId = field.NewString(table, "author_uuid")
+	a.AuthorUUID = field.NewString(table, "author_uuid")
 	a.PublishedAt = field.NewTime(table, "published_at")
 	a.CreatedAt = field.NewTime(table, "created_at")
 	a.UpdatedAt = field.NewTime(table, "updated_at")
@@ -109,7 +109,7 @@ func (a *article) fillFieldMap() {
 	a.fieldMap["name"] = a.Name
 	a.fieldMap["meta_description"] = a.MetaDescription
 	a.fieldMap["content"] = a.Content
-	a.fieldMap["author_uuid"] = a.AuthorId
+	a.fieldMap["author_uuid"] = a.AuthorUUID
 	a.fieldMap["published_at"] = a.PublishedAt
 	a.fieldMap["created_at"] = a.CreatedAt
 	a.fieldMap["updated_at"] = a.UpdatedAt

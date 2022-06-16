@@ -78,14 +78,13 @@ func (s *service) Index(ctx context.Context, r *albums_pb.IndexRequest) (*albums
 		q.Where(qb.ID.Gt(*r.Next))
 	}
 
-	// TODO add Preload support
-	// if params.Joins.Categories {
-	// 	query.Preload(qb.Categories)
-	// }
+	if r.Joins != nil && r.Joins.Categories {
+		q = q.Preload(qb.Categories)
+	}
 
-	// if params.Joins.Medias {
-	// 	query.Preload(qb.Medias)
-	// }
+	if r.Joins != nil && r.Joins.Medias {
+		q = q.Preload(qb.Medias)
+	}
 
 	albums, err := q.Scopes(Paginate(query.Use(s.orm), r.Next, r.Limit)).Find()
 	if err != nil {
@@ -228,6 +227,7 @@ func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albu
 	// TODO Check row count update
 	// TODO UpdatedAt
 	_, err := query.Where(qb.ID.Eq(r.Id)).Updates(model.Album{
+		ID:                  r.Id,
 		Slug:                r.Slug,
 		Title:               r.Name,
 		Body:                &r.Content,

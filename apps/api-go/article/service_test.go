@@ -380,8 +380,6 @@ func TestShouldBeAbleToCreateAnArticleAndGenerateSlugAsAdmin(t *testing.T) {
 	a := articlesgrpc.CreateRequest{Name: "A good name", MetaDescription: "a meta decription"}
 	ctx, claims := authAsAdmin(context.Background())
 
-	pretty.Log(a)
-
 	res, err := s.Create(ctx, &a)
 	pretty.Log(res)
 

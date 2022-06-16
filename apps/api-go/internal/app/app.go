@@ -147,7 +147,7 @@ func Run(config *config.Configurations) {
 	oa := getOpenAPIHandler()
 
 	gwServer := &http.Server{
-		Addr: ":8090",
+		Addr: "0.0.0.0:8090",
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if strings.HasPrefix(r.URL.Path, "/api") {
 				gwmux.ServeHTTP(w, r)
@@ -157,6 +157,6 @@ func Run(config *config.Configurations) {
 		}),
 	}
 
-	log.Println("Serving gRPC-Gateway on http://0.0.0.0:8090")
+	log.Println("Serving gRPC-Gateway on http://127.0.0.1:8090")
 	log.Fatalln(gwServer.ListenAndServe())
 }
