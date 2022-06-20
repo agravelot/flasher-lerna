@@ -24,31 +24,31 @@ export interface V1ArticleResponse {
      * @type {string}
      * @memberof V1ArticleResponse
      */
-    id?: string;
+    id: string;
     /**
      * 
      * @type {string}
      * @memberof V1ArticleResponse
      */
-    slug?: string;
+    slug: string;
     /**
      * 
      * @type {string}
      * @memberof V1ArticleResponse
      */
-    name?: string;
+    name: string;
     /**
      * 
      * @type {string}
      * @memberof V1ArticleResponse
      */
-    metaDescription?: string;
+    metaDescription: string;
     /**
      * 
      * @type {string}
      * @memberof V1ArticleResponse
      */
-    content?: string;
+    content: string;
     /**
      * 
      * @type {Date}
@@ -68,6 +68,11 @@ export interface V1ArticleResponse {
  */
 export function instanceOfV1ArticleResponse(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "slug" in value;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "metaDescription" in value;
+    isInstance = isInstance && "content" in value;
 
     return isInstance;
 }
@@ -82,11 +87,11 @@ export function V1ArticleResponseFromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'slug': !exists(json, 'slug') ? undefined : json['slug'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'metaDescription': !exists(json, 'metaDescription') ? undefined : json['metaDescription'],
-        'content': !exists(json, 'content') ? undefined : json['content'],
+        'id': json['id'],
+        'slug': json['slug'],
+        'name': json['name'],
+        'metaDescription': json['metaDescription'],
+        'content': json['content'],
         'publishedAt': !exists(json, 'publishedAt') ? undefined : (new Date(json['publishedAt'])),
         'authorId': !exists(json, 'authorId') ? undefined : json['authorId'],
     };

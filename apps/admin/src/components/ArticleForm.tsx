@@ -12,7 +12,7 @@ export interface ArticleCreateProps {
 interface ArticleForm {
   name: string;
   content: string;
-  meta_description: string;
+  metaDescription: string;
 }
 
 const ArticleForm: FunctionComponent<ArticleCreateProps> = ({
@@ -40,9 +40,9 @@ const ArticleForm: FunctionComponent<ArticleCreateProps> = ({
       <Formik
         initialValues={{
           name: article?.name ?? "",
-          meta_description: article?.meta_description ?? "",
+          metaDescription: article?.meta_description ?? "",
           content: article?.content ?? "",
-          published_at: article?.published_at ?? null,
+          publishedAt: article?.published_at ?? null,
         }}
         onSubmit={onSubmit}
       >
@@ -53,7 +53,7 @@ const ArticleForm: FunctionComponent<ArticleCreateProps> = ({
             </label>
             <Field
               placeholder="Entrez un titre"
-              className="input input-lg input-bordered"
+              className="input input-bordered input-lg"
               name="name"
               type="text"
             />
@@ -78,7 +78,7 @@ const ArticleForm: FunctionComponent<ArticleCreateProps> = ({
             <Field
               as="textarea"
               name="content"
-              className="textarea h-24 textarea-bordered"
+              className="textarea textarea-bordered h-24"
               placeholder="Mon contenu"
             ></Field>
           </div>

@@ -13,125 +13,100 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import {
-    V1Category,
-    V1CategoryFromJSON,
-    V1CategoryFromJSONTyped,
-    V1CategoryToJSON,
-} from './V1Category';
-import {
-    V1Media,
-    V1MediaFromJSON,
-    V1MediaFromJSONTyped,
-    V1MediaToJSON,
-} from './V1Media';
-
 /**
  * 
  * @export
- * @interface V1AlbumResponse
+ * @interface Protoalbumsv1UpdateResponse
  */
-export interface V1AlbumResponse {
+export interface Protoalbumsv1UpdateResponse {
     /**
      * 
      * @type {number}
-     * @memberof V1AlbumResponse
+     * @memberof Protoalbumsv1UpdateResponse
      */
     id?: number;
     /**
      * 
      * @type {string}
-     * @memberof V1AlbumResponse
+     * @memberof Protoalbumsv1UpdateResponse
      */
     slug?: string;
     /**
      * 
      * @type {string}
-     * @memberof V1AlbumResponse
+     * @memberof Protoalbumsv1UpdateResponse
      */
     title?: string;
     /**
      * 
      * @type {string}
-     * @memberof V1AlbumResponse
+     * @memberof Protoalbumsv1UpdateResponse
      */
     metaDescription?: string;
     /**
      * 
      * @type {string}
-     * @memberof V1AlbumResponse
+     * @memberof Protoalbumsv1UpdateResponse
      */
     content?: string;
     /**
      * 
      * @type {Date}
-     * @memberof V1AlbumResponse
+     * @memberof Protoalbumsv1UpdateResponse
      */
     publishedAt?: Date;
     /**
      * 
      * @type {string}
-     * @memberof V1AlbumResponse
+     * @memberof Protoalbumsv1UpdateResponse
      */
     authorId?: string;
     /**
      * 
      * @type {boolean}
-     * @memberof V1AlbumResponse
+     * @memberof Protoalbumsv1UpdateResponse
      */
     _private?: boolean;
     /**
      * 
      * @type {string}
-     * @memberof V1AlbumResponse
+     * @memberof Protoalbumsv1UpdateResponse
      */
     userId?: string;
     /**
      * 
      * @type {Date}
-     * @memberof V1AlbumResponse
+     * @memberof Protoalbumsv1UpdateResponse
      */
     createdAt?: Date;
     /**
      * 
      * @type {Date}
-     * @memberof V1AlbumResponse
+     * @memberof Protoalbumsv1UpdateResponse
      */
     updatedAt?: Date;
     /**
      * 
      * @type {boolean}
-     * @memberof V1AlbumResponse
+     * @memberof Protoalbumsv1UpdateResponse
      */
     notifyUsersOnPublished?: boolean;
-    /**
-     * 
-     * @type {Array<V1Category>}
-     * @memberof V1AlbumResponse
-     */
-    categories?: Array<V1Category>;
-    /**
-     * 
-     * @type {Array<V1Media>}
-     * @memberof V1AlbumResponse
-     */
-    medias?: Array<V1Media>;
 }
 
 /**
- * Check if a given object implements the V1AlbumResponse interface.
+ * Check if a given object implements the Protoalbumsv1UpdateResponse interface.
  */
-export function instanceOfV1AlbumResponse(value: object): boolean {
+export function instanceOfProtoalbumsv1UpdateResponse(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function V1AlbumResponseFromJSON(json: any): V1AlbumResponse {
-    return V1AlbumResponseFromJSONTyped(json, false);
+export function Protoalbumsv1UpdateResponseFromJSON(json: any): Protoalbumsv1UpdateResponse {
+    return Protoalbumsv1UpdateResponseFromJSONTyped(json, false);
 }
 
-export function V1AlbumResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): V1AlbumResponse {
+export function Protoalbumsv1UpdateResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): Protoalbumsv1UpdateResponse {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -149,12 +124,10 @@ export function V1AlbumResponseFromJSONTyped(json: any, ignoreDiscriminator: boo
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
         'notifyUsersOnPublished': !exists(json, 'notifyUsersOnPublished') ? undefined : json['notifyUsersOnPublished'],
-        'categories': !exists(json, 'categories') ? undefined : ((json['categories'] as Array<any>).map(V1CategoryFromJSON)),
-        'medias': !exists(json, 'medias') ? undefined : ((json['medias'] as Array<any>).map(V1MediaFromJSON)),
     };
 }
 
-export function V1AlbumResponseToJSON(value?: V1AlbumResponse | null): any {
+export function Protoalbumsv1UpdateResponseToJSON(value?: Protoalbumsv1UpdateResponse | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -175,8 +148,6 @@ export function V1AlbumResponseToJSON(value?: V1AlbumResponse | null): any {
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
         'notifyUsersOnPublished': value.notifyUsersOnPublished,
-        'categories': value.categories === undefined ? undefined : ((value.categories as Array<any>).map(V1CategoryToJSON)),
-        'medias': value.medias === undefined ? undefined : ((value.medias as Array<any>).map(V1MediaToJSON)),
     };
 }
 

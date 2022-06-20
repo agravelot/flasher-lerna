@@ -19,6 +19,8 @@ plugins:
       # - standalone=true
   - name: openapiv2
     out: gen/openapiv2
+    strategy: all
+    opt: allow_merge=true,merge_file_name=all
   - name: validate
     out: gen/go
     opt:

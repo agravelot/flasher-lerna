@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@flasher/http-client": "^0.1.0",
     "@flasher/common": "^0.1.0",
     "@flasher/models": "^0.1.0",
     "@react-keycloak/web": "^3.4.0",

@@ -5,6 +5,7 @@ option go_package = "api-go/articlesgrpc";
 
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
 
@@ -22,11 +23,11 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 
 
 message ArticleResponse {
-  int64 id = 1;
-	string slug = 2;
-	string name = 3;
-	string meta_description = 4;
-	string content = 5;
+  int64 id = 1 [(google.api.field_behavior) = REQUIRED];
+	string slug = 2 [(google.api.field_behavior) = REQUIRED];
+	string name = 3 [(google.api.field_behavior) = REQUIRED];
+	string meta_description = 4 [(google.api.field_behavior) = REQUIRED];
+	string content = 5 [(google.api.field_behavior) = REQUIRED];
 	optional google.protobuf.Timestamp published_at = 6;
   string author_id = 7;
 }
