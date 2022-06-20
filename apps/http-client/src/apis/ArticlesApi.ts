@@ -15,34 +15,31 @@
 
 import * as runtime from '../runtime';
 import {
+    Protoarticlesv1CreateRequest,
+    Protoarticlesv1CreateRequestFromJSON,
+    Protoarticlesv1CreateRequestToJSON,
+    Protoarticlesv1CreateResponse,
+    Protoarticlesv1CreateResponseFromJSON,
+    Protoarticlesv1CreateResponseToJSON,
+    Protoarticlesv1GetBySlugResponse,
+    Protoarticlesv1GetBySlugResponseFromJSON,
+    Protoarticlesv1GetBySlugResponseToJSON,
+    Protoarticlesv1IndexResponse,
+    Protoarticlesv1IndexResponseFromJSON,
+    Protoarticlesv1IndexResponseToJSON,
+    Protoarticlesv1UpdateRequest,
+    Protoarticlesv1UpdateRequestFromJSON,
+    Protoarticlesv1UpdateRequestToJSON,
+    Protoarticlesv1UpdateResponse,
+    Protoarticlesv1UpdateResponseFromJSON,
+    Protoarticlesv1UpdateResponseToJSON,
     RpcStatus,
     RpcStatusFromJSON,
     RpcStatusToJSON,
-    V1CreateRequest,
-    V1CreateRequestFromJSON,
-    V1CreateRequestToJSON,
-    V1CreateResponse,
-    V1CreateResponseFromJSON,
-    V1CreateResponseToJSON,
-    V1DeleteResponse,
-    V1DeleteResponseFromJSON,
-    V1DeleteResponseToJSON,
-    V1GetBySlugResponse,
-    V1GetBySlugResponseFromJSON,
-    V1GetBySlugResponseToJSON,
-    V1IndexResponse,
-    V1IndexResponseFromJSON,
-    V1IndexResponseToJSON,
-    V1UpdateRequest,
-    V1UpdateRequestFromJSON,
-    V1UpdateRequestToJSON,
-    V1UpdateResponse,
-    V1UpdateResponseFromJSON,
-    V1UpdateResponseToJSON,
 } from '../models';
 
 export interface ArticleServiceCreateRequest {
-    body: V1CreateRequest;
+    body: Protoarticlesv1CreateRequest;
 }
 
 export interface ArticleServiceDeleteRequest {
@@ -59,7 +56,7 @@ export interface ArticleServiceIndexRequest {
 }
 
 export interface ArticleServiceUpdateRequest {
-    body: V1UpdateRequest;
+    body: Protoarticlesv1UpdateRequest;
 }
 
 /**
@@ -71,7 +68,7 @@ export class ArticlesApi extends runtime.BaseAPI {
      * Add an article to the server.
      * Add an article
      */
-    async articleServiceCreateRaw(requestParameters: ArticleServiceCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1CreateResponse>> {
+    async articleServiceCreateRaw(requestParameters: ArticleServiceCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Protoarticlesv1CreateResponse>> {
         if (requestParameters.body === null || requestParameters.body === undefined) {
             throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling articleServiceCreate.');
         }
@@ -87,17 +84,17 @@ export class ArticlesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: V1CreateRequestToJSON(requestParameters.body),
+            body: Protoarticlesv1CreateRequestToJSON(requestParameters.body),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => V1CreateResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => Protoarticlesv1CreateResponseFromJSON(jsonValue));
     }
 
     /**
      * Add an article to the server.
      * Add an article
      */
-    async articleServiceCreate(requestParameters: ArticleServiceCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<V1CreateResponse> {
+    async articleServiceCreate(requestParameters: ArticleServiceCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Protoarticlesv1CreateResponse> {
         const response = await this.articleServiceCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -106,7 +103,7 @@ export class ArticlesApi extends runtime.BaseAPI {
      * Delete an article to the server.
      * Delete an article
      */
-    async articleServiceDeleteRaw(requestParameters: ArticleServiceDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1DeleteResponse>> {
+    async articleServiceDeleteRaw(requestParameters: ArticleServiceDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling articleServiceDelete.');
         }
@@ -122,14 +119,14 @@ export class ArticlesApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => V1DeleteResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse<any>(response);
     }
 
     /**
      * Delete an article to the server.
      * Delete an article
      */
-    async articleServiceDelete(requestParameters: ArticleServiceDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<V1DeleteResponse> {
+    async articleServiceDelete(requestParameters: ArticleServiceDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
         const response = await this.articleServiceDeleteRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -138,7 +135,7 @@ export class ArticlesApi extends runtime.BaseAPI {
      * Create an article to the server.
      * Create an article
      */
-    async articleServiceGetBySlugRaw(requestParameters: ArticleServiceGetBySlugRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1GetBySlugResponse>> {
+    async articleServiceGetBySlugRaw(requestParameters: ArticleServiceGetBySlugRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Protoarticlesv1GetBySlugResponse>> {
         if (requestParameters.slug === null || requestParameters.slug === undefined) {
             throw new runtime.RequiredError('slug','Required parameter requestParameters.slug was null or undefined when calling articleServiceGetBySlug.');
         }
@@ -154,14 +151,14 @@ export class ArticlesApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => V1GetBySlugResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => Protoarticlesv1GetBySlugResponseFromJSON(jsonValue));
     }
 
     /**
      * Create an article to the server.
      * Create an article
      */
-    async articleServiceGetBySlug(requestParameters: ArticleServiceGetBySlugRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<V1GetBySlugResponse> {
+    async articleServiceGetBySlug(requestParameters: ArticleServiceGetBySlugRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Protoarticlesv1GetBySlugResponse> {
         const response = await this.articleServiceGetBySlugRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -170,7 +167,7 @@ export class ArticlesApi extends runtime.BaseAPI {
      * List articles to the server.
      * List articles
      */
-    async articleServiceIndexRaw(requestParameters: ArticleServiceIndexRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1IndexResponse>> {
+    async articleServiceIndexRaw(requestParameters: ArticleServiceIndexRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Protoarticlesv1IndexResponse>> {
         const queryParameters: any = {};
 
         if (requestParameters.limit !== undefined) {
@@ -190,14 +187,14 @@ export class ArticlesApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => V1IndexResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => Protoarticlesv1IndexResponseFromJSON(jsonValue));
     }
 
     /**
      * List articles to the server.
      * List articles
      */
-    async articleServiceIndex(requestParameters: ArticleServiceIndexRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<V1IndexResponse> {
+    async articleServiceIndex(requestParameters: ArticleServiceIndexRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Protoarticlesv1IndexResponse> {
         const response = await this.articleServiceIndexRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -206,7 +203,7 @@ export class ArticlesApi extends runtime.BaseAPI {
      * Update an article to the server.
      * Update an article
      */
-    async articleServiceUpdateRaw(requestParameters: ArticleServiceUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1UpdateResponse>> {
+    async articleServiceUpdateRaw(requestParameters: ArticleServiceUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Protoarticlesv1UpdateResponse>> {
         if (requestParameters.body === null || requestParameters.body === undefined) {
             throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling articleServiceUpdate.');
         }
@@ -222,17 +219,17 @@ export class ArticlesApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: V1UpdateRequestToJSON(requestParameters.body),
+            body: Protoarticlesv1UpdateRequestToJSON(requestParameters.body),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => V1UpdateResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => Protoarticlesv1UpdateResponseFromJSON(jsonValue));
     }
 
     /**
      * Update an article to the server.
      * Update an article
      */
-    async articleServiceUpdate(requestParameters: ArticleServiceUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<V1UpdateResponse> {
+    async articleServiceUpdate(requestParameters: ArticleServiceUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Protoarticlesv1UpdateResponse> {
         const response = await this.articleServiceUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }

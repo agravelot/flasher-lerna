@@ -18,8 +18,8 @@ require (
 	github.com/tkrajina/typescriptify-golang-structs v0.1.7
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.2.0
 	gorm.io/driver/postgres v1.3.7
-	gorm.io/gen v0.3.6
-	gorm.io/gorm v1.23.5
+	gorm.io/gen v0.3.8
+	gorm.io/gorm v1.23.6
 )
 
 require (
@@ -32,6 +32,7 @@ require (
 	go.buf.build/protocolbuffers/go/envoyproxy/protoc-gen-validate v1.2.6 // indirect
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	gorm.io/plugin/dbresolver v1.2.1 // indirect
 	sigs.k8s.io/yaml v1.3.0 // indirect
 )
 
@@ -61,16 +62,16 @@ require (
 	github.com/tkrajina/go-reflector v0.5.6 // indirect
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
-	golang.org/x/net v0.0.0-20220607020251-c690dde0001d // indirect
-	golang.org/x/sys v0.0.0-20220608164250-635b8c9b7f68 // indirect
+	golang.org/x/net v0.0.0-20220617184016-355a448f1bc9 // indirect
+	golang.org/x/sys v0.0.0-20220615213510-4f61da869c0c // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/tools v0.1.11 // indirect
 	golang.org/x/xerrors v0.0.0-20220609144429-65e65417b02f // indirect
-	google.golang.org/genproto v0.0.0-20220608133413-ed9918b62aac
+	google.golang.org/genproto v0.0.0-20220617124728-180714bec0ad
 	google.golang.org/grpc v1.47.0
 	google.golang.org/protobuf v1.28.0
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	gorm.io/datatypes v1.0.6 // indirect
+	gorm.io/datatypes v1.0.7-0.20220608135749-9359a769c0b6 // indirect
 	gorm.io/driver/mysql v1.3.4 // indirect
 	gorm.io/hints v1.1.0 // indirect
 )

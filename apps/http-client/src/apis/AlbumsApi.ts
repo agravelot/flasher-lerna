@@ -18,31 +18,31 @@ import {
     AlbumServiceUpdateRequest,
     AlbumServiceUpdateRequestFromJSON,
     AlbumServiceUpdateRequestToJSON,
+    Protoalbumsv1CreateRequest,
+    Protoalbumsv1CreateRequestFromJSON,
+    Protoalbumsv1CreateRequestToJSON,
+    Protoalbumsv1CreateResponse,
+    Protoalbumsv1CreateResponseFromJSON,
+    Protoalbumsv1CreateResponseToJSON,
+    Protoalbumsv1DeleteResponse,
+    Protoalbumsv1DeleteResponseFromJSON,
+    Protoalbumsv1DeleteResponseToJSON,
+    Protoalbumsv1GetBySlugResponse,
+    Protoalbumsv1GetBySlugResponseFromJSON,
+    Protoalbumsv1GetBySlugResponseToJSON,
+    Protoalbumsv1IndexResponse,
+    Protoalbumsv1IndexResponseFromJSON,
+    Protoalbumsv1IndexResponseToJSON,
+    Protoalbumsv1UpdateResponse,
+    Protoalbumsv1UpdateResponseFromJSON,
+    Protoalbumsv1UpdateResponseToJSON,
     RpcStatus,
     RpcStatusFromJSON,
     RpcStatusToJSON,
-    V1CreateRequest,
-    V1CreateRequestFromJSON,
-    V1CreateRequestToJSON,
-    V1CreateResponse,
-    V1CreateResponseFromJSON,
-    V1CreateResponseToJSON,
-    V1DeleteResponse,
-    V1DeleteResponseFromJSON,
-    V1DeleteResponseToJSON,
-    V1GetBySlugResponse,
-    V1GetBySlugResponseFromJSON,
-    V1GetBySlugResponseToJSON,
-    V1IndexResponse,
-    V1IndexResponseFromJSON,
-    V1IndexResponseToJSON,
-    V1UpdateResponse,
-    V1UpdateResponseFromJSON,
-    V1UpdateResponseToJSON,
 } from '../models';
 
 export interface AlbumServiceCreateRequest {
-    body: V1CreateRequest;
+    body: Protoalbumsv1CreateRequest;
 }
 
 export interface AlbumServiceDeleteRequest {
@@ -56,6 +56,8 @@ export interface AlbumServiceGetBySlugRequest {
 export interface AlbumServiceIndexRequest {
     limit?: number;
     next?: number;
+    joinsCategories?: boolean;
+    joinsMedias?: boolean;
 }
 
 export interface AlbumServiceUpdateOperationRequest {
@@ -72,7 +74,7 @@ export class AlbumsApi extends runtime.BaseAPI {
      * Add an album to the server.
      * Add an album
      */
-    async albumServiceCreateRaw(requestParameters: AlbumServiceCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1CreateResponse>> {
+    async albumServiceCreateRaw(requestParameters: AlbumServiceCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Protoalbumsv1CreateResponse>> {
         if (requestParameters.body === null || requestParameters.body === undefined) {
             throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling albumServiceCreate.');
         }
@@ -88,17 +90,17 @@ export class AlbumsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: V1CreateRequestToJSON(requestParameters.body),
+            body: Protoalbumsv1CreateRequestToJSON(requestParameters.body),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => V1CreateResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => Protoalbumsv1CreateResponseFromJSON(jsonValue));
     }
 
     /**
      * Add an album to the server.
      * Add an album
      */
-    async albumServiceCreate(requestParameters: AlbumServiceCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<V1CreateResponse> {
+    async albumServiceCreate(requestParameters: AlbumServiceCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Protoalbumsv1CreateResponse> {
         const response = await this.albumServiceCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -107,7 +109,7 @@ export class AlbumsApi extends runtime.BaseAPI {
      * Delete an album to the server.
      * Delete an album
      */
-    async albumServiceDeleteRaw(requestParameters: AlbumServiceDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1DeleteResponse>> {
+    async albumServiceDeleteRaw(requestParameters: AlbumServiceDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Protoalbumsv1DeleteResponse>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling albumServiceDelete.');
         }
@@ -123,14 +125,14 @@ export class AlbumsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => V1DeleteResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => Protoalbumsv1DeleteResponseFromJSON(jsonValue));
     }
 
     /**
      * Delete an album to the server.
      * Delete an album
      */
-    async albumServiceDelete(requestParameters: AlbumServiceDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<V1DeleteResponse> {
+    async albumServiceDelete(requestParameters: AlbumServiceDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Protoalbumsv1DeleteResponse> {
         const response = await this.albumServiceDeleteRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -139,7 +141,7 @@ export class AlbumsApi extends runtime.BaseAPI {
      * Create an album to the server.
      * Create an album
      */
-    async albumServiceGetBySlugRaw(requestParameters: AlbumServiceGetBySlugRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1GetBySlugResponse>> {
+    async albumServiceGetBySlugRaw(requestParameters: AlbumServiceGetBySlugRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Protoalbumsv1GetBySlugResponse>> {
         if (requestParameters.slug === null || requestParameters.slug === undefined) {
             throw new runtime.RequiredError('slug','Required parameter requestParameters.slug was null or undefined when calling albumServiceGetBySlug.');
         }
@@ -155,14 +157,14 @@ export class AlbumsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => V1GetBySlugResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => Protoalbumsv1GetBySlugResponseFromJSON(jsonValue));
     }
 
     /**
      * Create an album to the server.
      * Create an album
      */
-    async albumServiceGetBySlug(requestParameters: AlbumServiceGetBySlugRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<V1GetBySlugResponse> {
+    async albumServiceGetBySlug(requestParameters: AlbumServiceGetBySlugRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Protoalbumsv1GetBySlugResponse> {
         const response = await this.albumServiceGetBySlugRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -171,7 +173,7 @@ export class AlbumsApi extends runtime.BaseAPI {
      * List albums to the server.
      * List albums
      */
-    async albumServiceIndexRaw(requestParameters: AlbumServiceIndexRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1IndexResponse>> {
+    async albumServiceIndexRaw(requestParameters: AlbumServiceIndexRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Protoalbumsv1IndexResponse>> {
         const queryParameters: any = {};
 
         if (requestParameters.limit !== undefined) {
@@ -180,6 +182,14 @@ export class AlbumsApi extends runtime.BaseAPI {
 
         if (requestParameters.next !== undefined) {
             queryParameters['next'] = requestParameters.next;
+        }
+
+        if (requestParameters.joinsCategories !== undefined) {
+            queryParameters['joins.categories'] = requestParameters.joinsCategories;
+        }
+
+        if (requestParameters.joinsMedias !== undefined) {
+            queryParameters['joins.medias'] = requestParameters.joinsMedias;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -191,14 +201,14 @@ export class AlbumsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => V1IndexResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => Protoalbumsv1IndexResponseFromJSON(jsonValue));
     }
 
     /**
      * List albums to the server.
      * List albums
      */
-    async albumServiceIndex(requestParameters: AlbumServiceIndexRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<V1IndexResponse> {
+    async albumServiceIndex(requestParameters: AlbumServiceIndexRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Protoalbumsv1IndexResponse> {
         const response = await this.albumServiceIndexRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -207,7 +217,7 @@ export class AlbumsApi extends runtime.BaseAPI {
      * Update an album to the server.
      * Update an album
      */
-    async albumServiceUpdateRaw(requestParameters: AlbumServiceUpdateOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1UpdateResponse>> {
+    async albumServiceUpdateRaw(requestParameters: AlbumServiceUpdateOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Protoalbumsv1UpdateResponse>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling albumServiceUpdate.');
         }
@@ -230,14 +240,14 @@ export class AlbumsApi extends runtime.BaseAPI {
             body: AlbumServiceUpdateRequestToJSON(requestParameters.body),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => V1UpdateResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => Protoalbumsv1UpdateResponseFromJSON(jsonValue));
     }
 
     /**
      * Update an album to the server.
      * Update an album
      */
-    async albumServiceUpdate(requestParameters: AlbumServiceUpdateOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<V1UpdateResponse> {
+    async albumServiceUpdate(requestParameters: AlbumServiceUpdateOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Protoalbumsv1UpdateResponse> {
         const response = await this.albumServiceUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
