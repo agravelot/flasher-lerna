@@ -45,6 +45,7 @@ jobs:
           file: ./apps/admin/Dockerfile
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
+          context: .
           # cache: true
           # cache-repository: ghcr.io/${{ github.repository }}/cache
       # - name: Build and push base
