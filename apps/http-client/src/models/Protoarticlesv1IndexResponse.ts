@@ -31,7 +31,7 @@ export interface Protoarticlesv1IndexResponse {
      * @type {Array<V1ArticleResponse>}
      * @memberof Protoarticlesv1IndexResponse
      */
-    data?: Array<V1ArticleResponse>;
+    data: Array<V1ArticleResponse>;
 }
 
 /**
@@ -39,6 +39,7 @@ export interface Protoarticlesv1IndexResponse {
  */
 export function instanceOfProtoarticlesv1IndexResponse(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "data" in value;
 
     return isInstance;
 }
@@ -53,7 +54,7 @@ export function Protoarticlesv1IndexResponseFromJSONTyped(json: any, ignoreDiscr
     }
     return {
         
-        'data': !exists(json, 'data') ? undefined : ((json['data'] as Array<any>).map(V1ArticleResponseFromJSON)),
+        'data': ((json['data'] as Array<any>).map(V1ArticleResponseFromJSON)),
     };
 }
 
@@ -66,7 +67,7 @@ export function Protoarticlesv1IndexResponseToJSON(value?: Protoarticlesv1IndexR
     }
     return {
         
-        'data': value.data === undefined ? undefined : ((value.data as Array<any>).map(V1ArticleResponseToJSON)),
+        'data': ((value.data as Array<any>).map(V1ArticleResponseToJSON)),
     };
 }
 

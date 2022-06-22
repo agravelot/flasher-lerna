@@ -1,8 +1,9 @@
 import { ArticlesApi, Configuration } from "@flasher/http-client";
 import ArticleTable from "../components/ArticleTable";
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useState } from "react";
 import { Link } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
+import { useQuery } from "react-query";
 
 interface Article {
   id: string;
@@ -10,6 +11,7 @@ interface Article {
   slug: string;
   metaDescription: string;
   content: string;
+  publishedAt?: Date;
 }
 
 const config = new Configuration({
@@ -20,38 +22,43 @@ const api = new ArticlesApi(config);
 
 const ArticleList: FunctionComponent = () => {
   const { initialized, keycloak } = useKeycloak();
-  const [articles, setArticles] = useState<Article[]>([]);
   const [selectedArticles, setSelectedArticles] = useState<Article[]>([]);
 
-  useEffect(() => {
-    const fetchArticles = async () => {
-      if (!initialized) {
-        return;
-      }
-      const res = await api.articleServiceIndex(
-        { limit: 15 },
-        { headers: { Authorization: `Bearer ${keycloak.token}` } }
-      );
-      if (!res.data) {
-        throw new Error("No data");
-      }
-      setArticles(res.data);
-    };
-    fetchArticles();
-  }, [initialized]);
+  const {
+    data: articles,
+    error,
+    isFetching,
+    status,
+  } = useQuery(
+    "article-index",
+    () =>
+      api
+        .articleServiceIndex(
+          { limit: 15 },
+          { headers: { Authorization: `Bearer ${keycloak.token}` } }
+        )
+        .then((r) => r.data),
+    {
+      enabled: initialized,
+      // getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
+    }
+  );
 
   return (
     <div>
       <Link to="/articles/create" className="btn">
         Créer
       </Link>
-      <ArticleTable
-        articles={articles}
-        onSelectChange={(articles: Article[]) => {
-          setSelectedArticles(articles);
-        }}
-        selected={selectedArticles}
-      />
+      {error && <div>{String(error)}</div>}
+      {articles && (
+        <ArticleTable
+          articles={articles}
+          onSelectChange={(articles: Article[]) => {
+            setSelectedArticles(articles);
+          }}
+          selected={selectedArticles}
+        />
+      )}
     </div>
   );
 };

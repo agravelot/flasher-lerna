@@ -46,7 +46,7 @@ message DeleteRequest {
 }
 
 message IndexResponse {
-  repeated ArticleResponse data = 1;
+  repeated ArticleResponse data = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message GetBySlugResponse {
