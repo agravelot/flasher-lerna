@@ -7,8 +7,7 @@ export interface ArticleCreateProps {
 }
 
 interface ArticleForm {
-  id: string;
-  slug: string;
+  slug?: string;
   name: string;
   content: string;
   metaDescription: string;
