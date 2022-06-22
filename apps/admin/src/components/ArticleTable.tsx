@@ -6,7 +6,7 @@ interface Article {
   id: string;
   slug: string;
   name: string;
-  publishedAt?: string;
+  publishedAt?: Date;
   metaDescription: string;
   content: string;
 }
@@ -80,7 +80,7 @@ const ArticleTable: FunctionComponent<ArticleListProps> = ({
                       <div className="font-bold">{a.name}</div>
                       <div className="text-sm opacity-50">
                         {a.publishedAt &&
-                          format(new Date(a.publishedAt), "dd/MM/yyyy", {
+                          format(a.publishedAt, "dd/MM/yyyy", {
                             locale: fr,
                           })}
                       </div>

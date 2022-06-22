@@ -681,9 +681,15 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/v1ArticleResponse"
-          }
+          },
+          "required": [
+            "data"
+          ]
         }
-      }
+      },
+      "required": [
+        "data"
+      ]
     },
     "protoarticlesv1UpdateRequest": {
       "type": "object",
