@@ -44,8 +44,8 @@ jobs:
           image: flasher/flasher/flasher-admin-v2
           username: ${{ secrets.CI_REGISTRY_USER }}
           password: ${{ secrets.CI_REGISTRY_PASSWORD }}
-          cache: true
-          cache_registry: flasher/flasher/flasher-admin-v2
+          cache: false
+          # cache_registry: flasher/flasher/flasher-admin-v2
           registry: registry.gitlab.com
           path: .
           build_file: ./apps/admin/Dockerfile
