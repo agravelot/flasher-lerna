@@ -1,48 +1,32 @@
 import { FunctionComponent } from "react";
 import { Formik, Field, Form } from "formik";
-import { Article } from "@flasher/models";
-import { useKeycloak } from "@react-keycloak/web";
-import { apiRepository } from "@flasher/common/src";
 
 export interface ArticleCreateProps {
-  article?: Article;
-  onPostSubmit?: () => void;
+  article?: ArticleForm;
+  onSubmit: (article: ArticleForm) => void;
 }
 
 interface ArticleForm {
+  id: string;
+  slug: string;
   name: string;
   content: string;
   metaDescription: string;
+  publishedAt?: Date;
 }
 
 const ArticleForm: FunctionComponent<ArticleCreateProps> = ({
-  onPostSubmit,
   article,
+  onSubmit,
 }: ArticleCreateProps) => {
-  const { initialized, keycloak } = useKeycloak();
-
-  const onSubmit = async (values: ArticleForm) => {
-    console.log({ values });
-
-    if (!initialized) {
-      return;
-    }
-
-    const repo = apiRepository(keycloak);
-    const res = await repo.articles.create(values);
-    console.log(res);
-
-    onPostSubmit && onPostSubmit();
-  };
-
   return (
     <div>
       <Formik
         initialValues={{
           name: article?.name ?? "",
-          metaDescription: article?.meta_description ?? "",
+          metaDescription: article?.metaDescription ?? "",
           content: article?.content ?? "",
-          publishedAt: article?.published_at ?? null,
+          publishedAt: article?.publishedAt ?? undefined,
         }}
         onSubmit={onSubmit}
       >

@@ -1039,8 +1039,6 @@ func (m *CreateRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Id
-
 	// no validation rules for Slug
 
 	if l := utf8.RuneCountInString(m.GetName()); l < 5 || l > 60 {

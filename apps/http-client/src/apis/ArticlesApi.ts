@@ -132,8 +132,8 @@ export class ArticlesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create an article to the server.
-     * Create an article
+     * Get an article to the server.
+     * Get an article by slug
      */
     async articleServiceGetBySlugRaw(requestParameters: ArticleServiceGetBySlugRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Protoarticlesv1GetBySlugResponse>> {
         if (requestParameters.slug === null || requestParameters.slug === undefined) {
@@ -155,8 +155,8 @@ export class ArticlesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create an article to the server.
-     * Create an article
+     * Get an article to the server.
+     * Get an article by slug
      */
     async articleServiceGetBySlug(requestParameters: ArticleServiceGetBySlugRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Protoarticlesv1GetBySlugResponse> {
         const response = await this.articleServiceGetBySlugRaw(requestParameters, initOverrides);

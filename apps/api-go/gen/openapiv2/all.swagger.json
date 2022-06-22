@@ -369,8 +369,8 @@
     },
     "/api/v1/articles/{slug}": {
       "get": {
-        "summary": "Create an article",
-        "description": "Create an article to the server.",
+        "summary": "Get an article by slug",
+        "description": "Get an article to the server.",
         "operationId": "ArticleService_GetBySlug",
         "responses": {
           "200": {
@@ -593,55 +593,91 @@
     "protoarticlesv1CreateRequest": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string",
-          "format": "int64"
-        },
         "slug": {
           "type": "string"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "required": [
+            "name"
+          ]
         },
         "metaDescription": {
-          "type": "string"
+          "type": "string",
+          "required": [
+            "metaDescription"
+          ]
         },
         "content": {
-          "type": "string"
+          "type": "string",
+          "required": [
+            "content"
+          ]
         },
         "publishedAt": {
           "type": "string",
           "format": "date-time"
         }
-      }
+      },
+      "required": [
+        "name",
+        "metaDescription",
+        "content"
+      ]
     },
     "protoarticlesv1CreateResponse": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string",
-          "format": "int64"
+          "format": "int64",
+          "required": [
+            "id"
+          ]
         },
         "slug": {
-          "type": "string"
+          "type": "string",
+          "required": [
+            "slug"
+          ]
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "required": [
+            "name"
+          ]
         },
         "metaDescription": {
-          "type": "string"
+          "type": "string",
+          "required": [
+            "metaDescription"
+          ]
         },
         "content": {
-          "type": "string"
+          "type": "string",
+          "required": [
+            "content"
+          ]
         },
         "publishedAt": {
           "type": "string",
           "format": "date-time"
         },
         "authorId": {
-          "type": "string"
+          "type": "string",
+          "required": [
+            "authorId"
+          ]
         }
-      }
+      },
+      "required": [
+        "id",
+        "slug",
+        "name",
+        "metaDescription",
+        "content",
+        "authorId"
+      ]
     },
     "protoarticlesv1DeleteResponse": {
       "type": "object"
