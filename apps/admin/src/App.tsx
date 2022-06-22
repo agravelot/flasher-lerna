@@ -10,9 +10,9 @@ import ArticleCreate from "./pages/ArticleCreate";
 import AlbumCreate from "./pages/AlbumCreate";
 import AlbumEdit from "./pages/AlbumEdit";
 import { setBaseUrl } from "@flasher/common/src";
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
-2 
-3 const queryClient = new QueryClient();
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+
+const queryClient = new QueryClient();
 
 // Setup Keycloak instance as needed
 // Pass initialization options as required or leave blank to load from 'keycloak.json'
