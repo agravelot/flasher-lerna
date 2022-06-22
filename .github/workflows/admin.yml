@@ -39,17 +39,14 @@ jobs:
             {{version}}
             {{major}}.{{minor}}
       - name: Kaniko build
-        uses: aevea/action-kaniko@master
+        uses: int128/kaniko-action@v1
         with:
-          image: flasher/flasher/flasher-admin-v2
-          username: ${{ secrets.CI_REGISTRY_USER }}
-          password: ${{ secrets.CI_REGISTRY_PASSWORD }}
-          cache: false
-          # cache_registry: flasher/flasher/flasher-admin-v2
-          registry: registry.gitlab.com
-          path: .
-          build_file: ./apps/admin/Dockerfile
-          tag: ${{ steps.docker_meta.outputs.tags }}
+          push: ${{ github.event_name != 'pull_request' }}
+          file: ./apps/admin/Dockerfile
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
+          cache: true
+          cache-repository: ghcr.io/${{ github.repository }}/cache
       # - name: Build and push base
       #   uses: docker/build-push-action@v2
       #   with:
