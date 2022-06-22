@@ -24,31 +24,25 @@ export interface Protoarticlesv1CreateRequest {
      * @type {string}
      * @memberof Protoarticlesv1CreateRequest
      */
-    id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Protoarticlesv1CreateRequest
-     */
     slug?: string;
     /**
      * 
      * @type {string}
      * @memberof Protoarticlesv1CreateRequest
      */
-    name?: string;
+    name: string;
     /**
      * 
      * @type {string}
      * @memberof Protoarticlesv1CreateRequest
      */
-    metaDescription?: string;
+    metaDescription: string;
     /**
      * 
      * @type {string}
      * @memberof Protoarticlesv1CreateRequest
      */
-    content?: string;
+    content: string;
     /**
      * 
      * @type {Date}
@@ -62,6 +56,9 @@ export interface Protoarticlesv1CreateRequest {
  */
 export function instanceOfProtoarticlesv1CreateRequest(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "metaDescription" in value;
+    isInstance = isInstance && "content" in value;
 
     return isInstance;
 }
@@ -76,11 +73,10 @@ export function Protoarticlesv1CreateRequestFromJSONTyped(json: any, ignoreDiscr
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
         'slug': !exists(json, 'slug') ? undefined : json['slug'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'metaDescription': !exists(json, 'metaDescription') ? undefined : json['metaDescription'],
-        'content': !exists(json, 'content') ? undefined : json['content'],
+        'name': json['name'],
+        'metaDescription': json['metaDescription'],
+        'content': json['content'],
         'publishedAt': !exists(json, 'publishedAt') ? undefined : (new Date(json['publishedAt'])),
     };
 }
@@ -94,7 +90,6 @@ export function Protoarticlesv1CreateRequestToJSON(value?: Protoarticlesv1Create
     }
     return {
         
-        'id': value.id,
         'slug': value.slug,
         'name': value.name,
         'metaDescription': value.metaDescription,

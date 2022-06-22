@@ -158,7 +158,6 @@ func (s Service) Create(ctx context.Context, request *articles_pb.CreateRequest)
 		p = &tmp
 	}
 	a := model.Article{
-		ID:              request.Id,
 		Slug:            request.Slug,
 		Name:            request.Name,
 		MetaDescription: request.MetaDescription,

@@ -62,21 +62,20 @@ message GetBySlugResponse {
 message DeleteResponse {}
 
 message CreateResponse {
-  int64 id = 1;
-	string slug = 2;
-	string name = 3;
-	string meta_description = 4;
-	string content = 5;
+  int64 id = 1 [(google.api.field_behavior) = REQUIRED];
+	string slug = 2 [(google.api.field_behavior) = REQUIRED];
+	string name = 3 [(google.api.field_behavior) = REQUIRED];
+	string meta_description = 4 [(google.api.field_behavior) = REQUIRED];
+	string content = 5 [(google.api.field_behavior) = REQUIRED];
 	optional google.protobuf.Timestamp published_at = 6;
-  string author_id = 7;
+  string author_id = 7 [(google.api.field_behavior) = REQUIRED];
 }
 
 message CreateRequest {
-  int64 id = 1;
 	string slug = 2;
-	string name = 3 [(validate.rules).string.min_len = 5, (validate.rules).string.max_len = 60];
-	string meta_description = 4 [(validate.rules).string.min_len = 1, (validate.rules).string.max_len = 155];
-	string content = 5;
+	string name = 3 [(google.api.field_behavior) = REQUIRED, (validate.rules).string.min_len = 5, (validate.rules).string.max_len = 60];
+	string meta_description = 4 [(google.api.field_behavior) = REQUIRED, (validate.rules).string.min_len = 1, (validate.rules).string.max_len = 155];
+	string content = 5 [(google.api.field_behavior) = REQUIRED];
 	optional google.protobuf.Timestamp published_at = 6;
 }
 
@@ -116,8 +115,8 @@ service ArticleService {
       get: "/api/v1/articles/{slug}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      summary: "Create an article"
-      description: "Create an article to the server."
+      summary: "Get an article by slug"
+      description: "Get an article to the server."
       tags: "Articles"
     };
   }

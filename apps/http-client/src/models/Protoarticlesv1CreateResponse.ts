@@ -24,31 +24,31 @@ export interface Protoarticlesv1CreateResponse {
      * @type {string}
      * @memberof Protoarticlesv1CreateResponse
      */
-    id?: string;
+    id: string;
     /**
      * 
      * @type {string}
      * @memberof Protoarticlesv1CreateResponse
      */
-    slug?: string;
+    slug: string;
     /**
      * 
      * @type {string}
      * @memberof Protoarticlesv1CreateResponse
      */
-    name?: string;
+    name: string;
     /**
      * 
      * @type {string}
      * @memberof Protoarticlesv1CreateResponse
      */
-    metaDescription?: string;
+    metaDescription: string;
     /**
      * 
      * @type {string}
      * @memberof Protoarticlesv1CreateResponse
      */
-    content?: string;
+    content: string;
     /**
      * 
      * @type {Date}
@@ -60,7 +60,7 @@ export interface Protoarticlesv1CreateResponse {
      * @type {string}
      * @memberof Protoarticlesv1CreateResponse
      */
-    authorId?: string;
+    authorId: string;
 }
 
 /**
@@ -68,6 +68,12 @@ export interface Protoarticlesv1CreateResponse {
  */
 export function instanceOfProtoarticlesv1CreateResponse(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "slug" in value;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "metaDescription" in value;
+    isInstance = isInstance && "content" in value;
+    isInstance = isInstance && "authorId" in value;
 
     return isInstance;
 }
@@ -82,13 +88,13 @@ export function Protoarticlesv1CreateResponseFromJSONTyped(json: any, ignoreDisc
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'slug': !exists(json, 'slug') ? undefined : json['slug'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'metaDescription': !exists(json, 'metaDescription') ? undefined : json['metaDescription'],
-        'content': !exists(json, 'content') ? undefined : json['content'],
+        'id': json['id'],
+        'slug': json['slug'],
+        'name': json['name'],
+        'metaDescription': json['metaDescription'],
+        'content': json['content'],
         'publishedAt': !exists(json, 'publishedAt') ? undefined : (new Date(json['publishedAt'])),
-        'authorId': !exists(json, 'authorId') ? undefined : json['authorId'],
+        'authorId': json['authorId'],
     };
 }
 
