@@ -7,8 +7,8 @@ interface Props {
 const ReadingTime: FunctionComponent<Props> = ({
     body
 }: Props) => {  
-  const estimatedReadingInMinutes = calculateReadingTime(body).toFixed();
-  if(estimatedReadingInMinutes === "0"){
+  const estimatedReadingInMinutes = Math.round(calculateReadingTime(body));
+  if(estimatedReadingInMinutes === 0){
     return null;
   } 
   return (
