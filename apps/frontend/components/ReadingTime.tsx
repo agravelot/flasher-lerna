@@ -8,6 +8,9 @@ const ReadingTime: FunctionComponent<Props> = ({
     body
 }: Props) => {  
   const estimatedReadingInMinutes = calculateReadingTime(body).toFixed();
+  if(estimatedReadingInMinutes === "0"){
+    return null;
+  } 
   return (
     <div className="flex italic pb-8 content-end">
         <span>Temps de lecture estimé : {estimatedReadingInMinutes} minutes.</span>
