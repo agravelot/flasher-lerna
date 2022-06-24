@@ -2,15 +2,18 @@ import { FunctionComponent } from "react";
 import { calculateReadingTime } from "./../utils/util";
 
 interface Props {
-    body: string
+  body: string;
 }
-const ReadingTime: FunctionComponent<Props> = ({
-    body
-}: Props) => {  
-  const estimatedReadingInMinutes = calculateReadingTime(body).toFixed();
+const ReadingTime: FunctionComponent<Props> = ({ body }: Props) => {
+  const estimatedReadingInMinutes = calculateReadingTime(body);
+  if (estimatedReadingInMinutes === 0) {
+    return null;
+  }
   return (
-    <div className="flex italic pb-8 content-end">
-        <span>Temps de lecture estimé : {estimatedReadingInMinutes} minutes.</span>
+    <div className="flex content-end pb-8 italic">
+      <span>
+        Temps de lecture estimé : {estimatedReadingInMinutes} minutes.
+      </span>
     </div>
   );
 };
