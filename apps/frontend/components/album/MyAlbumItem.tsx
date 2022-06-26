@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useKeycloak } from "@react-keycloak/ssr";
+import { useKeycloak } from "@react-keycloak/web";
 import { Album } from "@flasher/models";
 import { api } from "@flasher/common";
 import { sizes } from "utils/util";

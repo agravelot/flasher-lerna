@@ -1,27 +1,32 @@
 import { AppProps } from "next/app";
-import { SSRKeycloakProvider, SSRCookies } from "@react-keycloak/ssr";
+import { ReactKeycloakProvider } from "@react-keycloak/web";
 import { configuration } from "../utils/configuration";
 import "../styles/main.css";
 import { ReactElement } from "react";
 import { Analytics } from "components/Analytics";
 import { Clarity } from "components/Clarity";
 import { setBaseUrl } from "@flasher/common";
+import Keycloak from "keycloak-js";
+
+const keycloak = Keycloak();
 
 setBaseUrl(configuration.baseUrl);
 
 function App({ Component, pageProps }: AppProps): ReactElement {
   return (
-    <SSRKeycloakProvider
+    <ReactKeycloakProvider
       initOptions={{
         enableLogging: process.env.NODE_ENV !== "production",
       }}
-      keycloakConfig={configuration.keycloak}
-      persistor={SSRCookies({})}
+      authClient={keycloak}
+      // keycloakConfig={configuration.keycloak}
     >
-      <Analytics />
-      <Clarity />
-      <Component {...pageProps} />
-    </SSRKeycloakProvider>
+      <>
+        <Analytics />
+        <Clarity />
+        <Component {...pageProps} />
+      </>
+    </ReactKeycloakProvider>
   );
 }
 

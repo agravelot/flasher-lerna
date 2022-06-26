@@ -1,5 +1,4 @@
-import { useKeycloak } from "@react-keycloak/ssr";
-import { useKeycloakHookResults } from "@react-keycloak/ssr/lib/useKeycloak";
+import { useKeycloak } from "@react-keycloak/web";
 import { KeycloakInstance, KeycloakTokenParsed } from "keycloak-js";
 
 export type ParsedToken = KeycloakTokenParsed & {
@@ -8,16 +7,17 @@ export type ParsedToken = KeycloakTokenParsed & {
   groups: string[];
 };
 
-type Authentication = useKeycloakHookResults<KeycloakInstance> & {
+type Authentication = {
   keycloak: KeycloakInstance;
   login: () => void;
   register: () => void;
   parsedToken: ParsedToken | undefined;
   isAdmin: boolean;
+  initialized: boolean;
 };
 
 export const useAuthentication = (): Authentication => {
-  const { initialized, keycloak } = useKeycloak<KeycloakInstance>();
+  const { initialized, keycloak } = useKeycloak();
 
   if (!keycloak) {
     throw new Error("Keycloak is not defined");
