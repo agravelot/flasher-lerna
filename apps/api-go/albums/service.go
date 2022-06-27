@@ -1,7 +1,6 @@
 package album
 
 import (
-	"api-go/api"
 	"api-go/auth"
 	"api-go/model"
 	"api-go/query"
@@ -10,21 +9,23 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/gosimple/slug"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"gorm.io/gen"
 	"gorm.io/gorm"
+
+	albums_pb "api-go/gen/go/proto/albums/v1"
 )
 
-// Service is a simple CRUD interface for user albums.
-type Service interface {
-	GetAlbumList(ctx context.Context, params AlbumListParams) (PaginatedAlbums, error)
-	GetAlbum(ctx context.Context, slug string) (AlbumResponse, error)
-	PostAlbum(ctx context.Context, p AlbumRequest) (AlbumResponse, error)
-	PutAlbum(ctx context.Context, slug string, p AlbumRequest) (AlbumResponse, error)
-	PatchAlbum(ctx context.Context, slug string, p AlbumUpdateRequest) (AlbumResponse, error)
-	DeleteAlbum(ctx context.Context, slug string) error
-}
+// // Service is a simple CRUD interface for user albums.
+// type Service interface {
+// 	Index(ctx context.Context, params albums_pb.IndexRequest) (albums_pb.IndexResponse, error)
+// 	GetBySlug(ctx context.Context, slug string) (AlbumResponse, error)
+// 	Create(ctx context.Context, p AlbumRequest) (AlbumResponse, error)
+// 	Update(ctx context.Context, slug string, p AlbumRequest) (AlbumResponse, error)
+// 	// PatchAlbum(ctx context.Context, slug string, p AlbumUpdateRequest) (AlbumResponse, error)
+// 	Delete(ctx context.Context, slug string) error
+// }
 
 var (
 	ErrAlreadyExists = status.Error(codes.AlreadyExists, "already exists")
@@ -34,62 +35,76 @@ var (
 )
 
 type service struct {
+	albums_pb.UnimplementedAlbumServiceServer
 	orm *gorm.DB
 }
 
-func NewService(orm *gorm.DB) Service {
+func NewService(orm *gorm.DB) albums_pb.AlbumServiceServer {
 	return &service{
 		orm: orm,
 	}
 }
 
-func (s *service) GetAlbumList(ctx context.Context, params AlbumListParams) (PaginatedAlbums, error) {
+func Published(q *query.Query) func(db gen.Dao) gen.Dao {
+	return func(db gen.Dao) gen.Dao {
+		return db.Where(q.Album.IsPublishedPublicly.Is(true), q.Album.PublishedAt.Lte(time.Now()))
+	}
+}
+
+func Paginate(q *query.Query, next *int32, pageSize *int32) func(db gen.Dao) gen.Dao {
+	return func(db gen.Dao) gen.Dao {
+		if next != nil && *next != 0 {
+			db = db.Where(q.Album.ID.Gt(*next))
+		}
+		s := 10
+		if pageSize != nil {
+			s = int(*pageSize)
+		}
+		return db.Limit(int(s))
+	}
+}
+
+func (s *service) Index(ctx context.Context, r *albums_pb.IndexRequest) (*albums_pb.IndexResponse, error) {
 	user := auth.GetUserClaims(ctx)
-	isAdmin := user != nil && user.IsAdmin()
 
 	qb := query.Use(s.orm).Album
-	query := qb.WithContext(ctx).Order(qb.PublishedAt.Desc())
+	q := qb.WithContext(ctx).Order(qb.PublishedAt.Desc())
 
-	if !isAdmin {
-		query = query.Where(qb.PublishedAt.Lte(time.Now()), qb.IsPublishedPublicly.Is(true))
+	if user == nil || (user != nil && !user.IsAdmin()) {
+		q = q.Scopes(Published(query.Use(s.orm)))
 	}
 
-	total, err := query.WithContext(ctx).Count()
+	if r.Next != nil && *r.Next != 0 {
+		q.Where(qb.ID.Gt(*r.Next))
+	}
+
+	if r.Joins != nil && r.Joins.Categories {
+		q = q.Preload(qb.Categories)
+	}
+
+	if r.Joins != nil && r.Joins.Medias {
+		q = q.Preload(qb.Medias)
+	}
+
+	albums, err := q.Scopes(Paginate(query.Use(s.orm), r.Next, r.Limit)).Find()
 	if err != nil {
-		return PaginatedAlbums{}, fmt.Errorf("error counting albums: %w", err)
+		return nil, fmt.Errorf("unable list albums : %d %w", r.Next, err)
 	}
 
-	if params.Next != 0 {
-		query.Where(qb.ID.Gt(params.Next))
-	}
-
-	if params.Joins.Categories {
-		query.Preload(qb.Categories)
-	}
-
-	if params.Joins.Medias {
-		query.Preload(qb.Medias)
-	}
-
-	albums, err := query.Limit(int(params.Limit)).Find()
-	if err != nil {
-		return PaginatedAlbums{}, fmt.Errorf("error list albums : %d %w", params.Next, err)
-	}
-
-	data := make([]AlbumResponse, len(albums))
+	data := make([]*albums_pb.AlbumResponse, len(albums))
 	for i, a := range albums {
 		data[i] = transformAlbumFromDB(*a)
 	}
 
-	return PaginatedAlbums{
+	return &albums_pb.IndexResponse{
 		Data: data,
-		Meta: api.Meta{Total: total, Limit: params.Limit},
+		// Meta: api.Meta{Total: total, Limit: params.Limit},
 	}, nil
 }
 
-// TODO bool incluce relation
+// TODO bool include relation
 
-func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, error) {
+func (s *service) GetBySlug(ctx context.Context, r *albums_pb.GetBySlugRequest) (*albums_pb.GetBySlugResponse, error) {
 	user := auth.GetUserClaims(ctx)
 	isAdmin := user != nil && user.IsAdmin()
 
@@ -104,48 +119,56 @@ func (s *service) GetAlbum(ctx context.Context, slug string) (AlbumResponse, err
 	a, err := query.
 		Preload(qb.Categories).
 		Preload(qb.Medias).
-		Where(qb.Slug.Eq(slug)).
+		Where(qb.Slug.Eq(r.Slug)).
 		First()
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return AlbumResponse{}, ErrNotFound
+		return nil, ErrNotFound
 	}
 
 	if err != nil {
-		return AlbumResponse{}, fmt.Errorf("error get album by slug: %w", err)
+		return nil, fmt.Errorf("error get album by slug: %w", err)
 	}
 
 	// TODO add medias and categes
-	return transformAlbumFromDB(*a), err
+	return &albums_pb.GetBySlugResponse{
+		Album: transformAlbumFromDB(*a),
+	}, err
 }
 
-func (s *service) PostAlbum(ctx context.Context, r AlbumRequest) (AlbumResponse, error) {
+func (s *service) Create(ctx context.Context, r *albums_pb.CreateRequest) (*albums_pb.CreateResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
 	if user == nil {
-		return AlbumResponse{}, ErrNoAuth
+		return nil, ErrNoAuth
 	}
 
 	isAdmin := user != nil && user.IsAdmin()
 	if !isAdmin {
-		return AlbumResponse{}, ErrNotAdmin
+		return nil, ErrNotAdmin
 	}
 
-	if err := r.Validate(); err != nil {
-		return AlbumResponse{}, err
+	if err := r.ValidateAll(); err != nil {
+		return nil, err
 	}
 
-	if r.Slug == nil {
-		s := slug.Make(r.Title)
-		r.Slug = &s
+	// if r.Slug == nil {
+	// 	s := slug.Make(r.Title)
+	// 	r.Slug = &s
+	// }
+
+	var publishedAt *time.Time
+	if r.PublishedAt != nil {
+		t := r.PublishedAt.AsTime()
+		publishedAt = &t
 	}
 
 	album := model.Album{
-		Title:       r.Title,
-		Slug:        *r.Slug,
+		Title:       r.Name,
+		Slug:        r.Slug,
 		SsoID:       &user.Sub,
-		Body:        r.Body,
-		PublishedAt: r.PublishedAt,
+		Body:        &r.Content,
+		PublishedAt: publishedAt,
 	}
 
 	query := query.Use(s.orm).Album.WithContext(ctx)
@@ -153,88 +176,121 @@ func (s *service) PostAlbum(ctx context.Context, r AlbumRequest) (AlbumResponse,
 	err := query.WithContext(ctx).Create(&album)
 	// TODO Check duplicate
 	if err != nil {
-		return AlbumResponse{}, err
+		return nil, err
 	}
 
-	return transformAlbumFromDB(album), nil
+	data := transformAlbumFromDB(album)
 
+	return &albums_pb.CreateResponse{
+		Id:                     data.Id,
+		Slug:                   data.Slug,
+		Title:                  data.Title,
+		Content:                data.Content,
+		MetaDescription:        data.MetaDescription,
+		PublishedAt:            data.PublishedAt,
+		AuthorId:               data.AuthorId,
+		Private:                data.Private,
+		UserId:                 data.UserId,
+		CreatedAt:              data.CreatedAt,
+		UpdatedAt:              data.UpdatedAt,
+		NotifyUsersOnPublished: data.NotifyUsersOnPublished,
+	}, nil
 }
 
-func (s *service) PutAlbum(ctx context.Context, slug string, r AlbumRequest) (AlbumResponse, error) {
+func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albums_pb.UpdateResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
 	if user == nil {
-		return AlbumResponse{}, ErrNoAuth
+		return nil, ErrNoAuth
 	}
 
 	isAdmin := user != nil && user.IsAdmin()
 	if !isAdmin {
-		return AlbumResponse{}, ErrNotAdmin
+		return nil, ErrNotAdmin
 	}
 
-	if err := r.Validate(); err != nil {
-		return AlbumResponse{}, err
+	if err := r.ValidateAll(); err != nil {
+		return nil, err
 	}
 
 	qb := query.Use(s.orm).Album
 
 	query := qb.WithContext(ctx)
 
+	var publishedAt *time.Time
+	if r.PublishedAt != nil {
+		t := r.PublishedAt.AsTime()
+		publishedAt = &t
+	}
+
 	// TODO Check duplicate
 	// TODO Check row count update
-	// YODO UpdatedAt
-	_, err := query.Updates(model.Album{
-		ID:                  r.ID,
-		Slug:                slug,
-		Title:               r.Title,
-		Body:                r.Body,
-		PublishedAt:         r.PublishedAt,
+	// TODO UpdatedAt
+	_, err := query.Where(qb.ID.Eq(r.Id)).Updates(model.Album{
+		ID:                  r.Id,
+		Slug:                r.Slug,
+		Title:               r.Name,
+		Body:                &r.Content,
+		PublishedAt:         publishedAt,
 		Private:             r.Private,
 		IsPublishedPublicly: !r.Private,
 		SsoID:               &user.Sub,
 	})
 	if err != nil {
-		return AlbumResponse{}, fmt.Errorf("error update album: %w", err)
+		return nil, fmt.Errorf("error update album: %w", err)
 	}
 
 	query.Preload(qb.Categories).Preload(qb.Medias)
 
-	a, err := query.Where(qb.Slug.Eq(slug)).First()
+	a, err := query.Where(qb.ID.Eq(r.Id)).First()
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return AlbumResponse{}, ErrNotFound
+		return nil, ErrNotFound
 	}
 
-	return transformAlbumFromDB(*a), nil
+	data := transformAlbumFromDB(*a)
+
+	return &albums_pb.UpdateResponse{
+		Id:                     data.Id,
+		Slug:                   data.Slug,
+		Title:                  data.Title,
+		Content:                data.Content,
+		MetaDescription:        data.MetaDescription,
+		PublishedAt:            data.PublishedAt,
+		AuthorId:               data.AuthorId,
+		Private:                data.Private,
+		UserId:                 data.UserId,
+		CreatedAt:              data.CreatedAt,
+		UpdatedAt:              data.UpdatedAt,
+		NotifyUsersOnPublished: data.NotifyUsersOnPublished,
+	}, nil
 }
 
 func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumUpdateRequest) (AlbumResponse, error) {
 	return AlbumResponse{}, nil
 }
 
-func (s *service) DeleteAlbum(ctx context.Context, slug string) error {
+func (s *service) Delete(ctx context.Context, r *albums_pb.DeleteRequest) (*albums_pb.DeleteResponse, error) {
 
 	user := auth.GetUserClaims(ctx)
 	if user == nil {
-		return ErrNoAuth
+		return nil, ErrNoAuth
 	}
 
 	isAdmin := user != nil && user.IsAdmin()
 	if !isAdmin {
-		return ErrNotAdmin
+		return nil, ErrNotAdmin
 	}
 
 	qb := query.Use(s.orm).Album
 
-	query := qb.WithContext(ctx)
-
-	r, err := query.Where(qb.Slug.Eq(slug)).Delete()
-	if r.RowsAffected == 0 {
-		return ErrNotFound
+	ri, err := qb.WithContext(ctx).Where(qb.ID.Eq(r.Id)).Delete()
+	if ri.RowsAffected == 0 {
+		return nil, ErrNotFound
 	}
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return nil, err
 }

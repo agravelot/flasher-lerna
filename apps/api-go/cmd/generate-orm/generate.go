@@ -50,7 +50,7 @@ func main() {
 		gen.FieldType("custom_properties", "*CustomProperties"),
 		gen.FieldType("responsive_images", "*ResponsiveImages"),
 	)
-	categories := g.GenerateModel("categories", gen.FieldType("id", "int64"))
+	categories := g.GenerateModel("categories")
 	albums := g.GenerateModel(
 		"albums",
 		gen.FieldRelate(field.HasMany, "Categories", categories,

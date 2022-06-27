@@ -18,10 +18,12 @@ import (
 	"google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/status"
 
+	album "api-go/albums"
 	"api-go/article"
 	"api-go/auth"
 	"api-go/config"
 	"api-go/database"
+	albumspb "api-go/gen/go/proto/albums/v1"
 	articlespb "api-go/gen/go/proto/articles/v1"
 	"api-go/third_party"
 
@@ -83,13 +85,13 @@ func Run(config *config.Configurations) {
 	}
 	defer db.Close()
 
-	// var sAlbum album.Service
-	// {
-	// 	sAlbum = album.NewService(orm)
-	// 	// sAlbum = album.LoggingMiddleware(logger)(sAlbum)
-	// }
+	var sAlbum albumspb.AlbumServiceServer
+	{
+		sAlbum = album.NewService(orm)
+		// sAlbum = album.LoggingMiddleware(logger)(sAlbum)
+	}
 
-	var sArticle article.Service
+	var sArticle articlespb.ArticleServiceServer
 	{
 		sArticle = article.NewService(orm)
 		// sArticle = article.LoggingMiddleware(logger)(sArticle)
@@ -112,6 +114,7 @@ func Run(config *config.Configurations) {
 	)
 	// Attach the Greeter service to the server
 	articlespb.RegisterArticleServiceServer(s, sArticle)
+	albumspb.RegisterAlbumServiceServer(s, sAlbum)
 	// Serve gRPC server
 	log.Println("Serving gRPC on 0.0.0.0:8080")
 	go func() {
@@ -144,7 +147,7 @@ func Run(config *config.Configurations) {
 	oa := getOpenAPIHandler()
 
 	gwServer := &http.Server{
-		Addr: ":8090",
+		Addr: "0.0.0.0:8090",
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if strings.HasPrefix(r.URL.Path, "/api") {
 				gwmux.ServeHTTP(w, r)
@@ -154,6 +157,6 @@ func Run(config *config.Configurations) {
 		}),
 	}
 
-	log.Println("Serving gRPC-Gateway on http://0.0.0.0:8090")
+	log.Println("Serving gRPC-Gateway on http://127.0.0.1:8090")
 	log.Fatalln(gwServer.ListenAndServe())
 }

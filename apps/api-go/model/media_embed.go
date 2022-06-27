@@ -9,8 +9,8 @@ import (
 )
 
 type CustomProperties struct {
-	Height int `json:"height"`
-	Width  int `json:"width"`
+	Height int32 `json:"height"`
+	Width  int32 `json:"width"`
 }
 
 func (cp CustomProperties) Value() (driver.Value, error) {

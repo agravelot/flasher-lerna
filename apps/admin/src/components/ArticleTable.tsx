@@ -1,7 +1,16 @@
-import { Article } from "@flasher/models";
 import { FunctionComponent } from "react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+
+interface Article {
+  id: string;
+  slug: string;
+  name: string;
+  publishedAt?: Date;
+  metaDescription: string;
+  content: string;
+}
+
 export interface ArticleListProps {
   articles: Article[];
   selected?: Article[];
@@ -13,8 +22,6 @@ const ArticleTable: FunctionComponent<ArticleListProps> = ({
   onSelectChange,
   selected = [],
 }: ArticleListProps) => {
-  console.log({ articles, selected });
-
   const onCheckboxChange = (article: Article) => {
     if (!onSelectChange) return;
 
@@ -62,7 +69,7 @@ const ArticleTable: FunctionComponent<ArticleListProps> = ({
                 <td>
                   <div className="flex items-center space-x-3">
                     <div className="avatar">
-                      <div className="w-12 h-12 mask mask-squircle">
+                      <div className="mask mask-squircle h-12 w-12">
                         <img
                           src="/tailwind-css-component-profile-2@56w.png"
                           alt="Avatar Tailwind CSS Component"
@@ -72,8 +79,8 @@ const ArticleTable: FunctionComponent<ArticleListProps> = ({
                     <div>
                       <div className="font-bold">{a.name}</div>
                       <div className="text-sm opacity-50">
-                        {a.published_at &&
-                          format(new Date(a.published_at), "dd/MM/yyyy", {
+                        {a.publishedAt &&
+                          format(a.publishedAt, "dd/MM/yyyy", {
                             locale: fr,
                           })}
                       </div>
@@ -90,7 +97,7 @@ const ArticleTable: FunctionComponent<ArticleListProps> = ({
                 <td>
                   <div className="flex items-center space-x-3">
                     <div data-tip="neutral" className="tooltip">
-                      {a.published_at !== null ? (
+                      {a.publishedAt !== null ? (
                         <div className="badge badge-accent">Publié</div>
                       ) : (
                         <div className="badge">Brouillon</div>

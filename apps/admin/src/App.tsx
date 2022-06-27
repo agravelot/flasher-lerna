@@ -10,6 +10,9 @@ import ArticleCreate from "./pages/ArticleCreate";
 import AlbumCreate from "./pages/AlbumCreate";
 import AlbumEdit from "./pages/AlbumEdit";
 import { setBaseUrl } from "@flasher/common/src";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+
+const queryClient = new QueryClient();
 
 // Setup Keycloak instance as needed
 // Pass initialization options as required or leave blank to load from 'keycloak.json'
@@ -38,30 +41,32 @@ function App() {
       initOptions={{ onLoad: "login-required" }}
     >
       <Router>
-        <div className="h-screen">
-          <Drawer>
-            <Switch>
-              <Route exact path="/albums/create">
-                <AlbumCreate />
-              </Route>
-              <Route path="/albums/:slug">
-                <AlbumEdit />
-              </Route>
-              <Route path="/albums">
-                <AlbumList />
-              </Route>
-              <Route exact path="/articles/create">
-                <ArticleCreate />
-              </Route>
-              <Route path="/articles">
-                <ArticleList />
-              </Route>
-              <Route path="/">
-                <Home />
-              </Route>
-            </Switch>
-          </Drawer>
-        </div>
+        <QueryClientProvider client={queryClient}>
+          <div className="h-screen">
+            <Drawer>
+              <Switch>
+                <Route exact path="/albums/create">
+                  <AlbumCreate />
+                </Route>
+                <Route path="/albums/:slug">
+                  <AlbumEdit />
+                </Route>
+                <Route path="/albums">
+                  <AlbumList />
+                </Route>
+                <Route exact path="/articles/create">
+                  <ArticleCreate />
+                </Route>
+                <Route path="/articles">
+                  <ArticleList />
+                </Route>
+                <Route path="/">
+                  <Home />
+                </Route>
+              </Switch>
+            </Drawer>
+          </div>
+        </QueryClientProvider>
       </Router>
     </ReactKeycloakProvider>
   );

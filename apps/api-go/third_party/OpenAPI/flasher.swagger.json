@@ -1,135 +1,24 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "proto/articles/v1/articles.proto",
-    "version": "1.0"
+    "title": "proto/medias/v1/medias.proto",
+    "version": "version not set"
   },
   "tags": [
     {
       "name": "ArticleService"
     }
   ],
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "paths": {
-    "/api/v1/albums": {
-      "get": {
-        "summary": "List albums",
-        "description": "List albums to the server.",
-        "operationId": "AlbumService_Index",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1IndexResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": ["Albums"]
-      },
-      "post": {
-        "summary": "Add an album",
-        "description": "Add an album to the server.",
-        "operationId": "AlbumService_Create",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1CreateResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1CreateRequest"
-            }
-          }
-        ],
-        "tags": ["Albums"]
-      }
-    },
-    "/api/v1/albums/{slug}": {
-      "get": {
-        "summary": "Create an album",
-        "description": "Create an album to the server.",
-        "operationId": "AlbumService_GetBySlug",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetBySlugResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": ["Albums"]
-      },
-      "delete": {
-        "summary": "Delete an album",
-        "description": "Delete an album to the server.",
-        "operationId": "AlbumService_Delete",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1DeleteResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": ["Albums"]
-      }
-    },
     "/api/v1/articles": {
       "get": {
         "summary": "List articles",
@@ -165,7 +54,9 @@
             "format": "int32"
           }
         ],
-        "tags": ["Articles"]
+        "tags": [
+          "Articles"
+        ]
       },
       "post": {
         "summary": "Add an article",
@@ -195,7 +86,9 @@
             }
           }
         ],
-        "tags": ["Articles"]
+        "tags": [
+          "Articles"
+        ]
       },
       "put": {
         "summary": "Update an article",
@@ -225,7 +118,9 @@
             }
           }
         ],
-        "tags": ["Articles"]
+        "tags": [
+          "Articles"
+        ]
       }
     },
     "/api/v1/articles/{id}": {
@@ -255,7 +150,9 @@
             "type": "string"
           }
         ],
-        "tags": ["Articles"]
+        "tags": [
+          "Articles"
+        ]
       }
     },
     "/api/v1/articles/{slug}": {
@@ -285,7 +182,9 @@
             "type": "string"
           }
         ],
-        "tags": ["Articles"]
+        "tags": [
+          "Articles"
+        ]
       }
     }
   },
@@ -317,142 +216,6 @@
         }
       }
     },
-    "v1AlbumReponse": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "int64"
-        },
-        "slug": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "metaDescription": {
-          "type": "string"
-        },
-        "content": {
-          "type": "string"
-        },
-        "publishedAt": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "authorUuid": {
-          "type": "string"
-        }
-      }
-    },
-    "v1AlbumRequest": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "int64"
-        },
-        "slug": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "metaDescription": {
-          "type": "string"
-        },
-        "content": {
-          "type": "string"
-        },
-        "publishedAt": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
-    },
-    "v1CreateRequest": {
-      "type": "object",
-      "properties": {
-        "album": {
-          "$ref": "#/definitions/v1AlbumRequest"
-        },
-        "article": {
-          "$ref": "#/definitions/v1AricleRequest"
-        }
-      }
-    },
-    "v1CreateResponse": {
-      "type": "object",
-      "properties": {
-        "album": {
-          "$ref": "#/definitions/v1AlbumReponse"
-        },
-        "article": {
-          "$ref": "#/definitions/v1ArticleResponse"
-        }
-      }
-    },
-    "v1DeleteResponse": {
-      "type": "object",
-      "properties": {
-        "deleted": {
-          "type": "boolean"
-        }
-      }
-    },
-    "v1GetBySlugResponse": {
-      "type": "object",
-      "properties": {
-        "album": {
-          "$ref": "#/definitions/v1AlbumReponse"
-        },
-        "article": {
-          "$ref": "#/definitions/v1ArticleResponse"
-        }
-      }
-    },
-    "v1IndexResponse": {
-      "type": "object",
-      "properties": {
-        "albums": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/v1AlbumReponse"
-          }
-        },
-        "data": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/v1ArticleResponse"
-          }
-        }
-      }
-    },
-    "v1AricleRequest": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "int64"
-        },
-        "slug": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "metaDescription": {
-          "type": "string"
-        },
-        "content": {
-          "type": "string"
-        },
-        "publishedAt": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
-    },
     "v1ArticleResponse": {
       "type": "object",
       "properties": {
@@ -476,29 +239,160 @@
           "type": "string",
           "format": "date-time"
         },
-        "authorUuid": {
+        "authorId": {
           "type": "string"
+        }
+      }
+    },
+    "v1CreateRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "metaDescription": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1CreateResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "metaDescription": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "authorId": {
+          "type": "string"
+        }
+      }
+    },
+    "v1DeleteResponse": {
+      "type": "object"
+    },
+    "v1GetBySlugResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "metaDescription": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "authorId": {
+          "type": "string"
+        }
+      }
+    },
+    "v1IndexResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1ArticleResponse"
+          }
         }
       }
     },
     "v1UpdateRequest": {
       "type": "object",
       "properties": {
-        "article": {
-          "$ref": "#/definitions/v1AricleRequest"
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "metaDescription": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     },
     "v1UpdateResponse": {
       "type": "object",
       "properties": {
-        "article": {
-          "$ref": "#/definitions/v1ArticleResponse"
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "metaDescription": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "authorId": {
+          "type": "string"
         }
       }
     }
   },
-  "schemes": ["http"],
   "externalDocs": {
     "description": "gRPC-gateway flasher api",
     "url": "https://github.com/agravelot/flasher-lerna/apps/api-go"

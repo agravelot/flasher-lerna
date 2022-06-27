@@ -1,11 +1,15 @@
 package album
 
 import (
+	albumspb "api-go/gen/go/proto/albums/v1"
+	categoriespb "api-go/gen/go/proto/categories/v1"
+	mediaspb "api-go/gen/go/proto/medias/v1"
 	"api-go/model"
 	"time"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // use a single instance of Validate, it caches struct info
@@ -95,21 +99,21 @@ type MediaReponse struct {
 	UpdatedAt        *time.Time               `json:"updated_at" swaggertype:"string" example:"2019-04-19T17:47:28Z"`
 }
 
-func transformMediaFromDB(media model.Medium) MediaReponse {
-	return MediaReponse{
-		ID:        media.ID,
+func transformMediaFromDB(media model.Medium) *mediaspb.Media {
+	return &mediaspb.Media{
+		Id:        media.ID,
 		Name:      media.Name,
 		FileName:  media.FileName,
 		MimeType:  media.MimeType,
 		Size:      media.Size,
-		CreatedAt: media.CreatedAt,
-		UpdatedAt: media.UpdatedAt,
-		CustomProperties: CustomPropertiesResponse{
+		CreatedAt: &timestamppb.Timestamp{Seconds: int64(media.CreatedAt.Second())},
+		UpdatedAt: &timestamppb.Timestamp{Seconds: int64(media.UpdatedAt.Second())},
+		CustomProperties: &mediaspb.Media_CustomProperties{
 			Height: media.CustomProperties.Height,
 			Width:  media.CustomProperties.Width,
 		},
-		ResponsiveImages: ResponsiveImagesResponse{
-			Responsive: ResponsiveResponse{
+		ResponsiveImages: &mediaspb.Media_ResponsiveImages{
+			Responsive: &mediaspb.Media_Responsive{
 				Urls:      media.ResponsiveImages.Responsive.Urls,
 				Base64Svg: media.ResponsiveImages.Responsive.Base64Svg,
 			},
@@ -117,47 +121,56 @@ func transformMediaFromDB(media model.Medium) MediaReponse {
 	}
 }
 
-func transformCategoryFromDB(c model.Category) CategoryReponse {
-	return CategoryReponse{
-		ID:   c.ID,
-		Name: c.Name,
+func transformCategoryFromDB(c model.Category) *categoriespb.Category {
+	return &categoriespb.Category{
+		Id: c.ID,
 	}
 }
 
-func transformAlbumFromDB(a model.Album) AlbumResponse {
-	var mediasResponse *[]MediaReponse
+func transformAlbumFromDB(a model.Album) *albumspb.AlbumResponse {
+	var mediasResponse []*mediaspb.Media
 	if a.Medias != nil {
-		var tmp []MediaReponse
+		var tmp []*mediaspb.Media
 		for _, m := range a.Medias {
 			tmp = append(tmp, transformMediaFromDB(m))
 		}
-		mediasResponse = &tmp
+		mediasResponse = tmp
 	}
 
-	var categoriesResponse *[]CategoryReponse
+	var categoriesResponse []*categoriespb.Category
 	if a.Categories != nil {
-		var tmp []CategoryReponse
+		var tmp []*categoriespb.Category
 		for _, c := range a.Categories {
 			tmp = append(tmp, transformCategoryFromDB(c))
 		}
-		categoriesResponse = &tmp
+		categoriesResponse = tmp
 	}
 
-	return AlbumResponse{
-		ID:                     a.ID,
+	var publishedAt *timestamppb.Timestamp
+	if a.PublishedAt != nil {
+		publishedAt = &timestamppb.Timestamp{Seconds: int64(a.PublishedAt.Second())}
+	}
+
+	var body string
+	if a.Body != nil {
+		body = *a.Body
+	}
+
+	return &albumspb.AlbumResponse{
+		Id:                     a.ID,
 		Slug:                   a.Slug,
 		Title:                  a.Title,
 		MetaDescription:        a.MetaDescription,
-		Body:                   a.Body,
-		PublishedAt:            a.PublishedAt,
+		Content:                body,
+		PublishedAt:            publishedAt,
 		Private:                a.Private,
-		SsoID:                  a.SsoID,
-		UserID:                 a.UserID,
-		CreatedAt:              a.CreatedAt,
-		UpdatedAt:              a.UpdatedAt,
+		AuthorId:               *a.SsoID,
+		UserId:                 a.UserID,
+		CreatedAt:              &timestamppb.Timestamp{Seconds: int64(a.CreatedAt.Second())},
+		UpdatedAt:              &timestamppb.Timestamp{Seconds: int64(a.UpdatedAt.Second())},
 		NotifyUsersOnPublished: a.NotifyUsersOnPublished,
-		Medias:                 mediasResponse,
 		Categories:             categoriesResponse,
+		Medias:                 mediasResponse,
 	}
 }
 

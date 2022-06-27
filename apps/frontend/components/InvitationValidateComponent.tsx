@@ -8,8 +8,7 @@ import {
   HttpRequestError,
   WrappedResponse,
 } from "@flasher/common";
-import { useKeycloak } from "@react-keycloak/ssr";
-import { KeycloakInstance } from "keycloak-js";
+import { useAuthentication } from "hooks/useAuthentication";
 
 export enum Status {
   Loading,
@@ -23,7 +22,7 @@ export enum Status {
 const InvitationValidateComponent: FunctionComponent = () => {
   const [status, setStatus] = useState<Status>(Status.Loading);
   const router = useRouter();
-  const { initialized, keycloak } = useKeycloak<KeycloakInstance>();
+  const { initialized, keycloak } = useAuthentication();
 
   useEffect(() => {
     const validate = async (c: string) => {

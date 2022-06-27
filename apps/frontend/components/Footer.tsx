@@ -13,7 +13,7 @@ interface Props {
 const date = new Date().getFullYear();
 
 const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
-  const { keycloak, register, login } = useAuthentication();
+  const { keycloak, isAuthenticated } = useAuthentication();
   const { administration } = configuration;
 
   return (
@@ -109,7 +109,7 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                     Mon compte
                   </span>
                   {/* Logged */}
-                  {keycloak.authenticated && (
+                  {isAuthenticated && (
                     <ul className="list-unstyled">
                       <li>
                         <a
@@ -126,7 +126,7 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                       <a
                         tabIndex={0}
                         className="block py-2 text-sm"
-                        onClick={() => keycloak.accountManagement}
+                        onClick={() => keycloak?.accountManagement}
                         target="_blank"
                         rel="noreferrer"
                       >
@@ -146,7 +146,7 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                         <a
                           tabIndex={0}
                           className="block py-2 text-sm"
-                          onClick={() => keycloak.logout()}
+                          onClick={() => keycloak?.logout()}
                         >
                           Déconnexion
                         </a>
@@ -154,14 +154,14 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                     </ul>
                   )}
                   {/* Guest */}
-                  {!keycloak.authenticated && (
+                  {!isAuthenticated && (
                     <ul className="list-unstyled">
                       <li>
                         <button
                           tabIndex={0}
                           className="block py-2 text-sm"
                           type="button"
-                          onClick={() => register()}
+                          onClick={() => keycloak?.register()}
                         >
                           S&apos;inscrire
                         </button>
@@ -171,7 +171,7 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                           tabIndex={0}
                           className="block py-2 text-sm"
                           type="button"
-                          onClick={() => login()}
+                          onClick={() => keycloak?.login()}
                         >
                           Se connecter
                         </button>

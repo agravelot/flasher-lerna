@@ -14,7 +14,7 @@ import { Transition } from "@headlessui/react";
 const Navbar: FunctionComponent = () => {
   const [showMenu, setShowMenu] = useState(false);
   const toggleNavbar = () => setShowMenu((prev) => !prev);
-  const { login, keycloak, initialized } = useAuthentication();
+  const { keycloak, initialized, isAuthenticated } = useAuthentication();
   const context = useContext(SearchContext);
   if (!context) {
     throw new Error("Unable to get context");
@@ -222,13 +222,13 @@ const Navbar: FunctionComponent = () => {
                 </button>
               </li>
 
-              {initialized && keycloak.authenticated === false && (
+              {initialized && isAuthenticated === false && (
                 <li>
                   <button
                     tabIndex={0}
                     role="menuitem"
                     className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
-                    onClick={() => login()}
+                    onClick={() => keycloak?.login()}
                   >
                     <LoginIcon className="mx-2 h-5 w-5" aria-hidden="true" />
                     Se connecter

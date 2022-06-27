@@ -35,167 +35,6 @@ var (
 	_ = sort.Sort
 )
 
-// Validate checks the field values on AricleRequest with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *AricleRequest) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on AricleRequest with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in AricleRequestMultiError, or
-// nil if none found.
-func (m *AricleRequest) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *AricleRequest) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Id
-
-	// no validation rules for Slug
-
-	if l := utf8.RuneCountInString(m.GetName()); l < 5 || l > 60 {
-		err := AricleRequestValidationError{
-			field:  "Name",
-			reason: "value length must be between 5 and 60 runes, inclusive",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	if l := utf8.RuneCountInString(m.GetMetaDescription()); l < 1 || l > 155 {
-		err := AricleRequestValidationError{
-			field:  "MetaDescription",
-			reason: "value length must be between 1 and 155 runes, inclusive",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	// no validation rules for Content
-
-	if m.PublishedAt != nil {
-
-		if all {
-			switch v := interface{}(m.GetPublishedAt()).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, AricleRequestValidationError{
-						field:  "PublishedAt",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, AricleRequestValidationError{
-						field:  "PublishedAt",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(m.GetPublishedAt()).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return AricleRequestValidationError{
-					field:  "PublishedAt",
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
-	if len(errors) > 0 {
-		return AricleRequestMultiError(errors)
-	}
-
-	return nil
-}
-
-// AricleRequestMultiError is an error wrapping multiple validation errors
-// returned by AricleRequest.ValidateAll() if the designated constraints
-// aren't met.
-type AricleRequestMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m AricleRequestMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m AricleRequestMultiError) AllErrors() []error { return m }
-
-// AricleRequestValidationError is the validation error returned by
-// AricleRequest.Validate if the designated constraints aren't met.
-type AricleRequestValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e AricleRequestValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e AricleRequestValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e AricleRequestValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e AricleRequestValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e AricleRequestValidationError) ErrorName() string { return "AricleRequestValidationError" }
-
-// Error satisfies the builtin error interface
-func (e AricleRequestValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sAricleRequest.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = AricleRequestValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = AricleRequestValidationError{}
-
 // Validate checks the field values on ArticleResponse with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
@@ -228,7 +67,7 @@ func (m *ArticleResponse) validate(all bool) error {
 
 	// no validation rules for Content
 
-	// no validation rules for AuthorUuid
+	// no validation rules for AuthorId
 
 	if m.PublishedAt != nil {
 
@@ -808,33 +647,49 @@ func (m *GetBySlugResponse) validate(all bool) error {
 
 	var errors []error
 
-	if all {
-		switch v := interface{}(m.GetArticle()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, GetBySlugResponseValidationError{
-					field:  "Article",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	// no validation rules for Id
+
+	// no validation rules for Slug
+
+	// no validation rules for Name
+
+	// no validation rules for MetaDescription
+
+	// no validation rules for Content
+
+	// no validation rules for AuthorId
+
+	if m.PublishedAt != nil {
+
+		if all {
+			switch v := interface{}(m.GetPublishedAt()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, GetBySlugResponseValidationError{
+						field:  "PublishedAt",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, GetBySlugResponseValidationError{
+						field:  "PublishedAt",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(m.GetPublishedAt()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, GetBySlugResponseValidationError{
-					field:  "Article",
+				return GetBySlugResponseValidationError{
+					field:  "PublishedAt",
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetArticle()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return GetBySlugResponseValidationError{
-				field:  "Article",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
 	if len(errors) > 0 {
@@ -1039,33 +894,49 @@ func (m *CreateResponse) validate(all bool) error {
 
 	var errors []error
 
-	if all {
-		switch v := interface{}(m.GetArticle()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, CreateResponseValidationError{
-					field:  "Article",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	// no validation rules for Id
+
+	// no validation rules for Slug
+
+	// no validation rules for Name
+
+	// no validation rules for MetaDescription
+
+	// no validation rules for Content
+
+	// no validation rules for AuthorId
+
+	if m.PublishedAt != nil {
+
+		if all {
+			switch v := interface{}(m.GetPublishedAt()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CreateResponseValidationError{
+						field:  "PublishedAt",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CreateResponseValidationError{
+						field:  "PublishedAt",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(m.GetPublishedAt()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, CreateResponseValidationError{
-					field:  "Article",
+				return CreateResponseValidationError{
+					field:  "PublishedAt",
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetArticle()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return CreateResponseValidationError{
-				field:  "Article",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
 	if len(errors) > 0 {
@@ -1168,33 +1039,63 @@ func (m *CreateRequest) validate(all bool) error {
 
 	var errors []error
 
-	if all {
-		switch v := interface{}(m.GetArticle()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, CreateRequestValidationError{
-					field:  "Article",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	// no validation rules for Slug
+
+	if l := utf8.RuneCountInString(m.GetName()); l < 5 || l > 60 {
+		err := CreateRequestValidationError{
+			field:  "Name",
+			reason: "value length must be between 5 and 60 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if l := utf8.RuneCountInString(m.GetMetaDescription()); l < 1 || l > 155 {
+		err := CreateRequestValidationError{
+			field:  "MetaDescription",
+			reason: "value length must be between 1 and 155 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for Content
+
+	if m.PublishedAt != nil {
+
+		if all {
+			switch v := interface{}(m.GetPublishedAt()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CreateRequestValidationError{
+						field:  "PublishedAt",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CreateRequestValidationError{
+						field:  "PublishedAt",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(m.GetPublishedAt()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, CreateRequestValidationError{
-					field:  "Article",
+				return CreateRequestValidationError{
+					field:  "PublishedAt",
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetArticle()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return CreateRequestValidationError{
-				field:  "Article",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
 	if len(errors) > 0 {
@@ -1297,33 +1198,65 @@ func (m *UpdateRequest) validate(all bool) error {
 
 	var errors []error
 
-	if all {
-		switch v := interface{}(m.GetArticle()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, UpdateRequestValidationError{
-					field:  "Article",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	// no validation rules for Id
+
+	// no validation rules for Slug
+
+	if l := utf8.RuneCountInString(m.GetName()); l < 5 || l > 60 {
+		err := UpdateRequestValidationError{
+			field:  "Name",
+			reason: "value length must be between 5 and 60 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if l := utf8.RuneCountInString(m.GetMetaDescription()); l < 1 || l > 155 {
+		err := UpdateRequestValidationError{
+			field:  "MetaDescription",
+			reason: "value length must be between 1 and 155 runes, inclusive",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for Content
+
+	if m.PublishedAt != nil {
+
+		if all {
+			switch v := interface{}(m.GetPublishedAt()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, UpdateRequestValidationError{
+						field:  "PublishedAt",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, UpdateRequestValidationError{
+						field:  "PublishedAt",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(m.GetPublishedAt()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, UpdateRequestValidationError{
-					field:  "Article",
+				return UpdateRequestValidationError{
+					field:  "PublishedAt",
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetArticle()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return UpdateRequestValidationError{
-				field:  "Article",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
 	if len(errors) > 0 {
@@ -1426,33 +1359,49 @@ func (m *UpdateResponse) validate(all bool) error {
 
 	var errors []error
 
-	if all {
-		switch v := interface{}(m.GetArticle()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, UpdateResponseValidationError{
-					field:  "Article",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
+	// no validation rules for Id
+
+	// no validation rules for Slug
+
+	// no validation rules for Name
+
+	// no validation rules for MetaDescription
+
+	// no validation rules for Content
+
+	// no validation rules for AuthorId
+
+	if m.PublishedAt != nil {
+
+		if all {
+			switch v := interface{}(m.GetPublishedAt()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, UpdateResponseValidationError{
+						field:  "PublishedAt",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, UpdateResponseValidationError{
+						field:  "PublishedAt",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
 			}
-		case interface{ Validate() error }:
+		} else if v, ok := interface{}(m.GetPublishedAt()).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				errors = append(errors, UpdateResponseValidationError{
-					field:  "Article",
+				return UpdateResponseValidationError{
+					field:  "PublishedAt",
 					reason: "embedded message failed validation",
 					cause:  err,
-				})
+				}
 			}
 		}
-	} else if v, ok := interface{}(m.GetArticle()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return UpdateResponseValidationError{
-				field:  "Article",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
+
 	}
 
 	if len(errors) > 0 {
