@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "next",
     "dev:debug": "NODE_OPTIONS='--inspect' next dev",
+    "prebuild": "yarn favicon && yarn pwa:icons",
     "build": "next build",
     "start": "next start",
     "type-check": "tsc",
