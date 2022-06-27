@@ -12,7 +12,7 @@ import {
 } from "@heroicons/react/outline";
 
 const NavbarAccount: FC = () => {
-  const { initialized, keycloak, register, login, parsedToken, isAdmin } =
+  const { initialized, keycloak, parsedToken, isAdmin, isAuthenticated } =
     useAuthentication();
   const { administration } = configuration;
 
@@ -22,7 +22,7 @@ const NavbarAccount: FC = () => {
   const openCloseIndicatorClass = (): string =>
     isOpenned ? "rotate-180" : "rotate-0";
 
-  if (initialized === false || keycloak.authenticated === false) {
+  if (initialized === false || isAuthenticated === false) {
     return (
       <ul className="flex items-center" role="menubar">
         <li className="flex items-center" role="menuitem">
@@ -30,7 +30,7 @@ const NavbarAccount: FC = () => {
             className="rounded p-2 text-xs font-bold uppercase text-white hover:text-gray-300"
             type="button"
             tabIndex={0}
-            onClick={() => register()}
+            onClick={() => keycloak?.register()}
           >
             {"S'inscrire"}
           </button>
@@ -40,7 +40,7 @@ const NavbarAccount: FC = () => {
             className="inline-flex rounded p-2 text-xs font-bold uppercase text-white hover:text-gray-300"
             type="button"
             tabIndex={0}
-            onClick={() => login()}
+            onClick={() => keycloak?.login()}
           >
             <LoginIcon className="mx-2 h-5 w-5" aria-hidden="true" />
             Se connecter
@@ -52,7 +52,7 @@ const NavbarAccount: FC = () => {
 
   return (
     <>
-      {initialized && keycloak.authenticated && (
+      {initialized && isAuthenticated && (
         <div className="flex items-center">
           <div className="relative inline-block text-left">
             <Menu>
@@ -122,7 +122,7 @@ const NavbarAccount: FC = () => {
                     <a
                       className="inline-flex w-full justify-start px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none"
                       role="menuitem"
-                      href={keycloak.createAccountUrl()}
+                      href={keycloak?.createAccountUrl()}
                       target="_blank"
                       rel="noreferrer"
                       tabIndex={0}
@@ -160,7 +160,7 @@ const NavbarAccount: FC = () => {
                         tabIndex={0}
                         className="inline-flex w-full justify-start px-4 py-2 text-sm leading-5 text-red-700 hover:bg-gray-100 hover:text-red-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none"
                         role="menuitem"
-                        href={keycloak.createLogoutUrl()}
+                        href={keycloak?.createLogoutUrl()}
                       >
                         <LogoutIcon
                           className="ml-2 mr-4 h-5 w-5"

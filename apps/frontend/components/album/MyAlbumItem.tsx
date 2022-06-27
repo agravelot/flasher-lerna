@@ -1,10 +1,10 @@
 import { FunctionComponent } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useKeycloak } from "@react-keycloak/web";
 import { Album } from "@flasher/models";
 import { api } from "@flasher/common";
 import { sizes } from "utils/util";
+import { useAuthentication } from "hooks/useAuthentication";
 
 export interface Props {
   album: Album;
@@ -28,7 +28,7 @@ const MyAlbumItem: FunctionComponent<Props> = ({
   album,
   showDownload,
 }: Props) => {
-  const { keycloak } = useKeycloak();
+  const { keycloak } = useAuthentication();
 
   const downloadAlbum = async (): Promise<void> => {
     const response = await api<GenerateDownloakLink>(
