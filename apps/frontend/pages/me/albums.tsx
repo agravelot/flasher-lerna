@@ -41,7 +41,7 @@ const MyAlbums: FunctionComponent<Props> = ({
     }
 
     if (!keycloak?.authenticated) {
-      keycloak.login();
+      keycloak?.login();
     }
 
     api<PaginatedReponse<Album[]>>("/me/albums", {
