@@ -13,11 +13,10 @@ const withTM = require("next-transpile-modules")([
 ]); // pass the modules you would like to see transpiled
 
 const sentryWebpackPluginOptions = {
-  silent: true, 
+  silent: true,
 };
 
-const moduleExports = 
-  module.exports = (withTM(
+const moduleExports = (module.exports = withTM(
   (module.exports = withBundleAnalyzer(
     (module.exports = withPWA({
       pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
@@ -41,7 +40,7 @@ const moduleExports =
           {
             source: "/albums/:slug",
             destination: "/galerie/:slug",
-            permanent: false
+            permanent: false,
           },
           {
             source: "/categories",
@@ -76,7 +75,7 @@ const moduleExports =
           "assets-jkanda.s3.fr-par.scw.cloud",
           "assets.blog.jkanda.s3.fr-par.scw.cloud",
         ],
-        formats: ["image/avif", "image/webp"]
+        formats: ["image/avif", "image/webp"],
       },
       poweredByHeader: false,
       compress: false,
@@ -84,5 +83,4 @@ const moduleExports =
   ))
 ));
 
-    
 module.exports = withSentryConfig(moduleExports, sentryWebpackPluginOptions);
