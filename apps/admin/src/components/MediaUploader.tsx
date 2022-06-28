@@ -3,11 +3,11 @@ import Uppy from "@uppy/core";
 import Tus from "@uppy/tus";
 import { Dashboard } from "@uppy/react";
 import ImageEditor from "@uppy/image-editor";
-import { useKeycloak } from "@react-keycloak/web";
 
 import "@uppy/core/dist/style.css";
 import "@uppy/dashboard/dist/style.css";
 import "@uppy/image-editor/dist/style.css";
+import { useAuthentication } from "../hooks/useAuthentication";
 
 export interface MediaUploaderProps {
   modelId: number;
@@ -18,7 +18,7 @@ export interface MediaUploaderProps {
 // Use memo to avoid re-rendering the component on upload success
 const MediaUploader: FunctionComponent<MediaUploaderProps> = memo(
   function MediaUploader(props: MediaUploaderProps) {
-    const { initialized, keycloak } = useKeycloak();
+    const { initialized, keycloak } = useAuthentication();
 
     useEffect(() => {
       return () => uppy.close();
@@ -131,7 +131,7 @@ const MediaUploader: FunctionComponent<MediaUploaderProps> = memo(
     // Concat uplload
     // Image Editor
     return (
-      <div className="flex flex-wrap mt-8 justify-center">
+      <div className="mt-8 flex flex-wrap justify-center">
         <Dashboard
           plugins={["ImageEditor"]}
           uppy={uppy}

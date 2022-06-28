@@ -2,8 +2,8 @@ import { ArticlesApi, Configuration } from "@flasher/http-client";
 import ArticleTable from "../components/ArticleTable";
 import { FunctionComponent, useState } from "react";
 import { Link } from "react-router-dom";
-import { useKeycloak } from "@react-keycloak/web";
 import { useQuery } from "react-query";
+import { useAuthentication } from "../hooks/useAuthentication";
 
 interface Article {
   id: string;
@@ -21,7 +21,7 @@ const config = new Configuration({
 const api = new ArticlesApi(config);
 
 const ArticleList: FunctionComponent = () => {
-  const { initialized, keycloak } = useKeycloak();
+  const { initialized, keycloak } = useAuthentication();
   const [selectedArticles, setSelectedArticles] = useState<Article[]>([]);
 
   const {
@@ -29,20 +29,21 @@ const ArticleList: FunctionComponent = () => {
     error,
     isFetching,
     status,
-  } = useQuery(
-    "article-index",
-    () =>
-      api
-        .articleServiceIndex(
-          { limit: 15 },
-          { headers: { Authorization: `Bearer ${keycloak.token}` } }
-        )
-        .then((r) => r.data),
-    {
-      enabled: initialized,
-      // getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
+  } = useQuery("article-index", () => {
+    if (!initialized) {
+      return;
     }
-  );
+    api
+      .articleServiceIndex(
+        { limit: 15 },
+        { headers: { Authorization: `Bearer ${keycloak.token}` } }
+      )
+      .then((r) => r.data),
+      {
+        enabled: initialized,
+        // getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
+      };
+  });
 
   return (
     <div>

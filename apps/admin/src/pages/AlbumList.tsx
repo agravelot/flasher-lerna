@@ -3,8 +3,8 @@ import { MetaPaginatedReponse, apiRepository } from "@flasher/common";
 import { FunctionComponent, useEffect, useState } from "react";
 import AlbumTable from "../components/AlbumsTable";
 import { useLocation } from "react-router-dom";
-import { useKeycloak } from "@react-keycloak/web";
 import { Pagination } from "../components/Pagination";
+import { useAuthentication } from "../hooks/useAuthentication";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -14,7 +14,7 @@ const AlbumList: FunctionComponent = () => {
   const query = useQuery();
   const [albums, setAlbums] = useState<Album[]>([]);
   const [meta, setMeta] = useState<MetaPaginatedReponse | null>(null);
-  const { keycloak, initialized } = useKeycloak();
+  const { keycloak, initialized } = useAuthentication();
 
   const location = useLocation();
 
