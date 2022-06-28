@@ -65,7 +65,9 @@ const moduleExports = (module.exports = withTM(
         disable: process.env.NODE_ENV !== "production",
         mode: process.env.NODE_ENV,
       },
-      reactStrictMode: true,
+      // For context, read: https://github.com/react-keycloak/react-keycloak/issues/182
+      // Must be re-enable when possible
+      // reactStrictMode: true,
       env: {
         baseUrl: "baseUrl",
       },
