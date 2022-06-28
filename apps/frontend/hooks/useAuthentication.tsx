@@ -61,6 +61,9 @@ const AuthContext = createContext<AuthenticationContextProps>({
   isAdmin: false,
 });
 
+const LOCAL_STORAGE_ACCESS_TOKEN_KEY = "at";
+const LOCAL_STORAGE_REFRESH_TOKEN_KEY = "rt";
+
 export const AuthenticationProvider = ({
   children,
   keycloakConfig,
@@ -80,23 +83,25 @@ export const AuthenticationProvider = ({
     }
     keycloakRef.current = keycloakInstance
       .init({
-        // onLoad: undefined,
-        // checkLoginIframe: false,
-        onLoad: "check-sso",
+        onLoad: undefined,
+        checkLoginIframe: false,
         enableLogging: true,
-        silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
+        token: getToken(LOCAL_STORAGE_ACCESS_TOKEN_KEY) ?? undefined,
+        refreshToken: getToken(LOCAL_STORAGE_REFRESH_TOKEN_KEY) ?? undefined,
         ...keycloakInitOptions,
       })
       .then((authentication) => {
+        setInitialized(true);
         setIsAuthenticated(authentication);
       })
       .catch((error) => {
         console.error(error);
-      })
-      .finally(() => {
-        setInitialized(true);
       });
-  }, [keycloakInstance]);
+
+    keycloakInstance.onTokenExpired = () => {
+      keycloakInstance.updateToken(30);
+    };
+  }, [keycloakInstance, keycloakInitOptions]);
 
   // if (isServer()) {
   //   return children;
@@ -116,4 +121,36 @@ export const AuthenticationProvider = ({
       {children}
     </AuthContext.Provider>
   );
+};
+
+const saveToken = (key: string, token: string): void => {
+  if (typeof window === "undefined") {
+    return;
+  }
+  localStorage.setItem(key, token);
+};
+
+const getToken = (key: string): string | undefined => {
+  if (typeof window === "undefined") {
+    return;
+  }
+  return localStorage.getItem(key) ?? undefined;
+};
+
+export const AuthenticationKeeper = (): null => {
+  const { keycloak, initialized, isAuthenticated } = useAuthentication();
+
+  useEffect(() => {
+    if (
+      initialized &&
+      isAuthenticated &&
+      keycloak?.token &&
+      keycloak?.refreshToken
+    ) {
+      saveToken(LOCAL_STORAGE_ACCESS_TOKEN_KEY, keycloak.token);
+      saveToken(LOCAL_STORAGE_REFRESH_TOKEN_KEY, keycloak.refreshToken);
+    }
+  }, [initialized, isAuthenticated, keycloak]);
+
+  return null;
 };

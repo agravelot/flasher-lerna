@@ -5,7 +5,10 @@ import { ReactElement } from "react";
 import { Analytics } from "components/Analytics";
 import { Clarity } from "components/Clarity";
 import { setBaseUrl } from "@flasher/common";
-import { AuthenticationProvider } from "hooks/useAuthentication";
+import {
+  AuthenticationKeeper,
+  AuthenticationProvider,
+} from "hooks/useAuthentication";
 
 setBaseUrl(configuration.baseUrl);
 
@@ -18,6 +21,7 @@ function App({ Component, pageProps }: AppProps): ReactElement {
       }}
     >
       <>
+        <AuthenticationKeeper />
         <Analytics />
         <Clarity />
         <Component {...pageProps} />
