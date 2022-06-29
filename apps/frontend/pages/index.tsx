@@ -9,7 +9,7 @@ import { getGlobalProps, GlobalProps } from "../stores";
 import Separator from "../components/Separator";
 import { NextSeo } from "next-seo";
 import { Album, Testimonial } from "@flasher/models";
-import { api, PaginatedReponse } from "@flasher/common";
+import { api, PaginatedReponse, sizes } from "@flasher/common";
 import { configuration } from "utils/configuration";
 import { ContactSection } from "../components/ContactSection";
 
@@ -75,15 +75,15 @@ const IndexPage: NextPage<Props> = ({
           <div className="container mx-auto px-4">
             <div className="block flex-wrap items-center lg:flex">
               {profilePictureHomepage && (
-                <div className="mx-auto w-3/5 lg:order-2 lg:w-4/12">
+                <div className="mx-auto w-full lg:order-2 lg:w-4/12">
                   <Image
-                    className="mb-8 w-full object-cover p-8 shadow-lg md:p-16 lg:mb-0"
+                    className="mb-8 w-full object-cover p-8 shadow-lg lg:mb-0"
                     alt={appName}
                     src={profilePictureHomepage.url}
                     width={2000}
                     draggable={false}
                     height={2000}
-                    // quality={95}
+                    sizes={sizes(3, "container")}
                   />
                 </div>
               )}
