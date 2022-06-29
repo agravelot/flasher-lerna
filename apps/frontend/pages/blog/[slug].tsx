@@ -74,6 +74,7 @@ const Post: NextPage<Props> = ({ post, appName, socialMedias }: Props) => {
       />
       <ArticleJsonLd
         // url={url}
+        type="Blog"
         url={`${configuration.appUrl}/blog/${post.slug}`}
         title={post.title}
         images={[]}
