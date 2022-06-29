@@ -10,6 +10,7 @@ import { getGlobalProps, GlobalProps } from "stores";
 import Layout from "components/Layout";
 import { configuration } from "utils/configuration";
 import Header from "components/Header";
+import { Breadcrumb } from "components/Breadcrumb";
 
 type Props = {
   posts: BlogPost[];
@@ -50,7 +51,17 @@ const IndexAlbum: NextPage<Props> = ({
             .slice(0, 5), */
         }}
       />
-      <Header title="Découvrez mon univers">
+      <Header
+        title="Découvrez mon univers"
+        breadcrumb={
+          <Breadcrumb
+            levels={[
+              { name: "Acceuil", path: "/" },
+              { name: "Blog ", path: "/blog" },
+            ]}
+          />
+        }
+      >
         <h2 className="mt-4 text-lg text-gray-300">
           {
             "Venez plonger dans mes différents univers à travers des albums divers et variés ! Entre balade, cosplay, et portrait."

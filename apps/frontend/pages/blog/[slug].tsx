@@ -12,6 +12,7 @@ import { generateNextImageUrl } from "utils/util";
 import { useRouter } from "next/router";
 import { ContactSection } from "components/ContactSection";
 import ReadingTime from "components/ReadingTime";
+import { Breadcrumb } from "components/Breadcrumb";
 
 type Props = {
   post: BlogPost;
@@ -88,11 +89,18 @@ const Post: NextPage<Props> = ({
         publisherName={appName}
         description={post.metaDescription}
       />
-      <Header title={post.title} />
-      <div className="container mx-auto py-16 px-4 max-w-none prose prose-sm sm:prose lg:prose-lg xl:prose-xl">
-          {(post.content && post.content.length !== 0) &&
-              <ReadingTime body={post.content}/>
-          }
+      <Header
+        title={post.title}
+        breadcrumb={
+          <Breadcrumb
+            levels={[
+              { name: "Acceuil", path: "/" },
+              { name: "Blog", path: "/blog" },
+              { name: post.title, path: `/blog/${post.slug}` },
+            ]}
+          />
+        }
+      />
         <div className="flex justify-center text-justify">
           <article className="content-center max-w-none">
             {post.contentSerialized && (

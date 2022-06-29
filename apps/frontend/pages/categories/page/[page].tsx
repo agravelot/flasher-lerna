@@ -19,6 +19,7 @@ import { api, PaginatedReponse } from "@flasher/common";
 import { useAuthentication } from "hooks/useAuthentication";
 import { configuration } from "utils/configuration";
 import { useRouter } from "next/dist/client/router";
+import { Breadcrumb } from "components/Breadcrumb";
 
 type Props = {
   categories: Category[];
@@ -66,7 +67,22 @@ const IndexAlbum: NextPage<Props> = ({
             })),
         }}
       />
-      <Header title={"Par thématique"} description={description} />
+      <Header
+        title={"Par thématique"}
+        description={description}
+        breadcrumb={
+          <Breadcrumb
+            levels={[
+              { name: "Acceuil", path: "/" },
+              { name: "Catégories", path: "/categories" },
+              {
+                name: `Page ${pagination.currentPage}`,
+                path: `/categories/page/${pagination.currentPage}`,
+              },
+            ]}
+          />
+        }
+      />
       <CategoryList categories={categories} />
       <div className="container mx-auto mb-20">
         <Pagination

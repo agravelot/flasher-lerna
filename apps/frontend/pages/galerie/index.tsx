@@ -12,6 +12,7 @@ import { api, PaginatedReponse } from "@flasher/common";
 import { useAuthentication } from "hooks/useAuthentication";
 import useInView from "react-cool-inview";
 import { useEffect, useState } from "react";
+import { Breadcrumb } from "components/Breadcrumb";
 
 type Props = {
   albums: Album[];
@@ -92,7 +93,17 @@ const IndexAlbum: NextPage<Props> = ({
             .slice(0, 5),
         }}
       />
-      <Header title="Découvrez mon univers">
+      <Header
+        title="Découvrez mon univers"
+        breadcrumb={
+          <Breadcrumb
+            levels={[
+              { name: "Acceuil", path: "/" },
+              { name: "Galerie ", path: "/galerie" },
+            ]}
+          />
+        }
+      >
         <h2 className="mt-4 text-lg text-gray-300">
           {
             "Venez plonger dans mes différents univers à travers des albums divers et variés ! Entre balade, cosplay, et portrait."

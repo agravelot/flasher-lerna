@@ -22,6 +22,7 @@ import AlbumMediaList from "../../components/album/AlbumMediaList";
 import { useAuthentication } from "hooks/useAuthentication";
 import ReadingTime from "components/ReadingTime";
 import { ContactSection } from "../../components/ContactSection";
+import { Breadcrumb } from "components/Breadcrumb";
 
 type Props = {
   album: Album;
@@ -106,6 +107,15 @@ const ShowAlbum: NextPage<Props> = ({
         title={album.title}
         src={album.medias?.[0].url}
         altDescription={album.title}
+        breadcrumb={
+          <Breadcrumb
+            levels={[
+              { name: "Acceuil", path: "/" },
+              { name: "Galerie ", path: "/galerie" },
+              { name: album.title, path: `/galerie/${album.slug}` },
+            ]}
+          />
+        }
       >
         <div className="px-6 py-4">
           {album.categories?.map((category) => (

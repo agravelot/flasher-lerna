@@ -20,6 +20,7 @@ import {
 import { Album, Category } from "@flasher/models";
 import { useAuthentication } from "hooks/useAuthentication";
 import { useRouter } from "next/dist/client/router";
+import { Breadcrumb } from "components/Breadcrumb";
 
 type Props = {
   category: Category;
@@ -70,20 +71,20 @@ const ShowCategory: NextPage<Props> = ({
         }}
       />
       <div>
-        {category.cover && (
-          <Header
-            src={category.cover?.url}
-            title={category.name}
-            description={`Découvrez les albums de la catégorie ${category.name.toLowerCase()}`}
-          />
-        )}
-
-        {!category.cover && (
-          <Header
-            title={category.name}
-            description={`Découvrez les albums de la catégorie ${category.name.toLowerCase()}`}
-          />
-        )}
+        <Header
+          src={category.cover?.url ?? undefined}
+          title={category.name}
+          description={`Découvrez les albums de la catégorie ${category.name.toLowerCase()}`}
+          breadcrumb={
+            <Breadcrumb
+              levels={[
+                { name: "Acceuil", path: "/" },
+                { name: "Catégorie ", path: "/categories" },
+                { name: category.name, path: `/categories/${category.slug}` },
+              ]}
+            />
+          }
+        />
 
         <div className="container mx-auto px-4">
           <div className="justify-center py-16 text-justify">

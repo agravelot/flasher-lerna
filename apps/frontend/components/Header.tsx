@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, ReactNode } from "react";
 import Image from "next/future/image";
 import Separator from "./Separator";
 import { Media } from "@flasher/models";
@@ -15,12 +15,13 @@ const defaultMedia: Media = {
 class Props {
   title?: string;
   description?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
   separatorClass?: string;
   src?: string;
   altDescription?: string;
   width?: number;
   height?: number;
+  breadcrumb?: ReactNode;
 }
 
 const Header: FunctionComponent<Props> = ({
@@ -30,6 +31,7 @@ const Header: FunctionComponent<Props> = ({
   separatorClass = "text-white",
   src = defaultMedia.url,
   altDescription = defaultMedia.name,
+  breadcrumb,
 }: Props) => (
   <div
     className="relative flex items-center justify-center pt-16 pb-32"
@@ -45,6 +47,8 @@ const Header: FunctionComponent<Props> = ({
         priority
       />
     </div>
+    <div className="container absolute top-[64px]">{breadcrumb}</div>
+
     <div className="container relative mx-auto">
       <div className="flex flex-wrap items-center">
         <div className="ml-auto mr-auto w-full px-4 text-center lg:w-6/12">
