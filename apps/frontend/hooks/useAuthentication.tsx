@@ -4,6 +4,7 @@ import {
   KeycloakInstance,
   KeycloakTokenParsed,
 } from "keycloak-js";
+import { String } from "lodash";
 import {
   createContext,
   useContext,
@@ -85,7 +86,6 @@ export const AuthenticationProvider = ({
       .init({
         onLoad: undefined,
         checkLoginIframe: false,
-        enableLogging: true,
         token: getToken(LOCAL_STORAGE_ACCESS_TOKEN_KEY) ?? undefined,
         refreshToken: getToken(LOCAL_STORAGE_REFRESH_TOKEN_KEY) ?? undefined,
         ...keycloakInitOptions,
@@ -95,7 +95,10 @@ export const AuthenticationProvider = ({
         setIsAuthenticated(authentication);
       })
       .catch((error) => {
+        console.error("unable init keycloak client");
         console.error(error);
+        deleteToken(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
+        deleteToken(LOCAL_STORAGE_REFRESH_TOKEN_KEY);
       });
 
     keycloakInstance.onTokenExpired = () => {
@@ -135,6 +138,13 @@ const getToken = (key: string): string | undefined => {
     return;
   }
   return localStorage.getItem(key) ?? undefined;
+};
+
+const deleteToken = (key: string): void => {
+  if (typeof window === "undefined") {
+    return;
+  }
+  localStorage.removeItem(key);
 };
 
 export const AuthenticationKeeper = (): null => {
