@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Layout from "../components/Layout";
-import Image from "next/image";
+import Image from "next/future/image";
 import Header from "../components/Header";
 import { TestimonialList } from "../components/TestimonialList";
 import AlbumList from "../components/album/AlbumList";

@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import Image from "next/future/image";
 import { sizes } from "../../utils/util";
 import { Category } from "@flasher/models";
 
@@ -21,12 +21,11 @@ const CategoryItem: FunctionComponent<Props> = ({ category }: Props) => {
           <a>
             {category.cover && (
               <div className="absolute top-0 h-full w-full bg-cover bg-center">
-                <span className="absolute h-full w-full bg-black opacity-50" />
+                <span className="absolute h-full w-full bg-black" />
                 <Image
-                  className="h-full opacity-75"
+                  style={{ filter: "brightness(80%)" }}
+                  className="h-full w-full object-cover"
                   src={category.cover.url}
-                  objectFit="cover"
-                  layout="fill"
                   alt={category.name}
                   sizes={sizes(3, "container")}
                   draggable={false}

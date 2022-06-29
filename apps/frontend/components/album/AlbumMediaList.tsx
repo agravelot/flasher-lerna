@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import Image from "next/image";
+import Image from "next/future/image";
 import { ImageGallery, ImageObject, Person } from "schema-dts";
 import { useRouter } from "next/dist/client/router";
 import { sizes } from "../../utils/util";
@@ -76,7 +76,6 @@ const AlbumMediaList: FunctionComponent<Props> = ({
             className="w-full object-contain p-1"
             src={media.url}
             alt={media.name}
-            layout="responsive"
             height={media.height}
             width={media.width}
             sizes={sizes(2, "container")}

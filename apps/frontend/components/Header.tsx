@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import Image from "next/image";
+import Image from "next/future/image";
 import Separator from "./Separator";
 import { Media } from "@flasher/models";
 
@@ -32,18 +32,15 @@ const Header: FunctionComponent<Props> = ({
   altDescription = defaultMedia.name,
 }: Props) => (
   <div
-    className="relative flex content-center items-center justify-center pt-16 pb-32"
+    className="relative flex items-center justify-center pt-16 pb-32"
     style={{ minHeight: "75vh" }}
   >
-    <div
-      className="absolute top-0 h-full w-full bg-black bg-cover bg-center"
-      style={{ filter: "brightness(80%)" }}
-    >
+    <div className="absolute top-0 h-full w-full bg-black bg-cover bg-center">
       <Image
+        style={{ filter: "brightness(80%)" }}
         src={src}
         alt={altDescription}
-        layout="fill"
-        objectFit="cover"
+        className="h-full w-full object-cover"
         draggable={false}
         priority
       />

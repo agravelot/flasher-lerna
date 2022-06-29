@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React, { FunctionComponent } from "react";
-import Image from "next/image";
+import Image from "next/future/image";
 import { Album } from "@flasher/models";
 import { sizes } from "../../utils/util";
 
@@ -19,14 +19,12 @@ const AlbumItem: FunctionComponent<Props> = ({ album }: Props) => {
         >
           {album.media && (
             <Image
-              className="h-64 w-full"
+              className="h-64 w-full object-cover"
               src={album.media.url}
               alt={album.title}
-              layout="responsive"
               height={album.media.height}
               width={album.media.width}
               sizes={sizes(3, "container")}
-              objectFit="cover"
               draggable={false}
             />
           )}

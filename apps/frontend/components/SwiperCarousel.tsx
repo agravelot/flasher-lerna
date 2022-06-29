@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import Image from "next/image";
+import Image from "next/future/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, {
   Navigation,
@@ -85,9 +85,7 @@ export const SwiperCarousel: FunctionComponent<Props> = ({
           <SwiperSlide key={m.id} zoom>
             <div className="flex h-screen items-center justify-center align-middle">
               <Image
-                objectFit="contain"
-                className="max-h-screen"
-                layout="fill"
+                className="max-h-screen object-contain"
                 priority={isNearbyOfCurrentIndex(index)}
                 src={m.url}
                 alt={m.name}

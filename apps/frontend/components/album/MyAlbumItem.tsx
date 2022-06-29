@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import Image from "next/image";
+import Image from "next/future/image";
 import Link from "next/link";
 import { Album } from "@flasher/models";
 import { api } from "@flasher/common";
@@ -55,15 +55,13 @@ const MyAlbumItem: FunctionComponent<Props> = ({
       <div className="flex-none overflow-hidden rounded-t text-center lg:w-64 lg:rounded-t-none lg:rounded-l">
         {album.media && (
           <Image
-            className="h-64 w-full rounded-t lg:rounded-t-none lg:rounded-l"
-            objectFit="cover"
+            className="h-64 w-full rounded-t object-cover lg:rounded-t-none lg:rounded-l"
             src={album.media.url}
             alt={album.title}
             width={album.media.width}
             height={album.media.height}
             sizes={sizes(2, "container")}
             draggable={false}
-            layout="responsive"
           />
         )}
       </div>
