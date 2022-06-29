@@ -43,11 +43,7 @@ const components = {
   // p: (props) => <p style={{ color: "tomato" }} {...props} />,
 };
 
-const Post: NextPage<Props> = ({
-  post,
-  appName,
-  socialMedias,
-}: Props) => {
+const Post: NextPage<Props> = ({ post, appName, socialMedias }: Props) => {
   const { asPath } = useRouter();
 
   return (
@@ -101,8 +97,12 @@ const Post: NextPage<Props> = ({
           />
         }
       />
+      <div className="container prose prose-sm mx-auto max-w-none py-16 px-4 sm:prose lg:prose-lg xl:prose-xl">
+        {post.content && post.content.length !== 0 && (
+          <ReadingTime body={post.content} />
+        )}
         <div className="flex justify-center text-justify">
-          <article className="content-center max-w-none">
+          <article className="max-w-none content-center">
             {post.contentSerialized && (
               <MDXRemote {...post.contentSerialized} components={components} />
             )}
