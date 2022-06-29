@@ -105,7 +105,7 @@ const ShowAlbum: NextPage<Props> = ({
       <Header
         title={album.title}
         src={album.medias?.[0].url}
-        alt-description={album.title}
+        altDescription={album.title}
       >
         <div className="px-6 py-4">
           {album.categories?.map((category) => (
@@ -136,22 +136,20 @@ const ShowAlbum: NextPage<Props> = ({
       )}
 
       <div className="container mx-auto">
-          <div className="pt-8 px-4 prose max-w-none">
-              {album.body &&
-                  <ReadingTime body={album.body}/>
-              }
+        <div className="prose max-w-none px-4 pt-8">
+          {album.body && <ReadingTime body={album.body} />}
+        </div>
+        <article>
+          <div className="prose flex max-w-none content-center justify-center px-4 pb-16 text-justify">
+            <div dangerouslySetInnerHTML={{ __html: album.body ?? "" }} />
           </div>
-          <article>
-            <div className="flex justify-center pb-16 px-4 text-justify content-center prose max-w-none">
-              <div dangerouslySetInnerHTML={{ __html: album.body ?? "" }}/>
-            </div>
-            <div
-              className="container mx-auto py-4 overflow-hidden mb-16"
-              // :style="galleryContentVisibility"
-            >
-              <AlbumMediaList album={album} openGalleryAt={openGalleryAt} />
-            </div>
-          </article>
+          <div
+            className="container mx-auto mb-16 overflow-hidden py-4"
+            // :style="galleryContentVisibility"
+          >
+            <AlbumMediaList album={album} openGalleryAt={openGalleryAt} />
+          </div>
+        </article>
       </div>
 
       {album.cosplayers?.length && (
