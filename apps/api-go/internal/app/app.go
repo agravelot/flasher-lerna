@@ -23,7 +23,7 @@ import (
 	"api-go/auth"
 	"api-go/config"
 	"api-go/database"
-	albumspb "api-go/gen/go/proto/albums/v1"
+	albumspb "api-go/gen/go/proto/albums/v2"
 	articlespb "api-go/gen/go/proto/articles/v1"
 	"api-go/third_party"
 

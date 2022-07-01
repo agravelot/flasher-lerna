@@ -16,76 +16,72 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface AlbumServiceUpdateRequest
+ * @interface Protoarticlesv2CreateRequest
  */
-export interface AlbumServiceUpdateRequest {
+export interface Protoarticlesv2CreateRequest {
     /**
      * 
      * @type {string}
-     * @memberof AlbumServiceUpdateRequest
+     * @memberof Protoarticlesv2CreateRequest
      */
     slug?: string;
     /**
      * 
      * @type {string}
-     * @memberof AlbumServiceUpdateRequest
+     * @memberof Protoarticlesv2CreateRequest
      */
-    name?: string;
+    name: string;
     /**
      * 
      * @type {string}
-     * @memberof AlbumServiceUpdateRequest
+     * @memberof Protoarticlesv2CreateRequest
      */
-    metaDescription?: string;
+    metaDescription: string;
     /**
      * 
      * @type {string}
-     * @memberof AlbumServiceUpdateRequest
+     * @memberof Protoarticlesv2CreateRequest
      */
-    content?: string;
+    content: string;
     /**
      * 
      * @type {Date}
-     * @memberof AlbumServiceUpdateRequest
+     * @memberof Protoarticlesv2CreateRequest
      */
     publishedAt?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof AlbumServiceUpdateRequest
-     */
-    _private?: boolean;
 }
 
 /**
- * Check if a given object implements the AlbumServiceUpdateRequest interface.
+ * Check if a given object implements the Protoarticlesv2CreateRequest interface.
  */
-export function instanceOfAlbumServiceUpdateRequest(value: object): boolean {
+export function instanceOfProtoarticlesv2CreateRequest(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "metaDescription" in value;
+    isInstance = isInstance && "content" in value;
 
     return isInstance;
 }
 
-export function AlbumServiceUpdateRequestFromJSON(json: any): AlbumServiceUpdateRequest {
-    return AlbumServiceUpdateRequestFromJSONTyped(json, false);
+export function Protoarticlesv2CreateRequestFromJSON(json: any): Protoarticlesv2CreateRequest {
+    return Protoarticlesv2CreateRequestFromJSONTyped(json, false);
 }
 
-export function AlbumServiceUpdateRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): AlbumServiceUpdateRequest {
+export function Protoarticlesv2CreateRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): Protoarticlesv2CreateRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'slug': !exists(json, 'slug') ? undefined : json['slug'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'metaDescription': !exists(json, 'metaDescription') ? undefined : json['metaDescription'],
-        'content': !exists(json, 'content') ? undefined : json['content'],
+        'name': json['name'],
+        'metaDescription': json['metaDescription'],
+        'content': json['content'],
         'publishedAt': !exists(json, 'publishedAt') ? undefined : (new Date(json['publishedAt'])),
-        '_private': !exists(json, 'private') ? undefined : json['private'],
     };
 }
 
-export function AlbumServiceUpdateRequestToJSON(value?: AlbumServiceUpdateRequest | null): any {
+export function Protoarticlesv2CreateRequestToJSON(value?: Protoarticlesv2CreateRequest | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -99,7 +95,6 @@ export function AlbumServiceUpdateRequestToJSON(value?: AlbumServiceUpdateReques
         'metaDescription': value.metaDescription,
         'content': value.content,
         'publishedAt': value.publishedAt === undefined ? undefined : (value.publishedAt.toISOString()),
-        'private': value._private,
     };
 }
 

@@ -1,9 +1,9 @@
 package album
 
 import (
-	albumspb "api-go/gen/go/proto/albums/v1"
-	categoriespb "api-go/gen/go/proto/categories/v1"
-	mediaspb "api-go/gen/go/proto/medias/v1"
+	albumspb "api-go/gen/go/proto/albums/v2"
+	categoriespb "api-go/gen/go/proto/categories/v2"
+	mediaspb "api-go/gen/go/proto/medias/v2"
 	"api-go/model"
 	"time"
 

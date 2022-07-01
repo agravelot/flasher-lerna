@@ -16,61 +16,61 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface AlbumServiceUpdateRequest
+ * @interface Protoalbumsv2CreateRequest
  */
-export interface AlbumServiceUpdateRequest {
+export interface Protoalbumsv2CreateRequest {
     /**
      * 
      * @type {string}
-     * @memberof AlbumServiceUpdateRequest
+     * @memberof Protoalbumsv2CreateRequest
      */
     slug?: string;
     /**
      * 
      * @type {string}
-     * @memberof AlbumServiceUpdateRequest
+     * @memberof Protoalbumsv2CreateRequest
      */
     name?: string;
     /**
      * 
      * @type {string}
-     * @memberof AlbumServiceUpdateRequest
+     * @memberof Protoalbumsv2CreateRequest
      */
     metaDescription?: string;
     /**
      * 
      * @type {string}
-     * @memberof AlbumServiceUpdateRequest
+     * @memberof Protoalbumsv2CreateRequest
      */
     content?: string;
     /**
      * 
      * @type {Date}
-     * @memberof AlbumServiceUpdateRequest
+     * @memberof Protoalbumsv2CreateRequest
      */
     publishedAt?: Date;
     /**
      * 
      * @type {boolean}
-     * @memberof AlbumServiceUpdateRequest
+     * @memberof Protoalbumsv2CreateRequest
      */
     _private?: boolean;
 }
 
 /**
- * Check if a given object implements the AlbumServiceUpdateRequest interface.
+ * Check if a given object implements the Protoalbumsv2CreateRequest interface.
  */
-export function instanceOfAlbumServiceUpdateRequest(value: object): boolean {
+export function instanceOfProtoalbumsv2CreateRequest(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function AlbumServiceUpdateRequestFromJSON(json: any): AlbumServiceUpdateRequest {
-    return AlbumServiceUpdateRequestFromJSONTyped(json, false);
+export function Protoalbumsv2CreateRequestFromJSON(json: any): Protoalbumsv2CreateRequest {
+    return Protoalbumsv2CreateRequestFromJSONTyped(json, false);
 }
 
-export function AlbumServiceUpdateRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): AlbumServiceUpdateRequest {
+export function Protoalbumsv2CreateRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): Protoalbumsv2CreateRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -85,7 +85,7 @@ export function AlbumServiceUpdateRequestFromJSONTyped(json: any, ignoreDiscrimi
     };
 }
 
-export function AlbumServiceUpdateRequestToJSON(value?: AlbumServiceUpdateRequest | null): any {
+export function Protoalbumsv2CreateRequestToJSON(value?: Protoalbumsv2CreateRequest | null): any {
     if (value === undefined) {
         return undefined;
     }

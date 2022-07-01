@@ -16,76 +16,76 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface AlbumServiceUpdateRequest
+ * @interface Protoarticlesv2UpdateRequest
  */
-export interface AlbumServiceUpdateRequest {
+export interface Protoarticlesv2UpdateRequest {
     /**
      * 
      * @type {string}
-     * @memberof AlbumServiceUpdateRequest
+     * @memberof Protoarticlesv2UpdateRequest
+     */
+    id?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Protoarticlesv2UpdateRequest
      */
     slug?: string;
     /**
      * 
      * @type {string}
-     * @memberof AlbumServiceUpdateRequest
+     * @memberof Protoarticlesv2UpdateRequest
      */
     name?: string;
     /**
      * 
      * @type {string}
-     * @memberof AlbumServiceUpdateRequest
+     * @memberof Protoarticlesv2UpdateRequest
      */
     metaDescription?: string;
     /**
      * 
      * @type {string}
-     * @memberof AlbumServiceUpdateRequest
+     * @memberof Protoarticlesv2UpdateRequest
      */
     content?: string;
     /**
      * 
      * @type {Date}
-     * @memberof AlbumServiceUpdateRequest
+     * @memberof Protoarticlesv2UpdateRequest
      */
     publishedAt?: Date;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof AlbumServiceUpdateRequest
-     */
-    _private?: boolean;
 }
 
 /**
- * Check if a given object implements the AlbumServiceUpdateRequest interface.
+ * Check if a given object implements the Protoarticlesv2UpdateRequest interface.
  */
-export function instanceOfAlbumServiceUpdateRequest(value: object): boolean {
+export function instanceOfProtoarticlesv2UpdateRequest(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function AlbumServiceUpdateRequestFromJSON(json: any): AlbumServiceUpdateRequest {
-    return AlbumServiceUpdateRequestFromJSONTyped(json, false);
+export function Protoarticlesv2UpdateRequestFromJSON(json: any): Protoarticlesv2UpdateRequest {
+    return Protoarticlesv2UpdateRequestFromJSONTyped(json, false);
 }
 
-export function AlbumServiceUpdateRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): AlbumServiceUpdateRequest {
+export function Protoarticlesv2UpdateRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): Protoarticlesv2UpdateRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'slug': !exists(json, 'slug') ? undefined : json['slug'],
         'name': !exists(json, 'name') ? undefined : json['name'],
         'metaDescription': !exists(json, 'metaDescription') ? undefined : json['metaDescription'],
         'content': !exists(json, 'content') ? undefined : json['content'],
         'publishedAt': !exists(json, 'publishedAt') ? undefined : (new Date(json['publishedAt'])),
-        '_private': !exists(json, 'private') ? undefined : json['private'],
     };
 }
 
-export function AlbumServiceUpdateRequestToJSON(value?: AlbumServiceUpdateRequest | null): any {
+export function Protoarticlesv2UpdateRequestToJSON(value?: Protoarticlesv2UpdateRequest | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -94,12 +94,12 @@ export function AlbumServiceUpdateRequestToJSON(value?: AlbumServiceUpdateReques
     }
     return {
         
+        'id': value.id,
         'slug': value.slug,
         'name': value.name,
         'metaDescription': value.metaDescription,
         'content': value.content,
         'publishedAt': value.publishedAt === undefined ? undefined : (value.publishedAt.toISOString()),
-        'private': value._private,
     };
 }
 

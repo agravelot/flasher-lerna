@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "proto/medias/v1/medias.proto",
+    "title": "proto/medias/v2/medias.proto",
     "version": "version not set"
   },
   "tags": [
@@ -9,17 +9,11 @@
       "name": "ArticleService"
     }
   ],
-  "schemes": [
-    "http"
-  ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "paths": {
-    "/api/v1/articles": {
+    "/api/v2/articles": {
       "get": {
         "summary": "List articles",
         "description": "List articles to the server.",
@@ -54,9 +48,7 @@
             "format": "int32"
           }
         ],
-        "tags": [
-          "Articles"
-        ]
+        "tags": ["Articles"]
       },
       "post": {
         "summary": "Add an article",
@@ -86,9 +78,7 @@
             }
           }
         ],
-        "tags": [
-          "Articles"
-        ]
+        "tags": ["Articles"]
       },
       "put": {
         "summary": "Update an article",
@@ -118,12 +108,10 @@
             }
           }
         ],
-        "tags": [
-          "Articles"
-        ]
+        "tags": ["Articles"]
       }
     },
-    "/api/v1/articles/{id}": {
+    "/api/v2/articles/{id}": {
       "delete": {
         "summary": "Delete an article",
         "description": "Delete an article to the server.",
@@ -150,12 +138,10 @@
             "type": "string"
           }
         ],
-        "tags": [
-          "Articles"
-        ]
+        "tags": ["Articles"]
       }
     },
-    "/api/v1/articles/{slug}": {
+    "/api/v2/articles/{slug}": {
       "get": {
         "summary": "Create an article",
         "description": "Create an article to the server.",
@@ -182,9 +168,7 @@
             "type": "string"
           }
         ],
-        "tags": [
-          "Articles"
-        ]
+        "tags": ["Articles"]
       }
     }
   },

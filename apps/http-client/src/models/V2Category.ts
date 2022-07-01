@@ -16,43 +16,41 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface ProtobufAny
+ * @interface V2Category
  */
-export interface ProtobufAny {
-    [key: string]: object | any;
+export interface V2Category {
     /**
      * 
-     * @type {string}
-     * @memberof ProtobufAny
+     * @type {number}
+     * @memberof V2Category
      */
-    type?: string;
+    id?: number;
 }
 
 /**
- * Check if a given object implements the ProtobufAny interface.
+ * Check if a given object implements the V2Category interface.
  */
-export function instanceOfProtobufAny(value: object): boolean {
+export function instanceOfV2Category(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function ProtobufAnyFromJSON(json: any): ProtobufAny {
-    return ProtobufAnyFromJSONTyped(json, false);
+export function V2CategoryFromJSON(json: any): V2Category {
+    return V2CategoryFromJSONTyped(json, false);
 }
 
-export function ProtobufAnyFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProtobufAny {
+export function V2CategoryFromJSONTyped(json: any, ignoreDiscriminator: boolean): V2Category {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-            ...json,
-        'type': !exists(json, '@type') ? undefined : json['@type'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
     };
 }
 
-export function ProtobufAnyToJSON(value?: ProtobufAny | null): any {
+export function V2CategoryToJSON(value?: V2Category | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -61,8 +59,7 @@ export function ProtobufAnyToJSON(value?: ProtobufAny | null): any {
     }
     return {
         
-            ...value,
-        '@type': value.type,
+        'id': value.id,
     };
 }
 

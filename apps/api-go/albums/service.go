@@ -14,7 +14,7 @@ import (
 	"gorm.io/gen"
 	"gorm.io/gorm"
 
-	albums_pb "api-go/gen/go/proto/albums/v1"
+	albums_pb "api-go/gen/go/proto/albums/v2"
 )
 
 // // Service is a simple CRUD interface for user albums.
