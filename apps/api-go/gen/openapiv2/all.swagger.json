@@ -12,9 +12,15 @@
       "name": "AlbumService"
     }
   ],
-  "schemes": ["http"],
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "paths": {
     "/api/v2/albums": {
       "get": {
@@ -63,7 +69,9 @@
             "type": "boolean"
           }
         ],
-        "tags": ["Albums"]
+        "tags": [
+          "Albums"
+        ]
       },
       "post": {
         "summary": "Add an album",
@@ -93,7 +101,9 @@
             }
           }
         ],
-        "tags": ["Albums"]
+        "tags": [
+          "Albums"
+        ]
       }
     },
     "/api/v2/albums/{id}": {
@@ -124,7 +134,9 @@
             "format": "int32"
           }
         ],
-        "tags": ["Albums"]
+        "tags": [
+          "Albums"
+        ]
       },
       "put": {
         "summary": "Update an album",
@@ -182,7 +194,9 @@
             }
           }
         ],
-        "tags": ["Albums"]
+        "tags": [
+          "Albums"
+        ]
       }
     },
     "/api/v2/albums/{slug}": {
@@ -212,7 +226,9 @@
             "type": "string"
           }
         ],
-        "tags": ["Albums"]
+        "tags": [
+          "Albums"
+        ]
       }
     },
     "/api/v2/articles": {
@@ -250,7 +266,9 @@
             "format": "int32"
           }
         ],
-        "tags": ["Articles"]
+        "tags": [
+          "Articles"
+        ]
       },
       "post": {
         "summary": "Add an article",
@@ -280,7 +298,9 @@
             }
           }
         ],
-        "tags": ["Articles"]
+        "tags": [
+          "Articles"
+        ]
       },
       "put": {
         "summary": "Update an article",
@@ -310,7 +330,9 @@
             }
           }
         ],
-        "tags": ["Articles"]
+        "tags": [
+          "Articles"
+        ]
       }
     },
     "/api/v2/articles/{id}": {
@@ -340,7 +362,9 @@
             "type": "string"
           }
         ],
-        "tags": ["Articles"]
+        "tags": [
+          "Articles"
+        ]
       }
     },
     "/api/v2/articles/{slug}": {
@@ -370,7 +394,9 @@
             "type": "string"
           }
         ],
-        "tags": ["Articles"]
+        "tags": [
+          "Articles"
+        ]
       }
     }
   },
@@ -572,22 +598,32 @@
         },
         "name": {
           "type": "string",
-          "required": ["name"]
+          "required": [
+            "name"
+          ]
         },
         "metaDescription": {
           "type": "string",
-          "required": ["metaDescription"]
+          "required": [
+            "metaDescription"
+          ]
         },
         "content": {
           "type": "string",
-          "required": ["content"]
+          "required": [
+            "content"
+          ]
         },
         "publishedAt": {
           "type": "string",
           "format": "date-time"
         }
       },
-      "required": ["name", "metaDescription", "content"]
+      "required": [
+        "name",
+        "metaDescription",
+        "content"
+      ]
     },
     "protoarticlesv2CreateResponse": {
       "type": "object",
@@ -595,23 +631,33 @@
         "id": {
           "type": "string",
           "format": "int64",
-          "required": ["id"]
+          "required": [
+            "id"
+          ]
         },
         "slug": {
           "type": "string",
-          "required": ["slug"]
+          "required": [
+            "slug"
+          ]
         },
         "name": {
           "type": "string",
-          "required": ["name"]
+          "required": [
+            "name"
+          ]
         },
         "metaDescription": {
           "type": "string",
-          "required": ["metaDescription"]
+          "required": [
+            "metaDescription"
+          ]
         },
         "content": {
           "type": "string",
-          "required": ["content"]
+          "required": [
+            "content"
+          ]
         },
         "publishedAt": {
           "type": "string",
@@ -619,7 +665,9 @@
         },
         "authorId": {
           "type": "string",
-          "required": ["authorId"]
+          "required": [
+            "authorId"
+          ]
         }
       },
       "required": [
@@ -670,10 +718,14 @@
           "items": {
             "$ref": "#/definitions/v2ArticleResponse"
           },
-          "required": ["data"]
+          "required": [
+            "data"
+          ]
         }
       },
-      "required": ["data"]
+      "required": [
+        "data"
+      ]
     },
     "protoarticlesv2UpdateRequest": {
       "type": "object",
@@ -820,23 +872,33 @@
         "id": {
           "type": "string",
           "format": "int64",
-          "required": ["id"]
+          "required": [
+            "id"
+          ]
         },
         "slug": {
           "type": "string",
-          "required": ["slug"]
+          "required": [
+            "slug"
+          ]
         },
         "name": {
           "type": "string",
-          "required": ["name"]
+          "required": [
+            "name"
+          ]
         },
         "metaDescription": {
           "type": "string",
-          "required": ["metaDescription"]
+          "required": [
+            "metaDescription"
+          ]
         },
         "content": {
           "type": "string",
-          "required": ["content"]
+          "required": [
+            "content"
+          ]
         },
         "publishedAt": {
           "type": "string",
@@ -846,7 +908,13 @@
           "type": "string"
         }
       },
-      "required": ["id", "slug", "name", "metaDescription", "content"]
+      "required": [
+        "id",
+        "slug",
+        "name",
+        "metaDescription",
+        "content"
+      ]
     },
     "v2Category": {
       "type": "object",
