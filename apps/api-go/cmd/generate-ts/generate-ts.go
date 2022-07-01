@@ -6,7 +6,7 @@ import (
 	"github.com/tkrajina/typescriptify-golang-structs/typescriptify"
 )
 
-// articlesgrpc "api-go/gen/go/proto/articles/v1"
+// articlesgrpc "api-go/gen/go/proto/articles/v2"
 // album "api-go/albums"
 
 func main() {

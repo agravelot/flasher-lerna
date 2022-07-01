@@ -4,7 +4,7 @@ import (
 	"api-go/auth"
 	"api-go/config"
 	"api-go/database"
-	articlesgrpc "api-go/gen/go/proto/articles/v1"
+	articlesgrpc "api-go/gen/go/proto/articles/v2"
 	"api-go/model"
 	"context"
 	"os"

@@ -2,7 +2,7 @@ package article
 
 import (
 	"api-go/auth"
-	articles_pb "api-go/gen/go/proto/articles/v1"
+	articles_pb "api-go/gen/go/proto/articles/v2"
 	"api-go/model"
 	"api-go/query"
 	"context"
