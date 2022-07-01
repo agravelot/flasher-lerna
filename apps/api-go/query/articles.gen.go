@@ -14,6 +14,8 @@ import (
 	"gorm.io/gen"
 	"gorm.io/gen/field"
 
+	"gorm.io/plugin/dbresolver"
+
 	"api-go/model"
 )
 
@@ -129,6 +131,14 @@ func (a articleDo) Debug() *articleDo {
 
 func (a articleDo) WithContext(ctx context.Context) *articleDo {
 	return a.withDO(a.DO.WithContext(ctx))
+}
+
+func (a articleDo) ReadDB() *articleDo {
+	return a.Clauses(dbresolver.Read)
+}
+
+func (a articleDo) WriteDB() *articleDo {
+	return a.Clauses(dbresolver.Write)
 }
 
 func (a articleDo) Clauses(conds ...clause.Expression) *articleDo {
@@ -330,6 +340,10 @@ func (a articleDo) ScanByPage(result interface{}, offset int, limit int) (count 
 
 	err = a.Offset(offset).Limit(limit).Scan(result)
 	return
+}
+
+func (a articleDo) Scan(result interface{}) (err error) {
+	return a.DO.Scan(result)
 }
 
 func (a *articleDo) withDO(do gen.Dao) *articleDo {

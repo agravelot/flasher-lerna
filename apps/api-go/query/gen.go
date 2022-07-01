@@ -43,18 +43,18 @@ func (q *Query) clone(db *gorm.DB) *Query {
 }
 
 type queryCtx struct {
-	Album    albumDo
-	Article  articleDo
-	Category categoryDo
-	Medium   mediumDo
+	Album    *albumDo
+	Article  *articleDo
+	Category *categoryDo
+	Medium   *mediumDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		Album:    *q.Album.WithContext(ctx),
-		Article:  *q.Article.WithContext(ctx),
-		Category: *q.Category.WithContext(ctx),
-		Medium:   *q.Medium.WithContext(ctx),
+		Album:    q.Album.WithContext(ctx),
+		Article:  q.Article.WithContext(ctx),
+		Category: q.Category.WithContext(ctx),
+		Medium:   q.Medium.WithContext(ctx),
 	}
 }
 

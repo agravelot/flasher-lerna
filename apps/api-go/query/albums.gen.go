@@ -14,6 +14,8 @@ import (
 	"gorm.io/gen"
 	"gorm.io/gen/field"
 
+	"gorm.io/plugin/dbresolver"
+
 	"api-go/model"
 )
 
@@ -290,6 +292,14 @@ func (a albumDo) WithContext(ctx context.Context) *albumDo {
 	return a.withDO(a.DO.WithContext(ctx))
 }
 
+func (a albumDo) ReadDB() *albumDo {
+	return a.Clauses(dbresolver.Read)
+}
+
+func (a albumDo) WriteDB() *albumDo {
+	return a.Clauses(dbresolver.Write)
+}
+
 func (a albumDo) Clauses(conds ...clause.Expression) *albumDo {
 	return a.withDO(a.DO.Clauses(conds...))
 }
@@ -489,6 +499,10 @@ func (a albumDo) ScanByPage(result interface{}, offset int, limit int) (count in
 
 	err = a.Offset(offset).Limit(limit).Scan(result)
 	return
+}
+
+func (a albumDo) Scan(result interface{}) (err error) {
+	return a.DO.Scan(result)
 }
 
 func (a *albumDo) withDO(do gen.Dao) *albumDo {
