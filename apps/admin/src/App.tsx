@@ -9,7 +9,8 @@ import AlbumCreate from "./pages/AlbumCreate";
 import AlbumEdit from "./pages/AlbumEdit";
 import { setBaseUrl } from "@flasher/common/src";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { AuthenticationProvider } from "./hooks/useAuthentication";
+import {  AuthenticationProvider } from "./hooks/useAuthentication";
+import { StrictMode } from "react";
 
 const queryClient = new QueryClient();
 
@@ -33,36 +34,40 @@ function App() {
       }}
       keycloakInitOptions={{
         enableLogging: process.env.NODE_ENV !== "production",
+        onLoad: undefined,
       }}
+      mustBeAuthenticated
     >
-      <Router>
-        <QueryClientProvider client={queryClient}>
-          <div className="h-screen">
-            <Drawer>
-              <Switch>
-                <Route exact path="/albums/create">
-                  <AlbumCreate />
-                </Route>
-                <Route path="/albums/:slug">
-                  <AlbumEdit />
-                </Route>
-                <Route path="/albums">
-                  <AlbumList />
-                </Route>
-                <Route exact path="/articles/create">
-                  <ArticleCreate />
-                </Route>
-                <Route path="/articles">
-                  <ArticleList />
-                </Route>
-                <Route path="/">
-                  <Home />
-                </Route>
-              </Switch>
-            </Drawer>
-          </div>
-        </QueryClientProvider>
-      </Router>
+      <StrictMode>
+        <Router>
+          <QueryClientProvider client={queryClient}>
+            <div className="h-screen">
+              <Drawer>
+                <Switch>
+                  <Route exact path="/albums/create">
+                    <AlbumCreate />
+                  </Route>
+                  <Route path="/albums/:slug">
+                    <AlbumEdit />
+                  </Route>
+                  <Route path="/albums">
+                    <AlbumList />
+                  </Route>
+                  <Route exact path="/articles/create">
+                    <ArticleCreate />
+                  </Route>
+                  <Route path="/articles">
+                    <ArticleList />
+                  </Route>
+                  <Route path="/">
+                    <Home />
+                  </Route>
+                </Switch>
+              </Drawer>
+            </div>
+          </QueryClientProvider>
+        </Router>
+      </StrictMode>
     </AuthenticationProvider>
   );
 }

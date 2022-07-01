@@ -1,4 +1,4 @@
-import Keycloak, {
+import Keycloak,{
   KeycloakConfig,
   KeycloakInitOptions,
   KeycloakTokenParsed,
@@ -18,28 +18,21 @@ export type ParsedToken = KeycloakTokenParsed & {
   groups: string[];
 };
 
-type Authentication =
-  | {
-      keycloak: Keycloak | null;
-      parsedToken: ParsedToken | undefined;
-      isAdmin: boolean;
-      isAuthenticated: boolean;
-      initialized: false;
-    }
-  | {
-      keycloak: Keycloak;
-      parsedToken: ParsedToken;
-      isAdmin: boolean;
-      isAuthenticated: boolean;
-      initialized: true;
-    };
+type Authentication = {
+  keycloak: Keycloak | null;
+  parsedToken: ParsedToken | undefined;
+  isAdmin: boolean;
+  isAuthenticated: boolean;
+  initialized: boolean;
+};
 
-export const isServer = (): boolean => typeof window === "undefined";
 
 export interface AuthenticationStateProviderProps {
   keycloakConfig: KeycloakConfig;
   keycloakInitOptions?: KeycloakInitOptions;
   children: JSX.Element;
+  mustBeAuthenticated?: boolean;
+  loadingComponent?: JSX.Element;
 }
 
 export interface AuthenticationContextProps {
@@ -68,41 +61,71 @@ const AuthContext = createContext<AuthenticationContextProps>({
   isAdmin: false,
 });
 
+const LOCAL_STORAGE_ACCESS_TOKEN_KEY = "at";
+const LOCAL_STORAGE_REFRESH_TOKEN_KEY = "rt";
+
 export const AuthenticationProvider = ({
   children,
   keycloakConfig,
   keycloakInitOptions,
+  mustBeAuthenticated,
+  loadingComponent
 }: AuthenticationStateProviderProps): JSX.Element => {
-  const keycloakRef = useRef<Promise<void>>();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [initialized, setInitialized] = useState(false);
   const keycloakInstance: Keycloak | null = useMemo(() => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     return new Keycloak(keycloakConfig);
   }, [keycloakConfig]);
 
   useEffect(() => {
+    console.log('init keycloak')
     if (!keycloakInstance) {
+      console.log('keycloakInstance is null')
       return;
     }
-    keycloakRef.current = keycloakInstance
+   keycloakInstance
       .init({
-        // onLoad: undefined,
-        // checkLoginIframe: false,
-        onLoad: "check-sso",
+        onLoad: undefined,
+        checkLoginIframe: false,
+        token: getToken(LOCAL_STORAGE_ACCESS_TOKEN_KEY) ?? undefined,
+        refreshToken: getToken(LOCAL_STORAGE_REFRESH_TOKEN_KEY) ?? undefined,
         enableLogging: true,
-        silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
         ...keycloakInitOptions,
       })
       .then((authentication) => {
+        setInitialized(true);
         setIsAuthenticated(authentication);
       })
       .catch((error) => {
+        console.error("unable init keycloak client");
         console.error(error);
-      })
-      .finally(() => {
-        setInitialized(true);
+        deleteToken(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
+        deleteToken(LOCAL_STORAGE_REFRESH_TOKEN_KEY);
       });
+
+    keycloakInstance.onTokenExpired = () => {
+      keycloakInstance.updateToken(30);
+    };
   }, [keycloakInstance, keycloakInitOptions]);
+
+  useEffect(() => {
+    if (!initialized) {
+      return
+    }
+    if (
+      isAuthenticated &&
+      keycloakInstance.token &&
+      keycloakInstance.refreshToken
+    ) {
+      saveToken(LOCAL_STORAGE_ACCESS_TOKEN_KEY, keycloakInstance.token);
+      saveToken(LOCAL_STORAGE_REFRESH_TOKEN_KEY, keycloakInstance.refreshToken);
+    } else if (mustBeAuthenticated) {
+      console.log('force login')
+      keycloakInstance.login()
+    }
+  }, [initialized, isAuthenticated, keycloakInstance, mustBeAuthenticated]);
+
 
   const parsedToken = keycloakInstance?.tokenParsed as ParsedToken | undefined;
 
@@ -116,7 +139,28 @@ export const AuthenticationProvider = ({
         isAdmin: parsedToken?.groups.includes("admin") ?? false,
       }}
     >
-      {children}
+      {!initialized && loadingComponent ? loadingComponent : children}
     </AuthContext.Provider>
   );
+};
+
+const saveToken = (key: string, token: string): void => {
+  if (typeof window === "undefined") {
+    return;
+  }
+  localStorage.setItem(key, token);
+};
+
+const getToken = (key: string): string | undefined => {
+  if (typeof window === "undefined") {
+    return;
+  }
+  return localStorage.getItem(key) ?? undefined;
+};
+
+const deleteToken = (key: string): void => {
+  if (typeof window === "undefined") {
+    return;
+  }
+  localStorage.removeItem(key);
 };
