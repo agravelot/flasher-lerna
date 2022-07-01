@@ -4,7 +4,7 @@ import (
 	"api-go/auth"
 	"api-go/config"
 	"api-go/database"
-	albums_pb "api-go/gen/go/proto/albums/v1"
+	albums_pb "api-go/gen/go/proto/albums/v2"
 	"api-go/model"
 	"api-go/query"
 	"context"

@@ -1,21 +1,21 @@
-import { useKeycloak } from "@react-keycloak/web";
 import { FunctionComponent } from "react";
 import { Link } from "react-router-dom";
+import { useAuthentication } from "../hooks/useAuthentication";
 
 interface DrawerProps {
   children: JSX.Element;
 }
 
 const Drawer: FunctionComponent<DrawerProps> = ({ children }: DrawerProps) => {
-  const { keycloak } = useKeycloak();
+  const { keycloak, parsedToken } = useAuthentication();
 
   return (
-    <div className="rounded-lg shadow bg-base-200 drawer drawer-mobile h-full">
+    <div className="drawer-mobile drawer h-full rounded-lg bg-base-200 shadow">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-      <div className="flex flex-col items-center drawer-content">
+      <div className="drawer-content flex flex-col items-center">
         <label
           htmlFor="my-drawer-2"
-          className="mb-4 btn btn-primary drawer-button lg:hidden"
+          className="btn btn-primary drawer-button mb-4 lg:hidden"
         >
           open menu
         </label>
@@ -23,7 +23,7 @@ const Drawer: FunctionComponent<DrawerProps> = ({ children }: DrawerProps) => {
       </div>
       <div className="drawer-side">
         <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-        <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
+        <ul className="menu w-80 overflow-y-auto bg-base-100 p-4 text-base-content">
           <li>
             <Link to="/">Dashboard</Link>
           </li>
@@ -34,10 +34,10 @@ const Drawer: FunctionComponent<DrawerProps> = ({ children }: DrawerProps) => {
             <Link to="/albums">Albums</Link>
           </li>
           <li>
-            <a>ID : {keycloak.tokenParsed?.sub}</a>
+            <a>ID : {parsedToken?.sub}</a>
           </li>
           <li className="text-red-300">
-            <a onClick={() => keycloak.logout()}>Se deconnecter</a>
+            <a onClick={() => keycloak?.logout()}>Se deconnecter</a>
           </li>
         </ul>
       </div>

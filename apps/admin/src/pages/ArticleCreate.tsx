@@ -1,12 +1,12 @@
 import { ArticlesApi, Configuration } from "@flasher/http-client/src";
-import { useKeycloak } from "@react-keycloak/web";
 import { FunctionComponent } from "react";
 import { useHistory } from "react-router-dom";
 import ArticleForm from "../components/ArticleForm";
+import { useAuthentication } from "../hooks/useAuthentication";
 
 const ArticleCreate: FunctionComponent = () => {
   const history = useHistory();
-  const { initialized } = useKeycloak();
+  const { initialized } = useAuthentication();
 
   const config = new Configuration({
     basePath: "",

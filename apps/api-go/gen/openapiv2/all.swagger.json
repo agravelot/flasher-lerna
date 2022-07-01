@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "proto/articles/v1/articles.proto",
+    "title": "proto/articles/v2/articles.proto",
     "version": "1.0"
   },
   "tags": [
@@ -12,17 +12,11 @@
       "name": "AlbumService"
     }
   ],
-  "schemes": [
-    "http"
-  ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "paths": {
-    "/api/v1/albums": {
+    "/api/v2/albums": {
       "get": {
         "summary": "List albums",
         "description": "List albums to the server.",
@@ -31,7 +25,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoalbumsv1IndexResponse"
+              "$ref": "#/definitions/protoalbumsv2IndexResponse"
             }
           },
           "default": {
@@ -69,9 +63,7 @@
             "type": "boolean"
           }
         ],
-        "tags": [
-          "Albums"
-        ]
+        "tags": ["Albums"]
       },
       "post": {
         "summary": "Add an album",
@@ -81,7 +73,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoalbumsv1CreateResponse"
+              "$ref": "#/definitions/protoalbumsv2CreateResponse"
             }
           },
           "default": {
@@ -97,16 +89,14 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/protoalbumsv1CreateRequest"
+              "$ref": "#/definitions/protoalbumsv2CreateRequest"
             }
           }
         ],
-        "tags": [
-          "Albums"
-        ]
+        "tags": ["Albums"]
       }
     },
-    "/api/v1/albums/{id}": {
+    "/api/v2/albums/{id}": {
       "delete": {
         "summary": "Delete an album",
         "description": "Delete an album to the server.",
@@ -115,7 +105,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoalbumsv1DeleteResponse"
+              "$ref": "#/definitions/protoalbumsv2DeleteResponse"
             }
           },
           "default": {
@@ -134,9 +124,7 @@
             "format": "int32"
           }
         ],
-        "tags": [
-          "Albums"
-        ]
+        "tags": ["Albums"]
       },
       "put": {
         "summary": "Update an album",
@@ -146,7 +134,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoalbumsv1UpdateResponse"
+              "$ref": "#/definitions/protoalbumsv2UpdateResponse"
             }
           },
           "default": {
@@ -194,12 +182,10 @@
             }
           }
         ],
-        "tags": [
-          "Albums"
-        ]
+        "tags": ["Albums"]
       }
     },
-    "/api/v1/albums/{slug}": {
+    "/api/v2/albums/{slug}": {
       "get": {
         "summary": "Create an album",
         "description": "Create an album to the server.",
@@ -208,7 +194,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoalbumsv1GetBySlugResponse"
+              "$ref": "#/definitions/protoalbumsv2GetBySlugResponse"
             }
           },
           "default": {
@@ -226,12 +212,10 @@
             "type": "string"
           }
         ],
-        "tags": [
-          "Albums"
-        ]
+        "tags": ["Albums"]
       }
     },
-    "/api/v1/articles": {
+    "/api/v2/articles": {
       "get": {
         "summary": "List articles",
         "description": "List articles to the server.",
@@ -240,7 +224,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoarticlesv1IndexResponse"
+              "$ref": "#/definitions/protoarticlesv2IndexResponse"
             }
           },
           "default": {
@@ -266,9 +250,7 @@
             "format": "int32"
           }
         ],
-        "tags": [
-          "Articles"
-        ]
+        "tags": ["Articles"]
       },
       "post": {
         "summary": "Add an article",
@@ -278,7 +260,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoarticlesv1CreateResponse"
+              "$ref": "#/definitions/protoarticlesv2CreateResponse"
             }
           },
           "default": {
@@ -294,13 +276,11 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/protoarticlesv1CreateRequest"
+              "$ref": "#/definitions/protoarticlesv2CreateRequest"
             }
           }
         ],
-        "tags": [
-          "Articles"
-        ]
+        "tags": ["Articles"]
       },
       "put": {
         "summary": "Update an article",
@@ -310,7 +290,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoarticlesv1UpdateResponse"
+              "$ref": "#/definitions/protoarticlesv2UpdateResponse"
             }
           },
           "default": {
@@ -326,16 +306,14 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/protoarticlesv1UpdateRequest"
+              "$ref": "#/definitions/protoarticlesv2UpdateRequest"
             }
           }
         ],
-        "tags": [
-          "Articles"
-        ]
+        "tags": ["Articles"]
       }
     },
-    "/api/v1/articles/{id}": {
+    "/api/v2/articles/{id}": {
       "delete": {
         "summary": "Delete an article",
         "description": "Delete an article to the server.",
@@ -344,7 +322,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoarticlesv1DeleteResponse"
+              "$ref": "#/definitions/protoarticlesv2DeleteResponse"
             }
           },
           "default": {
@@ -362,12 +340,10 @@
             "type": "string"
           }
         ],
-        "tags": [
-          "Articles"
-        ]
+        "tags": ["Articles"]
       }
     },
-    "/api/v1/articles/{slug}": {
+    "/api/v2/articles/{slug}": {
       "get": {
         "summary": "Get an article by slug",
         "description": "Get an article to the server.",
@@ -376,7 +352,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoarticlesv1GetBySlugResponse"
+              "$ref": "#/definitions/protoarticlesv2GetBySlugResponse"
             }
           },
           "default": {
@@ -394,9 +370,7 @@
             "type": "string"
           }
         ],
-        "tags": [
-          "Articles"
-        ]
+        "tags": ["Articles"]
       }
     }
   },
@@ -447,7 +421,7 @@
         }
       }
     },
-    "protoalbumsv1CreateRequest": {
+    "protoalbumsv2CreateRequest": {
       "type": "object",
       "properties": {
         "slug": {
@@ -471,7 +445,7 @@
         }
       }
     },
-    "protoalbumsv1CreateResponse": {
+    "protoalbumsv2CreateResponse": {
       "type": "object",
       "properties": {
         "id": {
@@ -517,7 +491,7 @@
         }
       }
     },
-    "protoalbumsv1DeleteResponse": {
+    "protoalbumsv2DeleteResponse": {
       "type": "object",
       "properties": {
         "deleted": {
@@ -525,26 +499,26 @@
         }
       }
     },
-    "protoalbumsv1GetBySlugResponse": {
+    "protoalbumsv2GetBySlugResponse": {
       "type": "object",
       "properties": {
         "album": {
-          "$ref": "#/definitions/v1AlbumResponse"
+          "$ref": "#/definitions/v2AlbumResponse"
         }
       }
     },
-    "protoalbumsv1IndexResponse": {
+    "protoalbumsv2IndexResponse": {
       "type": "object",
       "properties": {
         "data": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v1AlbumResponse"
+            "$ref": "#/definitions/v2AlbumResponse"
           }
         }
       }
     },
-    "protoalbumsv1UpdateResponse": {
+    "protoalbumsv2UpdateResponse": {
       "type": "object",
       "properties": {
         "id": {
@@ -590,7 +564,7 @@
         }
       }
     },
-    "protoarticlesv1CreateRequest": {
+    "protoarticlesv2CreateRequest": {
       "type": "object",
       "properties": {
         "slug": {
@@ -598,66 +572,46 @@
         },
         "name": {
           "type": "string",
-          "required": [
-            "name"
-          ]
+          "required": ["name"]
         },
         "metaDescription": {
           "type": "string",
-          "required": [
-            "metaDescription"
-          ]
+          "required": ["metaDescription"]
         },
         "content": {
           "type": "string",
-          "required": [
-            "content"
-          ]
+          "required": ["content"]
         },
         "publishedAt": {
           "type": "string",
           "format": "date-time"
         }
       },
-      "required": [
-        "name",
-        "metaDescription",
-        "content"
-      ]
+      "required": ["name", "metaDescription", "content"]
     },
-    "protoarticlesv1CreateResponse": {
+    "protoarticlesv2CreateResponse": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string",
           "format": "int64",
-          "required": [
-            "id"
-          ]
+          "required": ["id"]
         },
         "slug": {
           "type": "string",
-          "required": [
-            "slug"
-          ]
+          "required": ["slug"]
         },
         "name": {
           "type": "string",
-          "required": [
-            "name"
-          ]
+          "required": ["name"]
         },
         "metaDescription": {
           "type": "string",
-          "required": [
-            "metaDescription"
-          ]
+          "required": ["metaDescription"]
         },
         "content": {
           "type": "string",
-          "required": [
-            "content"
-          ]
+          "required": ["content"]
         },
         "publishedAt": {
           "type": "string",
@@ -665,9 +619,7 @@
         },
         "authorId": {
           "type": "string",
-          "required": [
-            "authorId"
-          ]
+          "required": ["authorId"]
         }
       },
       "required": [
@@ -679,10 +631,10 @@
         "authorId"
       ]
     },
-    "protoarticlesv1DeleteResponse": {
+    "protoarticlesv2DeleteResponse": {
       "type": "object"
     },
-    "protoarticlesv1GetBySlugResponse": {
+    "protoarticlesv2GetBySlugResponse": {
       "type": "object",
       "properties": {
         "id": {
@@ -710,24 +662,20 @@
         }
       }
     },
-    "protoarticlesv1IndexResponse": {
+    "protoarticlesv2IndexResponse": {
       "type": "object",
       "properties": {
         "data": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v1ArticleResponse"
+            "$ref": "#/definitions/v2ArticleResponse"
           },
-          "required": [
-            "data"
-          ]
+          "required": ["data"]
         }
       },
-      "required": [
-        "data"
-      ]
+      "required": ["data"]
     },
-    "protoarticlesv1UpdateRequest": {
+    "protoarticlesv2UpdateRequest": {
       "type": "object",
       "properties": {
         "id": {
@@ -752,7 +700,7 @@
         }
       }
     },
-    "protoarticlesv1UpdateResponse": {
+    "protoarticlesv2UpdateResponse": {
       "type": "object",
       "properties": {
         "id": {
@@ -807,7 +755,7 @@
         }
       }
     },
-    "v1AlbumResponse": {
+    "v2AlbumResponse": {
       "type": "object",
       "properties": {
         "id": {
@@ -854,51 +802,41 @@
         "categories": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v1Category"
+            "$ref": "#/definitions/v2Category"
           },
           "title": "TODO Can be optional"
         },
         "medias": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v1Media"
+            "$ref": "#/definitions/v2Media"
           }
         }
       }
     },
-    "v1ArticleResponse": {
+    "v2ArticleResponse": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string",
           "format": "int64",
-          "required": [
-            "id"
-          ]
+          "required": ["id"]
         },
         "slug": {
           "type": "string",
-          "required": [
-            "slug"
-          ]
+          "required": ["slug"]
         },
         "name": {
           "type": "string",
-          "required": [
-            "name"
-          ]
+          "required": ["name"]
         },
         "metaDescription": {
           "type": "string",
-          "required": [
-            "metaDescription"
-          ]
+          "required": ["metaDescription"]
         },
         "content": {
           "type": "string",
-          "required": [
-            "content"
-          ]
+          "required": ["content"]
         },
         "publishedAt": {
           "type": "string",
@@ -908,15 +846,9 @@
           "type": "string"
         }
       },
-      "required": [
-        "id",
-        "slug",
-        "name",
-        "metaDescription",
-        "content"
-      ]
+      "required": ["id", "slug", "name", "metaDescription", "content"]
     },
-    "v1Category": {
+    "v2Category": {
       "type": "object",
       "properties": {
         "id": {
@@ -925,7 +857,7 @@
         }
       }
     },
-    "v1Media": {
+    "v2Media": {
       "type": "object",
       "properties": {
         "id": {

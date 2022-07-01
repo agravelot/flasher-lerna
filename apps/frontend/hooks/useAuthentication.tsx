@@ -4,7 +4,6 @@ import {
   KeycloakInstance,
   KeycloakTokenParsed,
 } from "keycloak-js";
-import { String } from "lodash";
 import {
   createContext,
   useContext,

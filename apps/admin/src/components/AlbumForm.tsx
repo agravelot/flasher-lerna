@@ -1,8 +1,8 @@
 import { FunctionComponent } from "react";
 import { Formik, Field, Form } from "formik";
 import { Album } from "@flasher/models";
-import { useKeycloak } from "@react-keycloak/web";
 import { apiRepository } from "@flasher/common";
+import { useAuthentication } from "../hooks/useAuthentication";
 
 export type FormType = "edit" | "create";
 
@@ -26,7 +26,7 @@ const AlbumForm: FunctionComponent<AlbumFormProps> = ({
   album,
   type,
 }: AlbumFormProps) => {
-  const { initialized, keycloak } = useKeycloak();
+  const { initialized, keycloak } = useAuthentication();
 
   const onSubmit = async (values: AlbumForm) => {
     if (!initialized) {
@@ -76,7 +76,7 @@ const AlbumForm: FunctionComponent<AlbumFormProps> = ({
             </label>
             <Field
               placeholder="Entrez un titre"
-              className="input input-lg input-bordered"
+              className="input input-bordered input-lg"
               name="title"
               type="text"
             />
@@ -101,7 +101,7 @@ const AlbumForm: FunctionComponent<AlbumFormProps> = ({
             <Field
               as="textarea"
               name="body"
-              className="textarea h-24 textarea-bordered"
+              className="textarea textarea-bordered h-24"
               placeholder="Mon contenu"
             ></Field>
           </div>
@@ -118,7 +118,7 @@ const AlbumForm: FunctionComponent<AlbumFormProps> = ({
             />
           </div>
 
-          <div className="m-8 justify-end flex">
+          <div className="m-8 flex justify-end">
             <button className="btn btn-primary m-2" type="submit">
               Envoyer
             </button>
