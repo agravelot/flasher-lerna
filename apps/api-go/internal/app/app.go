@@ -48,12 +48,15 @@ func getOpenAPIHandler() http.Handler {
 func authFunc(ctx context.Context) (context.Context, error) {
 	token, err := grpc_auth.AuthFromMD(ctx, "bearer")
 	if err != nil {
-		return nil, err
+		if status.Code(err) == codes.Unauthenticated {
+			return ctx, nil
+		}
+		return ctx, err
 	}
 
 	parsedToken, err := auth.ParseToken(token)
 	if err != nil {
-		return nil, status.Errorf(codes.Unauthenticated, "invalid auth token: %v", err)
+		return ctx, status.Errorf(codes.Unauthenticated, "invalid auth token: %v", err)
 	}
 
 	grpc_ctxtags.Extract(ctx).Set("user", parsedToken)
