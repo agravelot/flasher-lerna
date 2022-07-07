@@ -1,4 +1,5 @@
-// +build ignore
+//go:build exclude
+
 package main
 
 import (
