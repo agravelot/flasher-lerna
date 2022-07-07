@@ -134,16 +134,16 @@ func Run(config *config.Configurations) {
 	}
 
 	gwmux := runtime.NewServeMux()
-	// Register Greeter
 	err = articlespb.RegisterArticleServiceHandler(context.Background(), gwmux, conn)
 	if err != nil {
 		log.Fatalln("Failed to register article gateway:", err)
 	}
 
-	// gwServer := &http.Server{
-	// 	Addr:    ":8090",
-	// 	Handler: gwmux,
-	// }
+	err = albumspb.RegisterAlbumServiceHandler(context.Background(), gwmux, conn)
+	if err != nil {
+		log.Fatalln("Failed to register albuns gateway:", err)
+	}
+
 	oa := getOpenAPIHandler()
 
 	gwServer := &http.Server{
