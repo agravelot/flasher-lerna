@@ -13,11 +13,11 @@ const TableNameAlbum = "albums"
 // Album mapped from table <albums>
 type Album struct {
 	ID                     int32      `gorm:"column:id;type:integer;primaryKey;autoIncrement:true" json:"id"`
-	Slug                   string     `gorm:"column:slug;type:character varying(255);not null" json:"slug"`
-	Title                  string     `gorm:"column:title;type:character varying(255);not null" json:"title"`
+	Slug                   string     `gorm:"column:slug;type:character varying(255);not null;uniqueIndex:albums_slug_unique,priority:1" json:"slug"`
+	Title                  string     `gorm:"column:title;type:character varying(255);not null;uniqueIndex:albums_title_unique,priority:1" json:"title"`
 	Body                   *string    `gorm:"column:body;type:text" json:"body"`
-	PublishedAt            *time.Time `gorm:"column:published_at;type:timestamp(0) without time zone" json:"published_at"`
-	Private                bool       `gorm:"column:private;type:boolean;not null" json:"private"`
+	PublishedAt            *time.Time `gorm:"column:published_at;type:timestamp(0) without time zone;index:albums_published_at_private_index,priority:1" json:"published_at"`
+	Private                bool       `gorm:"column:private;type:boolean;not null;index:albums_published_at_private_index,priority:2" json:"private"`
 	UserID                 *int64     `gorm:"column:user_id;type:bigint" json:"user_id"`
 	CreatedAt              *time.Time `gorm:"column:created_at;type:timestamp(0) without time zone" json:"created_at"`
 	UpdatedAt              *time.Time `gorm:"column:updated_at;type:timestamp(0) without time zone" json:"updated_at"`

@@ -16,9 +16,9 @@ require (
 	github.com/stretchr/testify v1.7.0
 	github.com/tkrajina/typescriptify-golang-structs v0.1.7
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.2.0
-	gorm.io/driver/postgres v1.3.7
-	gorm.io/gen v0.3.9
-	gorm.io/gorm v1.23.7
+	gorm.io/driver/postgres v1.3.8
+	gorm.io/gen v0.3.10
+	gorm.io/gorm v1.23.8
 	gorm.io/plugin/dbresolver v1.2.1
 )
 
@@ -54,11 +54,11 @@ require (
 	github.com/tkrajina/go-reflector v0.5.6 // indirect
 	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
-	golang.org/x/net v0.0.0-20220630215102-69896b714898 // indirect
-	golang.org/x/sys v0.0.0-20220627191245-f75cf1eec38b // indirect
+	golang.org/x/net v0.0.0-20220706163947-c90051bbdb60 // indirect
+	golang.org/x/sys v0.0.0-20220704084225-05e143d24a9e // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/tools v0.1.11 // indirect
-	google.golang.org/genproto v0.0.0-20220630174209-ad1d48641aa7
+	google.golang.org/genproto v0.0.0-20220707150051-590a5ac7bee1
 	google.golang.org/grpc v1.47.0
 	google.golang.org/protobuf v1.28.0
 	gopkg.in/yaml.v3 v3.0.1 // indirect
