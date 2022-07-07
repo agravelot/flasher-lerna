@@ -58,6 +58,8 @@ jobs:
           labels: ${{ steps.docker_meta.outputs.labels }}
           cache-from: type=registry,ref=registry.gitlab.com/flasher/flasher/flasher-api-go:latest
           cache-to: type=inline
+          build-args: |
+            BUF_TOKEN=${{ secrets.BUF_TOKEN }}
   test:
     services:
       postgres:
