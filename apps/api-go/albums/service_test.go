@@ -1060,6 +1060,43 @@ func TestShouldNotBeAbleToUpdateAlbumTooShortTitleAsAdmin(t *testing.T) {
 	assert.Equal(t, 1, int(total))
 }
 
+func TestShouldBeAbleToUpdateAlbumToAsPublishedAsAdmin(t *testing.T) {
+	tx := orm.Begin()
+	defer tx.Rollback()
+	s := NewService(tx)
+
+	ctx, _ := authAsAdmin(context.Background())
+
+	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	a := model.Album{
+		Title:           "A good Title",
+		Slug:            "a-good-slug",
+		MetaDescription: "a meta decription",
+		SsoID:           &id,
+		Private:         true,
+	}
+	tx.Create(&a)
+
+	expectedTitle := "A new Title"
+	new, err := s.Update(ctx, &albums_pb.UpdateRequest{
+		Id:              a.ID,
+		Name:            expectedTitle,
+		Slug:            a.Slug,
+		MetaDescription: a.MetaDescription,
+		Private:         false,
+		PublishedAt:     nil,
+	})
+
+	assert.NoError(t, err)
+	assert.Equal(t, expectedTitle, new.Title)
+	var expectedAlbum model.Album
+	tx.Model(&model.Album{}).Find(&expectedAlbum, a.ID)
+	assert.Equal(t, a.ID, expectedAlbum.ID)
+	assert.Equal(t, expectedTitle, expectedAlbum.Title)
+	assert.Equal(t, false, expectedAlbum.Private)
+	assert.Nil(t, expectedAlbum.PublishedAt)
+}
+
 func TestShouldNotBeAbleToUpdateAlbumAsUser(t *testing.T) {
 	tx := orm.Begin()
 	defer tx.Rollback()

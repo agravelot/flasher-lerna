@@ -7,14 +7,16 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"reflect"
 	"time"
 
+	albums_pb "api-go/gen/go/proto/albums/v2"
+
+	"github.com/kr/pretty"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"gorm.io/gen"
 	"gorm.io/gorm"
-
-	albums_pb "api-go/gen/go/proto/albums/v2"
 )
 
 // // Service is a simple CRUD interface for user albums.
@@ -35,7 +37,7 @@ var (
 )
 
 type service struct {
-	albums_pb.UnimplementedAlbumServiceServer
+	albums_pb.AlbumServiceServer
 	orm *gorm.DB
 }
 
@@ -47,7 +49,7 @@ func NewService(orm *gorm.DB) albums_pb.AlbumServiceServer {
 
 func Published(q *query.Query) func(db gen.Dao) gen.Dao {
 	return func(db gen.Dao) gen.Dao {
-		return db.Where(q.Album.IsPublishedPublicly.Is(true), q.Album.PublishedAt.Lte(time.Now()))
+		return db.Where(q.Album.Private.Is(false), q.Album.PublishedAt.Lte(time.Now()))
 	}
 }
 
@@ -113,7 +115,7 @@ func (s *service) GetBySlug(ctx context.Context, r *albums_pb.GetBySlugRequest) 
 	query := qb.WithContext(ctx)
 
 	if !isAdmin {
-		query = query.Where(qb.PublishedAt.Lt(time.Now()), qb.IsPublishedPublicly.Is(true))
+		query = query.Where(qb.PublishedAt.Lt(time.Now()), qb.Private.Is(false))
 	}
 
 	a, err := query.
@@ -137,6 +139,8 @@ func (s *service) GetBySlug(ctx context.Context, r *albums_pb.GetBySlugRequest) 
 }
 
 func (s *service) Create(ctx context.Context, r *albums_pb.CreateRequest) (*albums_pb.CreateResponse, error) {
+	// pretty.Log(r)
+
 	user := auth.GetUserClaims(ctx)
 
 	if user == nil {
@@ -217,25 +221,32 @@ func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albu
 
 	query := qb.WithContext(ctx)
 
-	var publishedAt *time.Time
-	if r.PublishedAt != nil {
-		t := r.PublishedAt.AsTime()
-		publishedAt = &t
-	}
+	// var publishedAt *time.Time
+	// if r.PublishedAt != nil {
+	// 	t := r.PublishedAt.AsTime()
+	// 	publishedAt = &t
+	// }
 
 	// TODO Check duplicate
 	// TODO Check row count update
 	// TODO UpdatedAt
-	_, err := query.Where(qb.ID.Eq(r.Id)).Updates(model.Album{
-		ID:                  r.Id,
-		Slug:                r.Slug,
-		Title:               r.Name,
-		Body:                &r.Content,
-		PublishedAt:         publishedAt,
-		Private:             r.Private,
-		IsPublishedPublicly: !r.Private,
-		SsoID:               &user.Sub,
-	})
+	// re, err := query.Clauses(clause.Returning{}).Where(qb.ID.Eq(r.Id)).Select(qb.ALL).Updates(model.Album{
+	// 	ID:      r.Id,
+	// 	Private: r.Private,
+	// 	Title:   r.Name,
+	// })
+
+	// m := &model.Album{}
+	update := map[string]interface{}{
+		// "id":           r.Id,
+		"private":      r.Private,
+		"title":        r.Name,
+		"slug":         r.Slug,
+		"body":         r.Content,
+		"published_at": r.PublishedAt,
+	}
+	re, err := query.Where(qb.ID.Eq(r.Id)).Updates(update)
+	pretty.Log(re)
 	if err != nil {
 		return nil, fmt.Errorf("error update album: %w", err)
 	}
@@ -293,4 +304,31 @@ func (s *service) Delete(ctx context.Context, r *albums_pb.DeleteRequest) (*albu
 	}
 
 	return nil, err
+}
+
+func structToMap[T any](item T) map[string]interface{} {
+
+	res := map[string]interface{}{}
+	// if item == nil {
+	// 	return res
+	// }
+	v := reflect.TypeOf(item)
+	reflectValue := reflect.ValueOf(item)
+	reflectValue = reflect.Indirect(reflectValue)
+
+	if v.Kind() == reflect.Ptr {
+		v = v.Elem()
+	}
+	for i := 0; i < v.NumField(); i++ {
+		tag := v.Field(i).Tag.Get("json")
+		field := reflectValue.Field(i).Interface()
+		if tag != "" && tag != "-" {
+			if v.Field(i).Type.Kind() == reflect.Struct {
+				res[tag] = structToMap(field)
+			} else {
+				res[tag] = field
+			}
+		}
+	}
+	return res
 }

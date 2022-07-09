@@ -29,7 +29,7 @@ func Init(c *config.Configurations) (*gorm.DB, error) {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=%s", c.DbHost, c.DbUser, c.DbPassword, c.DbName, c.DbPort, c.DbSslMode)
 
 	config := &gorm.Config{}
-	if false {
+	if true {
 		config.Logger = newLogger
 	}
 	db, err = gorm.Open(postgres.Open(dsn), config)

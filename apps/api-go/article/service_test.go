@@ -13,7 +13,6 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/kr/pretty"
 
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -381,7 +380,6 @@ func TestShouldBeAbleToCreateAnArticleAndGenerateSlugAsAdmin(t *testing.T) {
 	ctx, claims := authAsAdmin(context.Background())
 
 	res, err := s.Create(ctx, &a)
-	pretty.Log(res)
 
 	assert.NoError(t, err)
 	var total int64

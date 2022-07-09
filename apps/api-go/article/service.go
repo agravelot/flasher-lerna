@@ -26,7 +26,7 @@ var (
 )
 
 type Service struct {
-	articles_pb.UnimplementedArticleServiceServer
+	articles_pb.ArticleServiceServer
 	db *gorm.DB
 }
 
@@ -81,11 +81,6 @@ func (s Service) Index(ctx context.Context, request *articles_pb.IndexRequest) (
 	if user == nil || (user != nil && !user.IsAdmin()) {
 		q = q.Scopes(Published(query.Use(s.db)))
 	}
-
-	//total, err := q.Count()
-	//if err != nil {
-	//	return &articlespb.IndexResponse{}, err
-	//}
 
 	articles, err := q.Scopes(Paginate(query.Use(s.db), request.Next, request.Limit)).Find()
 	if err != nil {

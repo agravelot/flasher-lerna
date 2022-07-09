@@ -9,15 +9,15 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/gosimple/slug v1.12.0
 	github.com/jackc/pgconn v1.12.1
-	github.com/jackc/pgerrcode v0.0.0-20201024163028-a0d42d470451
+	github.com/jackc/pgerrcode v0.0.0-20220416144525-469b46aa5efa
 	github.com/joho/godotenv v1.4.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/kr/pretty v0.3.0
-	github.com/stretchr/testify v1.7.0
+	github.com/stretchr/testify v1.8.0
 	github.com/tkrajina/typescriptify-golang-structs v0.1.7
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.2.0
 	gorm.io/driver/postgres v1.3.8
-	gorm.io/gen v0.3.10
+	gorm.io/gen v0.3.11
 	gorm.io/gorm v1.23.8
 	gorm.io/plugin/dbresolver v1.2.1
 )
@@ -58,7 +58,7 @@ require (
 	golang.org/x/sys v0.0.0-20220704084225-05e143d24a9e // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/tools v0.1.11 // indirect
-	google.golang.org/genproto v0.0.0-20220707150051-590a5ac7bee1
+	google.golang.org/genproto v0.0.0-20220708155623-50e5f4832e73
 	google.golang.org/grpc v1.47.0
 	google.golang.org/protobuf v1.28.0
 	gopkg.in/yaml.v3 v3.0.1 // indirect
