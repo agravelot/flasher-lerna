@@ -10,13 +10,14 @@ import (
 
 type Configurations struct {
 	// Debug      bool   `envconfig:"DEBUG"`
-	Port       int    `envconfig:"PORT" required:"true"`
-	DbHost     string `envconfig:"DB_HOST" required:"true"`
-	DbUser     string `envconfig:"DB_USER" required:"true"`
-	DbPassword string `envconfig:"DB_PASSWORD" required:"true"`
-	DbName     string `envconfig:"DB_NAME" required:"true"`
-	DbPort     int    `envconfig:"DB_PORT" required:"true"`
-	DbSslMode  string `envconfig:"DB_SSL_MODE" required:"true"`
+	AppHttpPort int    `envconfig:"APP_HTTP_PORT" required:"true"`
+	AppGrpcPort int    `envconfig:"APP_GRPC_PORT" required:"true"`
+	DbHost      string `envconfig:"DB_HOST" required:"true"`
+	DbUser      string `envconfig:"DB_USER" required:"true"`
+	DbPassword  string `envconfig:"DB_PASSWORD" required:"true"`
+	DbName      string `envconfig:"DB_NAME" required:"true"`
+	DbPort      int    `envconfig:"DB_PORT" required:"true"`
+	DbSslMode   string `envconfig:"DB_SSL_MODE" required:"true"`
 }
 
 func LoadDotEnv(path string) *Configurations {

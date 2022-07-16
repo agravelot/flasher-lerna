@@ -12,7 +12,6 @@ import (
 
 	albums_pb "api-go/gen/go/proto/albums/v2"
 
-	"github.com/kr/pretty"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"gorm.io/gen"
@@ -221,22 +220,6 @@ func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albu
 
 	query := qb.WithContext(ctx)
 
-	// var publishedAt *time.Time
-	// if r.PublishedAt != nil {
-	// 	t := r.PublishedAt.AsTime()
-	// 	publishedAt = &t
-	// }
-
-	// TODO Check duplicate
-	// TODO Check row count update
-	// TODO UpdatedAt
-	// re, err := query.Clauses(clause.Returning{}).Where(qb.ID.Eq(r.Id)).Select(qb.ALL).Updates(model.Album{
-	// 	ID:      r.Id,
-	// 	Private: r.Private,
-	// 	Title:   r.Name,
-	// })
-
-	// m := &model.Album{}
 	update := map[string]interface{}{
 		// "id":           r.Id,
 		"private":      r.Private,
@@ -245,12 +228,10 @@ func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albu
 		"body":         r.Content,
 		"published_at": r.PublishedAt,
 	}
-	re, err := query.Where(qb.ID.Eq(r.Id)).Updates(update)
-	pretty.Log(re)
+	_, err := query.Where(qb.ID.Eq(r.Id)).Updates(update)
 	if err != nil {
 		return nil, fmt.Errorf("error update album: %w", err)
 	}
-
 	query.Preload(qb.Categories).Preload(qb.Medias)
 
 	a, err := query.Where(qb.ID.Eq(r.Id)).First()

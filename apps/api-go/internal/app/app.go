@@ -2,8 +2,8 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"io/fs"
-	"io/ioutil"
 	"log"
 	"mime"
 	"net"
@@ -68,7 +68,7 @@ func authFunc(ctx context.Context) (context.Context, error) {
 }
 
 // Run creates objects via constructors.
-func Run(config *config.Configurations) {
+func Run(config *config.Configurations) error {
 
 	// var logger log.Logger
 	// {
@@ -79,12 +79,12 @@ func Run(config *config.Configurations) {
 
 	orm, err := database.Init(config)
 	if err != nil {
-		log.Fatalln("could not connect to database: %w", err)
+		return fmt.Errorf("could not connect to database: %w", err)
 	}
 
 	db, err := orm.DB()
 	if err != nil {
-		log.Fatalln("could not get DB: %w", err)
+		return fmt.Errorf("could not get DB: %w", err)
 	}
 	defer db.Close()
 
@@ -101,13 +101,13 @@ func Run(config *config.Configurations) {
 	}
 
 	// Adds gRPC internal logs. This is quite verbose, so adjust as desired!
-	l := grpclog.NewLoggerV2(os.Stdout, ioutil.Discard, ioutil.Discard)
+	l := grpclog.NewLoggerV2(os.Stdout, os.Stdout, os.Stdout)
 	grpclog.SetLoggerV2(l)
 
 	// Create a listener on TCP port
-	lis, err := net.Listen("tcp", ":8080")
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", config.AppGrpcPort))
 	if err != nil {
-		log.Fatalln("Failed to listen:", err)
+		return fmt.Errorf("failed to listen: %w", err)
 	}
 
 	// Create a gRPC server object
@@ -119,7 +119,7 @@ func Run(config *config.Configurations) {
 	articlespb.RegisterArticleServiceServer(s, sArticle)
 	albumspb.RegisterAlbumServiceServer(s, sAlbum)
 	// Serve gRPC server
-	log.Println("Serving gRPC on 0.0.0.0:8080")
+	log.Printf("Serving gRPC on 0.0.0.0:%d", config.AppGrpcPort)
 	go func() {
 		log.Fatalln(s.Serve(lis))
 	}()
@@ -128,29 +128,30 @@ func Run(config *config.Configurations) {
 	// This is where the gRPC-Gateway proxies the requests
 	conn, err := grpc.DialContext(
 		context.Background(),
-		"0.0.0.0:8080",
+		// TODO Can configure the address of the gRPC server
+		fmt.Sprintf("0.0.0.0:%d", config.AppGrpcPort),
 		grpc.WithBlock(),
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {
-		log.Fatalln("Failed to dial server:", err)
+		return fmt.Errorf("failed to dial server: %w", err)
 	}
 
 	gwmux := runtime.NewServeMux()
 	err = articlespb.RegisterArticleServiceHandler(context.Background(), gwmux, conn)
 	if err != nil {
-		log.Fatalln("Failed to register article gateway:", err)
+		return fmt.Errorf("Failed to register article gateway: %w", err)
 	}
 
 	err = albumspb.RegisterAlbumServiceHandler(context.Background(), gwmux, conn)
 	if err != nil {
-		log.Fatalln("Failed to register albuns gateway:", err)
+		return fmt.Errorf("Failed to register albuns gateway: %w", err)
 	}
 
 	oa := getOpenAPIHandler()
 
 	gwServer := &http.Server{
-		Addr: "0.0.0.0:8090",
+		Addr: fmt.Sprintf("0.0.0.0:%d", config.AppHttpPort),
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if strings.HasPrefix(r.URL.Path, "/api") {
 				gwmux.ServeHTTP(w, r)
@@ -160,6 +161,8 @@ func Run(config *config.Configurations) {
 		}),
 	}
 
-	log.Println("Serving gRPC-Gateway on http://127.0.0.1:8090")
+	log.Printf("Serving gRPC-Gateway on http://0.0.0.0:%d | http://127.0.0.1:%d\n", config.AppHttpPort, config.AppHttpPort)
 	log.Fatalln(gwServer.ListenAndServe())
+
+	return nil
 }

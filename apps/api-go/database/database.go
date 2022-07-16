@@ -32,9 +32,10 @@ func Init(c *config.Configurations) (*gorm.DB, error) {
 	if true {
 		config.Logger = newLogger
 	}
+
 	db, err = gorm.Open(postgres.Open(dsn), config)
 	if err != nil {
-		log.Fatalln("unable to connect to the database: %w", err)
+		return db, fmt.Errorf("unable to connect to the database: %w", err)
 	}
 
 	return db, nil
@@ -43,17 +44,4 @@ func Init(c *config.Configurations) (*gorm.DB, error) {
 // DbManager Return Gorm DB instance
 func DbManager() *gorm.DB {
 	return db
-}
-
-func ClearDB(db *gorm.DB) {
-	var tables []string
-	if err := db.Table("information_schema.tables").Where("table_schema = ?", "public").Order("length(table_name) desc").Pluck("table_name", &tables).Error; err != nil {
-		panic(err)
-	}
-	for _, table := range tables {
-		db.Exec("TRUNCATE " + table)
-	}
-	for _, table := range tables {
-		db.Exec("TRUNCATE " + table)
-	}
 }
