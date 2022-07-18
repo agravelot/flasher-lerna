@@ -18,7 +18,7 @@ import (
 	"google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/status"
 
-	album "api-go/albums"
+	"api-go/album"
 	"api-go/article"
 	"api-go/auth"
 	"api-go/config"
