@@ -12,10 +12,11 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-var db *gorm.DB
-var err error
+type Database struct {
+	DB *gorm.DB
+}
 
-func Init(c *config.Configurations) (*gorm.DB, error) {
+func New(c *config.Configurations) (Database, error) {
 
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
@@ -33,15 +34,12 @@ func Init(c *config.Configurations) (*gorm.DB, error) {
 		config.Logger = newLogger
 	}
 
-	db, err = gorm.Open(postgres.Open(dsn), config)
+	db, err := gorm.Open(postgres.Open(dsn), config)
 	if err != nil {
-		return db, fmt.Errorf("unable to connect to the database: %w", err)
+		return Database{}, fmt.Errorf("unable to connect to the database: %w", err)
 	}
 
-	return db, nil
-}
-
-// DbManager Return Gorm DB instance
-func DbManager() *gorm.DB {
-	return db
+	return Database{
+		DB: db,
+	}, nil
 }

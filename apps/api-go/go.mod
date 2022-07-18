@@ -12,9 +12,7 @@ require (
 	github.com/jackc/pgerrcode v0.0.0-20220416144525-469b46aa5efa
 	github.com/joho/godotenv v1.4.0
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/kr/pretty v0.3.0
 	github.com/stretchr/testify v1.8.0
-	github.com/tkrajina/typescriptify-golang-structs v0.1.7
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.2.0
 	gorm.io/driver/postgres v1.3.8
 	gorm.io/gen v0.3.12
@@ -25,7 +23,6 @@ require (
 require (
 	cloud.google.com/go v0.75.0 // indirect
 	github.com/golang/glog v1.0.0 // indirect
-	github.com/kr/text v0.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.8.1 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 )
@@ -51,7 +48,6 @@ require (
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/lib/pq v1.10.4 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/tkrajina/go-reflector v0.5.6 // indirect
 	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
 	golang.org/x/net v0.0.0-20220708220712-1185a9018129 // indirect

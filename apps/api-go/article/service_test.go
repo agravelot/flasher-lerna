@@ -7,6 +7,8 @@ import (
 	articlesgrpc "api-go/gen/go/proto/articles/v2"
 	"api-go/model"
 	"context"
+	"fmt"
+	"log"
 	"os"
 	"strconv"
 	"testing"
@@ -91,7 +93,11 @@ func authAsAdmin(ctx context.Context) (context.Context, auth.Claims) {
 
 func TestMain(m *testing.M) {
 	config := config.LoadDotEnv("../")
-	db, _ = database.Init(config)
+	db2, err := database.New(config)
+	if err != nil {
+		log.Fatal(fmt.Errorf("unable to connect to the database: %w", err))
+	}
+	db = db2.DB
 
 	exitVal := m.Run() // Run tests
 	// Do stuff after test
