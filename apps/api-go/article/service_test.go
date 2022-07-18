@@ -55,7 +55,7 @@ func authAsUser(ctx context.Context) (context.Context, auth.Claims) {
 		Email:             "test@test.com",
 	}
 
-	return context.WithValue(ctx, "user", &claims), claims
+	return context.WithValue(ctx, auth.UserClaimsKey, &claims), claims
 }
 
 func authAsAdmin(ctx context.Context) (context.Context, auth.Claims) {
@@ -87,7 +87,7 @@ func authAsAdmin(ctx context.Context) (context.Context, auth.Claims) {
 		Email:             "test@test.com",
 	}
 
-	return context.WithValue(ctx, "user", &claims), claims
+	return context.WithValue(ctx, auth.UserClaimsKey, &claims), claims
 }
 
 func TestMain(m *testing.M) {

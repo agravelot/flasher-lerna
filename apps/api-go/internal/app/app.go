@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"syscall"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
@@ -114,7 +115,7 @@ func Run(config *config.Config) error {
 
 	go func() {
 		sigquit := make(chan os.Signal, 1)
-		signal.Notify(sigquit, os.Interrupt, os.Kill)
+		signal.Notify(sigquit, os.Interrupt, syscall.SIGTERM)
 
 		sig := <-sigquit
 		log.Printf("caught sig: %+v", sig)
