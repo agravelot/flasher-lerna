@@ -8,7 +8,7 @@ on:
   pull_request:
     paths:
       - "apps/api-go/**"
-      - ".github/workflows/api-go.yml"
+      - ".github/workflows/golangci-lint.yml"
 
 permissions:
   contents: read
