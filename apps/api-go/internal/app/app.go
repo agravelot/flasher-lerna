@@ -7,6 +7,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"os/signal"
 	"strings"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -65,17 +66,17 @@ func Run(config *config.Configurations) error {
 	}
 
 	// Create a gRPC server object
-	s := grpc.NewServer(
+	grpcServer := grpc.NewServer(
 		grpc.StreamInterceptor(grpc_auth.StreamServerInterceptor(auth.AuthFunc)),
 		grpc.UnaryInterceptor(grpc_auth.UnaryServerInterceptor(auth.AuthFunc)),
 	)
 	// Attach the Greeter service to the server
-	articlespb.RegisterArticleServiceServer(s, sArticle)
-	albumspb.RegisterAlbumServiceServer(s, sAlbum)
+	articlespb.RegisterArticleServiceServer(grpcServer, sArticle)
+	albumspb.RegisterAlbumServiceServer(grpcServer, sAlbum)
 	// Serve gRPC server
-	log.Printf("Serving gRPC on 0.0.0.0:%d", config.AppGrpcPort)
 	go func() {
-		log.Fatalln(s.Serve(lis))
+		log.Printf("Serving gRPC on 0.0.0.0:%d", config.AppGrpcPort)
+		log.Fatalln(grpcServer.Serve(lis))
 	}()
 
 	// Create a client connection to the gRPC server we just started
@@ -118,8 +119,29 @@ func Run(config *config.Configurations) error {
 		}),
 	}
 
+	go func() {
+		sigquit := make(chan os.Signal, 1)
+		signal.Notify(sigquit, os.Interrupt, os.Kill)
+
+		sig := <-sigquit
+		log.Printf("caught sig: %+v", sig)
+		log.Println("gracefully shuting down servers...")
+
+		err := gwServer.Shutdown(context.Background())
+		if err != nil {
+			log.Printf("unable to shut down http sever: %v", err)
+		}
+		log.Println("http server stopped")
+
+		grpcServer.GracefulStop()
+		log.Println("grpc server stopped")
+	}()
+
 	log.Printf("Serving gRPC-Gateway on http://0.0.0.0:%d | http://127.0.0.1:%d\n", config.AppHttpPort, config.AppHttpPort)
-	log.Fatalln(gwServer.ListenAndServe())
+	err = gwServer.ListenAndServe()
+	if err != nil {
+		log.Fatalln(gwServer.ListenAndServe())
+	}
 
 	return nil
 }
