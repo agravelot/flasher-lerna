@@ -9,7 +9,6 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
 import "proto/categories/v2/categories.proto";
 import "proto/medias/v2/medias.proto";
-import "google/protobuf/empty.proto";
 
 message AlbumResponse {
   int32 id = 1;
