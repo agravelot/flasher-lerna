@@ -10,6 +10,9 @@ on:
     tags:
       - "v*"
   pull_request:
+    paths:
+      - "apps/api-laravel/**"
+      - ".github/workflows/api-laravel.yml"
 
 jobs:
   build:

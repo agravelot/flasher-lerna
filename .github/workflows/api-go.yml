@@ -10,6 +10,9 @@ on:
     tags:
       - "v*"
   pull_request:
+    paths:
+      - "apps/api-go/**"
+      - ".github/workflows/api-go.yml"
 
 jobs:
   docker:
