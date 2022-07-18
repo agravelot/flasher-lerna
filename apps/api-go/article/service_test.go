@@ -3,9 +3,9 @@ package article
 import (
 	"api-go/auth"
 	"api-go/config"
-	"api-go/database"
 	articlesgrpc "api-go/gen/go/proto/articles/v2"
 	"api-go/model"
+	"api-go/storage/postgres"
 	"context"
 	"fmt"
 	"log"
@@ -18,14 +18,13 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"gorm.io/gorm"
 )
 
 var (
-	db *gorm.DB
+	db postgres.Postgres
 )
 
-var token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIxamVHNzFZSHlUd25GUEVSb2NJeEVzS21lbjlWN1NjanRIZXFzak1KUXlZIn0.eyJleHAiOjE2MTExNjQ3MTAsImlhdCI6MTYxMTE2NDQxMCwiYXV0aF90aW1lIjoxNjExMTY0MzY0LCJqdGkiOiJlMThlMWNlOC05OTc5LTQ3NmQtOWYxMC1mOTk5OWJhMDQwZjgiLCJpc3MiOiJodHRwczovL2FjY291bnRzLmFncmF2ZWxvdC5ldS9hdXRoL3JlYWxtcy9hbnljbG91ZCIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiIzMDE1MWFlNS0yOGI0LTRjNmMtYjBhZS1lYTJlNmE0OWVmNjciLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJmcm9udGVuZCIsIm5vbmNlIjoiMTkyOWEwZGEtMTU2ZS00NWZmLTgzM2YtYTU2MGIwNmI1YWNkIiwic2Vzc2lvbl9zdGF0ZSI6IjRlMWYxOWYzLTFhMmMtNGUxNS1iMWFhLTNlY2ZhMTkxMGRiOCIsImFjciI6IjAiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIn0.PkfxSmIiG4lLE9hCjICcRPNpXC0X2QtVzYeUwAUwwe2G_6ArmMdZOkRVOKx3jiRO7PYu-D0NR9tAiv7yN9SDMDrIhtNoosgChB4PQ4wBf_YvHsJaAHwyK8Hu6h_8gxJIl3UYCKWTSYgLRK-IOE9E6FNlMdJK9UXAO_y2IBEZBO9QV-QxZH7SlYkm8VfoZzNzRMy82SgWLsQGDvwAAGCxHFRgTZdFNKPoqJylDyANBEuWanLwDohQKdNGqz6PlhtopmXo1v8kcHwBHxyMQ3mtRNCXBV6TOXo7oAWW3XeXGWjTtAiTY85Wr7R6IJ74WKpMrG-3PDL6Sx6n4JxOuurpLg"
+// var token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIxamVHNzFZSHlUd25GUEVSb2NJeEVzS21lbjlWN1NjanRIZXFzak1KUXlZIn0.eyJleHAiOjE2MTExNjQ3MTAsImlhdCI6MTYxMTE2NDQxMCwiYXV0aF90aW1lIjoxNjExMTY0MzY0LCJqdGkiOiJlMThlMWNlOC05OTc5LTQ3NmQtOWYxMC1mOTk5OWJhMDQwZjgiLCJpc3MiOiJodHRwczovL2FjY291bnRzLmFncmF2ZWxvdC5ldS9hdXRoL3JlYWxtcy9hbnljbG91ZCIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiIzMDE1MWFlNS0yOGI0LTRjNmMtYjBhZS1lYTJlNmE0OWVmNjciLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJmcm9udGVuZCIsIm5vbmNlIjoiMTkyOWEwZGEtMTU2ZS00NWZmLTgzM2YtYTU2MGIwNmI1YWNkIiwic2Vzc2lvbl9zdGF0ZSI6IjRlMWYxOWYzLTFhMmMtNGUxNS1iMWFhLTNlY2ZhMTkxMGRiOCIsImFjciI6IjAiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIn0.PkfxSmIiG4lLE9hCjICcRPNpXC0X2QtVzYeUwAUwwe2G_6ArmMdZOkRVOKx3jiRO7PYu-D0NR9tAiv7yN9SDMDrIhtNoosgChB4PQ4wBf_YvHsJaAHwyK8Hu6h_8gxJIl3UYCKWTSYgLRK-IOE9E6FNlMdJK9UXAO_y2IBEZBO9QV-QxZH7SlYkm8VfoZzNzRMy82SgWLsQGDvwAAGCxHFRgTZdFNKPoqJylDyANBEuWanLwDohQKdNGqz6PlhtopmXo1v8kcHwBHxyMQ3mtRNCXBV6TOXo7oAWW3XeXGWjTtAiTY85Wr7R6IJ74WKpMrG-3PDL6Sx6n4JxOuurpLg"
 
 func authAsUser(ctx context.Context) (context.Context, auth.Claims) {
 	claims := auth.Claims{
@@ -93,11 +92,11 @@ func authAsAdmin(ctx context.Context) (context.Context, auth.Claims) {
 
 func TestMain(m *testing.M) {
 	config := config.LoadDotEnv("../")
-	db2, err := database.New(config)
+	db2, err := postgres.New(config)
 	if err != nil {
 		log.Fatal(fmt.Errorf("unable to connect to the database: %w", err))
 	}
-	db = db2.DB
+	db = db2
 
 	exitVal := m.Run() // Run tests
 	// Do stuff after test
@@ -108,7 +107,7 @@ func TestMain(m *testing.M) {
 /////// LIST ////////
 
 func TestShouldBeAbleToListEmpty(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -120,7 +119,7 @@ func TestShouldBeAbleToListEmpty(t *testing.T) {
 }
 
 func TestShouldBeAbleToListWithOnePublishedArticle(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -142,7 +141,7 @@ func TestShouldBeAbleToListWithOnePublishedArticle(t *testing.T) {
 
 func TestShouldBeAbleToListPublishedArticlesOnSecondPage(t *testing.T) {
 	var articles []model.Article
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -176,7 +175,7 @@ func TestShouldBeAbleToListPublishedArticlesOnSecondPage(t *testing.T) {
 func TestShouldBeAbleToListPublishedArticlesOnSecondPageWithCustomPerPage(t *testing.T) {
 	var articles []model.Article
 	n := time.Now()
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -206,7 +205,7 @@ func TestShouldBeAbleToListPublishedArticlesOnSecondPageWithCustomPerPage(t *tes
 
 func TestShouldBeAbleToListNonPublishedArticleAsAdmin(t *testing.T) {
 	ctx, _ := authAsAdmin(context.Background())
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -225,7 +224,7 @@ func TestShouldBeAbleToListNonPublishedArticleAsAdmin(t *testing.T) {
 }
 
 func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -245,7 +244,7 @@ func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 }
 
 func TestShouldNotListSoftDeletedArticles(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -266,7 +265,7 @@ func TestShouldNotListSoftDeletedArticles(t *testing.T) {
 }
 
 func TestShouldNotListNonPublishedArticles(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -286,7 +285,7 @@ func TestShouldNotListNonPublishedArticles(t *testing.T) {
 ///////// SHOW  ///////////
 
 func TestShouldBeAbleToGetPublishedArticleAsGuest(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -304,7 +303,7 @@ func TestShouldBeAbleToGetPublishedArticleAsGuest(t *testing.T) {
 }
 
 func TestShouldBeAbleToGetPublishedArticleAsUser(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -323,7 +322,7 @@ func TestShouldBeAbleToGetPublishedArticleAsUser(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToGetNonPublishedArticleAsGuest(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -340,7 +339,7 @@ func TestShouldNotBeAbleToGetNonPublishedArticleAsGuest(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToGetNonPublishedArticleAsUser(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -358,7 +357,7 @@ func TestShouldNotBeAbleToGetNonPublishedArticleAsUser(t *testing.T) {
 }
 
 func TestShouldBeAbleToGetNonPublishedArticleAsAdmin(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -378,7 +377,7 @@ func TestShouldBeAbleToGetNonPublishedArticleAsAdmin(t *testing.T) {
 ///////// POST  ///////////
 
 func TestShouldBeAbleToCreateAnArticleAndGenerateSlugAsAdmin(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -398,7 +397,7 @@ func TestShouldBeAbleToCreateAnArticleAndGenerateSlugAsAdmin(t *testing.T) {
 }
 
 func TestShouldBeAbleToCreateAnPublishedArticleAndGenerateSlugAsAdmin(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -419,7 +418,7 @@ func TestShouldBeAbleToCreateAnPublishedArticleAndGenerateSlugAsAdmin(t *testing
 }
 
 func TestShouldBeAbleToCreateAnArticleWithASpecifiedSlug(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -438,7 +437,7 @@ func TestShouldBeAbleToCreateAnArticleWithASpecifiedSlug(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToCreateAnArticleWithSameSlug(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -458,7 +457,7 @@ func TestShouldNotBeAbleToCreateAnArticleWithSameSlug(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToSaveArticleWithEmptyName(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -476,7 +475,7 @@ func TestShouldNotBeAbleToSaveArticleWithEmptyName(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToSaveArticleWithTooLongName(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -494,7 +493,7 @@ func TestShouldNotBeAbleToSaveArticleWithTooLongName(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToSaveArticleWithEmptyMetaDescription(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -512,7 +511,7 @@ func TestShouldNotBeAbleToSaveArticleWithEmptyMetaDescription(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToSaveArticleWithTooLongMetaDescription(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -530,7 +529,7 @@ func TestShouldNotBeAbleToSaveArticleWithTooLongMetaDescription(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToCreateAsUser(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -547,7 +546,7 @@ func TestShouldNotBeAbleToCreateAsUser(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToCreateAsGuest(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -565,7 +564,7 @@ func TestShouldNotBeAbleToCreateAsGuest(t *testing.T) {
 //////// UPDATE //////////
 
 func TestShouldBeAbleToUpdateArticleNameAsAdmin(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -589,7 +588,7 @@ func TestShouldBeAbleToUpdateArticleNameAsAdmin(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToUpdateArticleTooShortNameAsAdmin(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -606,7 +605,7 @@ func TestShouldNotBeAbleToUpdateArticleTooShortNameAsAdmin(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToUpdateArticleAsUser(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -625,7 +624,7 @@ func TestShouldNotBeAbleToUpdateArticleAsUser(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToUpdateArticleAsGuest(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -645,7 +644,7 @@ func TestShouldNotBeAbleToUpdateArticleAsGuest(t *testing.T) {
 //////// DELETE //////////
 
 func TestShouldBeAbleToDeleteArticleAndIsSoftDeleted(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -663,7 +662,7 @@ func TestShouldBeAbleToDeleteArticleAndIsSoftDeleted(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToDeleteAnNonExistantArticle(t *testing.T) {
-	tx := db.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 

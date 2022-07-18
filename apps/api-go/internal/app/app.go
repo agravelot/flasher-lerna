@@ -18,10 +18,10 @@ import (
 	"api-go/article"
 	"api-go/auth"
 	"api-go/config"
-	"api-go/database"
 	albumspb "api-go/gen/go/proto/albums/v2"
 	articlespb "api-go/gen/go/proto/articles/v2"
 	"api-go/openapi"
+	"api-go/storage/postgres"
 
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 )
@@ -36,16 +36,11 @@ func Run(config *config.Configurations) error {
 	// 	logger = log.With(logger, "caller", log.DefaultCaller)
 	// }
 
-	orm, err := database.New(config)
+	orm, err := postgres.New(config)
 	if err != nil {
 		return fmt.Errorf("could not connect to database: %w", err)
 	}
-
-	db, err := orm.DB.DB()
-	if err != nil {
-		return fmt.Errorf("could not get DB: %w", err)
-	}
-	defer db.Close()
+	defer orm.Close()
 
 	var sAlbum albumspb.AlbumServiceServer
 	{

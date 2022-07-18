@@ -3,10 +3,10 @@ package album
 import (
 	"api-go/auth"
 	"api-go/config"
-	"api-go/database"
 	albums_pb "api-go/gen/go/proto/albums/v2"
 	"api-go/model"
 	"api-go/query"
+	"api-go/storage/postgres"
 	"context"
 	"errors"
 	"fmt"
@@ -20,11 +20,10 @@ import (
 	"github.com/jackc/pgerrcode"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"gorm.io/gorm"
 )
 
 var (
-	orm *gorm.DB
+	db postgres.Postgres
 )
 
 var ssoId = "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
@@ -97,11 +96,11 @@ func authAsAdmin(ctx context.Context) (context.Context, auth.Claims) {
 
 func TestMain(m *testing.M) {
 	config := config.LoadDotEnv("../")
-	_orm, err := database.New(config)
+	_db, err := postgres.New(config)
 	if err != nil {
 		log.Fatal(fmt.Errorf("unable to connect to the database: %w", err))
 	}
-	orm = _orm.DB
+	db = _db
 
 	exitVal := m.Run() // Run tests
 	// Do stuff after test
@@ -112,7 +111,7 @@ func TestMain(m *testing.M) {
 /////// LIST ////////
 
 func TestShouldBeAbleToListEmpty(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -125,7 +124,7 @@ func TestShouldBeAbleToListEmpty(t *testing.T) {
 }
 
 func TestShouldBeAbleToListWithOnePublishedAlbum(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -151,7 +150,7 @@ func TestShouldBeAbleToListWithOnePublishedAlbum(t *testing.T) {
 }
 
 func TestShouldBeOrderedByDateOfPublication(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -203,7 +202,7 @@ func TestShouldBeOrderedByDateOfPublication(t *testing.T) {
 }
 
 func TestShouldOnlyShowPublicAlbums(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -255,7 +254,7 @@ func TestShouldOnlyShowPublicAlbums(t *testing.T) {
 }
 
 func TestShouldBeAbleToListPublishedAlbumsOnSecondPage(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -302,7 +301,7 @@ func TestShouldBeAbleToListPublishedAlbumsOnSecondPage(t *testing.T) {
 }
 
 func TestShouldBeAbleToListPublishedAlbumsOnSecondPageWithCustomPerPage(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -349,7 +348,7 @@ func TestShouldBeAbleToListPublishedAlbumsOnSecondPageWithCustomPerPage(t *testi
 
 func TestShouldBeAbleToListNonPublishedAlbumAsAdmin(t *testing.T) {
 	ctx, _ := authAsAdmin(context.Background())
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -374,7 +373,7 @@ func TestShouldBeAbleToListNonPublishedAlbumAsAdmin(t *testing.T) {
 }
 
 func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -404,7 +403,7 @@ func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 }
 
 func TestShouldNotIncludeCategoriesByDefault(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -440,7 +439,7 @@ func TestShouldNotIncludeCategoriesByDefault(t *testing.T) {
 }
 
 func TestShouldBeAbleToListWithCategories(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -480,7 +479,7 @@ func TestShouldBeAbleToListWithCategories(t *testing.T) {
 }
 
 func TestShouldBeAbleToListWithMedias(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -532,7 +531,7 @@ func TestShouldBeAbleToListWithMedias(t *testing.T) {
 }
 
 func TestShouldNotIncludeMediasByDefault(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -582,7 +581,7 @@ func TestShouldNotIncludeMediasByDefault(t *testing.T) {
 }
 
 func TestShouldNotListNonPublishedAlbums(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -612,7 +611,7 @@ func TestShouldNotListNonPublishedAlbums(t *testing.T) {
 ///////// SHOW  ///////////
 
 func TestShouldBeAbleToGetPublishedAlbumAsGuest(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -639,7 +638,7 @@ func TestShouldBeAbleToGetPublishedAlbumAsGuest(t *testing.T) {
 }
 
 func TestShouldBeAbleToGetPublishedAlbumAsUser(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -667,7 +666,7 @@ func TestShouldBeAbleToGetPublishedAlbumAsUser(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToGetNonPublishedAlbumAsGuest(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -693,7 +692,7 @@ func TestShouldNotBeAbleToGetNonPublishedAlbumAsGuest(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToGetNonPublishedAlbumAsUser(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -718,7 +717,7 @@ func TestShouldNotBeAbleToGetNonPublishedAlbumAsUser(t *testing.T) {
 }
 
 func TestShouldBeAbleToGetNonPublishedAlbumAsAdmin(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -744,7 +743,7 @@ func TestShouldBeAbleToGetNonPublishedAlbumAsAdmin(t *testing.T) {
 // ///////// POST  ///////////
 
 func TestShouldBeAbleToCreateAnAlbumAsAdmin(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -771,7 +770,7 @@ func TestShouldBeAbleToCreateAnAlbumAsAdmin(t *testing.T) {
 }
 
 func TestShouldBeAbleToCreateAnPublishedAlbumAsAdmin(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -803,7 +802,7 @@ func TestShouldBeAbleToCreateAnPublishedAlbumAsAdmin(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToCreateAnAlbumWithSameSlug(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -837,7 +836,7 @@ func TestShouldNotBeAbleToCreateAnAlbumWithSameSlug(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToSaveAlbumWithEmptyTitle(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -864,7 +863,7 @@ func TestShouldNotBeAbleToSaveAlbumWithEmptyTitle(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToSaveAlbumWithTooLongTitle(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -874,7 +873,7 @@ func TestShouldNotBeAbleToSaveAlbumWithTooLongTitle(t *testing.T) {
 	slug := "a-good-title"
 	pub := time.Now().Add(-5 * time.Minute)
 	arg := albums_pb.CreateRequest{
-		Name:            "a very too long big enormous title that will never fit in any screen...",
+		Name:            "a very too long big endb.DBous title that will never fit in any screen...",
 		MetaDescription: "meta",
 		Slug:            slug,
 		PublishedAt:     &timestamppb.Timestamp{Seconds: int64(pub.Second())},
@@ -891,7 +890,7 @@ func TestShouldNotBeAbleToSaveAlbumWithTooLongTitle(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToSaveAlbumWithEmptyMetaDescription(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -918,7 +917,7 @@ func TestShouldNotBeAbleToSaveAlbumWithEmptyMetaDescription(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToSaveAlbumWithTooLongMetaDescription(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -929,7 +928,7 @@ func TestShouldNotBeAbleToSaveAlbumWithTooLongMetaDescription(t *testing.T) {
 	pub := time.Now().Add(-5 * time.Minute)
 	arg := albums_pb.CreateRequest{
 		Name:            "a good title",
-		MetaDescription: "a very too long big enormous meta description that will never fit in any screen..a very too long big enormous meta description that will never fit in any screen..a very too long big enormous meta description that will never fit in any screen..a very too long big enormous meta description that will never fit in any screen..a very too long big enormous meta description that will never fit in any screen...",
+		MetaDescription: "a very too long big endb.DBous meta description that will never fit in any screen..a very too long big endb.DBous meta description that will never fit in any screen..a very too long big endb.DBous meta description that will never fit in any screen..a very too long big endb.DBous meta description that will never fit in any screen..a very too long big endb.DBous meta description that will never fit in any screen...",
 		Slug:            slug,
 		PublishedAt:     &timestamppb.Timestamp{Seconds: int64(pub.Second())},
 	}
@@ -945,7 +944,7 @@ func TestShouldNotBeAbleToSaveAlbumWithTooLongMetaDescription(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToCreateAsUser(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -972,7 +971,7 @@ func TestShouldNotBeAbleToCreateAsUser(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToCreateAsGuest(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -999,7 +998,7 @@ func TestShouldNotBeAbleToCreateAsGuest(t *testing.T) {
 // //////// UPDATE //////////
 
 func TestShouldBeAbleToUpdateAlbumTitleAsAdmin(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -1030,7 +1029,7 @@ func TestShouldBeAbleToUpdateAlbumTitleAsAdmin(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToUpdateAlbumTooShortTitleAsAdmin(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -1062,7 +1061,7 @@ func TestShouldNotBeAbleToUpdateAlbumTooShortTitleAsAdmin(t *testing.T) {
 }
 
 func TestShouldBeAbleToUpdateAlbumToAsPublishedAsAdmin(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -1099,7 +1098,7 @@ func TestShouldBeAbleToUpdateAlbumToAsPublishedAsAdmin(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToUpdateAlbumAsUser(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -1127,7 +1126,7 @@ func TestShouldNotBeAbleToUpdateAlbumAsUser(t *testing.T) {
 }
 
 func TestShouldNotBeAbleToUpdateAlbumAsGuest(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -1155,7 +1154,7 @@ func TestShouldNotBeAbleToUpdateAlbumAsGuest(t *testing.T) {
 // //////// DELETE //////////
 
 func TestAdminShouldBeAbleToDeleteAndNotSoftDeleted(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -1183,7 +1182,7 @@ func TestAdminShouldBeAbleToDeleteAndNotSoftDeleted(t *testing.T) {
 }
 
 func TestAdminShouldNotBeAbleToDeleteAnNonExistantAlbum(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -1196,7 +1195,7 @@ func TestAdminShouldNotBeAbleToDeleteAnNonExistantAlbum(t *testing.T) {
 }
 
 func TestUserShouldNotBeAbleToDelete(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 
@@ -1221,7 +1220,7 @@ func TestUserShouldNotBeAbleToDelete(t *testing.T) {
 }
 
 func TestGuestShouldNotBeAbleToDelete(t *testing.T) {
-	tx := orm.Begin()
+	tx := db.DB.Begin()
 	defer tx.Rollback()
 	s := NewService(tx)
 

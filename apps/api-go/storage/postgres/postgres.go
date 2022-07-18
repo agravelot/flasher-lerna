@@ -1,4 +1,4 @@
-package database
+package postgres
 
 import (
 	"api-go/config"
@@ -12,11 +12,19 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-type Database struct {
+type Postgres struct {
 	DB *gorm.DB
 }
 
-func New(c *config.Configurations) (Database, error) {
+func (d Postgres) Close() error {
+	db, err := d.DB.DB()
+	if err != nil {
+		return err
+	}
+	return db.Close()
+}
+
+func New(c *config.Configurations) (Postgres, error) {
 
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
@@ -36,10 +44,10 @@ func New(c *config.Configurations) (Database, error) {
 
 	db, err := gorm.Open(postgres.Open(dsn), config)
 	if err != nil {
-		return Database{}, fmt.Errorf("unable to connect to the database: %w", err)
+		return Postgres{}, fmt.Errorf("unable to connect to the database: %w", err)
 	}
 
-	return Database{
+	return Postgres{
 		DB: db,
 	}, nil
 }
