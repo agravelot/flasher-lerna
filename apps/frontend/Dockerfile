@@ -1,4 +1,4 @@
-FROM node:16-alpine AS base
+FROM node:18-alpine AS base
 RUN apk add libc6-compat --no-cache
 
 
@@ -53,7 +53,7 @@ COPY apps/models apps/models
 RUN yarn workspace @flasher/frontend run build && yarn install --frozen-lockfile --production --ignore-scripts --prefer-offline
 RUN cd node_modules/sharp/ && yarn run install && cd -
 
-FROM node:16-alpine AS runner
+FROM node:18-alpine AS runner
 
 ARG NEXT_PUBLIC_APP_URL
 ARG NEXT_PUBLIC_API_URL
