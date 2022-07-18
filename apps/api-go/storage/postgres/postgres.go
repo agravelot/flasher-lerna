@@ -24,6 +24,16 @@ func (d Postgres) Close() error {
 	return db.Close()
 }
 
+func (d Postgres) Begin() Postgres {
+	d.DB = d.DB.Begin()
+	return d
+}
+
+func (d Postgres) Rollback() Postgres {
+	d.DB = d.DB.Rollback()
+	return d
+}
+
 func New(c *config.Config) (Postgres, error) {
 
 	newLogger := logger.New(
@@ -47,7 +57,5 @@ func New(c *config.Config) (Postgres, error) {
 		return Postgres{}, fmt.Errorf("unable to connect to the database: %w", err)
 	}
 
-	return Postgres{
-		DB: db,
-	}, nil
+	return Postgres{db}, nil
 }

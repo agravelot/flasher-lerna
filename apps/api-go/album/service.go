@@ -18,16 +18,6 @@ import (
 	"gorm.io/gorm"
 )
 
-// // Service is a simple CRUD interface for user albums.
-// type Service interface {
-// 	Index(ctx context.Context, params albums_pb.IndexRequest) (albums_pb.IndexResponse, error)
-// 	GetBySlug(ctx context.Context, slug string) (AlbumResponse, error)
-// 	Create(ctx context.Context, p AlbumRequest) (AlbumResponse, error)
-// 	Update(ctx context.Context, slug string, p AlbumRequest) (AlbumResponse, error)
-// 	// PatchAlbum(ctx context.Context, slug string, p AlbumUpdateRequest) (AlbumResponse, error)
-// 	Delete(ctx context.Context, slug string) error
-// }
-
 var (
 	ErrAlreadyExists = status.Error(codes.AlreadyExists, "already exists")
 	ErrNotFound      = status.Error(codes.NotFound, "not found")
@@ -37,22 +27,22 @@ var (
 
 type service struct {
 	albums_pb.AlbumServiceServer
-	orm *postgres.Postgres
+	storage *postgres.Postgres
 }
 
 func NewService(orm *postgres.Postgres) albums_pb.AlbumServiceServer {
 	return &service{
-		orm: orm,
+		storage: orm,
 	}
 }
 
-func Published(q *query.Query) func(db gen.Dao) gen.Dao {
+func published(q *query.Query) func(db gen.Dao) gen.Dao {
 	return func(db gen.Dao) gen.Dao {
 		return db.Where(q.Album.Private.Is(false), q.Album.PublishedAt.Lte(time.Now()))
 	}
 }
 
-func Paginate(q *query.Query, next *int32, pageSize *int32) func(db gen.Dao) gen.Dao {
+func paginate(q *query.Query, next *int32, pageSize *int32) func(db gen.Dao) gen.Dao {
 	return func(db gen.Dao) gen.Dao {
 		if next != nil && *next != 0 {
 			db = db.Where(q.Album.ID.Gt(*next))
@@ -68,11 +58,11 @@ func Paginate(q *query.Query, next *int32, pageSize *int32) func(db gen.Dao) gen
 func (s *service) Index(ctx context.Context, r *albums_pb.IndexRequest) (*albums_pb.IndexResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
-	qb := query.Use(s.orm.DB).Album
+	qb := query.Use(s.storage.DB).Album
 	q := qb.WithContext(ctx).Order(qb.PublishedAt.Desc())
 
 	if user == nil || (user != nil && !user.IsAdmin()) {
-		q = q.Scopes(Published(query.Use(s.orm.DB)))
+		q = q.Scopes(published(query.Use(s.storage.DB)))
 	}
 
 	if r.Next != nil && *r.Next != 0 {
@@ -87,14 +77,14 @@ func (s *service) Index(ctx context.Context, r *albums_pb.IndexRequest) (*albums
 		q = q.Preload(qb.Medias)
 	}
 
-	albums, err := q.Scopes(Paginate(query.Use(s.orm.DB), r.Next, r.Limit)).Find()
+	albums, err := q.Scopes(paginate(query.Use(s.storage.DB), r.Next, r.Limit)).Find()
 	if err != nil {
 		return nil, fmt.Errorf("unable list albums : %d %w", r.Next, err)
 	}
 
-	data := make([]*albums_pb.AlbumResponse, len(albums))
-	for i, a := range albums {
-		data[i] = transformAlbumFromDB(*a)
+	data := make([]*albums_pb.AlbumResponse, 0, len(albums))
+	for _, a := range albums {
+		data = append(data, transformAlbumFromDB(*a))
 	}
 
 	return &albums_pb.IndexResponse{
@@ -109,7 +99,7 @@ func (s *service) GetBySlug(ctx context.Context, r *albums_pb.GetBySlugRequest) 
 	user := auth.GetUserClaims(ctx)
 	isAdmin := user != nil && user.IsAdmin()
 
-	qb := query.Use(s.orm.DB).Album
+	qb := query.Use(s.storage.DB).Album
 
 	query := qb.WithContext(ctx)
 
@@ -174,7 +164,7 @@ func (s *service) Create(ctx context.Context, r *albums_pb.CreateRequest) (*albu
 		PublishedAt: publishedAt,
 	}
 
-	query := query.Use(s.orm.DB).Album.WithContext(ctx)
+	query := query.Use(s.storage.DB).Album.WithContext(ctx)
 
 	err := query.WithContext(ctx).Create(&album)
 	// TODO Check duplicate
@@ -216,7 +206,7 @@ func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albu
 		return nil, err
 	}
 
-	qb := query.Use(s.orm.DB).Album
+	qb := query.Use(s.storage.DB).Album
 
 	query := qb.WithContext(ctx)
 
@@ -274,7 +264,7 @@ func (s *service) Delete(ctx context.Context, r *albums_pb.DeleteRequest) (*albu
 		return nil, ErrNotAdmin
 	}
 
-	qb := query.Use(s.orm.DB).Album
+	qb := query.Use(s.storage.DB).Album
 
 	ri, err := qb.WithContext(ctx).Where(qb.ID.Eq(r.Id)).Delete()
 	if ri.RowsAffected == 0 {
