@@ -5,6 +5,7 @@ import (
 	articles_pb "api-go/gen/go/proto/articles/v2"
 	"api-go/model"
 	"api-go/query"
+	"api-go/storage/postgres"
 	"context"
 	"errors"
 	"fmt"
@@ -25,13 +26,13 @@ var (
 	ErrNotAdmin      = status.Error(codes.PermissionDenied, "not admin")
 )
 
-type Service struct {
+type service struct {
 	articles_pb.ArticleServiceServer
-	db *gorm.DB
+	db *postgres.Postgres
 }
 
-func NewService(db *gorm.DB) articles_pb.ArticleServiceServer {
-	return Service{
+func NewService(db *postgres.Postgres) articles_pb.ArticleServiceServer {
+	return service{
 		db: db,
 	}
 }
@@ -72,17 +73,17 @@ func transform(a model.Article) *articles_pb.ArticleResponse {
 	}
 }
 
-func (s Service) Index(ctx context.Context, request *articles_pb.IndexRequest) (*articles_pb.IndexResponse, error) {
+func (s service) Index(ctx context.Context, request *articles_pb.IndexRequest) (*articles_pb.IndexResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
-	qb := query.Use(s.db).Article
+	qb := query.Use(s.db.DB).Article
 	q := qb.WithContext(ctx)
 
 	if user == nil || (user != nil && !user.IsAdmin()) {
-		q = q.Scopes(Published(query.Use(s.db)))
+		q = q.Scopes(Published(query.Use(s.db.DB)))
 	}
 
-	articles, err := q.Scopes(Paginate(query.Use(s.db), request.Next, request.Limit)).Find()
+	articles, err := q.Scopes(Paginate(query.Use(s.db.DB), request.Next, request.Limit)).Find()
 	if err != nil {
 		return &articles_pb.IndexResponse{}, fmt.Errorf("unable list articles: %w", err)
 	}
@@ -99,16 +100,16 @@ func (s Service) Index(ctx context.Context, request *articles_pb.IndexRequest) (
 	}, nil
 }
 
-func (s Service) GetBySlug(ctx context.Context, request *articles_pb.GetBySlugRequest) (*articles_pb.GetBySlugResponse, error) {
+func (s service) GetBySlug(ctx context.Context, request *articles_pb.GetBySlugRequest) (*articles_pb.GetBySlugResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
-	qb := query.Use(s.db).Article
+	qb := query.Use(s.db.DB).Article
 	q := qb.WithContext(ctx)
 
 	q.Where(qb.Slug.Eq(request.Slug))
 
 	if user == nil || (user != nil && !user.IsAdmin()) {
-		q = q.Scopes(Published(query.Use(s.db)))
+		q = q.Scopes(Published(query.Use(s.db.DB)))
 	}
 
 	a, err := q.First()
@@ -129,10 +130,10 @@ func (s Service) GetBySlug(ctx context.Context, request *articles_pb.GetBySlugRe
 	}, err
 }
 
-func (s Service) Create(ctx context.Context, request *articles_pb.CreateRequest) (*articles_pb.CreateResponse, error) {
+func (s service) Create(ctx context.Context, request *articles_pb.CreateRequest) (*articles_pb.CreateResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
-	qb := query.Use(s.db).Article
+	qb := query.Use(s.db.DB).Article
 	query := qb.WithContext(ctx)
 
 	if user == nil {
@@ -181,10 +182,10 @@ func (s Service) Create(ctx context.Context, request *articles_pb.CreateRequest)
 	}, err
 }
 
-func (s Service) Update(ctx context.Context, request *articles_pb.UpdateRequest) (*articles_pb.UpdateResponse, error) {
+func (s service) Update(ctx context.Context, request *articles_pb.UpdateRequest) (*articles_pb.UpdateResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
-	qb := query.Use(s.db).Article
+	qb := query.Use(s.db.DB).Article
 	query := qb.WithContext(ctx)
 
 	if user == nil {
@@ -230,11 +231,11 @@ func (s Service) Update(ctx context.Context, request *articles_pb.UpdateRequest)
 	}, nil
 }
 
-func (s Service) Delete(ctx context.Context, request *articles_pb.DeleteRequest) (*articles_pb.DeleteResponse, error) {
-	if err := s.db.Where("id = ?", request.Id).First(&model.Article{}).Error; err != nil {
+func (s service) Delete(ctx context.Context, request *articles_pb.DeleteRequest) (*articles_pb.DeleteResponse, error) {
+	if err := s.db.DB.Where("id = ?", request.Id).First(&model.Article{}).Error; err != nil {
 		return nil, ErrNotFound
 	}
 
-	err := s.db.Where("id = ?", request.Id).Delete(&model.Article{}).Error
+	err := s.db.DB.Where("id = ?", request.Id).Delete(&model.Article{}).Error
 	return nil, err
 }

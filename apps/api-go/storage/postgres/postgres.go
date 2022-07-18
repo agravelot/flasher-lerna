@@ -24,7 +24,7 @@ func (d Postgres) Close() error {
 	return db.Close()
 }
 
-func New(c *config.Configurations) (Postgres, error) {
+func New(c *config.Config) (Postgres, error) {
 
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer

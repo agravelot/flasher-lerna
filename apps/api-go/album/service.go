@@ -4,6 +4,7 @@ import (
 	"api-go/auth"
 	"api-go/model"
 	"api-go/query"
+	"api-go/storage/postgres"
 	"context"
 	"errors"
 	"fmt"
@@ -36,10 +37,10 @@ var (
 
 type service struct {
 	albums_pb.AlbumServiceServer
-	orm *gorm.DB
+	orm *postgres.Postgres
 }
 
-func NewService(orm *gorm.DB) albums_pb.AlbumServiceServer {
+func NewService(orm *postgres.Postgres) albums_pb.AlbumServiceServer {
 	return &service{
 		orm: orm,
 	}
@@ -67,11 +68,11 @@ func Paginate(q *query.Query, next *int32, pageSize *int32) func(db gen.Dao) gen
 func (s *service) Index(ctx context.Context, r *albums_pb.IndexRequest) (*albums_pb.IndexResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
-	qb := query.Use(s.orm).Album
+	qb := query.Use(s.orm.DB).Album
 	q := qb.WithContext(ctx).Order(qb.PublishedAt.Desc())
 
 	if user == nil || (user != nil && !user.IsAdmin()) {
-		q = q.Scopes(Published(query.Use(s.orm)))
+		q = q.Scopes(Published(query.Use(s.orm.DB)))
 	}
 
 	if r.Next != nil && *r.Next != 0 {
@@ -86,7 +87,7 @@ func (s *service) Index(ctx context.Context, r *albums_pb.IndexRequest) (*albums
 		q = q.Preload(qb.Medias)
 	}
 
-	albums, err := q.Scopes(Paginate(query.Use(s.orm), r.Next, r.Limit)).Find()
+	albums, err := q.Scopes(Paginate(query.Use(s.orm.DB), r.Next, r.Limit)).Find()
 	if err != nil {
 		return nil, fmt.Errorf("unable list albums : %d %w", r.Next, err)
 	}
@@ -108,7 +109,7 @@ func (s *service) GetBySlug(ctx context.Context, r *albums_pb.GetBySlugRequest) 
 	user := auth.GetUserClaims(ctx)
 	isAdmin := user != nil && user.IsAdmin()
 
-	qb := query.Use(s.orm).Album
+	qb := query.Use(s.orm.DB).Album
 
 	query := qb.WithContext(ctx)
 
@@ -173,7 +174,7 @@ func (s *service) Create(ctx context.Context, r *albums_pb.CreateRequest) (*albu
 		PublishedAt: publishedAt,
 	}
 
-	query := query.Use(s.orm).Album.WithContext(ctx)
+	query := query.Use(s.orm.DB).Album.WithContext(ctx)
 
 	err := query.WithContext(ctx).Create(&album)
 	// TODO Check duplicate
@@ -215,7 +216,7 @@ func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albu
 		return nil, err
 	}
 
-	qb := query.Use(s.orm).Album
+	qb := query.Use(s.orm.DB).Album
 
 	query := qb.WithContext(ctx)
 
@@ -273,7 +274,7 @@ func (s *service) Delete(ctx context.Context, r *albums_pb.DeleteRequest) (*albu
 		return nil, ErrNotAdmin
 	}
 
-	qb := query.Use(s.orm).Album
+	qb := query.Use(s.orm.DB).Album
 
 	ri, err := qb.WithContext(ctx).Where(qb.ID.Eq(r.Id)).Delete()
 	if ri.RowsAffected == 0 {

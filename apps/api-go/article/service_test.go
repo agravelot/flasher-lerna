@@ -91,7 +91,10 @@ func authAsAdmin(ctx context.Context) (context.Context, auth.Claims) {
 }
 
 func TestMain(m *testing.M) {
-	config := config.LoadDotEnv("../")
+	config, err := config.FromDotEnv("../.env")
+	if err != nil {
+		log.Fatal(fmt.Errorf("unable to load config: %w", err))
+	}
 	db2, err := postgres.New(config)
 	if err != nil {
 		log.Fatal(fmt.Errorf("unable to connect to the database: %w", err))
@@ -109,7 +112,7 @@ func TestMain(m *testing.M) {
 func TestShouldBeAbleToListEmpty(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	r, _ := s.Index(context.Background(), &articlesgrpc.IndexRequest{})
 
@@ -121,7 +124,7 @@ func TestShouldBeAbleToListEmpty(t *testing.T) {
 func TestShouldBeAbleToListWithOnePublishedArticle(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	n := time.Now()
 	a := model.Article{Name: "A good name", PublishedAt: &n}
@@ -143,7 +146,7 @@ func TestShouldBeAbleToListPublishedArticlesOnSecondPage(t *testing.T) {
 	var articles []model.Article
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	n := time.Now()
 	for i := 0; i < 10; i++ {
@@ -177,7 +180,7 @@ func TestShouldBeAbleToListPublishedArticlesOnSecondPageWithCustomPerPage(t *tes
 	n := time.Now()
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	for i := 0; i < 2; i++ {
 		tmp := model.Article{Name: "A good name " + strconv.Itoa(i), PublishedAt: &n}
@@ -207,7 +210,7 @@ func TestShouldBeAbleToListNonPublishedArticleAsAdmin(t *testing.T) {
 	ctx, _ := authAsAdmin(context.Background())
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	a := model.Article{Name: "A good name"}
 	err := tx.Create(&a).Error
@@ -226,7 +229,7 @@ func TestShouldBeAbleToListNonPublishedArticleAsAdmin(t *testing.T) {
 func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	n := time.Now()
 	a := model.Article{Name: "A good name", PublishedAt: &n}
@@ -246,7 +249,7 @@ func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 func TestShouldNotListSoftDeletedArticles(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	n := time.Now()
 
@@ -267,7 +270,7 @@ func TestShouldNotListSoftDeletedArticles(t *testing.T) {
 func TestShouldNotListNonPublishedArticles(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	a := model.Article{Name: "A good name"}
 	err := tx.Create(&a).Error
@@ -287,7 +290,7 @@ func TestShouldNotListNonPublishedArticles(t *testing.T) {
 func TestShouldBeAbleToGetPublishedArticleAsGuest(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	n := time.Now()
 	a := model.Article{Name: "A good name", Slug: "a-good-name", PublishedAt: &n}
@@ -305,7 +308,7 @@ func TestShouldBeAbleToGetPublishedArticleAsGuest(t *testing.T) {
 func TestShouldBeAbleToGetPublishedArticleAsUser(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	ctx, _ := authAsUser(context.Background())
 	n := time.Now()
@@ -324,7 +327,7 @@ func TestShouldBeAbleToGetPublishedArticleAsUser(t *testing.T) {
 func TestShouldNotBeAbleToGetNonPublishedArticleAsGuest(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	a := model.Article{Name: "A good name", Slug: "a-good-name"}
 	err := tx.Create(&a).Error
@@ -341,7 +344,7 @@ func TestShouldNotBeAbleToGetNonPublishedArticleAsGuest(t *testing.T) {
 func TestShouldNotBeAbleToGetNonPublishedArticleAsUser(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	ctx, _ := authAsUser(context.Background())
 	a := model.Article{Name: "A good name", Slug: "a-good-name"}
@@ -359,7 +362,7 @@ func TestShouldNotBeAbleToGetNonPublishedArticleAsUser(t *testing.T) {
 func TestShouldBeAbleToGetNonPublishedArticleAsAdmin(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	ctx, _ := authAsAdmin(context.Background())
 	a := model.Article{Name: "A good name", Slug: "a-good-name"}
@@ -379,7 +382,7 @@ func TestShouldBeAbleToGetNonPublishedArticleAsAdmin(t *testing.T) {
 func TestShouldBeAbleToCreateAnArticleAndGenerateSlugAsAdmin(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	a := articlesgrpc.CreateRequest{Name: "A good name", MetaDescription: "a meta decription"}
 	ctx, claims := authAsAdmin(context.Background())
@@ -399,7 +402,7 @@ func TestShouldBeAbleToCreateAnArticleAndGenerateSlugAsAdmin(t *testing.T) {
 func TestShouldBeAbleToCreateAnPublishedArticleAndGenerateSlugAsAdmin(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	n := time.Now()
 	a := articlesgrpc.CreateRequest{Name: "A good name", MetaDescription: "a meta decription", PublishedAt: &timestamppb.Timestamp{Seconds: n.Unix()}}
@@ -420,7 +423,7 @@ func TestShouldBeAbleToCreateAnPublishedArticleAndGenerateSlugAsAdmin(t *testing
 func TestShouldBeAbleToCreateAnArticleWithASpecifiedSlug(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	a := articlesgrpc.CreateRequest{Name: "A good name", Slug: "wtf-is-this-slug", MetaDescription: "a meta decription"}
 	ctx, claims := authAsAdmin(context.Background())
@@ -439,7 +442,7 @@ func TestShouldBeAbleToCreateAnArticleWithASpecifiedSlug(t *testing.T) {
 func TestShouldNotBeAbleToCreateAnArticleWithSameSlug(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	tx.Create(&a)
@@ -459,7 +462,7 @@ func TestShouldNotBeAbleToCreateAnArticleWithSameSlug(t *testing.T) {
 func TestShouldNotBeAbleToSaveArticleWithEmptyName(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	a := articlesgrpc.CreateRequest{Name: ""}
 	ctx, _ := authAsAdmin(context.Background())
@@ -477,7 +480,7 @@ func TestShouldNotBeAbleToSaveArticleWithEmptyName(t *testing.T) {
 func TestShouldNotBeAbleToSaveArticleWithTooLongName(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	a := articlesgrpc.CreateRequest{Name: "a very too long big enormous title that will never fit in any screen..."}
 	ctx, _ := authAsAdmin(context.Background())
@@ -495,7 +498,7 @@ func TestShouldNotBeAbleToSaveArticleWithTooLongName(t *testing.T) {
 func TestShouldNotBeAbleToSaveArticleWithEmptyMetaDescription(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	a := articlesgrpc.CreateRequest{Name: "a good name", MetaDescription: ""}
 	ctx, _ := authAsAdmin(context.Background())
@@ -513,7 +516,7 @@ func TestShouldNotBeAbleToSaveArticleWithEmptyMetaDescription(t *testing.T) {
 func TestShouldNotBeAbleToSaveArticleWithTooLongMetaDescription(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	a := articlesgrpc.CreateRequest{Name: "A good name", MetaDescription: "a very too long big enormous title that will never fit in any screen...a very too long big enormous title that will never fit in any screen...a very too long big enormous title that will never fit in any screen..."}
 	ctx, _ := authAsAdmin(context.Background())
@@ -531,7 +534,7 @@ func TestShouldNotBeAbleToSaveArticleWithTooLongMetaDescription(t *testing.T) {
 func TestShouldNotBeAbleToCreateAsUser(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	a := articlesgrpc.CreateRequest{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	ctx, _ := authAsUser(context.Background())
@@ -548,7 +551,7 @@ func TestShouldNotBeAbleToCreateAsUser(t *testing.T) {
 func TestShouldNotBeAbleToCreateAsGuest(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	a := articlesgrpc.CreateRequest{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 
@@ -566,7 +569,7 @@ func TestShouldNotBeAbleToCreateAsGuest(t *testing.T) {
 func TestShouldBeAbleToUpdateArticleNameAsAdmin(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	ctx, _ := authAsAdmin(context.Background())
 
@@ -590,7 +593,7 @@ func TestShouldBeAbleToUpdateArticleNameAsAdmin(t *testing.T) {
 func TestShouldNotBeAbleToUpdateArticleTooShortNameAsAdmin(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	tx.Create(&a)
@@ -607,7 +610,7 @@ func TestShouldNotBeAbleToUpdateArticleTooShortNameAsAdmin(t *testing.T) {
 func TestShouldNotBeAbleToUpdateArticleAsUser(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	ctx, _ := authAsUser(context.Background())
@@ -626,7 +629,7 @@ func TestShouldNotBeAbleToUpdateArticleAsUser(t *testing.T) {
 func TestShouldNotBeAbleToUpdateArticleAsGuest(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	tx.Create(&a)
@@ -646,7 +649,7 @@ func TestShouldNotBeAbleToUpdateArticleAsGuest(t *testing.T) {
 func TestShouldBeAbleToDeleteArticleAndIsSoftDeleted(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	tx.Create(&a)
@@ -664,7 +667,7 @@ func TestShouldBeAbleToDeleteArticleAndIsSoftDeleted(t *testing.T) {
 func TestShouldNotBeAbleToDeleteAnNonExistantArticle(t *testing.T) {
 	tx := db.DB.Begin()
 	defer tx.Rollback()
-	s := NewService(tx)
+	s := NewService(&db)
 
 	_, err := s.Delete(context.Background(), &articlesgrpc.DeleteRequest{Id: string("123123123")})
 

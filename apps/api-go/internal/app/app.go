@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"strings"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
@@ -28,7 +27,7 @@ import (
 )
 
 // Run creates objects via constructors.
-func Run(config *config.Configurations) error {
+func Run(config *config.Config) error {
 
 	// var logger log.Logger
 	// {
@@ -45,13 +44,13 @@ func Run(config *config.Configurations) error {
 
 	var sAlbum albumspb.AlbumServiceServer
 	{
-		sAlbum = album.NewService(orm.DB)
+		sAlbum = album.NewService(&orm)
 		// sAlbum = album.LoggingMiddleware(logger)(sAlbum)
 	}
 
 	var sArticle articlespb.ArticleServiceServer
 	{
-		sArticle = article.NewService(orm.DB)
+		sArticle = article.NewService(&orm)
 		// sArticle = article.LoggingMiddleware(logger)(sArticle)
 	}
 
@@ -70,7 +69,7 @@ func Run(config *config.Configurations) error {
 		grpc.StreamInterceptor(grpc_auth.StreamServerInterceptor(auth.AuthFunc)),
 		grpc.UnaryInterceptor(grpc_auth.UnaryServerInterceptor(auth.AuthFunc)),
 	)
-	// Attach the Greeter service to the server
+	// Attach the services to the server
 	articlespb.RegisterArticleServiceServer(grpcServer, sArticle)
 	albumspb.RegisterAlbumServiceServer(grpcServer, sAlbum)
 	// Serve gRPC server
@@ -103,20 +102,14 @@ func Run(config *config.Configurations) error {
 		return fmt.Errorf("failed to register albuns gateway: %w", err)
 	}
 
-	oa, err := openapi.New()
+	err = openapi.New("/", gwmux)
 	if err != nil {
 		return fmt.Errorf("unable to init openapi for application: %w", err)
 	}
 
 	gwServer := &http.Server{
-		Addr: fmt.Sprintf("0.0.0.0:%d", config.AppHttpPort),
-		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if strings.HasPrefix(r.URL.Path, "/api") {
-				gwmux.ServeHTTP(w, r)
-				return
-			}
-			oa.ServeHTTP(w, r)
-		}),
+		Addr:    fmt.Sprintf("0.0.0.0:%d", config.AppHttpPort),
+		Handler: gwmux,
 	}
 
 	go func() {
@@ -135,6 +128,11 @@ func Run(config *config.Configurations) error {
 
 		grpcServer.GracefulStop()
 		log.Println("grpc server stopped")
+
+		err = lis.Close()
+		if err != nil {
+			log.Printf("unable to close socket: %v", err)
+		}
 	}()
 
 	log.Printf("Serving gRPC-Gateway on http://0.0.0.0:%d | http://127.0.0.1:%d\n", config.AppHttpPort, config.AppHttpPort)
