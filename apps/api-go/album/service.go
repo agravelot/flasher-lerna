@@ -258,9 +258,9 @@ func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albu
 	}, nil
 }
 
-func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumUpdateRequest) (AlbumResponse, error) {
-	return AlbumResponse{}, nil
-}
+// func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumUpdateRequest) (AlbumResponse, error) {
+// 	return AlbumResponse{}, nil
+// }
 
 func (s *service) Delete(ctx context.Context, r *albums_pb.DeleteRequest) (*albums_pb.DeleteResponse, error) {
 
