@@ -10,13 +10,16 @@ on:
     tags:
       - "v*"
   pull_request:
+    paths:
+      - "apps/api-go/**"
+      - ".github/workflows/api-go.yml"
 
 jobs:
   docker:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        go-version: [1.17.x]
+        go-version: [1.18.x]
         os: [ubuntu-20.04]
     steps:
       - name: Checkout
@@ -130,7 +133,8 @@ jobs:
           DB_PASSWORD: flasher
           DB_NAME: flasher
           DB_PORT: 5432
-          PORT: 8080
+          APP_HTTP_PORT: 3000
+          APP_GRPC_PORT: 3100
           DB_SSL_MODE: disable
       - name: Upload test log
         uses: actions/upload-artifact@v2

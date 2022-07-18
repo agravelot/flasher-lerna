@@ -3,72 +3,32 @@ package app
 import (
 	"context"
 	"fmt"
-	"io/fs"
 	"log"
-	"mime"
 	"net"
 	"net/http"
 	"os"
-	"strings"
+	"os/signal"
+	"syscall"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/grpclog"
-	"google.golang.org/grpc/status"
 
-	album "api-go/albums"
-	"api-go/article"
-	"api-go/auth"
 	"api-go/config"
-	"api-go/database"
+	"api-go/domain/album"
+	"api-go/domain/article"
 	albumspb "api-go/gen/go/proto/albums/v2"
 	articlespb "api-go/gen/go/proto/articles/v2"
-	"api-go/third_party"
+	"api-go/pkg/auth"
+	"api-go/pkg/openapi"
+	"api-go/storage/postgres"
 
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
-	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
 )
 
-// getOpenAPIHandler serves an OpenAPI UI.
-// Adapted from https://github.com/philips/grpc-gateway-example/blob/a269bcb5931ca92be0ceae6130ac27ae89582ecc/cmd/serve.go#L63
-func getOpenAPIHandler() http.Handler {
-	mime.AddExtensionType(".svg", "image/svg+xml")
-	// Use subdirectory in embedded files
-	subFS, err := fs.Sub(third_party.OpenAPI, "OpenAPI")
-	if err != nil {
-		panic("couldn't create sub filesystem: " + err.Error())
-	}
-	return http.FileServer(http.FS(subFS))
-}
-
-// TODO Extract to a separate file
-// authFunc is used by a middleware to authenticate requests
-func authFunc(ctx context.Context) (context.Context, error) {
-	token, err := grpc_auth.AuthFromMD(ctx, "bearer")
-	if err != nil {
-		if status.Code(err) == codes.Unauthenticated {
-			return ctx, nil
-		}
-		return ctx, err
-	}
-
-	parsedToken, err := auth.ParseToken(token)
-	if err != nil {
-		return ctx, status.Errorf(codes.Unauthenticated, "invalid auth token: %v", err)
-	}
-
-	grpc_ctxtags.Extract(ctx).Set("user", parsedToken)
-
-	// WARNING: in production define your own type to avoid context collisions
-	newCtx := context.WithValue(ctx, "user", parsedToken)
-
-	return newCtx, nil
-}
-
 // Run creates objects via constructors.
-func Run(config *config.Configurations) error {
+func Run(config *config.Config) error {
 
 	// var logger log.Logger
 	// {
@@ -77,26 +37,21 @@ func Run(config *config.Configurations) error {
 	// 	logger = log.With(logger, "caller", log.DefaultCaller)
 	// }
 
-	orm, err := database.Init(config)
+	orm, err := postgres.New(config)
 	if err != nil {
 		return fmt.Errorf("could not connect to database: %w", err)
 	}
-
-	db, err := orm.DB()
-	if err != nil {
-		return fmt.Errorf("could not get DB: %w", err)
-	}
-	defer db.Close()
+	defer orm.Close()
 
 	var sAlbum albumspb.AlbumServiceServer
 	{
-		sAlbum = album.NewService(orm)
+		sAlbum = album.NewService(&orm)
 		// sAlbum = album.LoggingMiddleware(logger)(sAlbum)
 	}
 
 	var sArticle articlespb.ArticleServiceServer
 	{
-		sArticle = article.NewService(orm)
+		sArticle = article.NewService(&orm)
 		// sArticle = article.LoggingMiddleware(logger)(sArticle)
 	}
 
@@ -111,17 +66,17 @@ func Run(config *config.Configurations) error {
 	}
 
 	// Create a gRPC server object
-	s := grpc.NewServer(
-		grpc.StreamInterceptor(grpc_auth.StreamServerInterceptor(authFunc)),
-		grpc.UnaryInterceptor(grpc_auth.UnaryServerInterceptor(authFunc)),
+	grpcServer := grpc.NewServer(
+		grpc.StreamInterceptor(grpc_auth.StreamServerInterceptor(auth.AuthFunc)),
+		grpc.UnaryInterceptor(grpc_auth.UnaryServerInterceptor(auth.AuthFunc)),
 	)
-	// Attach the Greeter service to the server
-	articlespb.RegisterArticleServiceServer(s, sArticle)
-	albumspb.RegisterAlbumServiceServer(s, sAlbum)
+	// Attach the services to the server
+	articlespb.RegisterArticleServiceServer(grpcServer, sArticle)
+	albumspb.RegisterAlbumServiceServer(grpcServer, sAlbum)
 	// Serve gRPC server
-	log.Printf("Serving gRPC on 0.0.0.0:%d", config.AppGrpcPort)
 	go func() {
-		log.Fatalln(s.Serve(lis))
+		log.Printf("Serving gRPC on 0.0.0.0:%d", config.AppGrpcPort)
+		log.Fatalln(grpcServer.Serve(lis))
 	}()
 
 	// Create a client connection to the gRPC server we just started
@@ -140,29 +95,52 @@ func Run(config *config.Configurations) error {
 	gwmux := runtime.NewServeMux()
 	err = articlespb.RegisterArticleServiceHandler(context.Background(), gwmux, conn)
 	if err != nil {
-		return fmt.Errorf("Failed to register article gateway: %w", err)
+		return fmt.Errorf("failed to register article gateway: %w", err)
 	}
 
 	err = albumspb.RegisterAlbumServiceHandler(context.Background(), gwmux, conn)
 	if err != nil {
-		return fmt.Errorf("Failed to register albuns gateway: %w", err)
+		return fmt.Errorf("failed to register albuns gateway: %w", err)
 	}
 
-	oa := getOpenAPIHandler()
+	err = openapi.New("/", gwmux)
+	if err != nil {
+		return fmt.Errorf("unable to init openapi for application: %w", err)
+	}
 
 	gwServer := &http.Server{
-		Addr: fmt.Sprintf("0.0.0.0:%d", config.AppHttpPort),
-		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if strings.HasPrefix(r.URL.Path, "/api") {
-				gwmux.ServeHTTP(w, r)
-				return
-			}
-			oa.ServeHTTP(w, r)
-		}),
+		Addr:    fmt.Sprintf("0.0.0.0:%d", config.AppHttpPort),
+		Handler: gwmux,
 	}
 
+	go func() {
+		sigquit := make(chan os.Signal, 1)
+		signal.Notify(sigquit, os.Interrupt, syscall.SIGTERM)
+
+		sig := <-sigquit
+		log.Printf("caught sig: %+v", sig)
+		log.Println("gracefully shuting down servers...")
+
+		err := gwServer.Shutdown(context.Background())
+		if err != nil {
+			log.Printf("unable to shut down http sever: %v", err)
+		}
+		log.Println("http server stopped")
+
+		grpcServer.GracefulStop()
+		log.Println("grpc server stopped")
+
+		err = lis.Close()
+		if err != nil {
+			log.Printf("unable to close socket: %v", err)
+		}
+	}()
+
 	log.Printf("Serving gRPC-Gateway on http://0.0.0.0:%d | http://127.0.0.1:%d\n", config.AppHttpPort, config.AppHttpPort)
-	log.Fatalln(gwServer.ListenAndServe())
+	err = gwServer.ListenAndServe()
+	if err != nil {
+		log.Fatalln(gwServer.ListenAndServe())
+	}
 
 	return nil
 }

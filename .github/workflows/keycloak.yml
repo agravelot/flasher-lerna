@@ -10,6 +10,9 @@ on:
     tags:
       - "v*"
   pull_request:
+    paths:
+      - "apps/keycloak/**"
+      - ".github/workflows/keycloak.yml"
 
 env:
   IMAGE_NAME: keycloak

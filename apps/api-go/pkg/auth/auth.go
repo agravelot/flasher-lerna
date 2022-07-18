@@ -4,9 +4,11 @@ import (
 	"context"
 
 	jwtgo "github.com/dgrijalva/jwt-go"
+	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
+
+	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
 )
 
 func (c Claims) IsAdmin() bool {
@@ -59,7 +61,7 @@ type UserClaimsKeyType string
 const UserClaimsKey UserClaimsKeyType = "user"
 
 func GetUserClaims(ctx context.Context) *Claims {
-	claims, ok := ctx.Value("user").(*Claims)
+	claims, ok := ctx.Value(UserClaimsKey).(*Claims)
 
 	if !ok {
 		return nil
@@ -68,42 +70,7 @@ func GetUserClaims(ctx context.Context) *Claims {
 	return claims
 }
 
-func extractHeader(ctx context.Context, header string) (*string, error) {
-	md, ok := metadata.FromIncomingContext(ctx)
-	var h string
-	if !ok {
-		return &h, status.Error(codes.Unauthenticated, "no headers in request")
-	}
-
-	authHeaders := md.Get(header)
-
-	if len(authHeaders) != 1 {
-		return &h, status.Error(codes.Unauthenticated, "more than 1 header in request")
-	}
-
-	return &authHeaders[0], nil
-}
-
-// func GetUserClaims(ctx context.Context) (*Claims, error) {
-// 	// h, err := extractHeader(ctx, "authorization")
-// 	md, ok := metadata.FromIncomingContext(ctx)
-// 	if !ok {
-// 		return nil, nil
-// 	}
-// 	authHeaders := md.Get("authorization")
-
-// 	if len(authHeaders) != 1 {
-// 		return nil, nil
-// 	}
-
-// 	return ParseHeader(authHeaders[0])
-// }
-
-func ParseHeader(bearer string) (*Claims, error) {
-	return ParseToken(bearer[7:])
-}
-
-func ParseToken(tokenString string) (*Claims, error) {
+func parseToken(tokenString string) (*Claims, error) {
 	parser := new(jwtgo.Parser)
 	token, _, err := parser.ParseUnverified(tokenString, &Claims{})
 	if err != nil {
@@ -113,6 +80,28 @@ func ParseToken(tokenString string) (*Claims, error) {
 	claims := token.Claims.(*Claims)
 
 	return claims, nil
+}
+
+// AuthFunc is used by a middleware to authenticate requests
+func AuthFunc(ctx context.Context) (context.Context, error) {
+	token, err := grpc_auth.AuthFromMD(ctx, "bearer")
+	if err != nil {
+		if status.Code(err) == codes.Unauthenticated {
+			return ctx, nil
+		}
+		return ctx, err
+	}
+
+	parsedToken, err := parseToken(token)
+	if err != nil {
+		return ctx, status.Errorf(codes.Unauthenticated, "invalid auth token: %v", err)
+	}
+
+	grpc_ctxtags.Extract(ctx).Set("user", parsedToken)
+
+	newCtx := context.WithValue(ctx, UserClaimsKey, parsedToken)
+
+	return newCtx, nil
 }
 
 // ClaimsToContext Inject user claims into context

@@ -13,6 +13,12 @@ on:
     tags:
       - "v*"
   pull_request:
+    paths:
+      - "apps/frontend/**"
+      - "apps/common/**"
+      - "libs/**"
+      - "yarn.lock"
+      - ".github/workflows/frontend.yml"
 
 jobs:
   build:

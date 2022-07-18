@@ -8,7 +8,7 @@ import (
 	"github.com/kelseyhightower/envconfig"
 )
 
-type Configurations struct {
+type Config struct {
 	// Debug      bool   `envconfig:"DEBUG"`
 	AppHttpPort int    `envconfig:"APP_HTTP_PORT" required:"true"`
 	AppGrpcPort int    `envconfig:"APP_GRPC_PORT" required:"true"`
@@ -20,18 +20,21 @@ type Configurations struct {
 	DbSslMode   string `envconfig:"DB_SSL_MODE" required:"true"`
 }
 
-func LoadDotEnv(path string) *Configurations {
-
-	if err := godotenv.Load(path + ".env"); err != nil {
+func FromDotEnv(path string) (*Config, error) {
+	err := godotenv.Load(path)
+	if err != nil {
 		log.Println(err)
 	}
 
-	var c Configurations
-	err := envconfig.Process("", &c)
+	return FromEnv()
+}
 
+func FromEnv() (*Config, error) {
+	var cfg Config
+	err := envconfig.Process("", &cfg)
 	if err != nil {
-		panic(fmt.Errorf("failed to process config: %w", err))
+		return &cfg, fmt.Errorf("failed to process config: %w", err)
 	}
 
-	return &c
+	return &cfg, nil
 }

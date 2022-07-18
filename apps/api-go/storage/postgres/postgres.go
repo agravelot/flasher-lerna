@@ -1,4 +1,4 @@
-package database
+package postgres
 
 import (
 	"api-go/config"
@@ -12,10 +12,29 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-var db *gorm.DB
-var err error
+type Postgres struct {
+	DB *gorm.DB
+}
 
-func Init(c *config.Configurations) (*gorm.DB, error) {
+func (d Postgres) Close() error {
+	db, err := d.DB.DB()
+	if err != nil {
+		return err
+	}
+	return db.Close()
+}
+
+func (d Postgres) Begin() Postgres {
+	d.DB = d.DB.Begin()
+	return d
+}
+
+func (d Postgres) Rollback() Postgres {
+	d.DB = d.DB.Rollback()
+	return d
+}
+
+func New(c *config.Config) (Postgres, error) {
 
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
@@ -33,15 +52,10 @@ func Init(c *config.Configurations) (*gorm.DB, error) {
 		config.Logger = newLogger
 	}
 
-	db, err = gorm.Open(postgres.Open(dsn), config)
+	db, err := gorm.Open(postgres.Open(dsn), config)
 	if err != nil {
-		return db, fmt.Errorf("unable to connect to the database: %w", err)
+		return Postgres{}, fmt.Errorf("unable to connect to the database: %w", err)
 	}
 
-	return db, nil
-}
-
-// DbManager Return Gorm DB instance
-func DbManager() *gorm.DB {
-	return db
+	return Postgres{db}, nil
 }

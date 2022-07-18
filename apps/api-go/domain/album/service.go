@@ -1,32 +1,25 @@
 package album
 
 import (
-	"api-go/auth"
 	"api-go/model"
+	"api-go/pkg/auth"
 	"api-go/query"
+	"api-go/storage/postgres"
 	"context"
 	"errors"
 	"fmt"
-	"reflect"
 	"time"
 
-	albums_pb "api-go/gen/go/proto/albums/v2"
+	albumspb "api-go/gen/go/proto/albums/v2"
+	categoriespb "api-go/gen/go/proto/categories/v2"
+	mediaspb "api-go/gen/go/proto/medias/v2"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gen"
 	"gorm.io/gorm"
 )
-
-// // Service is a simple CRUD interface for user albums.
-// type Service interface {
-// 	Index(ctx context.Context, params albums_pb.IndexRequest) (albums_pb.IndexResponse, error)
-// 	GetBySlug(ctx context.Context, slug string) (AlbumResponse, error)
-// 	Create(ctx context.Context, p AlbumRequest) (AlbumResponse, error)
-// 	Update(ctx context.Context, slug string, p AlbumRequest) (AlbumResponse, error)
-// 	// PatchAlbum(ctx context.Context, slug string, p AlbumUpdateRequest) (AlbumResponse, error)
-// 	Delete(ctx context.Context, slug string) error
-// }
 
 var (
 	ErrAlreadyExists = status.Error(codes.AlreadyExists, "already exists")
@@ -36,23 +29,23 @@ var (
 )
 
 type service struct {
-	albums_pb.AlbumServiceServer
-	orm *gorm.DB
+	albumspb.AlbumServiceServer
+	storage *postgres.Postgres
 }
 
-func NewService(orm *gorm.DB) albums_pb.AlbumServiceServer {
+func NewService(orm *postgres.Postgres) albumspb.AlbumServiceServer {
 	return &service{
-		orm: orm,
+		storage: orm,
 	}
 }
 
-func Published(q *query.Query) func(db gen.Dao) gen.Dao {
+func published(q *query.Query) func(db gen.Dao) gen.Dao {
 	return func(db gen.Dao) gen.Dao {
 		return db.Where(q.Album.Private.Is(false), q.Album.PublishedAt.Lte(time.Now()))
 	}
 }
 
-func Paginate(q *query.Query, next *int32, pageSize *int32) func(db gen.Dao) gen.Dao {
+func paginate(q *query.Query, next *int32, pageSize *int32) func(db gen.Dao) gen.Dao {
 	return func(db gen.Dao) gen.Dao {
 		if next != nil && *next != 0 {
 			db = db.Where(q.Album.ID.Gt(*next))
@@ -65,14 +58,14 @@ func Paginate(q *query.Query, next *int32, pageSize *int32) func(db gen.Dao) gen
 	}
 }
 
-func (s *service) Index(ctx context.Context, r *albums_pb.IndexRequest) (*albums_pb.IndexResponse, error) {
+func (s *service) Index(ctx context.Context, r *albumspb.IndexRequest) (*albumspb.IndexResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
-	qb := query.Use(s.orm).Album
+	qb := query.Use(s.storage.DB).Album
 	q := qb.WithContext(ctx).Order(qb.PublishedAt.Desc())
 
 	if user == nil || (user != nil && !user.IsAdmin()) {
-		q = q.Scopes(Published(query.Use(s.orm)))
+		q = q.Scopes(published(query.Use(s.storage.DB)))
 	}
 
 	if r.Next != nil && *r.Next != 0 {
@@ -87,17 +80,17 @@ func (s *service) Index(ctx context.Context, r *albums_pb.IndexRequest) (*albums
 		q = q.Preload(qb.Medias)
 	}
 
-	albums, err := q.Scopes(Paginate(query.Use(s.orm), r.Next, r.Limit)).Find()
+	albums, err := q.Scopes(paginate(query.Use(s.storage.DB), r.Next, r.Limit)).Find()
 	if err != nil {
 		return nil, fmt.Errorf("unable list albums : %d %w", r.Next, err)
 	}
 
-	data := make([]*albums_pb.AlbumResponse, len(albums))
-	for i, a := range albums {
-		data[i] = transformAlbumFromDB(*a)
+	data := make([]*albumspb.AlbumResponse, 0, len(albums))
+	for _, a := range albums {
+		data = append(data, transformAlbumFromDB(*a))
 	}
 
-	return &albums_pb.IndexResponse{
+	return &albumspb.IndexResponse{
 		Data: data,
 		// Meta: api.Meta{Total: total, Limit: params.Limit},
 	}, nil
@@ -105,11 +98,11 @@ func (s *service) Index(ctx context.Context, r *albums_pb.IndexRequest) (*albums
 
 // TODO bool include relation
 
-func (s *service) GetBySlug(ctx context.Context, r *albums_pb.GetBySlugRequest) (*albums_pb.GetBySlugResponse, error) {
+func (s *service) GetBySlug(ctx context.Context, r *albumspb.GetBySlugRequest) (*albumspb.GetBySlugResponse, error) {
 	user := auth.GetUserClaims(ctx)
 	isAdmin := user != nil && user.IsAdmin()
 
-	qb := query.Use(s.orm).Album
+	qb := query.Use(s.storage.DB).Album
 
 	query := qb.WithContext(ctx)
 
@@ -132,12 +125,12 @@ func (s *service) GetBySlug(ctx context.Context, r *albums_pb.GetBySlugRequest) 
 	}
 
 	// TODO add medias and categes
-	return &albums_pb.GetBySlugResponse{
+	return &albumspb.GetBySlugResponse{
 		Album: transformAlbumFromDB(*a),
 	}, err
 }
 
-func (s *service) Create(ctx context.Context, r *albums_pb.CreateRequest) (*albums_pb.CreateResponse, error) {
+func (s *service) Create(ctx context.Context, r *albumspb.CreateRequest) (*albumspb.CreateResponse, error) {
 	// pretty.Log(r)
 
 	user := auth.GetUserClaims(ctx)
@@ -174,7 +167,7 @@ func (s *service) Create(ctx context.Context, r *albums_pb.CreateRequest) (*albu
 		PublishedAt: publishedAt,
 	}
 
-	query := query.Use(s.orm).Album.WithContext(ctx)
+	query := query.Use(s.storage.DB).Album.WithContext(ctx)
 
 	err := query.WithContext(ctx).Create(&album)
 	// TODO Check duplicate
@@ -184,7 +177,7 @@ func (s *service) Create(ctx context.Context, r *albums_pb.CreateRequest) (*albu
 
 	data := transformAlbumFromDB(album)
 
-	return &albums_pb.CreateResponse{
+	return &albumspb.CreateResponse{
 		Id:                     data.Id,
 		Slug:                   data.Slug,
 		Title:                  data.Title,
@@ -200,7 +193,7 @@ func (s *service) Create(ctx context.Context, r *albums_pb.CreateRequest) (*albu
 	}, nil
 }
 
-func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albums_pb.UpdateResponse, error) {
+func (s *service) Update(ctx context.Context, r *albumspb.UpdateRequest) (*albumspb.UpdateResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
 	if user == nil {
@@ -216,7 +209,7 @@ func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albu
 		return nil, err
 	}
 
-	qb := query.Use(s.orm).Album
+	qb := query.Use(s.storage.DB).Album
 
 	query := qb.WithContext(ctx)
 
@@ -242,7 +235,7 @@ func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albu
 
 	data := transformAlbumFromDB(*a)
 
-	return &albums_pb.UpdateResponse{
+	return &albumspb.UpdateResponse{
 		Id:                     data.Id,
 		Slug:                   data.Slug,
 		Title:                  data.Title,
@@ -258,11 +251,11 @@ func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albu
 	}, nil
 }
 
-func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumUpdateRequest) (AlbumResponse, error) {
-	return AlbumResponse{}, nil
-}
+// func (s *service) PatchAlbum(ctx context.Context, slug string, a AlbumUpdateRequest) (AlbumResponse, error) {
+// 	return AlbumResponse{}, nil
+// }
 
-func (s *service) Delete(ctx context.Context, r *albums_pb.DeleteRequest) (*albums_pb.DeleteResponse, error) {
+func (s *service) Delete(ctx context.Context, r *albumspb.DeleteRequest) (*albumspb.DeleteResponse, error) {
 
 	user := auth.GetUserClaims(ctx)
 	if user == nil {
@@ -274,7 +267,7 @@ func (s *service) Delete(ctx context.Context, r *albums_pb.DeleteRequest) (*albu
 		return nil, ErrNotAdmin
 	}
 
-	qb := query.Use(s.orm).Album
+	qb := query.Use(s.storage.DB).Album
 
 	ri, err := qb.WithContext(ctx).Where(qb.ID.Eq(r.Id)).Delete()
 	if ri.RowsAffected == 0 {
@@ -287,29 +280,77 @@ func (s *service) Delete(ctx context.Context, r *albums_pb.DeleteRequest) (*albu
 	return nil, err
 }
 
-func structToMap[T any](item T) map[string]interface{} {
-
-	res := map[string]interface{}{}
-	// if item == nil {
-	// 	return res
-	// }
-	v := reflect.TypeOf(item)
-	reflectValue := reflect.ValueOf(item)
-	reflectValue = reflect.Indirect(reflectValue)
-
-	if v.Kind() == reflect.Ptr {
-		v = v.Elem()
+func transformMediaFromDB(media model.Medium) *mediaspb.Media {
+	return &mediaspb.Media{
+		Id:        media.ID,
+		Name:      media.Name,
+		FileName:  media.FileName,
+		MimeType:  media.MimeType,
+		Size:      media.Size,
+		CreatedAt: &timestamppb.Timestamp{Seconds: int64(media.CreatedAt.Second())},
+		UpdatedAt: &timestamppb.Timestamp{Seconds: int64(media.UpdatedAt.Second())},
+		CustomProperties: &mediaspb.Media_CustomProperties{
+			Height: media.CustomProperties.Height,
+			Width:  media.CustomProperties.Width,
+		},
+		ResponsiveImages: &mediaspb.Media_ResponsiveImages{
+			Responsive: &mediaspb.Media_Responsive{
+				Urls:      media.ResponsiveImages.Responsive.Urls,
+				Base64Svg: media.ResponsiveImages.Responsive.Base64Svg,
+			},
+		},
 	}
-	for i := 0; i < v.NumField(); i++ {
-		tag := v.Field(i).Tag.Get("json")
-		field := reflectValue.Field(i).Interface()
-		if tag != "" && tag != "-" {
-			if v.Field(i).Type.Kind() == reflect.Struct {
-				res[tag] = structToMap(field)
-			} else {
-				res[tag] = field
-			}
+}
+
+func transformCategoryFromDB(c model.Category) *categoriespb.Category {
+	return &categoriespb.Category{
+		Id: c.ID,
+	}
+}
+
+func transformAlbumFromDB(a model.Album) *albumspb.AlbumResponse {
+	var mediasResponse []*mediaspb.Media
+	if a.Medias != nil {
+		var tmp []*mediaspb.Media
+		for _, m := range a.Medias {
+			tmp = append(tmp, transformMediaFromDB(m))
 		}
+		mediasResponse = tmp
 	}
-	return res
+
+	var categoriesResponse []*categoriespb.Category
+	if a.Categories != nil {
+		var tmp []*categoriespb.Category
+		for _, c := range a.Categories {
+			tmp = append(tmp, transformCategoryFromDB(c))
+		}
+		categoriesResponse = tmp
+	}
+
+	var publishedAt *timestamppb.Timestamp
+	if a.PublishedAt != nil {
+		publishedAt = &timestamppb.Timestamp{Seconds: int64(a.PublishedAt.Second())}
+	}
+
+	var body string
+	if a.Body != nil {
+		body = *a.Body
+	}
+
+	return &albumspb.AlbumResponse{
+		Id:                     a.ID,
+		Slug:                   a.Slug,
+		Title:                  a.Title,
+		MetaDescription:        a.MetaDescription,
+		Content:                body,
+		PublishedAt:            publishedAt,
+		Private:                a.Private,
+		AuthorId:               *a.SsoID,
+		UserId:                 a.UserID,
+		CreatedAt:              &timestamppb.Timestamp{Seconds: int64(a.CreatedAt.Second())},
+		UpdatedAt:              &timestamppb.Timestamp{Seconds: int64(a.UpdatedAt.Second())},
+		NotifyUsersOnPublished: a.NotifyUsersOnPublished,
+		Categories:             categoriesResponse,
+		Medias:                 mediasResponse,
+	}
 }
