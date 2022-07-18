@@ -1,8 +1,8 @@
 package album
 
 import (
-	"api-go/auth"
 	"api-go/model"
+	"api-go/pkg/auth"
 	"api-go/query"
 	"api-go/storage/postgres"
 	"context"
@@ -10,10 +10,13 @@ import (
 	"fmt"
 	"time"
 
-	albums_pb "api-go/gen/go/proto/albums/v2"
+	albumspb "api-go/gen/go/proto/albums/v2"
+	categoriespb "api-go/gen/go/proto/categories/v2"
+	mediaspb "api-go/gen/go/proto/medias/v2"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gen"
 	"gorm.io/gorm"
 )
@@ -26,11 +29,11 @@ var (
 )
 
 type service struct {
-	albums_pb.AlbumServiceServer
+	albumspb.AlbumServiceServer
 	storage *postgres.Postgres
 }
 
-func NewService(orm *postgres.Postgres) albums_pb.AlbumServiceServer {
+func NewService(orm *postgres.Postgres) albumspb.AlbumServiceServer {
 	return &service{
 		storage: orm,
 	}
@@ -55,7 +58,7 @@ func paginate(q *query.Query, next *int32, pageSize *int32) func(db gen.Dao) gen
 	}
 }
 
-func (s *service) Index(ctx context.Context, r *albums_pb.IndexRequest) (*albums_pb.IndexResponse, error) {
+func (s *service) Index(ctx context.Context, r *albumspb.IndexRequest) (*albumspb.IndexResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
 	qb := query.Use(s.storage.DB).Album
@@ -82,12 +85,12 @@ func (s *service) Index(ctx context.Context, r *albums_pb.IndexRequest) (*albums
 		return nil, fmt.Errorf("unable list albums : %d %w", r.Next, err)
 	}
 
-	data := make([]*albums_pb.AlbumResponse, 0, len(albums))
+	data := make([]*albumspb.AlbumResponse, 0, len(albums))
 	for _, a := range albums {
 		data = append(data, transformAlbumFromDB(*a))
 	}
 
-	return &albums_pb.IndexResponse{
+	return &albumspb.IndexResponse{
 		Data: data,
 		// Meta: api.Meta{Total: total, Limit: params.Limit},
 	}, nil
@@ -95,7 +98,7 @@ func (s *service) Index(ctx context.Context, r *albums_pb.IndexRequest) (*albums
 
 // TODO bool include relation
 
-func (s *service) GetBySlug(ctx context.Context, r *albums_pb.GetBySlugRequest) (*albums_pb.GetBySlugResponse, error) {
+func (s *service) GetBySlug(ctx context.Context, r *albumspb.GetBySlugRequest) (*albumspb.GetBySlugResponse, error) {
 	user := auth.GetUserClaims(ctx)
 	isAdmin := user != nil && user.IsAdmin()
 
@@ -122,12 +125,12 @@ func (s *service) GetBySlug(ctx context.Context, r *albums_pb.GetBySlugRequest) 
 	}
 
 	// TODO add medias and categes
-	return &albums_pb.GetBySlugResponse{
+	return &albumspb.GetBySlugResponse{
 		Album: transformAlbumFromDB(*a),
 	}, err
 }
 
-func (s *service) Create(ctx context.Context, r *albums_pb.CreateRequest) (*albums_pb.CreateResponse, error) {
+func (s *service) Create(ctx context.Context, r *albumspb.CreateRequest) (*albumspb.CreateResponse, error) {
 	// pretty.Log(r)
 
 	user := auth.GetUserClaims(ctx)
@@ -174,7 +177,7 @@ func (s *service) Create(ctx context.Context, r *albums_pb.CreateRequest) (*albu
 
 	data := transformAlbumFromDB(album)
 
-	return &albums_pb.CreateResponse{
+	return &albumspb.CreateResponse{
 		Id:                     data.Id,
 		Slug:                   data.Slug,
 		Title:                  data.Title,
@@ -190,7 +193,7 @@ func (s *service) Create(ctx context.Context, r *albums_pb.CreateRequest) (*albu
 	}, nil
 }
 
-func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albums_pb.UpdateResponse, error) {
+func (s *service) Update(ctx context.Context, r *albumspb.UpdateRequest) (*albumspb.UpdateResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
 	if user == nil {
@@ -232,7 +235,7 @@ func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albu
 
 	data := transformAlbumFromDB(*a)
 
-	return &albums_pb.UpdateResponse{
+	return &albumspb.UpdateResponse{
 		Id:                     data.Id,
 		Slug:                   data.Slug,
 		Title:                  data.Title,
@@ -252,7 +255,7 @@ func (s *service) Update(ctx context.Context, r *albums_pb.UpdateRequest) (*albu
 // 	return AlbumResponse{}, nil
 // }
 
-func (s *service) Delete(ctx context.Context, r *albums_pb.DeleteRequest) (*albums_pb.DeleteResponse, error) {
+func (s *service) Delete(ctx context.Context, r *albumspb.DeleteRequest) (*albumspb.DeleteResponse, error) {
 
 	user := auth.GetUserClaims(ctx)
 	if user == nil {
@@ -275,4 +278,79 @@ func (s *service) Delete(ctx context.Context, r *albums_pb.DeleteRequest) (*albu
 	}
 
 	return nil, err
+}
+
+func transformMediaFromDB(media model.Medium) *mediaspb.Media {
+	return &mediaspb.Media{
+		Id:        media.ID,
+		Name:      media.Name,
+		FileName:  media.FileName,
+		MimeType:  media.MimeType,
+		Size:      media.Size,
+		CreatedAt: &timestamppb.Timestamp{Seconds: int64(media.CreatedAt.Second())},
+		UpdatedAt: &timestamppb.Timestamp{Seconds: int64(media.UpdatedAt.Second())},
+		CustomProperties: &mediaspb.Media_CustomProperties{
+			Height: media.CustomProperties.Height,
+			Width:  media.CustomProperties.Width,
+		},
+		ResponsiveImages: &mediaspb.Media_ResponsiveImages{
+			Responsive: &mediaspb.Media_Responsive{
+				Urls:      media.ResponsiveImages.Responsive.Urls,
+				Base64Svg: media.ResponsiveImages.Responsive.Base64Svg,
+			},
+		},
+	}
+}
+
+func transformCategoryFromDB(c model.Category) *categoriespb.Category {
+	return &categoriespb.Category{
+		Id: c.ID,
+	}
+}
+
+func transformAlbumFromDB(a model.Album) *albumspb.AlbumResponse {
+	var mediasResponse []*mediaspb.Media
+	if a.Medias != nil {
+		var tmp []*mediaspb.Media
+		for _, m := range a.Medias {
+			tmp = append(tmp, transformMediaFromDB(m))
+		}
+		mediasResponse = tmp
+	}
+
+	var categoriesResponse []*categoriespb.Category
+	if a.Categories != nil {
+		var tmp []*categoriespb.Category
+		for _, c := range a.Categories {
+			tmp = append(tmp, transformCategoryFromDB(c))
+		}
+		categoriesResponse = tmp
+	}
+
+	var publishedAt *timestamppb.Timestamp
+	if a.PublishedAt != nil {
+		publishedAt = &timestamppb.Timestamp{Seconds: int64(a.PublishedAt.Second())}
+	}
+
+	var body string
+	if a.Body != nil {
+		body = *a.Body
+	}
+
+	return &albumspb.AlbumResponse{
+		Id:                     a.ID,
+		Slug:                   a.Slug,
+		Title:                  a.Title,
+		MetaDescription:        a.MetaDescription,
+		Content:                body,
+		PublishedAt:            publishedAt,
+		Private:                a.Private,
+		AuthorId:               *a.SsoID,
+		UserId:                 a.UserID,
+		CreatedAt:              &timestamppb.Timestamp{Seconds: int64(a.CreatedAt.Second())},
+		UpdatedAt:              &timestamppb.Timestamp{Seconds: int64(a.UpdatedAt.Second())},
+		NotifyUsersOnPublished: a.NotifyUsersOnPublished,
+		Categories:             categoriesResponse,
+		Medias:                 mediasResponse,
+	}
 }

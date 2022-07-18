@@ -1,10 +1,10 @@
 package album
 
 import (
-	"api-go/auth"
 	"api-go/config"
 	albums_pb "api-go/gen/go/proto/albums/v2"
 	"api-go/model"
+	"api-go/pkg/auth"
 	"api-go/query"
 	"api-go/storage/postgres"
 	"context"

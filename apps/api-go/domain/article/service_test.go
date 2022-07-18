@@ -1,10 +1,10 @@
 package article
 
 import (
-	"api-go/auth"
 	"api-go/config"
 	articlesgrpc "api-go/gen/go/proto/articles/v2"
 	"api-go/model"
+	"api-go/pkg/auth"
 	"api-go/storage/postgres"
 	"context"
 	"fmt"

@@ -15,13 +15,13 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/grpclog"
 
-	"api-go/album"
-	"api-go/article"
-	"api-go/auth"
 	"api-go/config"
+	"api-go/domain/album"
+	"api-go/domain/article"
 	albumspb "api-go/gen/go/proto/albums/v2"
 	articlespb "api-go/gen/go/proto/articles/v2"
-	"api-go/openapi"
+	"api-go/pkg/auth"
+	"api-go/pkg/openapi"
 	"api-go/storage/postgres"
 
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"

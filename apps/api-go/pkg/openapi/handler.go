@@ -1,7 +1,7 @@
 package openapi
 
 import (
-	"api-go/openapi/third_party"
+	"api-go/pkg/openapi/third_party"
 	"fmt"
 	"io/fs"
 	"mime"
