@@ -56,7 +56,7 @@
     "prettier": "^2.1.2",
     "prettier-plugin-tailwindcss": "^0.1.8",
     "react": "^18.2.0",
-    "react-cool-inview": "^2.0.7",
+    "react-cool-inview": "^3.0.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.33.0",
     "react-instantsearch-dom": "^6.8.2",
