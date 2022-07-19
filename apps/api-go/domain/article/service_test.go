@@ -91,7 +91,7 @@ func authAsAdmin(ctx context.Context) (context.Context, auth.Claims) {
 }
 
 func TestMain(m *testing.M) {
-	config, err := config.FromDotEnv("../.env")
+	config, err := config.FromDotEnv("../../.env")
 	if err != nil {
 		log.Fatal(fmt.Errorf("unable to load config: %w", err))
 	}
