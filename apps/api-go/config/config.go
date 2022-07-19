@@ -9,15 +9,19 @@ import (
 )
 
 type Config struct {
-	// Debug      bool   `envconfig:"DEBUG"`
-	AppHttpPort int    `envconfig:"APP_HTTP_PORT" required:"true"`
-	AppGrpcPort int    `envconfig:"APP_GRPC_PORT" required:"true"`
-	DbHost      string `envconfig:"DB_HOST" required:"true"`
-	DbUser      string `envconfig:"DB_USER" required:"true"`
-	DbPassword  string `envconfig:"DB_PASSWORD" required:"true"`
-	DbName      string `envconfig:"DB_NAME" required:"true"`
-	DbPort      int    `envconfig:"DB_PORT" required:"true"`
-	DbSslMode   string `envconfig:"DB_SSL_MODE" required:"true"`
+	Debug       bool `envconfig:"DEBUG"`
+	AppHttpPort int  `envconfig:"APP_HTTP_PORT" required:"true"`
+	AppGrpcPort int  `envconfig:"APP_GRPC_PORT" required:"true"`
+	Database    struct {
+		Engine string `envconfig:"DB_ENGINE" default:"postgres"`
+		URI    string `envconfig:"DB_URI" required:"true"`
+		// Host     string `envconfig:"DB_HOST" required:"false"`
+		// User     string `envconfig:"DB_USER" required:"false"`
+		// Password string `envconfig:"DB_PASSWORD" required:"false"`
+		// Name     string `envconfig:"DB_NAME" required:"false"`
+		// Port     int    `envconfig:"DB_PORT" required:"false"`
+		// SslMode  string `envconfig:"DB_SSL_MODE" required:"false"`
+	}
 }
 
 func FromDotEnv(path string) (*Config, error) {

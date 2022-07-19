@@ -1,7 +1,6 @@
 package postgres
 
 import (
-	"api-go/config"
 	"fmt"
 	"log"
 	"os"
@@ -34,7 +33,7 @@ func (d Postgres) Rollback() Postgres {
 	return d
 }
 
-func New(c *config.Config) (Postgres, error) {
+func New(uri string) (Postgres, error) {
 
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
@@ -45,14 +44,12 @@ func New(c *config.Config) (Postgres, error) {
 		},
 	)
 
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=%s", c.DbHost, c.DbUser, c.DbPassword, c.DbName, c.DbPort, c.DbSslMode)
-
 	config := &gorm.Config{}
 	if true {
 		config.Logger = newLogger
 	}
 
-	db, err := gorm.Open(postgres.Open(dsn), config)
+	db, err := gorm.Open(postgres.Open(uri), config)
 	if err != nil {
 		return Postgres{}, fmt.Errorf("unable to connect to the database: %w", err)
 	}
