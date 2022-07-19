@@ -30,6 +30,7 @@ var (
 
 type service struct {
 	albumspb.AlbumServiceServer
+	// TODO Use storage.Storage interface
 	storage *postgres.Postgres
 }
 

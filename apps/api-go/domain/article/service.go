@@ -28,6 +28,7 @@ var (
 
 type service struct {
 	articles_pb.ArticleServiceServer
+	// TODO Use storage.Storage interface
 	db *postgres.Postgres
 }
 
