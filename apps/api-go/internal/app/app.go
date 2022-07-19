@@ -43,10 +43,9 @@ func Run(config *config.Config) error {
 	}
 	defer orm.Close()
 
-	var sAlbum albumspb.AlbumServiceServer
-	{
-		sAlbum = album.NewService(&orm)
-		// sAlbum = album.LoggingMiddleware(logger)(sAlbum)
+	sAlbum, err := album.NewService(&orm)
+	if err != nil {
+		return fmt.Errorf("could not create album service: %w", err)
 	}
 
 	var sArticle articlespb.ArticleServiceServer

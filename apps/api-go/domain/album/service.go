@@ -17,7 +17,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"gorm.io/gen"
 	"gorm.io/gorm"
 )
 
@@ -31,59 +30,36 @@ var (
 type service struct {
 	albumspb.AlbumServiceServer
 	// TODO Use storage.Storage interface
-	storage *postgres.Postgres
+	storage    *postgres.Postgres
+	repository Repository
 }
 
-func NewService(orm *postgres.Postgres) albumspb.AlbumServiceServer {
+func NewService(orm *postgres.Postgres) (albumspb.AlbumServiceServer, error) {
+	// TODO Should be provided by the caller
+	repository, err := NewRepository(orm)
+	if err != nil {
+		return nil, err
+	}
 	return &service{
-		storage: orm,
-	}
-}
-
-func published(q *query.Query) func(db gen.Dao) gen.Dao {
-	return func(db gen.Dao) gen.Dao {
-		return db.Where(q.Album.Private.Is(false), q.Album.PublishedAt.Lte(time.Now()))
-	}
-}
-
-func paginate(q *query.Query, next *int32, pageSize *int32) func(db gen.Dao) gen.Dao {
-	return func(db gen.Dao) gen.Dao {
-		if next != nil && *next != 0 {
-			db = db.Where(q.Album.ID.Gt(*next))
-		}
-		s := 10
-		if pageSize != nil {
-			s = int(*pageSize)
-		}
-		return db.Limit(int(s))
-	}
+		storage:    orm,
+		repository: repository,
+	}, nil
 }
 
 func (s *service) Index(ctx context.Context, r *albumspb.IndexRequest) (*albumspb.IndexResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
-	qb := query.Use(s.storage.DB).Album
-	q := qb.WithContext(ctx).Order(qb.PublishedAt.Desc())
-
-	if user == nil || (user != nil && !user.IsAdmin()) {
-		q = q.Scopes(published(query.Use(s.storage.DB)))
+	var params ListParams
+	if r.Joins != nil {
+		params.Joins = ListJoinsParams{
+			Categories: r.Joins.Categories,
+			Medias:     r.Joins.Medias,
+		}
 	}
 
-	if r.Next != nil && *r.Next != 0 {
-		q.Where(qb.ID.Gt(*r.Next))
-	}
-
-	if r.Joins != nil && r.Joins.Categories {
-		q = q.Preload(qb.Categories)
-	}
-
-	if r.Joins != nil && r.Joins.Medias {
-		q = q.Preload(qb.Medias)
-	}
-
-	albums, err := q.Scopes(paginate(query.Use(s.storage.DB), r.Next, r.Limit)).Find()
+	albums, err := s.repository.List(ctx, user, params)
 	if err != nil {
-		return nil, fmt.Errorf("unable list albums : %d %w", r.Next, err)
+		return nil, fmt.Errorf("unable get albums: %w", err)
 	}
 
 	data := make([]*albumspb.AlbumResponse, 0, len(albums))
@@ -93,7 +69,6 @@ func (s *service) Index(ctx context.Context, r *albumspb.IndexRequest) (*albumsp
 
 	return &albumspb.IndexResponse{
 		Data: data,
-		// Meta: api.Meta{Total: total, Limit: params.Limit},
 	}, nil
 }
 
