@@ -137,7 +137,7 @@ jobs:
           APP_GRPC_PORT: 3100
           DB_SSL_MODE: disable
       - name: Upload test log
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: always()
         with:
           name: test-log
