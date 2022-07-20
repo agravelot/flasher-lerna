@@ -1,10 +1,6 @@
 package album
 
 import (
-	"api-go/model"
-	"api-go/pkg/auth"
-	"api-go/query"
-	"api-go/storage/postgres"
 	"context"
 	"errors"
 	"fmt"
@@ -13,6 +9,10 @@ import (
 	albumspb "api-go/gen/go/proto/albums/v2"
 	categoriespb "api-go/gen/go/proto/categories/v2"
 	mediaspb "api-go/gen/go/proto/medias/v2"
+	"api-go/infrastructure/storage/postgres"
+	"api-go/model"
+	"api-go/pkg/auth"
+	"api-go/query"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -34,12 +34,7 @@ type service struct {
 	repository Repository
 }
 
-func NewService(orm *postgres.Postgres) (albumspb.AlbumServiceServer, error) {
-	// TODO Should be provided by the caller
-	repository, err := NewRepository(orm)
-	if err != nil {
-		return nil, err
-	}
+func NewService(orm *postgres.Postgres, repository Repository) (albumspb.AlbumServiceServer, error) {
 	return &service{
 		storage:    orm,
 		repository: repository,
@@ -79,21 +74,8 @@ func (s *service) Index(ctx context.Context, r *albumspb.IndexRequest) (*albumsp
 
 func (s *service) GetBySlug(ctx context.Context, r *albumspb.GetBySlugRequest) (*albumspb.GetBySlugResponse, error) {
 	user := auth.GetUserClaims(ctx)
-	isAdmin := user != nil && user.IsAdmin()
 
-	qb := query.Use(s.storage.DB).Album
-
-	query := qb.WithContext(ctx)
-
-	if !isAdmin {
-		query = query.Where(qb.PublishedAt.Lt(time.Now()), qb.Private.Is(false))
-	}
-
-	a, err := query.
-		Preload(qb.Categories).
-		Preload(qb.Medias).
-		Where(qb.Slug.Eq(r.Slug)).
-		First()
+	a, err := s.repository.GetBySlug(ctx, user, r.Slug)
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, ErrNotFound
@@ -127,34 +109,24 @@ func (s *service) Create(ctx context.Context, r *albumspb.CreateRequest) (*album
 		return nil, err
 	}
 
-	// if r.Slug == nil {
-	// 	s := slug.Make(r.Title)
-	// 	r.Slug = &s
-	// }
-
 	var publishedAt *time.Time
 	if r.PublishedAt != nil {
-		t := r.PublishedAt.AsTime()
-		publishedAt = &t
+		p := r.PublishedAt.AsTime()
+		publishedAt = &p
 	}
 
-	album := model.Album{
+	a, err := s.repository.Create(ctx, user, model.Album{
 		Title:       r.Name,
 		Slug:        r.Slug,
-		SsoID:       &user.Sub,
 		Body:        &r.Content,
+		SsoID:       &user.Sub,
 		PublishedAt: publishedAt,
-	}
-
-	query := query.Use(s.storage.DB).Album.WithContext(ctx)
-
-	err := query.WithContext(ctx).Create(&album)
-	// TODO Check duplicate
+	})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("unable create album: %w", err)
 	}
 
-	data := transformAlbumFromDB(album)
+	data := transformAlbumFromDB(*a)
 
 	return &albumspb.CreateResponse{
 		Id:                     data.Id,

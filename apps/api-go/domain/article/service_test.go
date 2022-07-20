@@ -3,9 +3,9 @@ package article
 import (
 	"api-go/config"
 	articlesgrpc "api-go/gen/go/proto/articles/v2"
+	"api-go/infrastructure/storage/postgres"
 	"api-go/model"
 	"api-go/pkg/auth"
-	"api-go/storage/postgres"
 	"context"
 	"fmt"
 	"log"

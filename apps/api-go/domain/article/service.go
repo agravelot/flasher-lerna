@@ -2,10 +2,10 @@ package article
 
 import (
 	articles_pb "api-go/gen/go/proto/articles/v2"
+	"api-go/infrastructure/storage/postgres"
 	"api-go/model"
 	"api-go/pkg/auth"
 	"api-go/query"
-	"api-go/storage/postgres"
 	"context"
 	"errors"
 	"fmt"

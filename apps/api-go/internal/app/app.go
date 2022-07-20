@@ -20,9 +20,10 @@ import (
 	"api-go/domain/article"
 	albumspb "api-go/gen/go/proto/albums/v2"
 	articlespb "api-go/gen/go/proto/articles/v2"
+	"api-go/infrastructure"
+	"api-go/infrastructure/storage/postgres"
 	"api-go/pkg/auth"
 	"api-go/pkg/openapi"
-	"api-go/storage/postgres"
 
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 )
@@ -43,16 +44,17 @@ func Run(config *config.Config) error {
 	}
 	defer orm.Close()
 
-	sAlbum, err := album.NewService(&orm)
+	albumRepo, err := infrastructure.NewAlbumRepository(&orm)
+	if err != nil {
+		return err
+	}
+
+	sAlbum, err := album.NewService(&orm, albumRepo)
 	if err != nil {
 		return fmt.Errorf("could not create album service: %w", err)
 	}
 
-	var sArticle articlespb.ArticleServiceServer
-	{
-		sArticle = article.NewService(&orm)
-		// sArticle = article.LoggingMiddleware(logger)(sArticle)
-	}
+	sArticle := article.NewService(&orm)
 
 	// Adds gRPC internal logs. This is quite verbose, so adjust as desired!
 	l := grpclog.NewLoggerV2(os.Stdout, os.Stdout, os.Stdout)

@@ -1,12 +1,6 @@
-package album
+package album_test
 
 import (
-	"api-go/config"
-	albums_pb "api-go/gen/go/proto/albums/v2"
-	"api-go/model"
-	"api-go/pkg/auth"
-	"api-go/query"
-	"api-go/storage/postgres"
 	"context"
 	"errors"
 	"fmt"
@@ -15,6 +9,15 @@ import (
 	"strconv"
 	"testing"
 	"time"
+
+	"api-go/config"
+	"api-go/domain/album"
+	albums_pb "api-go/gen/go/proto/albums/v2"
+	"api-go/infrastructure"
+	"api-go/infrastructure/storage/postgres"
+	"api-go/model"
+	"api-go/pkg/auth"
+	"api-go/query"
 
 	"github.com/jackc/pgconn"
 	"github.com/jackc/pgerrcode"
@@ -123,7 +126,11 @@ func TestMain(m *testing.M) {
 func TestShouldBeAbleToListEmpty(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -139,7 +146,11 @@ func TestShouldBeAbleToListEmpty(t *testing.T) {
 func TestShouldBeAbleToListWithOnePublishedAlbum(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -168,7 +179,11 @@ func TestShouldBeAbleToListWithOnePublishedAlbum(t *testing.T) {
 func TestShouldBeOrderedByDateOfPublication(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -223,7 +238,11 @@ func TestShouldBeOrderedByDateOfPublication(t *testing.T) {
 func TestShouldOnlyShowPublicAlbums(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -278,7 +297,11 @@ func TestShouldOnlyShowPublicAlbums(t *testing.T) {
 func TestShouldBeAbleToListPublishedAlbumsOnSecondPage(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -328,7 +351,12 @@ func TestShouldBeAbleToListPublishedAlbumsOnSecondPage(t *testing.T) {
 func TestShouldBeAbleToListPublishedAlbumsOnSecondPageWithCustomPerPage(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -379,7 +407,11 @@ func TestShouldBeAbleToListNonPublishedAlbumAsAdmin(t *testing.T) {
 	ctx, _ := authAsAdmin(context.Background())
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -407,7 +439,12 @@ func TestShouldBeAbleToListNonPublishedAlbumAsAdmin(t *testing.T) {
 func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -440,7 +477,11 @@ func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 func TestShouldNotIncludeCategoriesByDefault(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -479,7 +520,11 @@ func TestShouldNotIncludeCategoriesByDefault(t *testing.T) {
 func TestShouldBeAbleToListWithCategories(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -522,7 +567,11 @@ func TestShouldBeAbleToListWithCategories(t *testing.T) {
 func TestShouldBeAbleToListWithMedias(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -577,7 +626,11 @@ func TestShouldBeAbleToListWithMedias(t *testing.T) {
 func TestShouldNotIncludeMediasByDefault(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -630,7 +683,11 @@ func TestShouldNotIncludeMediasByDefault(t *testing.T) {
 func TestShouldNotListNonPublishedAlbums(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -663,7 +720,11 @@ func TestShouldNotListNonPublishedAlbums(t *testing.T) {
 func TestShouldBeAbleToGetPublishedAlbumAsGuest(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -693,7 +754,11 @@ func TestShouldBeAbleToGetPublishedAlbumAsGuest(t *testing.T) {
 func TestShouldBeAbleToGetPublishedAlbumAsUser(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -724,7 +789,11 @@ func TestShouldBeAbleToGetPublishedAlbumAsUser(t *testing.T) {
 func TestShouldNotBeAbleToGetNonPublishedAlbumAsGuest(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -747,13 +816,17 @@ func TestShouldNotBeAbleToGetNonPublishedAlbumAsGuest(t *testing.T) {
 	_, err = s.GetBySlug(context.Background(), &albums_pb.GetBySlugRequest{Slug: slug})
 
 	assert.Error(t, err)
-	assert.Equal(t, ErrNotFound, err)
+	assert.Equal(t, album.ErrNotFound, err)
 }
 
 func TestShouldNotBeAbleToGetNonPublishedAlbumAsUser(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -775,13 +848,17 @@ func TestShouldNotBeAbleToGetNonPublishedAlbumAsUser(t *testing.T) {
 	_, err = s.GetBySlug(ctx, &albums_pb.GetBySlugRequest{Slug: arg.Slug})
 
 	assert.Error(t, err)
-	assert.Equal(t, ErrNotFound, err)
+	assert.Equal(t, album.ErrNotFound, err)
 }
 
 func TestShouldBeAbleToGetNonPublishedAlbumAsAdmin(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -810,7 +887,11 @@ func TestShouldBeAbleToGetNonPublishedAlbumAsAdmin(t *testing.T) {
 func TestShouldBeAbleToCreateAnAlbumAsAdmin(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -840,7 +921,11 @@ func TestShouldBeAbleToCreateAnAlbumAsAdmin(t *testing.T) {
 func TestShouldBeAbleToCreateAnPublishedAlbumAsAdmin(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -875,7 +960,11 @@ func TestShouldBeAbleToCreateAnPublishedAlbumAsAdmin(t *testing.T) {
 func TestShouldNotBeAbleToCreateAnAlbumWithSameSlug(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -912,7 +1001,11 @@ func TestShouldNotBeAbleToCreateAnAlbumWithSameSlug(t *testing.T) {
 func TestShouldNotBeAbleToSaveAlbumWithEmptyTitle(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -942,7 +1035,11 @@ func TestShouldNotBeAbleToSaveAlbumWithEmptyTitle(t *testing.T) {
 func TestShouldNotBeAbleToSaveAlbumWithTooLongTitle(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -972,7 +1069,11 @@ func TestShouldNotBeAbleToSaveAlbumWithTooLongTitle(t *testing.T) {
 func TestShouldNotBeAbleToSaveAlbumWithEmptyMetaDescription(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1002,7 +1103,11 @@ func TestShouldNotBeAbleToSaveAlbumWithEmptyMetaDescription(t *testing.T) {
 func TestShouldNotBeAbleToSaveAlbumWithTooLongMetaDescription(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1032,7 +1137,11 @@ func TestShouldNotBeAbleToSaveAlbumWithTooLongMetaDescription(t *testing.T) {
 func TestShouldNotBeAbleToCreateAsUser(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1052,7 +1161,7 @@ func TestShouldNotBeAbleToCreateAsUser(t *testing.T) {
 	_, err = s.Create(ctx, &arg)
 
 	assert.Error(t, err)
-	assert.Equal(t, ErrNotAdmin, err)
+	assert.Equal(t, album.ErrNotAdmin, err)
 	total, err := a.WithContext(context.Background()).Count()
 
 	assert.NoError(t, err)
@@ -1062,7 +1171,11 @@ func TestShouldNotBeAbleToCreateAsUser(t *testing.T) {
 func TestShouldNotBeAbleToCreateAsGuest(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1081,7 +1194,7 @@ func TestShouldNotBeAbleToCreateAsGuest(t *testing.T) {
 	_, err = s.Create(context.Background(), &arg)
 
 	assert.Error(t, err)
-	assert.Equal(t, ErrNoAuth, err)
+	assert.Equal(t, album.ErrNoAuth, err)
 	total, err := a.WithContext(context.Background()).Count() // TODO Add filter published to pass test
 	assert.NoError(t, err)
 	assert.Equal(t, 0, int(total))
@@ -1092,7 +1205,11 @@ func TestShouldNotBeAbleToCreateAsGuest(t *testing.T) {
 func TestShouldBeAbleToUpdateAlbumTitleAsAdmin(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1126,7 +1243,11 @@ func TestShouldBeAbleToUpdateAlbumTitleAsAdmin(t *testing.T) {
 func TestShouldNotBeAbleToUpdateAlbumTooShortTitleAsAdmin(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1161,7 +1282,11 @@ func TestShouldNotBeAbleToUpdateAlbumTooShortTitleAsAdmin(t *testing.T) {
 func TestShouldBeAbleToUpdateAlbumToAsPublishedAsAdmin(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1201,7 +1326,11 @@ func TestShouldBeAbleToUpdateAlbumToAsPublishedAsAdmin(t *testing.T) {
 func TestShouldNotBeAbleToUpdateAlbumAsUser(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1223,7 +1352,7 @@ func TestShouldNotBeAbleToUpdateAlbumAsUser(t *testing.T) {
 	})
 
 	assert.Error(t, err)
-	assert.Equal(t, ErrNotAdmin, err)
+	assert.Equal(t, album.ErrNotAdmin, err)
 	var total int64
 	tx.DB.Model(&model.Album{}).Count(&total)
 	assert.Equal(t, 1, int(total))
@@ -1232,7 +1361,11 @@ func TestShouldNotBeAbleToUpdateAlbumAsUser(t *testing.T) {
 func TestShouldNotBeAbleToUpdateAlbumAsGuest(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1252,7 +1385,7 @@ func TestShouldNotBeAbleToUpdateAlbumAsGuest(t *testing.T) {
 	})
 
 	assert.Error(t, err)
-	assert.Equal(t, ErrNoAuth, err)
+	assert.Equal(t, album.ErrNoAuth, err)
 	var total int64
 	tx.DB.Model(&model.Album{}).Count(&total)
 	assert.Equal(t, 1, int(total))
@@ -1263,7 +1396,11 @@ func TestShouldNotBeAbleToUpdateAlbumAsGuest(t *testing.T) {
 func TestAdminShouldBeAbleToDeleteAndNotSoftDeleted(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1294,7 +1431,11 @@ func TestAdminShouldBeAbleToDeleteAndNotSoftDeleted(t *testing.T) {
 func TestAdminShouldNotBeAbleToDeleteAnNonExistantAlbum(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1304,13 +1445,17 @@ func TestAdminShouldNotBeAbleToDeleteAnNonExistantAlbum(t *testing.T) {
 	_, err = s.Delete(ctx, &albums_pb.DeleteRequest{Id: 1})
 
 	assert.Error(t, err)
-	assert.EqualError(t, err, ErrNotFound.Error())
+	assert.EqualError(t, err, album.ErrNotFound.Error())
 }
 
 func TestUserShouldNotBeAbleToDelete(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1332,13 +1477,17 @@ func TestUserShouldNotBeAbleToDelete(t *testing.T) {
 	_, err = s.Delete(ctx, &albums_pb.DeleteRequest{Id: a.ID})
 
 	assert.Error(t, err)
-	assert.EqualError(t, err, ErrNotAdmin.Error())
+	assert.EqualError(t, err, album.ErrNotAdmin.Error())
 }
 
 func TestGuestShouldNotBeAbleToDelete(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s, err := NewService(&tx)
+	repo, err := infrastructure.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(&tx, repo)
 	if err != nil {
 		t.Error(err)
 	}
@@ -1346,5 +1495,5 @@ func TestGuestShouldNotBeAbleToDelete(t *testing.T) {
 	_, err = s.Delete(context.Background(), &albums_pb.DeleteRequest{Id: 1})
 
 	assert.Error(t, err)
-	assert.EqualError(t, err, ErrNoAuth.Error())
+	assert.EqualError(t, err, album.ErrNoAuth.Error())
 }

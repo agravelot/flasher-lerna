@@ -45,7 +45,7 @@ func New(uri string) (Postgres, error) {
 	)
 
 	config := &gorm.Config{}
-	if true {
+	if false {
 		config.Logger = newLogger
 	}
 
