@@ -13,8 +13,8 @@ require (
 	github.com/stretchr/testify v1.8.0
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.2.0
 	gorm.io/driver/postgres v1.3.8
-	gorm.io/gen v0.3.12
-	gorm.io/gorm v1.23.8
+	gorm.io/gen v0.3.13
+	gorm.io/gorm v1.23.9-0.20220713102635-3262daf8d468
 	gorm.io/plugin/dbresolver v1.2.1
 )
 
