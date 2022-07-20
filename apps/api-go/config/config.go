@@ -9,9 +9,9 @@ import (
 )
 
 type Config struct {
-	Debug       bool `envconfig:"DEBUG"`
-	AppHttpPort int  `envconfig:"APP_HTTP_PORT" required:"true"`
-	AppGrpcPort int  `envconfig:"APP_GRPC_PORT" required:"true"`
+	// Debug       bool `envconfig:"DEBUG"`
+	AppHttpPort int `envconfig:"APP_HTTP_PORT" required:"true"`
+	AppGrpcPort int `envconfig:"APP_GRPC_PORT" required:"true"`
 	Database    struct {
 		Engine string `envconfig:"DB_ENGINE" default:"postgres"`
 		URI    string `envconfig:"DB_URI" required:"true"`
