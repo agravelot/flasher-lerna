@@ -49,7 +49,10 @@ func NewService(orm *postgres.Postgres) (albumspb.AlbumServiceServer, error) {
 func (s *service) Index(ctx context.Context, r *albumspb.IndexRequest) (*albumspb.IndexResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
-	var params ListParams
+	params := ListParams{
+		Next:  r.Next,
+		Limit: r.Limit,
+	}
 	if r.Joins != nil {
 		params.Joins = ListJoinsParams{
 			Categories: r.Joins.Categories,
