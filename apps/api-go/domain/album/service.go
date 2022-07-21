@@ -9,7 +9,6 @@ import (
 	albumspb "api-go/gen/go/proto/albums/v2"
 	categoriespb "api-go/gen/go/proto/categories/v2"
 	mediaspb "api-go/gen/go/proto/medias/v2"
-	"api-go/infrastructure/storage/postgres"
 	"api-go/model"
 	"api-go/pkg/auth"
 
@@ -31,9 +30,9 @@ type service struct {
 	repository Repository
 }
 
-func NewService(orm *postgres.Postgres, repository Repository) (albumspb.AlbumServiceServer, error) {
+func NewService(r Repository) (albumspb.AlbumServiceServer, error) {
 	return &service{
-		repository: repository,
+		repository: r,
 	}, nil
 }
 
@@ -88,8 +87,6 @@ func (s *service) GetBySlug(ctx context.Context, r *albumspb.GetBySlugRequest) (
 }
 
 func (s *service) Create(ctx context.Context, r *albumspb.CreateRequest) (*albumspb.CreateResponse, error) {
-	// pretty.Log(r)
-
 	user := auth.GetUserClaims(ctx)
 
 	if user == nil {

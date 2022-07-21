@@ -20,7 +20,6 @@ import (
 	"api-go/domain/article"
 	albumspb "api-go/gen/go/proto/albums/v2"
 	articlespb "api-go/gen/go/proto/articles/v2"
-	"api-go/infrastructure"
 	"api-go/infrastructure/storage/postgres"
 	"api-go/pkg/auth"
 	"api-go/pkg/openapi"
@@ -44,12 +43,12 @@ func Run(config *config.Config) error {
 	}
 	defer orm.Close()
 
-	albumRepo, err := infrastructure.NewAlbumRepository(&orm)
+	albumRepo, err := postgres.NewAlbumRepository(&orm)
 	if err != nil {
 		return err
 	}
 
-	sAlbum, err := album.NewService(&orm, albumRepo)
+	sAlbum, err := album.NewService(albumRepo)
 	if err != nil {
 		return fmt.Errorf("could not create album service: %w", err)
 	}

@@ -1,8 +1,7 @@
-package infrastructure
+package postgres
 
 import (
 	"api-go/domain/album"
-	"api-go/infrastructure/storage/postgres"
 	"api-go/model"
 	"api-go/pkg/auth"
 	"api-go/query"
@@ -15,7 +14,7 @@ import (
 
 // Postgres repository implmentation
 type PostgresRepository struct {
-	storage *postgres.Postgres
+	storage *Postgres
 }
 
 func (r *PostgresRepository) published(q *query.Query) func(db gen.Dao) gen.Dao {
@@ -139,6 +138,6 @@ func (r PostgresRepository) Delete(ctx context.Context, user *auth.Claims, id in
 	return err
 }
 
-func NewAlbumRepository(storage *postgres.Postgres) (album.Repository, error) {
+func NewAlbumRepository(storage *Postgres) (album.Repository, error) {
 	return PostgresRepository{storage}, nil
 }
