@@ -160,25 +160,19 @@ func (s *service) Update(ctx context.Context, r *albumspb.UpdateRequest) (*album
 		return nil, err
 	}
 
-	qb := query.Use(s.storage.DB).Album
-
-	query := qb.WithContext(ctx)
-
-	update := map[string]interface{}{
-		// "id":           r.Id,
-		"private":      r.Private,
-		"title":        r.Name,
-		"slug":         r.Slug,
-		"body":         r.Content,
-		"published_at": r.PublishedAt,
+	var publishedAt *time.Time
+	if r.PublishedAt != nil {
+		p := r.PublishedAt.AsTime()
+		publishedAt = &p
 	}
-	_, err := query.Where(qb.ID.Eq(r.Id)).Updates(update)
-	if err != nil {
-		return nil, fmt.Errorf("error update album: %w", err)
-	}
-	query.Preload(qb.Categories).Preload(qb.Medias)
-
-	a, err := query.Where(qb.ID.Eq(r.Id)).First()
+	a, err := s.repository.Update(ctx, user, model.Album{
+		ID:          r.Id,
+		Title:       r.Name,
+		Slug:        r.Slug,
+		Body:        &r.Content,
+		SsoID:       &user.Sub,
+		PublishedAt: publishedAt,
+	})
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, ErrNotFound

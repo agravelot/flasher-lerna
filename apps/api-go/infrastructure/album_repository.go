@@ -107,6 +107,28 @@ func (r PostgresRepository) Create(ctx context.Context, user *auth.Claims, a mod
 	return &a, nil
 }
 
+func (r PostgresRepository) Update(ctx context.Context, user *auth.Claims, a model.Album) (*model.Album, error) {
+	qb := query.Use(r.storage.DB).Album
+
+	query := qb.WithContext(ctx)
+
+	update := map[string]interface{}{
+		// "id":           r.Id,
+		"private":      a.Private,
+		"title":        a.Title,
+		"slug":         a.Slug,
+		"body":         a.Title,
+		"published_at": a.PublishedAt,
+	}
+	_, err := query.Where(qb.ID.Eq(a.ID)).Updates(update)
+	if err != nil {
+		return nil, fmt.Errorf("error update album: %w", err)
+	}
+	query.Preload(qb.Categories).Preload(qb.Medias)
+
+	return query.Where(qb.ID.Eq(a.ID)).First()
+}
+
 func NewAlbumRepository(storage *postgres.Postgres) (album.Repository, error) {
 	return PostgresRepository{storage}, nil
 }

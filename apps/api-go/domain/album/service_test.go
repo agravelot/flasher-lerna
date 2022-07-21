@@ -1223,7 +1223,8 @@ func TestShouldBeAbleToUpdateAlbumTitleAsAdmin(t *testing.T) {
 		MetaDescription: "a meta decription",
 		SsoID:           &id,
 	}
-	tx.DB.Create(&a)
+	err = tx.DB.Create(&a).Error
+	assert.NoError(t, err)
 
 	expectedTitle := "A new Title"
 	new, err := s.Update(ctx, &albums_pb.UpdateRequest{
