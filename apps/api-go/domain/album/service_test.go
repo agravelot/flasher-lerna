@@ -1420,11 +1420,11 @@ func TestAdminShouldBeAbleToDeleteAndNotSoftDeleted(t *testing.T) {
 	}
 
 	_, err = s.Delete(ctx, &albums_pb.DeleteRequest{Id: a.ID})
+	assert.NoError(t, err)
 
 	var total, totalScopeless int64
 	tx.DB.Model(&a).Count(&total)
 	tx.DB.Model(&a).Unscoped().Count(&totalScopeless)
-	assert.NoError(t, err)
 	assert.Equal(t, 0, int(total))
 	assert.Equal(t, 0, int(totalScopeless))
 }
@@ -1446,7 +1446,7 @@ func TestAdminShouldNotBeAbleToDeleteAnNonExistantAlbum(t *testing.T) {
 	_, err = s.Delete(ctx, &albums_pb.DeleteRequest{Id: 1})
 
 	assert.Error(t, err)
-	assert.EqualError(t, err, album.ErrNotFound.Error())
+	assert.ErrorIs(t, err, album.ErrNotFound)
 }
 
 func TestUserShouldNotBeAbleToDelete(t *testing.T) {

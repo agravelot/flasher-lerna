@@ -12,7 +12,6 @@ import (
 	"api-go/infrastructure/storage/postgres"
 	"api-go/model"
 	"api-go/pkg/auth"
-	"api-go/query"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -212,17 +211,12 @@ func (s *service) Delete(ctx context.Context, r *albumspb.DeleteRequest) (*album
 		return nil, ErrNotAdmin
 	}
 
-	qb := query.Use(s.storage.DB).Album
+	err := s.repository.Delete(ctx, user, r.Id)
 
-	ri, err := qb.WithContext(ctx).Where(qb.ID.Eq(r.Id)).Delete()
-	if ri.RowsAffected == 0 {
-		return nil, ErrNotFound
-	}
 	if err != nil {
-		return nil, err
+		return &albumspb.DeleteResponse{Deleted: false}, fmt.Errorf("unable delete album: %w", err)
 	}
-
-	return nil, err
+	return &albumspb.DeleteResponse{Deleted: true}, nil
 }
 
 func transformMediaFromDB(media model.Medium) *mediaspb.Media {

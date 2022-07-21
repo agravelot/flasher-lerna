@@ -129,6 +129,16 @@ func (r PostgresRepository) Update(ctx context.Context, user *auth.Claims, a mod
 	return query.Where(qb.ID.Eq(a.ID)).First()
 }
 
+func (r PostgresRepository) Delete(ctx context.Context, user *auth.Claims, id int32) error {
+	qb := query.Use(r.storage.DB).Album
+
+	ri, err := qb.WithContext(ctx).Where(qb.ID.Eq(id)).Delete()
+	if ri.RowsAffected == 0 {
+		return album.ErrNotFound
+	}
+	return err
+}
+
 func NewAlbumRepository(storage *postgres.Postgres) (album.Repository, error) {
 	return PostgresRepository{storage}, nil
 }
