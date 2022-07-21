@@ -28,14 +28,11 @@ var (
 
 type service struct {
 	albumspb.AlbumServiceServer
-	// TODO Use storage.Storage interface
-	storage    *postgres.Postgres
 	repository Repository
 }
 
 func NewService(orm *postgres.Postgres, repository Repository) (albumspb.AlbumServiceServer, error) {
 	return &service{
-		storage:    orm,
 		repository: repository,
 	}, nil
 }
