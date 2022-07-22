@@ -57,7 +57,7 @@ func (s *service) Index(ctx context.Context, r *albumspb.IndexRequest) (*albumsp
 
 	data := make([]*albumspb.AlbumResponse, 0, len(albums))
 	for _, a := range albums {
-		data = append(data, transformAlbumFromDB(*a))
+		data = append(data, transformAlbumFromDB(a))
 	}
 
 	return &albumspb.IndexResponse{
@@ -82,7 +82,7 @@ func (s *service) GetBySlug(ctx context.Context, r *albumspb.GetBySlugRequest) (
 
 	// TODO add medias and categes
 	return &albumspb.GetBySlugResponse{
-		Album: transformAlbumFromDB(*a),
+		Album: transformAlbumFromDB(a),
 	}, err
 }
 
@@ -119,7 +119,7 @@ func (s *service) Create(ctx context.Context, r *albumspb.CreateRequest) (*album
 		return nil, fmt.Errorf("unable create album: %w", err)
 	}
 
-	data := transformAlbumFromDB(*a)
+	data := transformAlbumFromDB(a)
 
 	return &albumspb.CreateResponse{
 		Id:                     data.Id,
@@ -171,7 +171,7 @@ func (s *service) Update(ctx context.Context, r *albumspb.UpdateRequest) (*album
 		return nil, ErrNotFound
 	}
 
-	data := transformAlbumFromDB(*a)
+	data := transformAlbumFromDB(a)
 
 	return &albumspb.UpdateResponse{
 		Id:                     data.Id,

@@ -19,9 +19,9 @@ type ListParams struct {
 
 type Repository interface {
 	Close() error
-	List(ctx context.Context, user *auth.Claims, params ListParams) ([]*model.Album, error)
-	GetBySlug(ctx context.Context, user *auth.Claims, slug string) (*model.Album, error)
-	Create(ctx context.Context, user *auth.Claims, album model.Album) (*model.Album, error)
-	Update(ctx context.Context, user *auth.Claims, album model.Album) (*model.Album, error)
+	List(ctx context.Context, user *auth.Claims, params ListParams) ([]model.Album, error)
+	GetBySlug(ctx context.Context, user *auth.Claims, slug string) (model.Album, error)
+	Create(ctx context.Context, user *auth.Claims, album model.Album) (model.Album, error)
+	Update(ctx context.Context, user *auth.Claims, album model.Album) (model.Album, error)
 	Delete(ctx context.Context, user *auth.Claims, id int32) error
 }

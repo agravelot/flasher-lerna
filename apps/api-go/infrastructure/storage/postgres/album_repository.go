@@ -40,7 +40,7 @@ func (r PostgresRepository) Close() error {
 	return r.storage.Close()
 }
 
-func (r PostgresRepository) List(ctx context.Context, user *auth.Claims, params album.ListParams) ([]*model.Album, error) {
+func (r PostgresRepository) List(ctx context.Context, user *auth.Claims, params album.ListParams) ([]model.Album, error) {
 	qb := query.Use(r.storage.DB).Album
 	q := qb.WithContext(ctx).Order(qb.PublishedAt.Desc())
 
@@ -60,17 +60,23 @@ func (r PostgresRepository) List(ctx context.Context, user *auth.Claims, params 
 		q = q.Preload(qb.Medias)
 	}
 
-	albums, err := q.Scopes(
+	res, err := q.Scopes(
 		r.paginate(query.Use(r.storage.DB), params.Next, params.Limit),
 	).Find()
+
 	if err != nil {
-		return albums, fmt.Errorf("unable list albums : %d %w", params.Next, err)
+		return []model.Album{}, fmt.Errorf("unable list albums : %d %w", params.Next, err)
+	}
+
+	albums := make([]model.Album, len(res))
+	for i, a := range res {
+		albums[i] = *a
 	}
 
 	return albums, nil
 }
 
-func (r PostgresRepository) GetBySlug(ctx context.Context, user *auth.Claims, slug string) (*model.Album, error) {
+func (r PostgresRepository) GetBySlug(ctx context.Context, user *auth.Claims, slug string) (model.Album, error) {
 	isAdmin := user != nil && user.IsAdmin()
 
 	qb := query.Use(r.storage.DB).Album
@@ -81,14 +87,20 @@ func (r PostgresRepository) GetBySlug(ctx context.Context, user *auth.Claims, sl
 		query = query.Where(qb.PublishedAt.Lt(time.Now()), qb.Private.Is(false))
 	}
 
-	return query.
+	res, err := query.
 		Preload(qb.Categories).
 		Preload(qb.Medias).
 		Where(qb.Slug.Eq(slug)).
 		First()
+
+	if err != nil {
+		return model.Album{}, fmt.Errorf("error get album: %w", err)
+	}
+
+	return *res, err
 }
 
-func (r PostgresRepository) Create(ctx context.Context, user *auth.Claims, a model.Album) (*model.Album, error) {
+func (r PostgresRepository) Create(ctx context.Context, user *auth.Claims, a model.Album) (model.Album, error) {
 
 	// if r.Slug == nil {
 	// 	s := slug.Make(r.Title)
@@ -100,13 +112,13 @@ func (r PostgresRepository) Create(ctx context.Context, user *auth.Claims, a mod
 	err := query.WithContext(ctx).Create(&a)
 	// TODO Check duplicate
 	if err != nil {
-		return nil, err
+		return model.Album{}, err
 	}
 
-	return &a, nil
+	return a, nil
 }
 
-func (r PostgresRepository) Update(ctx context.Context, user *auth.Claims, a model.Album) (*model.Album, error) {
+func (r PostgresRepository) Update(ctx context.Context, user *auth.Claims, a model.Album) (model.Album, error) {
 	qb := query.Use(r.storage.DB).Album
 
 	query := qb.WithContext(ctx)
@@ -121,11 +133,17 @@ func (r PostgresRepository) Update(ctx context.Context, user *auth.Claims, a mod
 	}
 	_, err := query.Where(qb.ID.Eq(a.ID)).Updates(update)
 	if err != nil {
-		return nil, fmt.Errorf("error update album: %w", err)
+		return model.Album{}, fmt.Errorf("error update album: %w", err)
 	}
 	query.Preload(qb.Categories).Preload(qb.Medias)
 
-	return query.Where(qb.ID.Eq(a.ID)).First()
+	res, err := query.Where(qb.ID.Eq(a.ID)).First()
+
+	if err != nil {
+		return model.Album{}, fmt.Errorf("error get album: %w", err)
+	}
+
+	return *res, err
 }
 
 func (r PostgresRepository) Delete(ctx context.Context, user *auth.Claims, id int32) error {
