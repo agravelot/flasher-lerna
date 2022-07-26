@@ -53,7 +53,12 @@ func Run(config *config.Config) error {
 		return fmt.Errorf("could not create album service: %w", err)
 	}
 
-	sArticle := article.NewService(&orm)
+	articleRepo, err := postgres.NewArticleRepository(&orm)
+	if err != nil {
+		return err
+	}
+
+	sArticle := article.NewService(articleRepo)
 
 	// Adds gRPC internal logs. This is quite verbose, so adjust as desired!
 	l := grpclog.NewLoggerV2(os.Stdout, os.Stdout, os.Stdout)

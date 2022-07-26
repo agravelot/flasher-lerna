@@ -13,17 +13,17 @@ import (
 )
 
 // Postgres repository implmentation
-type PostgresRepository struct {
+type PostgresAlbumRepository struct {
 	storage *Postgres
 }
 
-func (r *PostgresRepository) published(q *query.Query) func(db gen.Dao) gen.Dao {
+func (r *PostgresAlbumRepository) published(q *query.Query) func(db gen.Dao) gen.Dao {
 	return func(db gen.Dao) gen.Dao {
 		return db.Where(q.Album.Private.Is(false), q.Album.PublishedAt.Lte(time.Now()))
 	}
 }
 
-func (r PostgresRepository) paginate(q *query.Query, next *int32, pageSize *int32) func(db gen.Dao) gen.Dao {
+func (r PostgresAlbumRepository) paginate(q *query.Query, next *int32, pageSize *int32) func(db gen.Dao) gen.Dao {
 	return func(db gen.Dao) gen.Dao {
 		if next != nil && *next != 0 {
 			db = db.Where(q.Album.ID.Gt(*next))
@@ -36,11 +36,11 @@ func (r PostgresRepository) paginate(q *query.Query, next *int32, pageSize *int3
 	}
 }
 
-func (r PostgresRepository) Close() error {
+func (r PostgresAlbumRepository) Close() error {
 	return r.storage.Close()
 }
 
-func (r PostgresRepository) List(ctx context.Context, user *auth.Claims, params album.ListParams) ([]model.Album, error) {
+func (r PostgresAlbumRepository) List(ctx context.Context, user *auth.Claims, params album.ListParams) ([]model.Album, error) {
 	qb := query.Use(r.storage.DB).Album
 	q := qb.WithContext(ctx).Order(qb.PublishedAt.Desc())
 
@@ -76,7 +76,7 @@ func (r PostgresRepository) List(ctx context.Context, user *auth.Claims, params 
 	return albums, nil
 }
 
-func (r PostgresRepository) GetBySlug(ctx context.Context, user *auth.Claims, slug string) (model.Album, error) {
+func (r PostgresAlbumRepository) GetBySlug(ctx context.Context, user *auth.Claims, slug string) (model.Album, error) {
 	isAdmin := user != nil && user.IsAdmin()
 
 	qb := query.Use(r.storage.DB).Album
@@ -100,7 +100,7 @@ func (r PostgresRepository) GetBySlug(ctx context.Context, user *auth.Claims, sl
 	return *res, err
 }
 
-func (r PostgresRepository) Create(ctx context.Context, user *auth.Claims, a model.Album) (model.Album, error) {
+func (r PostgresAlbumRepository) Create(ctx context.Context, user *auth.Claims, a model.Album) (model.Album, error) {
 
 	// if r.Slug == nil {
 	// 	s := slug.Make(r.Title)
@@ -118,7 +118,7 @@ func (r PostgresRepository) Create(ctx context.Context, user *auth.Claims, a mod
 	return a, nil
 }
 
-func (r PostgresRepository) Update(ctx context.Context, user *auth.Claims, a model.Album) (model.Album, error) {
+func (r PostgresAlbumRepository) Update(ctx context.Context, user *auth.Claims, a model.Album) (model.Album, error) {
 	qb := query.Use(r.storage.DB).Album
 
 	query := qb.WithContext(ctx)
@@ -146,7 +146,7 @@ func (r PostgresRepository) Update(ctx context.Context, user *auth.Claims, a mod
 	return *res, err
 }
 
-func (r PostgresRepository) Delete(ctx context.Context, user *auth.Claims, id int32) error {
+func (r PostgresAlbumRepository) Delete(ctx context.Context, user *auth.Claims, id int32) error {
 	qb := query.Use(r.storage.DB).Album
 
 	ri, err := qb.WithContext(ctx).Where(qb.ID.Eq(id)).Delete()
@@ -157,5 +157,5 @@ func (r PostgresRepository) Delete(ctx context.Context, user *auth.Claims, id in
 }
 
 func NewAlbumRepository(storage *Postgres) (album.Repository, error) {
-	return PostgresRepository{storage}, nil
+	return PostgresAlbumRepository{storage}, nil
 }

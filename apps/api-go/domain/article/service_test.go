@@ -1,7 +1,8 @@
-package article
+package article_test
 
 import (
 	"api-go/config"
+	"api-go/domain/article"
 	articlesgrpc "api-go/gen/go/proto/articles/v2"
 	"api-go/infrastructure/storage/postgres"
 	"api-go/model"
@@ -112,10 +113,15 @@ func TestMain(m *testing.M) {
 func TestShouldBeAbleToListEmpty(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
-	r, _ := s.Index(context.Background(), &articlesgrpc.IndexRequest{})
+	r, err := s.Index(context.Background(), &articlesgrpc.IndexRequest{})
 
+	assert.NoError(t, err)
 	assert.Equal(t, 0, len(r.Data))
 	// assert.Equal(t, int64(0), r.Meta.Total)
 	// assert.Equal(t, 10, r.Meta.Limit)
@@ -124,11 +130,15 @@ func TestShouldBeAbleToListEmpty(t *testing.T) {
 func TestShouldBeAbleToListWithOnePublishedArticle(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	n := time.Now()
 	a := model.Article{Name: "A good name", PublishedAt: &n}
-	err := tx.DB.Create(&a).Error
+	err = tx.DB.Create(&a).Error
 	if !assert.NoError(t, err) {
 		t.Error(err)
 	}
@@ -146,7 +156,11 @@ func TestShouldBeAbleToListPublishedArticlesOnSecondPage(t *testing.T) {
 	var articles []model.Article
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	n := time.Now()
 	for i := 0; i < 10; i++ {
@@ -161,7 +175,7 @@ func TestShouldBeAbleToListPublishedArticlesOnSecondPage(t *testing.T) {
 		articles = append(articles, tmp)
 	}
 	a := model.Article{Name: "On second page", PublishedAt: &n}
-	err := tx.DB.Create(&a).Error
+	err = tx.DB.Create(&a).Error
 	if err != nil {
 		t.Error(err)
 	}
@@ -180,7 +194,11 @@ func TestShouldBeAbleToListPublishedArticlesOnSecondPageWithCustomPerPage(t *tes
 	n := time.Now()
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	for i := 0; i < 2; i++ {
 		tmp := model.Article{Name: "A good name " + strconv.Itoa(i), PublishedAt: &n}
@@ -191,7 +209,7 @@ func TestShouldBeAbleToListPublishedArticlesOnSecondPageWithCustomPerPage(t *tes
 		articles = append(articles, tmp)
 	}
 	a := model.Article{Name: "On second page", PublishedAt: &n}
-	err := tx.DB.Create(&a).Error
+	err = tx.DB.Create(&a).Error
 	if err != nil {
 		t.Error(err)
 	}
@@ -210,10 +228,14 @@ func TestShouldBeAbleToListNonPublishedArticleAsAdmin(t *testing.T) {
 	ctx, _ := authAsAdmin(context.Background())
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	a := model.Article{Name: "A good name"}
-	err := tx.DB.Create(&a).Error
+	err = tx.DB.Create(&a).Error
 	if err != nil {
 		t.Error(err)
 	}
@@ -229,11 +251,15 @@ func TestShouldBeAbleToListNonPublishedArticleAsAdmin(t *testing.T) {
 func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	n := time.Now()
 	a := model.Article{Name: "A good name", PublishedAt: &n}
-	err := tx.DB.Create(&a).Error
+	err = tx.DB.Create(&a).Error
 	if err != nil {
 		t.Error(err)
 	}
@@ -249,12 +275,16 @@ func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
 func TestShouldNotListSoftDeletedArticles(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	n := time.Now()
 
 	a := model.Article{Name: "A good name", PublishedAt: &n}
-	err := tx.DB.Create(&a).Error
+	err = tx.DB.Create(&a).Error
 	if err != nil {
 		t.Error(err)
 	}
@@ -270,10 +300,14 @@ func TestShouldNotListSoftDeletedArticles(t *testing.T) {
 func TestShouldNotListNonPublishedArticles(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	a := model.Article{Name: "A good name"}
-	err := tx.DB.Create(&a).Error
+	err = tx.DB.Create(&a).Error
 	if err != nil {
 		t.Error(err)
 	}
@@ -290,11 +324,15 @@ func TestShouldNotListNonPublishedArticles(t *testing.T) {
 func TestShouldBeAbleToGetPublishedArticleAsGuest(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	n := time.Now()
 	a := model.Article{Name: "A good name", Slug: "a-good-name", PublishedAt: &n}
-	err := tx.DB.Create(&a).Error
+	err = tx.DB.Create(&a).Error
 	if err != nil {
 		t.Error(err)
 	}
@@ -308,12 +346,16 @@ func TestShouldBeAbleToGetPublishedArticleAsGuest(t *testing.T) {
 func TestShouldBeAbleToGetPublishedArticleAsUser(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	ctx, _ := authAsUser(context.Background())
 	n := time.Now()
 	a := model.Article{Name: "A good name", Slug: "a-good-name", PublishedAt: &n}
-	err := tx.DB.Create(&a).Error
+	err = tx.DB.Create(&a).Error
 	if err != nil {
 		t.Error(err)
 	}
@@ -327,10 +369,14 @@ func TestShouldBeAbleToGetPublishedArticleAsUser(t *testing.T) {
 func TestShouldNotBeAbleToGetNonPublishedArticleAsGuest(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	a := model.Article{Name: "A good name", Slug: "a-good-name"}
-	err := tx.DB.Create(&a).Error
+	err = tx.DB.Create(&a).Error
 	if err != nil {
 		t.Error(err)
 	}
@@ -338,17 +384,21 @@ func TestShouldNotBeAbleToGetNonPublishedArticleAsGuest(t *testing.T) {
 	_, err = s.GetBySlug(context.Background(), &articlesgrpc.GetBySlugRequest{Slug: a.Slug})
 
 	assert.Error(t, err)
-	assert.Equal(t, ErrNotFound, err)
+	assert.Equal(t, article.ErrNotFound, err)
 }
 
 func TestShouldNotBeAbleToGetNonPublishedArticleAsUser(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	ctx, _ := authAsUser(context.Background())
 	a := model.Article{Name: "A good name", Slug: "a-good-name"}
-	err := tx.DB.Create(&a).Error
+	err = tx.DB.Create(&a).Error
 	if err != nil {
 		t.Error(err)
 	}
@@ -356,17 +406,21 @@ func TestShouldNotBeAbleToGetNonPublishedArticleAsUser(t *testing.T) {
 	_, err = s.GetBySlug(ctx, &articlesgrpc.GetBySlugRequest{Slug: a.Slug})
 
 	assert.Error(t, err)
-	assert.Equal(t, ErrNotFound, err)
+	assert.Equal(t, article.ErrNotFound, err)
 }
 
 func TestShouldBeAbleToGetNonPublishedArticleAsAdmin(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	ctx, _ := authAsAdmin(context.Background())
 	a := model.Article{Name: "A good name", Slug: "a-good-name"}
-	err := tx.DB.Create(&a).Error
+	err = tx.DB.Create(&a).Error
 	if err != nil {
 		t.Error(err)
 	}
@@ -382,7 +436,11 @@ func TestShouldBeAbleToGetNonPublishedArticleAsAdmin(t *testing.T) {
 func TestShouldBeAbleToCreateAnArticleAndGenerateSlugAsAdmin(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	a := articlesgrpc.CreateRequest{Name: "A good name", MetaDescription: "a meta decription"}
 	ctx, claims := authAsAdmin(context.Background())
@@ -402,7 +460,11 @@ func TestShouldBeAbleToCreateAnArticleAndGenerateSlugAsAdmin(t *testing.T) {
 func TestShouldBeAbleToCreateAnPublishedArticleAndGenerateSlugAsAdmin(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	n := time.Now()
 	a := articlesgrpc.CreateRequest{Name: "A good name", MetaDescription: "a meta decription", PublishedAt: &timestamppb.Timestamp{Seconds: n.Unix()}}
@@ -423,7 +485,11 @@ func TestShouldBeAbleToCreateAnPublishedArticleAndGenerateSlugAsAdmin(t *testing
 func TestShouldBeAbleToCreateAnArticleWithASpecifiedSlug(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	a := articlesgrpc.CreateRequest{Name: "A good name", Slug: "wtf-is-this-slug", MetaDescription: "a meta decription"}
 	ctx, claims := authAsAdmin(context.Background())
@@ -442,7 +508,11 @@ func TestShouldBeAbleToCreateAnArticleWithASpecifiedSlug(t *testing.T) {
 func TestShouldNotBeAbleToCreateAnArticleWithSameSlug(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	tx.DB.Create(&a)
@@ -450,7 +520,7 @@ func TestShouldNotBeAbleToCreateAnArticleWithSameSlug(t *testing.T) {
 	ctx, _ := authAsAdmin(context.Background())
 
 	tx.DB.SavePoint("sp1")
-	_, err := s.Create(ctx, &dup)
+	_, err = s.Create(ctx, &dup)
 	tx.DB.RollbackTo("sp1") // rollback before failed transaction to be able to query it
 
 	assert.Error(t, err)
@@ -462,12 +532,16 @@ func TestShouldNotBeAbleToCreateAnArticleWithSameSlug(t *testing.T) {
 func TestShouldNotBeAbleToSaveArticleWithEmptyName(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	a := articlesgrpc.CreateRequest{Name: ""}
 	ctx, _ := authAsAdmin(context.Background())
 
-	_, err := s.Create(ctx, &a)
+	_, err = s.Create(ctx, &a)
 
 	assert.Error(t, err)
 	firstValidationError := err.(articlesgrpc.CreateRequestMultiError)[0].(articlesgrpc.CreateRequestValidationError)
@@ -480,12 +554,16 @@ func TestShouldNotBeAbleToSaveArticleWithEmptyName(t *testing.T) {
 func TestShouldNotBeAbleToSaveArticleWithTooLongName(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	a := articlesgrpc.CreateRequest{Name: "a very too long big enormous title that will never fit in any screen..."}
 	ctx, _ := authAsAdmin(context.Background())
 
-	_, err := s.Create(ctx, &a)
+	_, err = s.Create(ctx, &a)
 
 	assert.Error(t, err)
 	firstValidationError := err.(articlesgrpc.CreateRequestMultiError)[0].(articlesgrpc.CreateRequestValidationError)
@@ -498,12 +576,16 @@ func TestShouldNotBeAbleToSaveArticleWithTooLongName(t *testing.T) {
 func TestShouldNotBeAbleToSaveArticleWithEmptyMetaDescription(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	a := articlesgrpc.CreateRequest{Name: "a good name", MetaDescription: ""}
 	ctx, _ := authAsAdmin(context.Background())
 
-	_, err := s.Create(ctx, &a)
+	_, err = s.Create(ctx, &a)
 
 	assert.Error(t, err)
 	firstValidationError := err.(articlesgrpc.CreateRequestMultiError)[0].(articlesgrpc.CreateRequestValidationError)
@@ -516,12 +598,16 @@ func TestShouldNotBeAbleToSaveArticleWithEmptyMetaDescription(t *testing.T) {
 func TestShouldNotBeAbleToSaveArticleWithTooLongMetaDescription(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	a := articlesgrpc.CreateRequest{Name: "A good name", MetaDescription: "a very too long big enormous title that will never fit in any screen...a very too long big enormous title that will never fit in any screen...a very too long big enormous title that will never fit in any screen..."}
 	ctx, _ := authAsAdmin(context.Background())
 
-	_, err := s.Create(ctx, &a)
+	_, err = s.Create(ctx, &a)
 
 	assert.Error(t, err)
 	firstValidationError := err.(articlesgrpc.CreateRequestMultiError)[0].(articlesgrpc.CreateRequestValidationError)
@@ -534,15 +620,19 @@ func TestShouldNotBeAbleToSaveArticleWithTooLongMetaDescription(t *testing.T) {
 func TestShouldNotBeAbleToCreateAsUser(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	a := articlesgrpc.CreateRequest{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	ctx, _ := authAsUser(context.Background())
 
-	_, err := s.Create(ctx, &a)
+	_, err = s.Create(ctx, &a)
 
 	assert.Error(t, err)
-	assert.Equal(t, ErrNotAdmin, err)
+	assert.Equal(t, article.ErrNotAdmin, err)
 	var total int64
 	tx.DB.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 0, int(total))
@@ -551,14 +641,18 @@ func TestShouldNotBeAbleToCreateAsUser(t *testing.T) {
 func TestShouldNotBeAbleToCreateAsGuest(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	a := articlesgrpc.CreateRequest{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 
-	_, err := s.Create(context.Background(), &a)
+	_, err = s.Create(context.Background(), &a)
 
 	assert.Error(t, err)
-	assert.Equal(t, ErrNoAuth, err)
+	assert.Equal(t, article.ErrNoAuth, err)
 	var total int64
 	tx.DB.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 0, int(total))
@@ -569,12 +663,16 @@ func TestShouldNotBeAbleToCreateAsGuest(t *testing.T) {
 func TestShouldBeAbleToUpdateArticleNameAsAdmin(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	ctx, _ := authAsAdmin(context.Background())
 
 	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
-	err := tx.DB.Create(&a).Error
+	err = tx.DB.Create(&a).Error
 	if err != nil {
 		t.Error(err)
 	}
@@ -593,13 +691,17 @@ func TestShouldBeAbleToUpdateArticleNameAsAdmin(t *testing.T) {
 func TestShouldNotBeAbleToUpdateArticleTooShortNameAsAdmin(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	tx.DB.Create(&a)
 
 	u := &articlesgrpc.UpdateRequest{Name: "", Slug: a.Slug, MetaDescription: a.MetaDescription}
-	_, err := s.Update(context.Background(), u)
+	_, err = s.Update(context.Background(), u)
 
 	assert.Error(t, err)
 	var total int64
@@ -610,17 +712,21 @@ func TestShouldNotBeAbleToUpdateArticleTooShortNameAsAdmin(t *testing.T) {
 func TestShouldNotBeAbleToUpdateArticleAsUser(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	ctx, _ := authAsUser(context.Background())
 	tx.DB.Create(&a)
 
 	u := articlesgrpc.UpdateRequest{Name: a.Name, Slug: a.Slug, MetaDescription: a.MetaDescription}
-	_, err := s.Update(ctx, &u)
+	_, err = s.Update(ctx, &u)
 
 	assert.Error(t, err)
-	assert.Equal(t, ErrNotAdmin, err)
+	assert.ErrorIs(t, article.ErrNotAdmin, err)
 	var total int64
 	tx.DB.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 1, int(total))
@@ -629,16 +735,20 @@ func TestShouldNotBeAbleToUpdateArticleAsUser(t *testing.T) {
 func TestShouldNotBeAbleToUpdateArticleAsGuest(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	tx.DB.Create(&a)
 
 	u := articlesgrpc.UpdateRequest{Name: a.Name, Slug: a.Slug, MetaDescription: a.MetaDescription}
-	_, err := s.Update(context.Background(), &u)
+	_, err = s.Update(context.Background(), &u)
 
 	assert.Error(t, err)
-	assert.Equal(t, ErrNoAuth, err)
+	assert.ErrorIs(t, article.ErrNoAuth, err)
 	var total int64
 	tx.DB.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 1, int(total))
@@ -646,15 +756,20 @@ func TestShouldNotBeAbleToUpdateArticleAsGuest(t *testing.T) {
 
 //////// DELETE //////////
 
-func TestShouldBeAbleToDeleteArticleAndIsSoftDeleted(t *testing.T) {
+func TestShouldBeAbleToDeleteArticleAndIsSoftDeletedAsAdmin(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
 
 	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	tx.DB.Create(&a)
 
-	_, err := s.Delete(context.Background(), &articlesgrpc.DeleteRequest{Id: strconv.FormatInt(a.ID, 10)})
+	ctx, _ := authAsAdmin(context.Background())
+	_, err = s.Delete(ctx, &articlesgrpc.DeleteRequest{Id: int32(a.ID)})
 
 	var total, totalScopeless int64
 	tx.DB.Model(&a).Count(&total)
@@ -664,13 +779,20 @@ func TestShouldBeAbleToDeleteArticleAndIsSoftDeleted(t *testing.T) {
 	assert.Equal(t, 1, int(totalScopeless))
 }
 
-func TestShouldNotBeAbleToDeleteAnNonExistantArticle(t *testing.T) {
+func TestShouldNotBeAbleToDeleteAnNonExistantArticleAsAdmin(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
-	s := NewService(&tx)
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	ctx, _ := authAsAdmin(context.Background())
+	s := article.NewService(repo)
 
-	_, err := s.Delete(context.Background(), &articlesgrpc.DeleteRequest{Id: string("123123123")})
+	_, err = s.Delete(ctx, &articlesgrpc.DeleteRequest{Id: 123123123})
 
 	assert.Error(t, err)
-	assert.EqualError(t, err, ErrNotFound.Error())
+	assert.ErrorIs(t, err, article.ErrNotFound)
 }
+
+// TODO add delete test for user and guest
