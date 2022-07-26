@@ -82,6 +82,10 @@ func (s service) GetBySlug(ctx context.Context, request *articles_pb.GetBySlugRe
 		return &articles_pb.GetBySlugResponse{}, ErrNotFound
 	}
 
+	if err != nil {
+		return &articles_pb.GetBySlugResponse{}, fmt.Errorf("unable get article: %w", err)
+	}
+
 	data := transform(a)
 	return &articles_pb.GetBySlugResponse{
 		Id:              data.Id,
@@ -121,6 +125,9 @@ func (s service) Create(ctx context.Context, request *articles_pb.CreateRequest)
 		PublishedAt:     p,
 		AuthorUUID:      user.Sub,
 	})
+	if err != nil {
+		return nil, fmt.Errorf("unable create article: %w", err)
+	}
 
 	data := transform(a)
 	return &articles_pb.CreateResponse{
@@ -140,6 +147,7 @@ func (s service) Update(ctx context.Context, request *articles_pb.UpdateRequest)
 	p := request.PublishedAt.AsTime()
 
 	if err := request.ValidateAll(); err != nil {
+		// TODO Can wrap it?
 		return nil, err
 	}
 
@@ -154,7 +162,7 @@ func (s service) Update(ctx context.Context, request *articles_pb.UpdateRequest)
 		// AuthorId : request.AuthorId
 	})
 	if err != nil {
-		return &articles_pb.UpdateResponse{}, err
+		return &articles_pb.UpdateResponse{}, fmt.Errorf("unable update article: %w", err)
 	}
 
 	data := transform(a)
@@ -174,5 +182,9 @@ func (s service) Delete(ctx context.Context, request *articles_pb.DeleteRequest)
 	// TODO check if user is admin and other stuffs
 	err := s.repository.Delete(ctx, user, request.Id)
 
-	return &articles_pb.DeleteResponse{}, err
+	if err != nil {
+		return &articles_pb.DeleteResponse{}, fmt.Errorf("unable delete article: %w", err)
+	}
+
+	return &articles_pb.DeleteResponse{}, nil
 }

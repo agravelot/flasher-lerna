@@ -135,11 +135,11 @@ func (r PostgresArticleRepository) Delete(ctx context.Context, user *auth.Claims
 	}
 
 	rs, err := query.Where(qb.ID.Eq(int64(id))).Delete()
+	if err != nil {
+		return fmt.Errorf("unable to delete article: %w", err)
+	}
 	if rs.RowsAffected == 0 {
 		return article.ErrNotFound
-	}
-	if err != nil {
-		return err
 	}
 
 	return nil

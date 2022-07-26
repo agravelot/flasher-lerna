@@ -632,7 +632,7 @@ func TestShouldNotBeAbleToCreateAsUser(t *testing.T) {
 	_, err = s.Create(ctx, &a)
 
 	assert.Error(t, err)
-	assert.Equal(t, article.ErrNotAdmin, err)
+	assert.ErrorAs(t, err, &article.ErrNotAdmin)
 	var total int64
 	tx.DB.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 0, int(total))
@@ -726,7 +726,7 @@ func TestShouldNotBeAbleToUpdateArticleAsUser(t *testing.T) {
 	_, err = s.Update(ctx, &u)
 
 	assert.Error(t, err)
-	assert.ErrorIs(t, article.ErrNotAdmin, err)
+	assert.ErrorAs(t, err, &article.ErrNotAdmin)
 	var total int64
 	tx.DB.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 1, int(total))
@@ -748,7 +748,7 @@ func TestShouldNotBeAbleToUpdateArticleAsGuest(t *testing.T) {
 	_, err = s.Update(context.Background(), &u)
 
 	assert.Error(t, err)
-	assert.ErrorIs(t, article.ErrNoAuth, err)
+	assert.ErrorAs(t, err, &article.ErrNoAuth)
 	var total int64
 	tx.DB.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 1, int(total))
@@ -786,13 +786,13 @@ func TestShouldNotBeAbleToDeleteAnNonExistantArticleAsAdmin(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	ctx, _ := authAsAdmin(context.Background())
 	s := article.NewService(repo)
+	ctx, _ := authAsAdmin(context.Background())
 
 	_, err = s.Delete(ctx, &articlesgrpc.DeleteRequest{Id: 123123123})
 
 	assert.Error(t, err)
-	assert.ErrorIs(t, err, article.ErrNotFound)
+	assert.ErrorAs(t, err, &article.ErrNotFound)
 }
 
 // TODO add delete test for user and guest
