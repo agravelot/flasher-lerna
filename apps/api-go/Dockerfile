@@ -1,6 +1,10 @@
 FROM golang:1.18 as builder
 ARG BUF_TOKEN
 WORKDIR /go/src/github.com/agravelot/api-go
+# Fetch dependencies
+COPY go.mod go.sum ./
+RUN go mod download
+# Build
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app ./cmd/app
 
