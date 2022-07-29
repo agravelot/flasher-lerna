@@ -20,6 +20,7 @@ import (
 
 	"github.com/jackc/pgconn"
 	"github.com/jackc/pgerrcode"
+	"github.com/kr/pretty"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -125,13 +126,21 @@ func TestMain(m *testing.M) {
 type ListTestCase struct {
 	name              string
 	expectedDataCount int
-	album             []model.Album
+	albumGenerator    func() []*model.Album
 	assertSlugOrder   []string
+	assertTitleOrder  []string
+	limit             *int32
+	nextGenerator     func(albums []*model.Album) int32
+	authAs            func(ctx context.Context) (context.Context, auth.Claims)
 }
 
 var sub10Min = time.Now().Add(-10 * time.Minute)
 var sub100Min = time.Now().Add(-100 * time.Minute)
 var sub5Min = time.Now().Add(-5 * time.Minute)
+
+func ptr[T any](i T) *T {
+	return &i
+}
 
 func TestList(t *testing.T) {
 	testListCases := []ListTestCase{
@@ -139,73 +148,154 @@ func TestList(t *testing.T) {
 		{
 			name:              "list with one published album",
 			expectedDataCount: 1,
-			album: []model.Album{
-				{
-					Title:       "A good Title",
-					PublishedAt: &sub10Min,
-					Private:     false,
-					SsoID:       &ssoId,
-				},
+			albumGenerator: func() []*model.Album {
+				return []*model.Album{
+					{
+						Title:       "A good Title",
+						PublishedAt: &sub10Min,
+						Private:     false,
+						SsoID:       &ssoId,
+					},
+				}
 			},
 		},
 		{
 			name:              "should be ordered by date of publication",
 			expectedDataCount: 3,
 			assertSlugOrder:   []string{"a-good-title-3", "a-good-title-2", "a-good-title"},
-			album: []model.Album{
-				{
-					Title:       "A good Title",
-					Slug:        "a-good-title",
-					PublishedAt: &sub100Min,
-					Private:     false,
-					SsoID:       &ssoId,
-				},
-				{
-					Title:       "A good Title 2",
-					Slug:        "a-good-title-2",
-					PublishedAt: &sub10Min,
-					Private:     false,
-					SsoID:       &ssoId,
-				},
-				{
-					Title:       "A good Title 3",
-					Slug:        "a-good-title-3",
-					PublishedAt: &sub5Min,
-					Private:     false,
-					SsoID:       &ssoId,
-				},
+			albumGenerator: func() []*model.Album {
+				return []*model.Album{
+					{
+						Title:       "A good Title",
+						Slug:        "a-good-title",
+						PublishedAt: &sub100Min,
+						Private:     false,
+						SsoID:       &ssoId,
+					},
+					{
+						Title:       "A good Title 2",
+						Slug:        "a-good-title-2",
+						PublishedAt: &sub10Min,
+						Private:     false,
+						SsoID:       &ssoId,
+					},
+					{
+						Title:       "A good Title 3",
+						Slug:        "a-good-title-3",
+						PublishedAt: &sub5Min,
+						Private:     false,
+						SsoID:       &ssoId,
+					},
+				}
 			},
 		},
 		{
 			name:              "only show public albums",
 			expectedDataCount: 1,
-			album: []model.Album{
-				{
-					Title:       "A good Title",
-					Slug:        "a-good-title",
-					PublishedAt: &sub100Min,
+			albumGenerator: func() []*model.Album {
+				return []*model.Album{
+					{
+						Title:       "A good Title",
+						Slug:        "a-good-title",
+						PublishedAt: &sub100Min,
+						Private:     false,
+						SsoID:       &ssoId,
+					},
+					{
+						Title:       "A good Title 2",
+						Slug:        "a-good-title-2",
+						PublishedAt: &sub10Min,
+						Private:     true,
+						SsoID:       &ssoId,
+					},
+					{
+						Title:   "A good Title 3",
+						Slug:    "a-good-title-3",
+						Private: true,
+						SsoID:   &ssoId,
+					},
+					{
+						Title:   "A good Title 4",
+						Slug:    "a-good-title-4",
+						Private: false,
+						SsoID:   &ssoId,
+					},
+				}
+			},
+		},
+		{
+			name:              "should be able to list published albums on second page",
+			expectedDataCount: 1,
+			nextGenerator: func(albums []*model.Album) int32 {
+				pretty.Println(len(albums))
+				t := *albums[9]
+				return t.ID
+			},
+			albumGenerator: func() []*model.Album {
+				var albums []*model.Album
+				for i := 0; i < 10; i++ {
+					albums = append(albums, &model.Album{
+						Title:       "A good Title " + strconv.Itoa(i),
+						Slug:        "a-good-title-" + strconv.Itoa(i),
+						PublishedAt: &sub100Min,
+						Private:     false,
+						SsoID:       &ssoId,
+					})
+				}
+
+				albums = append(albums, &model.Album{
+					Title:       "On second page",
+					Slug:        "on-second-page",
+					PublishedAt: &sub5Min,
 					Private:     false,
 					SsoID:       &ssoId,
-				},
-				{
-					Title:       "A good Title 2",
-					Slug:        "a-good-title-2",
-					PublishedAt: &sub10Min,
-					Private:     true,
+				})
+				return albums
+			},
+		},
+		{
+			name: "should be able to list published albums on second page with custom per page",
+			nextGenerator: func(albums []*model.Album) int32 {
+				return albums[1].ID
+			},
+			limit:             ptr[int32](2),
+			expectedDataCount: 1,
+			assertTitleOrder:  []string{"On second page"},
+			assertSlugOrder:   []string{"on-second-page"},
+			albumGenerator: func() []*model.Album {
+				var albums []*model.Album
+				for i := 0; i < 2; i++ {
+					albums = append(albums, &model.Album{
+						Title:       "On second page " + strconv.Itoa(i),
+						Slug:        "on-second-page " + strconv.Itoa(i),
+						PublishedAt: &sub5Min,
+						Private:     false,
+						SsoID:       &ssoId,
+					})
+				}
+
+				albums = append(albums, &model.Album{
+					Title:       "On second page",
+					Slug:        "on-second-page",
+					PublishedAt: &sub5Min,
+					Private:     false,
 					SsoID:       &ssoId,
-				},
-				{
-					Title:   "A good Title 3",
-					Slug:    "a-good-title-3",
-					Private: true,
-					SsoID:   &ssoId,
-				},
-				{
-					Title:   "A good Title 4",
-					Slug:    "a-good-title-4",
-					Private: false,
-					SsoID:   &ssoId,
-				},
+				})
+				return albums
+			},
+		},
+		{
+			name:              "should be able to list non published album as admin",
+			expectedDataCount: 1,
+			authAs:            authAsAdmin,
+			albumGenerator: func() []*model.Album {
+				return []*model.Album{
+					{
+						Title: "On second page",
+						Slug:  "on-second-page",
+						SsoID: &ssoId,
+					},
+				}
 			},
 		},
 	}
@@ -225,165 +315,47 @@ func TestList(t *testing.T) {
 				t.Error(err)
 			}
 
-			for i := 0; i < len(tc.album); i++ {
-				_, err = repo.Create(context.Background(), nil, tc.album[i])
-				if err != nil {
-					t.Error(err)
-				}
+			ctx := context.Background()
+			if tc.authAs != nil {
+				ctx, _ = tc.authAs(ctx)
 			}
 
-			r, err := s.Index(context.Background(), &albums_pb.IndexRequest{})
+			var albums []*model.Album
+			if tc.albumGenerator != nil {
+				albums = tc.albumGenerator()
+			}
+			q := query.Use(tx.DB).Album
+			err = q.WithContext(ctx).Create(albums...)
+			if err != nil {
+				t.Error(err)
+			}
+
+			params := &albums_pb.IndexRequest{
+				Limit: tc.limit,
+			}
+
+			if tc.nextGenerator != nil {
+				next := tc.nextGenerator(albums)
+				params.Next = &next
+			}
+
+			r, err := s.Index(ctx, params)
 
 			assert.Nil(t, err)
 			assert.Equal(t, tc.expectedDataCount, len(r.Data))
 
+			//	assert.Equal(t, albums[10].Title, r.Data[0].Title)
+
+			for i, s := range tc.assertTitleOrder {
+				assert.Equal(t, s, r.Data[i].Title)
+			}
+
 			for i, s := range tc.assertSlugOrder {
 				assert.Equal(t, s, r.Data[i].Slug)
 			}
+
 		})
 	}
-}
-
-func TestShouldBeAbleToListPublishedAlbumsOnSecondPage(t *testing.T) {
-	tx := db.Begin()
-	defer tx.Rollback()
-	repo, err := postgres.NewAlbumRepository(&tx)
-	if err != nil {
-		t.Error(err)
-	}
-	s, err := album.NewService(repo)
-	if err != nil {
-		t.Error(err)
-	}
-
-	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
-	sub100Min := time.Now().Add(-100 * time.Minute)
-	sub5Min := time.Now().Add(-5 * time.Minute)
-	a := query.Use(tx.DB).Album
-
-	var lastPageID int32
-
-	albums := []*model.Album{}
-
-	for i := 0; i < 10; i++ {
-		albums = append(albums, &model.Album{
-			Title:       "A good Title " + strconv.Itoa(i),
-			Slug:        "a-good-title-" + strconv.Itoa(i),
-			PublishedAt: &sub100Min,
-			Private:     false,
-			SsoID:       &ssoId,
-		})
-	}
-
-	albums = append(albums, &model.Album{
-		Title:       "On second page",
-		Slug:        "on-second-page",
-		PublishedAt: &sub5Min,
-		Private:     false,
-		SsoID:       &ssoId,
-	})
-
-	err = a.WithContext(context.Background()).Create(albums...)
-	if err != nil {
-		t.Error(fmt.Errorf("unable create album: %w", err))
-	}
-	lastPageID = albums[9].ID
-	limit := int32(10)
-
-	r, _ := s.Index(context.Background(), &albums_pb.IndexRequest{Next: &lastPageID, Limit: &limit})
-
-	// assert.Equal(t, int64(11), r.Meta.Total)
-	// assert.Equal(t, int32(10), r.Meta.Limit)
-	assert.Equal(t, 1, len(r.Data))
-	assert.Equal(t, albums[10].Title, r.Data[0].Title)
-}
-
-func TestShouldBeAbleToListPublishedAlbumsOnSecondPageWithCustomPerPage(t *testing.T) {
-	tx := db.Begin()
-	defer tx.Rollback()
-	repo, err := postgres.NewAlbumRepository(&tx)
-	if err != nil {
-		t.Error(err)
-	}
-
-	s, err := album.NewService(repo)
-	if err != nil {
-		t.Error(err)
-	}
-
-	var lastPageID int32
-	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
-	sub5Min := time.Now().Add(-5 * time.Minute)
-	a := query.Use(tx.DB).Album
-
-	var albums []*model.Album
-	for i := 0; i < 2; i++ {
-		albums = append(albums, &model.Album{
-			Title:       "On second page " + strconv.Itoa(i),
-			Slug:        "on-second-page " + strconv.Itoa(i),
-			PublishedAt: &sub5Min,
-			Private:     false,
-			SsoID:       &ssoId,
-		})
-	}
-
-	albums = append(albums, &model.Album{
-		Title:       "On second page",
-		Slug:        "on-second-page",
-		PublishedAt: &sub5Min,
-		Private:     false,
-		SsoID:       &ssoId,
-	})
-
-	err = a.WithContext(context.Background()).Create(albums...)
-	if err != nil {
-		t.Error(fmt.Errorf("Error creating album: %w", err))
-	}
-	lastPageID = albums[1].ID
-
-	limit := int32(2)
-	r, err := s.Index(context.Background(), &albums_pb.IndexRequest{Next: &lastPageID, Limit: &limit})
-	if err != nil {
-		t.Error(fmt.Errorf("Error listing albums: %w", err))
-	}
-
-	// assert.Equal(t, int64(3), r.Meta.Total)
-	// assert.Equal(t, int32(2), r.Meta.Limit)
-	assert.Equal(t, 1, len(r.Data))
-	assert.Equal(t, albums[2].Title, r.Data[0].Title)
-}
-
-func TestShouldBeAbleToListNonPublishedAlbumAsAdmin(t *testing.T) {
-	ctx, _ := authAsAdmin(context.Background())
-	tx := db.Begin()
-	defer tx.Rollback()
-	repo, err := postgres.NewAlbumRepository(&tx)
-	if err != nil {
-		t.Error(err)
-	}
-	s, err := album.NewService(repo)
-	if err != nil {
-		t.Error(err)
-	}
-
-	a := query.Use(tx.DB).Album
-
-	arg := model.Album{
-		Title: "On second page",
-		Slug:  "on-second-page",
-		SsoID: &ssoId,
-	}
-
-	err = a.WithContext(context.Background()).Create(&arg)
-	if err != nil {
-		t.Error(fmt.Errorf("Error creating album: %w", err))
-	}
-
-	r, _ := s.Index(ctx, &albums_pb.IndexRequest{})
-
-	// assert.Equal(t, int64(1), r.Meta.Total)
-	// assert.Equal(t, int32(10), r.Meta.Limit)
-	assert.Equal(t, 1, len(r.Data))
 }
 
 func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
