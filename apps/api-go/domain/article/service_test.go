@@ -15,8 +15,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/davecgh/go-spew/spew"
-
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -147,7 +145,6 @@ func TestShouldBeAbleToListWithOnePublishedArticle(t *testing.T) {
 
 	// assert.Equal(t, int64(1), r.Meta.Total)
 	// assert.Equal(t, 10, r.Meta.Limit)
-	spew.Dump(r.Data)
 	assert.NoError(t, err)
 	assert.Equal(t, 1, len(r.Data))
 }
