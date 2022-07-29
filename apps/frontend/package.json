@@ -40,7 +40,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "gray-matter": "^4.0.2",
     "joi": "^17.4.0",
-    "keycloak-js": "^17.0.0",
+    "keycloak-js": "^19.0.1",
     "lodash-es": "^4.17.20",
     "next": "^12.1.6",
     "next-compose-plugins": "^2.2.1",
