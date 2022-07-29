@@ -340,7 +340,7 @@ Delete an article to the server.
 
 | Name | Source | Type | Go type | Separator | Required | Default | Description |
 |------|--------|------|---------|-----------| :------: |---------|-------------|
-| id | `path` | string | `string` |  | ✓ |  |  |
+| id | `path` | int32 (formatted integer) | `int32` |  | ✓ |  |  |
 
 #### All responses
 | Code | Status | Description | Has headers | Schema |

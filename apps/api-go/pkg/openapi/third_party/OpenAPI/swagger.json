@@ -359,7 +359,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "format": "int32"
           }
         ],
         "tags": [
