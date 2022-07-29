@@ -42,12 +42,10 @@ func (s *service) Index(ctx context.Context, r *albumspb.IndexRequest) (*albumsp
 	params := ListParams{
 		Next:  r.Next,
 		Limit: r.Limit,
-	}
-	if r.Joins != nil {
-		params.Joins = ListJoinsParams{
+		Joins: ListJoinsParams{
 			Categories: r.Joins.Categories,
 			Medias:     r.Joins.Medias,
-		}
+		},
 	}
 
 	albums, err := s.repository.List(ctx, user, params)

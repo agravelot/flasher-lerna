@@ -44,7 +44,8 @@ func (r PostgresAlbumRepository) List(ctx context.Context, user *auth.Claims, pa
 	qb := query.Use(r.storage.DB).Album
 	q := qb.WithContext(ctx).Order(qb.PublishedAt.Desc())
 
-	if user == nil || (user != nil && !user.IsAdmin()) {
+	isAdmin := user != nil && user.IsAdmin()
+	if !isAdmin {
 		q = q.Scopes(r.published(query.Use(r.storage.DB)))
 	}
 
@@ -81,13 +82,13 @@ func (r PostgresAlbumRepository) GetBySlug(ctx context.Context, user *auth.Claim
 
 	qb := query.Use(r.storage.DB).Album
 
-	query := qb.WithContext(ctx)
+	q := qb.WithContext(ctx)
 
 	if !isAdmin {
-		query = query.Where(qb.PublishedAt.Lt(time.Now()), qb.Private.Is(false))
+		q = q.Scopes(r.published(query.Use(r.storage.DB)))
 	}
 
-	res, err := query.
+	res, err := q.
 		Preload(qb.Categories).
 		Preload(qb.Medias).
 		Where(qb.Slug.Eq(slug)).

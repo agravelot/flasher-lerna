@@ -12,6 +12,7 @@ import (
 )
 
 type Postgres struct {
+	// TODO Make it private
 	DB *gorm.DB
 }
 
@@ -35,18 +36,24 @@ func (d Postgres) Rollback() Postgres {
 
 func New(uri string) (Postgres, error) {
 
+	debug := false
+
+	logLevel := logger.Silent
+	if debug {
+		logLevel = logger.Info
+	}
+
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
 			SlowThreshold: time.Second, // Slow SQL threshold
-			LogLevel:      logger.Info, // Log level
+			LogLevel:      logLevel,    // Log level
 			Colorful:      true,
 		},
 	)
 
-	config := &gorm.Config{}
-	if false {
-		config.Logger = newLogger
+	config := &gorm.Config{
+		Logger: newLogger,
 	}
 
 	db, err := gorm.Open(postgres.Open(uri), config)

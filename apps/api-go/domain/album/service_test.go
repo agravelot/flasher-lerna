@@ -33,6 +33,8 @@ var ssoId = "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 
 // var token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIxamVHNzFZSHlUd25GUEVSb2NJeEVzS21lbjlWN1NjanRIZXFzak1KUXlZIn0.eyJleHAiOjE2MTExNjQ3MTAsImlhdCI6MTYxMTE2NDQxMCwiYXV0aF90aW1lIjoxNjExMTY0MzY0LCJqdGkiOiJlMThlMWNlOC05OTc5LTQ3NmQtOWYxMC1mOTk5OWJhMDQwZjgiLCJpc3MiOiJodHRwczovL2FjY291bnRzLmFncmF2ZWxvdC5ldS9hdXRoL3JlYWxtcy9hbnljbG91ZCIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiIzMDE1MWFlNS0yOGI0LTRjNmMtYjBhZS1lYTJlNmE0OWVmNjciLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJmcm9udGVuZCIsIm5vbmNlIjoiMTkyOWEwZGEtMTU2ZS00NWZmLTgzM2YtYTU2MGIwNmI1YWNkIiwic2Vzc2lvbl9zdGF0ZSI6IjRlMWYxOWYzLTFhMmMtNGUxNS1iMWFhLTNlY2ZhMTkxMGRiOCIsImFjciI6IjAiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIn0.PkfxSmIiG4lLE9hCjICcRPNpXC0X2QtVzYeUwAUwwe2G_6ArmMdZOkRVOKx3jiRO7PYu-D0NR9tAiv7yN9SDMDrIhtNoosgChB4PQ4wBf_YvHsJaAHwyK8Hu6h_8gxJIl3UYCKWTSYgLRK-IOE9E6FNlMdJK9UXAO_y2IBEZBO9QV-QxZH7SlYkm8VfoZzNzRMy82SgWLsQGDvwAAGCxHFRgTZdFNKPoqJylDyANBEuWanLwDohQKdNGqz6PlhtopmXo1v8kcHwBHxyMQ3mtRNCXBV6TOXo7oAWW3XeXGWjTtAiTY85Wr7R6IJ74WKpMrG-3PDL6Sx6n4JxOuurpLg"
 
+var userSsoId = "30151ae5-28b4-4c6c-b0ae-ea2e6a49ef67"
+
 func authAsUser(ctx context.Context) (context.Context, auth.Claims) {
 	claims := auth.Claims{
 		Exp:            1611164710,
@@ -41,7 +43,7 @@ func authAsUser(ctx context.Context) (context.Context, auth.Claims) {
 		Jti:            "e18e1ce8-9979-476d-9f10-f9999ba040f8",
 		Iss:            "https://accounts.example.com/auth/realms/test",
 		Aud:            "account",
-		Sub:            "30151ae5-28b4-4c6c-b0ae-ea2e6a49ef67",
+		Sub:            userSsoId,
 		Typ:            "Bearer",
 		Azp:            "frontend",
 		Nonce:          "1929a0da-156e-45ff-833f-a560b06b5acd",
@@ -65,6 +67,8 @@ func authAsUser(ctx context.Context) (context.Context, auth.Claims) {
 	return context.WithValue(ctx, auth.UserClaimsKey, &claims), claims
 }
 
+var adminSsoID = "30151ae5-28b4-4c6c-b0ae-ea2e6a49ef99"
+
 func authAsAdmin(ctx context.Context) (context.Context, auth.Claims) {
 	claims := auth.Claims{
 		Exp:            1611164710,
@@ -73,7 +77,7 @@ func authAsAdmin(ctx context.Context) (context.Context, auth.Claims) {
 		Jti:            "e18e1ce8-9979-476d-9f10-f9999ba040f8",
 		Iss:            "https://accounts.example.com/auth/realms/test",
 		Aud:            "account",
-		Sub:            "30151ae5-28b4-4c6c-b0ae-ea2e6a49ef67",
+		Sub:            adminSsoID,
 		Typ:            "Bearer",
 		Azp:            "frontend",
 		Nonce:          "1929a0da-156e-45ff-833f-a560b06b5acd",
@@ -124,14 +128,22 @@ func TestMain(m *testing.M) {
 /////// LIST ////////
 
 type ListTestCase struct {
-	name              string
-	expectedDataCount int
-	albumGenerator    func() []*model.Album
-	assertSlugOrder   []string
-	assertTitleOrder  []string
-	limit             *int32
-	nextGenerator     func(albums []*model.Album) int32
-	authAs            func(ctx context.Context) (context.Context, auth.Claims)
+	name                     string
+	expectedDataCount        int
+	albumGenerator           func() []*model.Album
+	assertSlugOrder          []string
+	assertTitleOrder         []string
+	assertCategoriesPresence bool
+	assertCategoriesCount    []int
+	assertMediaPresence      bool
+	assertMediaCount         []int
+	limit                    *int32
+	joins                    struct {
+		Categories bool
+		Medias     bool
+	}
+	nextGenerator func(albums []*model.Album) int32
+	authAs        func(ctx context.Context) (context.Context, auth.Claims)
 }
 
 var sub10Min = time.Now().Add(-10 * time.Minute)
@@ -298,12 +310,164 @@ func TestList(t *testing.T) {
 				}
 			},
 		},
+		{
+			name:                     "Should not include categories by default",
+			assertCategoriesPresence: false,
+			expectedDataCount:        1,
+			albumGenerator: func() []*model.Album {
+				c := model.Category{
+					Name: "A good Category",
+				}
+				return []*model.Album{
+					{
+						Title:       "A good Title",
+						PublishedAt: &sub5Min,
+						SsoID:       &ssoId,
+						Private:     false,
+						Categories:  []model.Category{c},
+					},
+				}
+			},
+		},
+		{
+			name:                     "Should be able to list with categories",
+			assertCategoriesPresence: true,
+			assertCategoriesCount:    []int{1},
+			joins: struct {
+				Categories bool
+				Medias     bool
+			}{Categories: true},
+			expectedDataCount: 1,
+			albumGenerator: func() []*model.Album {
+				c := model.Category{
+					Name: "A good Category",
+				}
+				return []*model.Album{
+					{
+						Title:       "A good Title",
+						PublishedAt: &sub5Min,
+						SsoID:       &ssoId,
+						Private:     false,
+						Categories:  []model.Category{c},
+					},
+				}
+			},
+		},
+		{
+			name:                "Should be able to list with medias",
+			assertMediaPresence: true,
+			assertMediaCount:    []int{1},
+			joins: struct {
+				Categories bool
+				Medias     bool
+			}{Medias: true},
+			expectedDataCount: 1,
+			albumGenerator: func() []*model.Album {
+				mimeType := "image/jpeg"
+				arg1 := model.Medium{
+					Name: "A good Media",
+					// ModelID:          int64(arg.ID),
+					Size:             int64(1),
+					ModelType:        "App\\Models\\Album",
+					CollectionName:   "albums",
+					Disk:             "dummy",
+					MimeType:         &mimeType,
+					Manipulations:    `{"resize":{"width":100,"height":100}}`,
+					CustomProperties: &model.CustomProperties{},
+					ResponsiveImages: &model.ResponsiveImages{},
+				}
+				return []*model.Album{
+					{
+						Title:       "A good Title",
+						PublishedAt: &sub5Min,
+						SsoID:       &ssoId,
+						Private:     false,
+						Medias:      []model.Medium{arg1},
+					},
+				}
+			},
+		},
+		{
+			name:                "Should not include medias by default",
+			assertMediaPresence: false,
+			expectedDataCount:   1,
+			albumGenerator: func() []*model.Album {
+				mimeType := "image/jpeg"
+				arg1 := model.Medium{
+					Name: "A good Media",
+					// ModelID:          int64(arg.ID),
+					Size:             int64(1),
+					ModelType:        "App\\Models\\Album",
+					CollectionName:   "albums",
+					Disk:             "dummy",
+					MimeType:         &mimeType,
+					Manipulations:    `{"resize":{"width":100,"height":100}}`,
+					CustomProperties: &model.CustomProperties{},
+					ResponsiveImages: &model.ResponsiveImages{},
+				}
+				return []*model.Album{
+					{
+						Title:       "A good Title",
+						PublishedAt: &sub5Min,
+						SsoID:       &ssoId,
+						Private:     false,
+						Medias:      []model.Medium{arg1},
+					},
+				}
+			},
+		},
+		{
+			name:              "Should not list non published albums as guest",
+			expectedDataCount: 0,
+			albumGenerator: func() []*model.Album {
+				return []*model.Album{
+					{
+						Title:   "A good Title",
+						SsoID:   &ssoId,
+						Private: false,
+					},
+				}
+			},
+		},
+		{
+			name:              "should not list non published albums as user",
+			expectedDataCount: 0,
+			authAs:            authAsUser,
+			albumGenerator: func() []*model.Album {
+				return []*model.Album{
+					{
+						Title:   "A good Title",
+						SsoID:   &adminSsoID,
+						Private: false,
+					},
+				}
+			}},
+		{
+			name:              "should not be able to list his non published private albums as user",
+			expectedDataCount: 0,
+			authAs:            authAsUser,
+			albumGenerator: func() []*model.Album {
+				return []*model.Album{
+					{
+						Title:       "A good Title",
+						SsoID:       &userSsoId,
+						PublishedAt: &sub5Min,
+						Private:     true,
+					},
+				}
+			},
+		},
+		{
+			// TODO
+			name: "Should be able to see his published private albums appearing as cosplayer as user",
+		},
 	}
 
 	for _, tc := range testListCases {
 		tc := tc // capture range variable
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
+
 			tx := db.Begin()
 			defer tx.Rollback()
 			repo, err := postgres.NewAlbumRepository(&tx)
@@ -332,6 +496,10 @@ func TestList(t *testing.T) {
 
 			params := &albums_pb.IndexRequest{
 				Limit: tc.limit,
+				Joins: &albums_pb.IndexRequest_Joins{
+					Categories: tc.joins.Categories,
+					Medias:     tc.joins.Medias,
+				},
 			}
 
 			if tc.nextGenerator != nil {
@@ -341,10 +509,20 @@ func TestList(t *testing.T) {
 
 			r, err := s.Index(ctx, params)
 
-			assert.Nil(t, err)
+			assert.NoError(t, err)
 			assert.Equal(t, tc.expectedDataCount, len(r.Data))
 
-			//	assert.Equal(t, albums[10].Title, r.Data[0].Title)
+			for i := range r.Data {
+				assert.Equal(t, tc.assertCategoriesPresence, r.Data[i].Categories != nil)
+				if tc.assertCategoriesPresence {
+					assert.Equal(t, tc.assertCategoriesCount[i], len(r.Data[i].Categories))
+				}
+
+				assert.Equal(t, tc.assertMediaPresence, r.Data[i].Medias != nil)
+				if tc.assertMediaPresence {
+					assert.Equal(t, tc.assertMediaCount[i], len(r.Data[i].Medias))
+				}
+			}
 
 			for i, s := range tc.assertTitleOrder {
 				assert.Equal(t, s, r.Data[i].Title)
@@ -356,285 +534,6 @@ func TestList(t *testing.T) {
 
 		})
 	}
-}
-
-func TestShouldBeAbleToListWithCustomPerPage(t *testing.T) {
-	tx := db.Begin()
-	defer tx.Rollback()
-
-	repo, err := postgres.NewAlbumRepository(&tx)
-	if err != nil {
-		t.Error(err)
-	}
-	s, err := album.NewService(repo)
-	if err != nil {
-		t.Error(err)
-	}
-
-	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
-	sub5Min := time.Now().Add(-5 * time.Minute)
-	a := query.Use(tx.DB).Album
-
-	arg := model.Album{
-		Title:       "On second page",
-		Slug:        "on-second-page",
-		PublishedAt: &sub5Min,
-		SsoID:       &ssoId,
-		Private:     false,
-	}
-
-	err = a.WithContext(context.Background()).Create(&arg)
-	if err != nil {
-		t.Error(fmt.Errorf("Error creating album: %w", err))
-	}
-
-	limit := int32(15)
-	r, _ := s.Index(context.Background(), &albums_pb.IndexRequest{Limit: &limit})
-
-	// assert.Equal(t, int64(1), r.Meta.Total)
-	// assert.Equal(t, int32(15), r.Meta.Limit)
-	assert.Equal(t, 1, len(r.Data))
-}
-
-func TestShouldNotIncludeCategoriesByDefault(t *testing.T) {
-	tx := db.Begin()
-	defer tx.Rollback()
-	repo, err := postgres.NewAlbumRepository(&tx)
-	if err != nil {
-		t.Error(err)
-	}
-	s, err := album.NewService(repo)
-	if err != nil {
-		t.Error(err)
-	}
-
-	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
-	sub5Min := time.Now().Add(-5 * time.Minute)
-	a := query.Use(tx.DB).Album
-	// c := query.Use(tx.DB).Category
-
-	arg1 := model.Category{
-		Name: "A good Category",
-	}
-
-	arg := model.Album{
-		Title:       "A good Title",
-		PublishedAt: &sub5Min,
-		SsoID:       &ssoId,
-		Private:     false,
-		Categories:  []model.Category{arg1},
-	}
-
-	err = a.WithContext(context.Background()).Create(&arg)
-	if err != nil {
-		t.Error(fmt.Errorf("Error creating album: %w", err))
-	}
-
-	r, err := s.Index(context.Background(), &albums_pb.IndexRequest{})
-	if err != nil {
-		t.Error(err)
-	}
-
-	assert.Equal(t, 1, len(r.Data))
-	assert.Nil(t, r.Data[0].Categories)
-}
-
-func TestShouldBeAbleToListWithCategories(t *testing.T) {
-	tx := db.Begin()
-	defer tx.Rollback()
-	repo, err := postgres.NewAlbumRepository(&tx)
-	if err != nil {
-		t.Error(err)
-	}
-	s, err := album.NewService(repo)
-	if err != nil {
-		t.Error(err)
-	}
-
-	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
-	sub5Min := time.Now().Add(-5 * time.Minute)
-	a := query.Use(tx.DB).Album
-	// c := query.Use(tx.DB).Category
-
-	arg1 := model.Category{
-		Name: "A good Category",
-	}
-
-	arg := model.Album{
-		Title:       "A good Title",
-		PublishedAt: &sub5Min,
-		SsoID:       &ssoId,
-		Private:     false,
-		Categories:  []model.Category{arg1},
-	}
-
-	err = a.WithContext(context.Background()).Create(&arg)
-	if err != nil {
-		t.Error(fmt.Errorf("Error creating album: %w", err))
-	}
-
-	r, err := s.Index(context.Background(), &albums_pb.IndexRequest{
-		Joins: &albums_pb.IndexRequest_Joins{
-			Categories: true,
-		}})
-	if err != nil {
-		t.Error(err)
-	}
-
-	assert.Equal(t, 1, len(r.Data))
-	assert.NotNil(t, r.Data[0].Categories)
-	assert.Equal(t, 1, len(r.Data[0].Categories))
-}
-
-func TestShouldBeAbleToListWithMedias(t *testing.T) {
-	tx := db.Begin()
-	defer tx.Rollback()
-	repo, err := postgres.NewAlbumRepository(&tx)
-	if err != nil {
-		t.Error(err)
-	}
-	s, err := album.NewService(repo)
-	if err != nil {
-		t.Error(err)
-	}
-
-	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
-	sub5Min := time.Now().Add(-5 * time.Minute)
-	a := query.Use(tx.DB).Album
-	m := query.Use(tx.DB).Medium
-
-	arg := model.Album{
-		Title:       "A good Title",
-		PublishedAt: &sub5Min,
-		SsoID:       &ssoId,
-		Private:     false,
-	}
-
-	err = a.WithContext(context.Background()).Create(&arg)
-	if err != nil {
-		t.Error(fmt.Errorf("Error creating album: %w", err))
-	}
-
-	mimeType := "image/jpeg"
-	arg1 := model.Medium{
-		Name:             "A good Media",
-		ModelID:          int64(arg.ID),
-		Size:             int64(1),
-		ModelType:        "App\\Models\\Album",
-		CollectionName:   "albums",
-		Disk:             "dummy",
-		MimeType:         &mimeType,
-		Manipulations:    `{"resize":{"width":100,"height":100}}`,
-		CustomProperties: &model.CustomProperties{},
-		ResponsiveImages: &model.ResponsiveImages{},
-	}
-	err = m.WithContext(context.Background()).Create(&arg1)
-	if err != nil {
-		t.Error(err)
-		t.Error(fmt.Errorf("Error saving media for given album : %w", err))
-	}
-
-	r, err := s.Index(context.Background(), &albums_pb.IndexRequest{Joins: &albums_pb.IndexRequest_Joins{Medias: true}})
-	if err != nil {
-		t.Error(err)
-	}
-
-	assert.Equal(t, 1, len(r.Data))
-	assert.NotNil(t, r.Data[0].Medias)
-	assert.Equal(t, 1, len(r.Data[0].Medias))
-	// assert.Equal(t, arg1.Name, (r.Data[0].Medias)[0].Name)
-}
-
-func TestShouldNotIncludeMediasByDefault(t *testing.T) {
-	tx := db.Begin()
-	defer tx.Rollback()
-	repo, err := postgres.NewAlbumRepository(&tx)
-	if err != nil {
-		t.Error(err)
-	}
-	s, err := album.NewService(repo)
-	if err != nil {
-		t.Error(err)
-	}
-
-	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
-	sub5Min := time.Now().Add(-5 * time.Minute)
-	a := query.Use(tx.DB).Album
-	m := query.Use(tx.DB).Medium
-
-	arg := model.Album{
-		Title:       "A good Title",
-		PublishedAt: &sub5Min,
-		SsoID:       &ssoId,
-		Private:     false,
-	}
-
-	err = a.WithContext(context.Background()).Create(&arg)
-	if err != nil {
-		t.Error(fmt.Errorf("Error creating album: %w", err))
-	}
-
-	mimeType := "image/jpeg"
-	arg1 := model.Medium{
-		Name:             "A good Media",
-		ModelID:          int64(arg.ID),
-		Size:             int64(1),
-		ModelType:        "App\\Models\\Album",
-		CollectionName:   "albums",
-		Disk:             "dummy",
-		MimeType:         &mimeType,
-		Manipulations:    `{"resize":{"width":100,"height":100}}`,
-		CustomProperties: &model.CustomProperties{},
-		ResponsiveImages: &model.ResponsiveImages{},
-	}
-	err = m.WithContext(context.Background()).Create(&arg1)
-	if err != nil {
-		t.Error(err)
-		t.Error(fmt.Errorf("Error saving media for given album : %w", err))
-	}
-
-	r, err := s.Index(context.Background(), &albums_pb.IndexRequest{})
-	if err != nil {
-		t.Error(err)
-	}
-
-	assert.Equal(t, 1, len(r.Data))
-	assert.Nil(t, r.Data[0].Medias)
-}
-
-func TestShouldNotListNonPublishedAlbums(t *testing.T) {
-	tx := db.Begin()
-	defer tx.Rollback()
-	repo, err := postgres.NewAlbumRepository(&tx)
-	if err != nil {
-		t.Error(err)
-	}
-	s, err := album.NewService(repo)
-	if err != nil {
-		t.Error(err)
-	}
-
-	a := query.Use(tx.DB).Album
-
-	arg := model.Album{
-		Title:   "A good Title",
-		SsoID:   &ssoId,
-		Private: false,
-	}
-
-	err = a.WithContext(context.Background()).Create(&arg)
-	if err != nil {
-		t.Error(fmt.Errorf("Error creating album: %w", err))
-	}
-
-	r, err2 := s.Index(context.Background(), &albums_pb.IndexRequest{})
-	if err2 != nil {
-		t.Error(err)
-	}
-
-	// assert.Equal(t, int64(0), r.Meta.Total)
-	// assert.Equal(t, int32(10), r.Meta.Limit)
-	assert.Equal(t, 0, len(r.Data))
 }
 
 ///////// SHOW  ///////////
