@@ -795,4 +795,57 @@ func TestShouldNotBeAbleToDeleteAnNonExistantArticleAsAdmin(t *testing.T) {
 	assert.ErrorAs(t, err, &article.ErrNotFound)
 }
 
-// TODO add delete test for user and guest
+func TestUserShouldNotBeAbleToDelete(t *testing.T) {
+	tx := db.Begin()
+	defer tx.Rollback()
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
+
+	ctx, _ := authAsUser(context.Background())
+	slug := "a-good-slug"
+	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	a := model.Article{
+		Name:            "A good Title",
+		Slug:            slug,
+		MetaDescription: "a meta decription",
+		AuthorUUID:      id,
+	}
+	err = tx.DB.Create(&a).Error
+	if err != nil {
+		t.Error(err)
+	}
+
+	_, err = s.Delete(ctx, &articlesgrpc.DeleteRequest{Id: int32(a.ID)})
+
+	assert.Error(t, err)
+	assert.ErrorAs(t, err, &article.ErrNotAdmin)
+}
+
+func TestGuestShouldNotBeAbleToDelete(t *testing.T) {
+	tx := db.Begin()
+	defer tx.Rollback()
+	repo, err := postgres.NewArticleRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s := article.NewService(repo)
+
+	a := model.Article{
+		Name:            "A good Title",
+		Slug:            "a-good-slug",
+		MetaDescription: "a meta decription",
+		AuthorUUID:      "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+	}
+	err = tx.DB.Create(&a).Error
+	if err != nil {
+		t.Error(err)
+	}
+
+	_, err = s.Delete(context.Background(), &articlesgrpc.DeleteRequest{Id: int32(a.ID)})
+
+	assert.Error(t, err)
+	assert.ErrorAs(t, err, &article.ErrNoAuth)
+}

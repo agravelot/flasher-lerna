@@ -122,175 +122,126 @@ func TestMain(m *testing.M) {
 
 /////// LIST ////////
 
-func TestShouldBeAbleToListEmpty(t *testing.T) {
-	tx := db.Begin()
-	defer tx.Rollback()
-	repo, err := postgres.NewAlbumRepository(&tx)
-	if err != nil {
-		t.Error(err)
-	}
-	s, err := album.NewService(repo)
-	if err != nil {
-		t.Error(err)
-	}
-
-	r, err := s.Index(context.Background(), &albums_pb.IndexRequest{})
-
-	assert.Nil(t, err)
-	assert.Equal(t, 0, len(r.Data))
-	// assert.Equal(t, int64(0), r.Meta.Total)
-	// assert.Equal(t, int32(10), r.Meta.Limit)
+type ListTestCase struct {
+	name              string
+	expectedDataCount int
+	album             []model.Album
+	assertSlugOrder   []string
 }
 
-func TestShouldBeAbleToListWithOnePublishedAlbum(t *testing.T) {
-	tx := db.Begin()
-	defer tx.Rollback()
-	repo, err := postgres.NewAlbumRepository(&tx)
-	if err != nil {
-		t.Error(err)
-	}
-	s, err := album.NewService(repo)
-	if err != nil {
-		t.Error(err)
-	}
+var sub10Min = time.Now().Add(-10 * time.Minute)
+var sub100Min = time.Now().Add(-100 * time.Minute)
+var sub5Min = time.Now().Add(-5 * time.Minute)
 
-	sub10Min := time.Now().Add(-10 * time.Minute)
-	a := query.Use(tx.DB).Album
-
-	arg := model.Album{
-		Title:       "A good Title",
-		PublishedAt: &sub10Min,
-		Private:     false,
-		SsoID:       &ssoId,
-	}
-	err = a.WithContext(context.Background()).Create(&arg)
-	if err != nil {
-		t.Error(err)
-	}
-
-	r, _ := s.Index(context.Background(), &albums_pb.IndexRequest{})
-
-	// assert.Equal(t, int64(1), r.Meta.Total)
-	// assert.Equal(t, int32(10), r.Meta.Limit)
-	assert.Equal(t, 1, len(r.Data))
-}
-
-func TestShouldBeOrderedByDateOfPublication(t *testing.T) {
-	tx := db.Begin()
-	defer tx.Rollback()
-	repo, err := postgres.NewAlbumRepository(&tx)
-	if err != nil {
-		t.Error(err)
-	}
-	s, err := album.NewService(repo)
-	if err != nil {
-		t.Error(err)
-	}
-
-	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
-	sub100Min := time.Now().Add(-100 * time.Minute)
-	sub10Min := time.Now().Add(-10 * time.Minute)
-	sub5Min := time.Now().Add(-5 * time.Minute)
-	a := query.Use(tx.DB).Album
-
-	args := []model.Album{
+func TestList(t *testing.T) {
+	testListCases := []ListTestCase{
+		{name: "should be able to list empty"},
 		{
-			Title:       "A good Title",
-			Slug:        "a-good-title",
-			PublishedAt: &sub100Min,
-			Private:     false,
-			SsoID:       &ssoId,
+			name:              "list with one published album",
+			expectedDataCount: 1,
+			album: []model.Album{
+				{
+					Title:       "A good Title",
+					PublishedAt: &sub10Min,
+					Private:     false,
+					SsoID:       &ssoId,
+				},
+			},
 		},
 		{
-			Title:       "A good Title 2",
-			Slug:        "a-good-title-2",
-			PublishedAt: &sub10Min,
-			Private:     false,
-			SsoID:       &ssoId,
+			name:              "should be ordered by date of publication",
+			expectedDataCount: 3,
+			assertSlugOrder:   []string{"a-good-title-3", "a-good-title-2", "a-good-title"},
+			album: []model.Album{
+				{
+					Title:       "A good Title",
+					Slug:        "a-good-title",
+					PublishedAt: &sub100Min,
+					Private:     false,
+					SsoID:       &ssoId,
+				},
+				{
+					Title:       "A good Title 2",
+					Slug:        "a-good-title-2",
+					PublishedAt: &sub10Min,
+					Private:     false,
+					SsoID:       &ssoId,
+				},
+				{
+					Title:       "A good Title 3",
+					Slug:        "a-good-title-3",
+					PublishedAt: &sub5Min,
+					Private:     false,
+					SsoID:       &ssoId,
+				},
+			},
 		},
 		{
-			Title:       "A good Title 3",
-			Slug:        "a-good-title-3",
-			PublishedAt: &sub5Min,
-			Private:     false,
-			SsoID:       &ssoId,
-		},
-	}
-
-	for _, arg := range args {
-		err = a.WithContext(context.Background()).Create(&arg)
-		if err != nil {
-			t.Error(fmt.Errorf("unable create album: %w", err))
-		}
-	}
-
-	r, _ := s.Index(context.Background(), &albums_pb.IndexRequest{})
-
-	// assert.Equal(t, int64(3), r.Meta.Total)
-	// assert.Equal(t, int32(10), r.Meta.Limit)
-	assert.Equal(t, 3, len(r.Data))
-	assert.Equal(t, "a-good-title-3", r.Data[0].Slug)
-	assert.Equal(t, "a-good-title-2", r.Data[1].Slug)
-	assert.Equal(t, "a-good-title", r.Data[2].Slug)
-}
-
-func TestShouldOnlyShowPublicAlbums(t *testing.T) {
-	tx := db.Begin()
-	defer tx.Rollback()
-	repo, err := postgres.NewAlbumRepository(&tx)
-	if err != nil {
-		t.Error(err)
-	}
-	s, err := album.NewService(repo)
-	if err != nil {
-		t.Error(err)
-	}
-
-	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
-	sub100Min := time.Now().Add(-100 * time.Minute)
-	sub10Min := time.Now().Add(-10 * time.Minute)
-	a := query.Use(tx.DB).Album
-
-	args := []*model.Album{
-		{
-			Title:       "A good Title",
-			Slug:        "a-good-title",
-			PublishedAt: &sub100Min,
-			Private:     false,
-			SsoID:       &ssoId,
-		},
-		{
-			Title:       "A good Title 2",
-			Slug:        "a-good-title-2",
-			PublishedAt: &sub10Min,
-			Private:     true,
-			SsoID:       &ssoId,
-		},
-		{
-			Title:   "A good Title 3",
-			Slug:    "a-good-title-3",
-			Private: true,
-			SsoID:   &ssoId,
-		},
-		{
-			Title:   "A good Title 4",
-			Slug:    "a-good-title-4",
-			Private: false,
-			SsoID:   &ssoId,
+			name:              "only show public albums",
+			expectedDataCount: 1,
+			album: []model.Album{
+				{
+					Title:       "A good Title",
+					Slug:        "a-good-title",
+					PublishedAt: &sub100Min,
+					Private:     false,
+					SsoID:       &ssoId,
+				},
+				{
+					Title:       "A good Title 2",
+					Slug:        "a-good-title-2",
+					PublishedAt: &sub10Min,
+					Private:     true,
+					SsoID:       &ssoId,
+				},
+				{
+					Title:   "A good Title 3",
+					Slug:    "a-good-title-3",
+					Private: true,
+					SsoID:   &ssoId,
+				},
+				{
+					Title:   "A good Title 4",
+					Slug:    "a-good-title-4",
+					Private: false,
+					SsoID:   &ssoId,
+				},
+			},
 		},
 	}
 
-	err = a.WithContext(context.Background()).Create(args...)
-	if err != nil {
-		t.Error(fmt.Errorf("unable create album: %w", err))
+	for _, tc := range testListCases {
+		tc := tc // capture range variable
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			tx := db.Begin()
+			defer tx.Rollback()
+			repo, err := postgres.NewAlbumRepository(&tx)
+			if err != nil {
+				t.Error(err)
+			}
+			s, err := album.NewService(repo)
+			if err != nil {
+				t.Error(err)
+			}
+
+			for i := 0; i < len(tc.album); i++ {
+				_, err = repo.Create(context.Background(), nil, tc.album[i])
+				if err != nil {
+					t.Error(err)
+				}
+			}
+
+			r, err := s.Index(context.Background(), &albums_pb.IndexRequest{})
+
+			assert.Nil(t, err)
+			assert.Equal(t, tc.expectedDataCount, len(r.Data))
+
+			for i, s := range tc.assertSlugOrder {
+				assert.Equal(t, s, r.Data[i].Slug)
+			}
+		})
 	}
-
-	r, _ := s.Index(context.Background(), &albums_pb.IndexRequest{})
-
-	// assert.Equal(t, int64(1), r.Meta.Total)
-	// assert.Equal(t, int32(10), r.Meta.Limit)
-	assert.Equal(t, 1, len(r.Data))
-	assert.Equal(t, ssoId, r.Data[0].AuthorId)
 }
 
 func TestShouldBeAbleToListPublishedAlbumsOnSecondPage(t *testing.T) {
