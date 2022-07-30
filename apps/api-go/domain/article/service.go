@@ -1,13 +1,14 @@
 package article
 
 import (
-	articles_pb "api-go/gen/go/proto/articles/v2"
-	"api-go/model"
-	"api-go/pkg/auth"
 	"context"
 	"errors"
 	"fmt"
 	"time"
+
+	articles_pb "api-go/gen/go/proto/articles/v2"
+	"api-go/model"
+	"api-go/pkg/auth"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -69,7 +70,7 @@ func (s service) Index(ctx context.Context, request *articles_pb.IndexRequest) (
 
 	return &articles_pb.IndexResponse{
 		Data: data,
-		//Meta: api.MetaOld{Total: total, Limit: params.Limit},
+		// Meta: api.MetaOld{Total: total, Limit: params.Limit},
 	}, nil
 }
 
@@ -181,7 +182,6 @@ func (s service) Delete(ctx context.Context, request *articles_pb.DeleteRequest)
 	user := auth.GetUserClaims(ctx)
 	// TODO check if user is admin and other stuffs
 	err := s.repository.Delete(ctx, user, request.Id)
-
 	if err != nil {
 		return &articles_pb.DeleteResponse{}, fmt.Errorf("unable delete article: %w", err)
 	}

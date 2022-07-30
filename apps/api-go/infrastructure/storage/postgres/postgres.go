@@ -35,7 +35,6 @@ func (d Postgres) Rollback() Postgres {
 }
 
 func New(uri string) (Postgres, error) {
-
 	debug := false
 
 	logLevel := logger.Silent

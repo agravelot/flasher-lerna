@@ -192,7 +192,6 @@ func (s *service) Update(ctx context.Context, r *albumspb.UpdateRequest) (*album
 // }
 
 func (s *service) Delete(ctx context.Context, r *albumspb.DeleteRequest) (*albumspb.DeleteResponse, error) {
-
 	user := auth.GetUserClaims(ctx)
 	if user == nil {
 		return nil, ErrNoAuth
@@ -204,7 +203,6 @@ func (s *service) Delete(ctx context.Context, r *albumspb.DeleteRequest) (*album
 	}
 
 	err := s.repository.Delete(ctx, user, r.Id)
-
 	if err != nil {
 		return &albumspb.DeleteResponse{Deleted: false}, fmt.Errorf("unable delete album: %w", err)
 	}

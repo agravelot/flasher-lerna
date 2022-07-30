@@ -1,12 +1,13 @@
 package postgres
 
 import (
+	"context"
+	"fmt"
+
 	"api-go/domain/article"
 	"api-go/model"
 	"api-go/pkg/auth"
 	"api-go/query"
-	"context"
-	"fmt"
 
 	"gorm.io/gen"
 )

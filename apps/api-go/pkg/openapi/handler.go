@@ -1,11 +1,12 @@
 package openapi
 
 import (
-	"api-go/pkg/openapi/third_party"
 	"fmt"
 	"io/fs"
 	"mime"
 	"net/http"
+
+	"api-go/pkg/openapi/third_party"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 )
@@ -27,5 +28,4 @@ func New(path string, mux *runtime.ServeMux) error {
 	return mux.HandlePath("GET", path, func(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
 		s.ServeHTTP(w, r)
 	})
-
 }

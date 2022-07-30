@@ -25,9 +25,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-var (
-	db postgres.Postgres
-)
+var db postgres.Postgres
 
 var ssoId = "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 
@@ -146,9 +144,11 @@ type ListTestCase struct {
 	authAs        func(ctx context.Context) (context.Context, auth.Claims)
 }
 
-var sub10Min = time.Now().Add(-10 * time.Minute)
-var sub100Min = time.Now().Add(-100 * time.Minute)
-var sub5Min = time.Now().Add(-5 * time.Minute)
+var (
+	sub10Min  = time.Now().Add(-10 * time.Minute)
+	sub100Min = time.Now().Add(-100 * time.Minute)
+	sub5Min   = time.Now().Add(-5 * time.Minute)
+)
 
 func ptr[T any](i T) *T {
 	return &i
@@ -441,7 +441,8 @@ func TestList(t *testing.T) {
 						Private: false,
 					},
 				}
-			}},
+			},
+		},
 		{
 			name:              "should not be able to list his non published private albums as user",
 			expectedDataCount: 0,
@@ -531,7 +532,6 @@ func TestList(t *testing.T) {
 			for i, s := range tc.assertSlugOrder {
 				assert.Equal(t, s, r.Data[i].Slug)
 			}
-
 		})
 	}
 }
@@ -767,7 +767,6 @@ func TestShouldBeAbleToCreateAnPublishedAlbumAsAdmin(t *testing.T) {
 
 	assert.NoError(t, err)
 	total, err := a.WithContext(context.Background()).Count()
-
 	if err != nil {
 		t.Error(fmt.Errorf("Error counting albums: %w", err))
 	}

@@ -1,13 +1,14 @@
 package postgres
 
 import (
+	"context"
+	"fmt"
+	"time"
+
 	"api-go/domain/album"
 	"api-go/model"
 	"api-go/pkg/auth"
 	"api-go/query"
-	"context"
-	"fmt"
-	"time"
 
 	"gorm.io/gen"
 )
@@ -19,6 +20,7 @@ type PostgresAlbumRepository struct {
 
 func (r *PostgresAlbumRepository) published(q *query.Query) func(db gen.Dao) gen.Dao {
 	return func(db gen.Dao) gen.Dao {
+		// TODO try use NOW()
 		return db.Where(q.Album.Private.Is(false), q.Album.PublishedAt.Lte(time.Now()))
 	}
 }
@@ -64,7 +66,6 @@ func (r PostgresAlbumRepository) List(ctx context.Context, user *auth.Claims, pa
 	res, err := q.Scopes(
 		r.paginate(query.Use(r.storage.DB), params.Next, params.Limit),
 	).Find()
-
 	if err != nil {
 		return []model.Album{}, fmt.Errorf("unable list albums : %d %w", params.Next, err)
 	}
@@ -93,7 +94,6 @@ func (r PostgresAlbumRepository) GetBySlug(ctx context.Context, user *auth.Claim
 		Preload(qb.Medias).
 		Where(qb.Slug.Eq(slug)).
 		First()
-
 	if err != nil {
 		return model.Album{}, fmt.Errorf("error get album: %w", err)
 	}
@@ -102,7 +102,6 @@ func (r PostgresAlbumRepository) GetBySlug(ctx context.Context, user *auth.Claim
 }
 
 func (r PostgresAlbumRepository) Create(ctx context.Context, user *auth.Claims, a model.Album) (model.Album, error) {
-
 	// if r.Slug == nil {
 	// 	s := slug.Make(r.Title)
 	// 	r.Slug = &s
@@ -139,7 +138,6 @@ func (r PostgresAlbumRepository) Update(ctx context.Context, user *auth.Claims, 
 	query.Preload(qb.Categories).Preload(qb.Medias)
 
 	res, err := query.Where(qb.ID.Eq(a.ID)).First()
-
 	if err != nil {
 		return model.Album{}, fmt.Errorf("error get album: %w", err)
 	}

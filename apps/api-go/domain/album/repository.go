@@ -1,9 +1,10 @@
 package album
 
 import (
+	"context"
+
 	"api-go/model"
 	"api-go/pkg/auth"
-	"context"
 )
 
 type ListJoinsParams struct {
