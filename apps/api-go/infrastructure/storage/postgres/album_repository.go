@@ -131,6 +131,8 @@ func (r PostgresAlbumRepository) Update(ctx context.Context, user *auth.Claims, 
 		"body":         a.Title,
 		"published_at": a.PublishedAt,
 	}
+
+	// TODO Test if result info is zero, return not found
 	_, err := query.Where(qb.ID.Eq(a.ID)).Updates(update)
 	if err != nil {
 		return model.Album{}, fmt.Errorf("error update album: %w", err)
@@ -142,7 +144,7 @@ func (r PostgresAlbumRepository) Update(ctx context.Context, user *auth.Claims, 
 		return model.Album{}, fmt.Errorf("error get album: %w", err)
 	}
 
-	return *res, err
+	return *res, nil
 }
 
 func (r PostgresAlbumRepository) Delete(ctx context.Context, user *auth.Claims, id int32) error {

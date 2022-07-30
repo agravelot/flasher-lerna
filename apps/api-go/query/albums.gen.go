@@ -501,6 +501,10 @@ func (a albumDo) Scan(result interface{}) (err error) {
 	return a.DO.Scan(result)
 }
 
+func (a albumDo) Delete(models ...*model.Album) (result gen.ResultInfo, err error) {
+	return a.DO.Delete(models)
+}
+
 func (a *albumDo) withDO(do gen.Dao) *albumDo {
 	a.DO = *do.(*gen.DO)
 	return a

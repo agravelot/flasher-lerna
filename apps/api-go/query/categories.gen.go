@@ -334,6 +334,10 @@ func (c categoryDo) Scan(result interface{}) (err error) {
 	return c.DO.Scan(result)
 }
 
+func (c categoryDo) Delete(models ...*model.Category) (result gen.ResultInfo, err error) {
+	return c.DO.Delete(models)
+}
+
 func (c *categoryDo) withDO(do gen.Dao) *categoryDo {
 	c.DO = *do.(*gen.DO)
 	return c

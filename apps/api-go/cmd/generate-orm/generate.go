@@ -24,8 +24,8 @@ func main() {
 		FieldWithIndexTag: true,
 		// if you want to generate type tags from database, set FieldWithTypeTag true
 		FieldWithTypeTag: true,
-		//if you need unit tests for query code, set WithUnitTest true
-		/* WithUnitTest: true, */
+		// if you need unit tests for query code, set WithUnitTest true
+		WithUnitTest: false,
 	})
 
 	// dataMap := map[string]func(detailType string) (dataType string){

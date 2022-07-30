@@ -20,7 +20,6 @@ import (
 
 	"github.com/jackc/pgconn"
 	"github.com/jackc/pgerrcode"
-	"github.com/kr/pretty"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -165,7 +164,7 @@ func TestList(t *testing.T) {
 					{
 						Title:       "A good Title",
 						PublishedAt: &sub10Min,
-						Private:     false,
+						Private:     ptr(false),
 						SsoID:       &ssoId,
 					},
 				}
@@ -181,21 +180,21 @@ func TestList(t *testing.T) {
 						Title:       "A good Title",
 						Slug:        "a-good-title",
 						PublishedAt: &sub100Min,
-						Private:     false,
+						Private:     ptr(false),
 						SsoID:       &ssoId,
 					},
 					{
 						Title:       "A good Title 2",
 						Slug:        "a-good-title-2",
 						PublishedAt: &sub10Min,
-						Private:     false,
+						Private:     ptr(false),
 						SsoID:       &ssoId,
 					},
 					{
 						Title:       "A good Title 3",
 						Slug:        "a-good-title-3",
 						PublishedAt: &sub5Min,
-						Private:     false,
+						Private:     ptr(false),
 						SsoID:       &ssoId,
 					},
 				}
@@ -210,26 +209,26 @@ func TestList(t *testing.T) {
 						Title:       "A good Title",
 						Slug:        "a-good-title",
 						PublishedAt: &sub100Min,
-						Private:     false,
+						Private:     ptr(false),
 						SsoID:       &ssoId,
 					},
 					{
 						Title:       "A good Title 2",
 						Slug:        "a-good-title-2",
 						PublishedAt: &sub10Min,
-						Private:     true,
+						Private:     ptr(true),
 						SsoID:       &ssoId,
 					},
 					{
 						Title:   "A good Title 3",
 						Slug:    "a-good-title-3",
-						Private: true,
+						Private: ptr(true),
 						SsoID:   &ssoId,
 					},
 					{
 						Title:   "A good Title 4",
 						Slug:    "a-good-title-4",
-						Private: false,
+						Private: ptr(false),
 						SsoID:   &ssoId,
 					},
 				}
@@ -239,9 +238,8 @@ func TestList(t *testing.T) {
 			name:              "should be able to list published albums on second page",
 			expectedDataCount: 1,
 			nextGenerator: func(albums []*model.Album) int32 {
-				pretty.Println(len(albums))
-				t := *albums[9]
-				return t.ID
+				a := *albums[9]
+				return a.ID
 			},
 			albumGenerator: func() []*model.Album {
 				var albums []*model.Album
@@ -250,7 +248,7 @@ func TestList(t *testing.T) {
 						Title:       "A good Title " + strconv.Itoa(i),
 						Slug:        "a-good-title-" + strconv.Itoa(i),
 						PublishedAt: &sub100Min,
-						Private:     false,
+						Private:     ptr(false),
 						SsoID:       &ssoId,
 					})
 				}
@@ -259,7 +257,7 @@ func TestList(t *testing.T) {
 					Title:       "On second page",
 					Slug:        "on-second-page",
 					PublishedAt: &sub5Min,
-					Private:     false,
+					Private:     ptr(false),
 					SsoID:       &ssoId,
 				})
 				return albums
@@ -281,7 +279,7 @@ func TestList(t *testing.T) {
 						Title:       "On second page " + strconv.Itoa(i),
 						Slug:        "on-second-page " + strconv.Itoa(i),
 						PublishedAt: &sub5Min,
-						Private:     false,
+						Private:     ptr(false),
 						SsoID:       &ssoId,
 					})
 				}
@@ -290,7 +288,7 @@ func TestList(t *testing.T) {
 					Title:       "On second page",
 					Slug:        "on-second-page",
 					PublishedAt: &sub5Min,
-					Private:     false,
+					Private:     ptr(false),
 					SsoID:       &ssoId,
 				})
 				return albums
@@ -323,7 +321,7 @@ func TestList(t *testing.T) {
 						Title:       "A good Title",
 						PublishedAt: &sub5Min,
 						SsoID:       &ssoId,
-						Private:     false,
+						Private:     ptr(false),
 						Categories:  []model.Category{c},
 					},
 				}
@@ -347,7 +345,7 @@ func TestList(t *testing.T) {
 						Title:       "A good Title",
 						PublishedAt: &sub5Min,
 						SsoID:       &ssoId,
-						Private:     false,
+						Private:     ptr(false),
 						Categories:  []model.Category{c},
 					},
 				}
@@ -381,7 +379,7 @@ func TestList(t *testing.T) {
 						Title:       "A good Title",
 						PublishedAt: &sub5Min,
 						SsoID:       &ssoId,
-						Private:     false,
+						Private:     ptr(false),
 						Medias:      []model.Medium{arg1},
 					},
 				}
@@ -410,7 +408,7 @@ func TestList(t *testing.T) {
 						Title:       "A good Title",
 						PublishedAt: &sub5Min,
 						SsoID:       &ssoId,
-						Private:     false,
+						Private:     ptr(false),
 						Medias:      []model.Medium{arg1},
 					},
 				}
@@ -424,7 +422,7 @@ func TestList(t *testing.T) {
 					{
 						Title:   "A good Title",
 						SsoID:   &ssoId,
-						Private: false,
+						Private: ptr(false),
 					},
 				}
 			},
@@ -438,7 +436,7 @@ func TestList(t *testing.T) {
 					{
 						Title:   "A good Title",
 						SsoID:   &adminSsoID,
-						Private: false,
+						Private: ptr(false),
 					},
 				}
 			},
@@ -453,7 +451,7 @@ func TestList(t *testing.T) {
 						Title:       "A good Title",
 						SsoID:       &userSsoId,
 						PublishedAt: &sub5Min,
-						Private:     true,
+						Private:     ptr(true),
 					},
 				}
 			},
@@ -558,7 +556,7 @@ func TestShouldBeAbleToGetPublishedAlbumAsGuest(t *testing.T) {
 		Title:       "A good Title",
 		PublishedAt: &sub5Min,
 		SsoID:       &ssoId,
-		Private:     false,
+		Private:     ptr(false),
 	}
 
 	err = a.WithContext(context.Background()).Create(&arg)
@@ -593,7 +591,7 @@ func TestShouldBeAbleToGetPublishedAlbumAsUser(t *testing.T) {
 		Title:       "A good Title",
 		PublishedAt: &sub5Min,
 		SsoID:       &ssoId,
-		Private:     false,
+		Private:     ptr(false),
 	}
 
 	err = a.WithContext(context.Background()).Create(&arg)
@@ -1114,13 +1112,13 @@ func TestShouldBeAbleToUpdateAlbumToAsPublishedAsAdmin(t *testing.T) {
 
 	ctx, _ := authAsAdmin(context.Background())
 
-	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	ssoID := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	a := model.Album{
 		Title:           "A good Title",
 		Slug:            "a-good-slug",
 		MetaDescription: "a meta decription",
-		SsoID:           &id,
-		Private:         true,
+		SsoID:           &ssoID,
+		Private:         ptr(true),
 	}
 	tx.DB.Create(&a)
 
@@ -1140,7 +1138,8 @@ func TestShouldBeAbleToUpdateAlbumToAsPublishedAsAdmin(t *testing.T) {
 	tx.DB.Model(&model.Album{}).Find(&expectedAlbum, a.ID)
 	assert.Equal(t, a.ID, expectedAlbum.ID)
 	assert.Equal(t, expectedTitle, expectedAlbum.Title)
-	assert.Equal(t, false, expectedAlbum.Private)
+	assert.Equal(t, false, new.Private)
+	assert.Equal(t, false, *expectedAlbum.Private)
 	assert.Nil(t, expectedAlbum.PublishedAt)
 }
 

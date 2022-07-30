@@ -6,11 +6,12 @@ import (
 	"fmt"
 	"time"
 
+	"api-go/model"
+	"api-go/pkg/auth"
+
 	albumspb "api-go/gen/go/proto/albums/v2"
 	categoriespb "api-go/gen/go/proto/categories/v2"
 	mediaspb "api-go/gen/go/proto/medias/v2"
-	"api-go/model"
-	"api-go/pkg/auth"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -163,10 +164,15 @@ func (s *service) Update(ctx context.Context, r *albumspb.UpdateRequest) (*album
 		Body:        &r.Content,
 		SsoID:       &user.Sub,
 		PublishedAt: publishedAt,
+		Private:     &r.Private,
 	})
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, ErrNotFound
+	}
+
+	if err != nil {
+		return nil, fmt.Errorf("unable update album: %w", err)
 	}
 
 	data := transformAlbumFromDB(a)
@@ -266,6 +272,16 @@ func transformAlbumFromDB(a model.Album) *albumspb.AlbumResponse {
 		body = *a.Body
 	}
 
+	var createdAt *timestamppb.Timestamp
+	if a.CreatedAt != nil {
+		createdAt = &timestamppb.Timestamp{Seconds: int64(a.CreatedAt.Second())}
+	}
+
+	var updatedAt *timestamppb.Timestamp
+	if a.CreatedAt != nil {
+		createdAt = &timestamppb.Timestamp{Seconds: int64(a.CreatedAt.Second())}
+	}
+
 	return &albumspb.AlbumResponse{
 		Id:                     a.ID,
 		Slug:                   a.Slug,
@@ -273,12 +289,12 @@ func transformAlbumFromDB(a model.Album) *albumspb.AlbumResponse {
 		MetaDescription:        a.MetaDescription,
 		Content:                body,
 		PublishedAt:            publishedAt,
-		Private:                a.Private,
+		Private:                *a.Private,
 		AuthorId:               *a.SsoID,
 		UserId:                 a.UserID,
-		CreatedAt:              &timestamppb.Timestamp{Seconds: int64(a.CreatedAt.Second())},
-		UpdatedAt:              &timestamppb.Timestamp{Seconds: int64(a.UpdatedAt.Second())},
-		NotifyUsersOnPublished: a.NotifyUsersOnPublished,
+		CreatedAt:              createdAt,
+		UpdatedAt:              updatedAt,
+		NotifyUsersOnPublished: *a.NotifyUsersOnPublished,
 		Categories:             categoriesResponse,
 		Medias:                 mediasResponse,
 	}

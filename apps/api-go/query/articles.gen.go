@@ -346,6 +346,10 @@ func (a articleDo) Scan(result interface{}) (err error) {
 	return a.DO.Scan(result)
 }
 
+func (a articleDo) Delete(models ...*model.Article) (result gen.ResultInfo, err error) {
+	return a.DO.Delete(models)
+}
+
 func (a *articleDo) withDO(do gen.Dao) *articleDo {
 	a.DO = *do.(*gen.DO)
 	return a

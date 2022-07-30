@@ -374,6 +374,10 @@ func (m mediumDo) Scan(result interface{}) (err error) {
 	return m.DO.Scan(result)
 }
 
+func (m mediumDo) Delete(models ...*model.Medium) (result gen.ResultInfo, err error) {
+	return m.DO.Delete(models)
+}
+
 func (m *mediumDo) withDO(do gen.Dao) *mediumDo {
 	m.DO = *do.(*gen.DO)
 	return m
