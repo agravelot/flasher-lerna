@@ -20,6 +20,7 @@ import (
 
 	"github.com/jackc/pgconn"
 	"github.com/jackc/pgerrcode"
+	"github.com/kr/pretty"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -699,6 +700,26 @@ func TestShouldBeAbleToGetNonPublishedAlbumAsAdmin(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.Equal(t, arg.Slug, r.Album.Slug)
+}
+
+func TestShouldHaveNotFoundFornonExistingAlbum(t *testing.T) {
+	tx := db.Begin()
+	defer tx.Rollback()
+	repo, err := postgres.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(repo)
+	if err != nil {
+		t.Error(err)
+	}
+
+	ctx, _ := authAsAdmin(context.Background())
+
+	r, err := s.GetBySlug(ctx, &albums_pb.GetBySlugRequest{Slug: "not-existing"})
+
+	pretty.Log(r)
+	assert.ErrorAs(t, err, &album.ErrNotFound)
 }
 
 // ///////// POST  ///////////
