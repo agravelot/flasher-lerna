@@ -1,5 +1,7 @@
 # Flasher api
 
+[![codecov](https://codecov.io/gh/agravelot/flasher-lerna/branch/main/graph/badge.svg?token=B3HIJ1UON1)](https://codecov.io/gh/agravelot/flasher-lerna)
+
 ## Requirements
 
 - Golang version 1.18
