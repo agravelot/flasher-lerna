@@ -150,6 +150,7 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_APIKEY }} # not required for public repos
+          directory: apps/api-go
           # files: ./coverage1.xml,./coverage2.xml # optional
           # flags: unittests # optional
           # name: codecov-umbrella # optional
