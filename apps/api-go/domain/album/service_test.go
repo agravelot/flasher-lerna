@@ -1164,6 +1164,34 @@ func TestShouldBeAbleToUpdateAlbumToAsPublishedAsAdmin(t *testing.T) {
 	assert.Nil(t, expectedAlbum.PublishedAt)
 }
 
+func TestShouldFailToUpdateNonExistingAlbumAndReturnNotFound(t *testing.T) {
+	tx := db.Begin()
+	defer tx.Rollback()
+	repo, err := postgres.NewAlbumRepository(&tx)
+	if err != nil {
+		t.Error(err)
+	}
+	s, err := album.NewService(repo)
+	if err != nil {
+		t.Error(err)
+	}
+
+	ctx, _ := authAsAdmin(context.Background())
+
+	// expectedTitle := "A new Title"
+	_, err = s.Update(ctx, &albums_pb.UpdateRequest{
+		Id:              123,
+		Name:            "qweqwe",
+		Slug:            "a.Slug",
+		MetaDescription: "a.MetaDescription",
+		Private:         false,
+		PublishedAt:     nil,
+	})
+
+	assert.Error(t, err)
+	assert.ErrorAs(t, err, &album.ErrNotFound)
+}
+
 func TestShouldNotBeAbleToUpdateAlbumAsUser(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
@@ -1286,7 +1314,7 @@ func TestAdminShouldNotBeAbleToDeleteAnNonExistantAlbum(t *testing.T) {
 	_, err = s.Delete(ctx, &albums_pb.DeleteRequest{Id: 1})
 
 	assert.Error(t, err)
-	assert.ErrorIs(t, err, album.ErrNotFound)
+	assert.ErrorAs(t, err, &album.ErrNotFound)
 }
 
 func TestUserShouldNotBeAbleToDelete(t *testing.T) {
