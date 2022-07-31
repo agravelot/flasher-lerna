@@ -24,6 +24,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
       - uses: actions/cache@v3
         with:
           path: |
@@ -126,7 +128,7 @@ jobs:
         run: |
           cd apps/api-go
           set -euo pipefail
-          go test -json -v ./... 2>&1 | tee /tmp/gotest.log | gotestfmt
+          go test -race -coverprofile=coverage.out -covermode=atomic -json -v ./... 2>&1 | tee /tmp/gotest.log | gotestfmt
         env:
           DB_HOST: localhost
           DB_USER: flasher
@@ -144,3 +146,12 @@ jobs:
           name: test-log
           path: /tmp/gotest.log
           if-no-files-found: error
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_APIKEY }} # not required for public repos
+          # files: ./coverage1.xml,./coverage2.xml # optional
+          # flags: unittests # optional
+          # name: codecov-umbrella # optional
+          # fail_ci_if_error: true # optional (default = false)
+          # verbose: true # optional (default = false)
