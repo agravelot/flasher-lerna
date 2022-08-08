@@ -700,8 +700,9 @@ gorm.io/gorm v1.23.9-0.20220713102635-3262daf8d468 h1:1jRkgZcKrEqhq3+agcFmPt6wOd
 gorm.io/gorm v1.23.9-0.20220713102635-3262daf8d468/go.mod h1:l2lP/RyAtc1ynaTjFksBde/O8v9oOGIApu2/xRitmZk=
 gorm.io/hints v1.1.0 h1:Lp4z3rxREufSdxn4qmkK3TLDltrM10FLTHiuqwDPvXw=
 gorm.io/hints v1.1.0/go.mod h1:lKQ0JjySsPBj3uslFzY3JhYDtqEwzm+G1hv8rWujB6Y=
-gorm.io/plugin/dbresolver v1.2.1 h1:moK7t4QJRh+Eer60UGuiANM/KG40uhnIqUOPLmnd/7Y=
 gorm.io/plugin/dbresolver v1.2.1/go.mod h1:kWKz6XWRmz6KGBuHmGqvmAm8ioy8Y9sIhCPmissORLM=
+gorm.io/plugin/dbresolver v1.2.2 h1:z8Qx40jHUGb3aOwNIg1+4sEeiF6vGo0GWiAn2P7NWkE=
+gorm.io/plugin/dbresolver v1.2.2/go.mod h1:kWKz6XWRmz6KGBuHmGqvmAm8ioy8Y9sIhCPmissORLM=
 honnef.co/go/tools v0.0.0-20190102054323-c2f93a96b099/go.mod h1:rf3lG4BRIbNafJWhAfAdb/ePZxsR/4RtNHQocxwk9r4=
 honnef.co/go/tools v0.0.0-20190106161140-3f1c8253044a/go.mod h1:rf3lG4BRIbNafJWhAfAdb/ePZxsR/4RtNHQocxwk9r4=
 honnef.co/go/tools v0.0.0-20190418001031-e561f6794a2a/go.mod h1:rf3lG4BRIbNafJWhAfAdb/ePZxsR/4RtNHQocxwk9r4=

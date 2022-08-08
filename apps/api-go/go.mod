@@ -16,7 +16,7 @@ require (
 	gorm.io/driver/postgres v1.3.8
 	gorm.io/gen v0.3.14
 	gorm.io/gorm v1.23.9-0.20220713102635-3262daf8d468
-	gorm.io/plugin/dbresolver v1.2.1
+	gorm.io/plugin/dbresolver v1.2.2
 )
 
 require (
