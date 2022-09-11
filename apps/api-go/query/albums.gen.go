@@ -51,6 +51,12 @@ func newAlbum(db *gorm.DB) album {
 		RelationField: field.NewRelation("Medias", "model.Medium"),
 	}
 
+	_album.Cosplayers = albumHasManyCosplayers{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("Cosplayers", "model.Cosplayer"),
+	}
+
 	_album.fillFieldMap()
 
 	return _album
@@ -75,6 +81,8 @@ type album struct {
 	Categories             albumHasManyCategories
 
 	Medias albumHasManyMedias
+
+	Cosplayers albumHasManyCosplayers
 
 	fieldMap map[string]field.Expr
 }
@@ -125,7 +133,7 @@ func (a *album) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (a *album) fillFieldMap() {
-	a.fieldMap = make(map[string]field.Expr, 14)
+	a.fieldMap = make(map[string]field.Expr, 15)
 	a.fieldMap["id"] = a.ID
 	a.fieldMap["slug"] = a.Slug
 	a.fieldMap["title"] = a.Title
@@ -275,6 +283,72 @@ func (a albumHasManyMediasTx) Clear() error {
 }
 
 func (a albumHasManyMediasTx) Count() int64 {
+	return a.tx.Count()
+}
+
+type albumHasManyCosplayers struct {
+	db *gorm.DB
+
+	field.RelationField
+}
+
+func (a albumHasManyCosplayers) Where(conds ...field.Expr) *albumHasManyCosplayers {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a albumHasManyCosplayers) WithContext(ctx context.Context) *albumHasManyCosplayers {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a albumHasManyCosplayers) Model(m *model.Album) *albumHasManyCosplayersTx {
+	return &albumHasManyCosplayersTx{a.db.Model(m).Association(a.Name())}
+}
+
+type albumHasManyCosplayersTx struct{ tx *gorm.Association }
+
+func (a albumHasManyCosplayersTx) Find() (result []*model.Cosplayer, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a albumHasManyCosplayersTx) Append(values ...*model.Cosplayer) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a albumHasManyCosplayersTx) Replace(values ...*model.Cosplayer) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a albumHasManyCosplayersTx) Delete(values ...*model.Cosplayer) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a albumHasManyCosplayersTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a albumHasManyCosplayersTx) Count() int64 {
 	return a.tx.Count()
 }
 

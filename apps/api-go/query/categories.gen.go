@@ -34,6 +34,26 @@ func newCategory(db *gorm.DB) category {
 	_category.CreatedAt = field.NewTime(tableName, "created_at")
 	_category.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_category.MetaDescription = field.NewString(tableName, "meta_description")
+	_category.Albums = categoryHasManyAlbums{
+		db: db.Session(&gorm.Session{}),
+
+		RelationField: field.NewRelation("Albums", "model.Album"),
+		Categories: struct {
+			field.RelationField
+		}{
+			RelationField: field.NewRelation("Albums.Categories", "model.Category"),
+		},
+		Medias: struct {
+			field.RelationField
+		}{
+			RelationField: field.NewRelation("Albums.Medias", "model.Medium"),
+		},
+		Cosplayers: struct {
+			field.RelationField
+		}{
+			RelationField: field.NewRelation("Albums.Cosplayers", "model.Cosplayer"),
+		},
+	}
 
 	_category.fillFieldMap()
 
@@ -51,6 +71,7 @@ type category struct {
 	CreatedAt       field.Time
 	UpdatedAt       field.Time
 	MetaDescription field.String
+	Albums          categoryHasManyAlbums
 
 	fieldMap map[string]field.Expr
 }
@@ -96,7 +117,7 @@ func (c *category) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *category) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 7)
+	c.fieldMap = make(map[string]field.Expr, 8)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["name"] = c.Name
 	c.fieldMap["slug"] = c.Slug
@@ -104,11 +125,88 @@ func (c *category) fillFieldMap() {
 	c.fieldMap["created_at"] = c.CreatedAt
 	c.fieldMap["updated_at"] = c.UpdatedAt
 	c.fieldMap["meta_description"] = c.MetaDescription
+
 }
 
 func (c category) clone(db *gorm.DB) category {
 	c.categoryDo.ReplaceDB(db)
 	return c
+}
+
+type categoryHasManyAlbums struct {
+	db *gorm.DB
+
+	field.RelationField
+
+	Categories struct {
+		field.RelationField
+	}
+	Medias struct {
+		field.RelationField
+	}
+	Cosplayers struct {
+		field.RelationField
+	}
+}
+
+func (a categoryHasManyAlbums) Where(conds ...field.Expr) *categoryHasManyAlbums {
+	if len(conds) == 0 {
+		return &a
+	}
+
+	exprs := make([]clause.Expression, 0, len(conds))
+	for _, cond := range conds {
+		exprs = append(exprs, cond.BeCond().(clause.Expression))
+	}
+	a.db = a.db.Clauses(clause.Where{Exprs: exprs})
+	return &a
+}
+
+func (a categoryHasManyAlbums) WithContext(ctx context.Context) *categoryHasManyAlbums {
+	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a categoryHasManyAlbums) Model(m *model.Category) *categoryHasManyAlbumsTx {
+	return &categoryHasManyAlbumsTx{a.db.Model(m).Association(a.Name())}
+}
+
+type categoryHasManyAlbumsTx struct{ tx *gorm.Association }
+
+func (a categoryHasManyAlbumsTx) Find() (result []*model.Album, err error) {
+	return result, a.tx.Find(&result)
+}
+
+func (a categoryHasManyAlbumsTx) Append(values ...*model.Album) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Append(targetValues...)
+}
+
+func (a categoryHasManyAlbumsTx) Replace(values ...*model.Album) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Replace(targetValues...)
+}
+
+func (a categoryHasManyAlbumsTx) Delete(values ...*model.Album) (err error) {
+	targetValues := make([]interface{}, len(values))
+	for i, v := range values {
+		targetValues[i] = v
+	}
+	return a.tx.Delete(targetValues...)
+}
+
+func (a categoryHasManyAlbumsTx) Clear() error {
+	return a.tx.Clear()
+}
+
+func (a categoryHasManyAlbumsTx) Count() int64 {
+	return a.tx.Count()
 }
 
 type categoryDo struct{ gen.DO }

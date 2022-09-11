@@ -13,48 +13,53 @@ import (
 
 func Use(db *gorm.DB) *Query {
 	return &Query{
-		db:       db,
-		Album:    newAlbum(db),
-		Article:  newArticle(db),
-		Category: newCategory(db),
-		Medium:   newMedium(db),
+		db:        db,
+		Album:     newAlbum(db),
+		Article:   newArticle(db),
+		Category:  newCategory(db),
+		Cosplayer: newCosplayer(db),
+		Medium:    newMedium(db),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	Album    album
-	Article  article
-	Category category
-	Medium   medium
+	Album     album
+	Article   article
+	Category  category
+	Cosplayer cosplayer
+	Medium    medium
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:       db,
-		Album:    q.Album.clone(db),
-		Article:  q.Article.clone(db),
-		Category: q.Category.clone(db),
-		Medium:   q.Medium.clone(db),
+		db:        db,
+		Album:     q.Album.clone(db),
+		Article:   q.Article.clone(db),
+		Category:  q.Category.clone(db),
+		Cosplayer: q.Cosplayer.clone(db),
+		Medium:    q.Medium.clone(db),
 	}
 }
 
 type queryCtx struct {
-	Album    *albumDo
-	Article  *articleDo
-	Category *categoryDo
-	Medium   *mediumDo
+	Album     *albumDo
+	Article   *articleDo
+	Category  *categoryDo
+	Cosplayer *cosplayerDo
+	Medium    *mediumDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		Album:    q.Album.WithContext(ctx),
-		Article:  q.Article.WithContext(ctx),
-		Category: q.Category.WithContext(ctx),
-		Medium:   q.Medium.WithContext(ctx),
+		Album:     q.Album.WithContext(ctx),
+		Article:   q.Article.WithContext(ctx),
+		Category:  q.Category.WithContext(ctx),
+		Cosplayer: q.Cosplayer.WithContext(ctx),
+		Medium:    q.Medium.WithContext(ctx),
 	}
 }
 

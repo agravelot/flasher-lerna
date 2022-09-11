@@ -53,6 +53,7 @@ func main() {
 		gen.FieldType("responsive_images", "*ResponsiveImages"),
 	)
 	categories := g.GenerateModel("categories")
+	cosplayers := g.GenerateModel("cosplayers")
 	albums := g.GenerateModel(
 		"albums",
 		gen.FieldRelate(field.HasMany, "Categories", categories,
@@ -66,15 +67,40 @@ func main() {
 				GORMTag: "polymorphic:Model;polymorphicValue:App\\\\Models\\\\Album",
 			},
 		),
+		gen.FieldRelate(field.HasMany, "Cosplayers", cosplayers,
+			&field.RelateConfig{
+				GORMTag: "many2many:album_cosaplyer;joinForeignKey:AlbumID;joinReferences:CosplayerID",
+			},
+		),
 	)
+
+	// Add reverse relation
+	categories = g.GenerateModel("categories",
+		gen.FieldRelate(field.HasMany, "Albums", albums,
+			&field.RelateConfig{
+				GORMTag: "many2many:album_category;joinForeignKey:CategoryID;joinReferences:AlbumID",
+			},
+		))
+
+	// Add reverse relation
+	cosplayers = g.GenerateModel("cosplayers",
+		gen.FieldRelate(field.HasMany, "Albums", albums,
+			&field.RelateConfig{
+				GORMTag: "many2many:album_cosaplyer;joinForeignKey:CosplayerID;joinReferences:AlbumID",
+			},
+		),
+	)
+
+	article := g.GenerateModel("articles")
 
 	// apply basic crud api on structs or table models which is specified by table name with function
 	// GenerateModel/GenerateModelAs. And generator will generate table models' code when calling Excute.
 	g.ApplyBasic(
 		medias,
 		categories,
+		cosplayers,
 		albums,
-		g.GenerateModel("articles"),
+		article,
 	)
 
 	// apply diy interfaces on structs or table models
