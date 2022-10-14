@@ -37,7 +37,7 @@ const Search: FunctionComponent = () => {
         </IndexResults>
       </Index>
 
-      <div className="text-2xl text-white">Cosplayers</div>
+      <div className="text-2xl text-white">Modèles</div>
       <span className="mx-auto mb-4 inline-block h-1 w-8 rounded bg-gradient-to-r from-blue-700 to-red-700" />
       <Index indexName="cosplayers-production">
         <IndexResults>

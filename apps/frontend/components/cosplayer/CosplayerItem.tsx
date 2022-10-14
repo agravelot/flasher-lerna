@@ -14,7 +14,7 @@ const CosplayerItem: FunctionComponent<Props> = ({ cosplayer }: Props) => {
         <Avatar name={cosplayer.name} src={cosplayer.avatar?.url} />
         <div className="mt-4 text-center md:mt-0 md:ml-4 md:text-left">
           <div className="text-xl leading-tight">{cosplayer.name}</div>
-          <div className="text-sm leading-tight text-gray-800">Cosplayer</div>
+          <div className="text-sm leading-tight text-gray-800">Modèle</div>
           <div className="mt-4">
             <Link
               href={{
