@@ -152,7 +152,7 @@ const Navbar: FunctionComponent = () => {
                     tabIndex={0}
                     className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
                   >
-                    Albums
+                    Galerie
                   </a>
                 </Link>
               </li>
@@ -168,7 +168,7 @@ const Navbar: FunctionComponent = () => {
                     role="menuitem"
                     className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
                   >
-                    Categories
+                    Catégories
                   </a>
                 </Link>
               </li>
