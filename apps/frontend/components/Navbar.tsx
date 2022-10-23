@@ -144,7 +144,7 @@ const Navbar: FunctionComponent = () => {
           leaveTo="transform opacity-0 scale-95"
         >
           <div aria-haspopup="menu" aria-expanded={showMenu}>
-            <ul className="mr-auto flex list-none flex-col lg:flex-row">
+            <ul className="mr-auto flex list-none flex-col lg:hidden">
               <li>
                 <Link href={{ pathname: "/galerie" }}>
                   <a
