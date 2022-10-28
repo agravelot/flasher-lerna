@@ -31,6 +31,8 @@ const Header: FunctionComponent<Props> = ({
   separatorClass = "text-white",
   src = defaultMedia.url,
   altDescription = defaultMedia.name,
+  width = defaultMedia.width,
+  height = defaultMedia.height,
   breadcrumb,
 }: Props) => (
   <div
@@ -42,6 +44,8 @@ const Header: FunctionComponent<Props> = ({
         style={{ filter: "brightness(80%)" }}
         src={src}
         alt={altDescription}
+        width={width}
+        height={height}
         className="h-full w-full object-cover"
         draggable={false}
         priority
