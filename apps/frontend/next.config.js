@@ -1,6 +1,13 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const withPWA = require("next-pwa");
 const runtimeCaching = require("next-pwa/cache");
+
+const withPWA = require("next-pwa")({
+  dest: "public",
+  disable: process.env.NODE_ENV !== "production",
+  mode: process.env.NODE_ENV,
+  runtimeCaching,
+});
+
 const { withSentryConfig } = require("@sentry/nextjs");
 
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
@@ -58,12 +65,6 @@ const moduleExports = (module.exports = withTM(
             permanent: true,
           },
         ];
-      },
-      pwa: {
-        dest: "public",
-        runtimeCaching,
-        disable: process.env.NODE_ENV !== "production",
-        mode: process.env.NODE_ENV,
       },
       reactStrictMode: true,
       env: {
