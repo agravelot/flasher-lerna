@@ -4,12 +4,12 @@ import { FC, useState } from "react";
 import { configuration } from "../utils/configuration";
 import { Transition, Menu } from "@headlessui/react";
 import {
-  LoginIcon,
-  LogoutIcon,
-  PhotographIcon,
+  ArrowLeftOnRectangleIcon,
+  ArrowRightOnRectangleIcon,
+  PhotoIcon,
   UserIcon,
-  AdjustmentsIcon,
-} from "@heroicons/react/outline";
+  AdjustmentsVerticalIcon,
+} from "@heroicons/react/24/outline";
 
 const NavbarAccount: FC = () => {
   const { initialized, keycloak, parsedToken, isAdmin, isAuthenticated } =
@@ -42,7 +42,10 @@ const NavbarAccount: FC = () => {
             tabIndex={0}
             onClick={() => keycloak?.login()}
           >
-            <LoginIcon className="mx-2 h-5 w-5" aria-hidden="true" />
+            <ArrowLeftOnRectangleIcon
+              className="mx-2 h-5 w-5"
+              aria-hidden="true"
+            />
             Se connecter
           </button>
         </li>
@@ -109,7 +112,7 @@ const NavbarAccount: FC = () => {
                           target="_blank"
                           rel="noreferrer"
                         >
-                          <AdjustmentsIcon
+                          <AdjustmentsVerticalIcon
                             className="ml-2 mr-4 h-5 w-5"
                             aria-hidden="true"
                           />
@@ -145,7 +148,7 @@ const NavbarAccount: FC = () => {
                         tabIndex={0}
                         className="inline-flex w-full justify-start px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none"
                       >
-                        <PhotographIcon
+                        <PhotoIcon
                           className="ml-2 mr-4 h-5 w-5"
                           aria-hidden="true"
                         />
@@ -162,7 +165,7 @@ const NavbarAccount: FC = () => {
                         role="menuitem"
                         href={keycloak?.createLogoutUrl()}
                       >
-                        <LogoutIcon
+                        <ArrowRightOnRectangleIcon
                           className="ml-2 mr-4 h-5 w-5"
                           aria-hidden="true"
                         />
