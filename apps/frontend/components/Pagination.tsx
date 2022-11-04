@@ -14,6 +14,7 @@ export class PaginationProps {
 }
 
 const Pagination: FunctionComponent<PaginationProps> = ({
+  showInfo,
   currentPage,
   routeName,
   lastPage,
@@ -57,17 +58,19 @@ const Pagination: FunctionComponent<PaginationProps> = ({
       </Link>
     </div>
     <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-      <div v-if="showInfo">
-        <span className="text-sm leading-5 text-gray-700">
-          {"Affichage de "}
-          <span className="font-medium">{from}</span>
-          {" à "}
-          <span className="font-medium">{to}</span>
-          {" sur "}
-          <span className="font-medium">{totalItems}</span>
-          {" résultats"}
-        </span>
-      </div>
+      {showInfo && (
+        <div>
+          <span className="text-sm leading-5 text-gray-700">
+            {"Affichage de "}
+            <span className="font-medium">{from}</span>
+            {" à "}
+            <span className="font-medium">{to}</span>
+            {" sur "}
+            <span className="font-medium">{totalItems}</span>
+            {" résultats"}
+          </span>
+        </div>
+      )}
       <div>
         <nav className="relative z-0 inline-flex shadow-sm">
           <Link
