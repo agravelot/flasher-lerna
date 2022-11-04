@@ -4,11 +4,11 @@ import NavbarAccount from "./NavbarAccount";
 import { SearchContext } from "../contexts/AppContext";
 import { useAuthentication } from "hooks/useAuthentication";
 import {
-  SearchIcon,
-  MenuIcon,
-  XIcon,
-  LoginIcon,
-} from "@heroicons/react/outline";
+  MagnifyingGlassIcon,
+  Bars3Icon,
+  XMarkIcon,
+  ArrowLeftOnRectangleIcon,
+} from "@heroicons/react/24/outline";
 import { Transition } from "@headlessui/react";
 
 const Navbar: FunctionComponent = () => {
@@ -108,7 +108,10 @@ const Navbar: FunctionComponent = () => {
               className="inline-flex px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
               onClick={() => open()}
             >
-              <SearchIcon className="mx-2 h-5 w-5" aria-hidden="true" />
+              <MagnifyingGlassIcon
+                className="mx-2 h-5 w-5"
+                aria-hidden="true"
+              />
               Rechercher
             </button>
           </li>
@@ -126,9 +129,9 @@ const Navbar: FunctionComponent = () => {
               onClick={() => toggleNavbar()}
             >
               {showMenu ? (
-                <XIcon className="h-6 w-6  text-white" aria-hidden="true" />
+                <XMarkIcon className="h-6 w-6  text-white" aria-hidden="true" />
               ) : (
-                <MenuIcon className="h-6 w-6  text-white" aria-hidden="true" />
+                <Bars3Icon className="h-6 w-6  text-white" aria-hidden="true" />
               )}
             </button>
           </li>
@@ -217,7 +220,10 @@ const Navbar: FunctionComponent = () => {
                   className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
                   onClick={() => open()}
                 >
-                  <SearchIcon className="mx-2 h-5 w-5" aria-hidden="true" />
+                  <MagnifyingGlassIcon
+                    className="mx-2 h-5 w-5"
+                    aria-hidden="true"
+                  />
                   Rechercher
                 </button>
               </li>
@@ -230,7 +236,10 @@ const Navbar: FunctionComponent = () => {
                     className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
                     onClick={() => keycloak?.login()}
                   >
-                    <LoginIcon className="mx-2 h-5 w-5" aria-hidden="true" />
+                    <ArrowLeftOnRectangleIcon
+                      className="mx-2 h-5 w-5"
+                      aria-hidden="true"
+                    />
                     Se connecter
                   </button>
                 </li>
