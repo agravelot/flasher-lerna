@@ -80,11 +80,6 @@ const moduleExports = (module.exports = withTM(
       },
       poweredByHeader: false,
       compress: false,
-      experimental: {
-        images: {
-          allowFutureImage: true,
-        },
-      },
     }))
   ))
 ));
