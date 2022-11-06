@@ -61,28 +61,25 @@ const NavbarAccount: FC = () => {
             <Menu>
               <Menu.Button>
                 <div>
-                  <span className="rounded-md shadow-sm">
-                    <button
-                      id="options-menu"
-                      type="button"
-                      className="ml-3 inline-flex px-4 py-2 text-xs font-bold uppercase text-white shadow hover:shadow-md lg:mr-1"
-                      aria-haspopup="true"
-                      aria-expanded="true"
-                      onClick={() => toggleDropdown()}
+                  <span
+                    className="ml-3 inline-flex rounded-md px-4 py-2 text-xs font-bold uppercase text-white shadow-sm hover:shadow-md lg:mr-1"
+                    id="options-menu"
+                    aria-haspopup="true"
+                    aria-expanded="true"
+                    onClick={() => toggleDropdown()}
+                  >
+                    {parsedToken?.preferred_username}
+                    <svg
+                      className={`-mr-1 ml-2 h-5 w-5 transform transition-transform duration-150 ${openCloseIndicatorClass()}`}
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
                     >
-                      {parsedToken?.preferred_username}
-                      <svg
-                        className={`-mr-1 ml-2 h-5 w-5 transform transition-transform duration-150 ${openCloseIndicatorClass()}`}
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </button>
+                      <path
+                        fillRule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
                   </span>
                 </div>
               </Menu.Button>
@@ -138,23 +135,25 @@ const NavbarAccount: FC = () => {
                     </a>
                   </Menu.Item>
                   <Menu.Item>
-                    <Link
-                      href={{
-                        pathname: "/me/albums",
-                      }}
-                    >
-                      <a
-                        role="menuitem"
-                        tabIndex={0}
-                        className="inline-flex w-full justify-start px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none"
+                    <span>
+                      <Link
+                        href={{
+                          pathname: "/me/albums",
+                        }}
                       >
-                        <PhotoIcon
-                          className="ml-2 mr-4 h-5 w-5"
-                          aria-hidden="true"
-                        />
-                        Ma galerie
-                      </a>
-                    </Link>
+                        <a
+                          role="menuitem"
+                          tabIndex={0}
+                          className="inline-flex w-full justify-start px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none"
+                        >
+                          <PhotoIcon
+                            className="ml-2 mr-4 h-5 w-5"
+                            aria-hidden="true"
+                          />
+                          Ma galerie
+                        </a>
+                      </Link>
+                    </span>
                   </Menu.Item>
                   <div className="border-t border-gray-100"></div>
                   <Menu.Item>
