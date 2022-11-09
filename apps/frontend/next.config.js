@@ -78,6 +78,9 @@ const moduleExports = (module.exports = withTM(
         ],
         formats: ["image/avif", "image/webp"],
       },
+      sentry: {
+        hideSourceMaps: false,
+      },
       poweredByHeader: false,
       compress: false,
     }))
