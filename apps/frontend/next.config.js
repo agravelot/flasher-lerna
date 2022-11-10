@@ -78,13 +78,11 @@ const moduleExports = (module.exports = withTM(
         ],
         formats: ["image/avif", "image/webp"],
       },
+      sentry: {
+        hideSourceMaps: true,
+      },
       poweredByHeader: false,
       compress: false,
-      experimental: {
-        images: {
-          allowFutureImage: true,
-        },
-      },
     }))
   ))
 ));

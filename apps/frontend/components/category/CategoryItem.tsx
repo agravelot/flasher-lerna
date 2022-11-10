@@ -27,6 +27,8 @@ const CategoryItem: FunctionComponent<Props> = ({ category }: Props) => {
                   className="h-full w-full object-cover"
                   src={category.cover.url}
                   alt={category.name}
+                  width={category.cover.width}
+                  height={category.cover.height}
                   sizes={sizes(3, "container")}
                   draggable={false}
                 />
@@ -35,20 +37,8 @@ const CategoryItem: FunctionComponent<Props> = ({ category }: Props) => {
 
             <div className="relative h-full">
               <div className="flex h-full items-center justify-center align-middle">
-                <div>
-                  <Link
-                    href={{
-                      pathname: "/categories/[slug]",
-                      query: { slug: category.slug },
-                    }}
-                  >
-                    <a
-                      className="text-5xl font-semibold text-white"
-                      tabIndex={0}
-                    >
-                      <h2 className="p-8 py-32 text-center">{category.name}</h2>
-                    </a>
-                  </Link>
+                <div className="text-5xl font-semibold text-white">
+                  <h2 className="p-8 py-32 text-center">{category.name}</h2>
                 </div>
               </div>
             </div>
