@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import Link from "next/link";
-import Image from "next/future/image";
+import Image from "next/image";
 import { sizes } from "../../utils/util";
 import { Category } from "@flasher/models";
 

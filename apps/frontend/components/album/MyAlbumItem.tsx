@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import Image from "next/future/image";
+import Image from "next/image";
 import Link from "next/link";
 import { Album } from "@flasher/models";
 import { api } from "@flasher/common";

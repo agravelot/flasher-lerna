@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import Image from "next/future/image";
+import Image from "next/image";
 import { ImageGallery, ImageObject, Person } from "schema-dts";
 import { useRouter } from "next/dist/client/router";
 import { sizes } from "../../utils/util";

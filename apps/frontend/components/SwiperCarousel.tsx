@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import Image from "next/future/image";
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, {
   Navigation,
