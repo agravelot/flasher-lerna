@@ -82,8 +82,8 @@ const MyAlbums: FunctionComponent<Props> = ({
     <Image
       className="mx-auto h-64 w-64"
       src={pictureLogo}
-      height={"264px"}
-      width={"264px"}
+      height={264}
+      width={264}
       alt="logo image"
     />
   );
