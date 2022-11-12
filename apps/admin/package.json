@@ -20,7 +20,7 @@
     "@uppy/core": "^2.0.0",
     "@uppy/dashboard": "^2.0.0",
     "@uppy/drag-drop": "^2.0.0",
-    "@uppy/image-editor": "^1.0.1",
+    "@uppy/image-editor": "^2.1.0",
     "@uppy/react": "^2.0.0",
     "@uppy/tus": "^2.0.0",
     "@vitejs/plugin-react": "^1.3.0",
