@@ -140,18 +140,15 @@ const NavbarAccount: FC = () => {
                         href={{
                           pathname: "/me/albums",
                         }}
+                        role="menuitem"
+                        tabIndex={0}
+                        className="inline-flex w-full justify-start px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none"
                       >
-                        <a
-                          role="menuitem"
-                          tabIndex={0}
-                          className="inline-flex w-full justify-start px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none"
-                        >
-                          <PhotoIcon
-                            className="ml-2 mr-4 h-5 w-5"
-                            aria-hidden="true"
-                          />
-                          Ma galerie
-                        </a>
+                        <PhotoIcon
+                          className="ml-2 mr-4 h-5 w-5"
+                          aria-hidden="true"
+                        />
+                        Ma galerie
                       </Link>
                     </span>
                   </Menu.Item>

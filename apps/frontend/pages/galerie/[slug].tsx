@@ -125,12 +125,11 @@ const ShowAlbum: NextPage<Props> = ({
                 query: { slug: category.slug },
               }}
               key={category.id}
+              tabIndex={0}
             >
-              <a tabIndex={0}>
-                <span className="m-1 inline-block rounded-full px-3 py-1 text-sm text-white">
-                  {category.name}
-                </span>
-              </a>
+              <span className="m-1 inline-block rounded-full px-3 py-1 text-sm text-white">
+                {category.name}
+              </span>
             </Link>
           ))}
         </div>

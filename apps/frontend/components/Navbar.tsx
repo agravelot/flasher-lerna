@@ -33,72 +33,62 @@ const Navbar: FunctionComponent = () => {
         >
           {/* Left */}
           <li className="flex items-center" role="menuitem">
-            <Link href={{ pathname: "/" }}>
-              <a
-                tabIndex={0}
-                className="whitespace-no-wrap mr-4 inline-block p-2 text-sm font-bold uppercase leading-relaxed text-white"
-              >
-                JKanda
-              </a>
+            <Link
+              href={{ pathname: "/" }}
+              tabIndex={0}
+              className="whitespace-no-wrap mr-4 inline-block p-2 text-sm font-bold uppercase leading-relaxed text-white"
+            >
+              JKanda
             </Link>
           </li>
           <li className="hidden items-center lg:flex">
-            <Link href={{ pathname: "/galerie" }}>
-              <a
-                role="menuitem"
-                tabIndex={0}
-                className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
-              >
-                Galerie
-              </a>
+            <Link
+              href={{ pathname: "/galerie" }}
+              role="menuitem"
+              tabIndex={0}
+              className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
+            >
+              Galerie
             </Link>
           </li>
           <li className="hidden items-center lg:flex">
             <Link
               href={{ pathname: "/categories/page/[page]", query: { page: 1 } }}
+              role="menuitem"
+              tabIndex={0}
+              className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
             >
-              <a
-                role="menuitem"
-                tabIndex={0}
-                className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
-              >
-                Catégories
-              </a>
+              Catégories
             </Link>
           </li>
           <li className="hidden items-center lg:flex">
             <Link
               href={{ pathname: "/cosplayers/page/[page]", query: { page: 1 } }}
+              role="menuitem"
+              tabIndex={0}
+              className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
             >
-              <a
-                role="menuitem"
-                tabIndex={0}
-                className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
-              >
-                Cosplayers
-              </a>
+              Cosplayers
             </Link>
           </li>
           <li className="hidden items-center lg:flex">
-            <Link href={{ pathname: "/", hash: "contact" }}>
-              <a
-                role="menuitem"
-                tabIndex={0}
-                className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
-              >
-                Contact
-              </a>
+            <Link
+              href={{ pathname: "/", hash: "contact" }}
+              role="menuitem"
+              tabIndex={0}
+              className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
+            >
+              Contact
             </Link>
           </li>
           <li className="hidden items-center lg:flex">
-            <Link href={{ pathname: "/blog" }}>
-              <a
-                role="menuitem"
-                tabIndex={0}
-                className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
-              >
-                Blog
-              </a>
+            <Link
+              href={{ pathname: "/blog" }}
+              role="menuitem"
+              tabIndex={0}
+              className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
+            >
+              Blog
             </Link>
           </li>
           <li className="hidden items-center lg:flex">
@@ -149,14 +139,13 @@ const Navbar: FunctionComponent = () => {
           <div aria-haspopup="menu" aria-expanded={showMenu}>
             <ul className="mr-auto flex list-none flex-col lg:hidden">
               <li>
-                <Link href={{ pathname: "/galerie" }}>
-                  <a
-                    role="menuitem"
-                    tabIndex={0}
-                    className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
-                  >
-                    Galerie
-                  </a>
+                <Link
+                  href={{ pathname: "/galerie" }}
+                  role="menuitem"
+                  tabIndex={0}
+                  className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
+                >
+                  Galerie
                 </Link>
               </li>
               <li>
@@ -165,14 +154,11 @@ const Navbar: FunctionComponent = () => {
                     pathname: "/categories/page/1",
                     query: { page: 1 },
                   }}
+                  tabIndex={0}
+                  role="menuitem"
+                  className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
                 >
-                  <a
-                    tabIndex={0}
-                    role="menuitem"
-                    className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
-                  >
-                    Catégories
-                  </a>
+                  Catégories
                 </Link>
               </li>
               <li>
@@ -181,36 +167,31 @@ const Navbar: FunctionComponent = () => {
                     pathname: "/cosplayers/page/1",
                     query: { page: 1 },
                   }}
+                  tabIndex={0}
+                  role="menuitem"
+                  className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
                 >
-                  <a
-                    tabIndex={0}
-                    role="menuitem"
-                    className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
-                  >
-                    Cosplayers
-                  </a>
+                  Cosplayers
                 </Link>
               </li>
               <li>
-                <Link href={{ pathname: "/", hash: "contact" }}>
-                  <a
-                    tabIndex={0}
-                    role="menuitem"
-                    className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
-                  >
-                    Contact
-                  </a>
+                <Link
+                  href={{ pathname: "/", hash: "contact" }}
+                  tabIndex={0}
+                  role="menuitem"
+                  className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
+                >
+                  Contact
                 </Link>
               </li>
               <li>
-                <Link href={{ pathname: "/blog" }}>
-                  <a
-                    tabIndex={0}
-                    role="menuitem"
-                    className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
-                  >
-                    Blog
-                  </a>
+                <Link
+                  href={{ pathname: "/blog" }}
+                  tabIndex={0}
+                  role="menuitem"
+                  className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
+                >
+                  Blog
                 </Link>
               </li>
               <li>
