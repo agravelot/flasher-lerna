@@ -146,10 +146,9 @@ const MyAlbums: FunctionComponent<Props> = ({
                   pathname: "/",
                   hash: "contact",
                 }}
+                className="text-pink-600 underline hover:text-pink-800"
               >
-                <a className="text-pink-600 underline hover:text-pink-800">
-                  contacter
-                </a>
+                contacter
                 {/*  eslint-disable-next-line prettier/prettier */}
               </Link>{" "}
               !

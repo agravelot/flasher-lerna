@@ -87,27 +87,26 @@ const IndexAlbum: NextPage<Props> = ({
                     addSuffix: false,
                   })}
                 </span>
-                <Link href={`/blog/${post.slug}`}>
-                  <a className="block">
-                    <h3 className=" mt-2 text-3xl font-bold text-gray-800 hover:text-blue-500 hover:underline">
-                      {post.title}
-                    </h3>
-                  </a>
+                <Link href={`/blog/${post.slug}`} className="block">
+                  <h3 className=" mt-2 text-3xl font-bold text-gray-800 hover:text-blue-500 hover:underline">
+                    {post.title}
+                  </h3>
                 </Link>
                 <p className="mt-4 text-gray-600">
                   {truncate(post.metaDescription, 200)}
                 </p>
-                <Link href={`/blog/${post.slug}`}>
-                  <a className="inline-block w-full">
-                    <span
-                      className="float-right mx-4 bg-gradient-to-r from-blue-700 to-red-700 bg-clip-text font-semibold text-transparent shadow-none hover:underline"
-                      style={{
-                        WebkitBackgroundClip: "text",
-                      }}
-                    >
-                      Lire la suite
-                    </span>
-                  </a>
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="inline-block w-full"
+                >
+                  <span
+                    className="float-right mx-4 bg-gradient-to-r from-blue-700 to-red-700 bg-clip-text font-semibold text-transparent shadow-none hover:underline"
+                    style={{
+                      WebkitBackgroundClip: "text",
+                    }}
+                  >
+                    Lire la suite
+                  </span>
                 </Link>
 
                 <span className="inline-block h-px w-full rounded bg-gradient-to-r from-blue-700 to-red-700 opacity-50"></span>
