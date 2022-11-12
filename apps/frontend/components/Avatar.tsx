@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import Image from "next/future/image";
+import Image from "next/image";
 
 interface Props {
   name: string;

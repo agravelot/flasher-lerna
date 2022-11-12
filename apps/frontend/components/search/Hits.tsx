@@ -9,7 +9,7 @@ import Link from "next/link";
 import Avatar from "../Avatar";
 import { ReactElement } from "react";
 import { sizes } from "utils/util";
-import Image from "next/future/image";
+import Image from "next/image";
 
 export const CustomSearchBox = connectSearchBox(
   ({ currentRefinement, refine }) => {

@@ -2,7 +2,7 @@ import { GetStaticProps } from "next";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import Header from "../../components/Header";
-import Image from "next/future/image";
+import Image from "next/image";
 import Link from "next/link";
 import Pagination, { PaginationProps } from "../../components/Pagination";
 import { getGlobalProps, GlobalProps } from "../../stores";
