@@ -7,7 +7,7 @@ import AlbumList from "../components/album/AlbumList";
 import { GetStaticProps, GetStaticPropsResult, NextPage } from "next";
 import { getGlobalProps, GlobalProps } from "../stores";
 import Separator from "../components/Separator";
-import { NextSeo } from "next-seo";
+import { NextSeo, SiteLinksSearchBoxJsonLd } from "next-seo";
 import { Album, Testimonial } from "@flasher/models";
 import { api, PaginatedReponse, sizes } from "@flasher/common";
 import { configuration } from "utils/configuration";
@@ -52,6 +52,15 @@ const IndexPage: NextPage<Props> = ({
               }
             : undefined
         }
+      />
+      <SiteLinksSearchBoxJsonLd
+        url="https://jkanda.fr"
+        potentialActions={[
+          {
+            target: "https://query.example.com/search?q",
+            queryInput: "search_term_string",
+          },
+        ]}
       />
       <div>
         <Header title={appName} separatorClass="text-gray-300" />
