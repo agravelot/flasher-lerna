@@ -1,5 +1,5 @@
 import { FunctionComponent, ReactNode } from "react";
-import Image from "next/future/image";
+import Image from "next/image";
 import Separator from "./Separator";
 import { Media } from "@flasher/models";
 

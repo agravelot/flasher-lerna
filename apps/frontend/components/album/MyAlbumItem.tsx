@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import Image from "next/future/image";
+import Image from "next/image";
 import Link from "next/link";
 import { Album } from "@flasher/models";
 import { api } from "@flasher/common";
@@ -91,10 +91,9 @@ const MyAlbumItem: FunctionComponent<Props> = ({
                   pathname: "/albums/[slug]",
                   query: { slug: album.slug },
                 }}
+                className="mx-3 inline-flex flex-grow items-center rounded bg-gray-300 py-2 px-4 text-gray-800 hover:bg-gray-400"
               >
-                <a className="mx-3 inline-flex flex-grow items-center rounded bg-gray-300 py-2 px-4 text-gray-800 hover:bg-gray-400">
-                  Voir l&apos;album
-                </a>
+                Voir l&apos;album
               </Link>
             </div>
           )}

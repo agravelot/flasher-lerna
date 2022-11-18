@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Layout from "../components/Layout";
-import Image from "next/future/image";
+import Image from "next/image";
 import Header from "../components/Header";
 import { TestimonialList } from "../components/TestimonialList";
 import AlbumList from "../components/album/AlbumList";
@@ -58,13 +58,12 @@ const IndexPage: NextPage<Props> = ({
         <section className="bg-gray-300 pb-20">
           <div className="container mx-auto">
             <div className="-mt-24 flex flex-wrap overflow-x-hidden md:-mx-3">
-              <Link href="/albums/page/1">
-                <a
-                  tabIndex={0}
-                  className="order-last mx-auto mt-12 rounded-lg bg-gradient-to-r from-blue-700 to-red-700 py-3 px-10 font-semibold text-white hover:from-pink-500 hover:to-orange-500"
-                >
-                  <h2>Découvrez mes derniers albums</h2>
-                </a>
+              <Link
+                href="/albums/page/1"
+                tabIndex={0}
+                className="order-last mx-auto mt-12 rounded-lg bg-gradient-to-r from-blue-700 to-red-700 py-3 px-10 font-semibold text-white hover:from-pink-500 hover:to-orange-500"
+              >
+                <h2>Découvrez mes derniers albums</h2>
               </Link>
               <AlbumList albums={albums} className="-mt-24" />
             </div>

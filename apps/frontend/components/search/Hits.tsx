@@ -9,7 +9,7 @@ import Link from "next/link";
 import Avatar from "../Avatar";
 import { ReactElement } from "react";
 import { sizes } from "utils/util";
-import Image from "next/future/image";
+import Image from "next/image";
 
 export const CustomSearchBox = connectSearchBox(
   ({ currentRefinement, refine }) => {
@@ -102,33 +102,30 @@ export const AlbumHits = connectHits(({ hits }) => (
           href={{ pathname: "/galerie/[slug]", query: { slug: hit.slug } }}
           prefetch={false}
         >
-          <a>
-            <Image
-              className="object-cover"
-              src={hit.cover}
-              alt={hit.title}
-              width={2000}
-              height={2000}
-              sizes={sizes(3, "container")}
-              // quality={95}
-              // width={hit.width}
-              // height="hit.height"
-              // loading="lazy"
-            />
-          </a>
+          <Image
+            className="object-cover"
+            src={hit.cover}
+            alt={hit.title}
+            width={2000}
+            height={2000}
+            sizes={sizes(3, "container")}
+            // quality={95}
+            // width={hit.width}
+            // height="hit.height"
+            // loading="lazy"
+          />
         </Link>
         <Link
           href={{ pathname: "/galerie/[slug]", query: { slug: hit.slug } }}
           prefetch={false}
+          className="p-4"
         >
-          <a className="p-4">
-            <h3 className="mb-2 text-xl font-bold">
-              <CustomHighlight hit={hit} attribute="title" />
-            </h3>
-            <p className="hidden text-gray-200 md:block">
-              {hit.meta_description}
-            </p>
-          </a>
+          <h3 className="mb-2 text-xl font-bold">
+            <CustomHighlight hit={hit} attribute="title" />
+          </h3>
+          <p className="hidden text-gray-200 md:block">
+            {hit.meta_description}
+          </p>
         </Link>
       </div>
     ))}
@@ -143,20 +140,17 @@ export const CategoryHits = connectHits(({ hits }) => (
           href={{ pathname: "/categories/[slug]", query: { slug: hit.slug } }}
           prefetch={false}
         >
-          <a className="">
-            <Avatar name={hit.name} src={hit.cover} />
-          </a>
+          <Avatar name={hit.name} src={hit.cover} />
         </Link>
         <div className="p-4">
           <Link
             href={{ pathname: "/categories/[slug]", query: { slug: hit.slug } }}
             prefetch={false}
+            className="mb-2 text-xl font-bold"
           >
-            <a className="mb-2 text-xl font-bold">
-              <h3>
-                <CustomHighlight hit={hit} attribute="name" />
-              </h3>
-            </a>
+            <h3>
+              <CustomHighlight hit={hit} attribute="name" />
+            </h3> 
           </Link>
         </div>
       </li>
@@ -179,12 +173,11 @@ export const CosplayerHits = connectHits(({ hits }) => (
           <Link
             href={{ pathname: "/cosplayers/[slug]", query: { slug: hit.slug } }}
             prefetch={false}
+            className="mb-2 text-xl font-bold"
           >
-            <a className="mb-2 text-xl font-bold">
-              <h3>
-                <CustomHighlight hit={hit} attribute="name" />
-              </h3>
-            </a>
+            <h3>
+              <CustomHighlight hit={hit} attribute="name" />
+            </h3>
           </Link>
         </div>
       </div>
