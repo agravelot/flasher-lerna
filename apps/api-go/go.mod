@@ -5,25 +5,26 @@ go 1.18
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/envoyproxy/protoc-gen-validate v0.6.7
-	github.com/gosimple/slug v1.12.0
+	github.com/gosimple/slug v1.13.1
 	github.com/jackc/pgconn v1.13.0
 	github.com/jackc/pgerrcode v0.0.0-20220416144525-469b46aa5efa
 	github.com/joho/godotenv v1.4.0
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/kr/pretty v0.3.0
-	github.com/stretchr/testify v1.8.0
+	github.com/kr/pretty v0.3.1
+	github.com/stretchr/testify v1.8.1
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.2.0
 	gorm.io/driver/postgres v1.4.5
-	gorm.io/gen v0.3.14
-	gorm.io/gorm v1.24.1-0.20221019064659-5dd2bb482755
-	gorm.io/plugin/dbresolver v1.2.1
+	gorm.io/gen v0.3.18
+	gorm.io/gorm v1.24.2
+	gorm.io/plugin/dbresolver v1.3.0
 )
 
 require (
 	cloud.google.com/go/compute v1.10.0 // indirect
 	github.com/golang/glog v1.0.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
-	github.com/rogpeppe/go-internal v1.8.1 // indirect
+	github.com/rogpeppe/go-internal v1.9.0 // indirect
+	github.com/stretchr/objx v0.5.0 // indirect
 )
 
 require (
@@ -44,17 +45,17 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/lib/pq v1.10.4 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
+	golang.org/x/crypto v0.0.0-20221005025214-4161e89ecf1b // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
 	golang.org/x/net v0.2.0 // indirect
 	golang.org/x/sys v0.2.0 // indirect
 	golang.org/x/text v0.4.0 // indirect
 	golang.org/x/tools v0.1.12 // indirect
-	google.golang.org/genproto v0.0.0-20221114212237-e4508ebdbee1
+	google.golang.org/genproto v0.0.0-20221118155620-16455021b5e6
 	google.golang.org/grpc v1.51.0
 	google.golang.org/protobuf v1.28.1
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/datatypes v1.0.7 // indirect
-	gorm.io/driver/mysql v1.3.5 // indirect
+	gorm.io/driver/mysql v1.4.0 // indirect
 	gorm.io/hints v1.1.0 // indirect
 )

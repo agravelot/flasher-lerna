@@ -19,14 +19,14 @@ import (
 	"api-go/model"
 )
 
-func newAlbum(db *gorm.DB) album {
+func newAlbum(db *gorm.DB, opts ...gen.DOOption) album {
 	_album := album{}
 
-	_album.albumDo.UseDB(db)
+	_album.albumDo.UseDB(db, opts...)
 	_album.albumDo.UseModel(&model.Album{})
 
 	tableName := _album.albumDo.TableName()
-	_album.ALL = field.NewField(tableName, "*")
+	_album.ALL = field.NewAsterisk(tableName)
 	_album.ID = field.NewInt32(tableName, "id")
 	_album.Slug = field.NewString(tableName, "slug")
 	_album.Title = field.NewString(tableName, "title")
@@ -65,7 +65,7 @@ func newAlbum(db *gorm.DB) album {
 type album struct {
 	albumDo albumDo
 
-	ALL                    field.Field
+	ALL                    field.Asterisk
 	ID                     field.Int32
 	Slug                   field.String
 	Title                  field.String
@@ -98,7 +98,7 @@ func (a album) As(alias string) *album {
 }
 
 func (a *album) updateTableName(table string) *album {
-	a.ALL = field.NewField(table, "*")
+	a.ALL = field.NewAsterisk(table)
 	a.ID = field.NewInt32(table, "id")
 	a.Slug = field.NewString(table, "slug")
 	a.Title = field.NewString(table, "title")
@@ -150,6 +150,11 @@ func (a *album) fillFieldMap() {
 }
 
 func (a album) clone(db *gorm.DB) album {
+	a.albumDo.ReplaceConnPool(db.Statement.ConnPool)
+	return a
+}
+
+func (a album) replaceDB(db *gorm.DB) album {
 	a.albumDo.ReplaceDB(db)
 	return a
 }
@@ -368,6 +373,10 @@ func (a albumDo) ReadDB() *albumDo {
 
 func (a albumDo) WriteDB() *albumDo {
 	return a.Clauses(dbresolver.Write)
+}
+
+func (a albumDo) Session(config *gorm.Session) *albumDo {
+	return a.withDO(a.DO.Session(config))
 }
 
 func (a albumDo) Clauses(conds ...clause.Expression) *albumDo {

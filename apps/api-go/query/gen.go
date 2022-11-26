@@ -9,16 +9,20 @@ import (
 	"database/sql"
 
 	"gorm.io/gorm"
+
+	"gorm.io/gen"
+
+	"gorm.io/plugin/dbresolver"
 )
 
-func Use(db *gorm.DB) *Query {
+func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
 		db:        db,
-		Album:     newAlbum(db),
-		Article:   newArticle(db),
-		Category:  newCategory(db),
-		Cosplayer: newCosplayer(db),
-		Medium:    newMedium(db),
+		Album:     newAlbum(db, opts...),
+		Article:   newArticle(db, opts...),
+		Category:  newCategory(db, opts...),
+		Cosplayer: newCosplayer(db, opts...),
+		Medium:    newMedium(db, opts...),
 	}
 }
 
@@ -42,6 +46,25 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		Category:  q.Category.clone(db),
 		Cosplayer: q.Cosplayer.clone(db),
 		Medium:    q.Medium.clone(db),
+	}
+}
+
+func (q *Query) ReadDB() *Query {
+	return q.clone(q.db.Clauses(dbresolver.Read))
+}
+
+func (q *Query) WriteDB() *Query {
+	return q.clone(q.db.Clauses(dbresolver.Write))
+}
+
+func (q *Query) ReplaceDB(db *gorm.DB) *Query {
+	return &Query{
+		db:        db,
+		Album:     q.Album.replaceDB(db),
+		Article:   q.Article.replaceDB(db),
+		Category:  q.Category.replaceDB(db),
+		Cosplayer: q.Cosplayer.replaceDB(db),
+		Medium:    q.Medium.replaceDB(db),
 	}
 }
 

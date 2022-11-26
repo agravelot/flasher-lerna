@@ -19,14 +19,14 @@ import (
 	"api-go/model"
 )
 
-func newMedium(db *gorm.DB) medium {
+func newMedium(db *gorm.DB, opts ...gen.DOOption) medium {
 	_medium := medium{}
 
-	_medium.mediumDo.UseDB(db)
+	_medium.mediumDo.UseDB(db, opts...)
 	_medium.mediumDo.UseModel(&model.Medium{})
 
 	tableName := _medium.mediumDo.TableName()
-	_medium.ALL = field.NewField(tableName, "*")
+	_medium.ALL = field.NewAsterisk(tableName)
 	_medium.ID = field.NewInt32(tableName, "id")
 	_medium.ModelType = field.NewString(tableName, "model_type")
 	_medium.ModelID = field.NewInt64(tableName, "model_id")
@@ -53,7 +53,7 @@ func newMedium(db *gorm.DB) medium {
 type medium struct {
 	mediumDo mediumDo
 
-	ALL              field.Field
+	ALL              field.Asterisk
 	ID               field.Int32
 	ModelType        field.String
 	ModelID          field.Int64
@@ -86,7 +86,7 @@ func (m medium) As(alias string) *medium {
 }
 
 func (m *medium) updateTableName(table string) *medium {
-	m.ALL = field.NewField(table, "*")
+	m.ALL = field.NewAsterisk(table)
 	m.ID = field.NewInt32(table, "id")
 	m.ModelType = field.NewString(table, "model_type")
 	m.ModelID = field.NewInt64(table, "model_id")
@@ -147,6 +147,11 @@ func (m *medium) fillFieldMap() {
 }
 
 func (m medium) clone(db *gorm.DB) medium {
+	m.mediumDo.ReplaceConnPool(db.Statement.ConnPool)
+	return m
+}
+
+func (m medium) replaceDB(db *gorm.DB) medium {
 	m.mediumDo.ReplaceDB(db)
 	return m
 }
@@ -167,6 +172,10 @@ func (m mediumDo) ReadDB() *mediumDo {
 
 func (m mediumDo) WriteDB() *mediumDo {
 	return m.Clauses(dbresolver.Write)
+}
+
+func (m mediumDo) Session(config *gorm.Session) *mediumDo {
+	return m.withDO(m.DO.Session(config))
 }
 
 func (m mediumDo) Clauses(conds ...clause.Expression) *mediumDo {

@@ -19,14 +19,14 @@ import (
 	"api-go/model"
 )
 
-func newArticle(db *gorm.DB) article {
+func newArticle(db *gorm.DB, opts ...gen.DOOption) article {
 	_article := article{}
 
-	_article.articleDo.UseDB(db)
+	_article.articleDo.UseDB(db, opts...)
 	_article.articleDo.UseModel(&model.Article{})
 
 	tableName := _article.articleDo.TableName()
-	_article.ALL = field.NewField(tableName, "*")
+	_article.ALL = field.NewAsterisk(tableName)
 	_article.ID = field.NewInt64(tableName, "id")
 	_article.Slug = field.NewString(tableName, "slug")
 	_article.Name = field.NewString(tableName, "name")
@@ -46,7 +46,7 @@ func newArticle(db *gorm.DB) article {
 type article struct {
 	articleDo articleDo
 
-	ALL             field.Field
+	ALL             field.Asterisk
 	ID              field.Int64
 	Slug            field.String
 	Name            field.String
@@ -72,7 +72,7 @@ func (a article) As(alias string) *article {
 }
 
 func (a *article) updateTableName(table string) *article {
-	a.ALL = field.NewField(table, "*")
+	a.ALL = field.NewAsterisk(table)
 	a.ID = field.NewInt64(table, "id")
 	a.Slug = field.NewString(table, "slug")
 	a.Name = field.NewString(table, "name")
@@ -119,6 +119,11 @@ func (a *article) fillFieldMap() {
 }
 
 func (a article) clone(db *gorm.DB) article {
+	a.articleDo.ReplaceConnPool(db.Statement.ConnPool)
+	return a
+}
+
+func (a article) replaceDB(db *gorm.DB) article {
 	a.articleDo.ReplaceDB(db)
 	return a
 }
@@ -139,6 +144,10 @@ func (a articleDo) ReadDB() *articleDo {
 
 func (a articleDo) WriteDB() *articleDo {
 	return a.Clauses(dbresolver.Write)
+}
+
+func (a articleDo) Session(config *gorm.Session) *articleDo {
+	return a.withDO(a.DO.Session(config))
 }
 
 func (a articleDo) Clauses(conds ...clause.Expression) *articleDo {
