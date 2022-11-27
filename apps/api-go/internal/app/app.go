@@ -37,7 +37,7 @@ func Run(config *config.Config) error {
 	// 	logger = log.With(logger, "caller", log.DefaultCaller)
 	// }
 
-	orm, err := postgres.New(config.Database.URI)
+	orm, err := postgres.New(config.Database.URL)
 	if err != nil {
 		return fmt.Errorf("could not connect to database: %w", err)
 	}

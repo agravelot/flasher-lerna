@@ -14,7 +14,7 @@ type Config struct {
 	AppGrpcPort int `envconfig:"APP_GRPC_PORT" required:"true"`
 	Database    struct {
 		Engine string `envconfig:"DB_ENGINE" default:"postgres"`
-		URI    string `envconfig:"DB_URI" required:"true"`
+		URL    string `envconfig:"DB_URL" required:"true"`
 		// Host     string `envconfig:"DB_HOST" required:"false"`
 		// User     string `envconfig:"DB_USER" required:"false"`
 		// Password string `envconfig:"DB_PASSWORD" required:"false"`

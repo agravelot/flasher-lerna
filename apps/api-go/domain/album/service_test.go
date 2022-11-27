@@ -104,7 +104,7 @@ func TestMain(m *testing.M) {
 	if err != nil {
 		log.Fatal(fmt.Errorf("unable to load config: %w", err))
 	}
-	_db, err := postgres.New(config.Database.URI)
+	_db, err := postgres.New(config.Database.URL)
 	if err != nil {
 		log.Fatal(fmt.Errorf("unable to connect to the database: %w", err))
 	}

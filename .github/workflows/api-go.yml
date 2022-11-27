@@ -138,7 +138,7 @@ jobs:
           APP_HTTP_PORT: 3000
           APP_GRPC_PORT: 3100
           DB_SSL_MODE: disable
-          DB_URI: postgresql://flasher:flasher@localhost:5432/flasher?sslmode=disable
+          DB_URL: postgresql://flasher:flasher@localhost:5432/flasher?sslmode=disable
       - name: Upload test log
         uses: actions/upload-artifact@v3
         if: always()
