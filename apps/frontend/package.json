@@ -54,7 +54,7 @@
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-preset-env": "^7.8.0",
     "prettier": "^2.1.2",
-    "prettier-plugin-tailwindcss": "^0.1.8",
+    "prettier-plugin-tailwindcss": "^0.2.0",
     "react": "^18.2.0",
     "react-cool-inview": "^3.0.0",
     "react-dom": "^18.2.0",
