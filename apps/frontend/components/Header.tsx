@@ -49,6 +49,7 @@ const Header: FunctionComponent<Props> = ({
         className="h-full w-full object-cover"
         draggable={false}
         priority
+        sizes="100vw"
       />
     </div>
     <div className="container absolute top-[64px]">{breadcrumb}</div>
