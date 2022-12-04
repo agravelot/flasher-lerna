@@ -214,7 +214,7 @@ export default function SharedModal({
                                                 x: `${Math.max(index * -100, 15 * -100)}%`,
                                             }}
                                             exit={{ width: "0%" }}
-                                            onClick={() => changePhotoId(id)}
+                                            onClick={() => changePhotoId(i)}
                                             key={id}
                                             className={`${
                                                 i === index
