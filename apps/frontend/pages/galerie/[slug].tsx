@@ -23,15 +23,21 @@ import { useAuthentication } from "hooks/useAuthentication";
 import ReadingTime from "components/ReadingTime";
 import { ContactSection } from "../../components/ContactSection";
 import { Breadcrumb } from "components/Breadcrumb";
+import {transformImage} from "../../utils/types";
 
 type Props = {
   album: Album;
   recommendedAlbums: Album[];
 } & GlobalProps;
 
-const DynamicFullscreenCarousel = dynamic(
-  () => import("../../components/FullscreenCarousel"),
-  { ssr: false }
+// const DynamicFullscreenCarousel = dynamic(
+//   () => import("../../components/FullscreenCarousel"),
+//   { ssr: false }
+// );
+
+const DynamicModal = dynamic(
+    () => import("../../components/Modal"),
+    { ssr: false }
 );
 
 const DynamicAdminOverlay = dynamic(
@@ -135,14 +141,26 @@ const ShowAlbum: NextPage<Props> = ({
         </div>
       </Header>
 
-      {loadCarousel && album.medias && (
-        <DynamicFullscreenCarousel
-          medias={album.medias}
-          beginAt={carouselIndex}
-          openned={isCarouselOpenned}
-          close={close}
-        />
-      )}
+      {/*{loadCarousel && album.medias && (*/}
+      {/*  <DynamicFullscreenCarousel*/}
+      {/*    medias={album.medias}*/}
+      {/*    beginAt={carouselIndex}*/}
+      {/*    openned={isCarouselOpenned}*/}
+      {/*    close={close}*/}
+      {/*  />*/}
+      {/*)}*/}
+
+        {loadCarousel &&isCarouselOpenned && album.medias && <div className="mx-auto max-w-[1960px] p-4">
+            <DynamicModal
+                startIndex={carouselIndex}
+                images={album.medias.map(transformImage)}
+                onClose={() => {
+                    close();
+                    // setLastViewedPhoto(photoId);
+                }}
+            />
+        </div>
+        }
 
       <div className="container mx-auto">
         <div className="prose max-w-none px-4 pt-8">

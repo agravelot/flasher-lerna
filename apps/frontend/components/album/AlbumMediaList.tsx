@@ -68,7 +68,7 @@ const AlbumMediaList: FunctionComponent<Props> = ({
       {album.medias?.map((media, index) => (
         <div
           key={media.id}
-          className="w-full flex-auto flex-grow-0 cursor-pointer md:w-1/2"
+          className="w-full flex-auto flex-grow-0 cursor-pointer md:w-1/2 cursor-zoom-in"
           onClick={() => openGalleryAt(index)}
           tabIndex={0}
         >
