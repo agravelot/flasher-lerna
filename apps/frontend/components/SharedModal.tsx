@@ -120,7 +120,7 @@ export default function SharedModal({
                 <div className="absolute inset-0 mx-auto flex items-center justify-center">
                     {/* Buttons */}
                     {loaded && (
-                        <div className={"relative aspect-[3/2] max-h-full w-full"}>
+                        <div className={"relative aspect-[3/2] max-h-screen w-full"}>
                             {navigation && (
                                 <>
                                     {index > 0 && (
