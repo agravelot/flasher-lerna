@@ -13,7 +13,7 @@ export default function Modal({
   onClose?: () => void
   startIndex: number
 }) {
-  const overlayRef = useRef<HTMLElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
   const [direction, setDirection] = useState(0);
   const [curIndex, setCurIndex] = useState(startIndex);
 
