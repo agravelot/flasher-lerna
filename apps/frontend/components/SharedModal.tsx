@@ -76,7 +76,7 @@ export default function SharedModal({
             }}
         >
             <div
-                className={`relative z-50 flex w-full max-w-7xl items-center wide:h-full xl:taller-than-854:h-auto ${aspectRatio}`}
+                className={`relative z-50 flex w-full items-center wide:h-full xl:taller-than-854:h-auto ${aspectRatio}`}
                 {...handlers}
             >
                 {/* Main image */}
@@ -117,7 +117,7 @@ export default function SharedModal({
                 </div>
 
                 {/* Buttons + bottom nav bar */}
-                <div className="absolute inset-0 mx-auto flex max-w-7xl items-center justify-center">
+                <div className="absolute inset-0 mx-auto flex items-center justify-center">
                     {/* Buttons */}
                     {loaded && (
                         <div className={"relative aspect-[3/2] max-h-full w-full"}>
