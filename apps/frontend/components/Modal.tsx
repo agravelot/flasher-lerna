@@ -1,66 +1,71 @@
 import { Dialog } from "@headlessui/react";
 import { motion } from "framer-motion";
-import {useEffect, useRef, useState} from "react";
-import useKeypress from "react-use-keypress";
+import { useEffect, useRef, useState } from "react";
 import type { ImageProps } from "../utils/types";
 import SharedModal from "./SharedModal";
 
 export default function Modal({
-  images,
-  onClose,
-    startIndex,
+                                images,
+                                onClose,
+                                startIndex,
 }: {
   images: ImageProps[]
   onClose?: () => void
   startIndex: number
 }) {
-
-  console.log(images);
-  const overlayRef = useRef<HTMLElement>();
-
+  const overlayRef = useRef<HTMLElement>(null);
   const [direction, setDirection] = useState(0);
   const [curIndex, setCurIndex] = useState(startIndex);
 
   useEffect(() => {
-    console.log(curIndex);
+    console.log({curIndex});
   }, [curIndex]);
 
   function handleClose() {
-    // router.push("/", undefined, { shallow: true });
     onClose?.();
   }
 
-  function changePhotoId(newVal: number) {
-    if (newVal > curIndex) {
-      setDirection(1);
-    } else {
-      setDirection(-1);
-    }
-    setCurIndex(newVal);
-    // router.push(
-    //   {
-    //     query: { photoId: newVal },
-    //   },
-    //   `/p/${newVal}`,
-    //   { shallow: true }
-    // );
+  // Deprecated
+  function changePhoto(newIndex: number) {
+    console.log("changePhoto");
+    setDirection(newIndex > curIndex ? 1 : -1);
+    setCurIndex(newIndex);
   }
 
-  useKeypress("ArrowRight", () => {
+  const next = () => {
     if (curIndex + 1 < images.length) {
-      changePhotoId(curIndex + 1);
+      console.log("next");
+      setDirection(1);
+      setCurIndex(i => i+1);
     }
-  });
+  };
 
-  useKeypress("ArrowLeft", () => {
+  const previous = () => {
     if (curIndex > 0) {
-      changePhotoId(curIndex - 1);
+      console.log("previous");
+      setDirection(-1);
+      setCurIndex(i => i-1);
     }
-  });
+  };
 
-  // if (!overlayRef || !overlayRef.current) {
-  //   return  null;
-  // }
+  const keydownHandler = (e: KeyboardEvent) => {
+    if (e.key === "ArrowRight") {
+      next();
+      return;
+    }
+    if (e.key === "ArrowLeft") {
+      previous();
+      return;
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", keydownHandler);
+
+    return () => {
+      window.removeEventListener("keydown", keydownHandler);
+    };
+  }, []);
 
   return (
     <Dialog
@@ -82,7 +87,7 @@ export default function Modal({
         index={curIndex}
         direction={direction}
         images={images}
-        changePhotoId={changePhotoId}
+        changePhotoId={changePhoto}
         closeModal={handleClose}
         navigation={true}
       />
