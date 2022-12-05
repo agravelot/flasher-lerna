@@ -36,6 +36,10 @@ export default function SharedModal({
     height: window.innerHeight,
   });
 
+  useEffect(() => {
+    setLoaded(false);
+  }, [index]);
+
   // Will force rerender on screen resize, allow dynamic `sizes` to work
   useEffect(() => {
     const handleResize = debounce(() => {
