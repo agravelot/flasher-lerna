@@ -11,7 +11,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { variants } from "../utils/animationVariants";
-import type { SharedModalProps } from "../utils/types";
+import type { ImageProps, SharedModalProps } from "../utils/types";
 import { debounce } from "lodash-es";
 import downloadPhoto from "../utils/downloadPhoto";
 
@@ -61,7 +61,14 @@ export default function SharedModal({
     trackMouse: true,
   });
 
+  const previousMedia = images?.[index - 1];
   const currentImage = images ? images[index] : currentPhoto;
+  const nextMedia = images?.[index + 1];
+
+  const getSizes = (media: ImageProps) =>
+    screenSize.height > screenSize.width || media.width > media.height
+      ? "100vw" // Image will be full width on mobile and landscape images.
+      : `${Math.ceil((screenSize.height / media.width) * media.height)}px`; // Determine wanted size
 
   if (!currentImage) {
     return null;
@@ -69,6 +76,23 @@ export default function SharedModal({
 
   const aspectRatio =
     currentImage.width > currentImage.height ? "aspect-[3/2]" : "aspect-[2/3]";
+
+  const preloadImage = (media: ImageProps) => {
+    return (
+      <Image
+        src={media.url}
+        width={media.width}
+        height={media.height}
+        sizes={getSizes(media)}
+        draggable={false}
+        priority
+        alt="TODO"
+        style={{
+          display: "none",
+        }}
+      />
+    );
+  };
 
   return (
     <MotionConfig
@@ -153,19 +177,14 @@ export default function SharedModal({
                       </g>
                     </svg>
                   )}
+
+                  {previousMedia && preloadImage(previousMedia)}
+
                   <Image
                     src={currentImage.url}
                     width={currentImage.width}
                     height={currentImage.height}
-                    sizes={
-                      screenSize.height > screenSize.width ||
-                      currentImage.width > currentImage.height
-                        ? "100vw" // Image will be full width on mobile and landscape images.
-                        : `${Math.ceil(
-                            (screenSize.height / currentImage.width) *
-                              currentImage.height
-                          )}px` // Determine wanted size
-                    }
+                    sizes={getSizes(currentImage)}
                     draggable={false}
                     priority
                     alt="TODO"
@@ -176,6 +195,8 @@ export default function SharedModal({
                       marginBottom: "100px",
                     }}
                   />
+
+                  {nextMedia && preloadImage(nextMedia)}
                 </div>
               </motion.div>
             </AnimatePresence>
