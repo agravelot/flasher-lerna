@@ -23,16 +23,16 @@ import { useAuthentication } from "hooks/useAuthentication";
 import ReadingTime from "components/ReadingTime";
 import { ContactSection } from "../../components/ContactSection";
 import { Breadcrumb } from "components/Breadcrumb";
+import { transformImage } from "../../utils/types";
 
 type Props = {
   album: Album;
   recommendedAlbums: Album[];
 } & GlobalProps;
 
-const DynamicFullscreenCarousel = dynamic(
-  () => import("../../components/FullscreenCarousel"),
-  { ssr: false }
-);
+const DynamicModal = dynamic(() => import("../../components/Modal"), {
+  ssr: false,
+});
 
 const DynamicAdminOverlay = dynamic(
   () => import("../../components/AdminOverlay"),
@@ -48,7 +48,7 @@ const ShowAlbum: NextPage<Props> = ({
   appName,
 }: Props) => {
   const [loadCarousel, setLoadCarousel] = useState<boolean>(false);
-  const [isCarouselOpenned, setIsCarouselOpenned] = useState<boolean>(true);
+  const [isCarouselOpened, setIsCarouselOpened] = useState<boolean>(true);
   const [carouselIndex, setCarouselIndex] = useState<number>(0);
 
   const router = useRouter();
@@ -57,10 +57,10 @@ const ShowAlbum: NextPage<Props> = ({
   const openGalleryAt = (index: number) => {
     setCarouselIndex(index);
     setLoadCarousel(true);
-    setIsCarouselOpenned(true);
+    setIsCarouselOpened(true);
   };
 
-  const close = () => setIsCarouselOpenned(false);
+  // const close = () => setIsCarouselOpenned(false);
 
   const { isAdmin } = useAuthentication();
 
@@ -135,13 +135,17 @@ const ShowAlbum: NextPage<Props> = ({
         </div>
       </Header>
 
-      {loadCarousel && album.medias && (
-        <DynamicFullscreenCarousel
-          medias={album.medias}
-          beginAt={carouselIndex}
-          openned={isCarouselOpenned}
-          close={close}
-        />
+      {loadCarousel && (
+        <div className="mx-auto p-4">
+          <DynamicModal
+            startIndex={carouselIndex}
+            images={album.medias?.map(transformImage) ?? []}
+            isOpen={isCarouselOpened}
+            onClose={() => {
+              setIsCarouselOpened(false);
+            }}
+          />
+        </div>
       )}
 
       <div className="container mx-auto">
