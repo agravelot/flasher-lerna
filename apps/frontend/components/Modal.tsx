@@ -1,63 +1,67 @@
 import { Dialog } from "@headlessui/react";
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { ImageProps } from "../utils/types";
 import SharedModal from "./SharedModal";
 
 export default function Modal({
-                                images,
-                                onClose,
-                                startIndex,
+  images,
+  onClose,
+  startIndex,
+  isOpen,
 }: {
-  images: ImageProps[]
-  onClose?: () => void
-  startIndex: number
+  images: ImageProps[];
+  onClose?: () => void;
+  startIndex: number;
+  isOpen: boolean;
 }) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const [direction, setDirection] = useState(0);
   const [curIndex, setCurIndex] = useState(startIndex);
 
-  useEffect(() => {
-    console.log({curIndex});
-  }, [curIndex]);
-
   function handleClose() {
     onClose?.();
   }
 
-  // Deprecated
-  function changePhoto(newIndex: number) {
-    console.log("changePhoto");
-    setDirection(newIndex > curIndex ? 1 : -1);
-    setCurIndex(newIndex);
-  }
+  useEffect(() => {
+    if (curIndex < 0) {
+      setCurIndex(0);
+    } else if (curIndex > images.length - 1) {
+      setCurIndex(images.length - 1);
+    }
+  }, [curIndex, setCurIndex, images]);
 
-  const next = () => {
-    if (curIndex + 1 < images.length) {
-      console.log("next");
-      setDirection(1);
-      setCurIndex(i => i+1);
-    }
-  };
+  const goTo = useCallback(
+    (index: number) => {
+      setDirection(curIndex < index ? 1 : -1);
+      setCurIndex(index);
+    },
+    [curIndex]
+  );
 
-  const previous = () => {
-    if (curIndex > 0) {
-      console.log("previous");
-      setDirection(-1);
-      setCurIndex(i => i-1);
-    }
-  };
+  const next = useCallback(() => {
+    setDirection(1);
+    setCurIndex((i) => i + 1);
+  }, [setDirection, setCurIndex]);
 
-  const keydownHandler = (e: KeyboardEvent) => {
-    if (e.key === "ArrowRight") {
-      next();
-      return;
-    }
-    if (e.key === "ArrowLeft") {
-      previous();
-      return;
-    }
-  };
+  const previous = useCallback(() => {
+    setDirection(-1);
+    setCurIndex((i) => i - 1);
+  }, [setDirection, setCurIndex]);
+
+  const keydownHandler = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") {
+        next();
+        return;
+      }
+      if (e.key === "ArrowLeft") {
+        previous();
+        return;
+      }
+    },
+    [next, previous]
+  );
 
   useEffect(() => {
     window.addEventListener("keydown", keydownHandler);
@@ -65,12 +69,12 @@ export default function Modal({
     return () => {
       window.removeEventListener("keydown", keydownHandler);
     };
-  }, []);
+  }, [keydownHandler]);
 
   return (
     <Dialog
-      static
-      open={true}
+      // static
+      open={isOpen}
       onClose={handleClose}
       initialFocus={overlayRef}
       className="fixed inset-0 z-10 flex items-center justify-center"
@@ -84,12 +88,14 @@ export default function Modal({
         animate={{ opacity: 1 }}
       />
       <SharedModal
+        next={next}
+        previous={previous}
         index={curIndex}
         direction={direction}
         images={images}
-        changePhotoId={changePhoto}
         closeModal={handleClose}
         navigation={true}
+        setIndex={goTo}
       />
     </Dialog>
   );
