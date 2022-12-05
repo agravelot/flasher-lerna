@@ -10,7 +10,7 @@ import { useRouter } from "next/dist/client/router";
 import { Album } from "@flasher/models";
 import { api, PaginatedReponse } from "@flasher/common";
 import { useAuthentication } from "hooks/useAuthentication";
-import useInView from "react-cool-inview";
+import { useInView } from "react-cool-inview";
 import { useEffect, useState } from "react";
 import { Breadcrumb } from "components/Breadcrumb";
 

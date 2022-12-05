@@ -1,6 +1,7 @@
 package postgres
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"os"
@@ -55,7 +56,10 @@ func New(uri string) (Postgres, error) {
 		Logger: newLogger,
 	}
 
-	db, err := gorm.Open(postgres.Open(uri), config)
+	sqlDB, err := sql.Open("pgx", uri)
+	db, err := gorm.Open(postgres.New(postgres.Config{
+		Conn: sqlDB,
+	}), config)
 	if err != nil {
 		return Postgres{}, fmt.Errorf("unable to connect to the database: %w", err)
 	}

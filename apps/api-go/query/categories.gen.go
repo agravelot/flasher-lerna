@@ -19,14 +19,14 @@ import (
 	"api-go/model"
 )
 
-func newCategory(db *gorm.DB) category {
+func newCategory(db *gorm.DB, opts ...gen.DOOption) category {
 	_category := category{}
 
-	_category.categoryDo.UseDB(db)
+	_category.categoryDo.UseDB(db, opts...)
 	_category.categoryDo.UseModel(&model.Category{})
 
 	tableName := _category.categoryDo.TableName()
-	_category.ALL = field.NewField(tableName, "*")
+	_category.ALL = field.NewAsterisk(tableName)
 	_category.ID = field.NewInt32(tableName, "id")
 	_category.Name = field.NewString(tableName, "name")
 	_category.Slug = field.NewString(tableName, "slug")
@@ -63,7 +63,7 @@ func newCategory(db *gorm.DB) category {
 type category struct {
 	categoryDo categoryDo
 
-	ALL             field.Field
+	ALL             field.Asterisk
 	ID              field.Int32
 	Name            field.String
 	Slug            field.String
@@ -87,7 +87,7 @@ func (c category) As(alias string) *category {
 }
 
 func (c *category) updateTableName(table string) *category {
-	c.ALL = field.NewField(table, "*")
+	c.ALL = field.NewAsterisk(table)
 	c.ID = field.NewInt32(table, "id")
 	c.Name = field.NewString(table, "name")
 	c.Slug = field.NewString(table, "slug")
@@ -129,6 +129,11 @@ func (c *category) fillFieldMap() {
 }
 
 func (c category) clone(db *gorm.DB) category {
+	c.categoryDo.ReplaceConnPool(db.Statement.ConnPool)
+	return c
+}
+
+func (c category) replaceDB(db *gorm.DB) category {
 	c.categoryDo.ReplaceDB(db)
 	return c
 }
@@ -225,6 +230,10 @@ func (c categoryDo) ReadDB() *categoryDo {
 
 func (c categoryDo) WriteDB() *categoryDo {
 	return c.Clauses(dbresolver.Write)
+}
+
+func (c categoryDo) Session(config *gorm.Session) *categoryDo {
+	return c.withDO(c.DO.Session(config))
 }
 
 func (c categoryDo) Clauses(conds ...clause.Expression) *categoryDo {

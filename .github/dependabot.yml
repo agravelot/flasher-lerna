@@ -26,3 +26,7 @@ updates:
     directory: "/apps/frontend"
     schedule:
       interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/apps/admin"
+    schedule:
+      interval: "daily"

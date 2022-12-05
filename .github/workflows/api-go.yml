@@ -16,11 +16,11 @@ on:
 
 jobs:
   docker:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
-        go-version: [1.18.x]
-        os: [ubuntu-20.04]
+        go-version: [ 1.19.x]
+        os: [ ubuntu-22.04]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -82,10 +82,10 @@ jobs:
           - 5432:5432
     strategy:
       matrix:
-        go-version: [1.18.x]
-        os: [ubuntu-20.04]
+        go-version: [ 1.19.x ]
+        os: [ ubuntu-22.04 ]
     # runs-on: self-hosted
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -101,7 +101,7 @@ jobs:
           key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-${{ matrix.go-version }}-
-      - uses: bufbuild/buf-setup-action@v1.7.0
+      - uses: bufbuild/buf-setup-action@v1.9.0
         with:
           version: "latest"
       - uses: bufbuild/buf-lint-action@v1
@@ -123,7 +123,7 @@ jobs:
         run: |
           go install github.com/pressly/goose/v3/cmd/goose@latest
           cd apps/api-go/migration
-          goose postgres "user=flasher password=flasher dbname=flasher sslmode=disable" up
+          goose postgres "postgres://flasher:flasher@localhost:5432/flasher?sslmode=disable" up
       - name: Test
         run: |
           cd apps/api-go
@@ -138,7 +138,7 @@ jobs:
           APP_HTTP_PORT: 3000
           APP_GRPC_PORT: 3100
           DB_SSL_MODE: disable
-          DB_URI: postgresql://flasher:flasher@localhost:5432/flasher?sslmode=disable
+          DB_URL: postgresql://flasher:flasher@localhost:5432/flasher?sslmode=disable
       - name: Upload test log
         uses: actions/upload-artifact@v3
         if: always()

@@ -44,8 +44,8 @@ func (s *service) Index(ctx context.Context, r *albumspb.IndexRequest) (*albumsp
 		Next:  r.Next,
 		Limit: r.Limit,
 		Joins: ListJoinsParams{
-			Categories: r.Joins.Categories,
-			Medias:     r.Joins.Medias,
+			Categories: r.Joins.GetCategories(),
+			Medias:     r.Joins.GetMedias(),
 		},
 	}
 

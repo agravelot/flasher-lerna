@@ -2,7 +2,7 @@ import { GetStaticProps } from "next";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import Header from "../../components/Header";
-import Image from "next/future/image";
+import Image from "next/image";
 import Link from "next/link";
 import Pagination, { PaginationProps } from "../../components/Pagination";
 import { getGlobalProps, GlobalProps } from "../../stores";
@@ -82,8 +82,8 @@ const MyAlbums: FunctionComponent<Props> = ({
     <Image
       className="mx-auto h-64 w-64"
       src={pictureLogo}
-      height={"264px"}
-      width={"264px"}
+      height={264}
+      width={264}
       alt="logo image"
     />
   );
@@ -146,10 +146,9 @@ const MyAlbums: FunctionComponent<Props> = ({
                   pathname: "/",
                   hash: "contact",
                 }}
+                className="text-pink-600 underline hover:text-pink-800"
               >
-                <a className="text-pink-600 underline hover:text-pink-800">
-                  contacter
-                </a>
+                contacter
                 {/*  eslint-disable-next-line prettier/prettier */}
               </Link>{" "}
               !

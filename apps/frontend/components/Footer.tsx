@@ -49,10 +49,12 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                   </span>
                   <ul className="list-unstyled">
                     <li>
-                      <Link href="/">
-                        <a tabIndex={0} className="block py-2 text-sm">
-                          Page d&apos;accueil
-                        </a>
+                      <Link
+                        href="/"
+                        tabIndex={0}
+                        className="block py-2 text-sm"
+                      >
+                        Page d&apos;accueil
                       </Link>
                     </li>
                     <li>
@@ -61,10 +63,10 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                           pathname: "/albums/page/[page]",
                           query: { page: 1 },
                         }}
+                        tabIndex={0}
+                        className="block py-2 text-sm"
                       >
-                        <a tabIndex={0} className="block py-2 text-sm">
-                          Albums
-                        </a>
+                        Albums
                       </Link>
                     </li>
                     <li>
@@ -73,10 +75,10 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                           pathname: "/categories/page/[page]",
                           query: { page: 1 },
                         }}
+                        tabIndex={0}
+                        className="block py-2 text-sm"
                       >
-                        <a tabIndex={0} className="block py-2 text-sm">
-                          Catégories
-                        </a>
+                        Catégories
                       </Link>
                     </li>
                     <li>
@@ -85,6 +87,8 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                           pathname: "/cosplayers/page/[page]",
                           query: { page: 1 },
                         }}
+                        tabIndex={0}
+                        className="block py-2 text-sm"
                       >
                         <a tabIndex={0} className="block py-2 text-sm">
                           Modèles
@@ -96,10 +100,10 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                         href={{
                           pathname: "/blog",
                         }}
+                        tabIndex={0}
+                        className="block py-2 text-sm"
                       >
-                        <a tabIndex={0} className="block py-2 text-sm">
-                          Blog
-                        </a>
+                        Blog
                       </Link>
                     </li>
                   </ul>
@@ -136,10 +140,10 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                         href={{
                           pathname: "/me/albums",
                         }}
+                        tabIndex={0}
+                        className="block py-2 text-sm"
                       >
-                        <a tabIndex={0} className="block py-2 text-sm">
-                          Mes albums
-                        </a>
+                        Mes albums
                       </Link>
 
                       <li className="items-center md:flex">
@@ -185,17 +189,21 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                   </span>
                   <ul className="list-unstyled">
                     <li>
-                      <Link href={{ pathname: "/", hash: "contact" }}>
-                        <a tabIndex={0} className="block py-2 text-sm">
-                          Me contacter
-                        </a>
+                      <Link
+                        href={{ pathname: "/", hash: "contact" }}
+                        tabIndex={0}
+                        className="block py-2 text-sm"
+                      >
+                        Me contacter
                       </Link>
                     </li>
                     <li>
-                      <Link href={{ pathname: "/mentions-legales" }}>
-                        <a tabIndex={0} className="block py-2 text-sm">
-                          Mentions légales
-                        </a>
+                      <Link
+                        href={{ pathname: "/mentions-legales" }}
+                        tabIndex={0}
+                        className="block py-2 text-sm"
+                      >
+                        Mentions légales
                       </Link>
                     </li>
                   </ul>

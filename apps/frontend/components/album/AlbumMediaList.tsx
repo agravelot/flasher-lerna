@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import Image from "next/future/image";
+import Image from "next/image";
 import { ImageGallery, ImageObject, Person } from "schema-dts";
 import { useRouter } from "next/dist/client/router";
 import { sizes } from "../../utils/util";
@@ -68,7 +68,7 @@ const AlbumMediaList: FunctionComponent<Props> = ({
       {album.medias?.map((media, index) => (
         <div
           key={media.id}
-          className="w-full flex-auto flex-grow-0 cursor-pointer md:w-1/2"
+          className="w-full flex-auto flex-grow-0 cursor-pointer cursor-zoom-in md:w-1/2"
           onClick={() => openGalleryAt(index)}
           tabIndex={0}
         >

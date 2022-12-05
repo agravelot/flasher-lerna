@@ -1,6 +1,13 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const withPWA = require("next-pwa");
 const runtimeCaching = require("next-pwa/cache");
+
+const withPWA = require("next-pwa")({
+  dest: "public",
+  disable: process.env.NODE_ENV !== "production",
+  mode: process.env.NODE_ENV,
+  runtimeCaching,
+});
+
 const { withSentryConfig } = require("@sentry/nextjs");
 
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
@@ -16,9 +23,12 @@ const sentryWebpackPluginOptions = {
   silent: true,
 };
 
-const moduleExports = (module.exports = withTM(
-  (module.exports = withBundleAnalyzer(
-    (module.exports = withPWA({
+/**
+ * @type {import('next').NextConfig}
+ **/
+const nextConfig = withTM(
+   withBundleAnalyzer(
+   withPWA({
       pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
       async redirects() {
         return [
@@ -59,12 +69,6 @@ const moduleExports = (module.exports = withTM(
           },
         ];
       },
-      pwa: {
-        dest: "public",
-        runtimeCaching,
-        disable: process.env.NODE_ENV !== "production",
-        mode: process.env.NODE_ENV,
-      },
       reactStrictMode: true,
       env: {
         baseUrl: "baseUrl",
@@ -76,16 +80,15 @@ const moduleExports = (module.exports = withTM(
           "assets.blog.jkanda.s3.fr-par.scw.cloud",
         ],
         formats: ["image/avif", "image/webp"],
+        minimumCacheTTL: 36000,
+      },
+      sentry: {
+        hideSourceMaps: true,
       },
       poweredByHeader: false,
       compress: false,
-      experimental: {
-        images: {
-          allowFutureImage: true,
-        },
-      },
     }))
-  ))
-));
 
-module.exports = withSentryConfig(moduleExports, sentryWebpackPluginOptions);
+);
+
+module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);

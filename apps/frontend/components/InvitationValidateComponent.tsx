@@ -153,10 +153,11 @@ const InvitationValidateComponent: FunctionComponent = () => {
         <div>
           <span>Vous pouvez dorénavant accéder à toutes vos photos.</span>
           <div className="mt-8">
-            <Link href={{ pathname: "/me/albums" }}>
-              <a className="mx-auto mt-12 rounded-lg bg-gradient-to-r from-blue-700 to-red-700 py-3 px-10 font-semibold text-white hover:from-pink-500 hover:to-orange-500">
-                Accéder à mes albums
-              </a>
+            <Link
+              href={{ pathname: "/me/albums" }}
+              className="mx-auto mt-12 rounded-lg bg-gradient-to-r from-blue-700 to-red-700 py-3 px-10 font-semibold text-white hover:from-pink-500 hover:to-orange-500"
+            >
+              Accéder à mes albums
             </Link>
           </div>
         </div>
@@ -165,10 +166,11 @@ const InvitationValidateComponent: FunctionComponent = () => {
         <div className="text-base text-gray-700">
           <span>N&apos;hésitez pas à me contarter pour remédier à cela.</span>
           <div className="mt-8">
-            <Link href={{ pathname: "/", hash: "#contact" }}>
-              <a className="mx-auto mt-12 rounded-lg bg-gradient-to-r from-blue-700 to-red-700 py-3 px-10 font-semibold text-white hover:from-pink-500 hover:to-orange-500">
-                Prendre contact
-              </a>
+            <Link
+              href={{ pathname: "/", hash: "#contact" }}
+              className="mx-auto mt-12 rounded-lg bg-gradient-to-r from-blue-700 to-red-700 py-3 px-10 font-semibold text-white hover:from-pink-500 hover:to-orange-500"
+            >
+              Prendre contact
             </Link>
           </div>
         </div>

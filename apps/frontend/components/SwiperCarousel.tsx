@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import Image from "next/future/image";
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, {
   Navigation,
@@ -41,11 +41,6 @@ export const SwiperCarousel: FunctionComponent<Props> = ({
   // Will force rerender on screen resize, allow dynamic `sizes`to wark
   useEffect(() => {
     const handleResize = debounce(() => {
-      console.log({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-
       setScreenSize({
         width: window.innerWidth,
         height: window.innerHeight,
@@ -90,6 +85,8 @@ export const SwiperCarousel: FunctionComponent<Props> = ({
                 src={m.url}
                 alt={m.name}
                 draggable={false}
+                width={m.width}
+                height={m.height}
                 sizes={
                   screenSize.height > screenSize.width || m.width > m.height
                     ? "100vw" // Image will be full width on mobile and landscape images.

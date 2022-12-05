@@ -21,13 +21,10 @@ const CosplayerItem: FunctionComponent<Props> = ({ cosplayer }: Props) => {
                 pathname: "/cosplayers/[slug]",
                 query: { slug: cosplayer.slug },
               }}
+              tabIndex={0}
+              className="rounded-full border border-red-700 px-4 py-1 text-xs font-semibold leading-normal text-red-700 hover:bg-red-700 hover:text-white"
             >
-              <a
-                tabIndex={0}
-                className="rounded-full border border-red-700 px-4 py-1 text-xs font-semibold leading-normal text-red-700 hover:bg-red-700 hover:text-white"
-              >
-                Voir le profil
-              </a>
+              Voir le profil
             </Link>
           </div>
         </div>

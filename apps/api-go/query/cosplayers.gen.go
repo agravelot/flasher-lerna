@@ -19,14 +19,14 @@ import (
 	"api-go/model"
 )
 
-func newCosplayer(db *gorm.DB) cosplayer {
+func newCosplayer(db *gorm.DB, opts ...gen.DOOption) cosplayer {
 	_cosplayer := cosplayer{}
 
-	_cosplayer.cosplayerDo.UseDB(db)
+	_cosplayer.cosplayerDo.UseDB(db, opts...)
 	_cosplayer.cosplayerDo.UseModel(&model.Cosplayer{})
 
 	tableName := _cosplayer.cosplayerDo.TableName()
-	_cosplayer.ALL = field.NewField(tableName, "*")
+	_cosplayer.ALL = field.NewAsterisk(tableName)
 	_cosplayer.ID = field.NewInt32(tableName, "id")
 	_cosplayer.Name = field.NewString(tableName, "name")
 	_cosplayer.Slug = field.NewString(tableName, "slug")
@@ -65,7 +65,7 @@ func newCosplayer(db *gorm.DB) cosplayer {
 type cosplayer struct {
 	cosplayerDo cosplayerDo
 
-	ALL         field.Field
+	ALL         field.Asterisk
 	ID          field.Int32
 	Name        field.String
 	Slug        field.String
@@ -91,7 +91,7 @@ func (c cosplayer) As(alias string) *cosplayer {
 }
 
 func (c *cosplayer) updateTableName(table string) *cosplayer {
-	c.ALL = field.NewField(table, "*")
+	c.ALL = field.NewAsterisk(table)
 	c.ID = field.NewInt32(table, "id")
 	c.Name = field.NewString(table, "name")
 	c.Slug = field.NewString(table, "slug")
@@ -139,6 +139,11 @@ func (c *cosplayer) fillFieldMap() {
 }
 
 func (c cosplayer) clone(db *gorm.DB) cosplayer {
+	c.cosplayerDo.ReplaceConnPool(db.Statement.ConnPool)
+	return c
+}
+
+func (c cosplayer) replaceDB(db *gorm.DB) cosplayer {
 	c.cosplayerDo.ReplaceDB(db)
 	return c
 }
@@ -235,6 +240,10 @@ func (c cosplayerDo) ReadDB() *cosplayerDo {
 
 func (c cosplayerDo) WriteDB() *cosplayerDo {
 	return c.Clauses(dbresolver.Write)
+}
+
+func (c cosplayerDo) Session(config *gorm.Session) *cosplayerDo {
+	return c.withDO(c.DO.Session(config))
 }
 
 func (c cosplayerDo) Clauses(conds ...clause.Expression) *cosplayerDo {

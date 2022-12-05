@@ -4,11 +4,11 @@ import NavbarAccount from "./NavbarAccount";
 import { SearchContext } from "../contexts/AppContext";
 import { useAuthentication } from "hooks/useAuthentication";
 import {
-  SearchIcon,
-  MenuIcon,
-  XIcon,
-  LoginIcon,
-} from "@heroicons/react/outline";
+  MagnifyingGlassIcon,
+  Bars3Icon,
+  XMarkIcon,
+  ArrowLeftOnRectangleIcon,
+} from "@heroicons/react/24/outline";
 import { Transition } from "@headlessui/react";
 
 const Navbar: FunctionComponent = () => {
@@ -33,42 +33,40 @@ const Navbar: FunctionComponent = () => {
         >
           {/* Left */}
           <li className="flex items-center" role="menuitem">
-            <Link href={{ pathname: "/" }}>
-              <a
-                tabIndex={0}
-                className="whitespace-no-wrap mr-4 inline-block p-2 text-sm font-bold uppercase leading-relaxed text-white"
-              >
-                JKanda
-              </a>
+            <Link
+              href={{ pathname: "/" }}
+              tabIndex={0}
+              className="whitespace-no-wrap mr-4 inline-block p-2 text-sm font-bold uppercase leading-relaxed text-white"
+            >
+              JKanda
             </Link>
           </li>
           <li className="hidden items-center lg:flex">
-            <Link href={{ pathname: "/galerie" }}>
-              <a
-                role="menuitem"
-                tabIndex={0}
-                className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
-              >
-                Galerie
-              </a>
+            <Link
+              href={{ pathname: "/galerie" }}
+              role="menuitem"
+              tabIndex={0}
+              className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
+            >
+              Galerie
             </Link>
           </li>
           <li className="hidden items-center lg:flex">
             <Link
               href={{ pathname: "/categories/page/[page]", query: { page: 1 } }}
+              role="menuitem"
+              tabIndex={0}
+              className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
             >
-              <a
-                role="menuitem"
-                tabIndex={0}
-                className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
-              >
-                Catégories
-              </a>
+              Catégories
             </Link>
           </li>
           <li className="hidden items-center lg:flex">
             <Link
               href={{ pathname: "/cosplayers/page/[page]", query: { page: 1 } }}
+              role="menuitem"
+              tabIndex={0}
+              className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
             >
               <a
                 role="menuitem"
@@ -80,25 +78,23 @@ const Navbar: FunctionComponent = () => {
             </Link>
           </li>
           <li className="hidden items-center lg:flex">
-            <Link href={{ pathname: "/", hash: "contact" }}>
-              <a
-                role="menuitem"
-                tabIndex={0}
-                className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
-              >
-                Contact
-              </a>
+            <Link
+              href={{ pathname: "/", hash: "contact" }}
+              role="menuitem"
+              tabIndex={0}
+              className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
+            >
+              Contact
             </Link>
           </li>
           <li className="hidden items-center lg:flex">
-            <Link href={{ pathname: "/blog" }}>
-              <a
-                role="menuitem"
-                tabIndex={0}
-                className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
-              >
-                Blog
-              </a>
+            <Link
+              href={{ pathname: "/blog" }}
+              role="menuitem"
+              tabIndex={0}
+              className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
+            >
+              Blog
             </Link>
           </li>
           <li className="hidden items-center lg:flex">
@@ -108,7 +104,10 @@ const Navbar: FunctionComponent = () => {
               className="inline-flex px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
               onClick={() => open()}
             >
-              <SearchIcon className="mx-2 h-5 w-5" aria-hidden="true" />
+              <MagnifyingGlassIcon
+                className="mx-2 h-5 w-5"
+                aria-hidden="true"
+              />
               Rechercher
             </button>
           </li>
@@ -126,9 +125,9 @@ const Navbar: FunctionComponent = () => {
               onClick={() => toggleNavbar()}
             >
               {showMenu ? (
-                <XIcon className="h-6 w-6  text-white" aria-hidden="true" />
+                <XMarkIcon className="h-6 w-6  text-white" aria-hidden="true" />
               ) : (
-                <MenuIcon className="h-6 w-6  text-white" aria-hidden="true" />
+                <Bars3Icon className="h-6 w-6  text-white" aria-hidden="true" />
               )}
             </button>
           </li>
@@ -144,16 +143,15 @@ const Navbar: FunctionComponent = () => {
           leaveTo="transform opacity-0 scale-95"
         >
           <div aria-haspopup="menu" aria-expanded={showMenu}>
-            <ul className="mr-auto flex list-none flex-col lg:flex-row">
+            <ul className="mr-auto flex list-none flex-col lg:hidden">
               <li>
-                <Link href={{ pathname: "/galerie" }}>
-                  <a
-                    role="menuitem"
-                    tabIndex={0}
-                    className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
-                  >
-                    Albums
-                  </a>
+                <Link
+                  href={{ pathname: "/galerie" }}
+                  role="menuitem"
+                  tabIndex={0}
+                  className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
+                >
+                  Galerie
                 </Link>
               </li>
               <li>
@@ -162,14 +160,11 @@ const Navbar: FunctionComponent = () => {
                     pathname: "/categories/page/1",
                     query: { page: 1 },
                   }}
+                  tabIndex={0}
+                  role="menuitem"
+                  className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
                 >
-                  <a
-                    tabIndex={0}
-                    role="menuitem"
-                    className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
-                  >
-                    Categories
-                  </a>
+                  Catégories
                 </Link>
               </li>
               <li>
@@ -178,6 +173,9 @@ const Navbar: FunctionComponent = () => {
                     pathname: "/cosplayers/page/1",
                     query: { page: 1 },
                   }}
+                  tabIndex={0}
+                  role="menuitem"
+                  className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
                 >
                   <a
                     tabIndex={0}
@@ -189,25 +187,23 @@ const Navbar: FunctionComponent = () => {
                 </Link>
               </li>
               <li>
-                <Link href={{ pathname: "/", hash: "contact" }}>
-                  <a
-                    tabIndex={0}
-                    role="menuitem"
-                    className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
-                  >
-                    Contact
-                  </a>
+                <Link
+                  href={{ pathname: "/", hash: "contact" }}
+                  tabIndex={0}
+                  role="menuitem"
+                  className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
+                >
+                  Contact
                 </Link>
               </li>
               <li>
-                <Link href={{ pathname: "/blog" }}>
-                  <a
-                    tabIndex={0}
-                    role="menuitem"
-                    className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
-                  >
-                    Blog
-                  </a>
+                <Link
+                  href={{ pathname: "/blog" }}
+                  tabIndex={0}
+                  role="menuitem"
+                  className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
+                >
+                  Blog
                 </Link>
               </li>
               <li>
@@ -217,7 +213,10 @@ const Navbar: FunctionComponent = () => {
                   className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
                   onClick={() => open()}
                 >
-                  <SearchIcon className="mx-2 h-5 w-5" aria-hidden="true" />
+                  <MagnifyingGlassIcon
+                    className="mx-2 h-5 w-5"
+                    aria-hidden="true"
+                  />
                   Rechercher
                 </button>
               </li>
@@ -230,7 +229,10 @@ const Navbar: FunctionComponent = () => {
                     className="flex w-full items-center justify-center px-3 py-4 text-xs font-bold uppercase text-gray-800"
                     onClick={() => keycloak?.login()}
                   >
-                    <LoginIcon className="mx-2 h-5 w-5" aria-hidden="true" />
+                    <ArrowLeftOnRectangleIcon
+                      className="mx-2 h-5 w-5"
+                      aria-hidden="true"
+                    />
                     Se connecter
                   </button>
                 </li>

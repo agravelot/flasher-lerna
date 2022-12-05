@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FC } from "react";
-import { ChevronRightIcon } from "@heroicons/react/outline";
+import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { BreadcrumbJsonLd } from "next-seo";
 import { ItemListElements } from "next-seo/lib/types";
 
@@ -34,16 +34,15 @@ export const Breadcrumb: FC<Props> = ({ levels }) => {
                 {!isFirstItem && (
                   <ChevronRightIcon className="h-4 w-4 text-gray-600" />
                 )}
-                <Link href={l.path}>
-                  <a
-                    className={`py-2 pl-1 text-xs font-medium md:pl-2 ${
-                      isLastItem
-                        ? "text-gray-500 dark:text-gray-400"
-                        : "text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                    }`}
-                  >
-                    {l.name}
-                  </a>
+                <Link
+                  href={l.path}
+                  className={`py-2 pl-1 text-xs font-medium md:pl-2 ${
+                    isLastItem
+                      ? "text-gray-500 dark:text-gray-400"
+                      : "text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                  }`}
+                >
+                  {l.name}
                 </Link>
               </div>
             </li>
