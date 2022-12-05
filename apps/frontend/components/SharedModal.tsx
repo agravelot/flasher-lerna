@@ -293,7 +293,7 @@ export default function SharedModal({
                       animate={{
                         scale: i === index ? 1.25 : 1,
                         width: "100%",
-                        x: `${Math.max(index * -100, 15 * -100)}%`,
+                        x: `${index * -100}%`,
                       }}
                       exit={{ width: "0%" }}
                       onClick={() => setIndex?.(i)}
