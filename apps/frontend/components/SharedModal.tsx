@@ -304,7 +304,7 @@ export default function SharedModal({
                       key={id}
                       className={`${
                         i === index
-                          ? "z-20 rounded-md shadow shadow-black/50"
+                          ? "z-20 rounded-md"
                           : "z-10"
                       } ${i === 0 ? "rounded-l-md" : ""} ${
                         images && i === images.length - 1 ? "rounded-r-md" : ""
@@ -316,7 +316,7 @@ export default function SharedModal({
                         height={height}
                         className={`${
                           i === index
-                            ? "brightness-110 hover:brightness-110"
+                            ? "brightness-110 hover:brightness-110 shadow shadow-black/50"
                             : "brightness-50 contrast-125 hover:brightness-75"
                         } h-full transform object-contain transition`}
                         src={url}
