@@ -57,6 +57,10 @@ func New(uri string) (Postgres, error) {
 	}
 
 	sqlDB, err := sql.Open("pgx", uri)
+	if err != nil {
+		return Postgres{}, fmt.Errorf("unable to connect to the database: %w", err)
+	}
+
 	db, err := gorm.Open(postgres.New(postgres.Config{
 		Conn: sqlDB,
 	}), config)
