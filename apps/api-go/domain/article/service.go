@@ -53,10 +53,10 @@ func transform(a model.Article) *articles_pb.ArticleResponse {
 func (s service) Index(ctx context.Context, request *articles_pb.IndexRequest) (*articles_pb.IndexResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
-	// TODO List params
-	articles, err := s.repository.List(ctx, user, ListParams{
-		Limit: request.Limit,
-		Next:  request.Next,
+	articles, err := s.repository.List(ctx, ListParams{
+		Limit:          request.Limit,
+		Next:           request.Next,
+		IncludePrivate: user != nil && user.IsAdmin(),
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to list articles: %w", err)
@@ -77,7 +77,10 @@ func (s service) Index(ctx context.Context, request *articles_pb.IndexRequest) (
 func (s service) GetBySlug(ctx context.Context, request *articles_pb.GetBySlugRequest) (*articles_pb.GetBySlugResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
-	a, err := s.repository.GetBySlug(ctx, user, request.Slug)
+	a, err := s.repository.GetBySlug(ctx, GetBySlugParams{
+		Slug:           request.Slug,
+		IncludePrivate: user != nil && user.IsAdmin(),
+	})
 
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		return &articles_pb.GetBySlugResponse{}, ErrNotFound
@@ -106,7 +109,9 @@ func (s service) Create(ctx context.Context, request *articles_pb.CreateRequest)
 		return nil, ErrNoAuth
 	}
 
-	// TODO check if user is admin
+	if !user.IsAdmin() {
+		return nil, ErrNotAdmin
+	}
 
 	if err := request.ValidateAll(); err != nil {
 		return nil, err
@@ -118,14 +123,15 @@ func (s service) Create(ctx context.Context, request *articles_pb.CreateRequest)
 		p = &tmp
 	}
 
-	a, err := s.repository.Create(ctx, user, model.Article{
-		Slug:            request.Slug,
-		Name:            request.Name,
-		MetaDescription: request.MetaDescription,
-		Content:         request.Content,
-		PublishedAt:     p,
-		AuthorUUID:      user.Sub,
-	})
+	a, err := s.repository.Create(ctx, CreateParams{
+		Article: model.Article{
+			Slug:            request.Slug,
+			Name:            request.Name,
+			MetaDescription: request.MetaDescription,
+			Content:         request.Content,
+			PublishedAt:     p,
+			AuthorUUID:      user.Sub,
+		}})
 	if err != nil {
 		return nil, fmt.Errorf("unable create article: %w", err)
 	}
@@ -145,6 +151,14 @@ func (s service) Create(ctx context.Context, request *articles_pb.CreateRequest)
 func (s service) Update(ctx context.Context, request *articles_pb.UpdateRequest) (*articles_pb.UpdateResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
+	if user == nil {
+		return nil, ErrNoAuth
+	}
+
+	if !user.IsAdmin() {
+		return nil, ErrNotAdmin
+	}
+
 	p := request.PublishedAt.AsTime()
 
 	if err := request.ValidateAll(); err != nil {
@@ -153,15 +167,16 @@ func (s service) Update(ctx context.Context, request *articles_pb.UpdateRequest)
 	}
 
 	// a.AuthorId = request.AuthorId
-	a, err := s.repository.Update(ctx, user, model.Article{
-		ID:              request.Id,
-		Slug:            request.Slug,
-		Name:            request.Name,
-		MetaDescription: request.MetaDescription,
-		Content:         request.Content,
-		PublishedAt:     &p,
-		// AuthorId : request.AuthorId
-	})
+	a, err := s.repository.Update(ctx, UpdateParams{
+		Article: model.Article{
+			ID:              request.Id,
+			Slug:            request.Slug,
+			Name:            request.Name,
+			MetaDescription: request.MetaDescription,
+			Content:         request.Content,
+			PublishedAt:     &p,
+			// AuthorId : request.AuthorId
+		}})
 	if err != nil {
 		return &articles_pb.UpdateResponse{}, fmt.Errorf("unable update article: %w", err)
 	}
@@ -180,8 +195,16 @@ func (s service) Update(ctx context.Context, request *articles_pb.UpdateRequest)
 
 func (s service) Delete(ctx context.Context, request *articles_pb.DeleteRequest) (*articles_pb.DeleteResponse, error) {
 	user := auth.GetUserClaims(ctx)
-	// TODO check if user is admin and other stuffs
-	err := s.repository.Delete(ctx, user, request.Id)
+
+	if user == nil {
+		return nil, ErrNoAuth
+	}
+
+	if !user.IsAdmin() {
+		return nil, ErrNotAdmin
+	}
+
+	err := s.repository.Delete(ctx, DeleteParams{ID: request.Id})
 	if err != nil {
 		return &articles_pb.DeleteResponse{}, fmt.Errorf("unable delete article: %w", err)
 	}

@@ -89,11 +89,11 @@ func authAsAdmin(ctx context.Context) (context.Context, auth.Claims) {
 }
 
 func TestMain(m *testing.M) {
-	config, err := config.FromDotEnv("../../.env")
+	c, err := config.FromDotEnv("../../.env")
 	if err != nil {
 		log.Fatal(fmt.Errorf("unable to load config: %w", err))
 	}
-	db2, err := postgres.New(config.Database.URL)
+	db2, err := postgres.New(c.Database.URL)
 	if err != nil {
 		log.Fatal(fmt.Errorf("unable to connect to the database: %w", err))
 	}
@@ -675,10 +675,10 @@ func TestShouldBeAbleToUpdateArticleNameAsAdmin(t *testing.T) {
 
 	a.Name = "A new name"
 	u := articlesgrpc.UpdateRequest{Id: a.ID, Name: a.Name, Slug: a.Slug, MetaDescription: a.MetaDescription}
-	new, err := s.Update(ctx, &u)
+	updated, err := s.Update(ctx, &u)
 
 	assert.NoError(t, err)
-	assert.Equal(t, "A new name", new.Name)
+	assert.Equal(t, "A new name", updated.Name)
 	var total int64
 	tx.DB.Model(&model.Article{}).Count(&total)
 	assert.Equal(t, 1, int(total))
@@ -775,7 +775,7 @@ func TestShouldBeAbleToDeleteArticleAndIsSoftDeletedAsAdmin(t *testing.T) {
 	assert.Equal(t, 1, int(totalScopeless))
 }
 
-func TestShouldNotBeAbleToDeleteAnNonExistantArticleAsAdmin(t *testing.T) {
+func TestShouldNotBeAbleToDeleteAnNonExistentArticleAsAdmin(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
 	repo, err := postgres.NewArticleRepository(&tx)

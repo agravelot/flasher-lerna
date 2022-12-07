@@ -60,6 +60,9 @@ type UserClaimsKeyType string
 
 const UserClaimsKey UserClaimsKeyType = "user"
 
+// GetUserClaims Return user from context.
+//
+// TODO return default value instead of pointer ?
 func GetUserClaims(ctx context.Context) *Claims {
 	claims, ok := ctx.Value(UserClaimsKey).(*Claims)
 

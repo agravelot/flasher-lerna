@@ -1,14 +1,11 @@
 package postgres
 
 import (
-	"context"
-	"fmt"
-
 	"api-go/domain/article"
 	"api-go/model"
-	"api-go/pkg/auth"
 	"api-go/query"
-
+	"context"
+	"fmt"
 	"gorm.io/gen"
 )
 
@@ -40,11 +37,11 @@ func (r PostgresArticleRepository) Close() error {
 	return r.storage.Close()
 }
 
-func (r PostgresArticleRepository) List(ctx context.Context, user *auth.Claims, params article.ListParams) ([]model.Article, error) {
+func (r PostgresArticleRepository) List(ctx context.Context, params article.ListParams) ([]model.Article, error) {
 	qb := query.Use(r.storage.DB).Article
 	q := qb.WithContext(ctx)
 
-	if user == nil || (user != nil && !user.IsAdmin()) {
+	if !params.IncludePrivate {
 		q = q.Scopes(published(query.Use(r.storage.DB)))
 	}
 
@@ -61,13 +58,13 @@ func (r PostgresArticleRepository) List(ctx context.Context, user *auth.Claims, 
 	return a2, nil
 }
 
-func (r PostgresArticleRepository) GetBySlug(ctx context.Context, user *auth.Claims, slug string) (model.Article, error) {
+func (r PostgresArticleRepository) GetBySlug(ctx context.Context, params article.GetBySlugParams) (model.Article, error) {
 	qb := query.Use(r.storage.DB).Article
 	q := qb.WithContext(ctx)
 
-	q.Where(qb.Slug.Eq(slug))
+	q.Where(qb.Slug.Eq(params.Slug))
 
-	if user == nil || (user != nil && !user.IsAdmin()) {
+	if !params.IncludePrivate {
 		q = q.Scopes(published(query.Use(r.storage.DB)))
 	}
 
@@ -79,19 +76,11 @@ func (r PostgresArticleRepository) GetBySlug(ctx context.Context, user *auth.Cla
 	return *a, err
 }
 
-func (r PostgresArticleRepository) Create(ctx context.Context, user *auth.Claims, a model.Article) (model.Article, error) {
+func (r PostgresArticleRepository) Create(ctx context.Context, params article.CreateParams) (model.Article, error) {
 	qb := query.Use(r.storage.DB).Article
-	query := qb.WithContext(ctx)
+	q := qb.WithContext(ctx)
 
-	if user == nil {
-		return model.Article{}, article.ErrNoAuth
-	}
-
-	if !user.IsAdmin() {
-		return model.Article{}, article.ErrNotAdmin
-	}
-
-	err := query.Create(&a)
+	err := q.Create(&params.Article)
 	if err != nil {
 		// TODO Cast pg error to have clean check
 		if err.Error() == "ERROR: duplicate key value violates unique constraint \"idx_articles_slug\" (SQLSTATE 23505)" {
@@ -100,42 +89,26 @@ func (r PostgresArticleRepository) Create(ctx context.Context, user *auth.Claims
 		return model.Article{}, err
 	}
 
-	return a, nil
+	return params.Article, nil
 }
 
-func (r PostgresArticleRepository) Update(ctx context.Context, user *auth.Claims, a model.Article) (model.Article, error) {
+func (r PostgresArticleRepository) Update(ctx context.Context, params article.UpdateParams) (model.Article, error) {
 	qb := query.Use(r.storage.DB).Article
-	query := qb.WithContext(ctx)
+	q := qb.WithContext(ctx)
 
-	if user == nil {
-		return model.Article{}, article.ErrNoAuth
-	}
-
-	if !user.IsAdmin() {
-		return model.Article{}, article.ErrNotAdmin
-	}
-
-	err := query.Save(&a)
+	err := q.Save(&params.Article)
 	if err != nil {
 		return model.Article{}, err
 	}
 
-	return a, nil
+	return params.Article, nil
 }
 
-func (r PostgresArticleRepository) Delete(ctx context.Context, user *auth.Claims, id int32) error {
+func (r PostgresArticleRepository) Delete(ctx context.Context, params article.DeleteParams) error {
 	qb := query.Use(r.storage.DB).Article
-	query := qb.WithContext(ctx)
+	q := qb.WithContext(ctx)
 
-	if user == nil {
-		return article.ErrNoAuth
-	}
-
-	if !user.IsAdmin() {
-		return article.ErrNotAdmin
-	}
-
-	rs, err := query.Where(qb.ID.Eq(int64(id))).Delete()
+	rs, err := q.Where(qb.ID.Eq(int64(params.ID))).Delete()
 	if err != nil {
 		return fmt.Errorf("unable to delete article: %w", err)
 	}
