@@ -1,6 +1,8 @@
 package app
 
 import (
+	"api-go/infrastructure/auth"
+	"api-go/infrastructure/openapi"
 	"context"
 	"fmt"
 	"log"
@@ -21,9 +23,6 @@ import (
 	albumspb "api-go/gen/go/proto/albums/v2"
 	articlespb "api-go/gen/go/proto/articles/v2"
 	"api-go/infrastructure/storage/postgres"
-	"api-go/pkg/auth"
-	"api-go/pkg/openapi"
-
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 )
 

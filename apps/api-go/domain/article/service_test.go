@@ -1,6 +1,7 @@
 package article_test
 
 import (
+	"api-go/infrastructure/auth"
 	"context"
 	"fmt"
 	"log"
@@ -14,8 +15,6 @@ import (
 	articlesgrpc "api-go/gen/go/proto/articles/v2"
 	"api-go/infrastructure/storage/postgres"
 	"api-go/model"
-	"api-go/pkg/auth"
-
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )

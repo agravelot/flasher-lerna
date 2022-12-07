@@ -1,6 +1,7 @@
 package album_test
 
 import (
+	"api-go/infrastructure/auth"
 	"context"
 	"errors"
 	"fmt"
@@ -15,7 +16,6 @@ import (
 	albums_pb "api-go/gen/go/proto/albums/v2"
 	"api-go/infrastructure/storage/postgres"
 	"api-go/model"
-	"api-go/pkg/auth"
 	"api-go/query"
 
 	"github.com/jackc/pgconn"
@@ -100,11 +100,11 @@ func authAsAdmin(ctx context.Context) (context.Context, auth.Claims) {
 }
 
 func TestMain(m *testing.M) {
-	config, err := config.FromDotEnv("../../.env")
+	c, err := config.FromDotEnv("../../.env")
 	if err != nil {
 		log.Fatal(fmt.Errorf("unable to load config: %w", err))
 	}
-	_db, err := postgres.New(config.Database.URL)
+	_db, err := postgres.New(c.Database.URL)
 	if err != nil {
 		log.Fatal(fmt.Errorf("unable to connect to the database: %w", err))
 	}
@@ -1066,7 +1066,7 @@ func TestShouldBeAbleToUpdateAlbumTitleAsAdmin(t *testing.T) {
 	assert.NoError(t, err)
 
 	expectedTitle := "A new Title"
-	new, err := s.Update(ctx, &albums_pb.UpdateRequest{
+	updated, err := s.Update(ctx, &albums_pb.UpdateRequest{
 		Id:              a.ID,
 		Name:            expectedTitle,
 		Slug:            a.Slug,
@@ -1074,7 +1074,7 @@ func TestShouldBeAbleToUpdateAlbumTitleAsAdmin(t *testing.T) {
 	})
 
 	assert.NoError(t, err)
-	assert.Equal(t, expectedTitle, new.Title)
+	assert.Equal(t, expectedTitle, updated.Title)
 	var total int64
 	tx.DB.Model(&model.Album{}).Count(&total)
 	assert.Equal(t, 1, int(total))
@@ -1144,7 +1144,7 @@ func TestShouldBeAbleToUpdateAlbumToAsPublishedAsAdmin(t *testing.T) {
 	tx.DB.Create(&a)
 
 	expectedTitle := "A new Title"
-	new, err := s.Update(ctx, &albums_pb.UpdateRequest{
+	updated, err := s.Update(ctx, &albums_pb.UpdateRequest{
 		Id:              a.ID,
 		Name:            expectedTitle,
 		Slug:            a.Slug,
@@ -1154,12 +1154,12 @@ func TestShouldBeAbleToUpdateAlbumToAsPublishedAsAdmin(t *testing.T) {
 	})
 
 	assert.NoError(t, err)
-	assert.Equal(t, expectedTitle, new.Title)
+	assert.Equal(t, expectedTitle, updated.Title)
 	var expectedAlbum model.Album
 	tx.DB.Model(&model.Album{}).Find(&expectedAlbum, a.ID)
 	assert.Equal(t, a.ID, expectedAlbum.ID)
 	assert.Equal(t, expectedTitle, expectedAlbum.Title)
-	assert.Equal(t, false, new.Private)
+	assert.Equal(t, false, updated.Private)
 	assert.Equal(t, false, *expectedAlbum.Private)
 	assert.Nil(t, expectedAlbum.PublishedAt)
 }

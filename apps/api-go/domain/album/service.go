@@ -1,17 +1,16 @@
 package album
 
 import (
+	"api-go/infrastructure/auth"
 	"context"
 	"errors"
 	"fmt"
 	"time"
 
-	"api-go/model"
-	"api-go/pkg/auth"
-
 	albumspb "api-go/gen/go/proto/albums/v2"
 	categoriespb "api-go/gen/go/proto/categories/v2"
 	mediaspb "api-go/gen/go/proto/medias/v2"
+	"api-go/model"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

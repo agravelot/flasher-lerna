@@ -1,12 +1,11 @@
 package openapi
 
 import (
+	"api-go/infrastructure/openapi/third_party"
 	"fmt"
 	"io/fs"
 	"mime"
 	"net/http"
-
-	"api-go/pkg/openapi/third_party"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 )

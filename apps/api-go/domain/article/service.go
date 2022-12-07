@@ -1,6 +1,7 @@
 package article
 
 import (
+	"api-go/infrastructure/auth"
 	"context"
 	"errors"
 	"fmt"
@@ -8,8 +9,6 @@ import (
 
 	articles_pb "api-go/gen/go/proto/articles/v2"
 	"api-go/model"
-	"api-go/pkg/auth"
-
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
