@@ -12,8 +12,8 @@ type ListJoinsParams struct {
 }
 
 type ListParams struct {
-	Next           *int32
-	Limit          *int32
+	Next           int32
+	Limit          int32
 	Joins          ListJoinsParams
 	IncludePrivate bool
 }

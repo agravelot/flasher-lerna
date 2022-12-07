@@ -40,9 +40,19 @@ func NewService(r Repository) (albumspb.AlbumServiceServer, error) {
 func (s *service) Index(ctx context.Context, r *albumspb.IndexRequest) (*albumspb.IndexResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
+	var next, limit int32
+
+	if r.Next != nil {
+		next = *r.Next
+	}
+
+	if r.Limit != nil {
+		limit = *r.Limit
+	}
+
 	params := ListParams{
-		Next:  r.Next,
-		Limit: r.Limit,
+		Next:  next,
+		Limit: limit,
 		Joins: ListJoinsParams{
 			Categories: r.Joins.GetCategories(),
 			Medias:     r.Joins.GetMedias(),

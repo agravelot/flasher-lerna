@@ -24,14 +24,14 @@ func (r *AlbumRepository) published(q *query.Query) func(db gen.Dao) gen.Dao {
 	}
 }
 
-func (r AlbumRepository) paginate(q *query.Query, next *int32, pageSize *int32) func(db gen.Dao) gen.Dao {
+func (r AlbumRepository) paginate(q *query.Query, next int32, pageSize int32) func(db gen.Dao) gen.Dao {
 	return func(db gen.Dao) gen.Dao {
-		if next != nil && *next != 0 {
-			db = db.Where(q.Album.ID.Gt(*next))
+		if next != 0 {
+			db = db.Where(q.Album.ID.Gt(next))
 		}
 		s := 10
-		if pageSize != nil {
-			s = int(*pageSize)
+		if pageSize != 0 {
+			s = int(pageSize)
 		}
 		return db.Limit(int(s))
 	}
@@ -49,8 +49,8 @@ func (r AlbumRepository) List(ctx context.Context, params album.ListParams) ([]m
 		q = q.Scopes(r.published(query.Use(r.storage.DB)))
 	}
 
-	if params.Next != nil && *params.Next != 0 {
-		q.Where(qb.ID.Gt(*params.Next))
+	if params.Next != 0 {
+		q.Where(qb.ID.Gt(params.Next))
 	}
 
 	if params.Joins.Categories {
