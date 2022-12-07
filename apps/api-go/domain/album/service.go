@@ -47,9 +47,10 @@ func (s *service) Index(ctx context.Context, r *albumspb.IndexRequest) (*albumsp
 			Categories: r.Joins.GetCategories(),
 			Medias:     r.Joins.GetMedias(),
 		},
+		IncludePrivate: user != nil && user.IsAdmin(),
 	}
 
-	albums, err := s.repository.List(ctx, user, params)
+	albums, err := s.repository.List(ctx, params)
 	if err != nil {
 		return nil, fmt.Errorf("unable get albums: %w", err)
 	}
@@ -69,7 +70,10 @@ func (s *service) Index(ctx context.Context, r *albumspb.IndexRequest) (*albumsp
 func (s *service) GetBySlug(ctx context.Context, r *albumspb.GetBySlugRequest) (*albumspb.GetBySlugResponse, error) {
 	user := auth.GetUserClaims(ctx)
 
-	a, err := s.repository.GetBySlug(ctx, user, r.Slug)
+	a, err := s.repository.GetBySlug(ctx, GetBySlugParams{
+		Slug:           r.Slug,
+		IncludePrivate: user != nil && user.IsAdmin(),
+	})
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, ErrNotFound
@@ -107,12 +111,14 @@ func (s *service) Create(ctx context.Context, r *albumspb.CreateRequest) (*album
 		publishedAt = &p
 	}
 
-	a, err := s.repository.Create(ctx, user, model.Album{
-		Title:       r.Name,
-		Slug:        r.Slug,
-		Body:        &r.Content,
-		SsoID:       &user.Sub,
-		PublishedAt: publishedAt,
+	a, err := s.repository.Create(ctx, CreateParams{
+		Album: model.Album{
+			Title:       r.Name,
+			Slug:        r.Slug,
+			Body:        &r.Content,
+			SsoID:       &user.Sub,
+			PublishedAt: publishedAt,
+		},
 	})
 	if err != nil {
 		return nil, fmt.Errorf("unable create album: %w", err)
@@ -157,7 +163,7 @@ func (s *service) Update(ctx context.Context, r *albumspb.UpdateRequest) (*album
 		p := r.PublishedAt.AsTime()
 		publishedAt = &p
 	}
-	a, err := s.repository.Update(ctx, user, model.Album{
+	a, err := s.repository.Update(ctx, UpdateParams{Album: model.Album{
 		ID:          r.Id,
 		Title:       r.Name,
 		Slug:        r.Slug,
@@ -165,7 +171,7 @@ func (s *service) Update(ctx context.Context, r *albumspb.UpdateRequest) (*album
 		SsoID:       &user.Sub,
 		PublishedAt: publishedAt,
 		Private:     &r.Private,
-	})
+	}})
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, ErrNotFound
@@ -208,7 +214,7 @@ func (s *service) Delete(ctx context.Context, r *albumspb.DeleteRequest) (*album
 		return nil, ErrNotAdmin
 	}
 
-	err := s.repository.Delete(ctx, user, r.Id)
+	err := s.repository.Delete(ctx, DeleteParams{ID: r.Id})
 	if err != nil {
 		return &albumspb.DeleteResponse{Deleted: false}, fmt.Errorf("unable delete album: %w", err)
 	}

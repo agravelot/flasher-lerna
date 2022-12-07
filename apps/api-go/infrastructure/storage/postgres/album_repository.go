@@ -7,25 +7,24 @@ import (
 
 	"api-go/domain/album"
 	"api-go/model"
-	"api-go/pkg/auth"
 	"api-go/query"
 
 	"gorm.io/gen"
 )
 
-// Postgres repository implmentation
-type PostgresAlbumRepository struct {
+// AlbumRepository Postgres repository implementation.
+type AlbumRepository struct {
 	storage *Postgres
 }
 
-func (r *PostgresAlbumRepository) published(q *query.Query) func(db gen.Dao) gen.Dao {
+func (r *AlbumRepository) published(q *query.Query) func(db gen.Dao) gen.Dao {
 	return func(db gen.Dao) gen.Dao {
 		// TODO try use NOW()
 		return db.Where(q.Album.Private.Is(false), q.Album.PublishedAt.Lte(time.Now()))
 	}
 }
 
-func (r PostgresAlbumRepository) paginate(q *query.Query, next *int32, pageSize *int32) func(db gen.Dao) gen.Dao {
+func (r AlbumRepository) paginate(q *query.Query, next *int32, pageSize *int32) func(db gen.Dao) gen.Dao {
 	return func(db gen.Dao) gen.Dao {
 		if next != nil && *next != 0 {
 			db = db.Where(q.Album.ID.Gt(*next))
@@ -38,16 +37,15 @@ func (r PostgresAlbumRepository) paginate(q *query.Query, next *int32, pageSize 
 	}
 }
 
-func (r PostgresAlbumRepository) Close() error {
+func (r AlbumRepository) Close() error {
 	return r.storage.Close()
 }
 
-func (r PostgresAlbumRepository) List(ctx context.Context, user *auth.Claims, params album.ListParams) ([]model.Album, error) {
+func (r AlbumRepository) List(ctx context.Context, params album.ListParams) ([]model.Album, error) {
 	qb := query.Use(r.storage.DB).Album
 	q := qb.WithContext(ctx).Order(qb.PublishedAt.Desc())
 
-	isAdmin := user != nil && user.IsAdmin()
-	if !isAdmin {
+	if !params.IncludePrivate {
 		q = q.Scopes(r.published(query.Use(r.storage.DB)))
 	}
 
@@ -78,21 +76,20 @@ func (r PostgresAlbumRepository) List(ctx context.Context, user *auth.Claims, pa
 	return albums, nil
 }
 
-func (r PostgresAlbumRepository) GetBySlug(ctx context.Context, user *auth.Claims, slug string) (model.Album, error) {
-	isAdmin := user != nil && user.IsAdmin()
+func (r AlbumRepository) GetBySlug(ctx context.Context, params album.GetBySlugParams) (model.Album, error) {
 
 	qb := query.Use(r.storage.DB).Album
 
 	q := qb.WithContext(ctx)
 
-	if !isAdmin {
+	if !params.IncludePrivate {
 		q = q.Scopes(r.published(query.Use(r.storage.DB)))
 	}
 
 	res, err := q.
 		Preload(qb.Categories).
 		Preload(qb.Medias).
-		Where(qb.Slug.Eq(slug)).
+		Where(qb.Slug.Eq(params.Slug)).
 		First()
 	if err != nil {
 		return model.Album{}, fmt.Errorf("error get album: %w", err)
@@ -101,45 +98,45 @@ func (r PostgresAlbumRepository) GetBySlug(ctx context.Context, user *auth.Claim
 	return *res, err
 }
 
-func (r PostgresAlbumRepository) Create(ctx context.Context, user *auth.Claims, a model.Album) (model.Album, error) {
+func (r AlbumRepository) Create(ctx context.Context, params album.CreateParams) (model.Album, error) {
 	// if r.Slug == nil {
 	// 	s := slug.Make(r.Title)
 	// 	r.Slug = &s
 	// }
 
-	query := query.Use(r.storage.DB).Album.WithContext(ctx)
+	q := query.Use(r.storage.DB).Album.WithContext(ctx)
 
-	err := query.WithContext(ctx).Create(&a)
+	err := q.WithContext(ctx).Create(&params.Album)
 	// TODO Check duplicate
 	if err != nil {
 		return model.Album{}, err
 	}
 
-	return a, nil
+	return params.Album, nil
 }
 
-func (r PostgresAlbumRepository) Update(ctx context.Context, user *auth.Claims, a model.Album) (model.Album, error) {
+func (r AlbumRepository) Update(ctx context.Context, params album.UpdateParams) (model.Album, error) {
 	qb := query.Use(r.storage.DB).Album
 
-	query := qb.WithContext(ctx)
+	q := qb.WithContext(ctx)
 
 	update := map[string]interface{}{
 		// "id":           r.Id,
-		"private":      a.Private,
-		"title":        a.Title,
-		"slug":         a.Slug,
-		"body":         a.Title,
-		"published_at": a.PublishedAt,
+		"private":      params.Album.Private,
+		"title":        params.Album.Title,
+		"slug":         params.Album.Slug,
+		"body":         params.Album.Title,
+		"published_at": params.Album.PublishedAt,
 	}
 
 	// TODO Test if result info is zero, return not found
-	_, err := query.Where(qb.ID.Eq(a.ID)).Updates(update)
+	_, err := q.Where(qb.ID.Eq(params.Album.ID)).Updates(update)
 	if err != nil {
 		return model.Album{}, fmt.Errorf("error update album: %w", err)
 	}
-	query.Preload(qb.Categories).Preload(qb.Medias)
+	q.Preload(qb.Categories).Preload(qb.Medias)
 
-	res, err := query.Where(qb.ID.Eq(a.ID)).First()
+	res, err := q.Where(qb.ID.Eq(params.Album.ID)).First()
 	if err != nil {
 		return model.Album{}, fmt.Errorf("error get album: %w", err)
 	}
@@ -147,10 +144,10 @@ func (r PostgresAlbumRepository) Update(ctx context.Context, user *auth.Claims, 
 	return *res, nil
 }
 
-func (r PostgresAlbumRepository) Delete(ctx context.Context, user *auth.Claims, id int32) error {
+func (r AlbumRepository) Delete(ctx context.Context, params album.DeleteParams) error {
 	qb := query.Use(r.storage.DB).Album
 
-	ri, err := qb.WithContext(ctx).Where(qb.ID.Eq(id)).Delete()
+	ri, err := qb.WithContext(ctx).Where(qb.ID.Eq(params.ID)).Delete()
 	if ri.RowsAffected == 0 {
 		return album.ErrNotFound
 	}
@@ -158,5 +155,5 @@ func (r PostgresAlbumRepository) Delete(ctx context.Context, user *auth.Claims, 
 }
 
 func NewAlbumRepository(storage *Postgres) (album.Repository, error) {
-	return PostgresAlbumRepository{storage}, nil
+	return AlbumRepository{storage}, nil
 }
