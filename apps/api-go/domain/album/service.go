@@ -30,6 +30,7 @@ type service struct {
 	repository Repository
 }
 
+// NewService Create a new instance.
 func NewService(r Repository) (albumspb.AlbumServiceServer, error) {
 	return &service{
 		repository: r,
@@ -37,9 +38,9 @@ func NewService(r Repository) (albumspb.AlbumServiceServer, error) {
 }
 
 func (s *service) Index(ctx context.Context, r *albumspb.IndexRequest) (*albumspb.IndexResponse, error) {
-	user := auth.GetUserClaims(ctx)
-
 	var next, limit int32
+
+	_, user := auth.GetUser(ctx)
 
 	if r.Next != nil {
 		next = *r.Next
@@ -56,7 +57,7 @@ func (s *service) Index(ctx context.Context, r *albumspb.IndexRequest) (*albumsp
 			Categories: r.Joins.GetCategories(),
 			Medias:     r.Joins.GetMedias(),
 		},
-		IncludePrivate: user != nil && user.IsAdmin(),
+		IncludePrivate: user.IsAdmin(),
 	}
 
 	albums, err := s.repository.List(ctx, params)
@@ -77,11 +78,11 @@ func (s *service) Index(ctx context.Context, r *albumspb.IndexRequest) (*albumsp
 // TODO bool include relation
 
 func (s *service) GetBySlug(ctx context.Context, r *albumspb.GetBySlugRequest) (*albumspb.GetBySlugResponse, error) {
-	user := auth.GetUserClaims(ctx)
+	_, user := auth.GetUser(ctx)
 
 	a, err := s.repository.GetBySlug(ctx, GetBySlugParams{
 		Slug:           r.Slug,
-		IncludePrivate: user != nil && user.IsAdmin(),
+		IncludePrivate: user.IsAdmin(),
 	})
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -92,20 +93,20 @@ func (s *service) GetBySlug(ctx context.Context, r *albumspb.GetBySlugRequest) (
 		return nil, fmt.Errorf("error get album by slug: %w", err)
 	}
 
-	// TODO add medias and categes
+	// TODO add medias and categories
 	return &albumspb.GetBySlugResponse{
 		Album: transformAlbumFromDB(a),
 	}, err
 }
 
 func (s *service) Create(ctx context.Context, r *albumspb.CreateRequest) (*albumspb.CreateResponse, error) {
-	user := auth.GetUserClaims(ctx)
+	authenticated, user := auth.GetUser(ctx)
 
-	if user == nil {
+	if !authenticated {
 		return nil, ErrNoAuth
 	}
 
-	isAdmin := user != nil && user.IsAdmin()
+	isAdmin := user.IsAdmin()
 	if !isAdmin {
 		return nil, ErrNotAdmin
 	}
@@ -152,13 +153,13 @@ func (s *service) Create(ctx context.Context, r *albumspb.CreateRequest) (*album
 }
 
 func (s *service) Update(ctx context.Context, r *albumspb.UpdateRequest) (*albumspb.UpdateResponse, error) {
-	user := auth.GetUserClaims(ctx)
+	authenticated, user := auth.GetUser(ctx)
 
-	if user == nil {
+	if !authenticated {
 		return nil, ErrNoAuth
 	}
 
-	isAdmin := user != nil && user.IsAdmin()
+	isAdmin := user.IsAdmin()
 	if !isAdmin {
 		return nil, ErrNotAdmin
 	}
@@ -213,13 +214,13 @@ func (s *service) Update(ctx context.Context, r *albumspb.UpdateRequest) (*album
 // }
 
 func (s *service) Delete(ctx context.Context, r *albumspb.DeleteRequest) (*albumspb.DeleteResponse, error) {
-	user := auth.GetUserClaims(ctx)
-	if user == nil {
+	authenticated, user := auth.GetUser(ctx)
+
+	if !authenticated {
 		return nil, ErrNoAuth
 	}
 
-	isAdmin := user != nil && user.IsAdmin()
-	if !isAdmin {
+	if !user.IsAdmin() {
 		return nil, ErrNotAdmin
 	}
 

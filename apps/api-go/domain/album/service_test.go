@@ -20,84 +20,11 @@ import (
 
 	"github.com/jackc/pgconn"
 	"github.com/jackc/pgerrcode"
-	"github.com/kr/pretty"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 var db postgres.Postgres
-
-var ssoId = "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
-
-// var token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIxamVHNzFZSHlUd25GUEVSb2NJeEVzS21lbjlWN1NjanRIZXFzak1KUXlZIn0.eyJleHAiOjE2MTExNjQ3MTAsImlhdCI6MTYxMTE2NDQxMCwiYXV0aF90aW1lIjoxNjExMTY0MzY0LCJqdGkiOiJlMThlMWNlOC05OTc5LTQ3NmQtOWYxMC1mOTk5OWJhMDQwZjgiLCJpc3MiOiJodHRwczovL2FjY291bnRzLmFncmF2ZWxvdC5ldS9hdXRoL3JlYWxtcy9hbnljbG91ZCIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiIzMDE1MWFlNS0yOGI0LTRjNmMtYjBhZS1lYTJlNmE0OWVmNjciLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJmcm9udGVuZCIsIm5vbmNlIjoiMTkyOWEwZGEtMTU2ZS00NWZmLTgzM2YtYTU2MGIwNmI1YWNkIiwic2Vzc2lvbl9zdGF0ZSI6IjRlMWYxOWYzLTFhMmMtNGUxNS1iMWFhLTNlY2ZhMTkxMGRiOCIsImFjciI6IjAiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIn0.PkfxSmIiG4lLE9hCjICcRPNpXC0X2QtVzYeUwAUwwe2G_6ArmMdZOkRVOKx3jiRO7PYu-D0NR9tAiv7yN9SDMDrIhtNoosgChB4PQ4wBf_YvHsJaAHwyK8Hu6h_8gxJIl3UYCKWTSYgLRK-IOE9E6FNlMdJK9UXAO_y2IBEZBO9QV-QxZH7SlYkm8VfoZzNzRMy82SgWLsQGDvwAAGCxHFRgTZdFNKPoqJylDyANBEuWanLwDohQKdNGqz6PlhtopmXo1v8kcHwBHxyMQ3mtRNCXBV6TOXo7oAWW3XeXGWjTtAiTY85Wr7R6IJ74WKpMrG-3PDL6Sx6n4JxOuurpLg"
-
-var userSsoId = "30151ae5-28b4-4c6c-b0ae-ea2e6a49ef67"
-
-func authAsUser(ctx context.Context) (context.Context, auth.Claims) {
-	claims := auth.Claims{
-		Exp:            1611164710,
-		Iat:            1611164410,
-		AuthTime:       1611164364,
-		Jti:            "e18e1ce8-9979-476d-9f10-f9999ba040f8",
-		Iss:            "https://accounts.example.com/auth/realms/test",
-		Aud:            "account",
-		Sub:            userSsoId,
-		Typ:            "Bearer",
-		Azp:            "frontend",
-		Nonce:          "1929a0da-156e-45ff-833f-a560b06b5acd",
-		SessionState:   "4e1f19f3-1a2c-4e15-b1aa-3ecfa1910db8",
-		Acr:            "0",
-		AllowedOrigins: []string{},
-		RealmAccess: auth.RealmAccess{
-			Roles: []string{},
-		},
-		ResourceAccess: auth.ResourceAccess{
-			Account: auth.Account{
-				Roles: []string{},
-			},
-		},
-		Scope:             "openid profile email",
-		EmailVerified:     true,
-		PreferredUsername: "test",
-		Email:             "test@test.com",
-	}
-
-	return context.WithValue(ctx, auth.UserClaimsKey, &claims), claims
-}
-
-var adminSsoID = "30151ae5-28b4-4c6c-b0ae-ea2e6a49ef99"
-
-func authAsAdmin(ctx context.Context) (context.Context, auth.Claims) {
-	claims := auth.Claims{
-		Exp:            1611164710,
-		Iat:            1611164410,
-		AuthTime:       1611164364,
-		Jti:            "e18e1ce8-9979-476d-9f10-f9999ba040f8",
-		Iss:            "https://accounts.example.com/auth/realms/test",
-		Aud:            "account",
-		Sub:            adminSsoID,
-		Typ:            "Bearer",
-		Azp:            "frontend",
-		Nonce:          "1929a0da-156e-45ff-833f-a560b06b5acd",
-		SessionState:   "4e1f19f3-1a2c-4e15-b1aa-3ecfa1910db8",
-		Acr:            "0",
-		AllowedOrigins: []string{},
-		RealmAccess: auth.RealmAccess{
-			Roles: []string{"admin"},
-		},
-		ResourceAccess: auth.ResourceAccess{
-			Account: auth.Account{
-				Roles: []string{},
-			},
-		},
-		Scope:             "openid profile email",
-		EmailVerified:     true,
-		PreferredUsername: "test",
-		Email:             "test@test.com",
-	}
-
-	return context.WithValue(ctx, auth.UserClaimsKey, &claims), claims
-}
 
 func TestMain(m *testing.M) {
 	c, err := config.FromDotEnv("../../.env")
@@ -166,7 +93,7 @@ func TestList(t *testing.T) {
 						Title:       "A good Title",
 						PublishedAt: &sub10Min,
 						Private:     ptr(false),
-						SsoID:       &ssoId,
+						SsoID:       &auth.UserSsoID,
 					},
 				}
 			},
@@ -182,21 +109,21 @@ func TestList(t *testing.T) {
 						Slug:        "a-good-title",
 						PublishedAt: &sub100Min,
 						Private:     ptr(false),
-						SsoID:       &ssoId,
+						SsoID:       &auth.UserSsoID,
 					},
 					{
 						Title:       "A good Title 2",
 						Slug:        "a-good-title-2",
 						PublishedAt: &sub10Min,
 						Private:     ptr(false),
-						SsoID:       &ssoId,
+						SsoID:       &auth.UserSsoID,
 					},
 					{
 						Title:       "A good Title 3",
 						Slug:        "a-good-title-3",
 						PublishedAt: &sub5Min,
 						Private:     ptr(false),
-						SsoID:       &ssoId,
+						SsoID:       &auth.UserSsoID,
 					},
 				}
 			},
@@ -211,26 +138,26 @@ func TestList(t *testing.T) {
 						Slug:        "a-good-title",
 						PublishedAt: &sub100Min,
 						Private:     ptr(false),
-						SsoID:       &ssoId,
+						SsoID:       &auth.UserSsoID,
 					},
 					{
 						Title:       "A good Title 2",
 						Slug:        "a-good-title-2",
 						PublishedAt: &sub10Min,
 						Private:     ptr(true),
-						SsoID:       &ssoId,
+						SsoID:       &auth.UserSsoID,
 					},
 					{
 						Title:   "A good Title 3",
 						Slug:    "a-good-title-3",
 						Private: ptr(true),
-						SsoID:   &ssoId,
+						SsoID:   &auth.UserSsoID,
 					},
 					{
 						Title:   "A good Title 4",
 						Slug:    "a-good-title-4",
 						Private: ptr(false),
-						SsoID:   &ssoId,
+						SsoID:   &auth.UserSsoID,
 					},
 				}
 			},
@@ -250,7 +177,7 @@ func TestList(t *testing.T) {
 						Slug:        "a-good-title-" + strconv.Itoa(i),
 						PublishedAt: &sub100Min,
 						Private:     ptr(false),
-						SsoID:       &ssoId,
+						SsoID:       &auth.UserSsoID,
 					})
 				}
 
@@ -259,7 +186,7 @@ func TestList(t *testing.T) {
 					Slug:        "on-second-page",
 					PublishedAt: &sub5Min,
 					Private:     ptr(false),
-					SsoID:       &ssoId,
+					SsoID:       &auth.UserSsoID,
 				})
 				return albums
 			},
@@ -281,7 +208,7 @@ func TestList(t *testing.T) {
 						Slug:        "on-second-page " + strconv.Itoa(i),
 						PublishedAt: &sub5Min,
 						Private:     ptr(false),
-						SsoID:       &ssoId,
+						SsoID:       &auth.UserSsoID,
 					})
 				}
 
@@ -290,7 +217,7 @@ func TestList(t *testing.T) {
 					Slug:        "on-second-page",
 					PublishedAt: &sub5Min,
 					Private:     ptr(false),
-					SsoID:       &ssoId,
+					SsoID:       &auth.UserSsoID,
 				})
 				return albums
 			},
@@ -298,13 +225,13 @@ func TestList(t *testing.T) {
 		{
 			name:              "should be able to list non published album as admin",
 			expectedDataCount: 1,
-			authAs:            authAsAdmin,
+			authAs:            auth.AuthAsAdmin,
 			albumGenerator: func() []*model.Album {
 				return []*model.Album{
 					{
 						Title: "On second page",
 						Slug:  "on-second-page",
-						SsoID: &ssoId,
+						SsoID: &auth.UserSsoID,
 					},
 				}
 			},
@@ -321,7 +248,7 @@ func TestList(t *testing.T) {
 					{
 						Title:       "A good Title",
 						PublishedAt: &sub5Min,
-						SsoID:       &ssoId,
+						SsoID:       &auth.UserSsoID,
 						Private:     ptr(false),
 						Categories:  []model.Category{c},
 					},
@@ -345,7 +272,7 @@ func TestList(t *testing.T) {
 					{
 						Title:       "A good Title",
 						PublishedAt: &sub5Min,
-						SsoID:       &ssoId,
+						SsoID:       &auth.UserSsoID,
 						Private:     ptr(false),
 						Categories:  []model.Category{c},
 					},
@@ -379,7 +306,7 @@ func TestList(t *testing.T) {
 					{
 						Title:       "A good Title",
 						PublishedAt: &sub5Min,
-						SsoID:       &ssoId,
+						SsoID:       &auth.UserSsoID,
 						Private:     ptr(false),
 						Medias:      []model.Medium{arg1},
 					},
@@ -408,7 +335,7 @@ func TestList(t *testing.T) {
 					{
 						Title:       "A good Title",
 						PublishedAt: &sub5Min,
-						SsoID:       &ssoId,
+						SsoID:       &auth.UserSsoID,
 						Private:     ptr(false),
 						Medias:      []model.Medium{arg1},
 					},
@@ -422,7 +349,7 @@ func TestList(t *testing.T) {
 				return []*model.Album{
 					{
 						Title:   "A good Title",
-						SsoID:   &ssoId,
+						SsoID:   &auth.UserSsoID,
 						Private: ptr(false),
 					},
 				}
@@ -431,12 +358,12 @@ func TestList(t *testing.T) {
 		{
 			name:              "should not list non published albums as user",
 			expectedDataCount: 0,
-			authAs:            authAsUser,
+			authAs:            auth.AuthAsUser,
 			albumGenerator: func() []*model.Album {
 				return []*model.Album{
 					{
 						Title:   "A good Title",
-						SsoID:   &adminSsoID,
+						SsoID:   &auth.AdminSsoID,
 						Private: ptr(false),
 					},
 				}
@@ -445,12 +372,12 @@ func TestList(t *testing.T) {
 		{
 			name:              "should not be able to list his non published private albums as user",
 			expectedDataCount: 0,
-			authAs:            authAsUser,
+			authAs:            auth.AuthAsUser,
 			albumGenerator: func() []*model.Album {
 				return []*model.Album{
 					{
 						Title:       "A good Title",
-						SsoID:       &userSsoId,
+						SsoID:       &auth.UserSsoID,
 						PublishedAt: &sub5Min,
 						Private:     ptr(true),
 					},
@@ -549,20 +476,19 @@ func TestShouldBeAbleToGetPublishedAlbumAsGuest(t *testing.T) {
 		t.Error(err)
 	}
 
-	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	sub5Min := time.Now().Add(-5 * time.Minute)
 	a := query.Use(tx.DB).Album
 
 	arg := model.Album{
 		Title:       "A good Title",
 		PublishedAt: &sub5Min,
-		SsoID:       &ssoId,
+		SsoID:       &auth.UserSsoID,
 		Private:     ptr(false),
 	}
 
 	err = a.WithContext(context.Background()).Create(&arg)
 	if err != nil {
-		t.Error(fmt.Errorf("Error creating album: %w", err))
+		t.Error(fmt.Errorf("error creating album: %w", err))
 	}
 
 	r, err := s.GetBySlug(context.Background(), &albums_pb.GetBySlugRequest{Slug: arg.Slug})
@@ -583,21 +509,20 @@ func TestShouldBeAbleToGetPublishedAlbumAsUser(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, _ := authAsUser(context.Background())
-	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	ctx, _ := auth.AuthAsUser(context.Background())
 	sub5Min := time.Now().Add(-5 * time.Minute)
 	a := query.Use(tx.DB).Album
 
 	arg := model.Album{
 		Title:       "A good Title",
 		PublishedAt: &sub5Min,
-		SsoID:       &ssoId,
+		SsoID:       &auth.UserSsoID,
 		Private:     ptr(false),
 	}
 
 	err = a.WithContext(context.Background()).Create(&arg)
 	if err != nil {
-		t.Error(fmt.Errorf("Error creating album: %w", err))
+		t.Error(fmt.Errorf("error creating album: %w", err))
 	}
 
 	r, err := s.GetBySlug(ctx, &albums_pb.GetBySlugRequest{Slug: arg.Slug})
@@ -618,19 +543,18 @@ func TestShouldNotBeAbleToGetNonPublishedAlbumAsGuest(t *testing.T) {
 		t.Error(err)
 	}
 
-	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	a := query.Use(tx.DB).Album
 
 	slug := "a-good-title"
 	arg := model.Album{
 		Title: "A good Title",
-		SsoID: &ssoId,
+		SsoID: &auth.UserSsoID,
 		Slug:  slug,
 	}
 
 	err = a.WithContext(context.Background()).Create(&arg)
 	if err != nil {
-		t.Error(fmt.Errorf("Error creating album: %w", err))
+		t.Error(fmt.Errorf("error creating album: %w", err))
 	}
 
 	_, err = s.GetBySlug(context.Background(), &albums_pb.GetBySlugRequest{Slug: slug})
@@ -651,18 +575,17 @@ func TestShouldNotBeAbleToGetNonPublishedAlbumAsUser(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, _ := authAsUser(context.Background())
-	ssoId := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	ctx, _ := auth.AuthAsUser(context.Background())
 	a := query.Use(tx.DB).Album
 
 	arg := model.Album{
 		Title: "A good Title",
-		SsoID: &ssoId,
+		SsoID: &auth.UserSsoID,
 	}
 
 	err = a.WithContext(context.Background()).Create(&arg)
 	if err != nil {
-		t.Error(fmt.Errorf("Error creating album: %w", err))
+		t.Error(fmt.Errorf("error creating album: %w", err))
 	}
 
 	_, err = s.GetBySlug(ctx, &albums_pb.GetBySlugRequest{Slug: arg.Slug})
@@ -683,17 +606,17 @@ func TestShouldBeAbleToGetNonPublishedAlbumAsAdmin(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 	a := query.Use(tx.DB).Album
 
 	arg := model.Album{
 		Title: "A good Title",
-		SsoID: &ssoId,
+		SsoID: &auth.UserSsoID,
 	}
 
 	err = a.WithContext(context.Background()).Create(&arg)
 	if err != nil {
-		t.Error(fmt.Errorf("Error creating album: %w", err))
+		t.Error(fmt.Errorf("error creating album: %w", err))
 	}
 
 	r, err := s.GetBySlug(ctx, &albums_pb.GetBySlugRequest{Slug: arg.Slug})
@@ -714,11 +637,10 @@ func TestShouldHaveNotFoundFornonExistingAlbum(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 
-	r, err := s.GetBySlug(ctx, &albums_pb.GetBySlugRequest{Slug: "not-existing"})
+	_, err = s.GetBySlug(ctx, &albums_pb.GetBySlugRequest{Slug: "not-existing"})
 
-	pretty.Log(r)
 	assert.ErrorAs(t, err, &album.ErrNotFound)
 }
 
@@ -736,7 +658,7 @@ func TestShouldBeAbleToCreateAnAlbumAsAdmin(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, claims := authAsAdmin(context.Background())
+	ctx, claims := auth.AuthAsAdmin(context.Background())
 	a := query.Use(tx.DB).Album
 
 	arg := &albums_pb.CreateRequest{
@@ -770,7 +692,7 @@ func TestShouldBeAbleToCreateAnPublishedAlbumAsAdmin(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, claims := authAsAdmin(context.Background())
+	ctx, claims := auth.AuthAsAdmin(context.Background())
 	a := query.Use(tx.DB).Album
 
 	slug := "a-good-title"
@@ -808,7 +730,7 @@ func TestShouldNotBeAbleToCreateAnAlbumWithSameSlug(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 	a := query.Use(tx.DB).Album
 
 	slug := "a-good-title"
@@ -849,7 +771,7 @@ func TestShouldNotBeAbleToSaveAlbumWithEmptyTitle(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 	a := query.Use(tx.DB).Album
 
 	slug := "a-good-title"
@@ -883,7 +805,7 @@ func TestShouldNotBeAbleToSaveAlbumWithTooLongTitle(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 	a := query.Use(tx.DB).Album
 
 	slug := "a-good-title"
@@ -917,7 +839,7 @@ func TestShouldNotBeAbleToSaveAlbumWithEmptyMetaDescription(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 	a := query.Use(tx.DB).Album
 
 	slug := "a-good-title"
@@ -951,7 +873,7 @@ func TestShouldNotBeAbleToSaveAlbumWithTooLongMetaDescription(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 	a := query.Use(tx.DB).Album
 
 	slug := "a-good-title"
@@ -985,7 +907,7 @@ func TestShouldNotBeAbleToCreateAsUser(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, _ := authAsUser(context.Background())
+	ctx, _ := auth.AuthAsUser(context.Background())
 	a := query.Use(tx.DB).Album
 
 	slug := "a-good-title"
@@ -1053,7 +975,7 @@ func TestShouldBeAbleToUpdateAlbumTitleAsAdmin(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 
 	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	a := model.Album{
@@ -1092,7 +1014,7 @@ func TestShouldNotBeAbleToUpdateAlbumTooShortTitleAsAdmin(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 
 	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	a := model.Album{
@@ -1131,14 +1053,13 @@ func TestShouldBeAbleToUpdateAlbumToAsPublishedAsAdmin(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 
-	ssoID := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	a := model.Album{
 		Title:           "A good Title",
 		Slug:            "a-good-slug",
 		MetaDescription: "a meta decription",
-		SsoID:           &ssoID,
+		SsoID:           &auth.UserSsoID,
 		Private:         ptr(true),
 	}
 	tx.DB.Create(&a)
@@ -1176,7 +1097,7 @@ func TestShouldFailToUpdateNonExistingAlbumAndReturnNotFound(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 
 	// expectedTitle := "A new Title"
 	_, err = s.Update(ctx, &albums_pb.UpdateRequest{
@@ -1204,7 +1125,7 @@ func TestShouldNotBeAbleToUpdateAlbumAsUser(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, _ := authAsUser(context.Background())
+	ctx, _ := auth.AuthAsUser(context.Background())
 
 	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	a := model.Album{
@@ -1274,7 +1195,7 @@ func TestAdminShouldBeAbleToDeleteAndNotSoftDeleted(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	a := model.Album{
 		Title:           "A good Title",
@@ -1297,7 +1218,7 @@ func TestAdminShouldBeAbleToDeleteAndNotSoftDeleted(t *testing.T) {
 	assert.Equal(t, 0, int(totalScopeless))
 }
 
-func TestAdminShouldNotBeAbleToDeleteAnNonExistantAlbum(t *testing.T) {
+func TestAdminShouldNotBeAbleToDeleteAnNonExistentAlbum(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
 	repo, err := postgres.NewAlbumRepository(&tx)
@@ -1309,7 +1230,7 @@ func TestAdminShouldNotBeAbleToDeleteAnNonExistantAlbum(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 
 	_, err = s.Delete(ctx, &albums_pb.DeleteRequest{Id: 1})
 
@@ -1329,7 +1250,7 @@ func TestUserShouldNotBeAbleToDelete(t *testing.T) {
 		t.Error(err)
 	}
 
-	ctx, _ := authAsUser(context.Background())
+	ctx, _ := auth.AuthAsUser(context.Background())
 	slug := "a-good-slug"
 	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	a := model.Album{

@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-
 	jwtgo "github.com/dgrijalva/jwt-go"
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	"google.golang.org/grpc/codes"
@@ -60,33 +59,27 @@ type UserClaimsKeyType string
 
 const UserClaimsKey UserClaimsKeyType = "user"
 
-// GetUserClaims Return user from context.
-//
-// TODO return default value instead of pointer ?
-func GetUserClaims(ctx context.Context) *Claims {
-	claims, ok := ctx.Value(UserClaimsKey).(*Claims)
+// GetUser Return authentication status and user from context.
+func GetUser(ctx context.Context) (bool, Claims) {
+	claims, ok := ctx.Value(UserClaimsKey).(Claims)
 
-	if !ok {
-		return nil
-	}
-
-	return claims
+	return ok, claims
 }
 
-func parseToken(tokenString string) (*Claims, error) {
+func parseToken(tokenString string) (Claims, error) {
 	parser := new(jwtgo.Parser)
-	token, _, err := parser.ParseUnverified(tokenString, &Claims{})
+	token, _, err := parser.ParseUnverified(tokenString, Claims{})
 	if err != nil {
-		return nil, err
+		return Claims{}, err
 	}
 
-	claims := token.Claims.(*Claims)
+	claims := token.Claims.(Claims)
 
 	return claims, nil
 }
 
-// AuthFunc is used by a middleware to authenticate requests
-func AuthFunc(ctx context.Context) (context.Context, error) {
+// Interceptor is used by a middleware to authenticate requests
+func Interceptor(ctx context.Context) (context.Context, error) {
 	token, err := grpc_auth.AuthFromMD(ctx, "bearer")
 	if err != nil {
 		if status.Code(err) == codes.Unauthenticated {

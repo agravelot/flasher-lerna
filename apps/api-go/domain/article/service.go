@@ -50,12 +50,12 @@ func transform(a model.Article) *articles_pb.ArticleResponse {
 }
 
 func (s service) Index(ctx context.Context, request *articles_pb.IndexRequest) (*articles_pb.IndexResponse, error) {
-	user := auth.GetUserClaims(ctx)
+	_, user := auth.GetUser(ctx)
 
 	articles, err := s.repository.List(ctx, ListParams{
 		Limit:          request.Limit,
 		Next:           request.Next,
-		IncludePrivate: user != nil && user.IsAdmin(),
+		IncludePrivate: user.IsAdmin(),
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to list articles: %w", err)
@@ -74,11 +74,11 @@ func (s service) Index(ctx context.Context, request *articles_pb.IndexRequest) (
 }
 
 func (s service) GetBySlug(ctx context.Context, request *articles_pb.GetBySlugRequest) (*articles_pb.GetBySlugResponse, error) {
-	user := auth.GetUserClaims(ctx)
+	_, user := auth.GetUser(ctx)
 
 	a, err := s.repository.GetBySlug(ctx, GetBySlugParams{
 		Slug:           request.Slug,
-		IncludePrivate: user != nil && user.IsAdmin(),
+		IncludePrivate: user.IsAdmin(),
 	})
 
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
@@ -102,9 +102,9 @@ func (s service) GetBySlug(ctx context.Context, request *articles_pb.GetBySlugRe
 }
 
 func (s service) Create(ctx context.Context, request *articles_pb.CreateRequest) (*articles_pb.CreateResponse, error) {
-	user := auth.GetUserClaims(ctx)
+	authenticated, user := auth.GetUser(ctx)
 
-	if user == nil {
+	if !authenticated {
 		return nil, ErrNoAuth
 	}
 
@@ -148,9 +148,9 @@ func (s service) Create(ctx context.Context, request *articles_pb.CreateRequest)
 }
 
 func (s service) Update(ctx context.Context, request *articles_pb.UpdateRequest) (*articles_pb.UpdateResponse, error) {
-	user := auth.GetUserClaims(ctx)
+	authenticated, user := auth.GetUser(ctx)
 
-	if user == nil {
+	if !authenticated {
 		return nil, ErrNoAuth
 	}
 
@@ -193,9 +193,9 @@ func (s service) Update(ctx context.Context, request *articles_pb.UpdateRequest)
 }
 
 func (s service) Delete(ctx context.Context, request *articles_pb.DeleteRequest) (*articles_pb.DeleteResponse, error) {
-	user := auth.GetUserClaims(ctx)
+	authenticated, user := auth.GetUser(ctx)
 
-	if user == nil {
+	if !authenticated {
 		return nil, ErrNoAuth
 	}
 

@@ -21,72 +21,6 @@ import (
 
 var db postgres.Postgres
 
-// var token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIxamVHNzFZSHlUd25GUEVSb2NJeEVzS21lbjlWN1NjanRIZXFzak1KUXlZIn0.eyJleHAiOjE2MTExNjQ3MTAsImlhdCI6MTYxMTE2NDQxMCwiYXV0aF90aW1lIjoxNjExMTY0MzY0LCJqdGkiOiJlMThlMWNlOC05OTc5LTQ3NmQtOWYxMC1mOTk5OWJhMDQwZjgiLCJpc3MiOiJodHRwczovL2FjY291bnRzLmFncmF2ZWxvdC5ldS9hdXRoL3JlYWxtcy9hbnljbG91ZCIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiIzMDE1MWFlNS0yOGI0LTRjNmMtYjBhZS1lYTJlNmE0OWVmNjciLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJmcm9udGVuZCIsIm5vbmNlIjoiMTkyOWEwZGEtMTU2ZS00NWZmLTgzM2YtYTU2MGIwNmI1YWNkIiwic2Vzc2lvbl9zdGF0ZSI6IjRlMWYxOWYzLTFhMmMtNGUxNS1iMWFhLTNlY2ZhMTkxMGRiOCIsImFjciI6IjAiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIn0.PkfxSmIiG4lLE9hCjICcRPNpXC0X2QtVzYeUwAUwwe2G_6ArmMdZOkRVOKx3jiRO7PYu-D0NR9tAiv7yN9SDMDrIhtNoosgChB4PQ4wBf_YvHsJaAHwyK8Hu6h_8gxJIl3UYCKWTSYgLRK-IOE9E6FNlMdJK9UXAO_y2IBEZBO9QV-QxZH7SlYkm8VfoZzNzRMy82SgWLsQGDvwAAGCxHFRgTZdFNKPoqJylDyANBEuWanLwDohQKdNGqz6PlhtopmXo1v8kcHwBHxyMQ3mtRNCXBV6TOXo7oAWW3XeXGWjTtAiTY85Wr7R6IJ74WKpMrG-3PDL6Sx6n4JxOuurpLg"
-
-func authAsUser(ctx context.Context) (context.Context, auth.Claims) {
-	claims := auth.Claims{
-		Exp:            1611164710,
-		Iat:            1611164410,
-		AuthTime:       1611164364,
-		Jti:            "e18e1ce8-9979-476d-9f10-f9999ba040f8",
-		Iss:            "https://accounts.example.com/auth/realms/test",
-		Aud:            "account",
-		Sub:            "30151ae5-28b4-4c6c-b0ae-ea2e6a49ef67",
-		Typ:            "Bearer",
-		Azp:            "frontend",
-		Nonce:          "1929a0da-156e-45ff-833f-a560b06b5acd",
-		SessionState:   "4e1f19f3-1a2c-4e15-b1aa-3ecfa1910db8",
-		Acr:            "0",
-		AllowedOrigins: []string{},
-		RealmAccess: auth.RealmAccess{
-			Roles: []string{},
-		},
-		ResourceAccess: auth.ResourceAccess{
-			Account: auth.Account{
-				Roles: []string{},
-			},
-		},
-		Scope:             "openid profile email",
-		EmailVerified:     true,
-		PreferredUsername: "test",
-		Email:             "test@test.com",
-	}
-
-	return context.WithValue(ctx, auth.UserClaimsKey, &claims), claims
-}
-
-func authAsAdmin(ctx context.Context) (context.Context, auth.Claims) {
-	claims := auth.Claims{
-		Exp:            1611164710,
-		Iat:            1611164410,
-		AuthTime:       1611164364,
-		Jti:            "e18e1ce8-9979-476d-9f10-f9999ba040f8",
-		Iss:            "https://accounts.example.com/auth/realms/test",
-		Aud:            "account",
-		Sub:            "30151ae5-28b4-4c6c-b0ae-ea2e6a49ef67",
-		Typ:            "Bearer",
-		Azp:            "frontend",
-		Nonce:          "1929a0da-156e-45ff-833f-a560b06b5acd",
-		SessionState:   "4e1f19f3-1a2c-4e15-b1aa-3ecfa1910db8",
-		Acr:            "0",
-		AllowedOrigins: []string{},
-		RealmAccess: auth.RealmAccess{
-			Roles: []string{"admin"},
-		},
-		ResourceAccess: auth.ResourceAccess{
-			Account: auth.Account{
-				Roles: []string{},
-			},
-		},
-		Scope:             "openid profile email",
-		EmailVerified:     true,
-		PreferredUsername: "test",
-		Email:             "test@test.com",
-	}
-
-	return context.WithValue(ctx, auth.UserClaimsKey, &claims), claims
-}
-
 func TestMain(m *testing.M) {
 	c, err := config.FromDotEnv("../../.env")
 	if err != nil {
@@ -220,7 +154,7 @@ func TestShouldBeAbleToListPublishedArticlesOnSecondPageWithCustomPerPage(t *tes
 }
 
 func TestShouldBeAbleToListNonPublishedArticleAsAdmin(t *testing.T) {
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 	tx := db.Begin()
 	defer tx.Rollback()
 	repo, err := postgres.NewArticleRepository(&tx)
@@ -347,7 +281,7 @@ func TestShouldBeAbleToGetPublishedArticleAsUser(t *testing.T) {
 	}
 	s := article.NewService(repo)
 
-	ctx, _ := authAsUser(context.Background())
+	ctx, _ := auth.AuthAsUser(context.Background())
 	n := time.Now()
 	a := model.Article{Name: "A good name", Slug: "a-good-name", PublishedAt: &n}
 	err = tx.DB.Create(&a).Error
@@ -391,7 +325,7 @@ func TestShouldNotBeAbleToGetNonPublishedArticleAsUser(t *testing.T) {
 	}
 	s := article.NewService(repo)
 
-	ctx, _ := authAsUser(context.Background())
+	ctx, _ := auth.AuthAsUser(context.Background())
 	a := model.Article{Name: "A good name", Slug: "a-good-name"}
 	err = tx.DB.Create(&a).Error
 	if err != nil {
@@ -413,7 +347,7 @@ func TestShouldBeAbleToGetNonPublishedArticleAsAdmin(t *testing.T) {
 	}
 	s := article.NewService(repo)
 
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 	a := model.Article{Name: "A good name", Slug: "a-good-name"}
 	err = tx.DB.Create(&a).Error
 	if err != nil {
@@ -438,7 +372,7 @@ func TestShouldBeAbleToCreateAnArticleAndGenerateSlugAsAdmin(t *testing.T) {
 	s := article.NewService(repo)
 
 	a := articlesgrpc.CreateRequest{Name: "A good name", MetaDescription: "a meta decription"}
-	ctx, claims := authAsAdmin(context.Background())
+	ctx, claims := auth.AuthAsAdmin(context.Background())
 
 	res, err := s.Create(ctx, &a)
 
@@ -463,7 +397,7 @@ func TestShouldBeAbleToCreateAnPublishedArticleAndGenerateSlugAsAdmin(t *testing
 
 	n := time.Now()
 	a := articlesgrpc.CreateRequest{Name: "A good name", MetaDescription: "a meta decription", PublishedAt: &timestamppb.Timestamp{Seconds: n.Unix()}}
-	ctx, claims := authAsAdmin(context.Background())
+	ctx, claims := auth.AuthAsAdmin(context.Background())
 
 	res, err := s.Create(ctx, &a)
 
@@ -487,7 +421,7 @@ func TestShouldBeAbleToCreateAnArticleWithASpecifiedSlug(t *testing.T) {
 	s := article.NewService(repo)
 
 	a := articlesgrpc.CreateRequest{Name: "A good name", Slug: "wtf-is-this-slug", MetaDescription: "a meta decription"}
-	ctx, claims := authAsAdmin(context.Background())
+	ctx, claims := auth.AuthAsAdmin(context.Background())
 
 	res, err := s.Create(ctx, &a)
 
@@ -512,7 +446,7 @@ func TestShouldNotBeAbleToCreateAnArticleWithSameSlug(t *testing.T) {
 	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	tx.DB.Create(&a)
 	dup := articlesgrpc.CreateRequest{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 
 	tx.DB.SavePoint("sp1")
 	_, err = s.Create(ctx, &dup)
@@ -534,7 +468,7 @@ func TestShouldNotBeAbleToSaveArticleWithEmptyName(t *testing.T) {
 	s := article.NewService(repo)
 
 	a := articlesgrpc.CreateRequest{Name: ""}
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 
 	_, err = s.Create(ctx, &a)
 
@@ -556,7 +490,7 @@ func TestShouldNotBeAbleToSaveArticleWithTooLongName(t *testing.T) {
 	s := article.NewService(repo)
 
 	a := articlesgrpc.CreateRequest{Name: "a very too long big enormous title that will never fit in any screen..."}
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 
 	_, err = s.Create(ctx, &a)
 
@@ -578,7 +512,7 @@ func TestShouldNotBeAbleToSaveArticleWithEmptyMetaDescription(t *testing.T) {
 	s := article.NewService(repo)
 
 	a := articlesgrpc.CreateRequest{Name: "a good name", MetaDescription: ""}
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 
 	_, err = s.Create(ctx, &a)
 
@@ -600,7 +534,7 @@ func TestShouldNotBeAbleToSaveArticleWithTooLongMetaDescription(t *testing.T) {
 	s := article.NewService(repo)
 
 	a := articlesgrpc.CreateRequest{Name: "A good name", MetaDescription: "a very too long big enormous title that will never fit in any screen...a very too long big enormous title that will never fit in any screen...a very too long big enormous title that will never fit in any screen..."}
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 
 	_, err = s.Create(ctx, &a)
 
@@ -622,7 +556,7 @@ func TestShouldNotBeAbleToCreateAsUser(t *testing.T) {
 	s := article.NewService(repo)
 
 	a := articlesgrpc.CreateRequest{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
-	ctx, _ := authAsUser(context.Background())
+	ctx, _ := auth.AuthAsUser(context.Background())
 
 	_, err = s.Create(ctx, &a)
 
@@ -664,7 +598,7 @@ func TestShouldBeAbleToUpdateArticleNameAsAdmin(t *testing.T) {
 	}
 	s := article.NewService(repo)
 
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 
 	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	err = tx.DB.Create(&a).Error
@@ -714,7 +648,7 @@ func TestShouldNotBeAbleToUpdateArticleAsUser(t *testing.T) {
 	s := article.NewService(repo)
 
 	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
-	ctx, _ := authAsUser(context.Background())
+	ctx, _ := auth.AuthAsUser(context.Background())
 	tx.DB.Create(&a)
 
 	u := articlesgrpc.UpdateRequest{Name: a.Name, Slug: a.Slug, MetaDescription: a.MetaDescription}
@@ -763,7 +697,7 @@ func TestShouldBeAbleToDeleteArticleAndIsSoftDeletedAsAdmin(t *testing.T) {
 	a := model.Article{Name: "A good name", Slug: "a-good-slug", MetaDescription: "a meta decription"}
 	tx.DB.Create(&a)
 
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 	_, err = s.Delete(ctx, &articlesgrpc.DeleteRequest{Id: int32(a.ID)})
 
 	var total, totalScopeless int64
@@ -782,7 +716,7 @@ func TestShouldNotBeAbleToDeleteAnNonExistentArticleAsAdmin(t *testing.T) {
 		t.Error(err)
 	}
 	s := article.NewService(repo)
-	ctx, _ := authAsAdmin(context.Background())
+	ctx, _ := auth.AuthAsAdmin(context.Background())
 
 	_, err = s.Delete(ctx, &articlesgrpc.DeleteRequest{Id: 123123123})
 
@@ -799,7 +733,7 @@ func TestUserShouldNotBeAbleToDelete(t *testing.T) {
 	}
 	s := article.NewService(repo)
 
-	ctx, _ := authAsUser(context.Background())
+	ctx, _ := auth.AuthAsUser(context.Background())
 	slug := "a-good-slug"
 	id := "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
 	a := model.Article{
