@@ -98,7 +98,7 @@ const ShowCosplayer: NextPage<Props> = ({
                   </h1>
                   <div className="mt-0 mb-2 text-sm font-bold uppercase leading-normal text-gray-500">
                     <i className="fas fa-map-marker-alt mr-2 text-lg text-gray-500"></i>
-                    Cosplayer
+                    Modèle
                   </div>
                 </div>
                 <div className="mt-10 border-t border-gray-300 py-10 text-center">
