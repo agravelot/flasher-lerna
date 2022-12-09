@@ -92,8 +92,7 @@ export const CustomHighlight = connectHighlight(
   }
 );
 
-export const AlbumHits = connectHits(({ hits }) => 
-{
+export const AlbumHits = connectHits(({ hits }) => {
   const { close } = useSearch();
   return (
     <ol className="flex flex-wrap md:-mx-3">
@@ -142,64 +141,64 @@ export const AlbumHits = connectHits(({ hits }) =>
 export const CategoryHits = connectHits(({ hits }) => {
   const { close } = useSearch();
   return (
-  <ol className="flex flex-col md:-mx-3">
-    {hits.map((hit) => (
-      <li className="my-4 flex" key={hit.id}>
-        <Link
-          href={{ pathname: "/categories/[slug]", query: { slug: hit.slug } }}
-          prefetch={false}
-          onClick={() => close()}
-        >
-          <Avatar name={hit.name} src={hit.cover} />
-        </Link>
-        <div className="p-4">
+    <ol className="flex flex-col md:-mx-3">
+      {hits.map((hit) => (
+        <li className="my-4 flex" key={hit.id}>
           <Link
             href={{ pathname: "/categories/[slug]", query: { slug: hit.slug } }}
             prefetch={false}
-            className="mb-2 text-xl font-bold"
             onClick={() => close()}
           >
-            <h3>
-              <CustomHighlight hit={hit} attribute="name" />
-            </h3> 
+            <Avatar name={hit.name} src={hit.cover} />
           </Link>
-        </div>
-      </li>
-    ))}
-  </ol>
-);
-    });
+          <div className="p-4">
+            <Link
+              href={{ pathname: "/categories/[slug]", query: { slug: hit.slug } }}
+              prefetch={false}
+              className="mb-2 text-xl font-bold"
+              onClick={() => close()}
+            >
+              <h3>
+                <CustomHighlight hit={hit} attribute="name" />
+              </h3> 
+            </Link>
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
+});
 
 export const CosplayerHits = connectHits(({ hits }) => {
   const { close } = useSearch();
   return (
-  <ol>
-    {hits.map((hit) => (
-      <div className="my-4 flex" key={hit.id}>
-        <Link
-          href={{ pathname: "/cosplayers/[slug]", query: { slug: hit.slug } }}
-          prefetch={false}
-          passHref={true}
-          onClick={() => close()}
-        >
-          <Avatar name={hit.name} src={hit.avatar} />
-        </Link>
-        <div className="p-4">
+    <ol>
+      {hits.map((hit) => (
+        <div className="my-4 flex" key={hit.id}>
           <Link
             href={{ pathname: "/cosplayers/[slug]", query: { slug: hit.slug } }}
             prefetch={false}
-            className="mb-2 text-xl font-bold"
+            passHref={true}
             onClick={() => close()}
           >
-            <h3>
-              <CustomHighlight hit={hit} attribute="name" />
-            </h3>
+            <Avatar name={hit.name} src={hit.avatar} />
           </Link>
+          <div className="p-4">
+            <Link
+              href={{ pathname: "/cosplayers/[slug]", query: { slug: hit.slug } }}
+              prefetch={false}
+              className="mb-2 text-xl font-bold"
+              onClick={() => close()}
+            >
+              <h3>
+                <CustomHighlight hit={hit} attribute="name" />
+              </h3>
+            </Link>
+          </div>
         </div>
-      </div>
-    ))}
-  </ol>
-);
+      ))}
+    </ol>
+  );
 });
 
 export const IndexResults = connectStateResults(
