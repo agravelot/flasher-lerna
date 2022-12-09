@@ -147,6 +147,7 @@ export const CategoryHits = connectHits(({ hits }) => {
           <Link
             href={{ pathname: "/categories/[slug]", query: { slug: hit.slug } }}
             prefetch={false}
+            className="mb-2 text-xl font-bold"
             onClick={() => close()}
           >
             <Avatar name={hit.name} src={hit.cover} />
