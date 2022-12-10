@@ -41,7 +41,7 @@
     "framer-motion": "^7.6.18",
     "gray-matter": "^4.0.2",
     "joi": "^17.4.0",
-    "keycloak-js": "^17.0.0",
+    "keycloak-js": "^20.0.1",
     "lodash-es": "^4.17.20",
     "next": "^13.0.0",
     "next-compose-plugins": "^2.2.1",
