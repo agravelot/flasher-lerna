@@ -19,8 +19,10 @@ const withTM = require("next-transpile-modules")([
   "@flasher/models",
 ]); // pass the modules you would like to see transpiled
 
+/** @type {Partial<import("@sentry/nextjs").SentryWebpackPluginOptions>} */
 const sentryWebpackPluginOptions = {
   silent: true,
+  dryRun: process.env.CI !== "true",
 };
 
 /**
