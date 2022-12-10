@@ -5,6 +5,9 @@ on:
       - v*
     branches:
       - "**"
+    paths:
+      - "apps/api-go/**"
+      - ".github/workflows/golangci-lint.yml"
   pull_request:
     paths:
       - "apps/api-go/**"
