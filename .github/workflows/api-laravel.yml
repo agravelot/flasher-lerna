@@ -110,6 +110,7 @@ jobs:
           DB_PASSWORD: "secretPassword"
 
       - name: Login to GitLab repository
+        if: github.event_name != 'pull_request' && github.actor != 'dependabot[bot]'
         uses: azure/docker-login@v1
         with:
           login-server: registry.gitlab.com
@@ -117,5 +118,6 @@ jobs:
           password: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
       - name: Push images to registry
+        if: github.event_name != 'pull_request' && github.actor != 'dependabot[bot]'
         working-directory: apps/api-laravel
         run: docker-compose push php nginx
