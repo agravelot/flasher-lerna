@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const runtimeCaching = require("next-pwa/cache");
 
+const { withSentryConfig } = require("@sentry/nextjs");
+
 const withPWA = require("next-pwa")({
   dest: "public",
   disable: process.env.NODE_ENV !== "production",
   mode: process.env.NODE_ENV,
   runtimeCaching,
 });
-
-const { withSentryConfig } = require("@sentry/nextjs");
 
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
@@ -26,11 +26,11 @@ const sentryWebpackPluginOptions = {
 };
 
 /**
- * @type {import('next').NextConfig}
+ * @type {import("next").NextConfig}
  **/
 const nextConfig = withTM(
-   withBundleAnalyzer(
-   withPWA({
+  withBundleAnalyzer(
+    withPWA({
       pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
       async redirects() {
         return [
@@ -89,8 +89,8 @@ const nextConfig = withTM(
       },
       poweredByHeader: false,
       compress: false,
-    }))
-
+    })
+  )
 );
 
 module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);
