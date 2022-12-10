@@ -58,11 +58,11 @@ jobs:
           cache-from: type=registry,ref=registry.gitlab.com/flasher/flasher/flasher-frontend:latest
           cache-to: type=inline
           build-args: |
-            "NEXT_PUBLIC_APP_URL=https://agravelot.eu
-            "NEXT_PUBLIC_API_URL=https://api.jkanda.fr/api
-            "NEXT_PUBLIC_KEYCLOAK_REALM=jkanda
-            "NEXT_PUBLIC_KEYCLOAK_URL=https://accounts.agravelot.eu/auth
-            "NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=flasher
+            "NEXT_PUBLIC_APP_URL=https://agravelot.eu"
+            "NEXT_PUBLIC_API_URL=https://api.jkanda.fr/api"
+            "NEXT_PUBLIC_KEYCLOAK_REALM=jkanda"
+            "NEXT_PUBLIC_KEYCLOAK_URL=https://accounts.agravelot.eu/auth"
+            "NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=flasher"
             "NEXT_PUBLIC_ADMINISTRATION_URL=https://admin.agravelot.eu"
             "NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}"
             "NEXT_PUBLIC_SENTRY_ENV=staging"
@@ -84,11 +84,11 @@ jobs:
           cache-from: type=registry,ref=registry.gitlab.com/flasher/flasher/flasher-frontend:latest
           cache-to: type=inline
           build-args: |
-            "NEXT_PUBLIC_APP_URL=https://jkanda.fr
-            "NEXT_PUBLIC_API_URL=https://api.jkanda.fr/api
-            "NEXT_PUBLIC_KEYCLOAK_REALM=jkanda
-            "NEXT_PUBLIC_KEYCLOAK_URL=https://accounts.jkanda.fr/auth
-            "NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=flasher
+            "NEXT_PUBLIC_APP_URL=https://jkanda.fr"
+            "NEXT_PUBLIC_API_URL=https://api.jkanda.fr/api"
+            "NEXT_PUBLIC_KEYCLOAK_REALM=jkanda"
+            "NEXT_PUBLIC_KEYCLOAK_URL=https://accounts.jkanda.fr/auth"
+            "NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=flasher"
             "NEXT_PUBLIC_ADMINISTRATION_URL=https://admin.jkanda.fr"
             "NEXT_PUBLIC_ALGOLIA_APP_ID=${{ secrets.NEXT_PUBLIC_ALGOLIA_APP_ID }}"
             "NEXT_PUBLIC_ALGOLIA_API_KEY=${{ secrets.NEXT_PUBLIC_ALGOLIA_API_KEY }}"
