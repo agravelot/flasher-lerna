@@ -38,7 +38,7 @@ jobs:
           password: ${{ secrets.CI_REGISTRY_PASSWORD }}
       - name: Docker meta
         id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v1
+        uses: crazy-max/ghaction-docker-meta@v4
         with:
           images: registry.gitlab.com/flasher/flasher/flasher-admin-v2 # list of Docker images to use as base name for tags
           tag-semver: |
