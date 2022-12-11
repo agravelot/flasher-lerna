@@ -2,12 +2,11 @@ package auth
 
 import (
 	"context"
-	jwtgo "github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
+	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-
-	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
 )
 
 func (c Claims) IsAdmin() bool {
@@ -67,7 +66,8 @@ func GetUser(ctx context.Context) (bool, Claims) {
 }
 
 func parseToken(tokenString string) (Claims, error) {
-	parser := new(jwtgo.Parser)
+	parser := new(jwt.Parser)
+	// no need to check jwt signature since it's check by api gateway.
 	token, _, err := parser.ParseUnverified(tokenString, Claims{})
 	if err != nil {
 		return Claims{}, err
