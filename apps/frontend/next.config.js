@@ -31,6 +31,7 @@ const sentryWebpackPluginOptions = {
 const nextConfig = withTM(
   withBundleAnalyzer(
     withPWA({
+      output: "standalone",
       pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
       async redirects() {
         return [

@@ -1,4 +1,5 @@
 FROM node:16-alpine AS base
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add libc6-compat --no-cache
 
 
@@ -90,9 +91,16 @@ ENV SENTRY_ORG=$SENTRY_ORG
 ENV SENTRY_PROJECT=$SENTRY_PROJECT
 ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
 
-
-COPY --from=builder /app /app
-
 WORKDIR /app/apps/frontend
+USER nextjs
+EXPOSE 3000
+ENV PORT 3000
 
-CMD ["/app/node_modules/.bin/next", "start"]
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+COPY --from=builder --chown=nextjs:nodejs /app/apps/frontend/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/apps/frontend/.next/static ./.next/static
+
+#CMD ["/app/node_modules/.bin/next", "start"]
+
+CMD ["node", "/app/apps/frontend/server.js"]
