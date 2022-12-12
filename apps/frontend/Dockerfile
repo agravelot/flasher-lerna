@@ -92,15 +92,14 @@ ENV SENTRY_PROJECT=$SENTRY_PROJECT
 ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
 
 WORKDIR /app/apps/frontend
-USER nextjs
-EXPOSE 3000
-ENV PORT 3000
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 COPY --from=builder --chown=nextjs:nodejs /app/apps/frontend/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/frontend/.next/static ./.next/static
 
-#CMD ["/app/node_modules/.bin/next", "start"]
+USER nextjs
+EXPOSE 3000
+ENV PORT 3000
 
 CMD ["node", "/app/apps/frontend/server.js"]
