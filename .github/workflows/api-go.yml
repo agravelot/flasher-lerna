@@ -46,21 +46,23 @@ jobs:
           username: ${{ secrets.CI_REGISTRY_USER }}
           password: ${{ secrets.CI_REGISTRY_PASSWORD }}
       - name: Docker meta
-        id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v4
+        id: meta
+        uses: docker/metadata-action@v4
         with:
           images: registry.gitlab.com/flasher/flasher/flasher-api-go # list of Docker images to use as base name for tags
-          tag-semver: |
-            {{version}}
-            {{major}}.{{minor}}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
       - name: Build and push base
         uses: docker/build-push-action@v3
         with:
           context: ./apps/api-go
           file: ./apps/api-go/Dockerfile
           push: ${{ github.event_name != 'pull_request' && github.actor != 'dependabot[bot]' }}
-          tags: ${{ steps.docker_meta.outputs.tags }}
-          labels: ${{ steps.docker_meta.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=registry.gitlab.com/flasher/flasher/flasher-api-go:latest
           cache-to: type=inline
           build-args: |
