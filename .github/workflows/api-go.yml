@@ -30,7 +30,7 @@ jobs:
         with:
           path: |
             ~/go/pkg/mod
-            ~/.cache/go-build
+            ~/.cache
             ~/Library/Caches/go-build
             %LocalAppData%\go-build
           key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
@@ -46,23 +46,25 @@ jobs:
           username: ${{ secrets.CI_REGISTRY_USER }}
           password: ${{ secrets.CI_REGISTRY_PASSWORD }}
       - name: Docker meta
-        id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v4
+        id: meta
+        uses: docker/metadata-action@v4
         with:
           images: registry.gitlab.com/flasher/flasher/flasher-api-go # list of Docker images to use as base name for tags
-          tag-semver: |
-            {{version}}
-            {{major}}.{{minor}}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
       - name: Build and push base
         uses: docker/build-push-action@v3
         with:
           context: ./apps/api-go
           file: ./apps/api-go/Dockerfile
           push: ${{ github.event_name != 'pull_request' && github.actor != 'dependabot[bot]' }}
-          tags: ${{ steps.docker_meta.outputs.tags }}
-          labels: ${{ steps.docker_meta.outputs.labels }}
-          cache-from: type=registry,ref=registry.gitlab.com/flasher/flasher/flasher-api-go:latest
-          cache-to: type=inline
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           build-args: |
             BUF_TOKEN=${{ secrets.BUF_TOKEN }}
   test:
@@ -75,9 +77,9 @@ jobs:
           POSTGRES_DB: flasher
         options: >-
           --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          --health-interval 1s
+          --health-timeout 1s
+          --health-retries 150
         ports:
           - 5432:5432
     strategy:
@@ -87,6 +89,10 @@ jobs:
     # runs-on: self-hosted
     runs-on: ubuntu-22.04
     steps:
+      - name: Install golang
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go-version }}
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -95,7 +101,7 @@ jobs:
         with:
           path: |
             ~/go/pkg/mod
-            ~/.cache/go-build
+            ~/.cache
             ~/Library/Caches/go-build
             %LocalAppData%\go-build
           key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
@@ -118,15 +124,10 @@ jobs:
         uses: haveyoudebuggedit/gotestfmt-action@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build api
-        uses: actions/setup-go@v3
-        with:
-          go-version: ${{ matrix.go-version }}
       - name: Init DB
         run: |
-          go install github.com/pressly/goose/v3/cmd/goose@latest
           cd apps/api-go/migration
-          goose postgres "postgres://flasher:flasher@localhost:5432/flasher?sslmode=disable" up
+          go run github.com/pressly/goose/v3/cmd/goose@latest postgres "postgres://flasher:flasher@localhost:5432/flasher?sslmode=disable" up
       - name: Test
         run: |
           cd apps/api-go
