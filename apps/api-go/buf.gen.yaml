@@ -27,3 +27,7 @@ plugins:
       - paths=source_relative
       - lang=go
       # - validate_out="lang=go:.gen/validate2"
+  - plugin: buf.build/protocolbuffers/go:v1.28.1
+    out: gen/go
+  - plugin: buf.build/grpc/go:v1.2.0
+    out: gen/go
