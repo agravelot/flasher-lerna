@@ -30,7 +30,7 @@ jobs:
         with:
           path: |
             ~/go/pkg/mod
-            ~/.cache/go-build
+            ~/.cache
             ~/Library/Caches/go-build
             %LocalAppData%\go-build
           key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
@@ -101,7 +101,7 @@ jobs:
         with:
           path: |
             ~/go/pkg/mod
-            ~/.cache/go-build
+            ~/.cache
             ~/Library/Caches/go-build
             %LocalAppData%\go-build
           key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
