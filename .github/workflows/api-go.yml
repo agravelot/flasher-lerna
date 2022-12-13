@@ -87,6 +87,10 @@ jobs:
     # runs-on: self-hosted
     runs-on: ubuntu-22.04
     steps:
+      - name: Install golang
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go-version }}
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -118,10 +122,6 @@ jobs:
         uses: haveyoudebuggedit/gotestfmt-action@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build api
-        uses: actions/setup-go@v3
-        with:
-          go-version: ${{ matrix.go-version }}
       - name: Init DB
         run: |
           cd apps/api-go/migration
