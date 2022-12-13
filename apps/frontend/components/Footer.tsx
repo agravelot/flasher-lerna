@@ -90,9 +90,7 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                         tabIndex={0}
                         className="block py-2 text-sm"
                       >
-                        <a tabIndex={0} className="block py-2 text-sm">
-                          Modèles
-                        </a>
+                        Modèles
                       </Link>
                     </li>
                     <li>
