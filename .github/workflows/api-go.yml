@@ -103,7 +103,8 @@ jobs:
             ${{ runner.os }}-go-${{ matrix.go-version }}-
       - uses: bufbuild/buf-setup-action@v1.10.0
         with:
-          version: "latest"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          version: 1.10.0
       - uses: bufbuild/buf-lint-action@v1
         with:
           input: apps/api-go
