@@ -112,9 +112,8 @@ jobs:
           input: apps/api-go
       - uses: bufbuild/buf-breaking-action@v1
         with:
-           input: .
+           input: apps/api-go
            against: "https://github.com/${GITHUB_REPOSITORY}.git#branch=main"
-           buf_input_https_password: ${{ secrets.GITHUB_TOKEN }}
       - name: Set up gotestfmt
         uses: haveyoudebuggedit/gotestfmt-action@v2
         with:
