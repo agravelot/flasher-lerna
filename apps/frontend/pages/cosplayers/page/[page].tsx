@@ -45,11 +45,11 @@ const IndexAlbum: NextPage<Props> = ({
   return (
     <Layout socialMedias={socialMedias} appName={appName}>
       <NextSeo
-        title={`Cosplayers page ${pagination.currentPage} - Photographe | ${appName}`}
+        title={`Modèles page ${pagination.currentPage} - Photographe | ${appName}`}
         description="Venez plonger dans mes différents univers à travers des albums divers et variés ! Entre balade, cosplay, et portrait."
         canonical={`${configuration.appUrl}${asPath}`}
         openGraph={{
-          title: `Cosplayers page ${pagination.currentPage} - Photographe | ${appName}`,
+          title: `Modèles page ${pagination.currentPage} - Photographe | ${appName}`,
           description:
             "Venez plonger dans mes différents univers à travers des albums divers et variés ! Entre balade, cosplay, et portrait.",
         }}

@@ -39,10 +39,10 @@ const ShowCosplayer: NextPage<Props> = ({
   return (
     <Layout socialMedias={socialMedias} appName={appName}>
       <NextSeo
-        title={`${cosplayer.name} - Cosplayeur - Photographe | ${appName}`}
+        title={`${cosplayer.name} - Modèle - Photographe | ${appName}`}
         description={cosplayer.description ?? ""}
         openGraph={{
-          title: `${cosplayer.name} - Cosplayeur - Photographe | ${appName}`,
+          title: `${cosplayer.name} - Modèle - Photographe | ${appName}`,
           description: cosplayer.description ?? "",
           type: "profile",
           profile: {
