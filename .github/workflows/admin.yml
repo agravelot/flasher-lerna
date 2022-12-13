@@ -54,8 +54,8 @@ jobs:
           labels: ${{ steps.docker_meta.outputs.labels }}
           # push: true
           # tags: :latest
-          cache-from: type=registry,ref=registry.gitlab.com/flasher/flasher/flasher-admin-v2:latest
-          cache-to: type=inline
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           # build-args: |
           #     "NEXT_PUBLIC_APP_URL=${{ secrets.NEXT_PUBLIC_APP_URL }}"
           #     "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}"
