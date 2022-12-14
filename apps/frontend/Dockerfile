@@ -47,12 +47,13 @@ WORKDIR /app
 
 COPY [^a]* . 
 COPY --from=deps /app/node_modules ./node_modules
+
 COPY apps/frontend apps/frontend
 COPY apps/common apps/common 
-COPY apps/models apps/models 
+COPY apps/models apps/models
 
-RUN yarn workspace @flasher/frontend run build && yarn install --frozen-lockfile --production --ignore-scripts --prefer-offline
-RUN cd node_modules/sharp/ && yarn run install && cd -
+RUN yarn workspace @flasher/frontend run build
+
 
 FROM node:16-alpine AS runner
 
