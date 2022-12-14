@@ -48,11 +48,12 @@ WORKDIR /app
 COPY [^a]* . 
 COPY --from=deps /app/node_modules ./node_modules
 
-RUN yarn workspace @flasher/frontend run build
-
 COPY apps/frontend apps/frontend
 COPY apps/common apps/common 
-COPY apps/models apps/models 
+COPY apps/models apps/models
+
+RUN yarn workspace @flasher/frontend run build
+
 
 FROM node:16-alpine AS runner
 
