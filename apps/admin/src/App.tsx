@@ -8,8 +8,8 @@ import ArticleCreate from "./pages/ArticleCreate";
 import AlbumCreate from "./pages/AlbumCreate";
 import AlbumEdit from "./pages/AlbumEdit";
 import { setBaseUrl } from "@flasher/common/src";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import {  AuthenticationProvider } from "./hooks/useAuthentication";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { AuthenticationProvider } from "./hooks/useAuthentication";
 import { StrictMode } from "react";
 
 const queryClient = new QueryClient();

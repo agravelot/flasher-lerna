@@ -5,7 +5,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AlbumForm from "../components/AlbumForm";
 import { apiRepository } from "@flasher/common";
 import { Album, Media } from "@flasher/models";
@@ -14,7 +14,7 @@ import { MediaOrdering } from "../components/MediaOrdering";
 import { useAuthentication } from "../hooks/useAuthentication";
 
 const AlbumEdit: FunctionComponent = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { initialized, keycloak } = useAuthentication();
 
   const [album, setAlbum] = useState<Album>();
@@ -23,8 +23,12 @@ const AlbumEdit: FunctionComponent = () => {
   const { slug } = useParams<{ slug: string }>();
 
   const fetchAlbum = useCallback(() => {
-    if (!initialized) {
+    if (!initialized || !keycloak) {
       return;
+    }
+
+    if (!slug) {
+      throw new Error("missing slug");
     }
 
     const repo = apiRepository(keycloak);
@@ -49,7 +53,7 @@ const AlbumEdit: FunctionComponent = () => {
 
   const updateMediasOrder = async (medias: Media[]): Promise<void> => {
     try {
-      if (!initialized) {
+      if (!initialized || !keycloak) {
         return;
       }
       if (!album) {
@@ -58,6 +62,11 @@ const AlbumEdit: FunctionComponent = () => {
       if (!album.medias) {
         throw new Error("Unable to update medias from undefined medias.");
       }
+
+      if (!slug) {
+        throw new Error("missing slug");
+      }
+
       const repo = apiRepository(keycloak);
 
       await repo.admin.medias.order(
@@ -82,7 +91,7 @@ const AlbumEdit: FunctionComponent = () => {
         //   history.push("/albums");
         // }}
         onPostDelete={() => {
-          history.push("/albums");
+          navigate("/albums");
         }}
       />
 

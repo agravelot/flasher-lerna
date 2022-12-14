@@ -1,16 +1,16 @@
 import { FunctionComponent } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AlbumForm from "../components/AlbumForm";
 
 const AlbumeCreate: FunctionComponent = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <div>
       <AlbumForm
         type="create"
         onPostSubmit={() => {
-          history.push("/albums");
+          navigate("/albums");
         }}
       />
     </div>

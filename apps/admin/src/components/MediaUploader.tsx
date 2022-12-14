@@ -24,7 +24,7 @@ const MediaUploader: FunctionComponent<MediaUploaderProps> = memo(
       return () => uppy.close();
     }, []);
 
-    if (!initialized) {
+    if (!initialized || !keycloak) {
       return null;
     }
 
@@ -141,9 +141,9 @@ const MediaUploader: FunctionComponent<MediaUploaderProps> = memo(
             strings: {
               // Text to show on the droppable area.
               // `%{browse}` is replaced with a link that opens the system file selection dialog.
-              dropHereOr: "Déposer ici ou %{browse}",
+              // dropHereOr: "Déposer ici ou %{browse}",
               // Used as the label for the link that opens the system file selection dialog.
-              browse: "explorer",
+              // browse: "explorer",
             },
           }}
         />

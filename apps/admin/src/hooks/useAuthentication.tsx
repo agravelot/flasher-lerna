@@ -1,6 +1,7 @@
-import Keycloak,{
+import {
   KeycloakConfig,
   KeycloakInitOptions,
+  KeycloakInstance,
   KeycloakTokenParsed,
 } from "keycloak-js";
 import {
@@ -19,13 +20,14 @@ export type ParsedToken = KeycloakTokenParsed & {
 };
 
 type Authentication = {
-  keycloak: Keycloak | null;
+  keycloak: KeycloakInstance | null;
   parsedToken: ParsedToken | undefined;
   isAdmin: boolean;
   isAuthenticated: boolean;
   initialized: boolean;
 };
 
+export const isServer = (): boolean => typeof window === "undefined";
 
 export interface AuthenticationStateProviderProps {
   keycloakConfig: KeycloakConfig;
@@ -38,7 +40,7 @@ export interface AuthenticationStateProviderProps {
 export interface AuthenticationContextProps {
   isAuthenticated: boolean;
   initialized: boolean;
-  keycloak: Keycloak | null;
+  keycloak: KeycloakInstance | null;
   parsedToken: ParsedToken | undefined;
   isAdmin: boolean;
 }
@@ -69,28 +71,26 @@ export const AuthenticationProvider = ({
   keycloakConfig,
   keycloakInitOptions,
   mustBeAuthenticated,
-  loadingComponent
+  loadingComponent,
 }: AuthenticationStateProviderProps): JSX.Element => {
+  const keycloakRef = useRef<Promise<void>>();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [initialized, setInitialized] = useState(false);
-  const keycloakInstance: Keycloak | null = useMemo(() => {
+  const keycloakInstance: KeycloakInstance | null = useMemo(() => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    return new Keycloak(keycloakConfig);
+    return !isServer() ? require("keycloak-js").default(keycloakConfig) : null;
   }, [keycloakConfig]);
 
   useEffect(() => {
-    console.log('init keycloak')
     if (!keycloakInstance) {
-      console.log('keycloakInstance is null')
       return;
     }
-   keycloakInstance
+    keycloakRef.current = keycloakInstance
       .init({
         onLoad: undefined,
         checkLoginIframe: false,
         token: getToken(LOCAL_STORAGE_ACCESS_TOKEN_KEY) ?? undefined,
         refreshToken: getToken(LOCAL_STORAGE_REFRESH_TOKEN_KEY) ?? undefined,
-        enableLogging: true,
         ...keycloakInitOptions,
       })
       .then((authentication) => {
@@ -109,25 +109,27 @@ export const AuthenticationProvider = ({
     };
   }, [keycloakInstance, keycloakInitOptions]);
 
+  // if (isServer()) {
+  //   return children;
+  // }
+  const parsedToken = keycloakInstance?.tokenParsed as ParsedToken | undefined;
+
   useEffect(() => {
     if (!initialized) {
-      return
+      return;
     }
     if (
       isAuthenticated &&
-      keycloakInstance.token &&
-      keycloakInstance.refreshToken
+      keycloakInstance?.token &&
+      keycloakInstance?.refreshToken
     ) {
       saveToken(LOCAL_STORAGE_ACCESS_TOKEN_KEY, keycloakInstance.token);
       saveToken(LOCAL_STORAGE_REFRESH_TOKEN_KEY, keycloakInstance.refreshToken);
     } else if (mustBeAuthenticated) {
-      console.log('force login')
-      keycloakInstance.login()
+      console.log("force login");
+      keycloakInstance?.login();
     }
   }, [initialized, isAuthenticated, keycloakInstance, mustBeAuthenticated]);
-
-
-  const parsedToken = keycloakInstance?.tokenParsed as ParsedToken | undefined;
 
   return (
     <AuthContext.Provider
@@ -163,4 +165,22 @@ const deleteToken = (key: string): void => {
     return;
   }
   localStorage.removeItem(key);
+};
+
+export const AuthenticationKeeper = (): null => {
+  const { keycloak, initialized, isAuthenticated } = useAuthentication();
+
+  useEffect(() => {
+    if (
+      initialized &&
+      isAuthenticated &&
+      keycloak?.token &&
+      keycloak?.refreshToken
+    ) {
+      saveToken(LOCAL_STORAGE_ACCESS_TOKEN_KEY, keycloak.token);
+      saveToken(LOCAL_STORAGE_REFRESH_TOKEN_KEY, keycloak.refreshToken);
+    }
+  }, [initialized, isAuthenticated, keycloak]);
+
+  return null;
 };

@@ -1,11 +1,11 @@
 import { ArticlesApi, Configuration } from "@flasher/http-client/src";
 import { FunctionComponent } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ArticleForm from "../components/ArticleForm";
 import { useAuthentication } from "../hooks/useAuthentication";
 
 const ArticleCreate: FunctionComponent = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { initialized } = useAuthentication();
 
   const config = new Configuration({
@@ -25,7 +25,7 @@ const ArticleCreate: FunctionComponent = () => {
             body: values,
           });
 
-          history.push("/articles");
+          navigate("/articles");
         }}
       />
     </div>
