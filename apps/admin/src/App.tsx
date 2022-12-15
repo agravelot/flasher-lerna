@@ -1,6 +1,6 @@
 import "./App.css";
 import Drawer from "./components/Drawer";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import AlbumList from "./pages/AlbumList";
 import Home from "./pages/Home";
 import ArticleList from "./pages/ArticleList";
@@ -39,34 +39,32 @@ function App() {
       mustBeAuthenticated
     >
       <StrictMode>
-        <Router>
-          <QueryClientProvider client={queryClient}>
-            <div className="h-screen">
-              <Drawer>
-                <Switch>
-                  <Route exact path="/albums/create">
-                    <AlbumCreate />
-                  </Route>
-                  <Route path="/albums/:slug">
-                    <AlbumEdit />
-                  </Route>
-                  <Route path="/albums">
-                    <AlbumList />
-                  </Route>
-                  <Route exact path="/articles/create">
-                    <ArticleCreate />
-                  </Route>
-                  <Route path="/articles">
-                    <ArticleList />
-                  </Route>
-                  <Route path="/">
-                    <Home />
-                  </Route>
-                </Switch>
-              </Drawer>
-            </div>
-          </QueryClientProvider>
-        </Router>
+        <QueryClientProvider client={queryClient}>
+          <div className="h-screen">
+            <Drawer>
+              <Routes>
+                <Route path="/albums/create">
+                  <AlbumCreate />
+                </Route>
+                <Route path="/albums/:slug">
+                  <AlbumEdit />
+                </Route>
+                <Route path="/albums">
+                  <AlbumList />
+                </Route>
+                <Route path="/articles/create">
+                  <ArticleCreate />
+                </Route>
+                <Route path="/articles">
+                  <ArticleList />
+                </Route>
+                <Route path="/">
+                  <Home />
+                </Route>
+              </Routes>
+            </Drawer>
+          </div>
+        </QueryClientProvider>
       </StrictMode>
     </AuthenticationProvider>
   );
