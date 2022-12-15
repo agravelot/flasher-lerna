@@ -2,11 +2,11 @@ import { FunctionComponent, memo, useEffect } from "react";
 import Uppy from "@uppy/core";
 import Tus from "@uppy/tus";
 import { Dashboard } from "@uppy/react";
-import ImageEditor from "@uppy/image-editor";
+// import ImageEditor from "@uppy/image-editor";
 
 import "@uppy/core/dist/style.css";
 import "@uppy/dashboard/dist/style.css";
-import "@uppy/image-editor/dist/style.css";
+// import "@uppy/image-editor/dist/style.css";
 import { useAuthentication } from "../hooks/useAuthentication";
 
 export interface MediaUploaderProps {
@@ -24,7 +24,7 @@ const MediaUploader: FunctionComponent<MediaUploaderProps> = memo(
       return () => uppy.close();
     }, []);
 
-    if (!initialized) {
+    if (!initialized || !keycloak) {
       return null;
     }
 
@@ -105,28 +105,28 @@ const MediaUploader: FunctionComponent<MediaUploaderProps> = memo(
         props.onUploadSuccess && setTimeout(props.onUploadSuccess, 1000);
       });
 
-    uppy.use(ImageEditor, {
-      // target: Dashboard,
-      quality: 1,
-      actions: {
-        revert: true,
-        rotate: true,
-        granularRotate: true,
-        flip: true,
-        zoomIn: true,
-        zoomOut: true,
-        cropSquare: true,
-        cropWidescreen: true,
-        cropWidescreenVertical: true,
-      },
-      // cropperOptions: {
-      //   viewMode: 1,
-      //   background: false,
-      //   autoCropArea: 1,
-      //   responsive: true,
-      //   croppedCanvasOptions: {},
-      // },
-    });
+    // uppy.use(ImageEditor, {
+    //   // target: Dashboard,
+    //   quality: 1,
+    //   actions: {
+    //     revert: true,
+    //     rotate: true,
+    //     granularRotate: true,
+    //     flip: true,
+    //     zoomIn: true,
+    //     zoomOut: true,
+    //     cropSquare: true,
+    //     cropWidescreen: true,
+    //     cropWidescreenVertical: true,
+    //   },
+    //   // cropperOptions: {
+    //   //   viewMode: 1,
+    //   //   background: false,
+    //   //   autoCropArea: 1,
+    //   //   responsive: true,
+    //   //   croppedCanvasOptions: {},
+    //   // },
+    // });
 
     // Concat uplload
     // Image Editor
@@ -141,9 +141,9 @@ const MediaUploader: FunctionComponent<MediaUploaderProps> = memo(
             strings: {
               // Text to show on the droppable area.
               // `%{browse}` is replaced with a link that opens the system file selection dialog.
-              dropHereOr: "Déposer ici ou %{browse}",
+              // dropHereOr: "Déposer ici ou %{browse}",
               // Used as the label for the link that opens the system file selection dialog.
-              browse: "explorer",
+              // browse: "explorer",
             },
           }}
         />

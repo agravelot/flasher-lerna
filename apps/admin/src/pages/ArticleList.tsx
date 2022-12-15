@@ -30,7 +30,7 @@ const ArticleList: FunctionComponent = () => {
     isFetching,
     status,
   } = useQuery("article-index", () => {
-    if (!initialized) {
+    if (!initialized || !keycloak) {
       return;
     }
     api
@@ -46,7 +46,7 @@ const ArticleList: FunctionComponent = () => {
   });
 
   return (
-    <div>
+    <>
       <Link to="/articles/create" className="btn">
         Créer
       </Link>
@@ -60,7 +60,7 @@ const ArticleList: FunctionComponent = () => {
           selected={selectedArticles}
         />
       )}
-    </div>
+    </>
   );
 };
 

@@ -29,7 +29,7 @@ const AlbumForm: FunctionComponent<AlbumFormProps> = ({
   const { initialized, keycloak } = useAuthentication();
 
   const onSubmit = async (values: AlbumForm) => {
-    if (!initialized) {
+    if (!initialized || !keycloak) {
       return;
     }
 
@@ -46,7 +46,7 @@ const AlbumForm: FunctionComponent<AlbumFormProps> = ({
   };
 
   const deleteAlbum = async () => {
-    if (type !== "edit" || !initialized || !album) {
+    if (type !== "edit" || !initialized || !album || !keycloak) {
       return;
     }
 
@@ -76,7 +76,7 @@ const AlbumForm: FunctionComponent<AlbumFormProps> = ({
             </label>
             <Field
               placeholder="Entrez un titre"
-              className="input input-bordered input-lg"
+              className="input-bordered input input-lg"
               name="title"
               type="text"
             />
@@ -90,7 +90,7 @@ const AlbumForm: FunctionComponent<AlbumFormProps> = ({
               name="meta_description"
               type="text"
               placeholder="Une description en moins de x caractères."
-              className="input input-bordered"
+              className="input-bordered input"
             />
           </div>
 
@@ -101,7 +101,7 @@ const AlbumForm: FunctionComponent<AlbumFormProps> = ({
             <Field
               as="textarea"
               name="body"
-              className="textarea textarea-bordered h-24"
+              className="textarea-bordered textarea h-24"
               placeholder="Mon contenu"
             ></Field>
           </div>
@@ -114,7 +114,7 @@ const AlbumForm: FunctionComponent<AlbumFormProps> = ({
               name="published_at"
               type="date"
               placeholder=""
-              className="input input-bordered"
+              className="input-bordered input"
             />
           </div>
 

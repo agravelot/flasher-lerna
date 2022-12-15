@@ -7,16 +7,16 @@ import { useAuthentication } from "../hooks/useAuthentication";
 const Home: FunctionComponent = () => {
   const { keycloak, initialized } = useAuthentication();
 
-  const [dashboardData, setdashboardData] = useState<DashboardData>();
+  const [dashboardData, setDashboardData] = useState<DashboardData>();
 
   useEffect(() => {
-    if (!initialized) {
+    if (!initialized || !keycloak) {
       return;
     }
 
     const repo = apiRepository(keycloak);
     repo.admin.dashboard().then((data) => {
-      setdashboardData(data);
+      setDashboardData(data);
     });
   }, [initialized]);
 

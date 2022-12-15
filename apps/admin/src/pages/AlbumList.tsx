@@ -19,7 +19,7 @@ const AlbumList: FunctionComponent = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (!initialized) {
+    if (!initialized || !keycloak) {
       return;
     }
 
