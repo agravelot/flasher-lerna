@@ -15,6 +15,8 @@ import {
   WrappedResponse,
 } from "@flasher/common";
 import { useAuthentication } from "hooks/useAuthentication";
+import { configuration } from "../../utils/configuration";
+import { useRouter } from "next/dist/client/router";
 
 type Props = {
   cosplayer: Cosplayer;
@@ -35,12 +37,14 @@ const ShowCosplayer: NextPage<Props> = ({
   appName,
 }: Props) => {
   const { isAdmin } = useAuthentication();
+  const { asPath } = useRouter();
 
   return (
     <Layout socialMedias={socialMedias} appName={appName}>
       <NextSeo
         title={`${cosplayer.name} - Modèle - Photographe | ${appName}`}
         description={cosplayer.description ?? ""}
+        canonical={`${configuration.appUrl}${asPath}`}
         openGraph={{
           title: `${cosplayer.name} - Modèle - Photographe | ${appName}`,
           description: cosplayer.description ?? "",
