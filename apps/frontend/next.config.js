@@ -2,6 +2,7 @@
 const runtimeCaching = require("next-pwa/cache");
 
 const { withSentryConfig } = require("@sentry/nextjs");
+const path = require("path");
 
 const withPWA = require("next-pwa")({
   dest: "public",
@@ -28,70 +29,82 @@ const sentryWebpackPluginOptions = {
 /**
  * @type {import("next").NextConfig}
  **/
-const nextConfig = withTM(
-  withBundleAnalyzer(
-    withPWA({
-      output: "standalone",
-      pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
-      async redirects() {
-        return [
-          {
-            source: "/contact",
-            destination: "/#contact",
-            permanent: true,
-          },
-          {
-            source: "/albums",
-            destination: "/galerie",
-            permanent: true,
-          },
-          {
-            source: "/albums/page/1",
-            destination: "/galerie",
-            permanent: true,
-          },
-          {
-            source: "/albums/:slug",
-            destination: "/galerie/:slug",
-            permanent: false,
-          },
-          {
-            source: "/categories",
-            destination: "/categories/page/1",
-            permanent: true,
-          },
-          {
-            source: "/cosplayers",
-            destination: "/cosplayers/page/1",
-            permanent: true,
-          },
-          {
-            source: "/blog/ae",
-            destination: "/blog/le-respect-en-convention-ou-est-il-passe",
-            permanent: true,
-          },
-        ];
+const config = {
+  output: "standalone",
+  experimental: {
+    // this includes files from the monorepo base two directories up
+    // https://nextjs.org/docs/advanced-features/output-file-tracing#caveats
+    outputFileTracingRoot: path.join(__dirname, "../../"),
+  },
+  pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
+  async rewrites() {
+    return [
+      {
+        source: "/robots.txt",
+        destination: "/api/robots.txt",
       },
-      reactStrictMode: true,
-      env: {
-        baseUrl: "baseUrl",
+    ];
+  },
+  async redirects() {
+    return [
+      {
+        source: "/contact",
+        destination: "/#contact",
+        permanent: true,
       },
-      images: {
-        domains: [
-          "s3.fr-par.scw.cloud",
-          "assets-jkanda.s3.fr-par.scw.cloud",
-          "assets.blog.jkanda.s3.fr-par.scw.cloud",
-        ],
-        formats: ["image/avif", "image/webp"],
-        minimumCacheTTL: 36000,
+      {
+        source: "/albums",
+        destination: "/galerie",
+        permanent: true,
       },
-      sentry: {
-        hideSourceMaps: true,
+      {
+        source: "/albums/page/1",
+        destination: "/galerie",
+        permanent: true,
       },
-      poweredByHeader: false,
-      compress: false,
-    })
-  )
-);
+      {
+        source: "/albums/:slug",
+        destination: "/galerie/:slug",
+        permanent: false,
+      },
+      {
+        source: "/categories",
+        destination: "/categories/page/1",
+        permanent: true,
+      },
+      {
+        source: "/cosplayers",
+        destination: "/cosplayers/page/1",
+        permanent: true,
+      },
+      {
+        source: "/blog/ae",
+        destination: "/blog/le-respect-en-convention-ou-est-il-passe",
+        permanent: true,
+      },
+    ];
+  },
+  reactStrictMode: true,
+  env: {
+    baseUrl: "baseUrl",
+  },
+  images: {
+    domains: [
+      "s3.fr-par.scw.cloud",
+      "assets-jkanda.s3.fr-par.scw.cloud",
+      "assets.blog.jkanda.s3.fr-par.scw.cloud",
+    ],
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 36000,
+  },
+  sentry: {
+    hideSourceMaps: true,
+  },
+  poweredByHeader: false,
+  compress: false,
+};
 
-module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);
+module.exports = withSentryConfig(
+  withTM(withBundleAnalyzer(withPWA(config))),
+  sentryWebpackPluginOptions
+);
