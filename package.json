@@ -4,6 +4,10 @@
   "workspaces": [
     "apps/*"
   ],
+  "nohoist": [
+    "**/frontend",
+    "**/frontend/**"
+  ],
   "devDependencies": {
     "lerna": "^4.0.0"
   },
