@@ -12,6 +12,9 @@ import { Album, Testimonial } from "@flasher/models";
 import { api, PaginatedReponse, sizes } from "@flasher/common";
 import { configuration } from "utils/configuration";
 import { ContactSection } from "../components/ContactSection";
+import { useRouter } from "next/router";
+import LayoutIndex from "../components/LayoutIndex";
+import { useSearch } from "contexts/AppContext";
 
 type Props = {
   albums: Album[];
@@ -28,12 +31,22 @@ const IndexPage: NextPage<Props> = ({
   socialMedias,
   seoDescription,
 }: Props) => {
+  const router = useRouter();
+  console.log(router.query);
+  // const SearchContextProvider = SearchContextProvider;
+  const searchContext = useSearch();
+  // if (searchContext === undefined) {
+  //   throw new Error("Unable to get context");
+  // }
+  if(!router.query){
+    searchContext.open();
+  }
   if (!profilePictureHomepage) {
     console.error("Missing profile picture");
   }
 
   return (
-    <Layout socialMedias={socialMedias} appName={appName}>
+    <LayoutIndex socialMedias={socialMedias} appName={appName}>
       <NextSeo
         title={defaultPageTitle}
         description={seoDescription}
@@ -57,8 +70,8 @@ const IndexPage: NextPage<Props> = ({
         url="https://jkanda.fr"
         potentialActions={[
           {
-            target: "https://query.example.com/search?q",
-            queryInput: "search_term_string",
+            target: "https://jkanda.fr?search=search_term",
+            queryInput: "search_term",
           },
         ]}
       />
@@ -154,7 +167,7 @@ const IndexPage: NextPage<Props> = ({
         </section>
         <ContactSection />
       </div>
-    </Layout>
+    </LayoutIndex>
   );
 };
 
