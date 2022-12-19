@@ -16,7 +16,7 @@
         <!-- Dependencies -->
         <bcrypt.version>0.9.0</bcrypt.version>
         <jboss.logging.version>3.4.1.Final</jboss.logging.version>
-        <keycloak.version>17.0.1</keycloak.version>
+        <keycloak.version>20.0.0</keycloak.version>
     </properties>
 
     <build>
