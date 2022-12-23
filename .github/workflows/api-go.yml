@@ -107,7 +107,7 @@ jobs:
           key: ${{ runner.os }}-go-${{ matrix.go-version }}-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-${{ matrix.go-version }}-
-      - uses: bufbuild/buf-setup-action@v1.10.0
+      - uses: bufbuild/buf-setup-action@v1.11.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           version: 1.10.0
