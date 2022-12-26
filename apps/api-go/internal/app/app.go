@@ -71,8 +71,8 @@ func Run(config *config.Config) error {
 
 	// Create a gRPC server object
 	grpcServer := grpc.NewServer(
-		grpc.StreamInterceptor(grpc_auth.StreamServerInterceptor(auth.Interceptor)),
-		grpc.UnaryInterceptor(grpc_auth.UnaryServerInterceptor(auth.Interceptor)),
+		grpc.StreamInterceptor(grpc_auth.StreamServerInterceptor(auth.GrpcInterceptor)),
+		grpc.UnaryInterceptor(grpc_auth.UnaryServerInterceptor(auth.GrpcInterceptor)),
 	)
 	// Attach the services to the server
 	articlespb.RegisterArticleServiceServer(grpcServer, sArticle)
