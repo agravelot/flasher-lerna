@@ -3,11 +3,18 @@ package auth
 import (
 	"context"
 	"github.com/golang-jwt/jwt/v4"
-	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
-	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
+	grpcauth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
+	grpcctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
+	"github.com/grpc-ecosystem/go-grpc-middleware/util/metautils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
+
+type InvalidTokenError struct{}
+
+func (ite *InvalidTokenError) Error() string {
+	return "invalid token"
+}
 
 func (c Claims) IsAdmin() bool {
 	r := c.RealmAccess.Roles
@@ -40,18 +47,21 @@ type Claims struct {
 	PreferredUsername string         `json:"preferred_username"`
 	Email             string         `json:"email"`
 }
-type RealmAccess struct {
-	Roles []string `json:"roles"`
-}
-type Account struct {
-	Roles []string `json:"roles"`
-}
-type ResourceAccess struct {
-	Account Account `json:"account"`
-}
 
 func (c Claims) Valid() error {
 	return nil
+}
+
+type RealmAccess struct {
+	Roles []string `json:"roles"`
+}
+
+type Account struct {
+	Roles []string `json:"roles"`
+}
+
+type ResourceAccess struct {
+	Account Account `json:"account"`
 }
 
 type UserClaimsKeyType string
@@ -67,24 +77,29 @@ func GetUser(ctx context.Context) (bool, Claims) {
 
 func parseToken(tokenString string) (Claims, error) {
 	parser := new(jwt.Parser)
-	// no need to check jwt signature since it's check by api gateway.
-	token, _, err := parser.ParseUnverified(tokenString, Claims{})
+
+	// no need to check jwt signature since it's already check by api gateway.
+	token, _, err := parser.ParseUnverified(tokenString, &jwt.RegisteredClaims{})
 	if err != nil {
 		return Claims{}, err
 	}
 
-	claims := token.Claims.(Claims)
+	claims, _ := token.Claims.(Claims)
 
 	return claims, nil
 }
 
-// Interceptor is used by a middleware to authenticate requests
-func Interceptor(ctx context.Context) (context.Context, error) {
-	token, err := grpc_auth.AuthFromMD(ctx, "bearer")
+// GrpcInterceptor is used to inject user into context
+func GrpcInterceptor(ctx context.Context) (context.Context, error) {
+	val := metautils.ExtractIncoming(ctx).Get("authorization")
+	// do not force login if no bearer included
+	if val == "" {
+		return ctx, nil
+	}
+
+	token, err := grpcauth.AuthFromMD(ctx, "bearer")
+
 	if err != nil {
-		if status.Code(err) == codes.Unauthenticated {
-			return ctx, nil
-		}
 		return ctx, err
 	}
 
@@ -93,32 +108,9 @@ func Interceptor(ctx context.Context) (context.Context, error) {
 		return ctx, status.Errorf(codes.Unauthenticated, "invalid auth token: %v", err)
 	}
 
-	grpc_ctxtags.Extract(ctx).Set("user", parsedToken)
+	grpcctxtags.Extract(ctx).Set("user", parsedToken)
 
 	newCtx := context.WithValue(ctx, UserClaimsKey, parsedToken)
 
 	return newCtx, nil
 }
-
-// ClaimsToContext Inject user claims into context
-// func ClaimsToContext() httptransport.RequestFunc {
-// 	return func(ctx context.Context, r *http.Request) context.Context {
-
-// 		tokenString, ok := ctx.Value(jwt.JWTTokenContextKey).(string)
-
-// 		// Unable to find token in current context, do not inject user
-// 		if ok == false {
-// 			return ctx
-// 		}
-
-// 		parser := new(jwtgo.Parser)
-// 		token, _, err := parser.ParseUnverified(tokenString, &Claims{})
-// 		if err != nil {
-// 			panic("Unable to parse token")
-// 		}
-
-// 		claims := token.Claims.(*Claims)
-
-// 		return context.WithValue(ctx, "user", claims)
-// 	}
-// }
