@@ -10,8 +10,9 @@ require (
 	github.com/jackc/pgerrcode v0.0.0-20220416144525-469b46aa5efa
 	github.com/joho/godotenv v1.4.0
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/kr/pretty v0.3.1
+	github.com/kr/pretty v0.1.0
 	github.com/stretchr/testify v1.8.1
+	golang.org/x/oauth2 v0.2.0
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.2.0
 	gorm.io/driver/postgres v1.4.5
 	gorm.io/gen v0.3.18
@@ -22,8 +23,8 @@ require (
 require (
 	cloud.google.com/go/compute/metadata v0.2.1 // indirect
 	github.com/golang/glog v1.0.0 // indirect
-	github.com/kr/text v0.2.0 // indirect
-	github.com/rogpeppe/go-internal v1.9.0 // indirect
+	github.com/kr/text v0.1.0 // indirect
+	google.golang.org/appengine v1.6.7 // indirect
 )
 
 require (
