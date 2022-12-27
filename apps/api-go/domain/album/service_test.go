@@ -676,7 +676,7 @@ func TestShouldBeAbleToCreateAnAlbumAsAdmin(t *testing.T) {
 	assert.Equal(t, 1, int(total))
 	assert.Equal(t, arg.Name, res.Title)
 	assert.Equal(t, "a-good-title", res.Slug)
-	assert.Equal(t, claims.Sub, res.AuthorId)
+	assert.Equal(t, claims.Subject, res.AuthorId)
 	assert.Equal(t, arg.PublishedAt, res.PublishedAt)
 }
 
@@ -714,7 +714,7 @@ func TestShouldBeAbleToCreateAnPublishedAlbumAsAdmin(t *testing.T) {
 	assert.Equal(t, 1, int(total))
 	assert.Equal(t, arg.Name, res.Title)
 	assert.Equal(t, "a-good-title", res.Slug)
-	assert.Equal(t, claims.Sub, res.AuthorId)
+	assert.Equal(t, claims.Subject, res.AuthorId)
 	assert.Equal(t, arg.PublishedAt.Seconds, res.PublishedAt.Seconds)
 }
 

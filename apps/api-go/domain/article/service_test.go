@@ -382,7 +382,7 @@ func TestShouldBeAbleToCreateAnArticleAndGenerateSlugAsAdmin(t *testing.T) {
 	assert.Equal(t, 1, int(total))
 	assert.Equal(t, a.Name, res.Name)
 	assert.Equal(t, "a-good-name", res.Slug)
-	assert.Equal(t, claims.Sub, res.AuthorId)
+	assert.Equal(t, claims.Subject, res.AuthorId)
 	assert.Nil(t, res.PublishedAt)
 }
 
@@ -407,7 +407,7 @@ func TestShouldBeAbleToCreateAnPublishedArticleAndGenerateSlugAsAdmin(t *testing
 	assert.Equal(t, 1, int(total))
 	assert.Equal(t, a.Name, res.Name)
 	assert.Equal(t, "a-good-name", res.Slug)
-	assert.Equal(t, claims.Sub, res.AuthorId)
+	assert.Equal(t, claims.Subject, res.AuthorId)
 	assert.NotNil(t, res.PublishedAt)
 }
 
@@ -431,7 +431,7 @@ func TestShouldBeAbleToCreateAnArticleWithASpecifiedSlug(t *testing.T) {
 	assert.Equal(t, 1, int(total))
 	assert.Equal(t, a.Name, res.Name)
 	assert.Equal(t, a.Slug, res.Slug)
-	assert.Equal(t, claims.Sub, res.AuthorId)
+	assert.Equal(t, claims.Subject, res.AuthorId)
 }
 
 func TestShouldNotBeAbleToCreateAnArticleWithSameSlug(t *testing.T) {
