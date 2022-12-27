@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"errors"
 	"github.com/golang-jwt/jwt/v4"
 	grpcauth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	grpcctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
@@ -10,6 +11,8 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+const adminRole = "admin"
+
 type InvalidTokenError struct{}
 
 func (ite *InvalidTokenError) Error() string {
@@ -17,9 +20,8 @@ func (ite *InvalidTokenError) Error() string {
 }
 
 func (c Claims) IsAdmin() bool {
-	r := c.RealmAccess.Roles
-	for _, a := range r {
-		if a == "admin" {
+	for _, r := range c.RealmAccess.Roles {
+		if r == adminRole {
 			return true
 		}
 	}
@@ -27,13 +29,7 @@ func (c Claims) IsAdmin() bool {
 }
 
 type Claims struct {
-	Exp               int            `json:"exp"`
-	Iat               int            `json:"iat"`
 	AuthTime          int            `json:"auth_time"`
-	Jti               string         `json:"jti"`
-	Iss               string         `json:"iss"`
-	Aud               string         `json:"aud"`
-	Sub               string         `json:"sub"`
 	Typ               string         `json:"typ"`
 	Azp               string         `json:"azp"`
 	Nonce             string         `json:"nonce"`
@@ -46,6 +42,7 @@ type Claims struct {
 	EmailVerified     bool           `json:"email_verified"`
 	PreferredUsername string         `json:"preferred_username"`
 	Email             string         `json:"email"`
+	jwt.RegisteredClaims
 }
 
 func (c Claims) Valid() error {
@@ -79,14 +76,19 @@ func parseToken(tokenString string) (Claims, error) {
 	parser := new(jwt.Parser)
 
 	// no need to check jwt signature since it's already check by api gateway.
-	token, _, err := parser.ParseUnverified(tokenString, &jwt.RegisteredClaims{})
+	token, _, err := parser.ParseUnverified(tokenString, &Claims{})
 	if err != nil {
 		return Claims{}, err
 	}
 
-	claims, _ := token.Claims.(Claims)
+	// Cast token
+	// https://pkg.go.dev/github.com/golang-jwt/jwt/v4#example-ParseWithClaims-CustomClaimsType
+	claims, ok := token.Claims.(*Claims)
+	if !ok {
+		return Claims{}, errors.New("unable to cast claim")
+	}
 
-	return claims, nil
+	return *claims, nil
 }
 
 // GrpcInterceptor is used to inject user into context

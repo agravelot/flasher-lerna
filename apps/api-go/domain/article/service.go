@@ -103,7 +103,6 @@ func (s service) GetBySlug(ctx context.Context, request *articles_pb.GetBySlugRe
 
 func (s service) Create(ctx context.Context, request *articles_pb.CreateRequest) (*articles_pb.CreateResponse, error) {
 	authenticated, user := auth.GetUser(ctx)
-
 	if !authenticated {
 		return nil, ErrNoAuth
 	}
@@ -129,7 +128,7 @@ func (s service) Create(ctx context.Context, request *articles_pb.CreateRequest)
 			MetaDescription: request.MetaDescription,
 			Content:         request.Content,
 			PublishedAt:     p,
-			AuthorUUID:      user.Sub,
+			AuthorUUID:      user.Subject,
 		}})
 	if err != nil {
 		return nil, fmt.Errorf("unable create article: %w", err)

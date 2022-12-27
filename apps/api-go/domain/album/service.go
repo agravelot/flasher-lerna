@@ -126,7 +126,7 @@ func (s *service) Create(ctx context.Context, r *albumspb.CreateRequest) (*album
 			Title:       r.Name,
 			Slug:        r.Slug,
 			Body:        &r.Content,
-			SsoID:       &user.Sub,
+			SsoID:       &user.Subject,
 			PublishedAt: publishedAt,
 		},
 	})
@@ -178,7 +178,7 @@ func (s *service) Update(ctx context.Context, r *albumspb.UpdateRequest) (*album
 		Title:       r.Name,
 		Slug:        r.Slug,
 		Body:        &r.Content,
-		SsoID:       &user.Sub,
+		SsoID:       &user.Subject,
 		PublishedAt: publishedAt,
 		Private:     &r.Private,
 	}})
