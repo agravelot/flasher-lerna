@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-type TestCase struct {
+type GrpcInterceptorTestCase struct {
 	name                 string
 	ctx                  context.Context
 	expectedCode         codes.Code
@@ -21,7 +21,7 @@ func ctxWithAuthorization(ctx context.Context, token string) context.Context {
 	return metadata.NewIncomingContext(ctx, metadata.Pairs("authorization", token))
 }
 
-var testCases = []TestCase{
+var grpcInterceptorTestCases = []GrpcInterceptorTestCase{
 	{name: "should not return an error no value is present", ctx: context.Background(), expectedCode: codes.OK},
 	{
 		name:         "should ignore authorization token if missing bearer prefix",
@@ -57,12 +57,57 @@ var testCases = []TestCase{
 }
 
 func TestGrpcInterceptor(t *testing.T) {
-	for _, tc := range testCases {
+	for _, tc := range grpcInterceptorTestCases {
 		t.Run(tc.name, func(t *testing.T) {
 			// TODO assert context value
 			_, err := auth.GrpcInterceptor(tc.ctx)
 
 			assert.Equal(t, tc.expectedCode, status.Code(err))
+		})
+	}
+}
+
+func ctxWithUser(ctx context.Context, user auth.Claims) context.Context {
+	return context.WithValue(ctx, auth.UserClaimsKey, user)
+}
+
+type GetUserTestCases struct {
+	name                  string
+	ctx                   context.Context
+	expectedAuthenticated bool
+	expectedAdmin         bool
+}
+
+var getUserTestCases = []GetUserTestCases{
+	{
+		name:                  "should return authenticated with admin role",
+		ctx:                   ctxWithUser(context.Background(), auth.AdminClaim),
+		expectedAuthenticated: true,
+		expectedAdmin:         true,
+	},
+	{
+		name:                  "should return authenticated with user role",
+		ctx:                   ctxWithUser(context.Background(), auth.UserClaim),
+		expectedAuthenticated: true,
+		expectedAdmin:         false,
+	},
+	{
+		name:                  "should return not authenticated without user value",
+		ctx:                   context.Background(),
+		expectedAuthenticated: false,
+	},
+}
+
+func TestGetUser(t *testing.T) {
+	for _, tc := range getUserTestCases {
+		t.Run(tc.name, func(t *testing.T) {
+			authenticated, user := auth.GetUser(tc.ctx)
+			assert.Equal(t, tc.expectedAuthenticated, authenticated)
+			assert.Equal(t, tc.expectedAdmin, user.IsAdmin())
+			if tc.expectedAuthenticated {
+				assert.NotZero(t, user.Subject)
+				assert.NotZero(t, user.ID)
+			}
 		})
 	}
 }
