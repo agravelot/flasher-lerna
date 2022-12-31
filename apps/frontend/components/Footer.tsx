@@ -60,8 +60,7 @@ const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
                     <li>
                       <Link
                         href={{
-                          pathname: "/albums/page/[page]",
-                          query: { page: 1 },
+                          pathname: "/agalerie",
                         }}
                         tabIndex={0}
                         className="block py-2 text-sm"
