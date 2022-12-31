@@ -34,7 +34,7 @@ const Avatar: FunctionComponent<Props> = ({
         {src && (
           <Image
             draggable={false}
-            className={`h-full w-full overflow-hidden ${roundClasses} ${className}`}
+            className={`h-full w-full overflow-hidden object-cover ${roundClasses} ${className}`}
             src={src}
             height={96}
             width={96}
