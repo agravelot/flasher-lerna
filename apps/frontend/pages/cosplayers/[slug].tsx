@@ -4,7 +4,6 @@ import Avatar from "../../components/Avatar";
 import { range } from "../../utils/util";
 import AlbumItem from "../../components/album/AlbumItem";
 import { getGlobalProps, GlobalProps } from "../../stores";
-import Separator from "../../components/Separator";
 import dynamic from "next/dynamic";
 import { NextSeo } from "next-seo";
 import { Album, Cosplayer } from "@flasher/models";
@@ -18,6 +17,7 @@ import { useAuthentication } from "hooks/useAuthentication";
 import { configuration } from "../../utils/configuration";
 import { useRouter } from "next/dist/client/router";
 import { removeQueryParams } from "../../utils/canonical";
+import Header from "../../components/Header";
 
 type Props = {
   cosplayer: Cosplayer;
@@ -63,21 +63,12 @@ const ShowCosplayer: NextPage<Props> = ({
         }}
       />
       <div>
-        <section className="relative block" style={{ height: "500px" }}>
-          <div
-            className="absolute top-0 h-full w-full bg-cover bg-center"
-            style={{
-              backgroundImage:
-                "url('https://images.unsplash.com/photo-1499336315816-097655dcfbda?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=2710&amp;q=80')",
-            }}
-          >
-            <span
-              id="blackOverlay"
-              className="absolute h-full w-full bg-black opacity-50"
-            ></span>
-          </div>
-
-          <Separator separatorClass="text-white" position="bottom" />
+        <section className="relative block" style={{ height: "400px" }}>
+          <Header
+            src={
+              "https://s3.fr-par.scw.cloud/assets.blog.jkanda/Jkanda_DSC_0019.jpg"
+            }
+          />
         </section>
         <section className="relative py-16">
           <div className="container mx-auto px-4">
