@@ -59,7 +59,7 @@ const IndexPage: NextPage<Props> = ({
           <div className="container mx-auto">
             <div className="-mt-24 flex flex-wrap overflow-x-hidden md:-mx-3">
               <Link
-                href="/albums/page/1"
+                href="/galerie"
                 tabIndex={0}
                 className="order-last mx-auto mt-12 rounded-lg bg-gradient-to-r from-blue-700 to-red-700 py-3 px-10 font-semibold text-white hover:from-pink-500 hover:to-orange-500"
               >
