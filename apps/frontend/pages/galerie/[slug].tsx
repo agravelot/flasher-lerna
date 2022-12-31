@@ -3,7 +3,7 @@ import Link from "next/link";
 import CosplayerItem from "../../components/cosplayer/CosplayerItem";
 import AlbumList from "../../components/album/AlbumList";
 import { NextSeo, ArticleJsonLd } from "next-seo";
-import { useRouter } from "next/dist/client/router";
+import { useRouter } from "next/router";
 import { configuration } from "../../utils/configuration";
 import { range } from "../../utils/util";
 import { getGlobalProps, GlobalProps } from "../../stores";
@@ -24,6 +24,7 @@ import ReadingTime from "components/ReadingTime";
 import { ContactSection } from "../../components/ContactSection";
 import { Breadcrumb } from "components/Breadcrumb";
 import { transformImage } from "../../utils/types";
+import { removeQueryParams } from "../../utils/canonical";
 
 type Props = {
   album: Album;
@@ -60,8 +61,6 @@ const ShowAlbum: NextPage<Props> = ({
     setIsCarouselOpened(true);
   };
 
-  // const close = () => setIsCarouselOpenned(false);
-
   const { isAdmin } = useAuthentication();
 
   const title = `${album.title} - Photographe | ${appName}`;
@@ -71,7 +70,7 @@ const ShowAlbum: NextPage<Props> = ({
       <NextSeo
         title={title}
         description={album.meta_description}
-        canonical={`${configuration.appUrl}${router.asPath}`}
+        canonical={`${configuration.appUrl}${removeQueryParams(router.asPath)}`}
         additionalMetaTags={[{ name: "author", content: appName }]}
         openGraph={{
           title: title,

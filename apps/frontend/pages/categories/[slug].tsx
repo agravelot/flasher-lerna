@@ -21,6 +21,7 @@ import { Album, Category } from "@flasher/models";
 import { useAuthentication } from "hooks/useAuthentication";
 import { useRouter } from "next/dist/client/router";
 import { Breadcrumb } from "components/Breadcrumb";
+import { removeQueryParams } from "../../utils/canonical";
 
 type Props = {
   category: Category;
@@ -47,7 +48,7 @@ const ShowCategory: NextPage<Props> = ({
     <Layout socialMedias={socialMedias} appName={appName}>
       <NextSeo
         title={`${category.name} - Photographe | ${appName}`}
-        canonical={`${configuration.appUrl}${asPath}`}
+        canonical={`${configuration.appUrl}${removeQueryParams(asPath)}`}
         description={category.meta_description}
         openGraph={{
           title: `${category.name} - Photographe | ${appName}`,

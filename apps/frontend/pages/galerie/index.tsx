@@ -13,6 +13,7 @@ import { useAuthentication } from "hooks/useAuthentication";
 import { useInView } from "react-cool-inview";
 import { useEffect, useState } from "react";
 import { Breadcrumb } from "components/Breadcrumb";
+import { removeQueryParams } from "../../utils/canonical";
 
 type Props = {
   albums: Album[];
@@ -78,7 +79,7 @@ const IndexAlbum: NextPage<Props> = ({
       <NextSeo
         title={title}
         description={description}
-        canonical={`${configuration.appUrl}${asPath}`}
+        canonical={`${configuration.appUrl}${removeQueryParams(asPath)}`}
         openGraph={{
           title: title,
           description: description,

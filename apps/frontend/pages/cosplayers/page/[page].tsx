@@ -18,6 +18,7 @@ import { Cosplayer } from "@flasher/models";
 import { useAuthentication } from "hooks/useAuthentication";
 import { useRouter } from "next/dist/client/router";
 import { configuration } from "utils/configuration";
+import { removeQueryParams } from "../../../utils/canonical";
 
 type Props = {
   cosplayers: Cosplayer[];
@@ -47,7 +48,7 @@ const IndexAlbum: NextPage<Props> = ({
       <NextSeo
         title={`Modèles page ${pagination.currentPage} - Photographe | ${appName}`}
         description="Venez plonger dans mes différents univers à travers des albums divers et variés ! Entre balade, cosplay, et portrait."
-        canonical={`${configuration.appUrl}${asPath}`}
+        canonical={`${configuration.appUrl}${removeQueryParams(asPath)}`}
         openGraph={{
           title: `Modèles page ${pagination.currentPage} - Photographe | ${appName}`,
           description:

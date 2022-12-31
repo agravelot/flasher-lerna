@@ -17,6 +17,7 @@ import {
 import { useAuthentication } from "hooks/useAuthentication";
 import { configuration } from "../../utils/configuration";
 import { useRouter } from "next/dist/client/router";
+import { removeQueryParams } from "../../utils/canonical";
 
 type Props = {
   cosplayer: Cosplayer;
@@ -44,7 +45,7 @@ const ShowCosplayer: NextPage<Props> = ({
       <NextSeo
         title={`${cosplayer.name} - Modèle - Photographe | ${appName}`}
         description={cosplayer.description ?? ""}
-        canonical={`${configuration.appUrl}${asPath}`}
+        canonical={`${configuration.appUrl}${removeQueryParams(asPath)}`}
         openGraph={{
           title: `${cosplayer.name} - Modèle - Photographe | ${appName}`,
           description: cosplayer.description ?? "",

@@ -11,6 +11,7 @@ import Layout from "components/Layout";
 import { configuration } from "utils/configuration";
 import Header from "components/Header";
 import { Breadcrumb } from "components/Breadcrumb";
+import { removeQueryParams } from "../../utils/canonical";
 
 type Props = {
   posts: BlogPost[];
@@ -35,7 +36,7 @@ const IndexAlbum: NextPage<Props> = ({
     <Layout socialMedias={socialMedias} appName={appName}>
       <NextSeo
         title={title}
-        canonical={`${configuration.appUrl}${asPath}`}
+        canonical={`${configuration.appUrl}${removeQueryParams(asPath)}`}
         description={description}
         openGraph={{
           title: title,

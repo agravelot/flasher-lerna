@@ -20,6 +20,7 @@ import { useAuthentication } from "hooks/useAuthentication";
 import { configuration } from "utils/configuration";
 import { useRouter } from "next/dist/client/router";
 import { Breadcrumb } from "components/Breadcrumb";
+import { removeQueryParams } from "../../../utils/canonical";
 
 type Props = {
   categories: Category[];
@@ -53,7 +54,7 @@ const IndexAlbum: NextPage<Props> = ({
       <NextSeo
         title={title}
         description={description}
-        canonical={`${configuration.appUrl}${asPath}`}
+        canonical={`${configuration.appUrl}${removeQueryParams(asPath)}`}
         openGraph={{
           title: title,
           description,

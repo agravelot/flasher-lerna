@@ -14,6 +14,7 @@ import { useAuthentication } from "hooks/useAuthentication";
 import { configuration } from "utils/configuration";
 import { useRouter } from "next/dist/client/router";
 import pictureLogo from "../../public/photo.svg";
+import { removeQueryParams } from "../../utils/canonical";
 
 type Props = GlobalProps;
 
@@ -36,7 +37,7 @@ const MyAlbums: FunctionComponent<Props> = ({
   const { asPath } = useRouter();
 
   useEffect(() => {
-    if (initialized === false) {
+    if (!initialized) {
       return;
     }
 
@@ -93,7 +94,7 @@ const MyAlbums: FunctionComponent<Props> = ({
       <NextSeo
         title={`Ma galerie | ${appName}`}
         description="Découvrir les albums dans lesquels j'apparais"
-        canonical={`${configuration.appUrl}${asPath}`}
+        canonical={`${configuration.appUrl}${removeQueryParams(asPath)}`}
         openGraph={{
           title: `Ma galerie | ${appName}`,
           description: "Découvrir les albums dans lesquels j'apparais",

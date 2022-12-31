@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import { ContactSection } from "components/ContactSection";
 import ReadingTime from "components/ReadingTime";
 import { Breadcrumb } from "components/Breadcrumb";
+import { removeQueryParams } from "../../utils/canonical";
 
 type Props = {
   post: BlogPost;
@@ -51,7 +52,7 @@ const Post: NextPage<Props> = ({ post, appName, socialMedias }: Props) => {
       <NextSeo
         title={post.title}
         description={post.metaDescription}
-        canonical={`${configuration.appUrl}${asPath}`}
+        canonical={`${configuration.appUrl}${removeQueryParams(asPath)}`}
         additionalMetaTags={[{ name: "author", content: appName }]}
         openGraph={{
           title: post.title,
@@ -98,7 +99,7 @@ const Post: NextPage<Props> = ({ post, appName, socialMedias }: Props) => {
           />
         }
       />
-      <div className="container prose prose-sm mx-auto max-w-none py-16 px-4 sm:prose lg:prose-lg xl:prose-xl">
+      <div className="container prose-sm prose mx-auto max-w-none py-16 px-4 sm:prose lg:prose-lg xl:prose-xl">
         {post.content && post.content.length !== 0 && (
           <ReadingTime body={post.content} />
         )}
