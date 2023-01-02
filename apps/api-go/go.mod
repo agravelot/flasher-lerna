@@ -12,11 +12,10 @@ require (
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/kr/pretty v0.1.0
 	github.com/stretchr/testify v1.8.1
-	golang.org/x/oauth2 v0.2.0
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.2.0
 	gorm.io/driver/postgres v1.4.5
 	gorm.io/gen v0.3.18
-	gorm.io/gorm v1.24.2
+	gorm.io/gorm v1.24.3
 	gorm.io/plugin/dbresolver v1.4.0
 )
 
@@ -24,7 +23,6 @@ require (
 	cloud.google.com/go/compute/metadata v0.2.1 // indirect
 	github.com/golang/glog v1.0.0 // indirect
 	github.com/kr/text v0.1.0 // indirect
-	google.golang.org/appengine v1.6.7 // indirect
 )
 
 require (
