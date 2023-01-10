@@ -13,7 +13,7 @@ require (
 	github.com/kr/pretty v0.3.1
 	github.com/stretchr/testify v1.8.1
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.2.0
-	gorm.io/driver/postgres v1.4.5
+	gorm.io/driver/postgres v1.4.6
 	gorm.io/gen v0.3.19
 	gorm.io/gorm v1.24.3
 	gorm.io/plugin/dbresolver v1.4.0
@@ -22,6 +22,7 @@ require (
 require (
 	cloud.google.com/go/compute/metadata v0.2.1 // indirect
 	github.com/golang/glog v1.0.0 // indirect
+	github.com/jackc/pgx/v5 v5.2.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.9.0 // indirect
 )
@@ -37,18 +38,15 @@ require (
 	github.com/jackc/pgio v1.0.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgproto3/v2 v2.3.1 // indirect
-	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
-	github.com/jackc/pgtype v1.12.0 // indirect
-	github.com/jackc/pgx/v4 v4.17.2 // indirect
+	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
-	github.com/lib/pq v1.10.4 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	golang.org/x/crypto v0.3.0 // indirect
+	golang.org/x/crypto v0.4.0 // indirect
 	golang.org/x/mod v0.7.0 // indirect
-	golang.org/x/net v0.2.0 // indirect
-	golang.org/x/sys v0.2.0 // indirect
-	golang.org/x/text v0.4.0 // indirect
+	golang.org/x/net v0.3.0 // indirect
+	golang.org/x/sys v0.3.0 // indirect
+	golang.org/x/text v0.5.0 // indirect
 	golang.org/x/tools v0.3.0 // indirect
 	google.golang.org/genproto v0.0.0-20221207170731-23e4bf6bdc37
 	google.golang.org/grpc v1.51.0
