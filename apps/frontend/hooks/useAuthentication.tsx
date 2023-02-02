@@ -1,7 +1,6 @@
-import {
+import Keycloak, {
   KeycloakConfig,
   KeycloakInitOptions,
-  KeycloakInstance,
   KeycloakTokenParsed,
 } from "keycloak-js";
 import {
@@ -20,7 +19,7 @@ export type ParsedToken = KeycloakTokenParsed & {
 };
 
 type Authentication = {
-  keycloak: KeycloakInstance | null;
+  keycloak: Keycloak | null;
   parsedToken: ParsedToken | undefined;
   isAdmin: boolean;
   isAuthenticated: boolean;
@@ -38,7 +37,7 @@ export interface AuthenticationStateProviderProps {
 export interface AuthenticationContextProps {
   isAuthenticated: boolean;
   initialized: boolean;
-  keycloak: KeycloakInstance | null;
+  keycloak: Keycloak | null;
   parsedToken: ParsedToken | undefined;
   isAdmin: boolean;
 }
@@ -72,7 +71,7 @@ export const AuthenticationProvider = ({
   const keycloakRef = useRef<Promise<void>>();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [initialized, setInitialized] = useState(false);
-  const keycloakInstance: KeycloakInstance | null = useMemo(() => {
+  const keycloakInstance: Keycloak | null = useMemo(() => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     return !isServer() ? require("keycloak-js").default(keycloakConfig) : null;
   }, [keycloakConfig]);
