@@ -45,7 +45,7 @@ jobs:
             {{version}}
             {{major}}.{{minor}}
       - name: Build and push base
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./apps/admin/Dockerfile
