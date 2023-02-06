@@ -13,7 +13,7 @@ const SearchOpener: FunctionComponent = () => {
         }
         const {search} = query;
         console.log(search);
-        if(search != "")
+        if(search != undefined)
         {
             open();
         }
