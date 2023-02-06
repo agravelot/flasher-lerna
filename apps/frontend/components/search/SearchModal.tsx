@@ -71,7 +71,7 @@ export const SearchModal: FunctionComponent = () => {
           aria-labelledby="modal-headline"
         >
           <div className="container mx-auto">
-            <LazySearch googleSearch={googleSearch}/>
+            <LazySearch search={googleSearch}/>
           </div>
         </div>
       </div>

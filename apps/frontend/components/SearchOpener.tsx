@@ -19,7 +19,7 @@ const SearchOpener: FunctionComponent = () => {
             open();
         }
     }, [open, query, isReady, setGoogleSearch]);
-    return <div></div>;
+    return null;
 };
 
 export default SearchOpener;
