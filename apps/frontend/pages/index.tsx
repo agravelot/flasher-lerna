@@ -12,14 +12,17 @@ import { Album, Testimonial } from "@flasher/models";
 import { api, PaginatedReponse, sizes } from "@flasher/common";
 import { configuration } from "utils/configuration";
 import { ContactSection } from "../components/ContactSection";
-import { useRouter } from "next/router";
-import LayoutIndex from "../components/LayoutIndex";
-import { useSearch } from "contexts/AppContext";
+import dynamic from "next/dynamic";
+import SearchOpener from "components/SearchOpener";
 
 type Props = {
   albums: Album[];
   testimonials: Testimonial[];
 } & GlobalProps;
+
+// const DynamicSearchOpenerComponent = dynamic(
+//   () => import("components/SearchOpener")
+// );
 
 const IndexPage: NextPage<Props> = ({
   albums,
@@ -31,22 +34,12 @@ const IndexPage: NextPage<Props> = ({
   socialMedias,
   seoDescription,
 }: Props) => {
-  const router = useRouter();
-  console.log(router.query);
-  // const SearchContextProvider = SearchContextProvider;
-  const searchContext = useSearch();
-  // if (searchContext === undefined) {
-  //   throw new Error("Unable to get context");
-  // }
-  if(!router.query){
-    searchContext.open();
-  }
   if (!profilePictureHomepage) {
     console.error("Missing profile picture");
   }
-
   return (
-    <LayoutIndex socialMedias={socialMedias} appName={appName}>
+    <Layout socialMedias={socialMedias} appName={appName}>
+      <SearchOpener/>
       <NextSeo
         title={defaultPageTitle}
         description={seoDescription}
@@ -167,7 +160,7 @@ const IndexPage: NextPage<Props> = ({
         </section>
         <ContactSection />
       </div>
-    </LayoutIndex>
+    </Layout>
   );
 };
 
