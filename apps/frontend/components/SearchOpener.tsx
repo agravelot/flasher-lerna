@@ -3,21 +3,22 @@ import { useRouter } from "next/router";
 import { FunctionComponent, useEffect } from "react";
 
 const SearchOpener: FunctionComponent = () => {
-    const { open } = useSearch();
+    const { open, setGoogleSearch } = useSearch();
     const {query, isReady} = useRouter();
     
     useEffect(() => {
         if(!isReady)
         {
-            return undefined;
+            return;
         }
-        const {search} = query;
-        console.log(search);
+        const search = query.search;
+        
         if(search != undefined)
         {
+            setGoogleSearch(search.toString());
             open();
         }
-    }, [open, query, isReady]);
+    }, [open, query, isReady, setGoogleSearch]);
     return <div></div>;
 };
 

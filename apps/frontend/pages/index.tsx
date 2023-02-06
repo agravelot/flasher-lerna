@@ -12,17 +12,12 @@ import { Album, Testimonial } from "@flasher/models";
 import { api, PaginatedReponse, sizes } from "@flasher/common";
 import { configuration } from "utils/configuration";
 import { ContactSection } from "../components/ContactSection";
-import dynamic from "next/dynamic";
 import SearchOpener from "components/SearchOpener";
 
 type Props = {
   albums: Album[];
   testimonials: Testimonial[];
 } & GlobalProps;
-
-// const DynamicSearchOpenerComponent = dynamic(
-//   () => import("components/SearchOpener")
-// );
 
 const IndexPage: NextPage<Props> = ({
   albums,
