@@ -11,7 +11,7 @@ import { FunctionComponent } from "react";
 import { configuration } from "../../utils/configuration";
 
 interface Props {
-  search: string;
+  search: string | undefined;
 }
 
 const Search: FunctionComponent<Props> = ({search}) => {
