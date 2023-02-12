@@ -12,7 +12,7 @@ import { Album, Testimonial } from "@flasher/models";
 import { api, PaginatedReponse, sizes } from "@flasher/common";
 import { configuration } from "utils/configuration";
 import { ContactSection } from "../components/ContactSection";
-import SearchOpener from "components/SearchOpener";
+import { SearchOpener } from "components/SearchOpener";
 
 type Props = {
   albums: Album[];
@@ -32,6 +32,7 @@ const IndexPage: NextPage<Props> = ({
   if (!profilePictureHomepage) {
     console.error("Missing profile picture");
   }
+  // const ndd = isset(process.env.NEXT_PUBLIC_APP_URL);
   return (
     <Layout socialMedias={socialMedias} appName={appName}>
       <SearchOpener/>
