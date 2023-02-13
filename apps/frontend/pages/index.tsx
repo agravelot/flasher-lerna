@@ -32,7 +32,7 @@ const IndexPage: NextPage<Props> = ({
   if (!profilePictureHomepage) {
     console.error("Missing profile picture");
   }
-  // const ndd = isset(process.env.NEXT_PUBLIC_APP_URL);
+  const ndd = process.env.NEXT_PUBLIC_APP_URL ?? "";
   return (
     <Layout socialMedias={socialMedias} appName={appName}>
       <SearchOpener/>
@@ -56,10 +56,10 @@ const IndexPage: NextPage<Props> = ({
         }
       />
       <SiteLinksSearchBoxJsonLd
-        url="https://jkanda.fr"
+        url={ndd}
         potentialActions={[
           {
-            target: "https://jkanda.fr?search=search_term",
+            target: `${ndd}?search`,
             queryInput: "search_term",
           },
         ]}
