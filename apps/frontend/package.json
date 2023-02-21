@@ -36,7 +36,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.21.4",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "framer-motion": "^7.6.18",
+    "framer-motion": "^9.0.6",
     "gray-matter": "^4.0.2",
     "joi": "^17.4.0",
     "keycloak-js": "^20.0.3",
