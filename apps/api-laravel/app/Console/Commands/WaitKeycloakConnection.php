@@ -35,7 +35,7 @@ class WaitKeycloakConnection extends Command
         $response = Http::withOptions(['verify' => false])
             ->retry(50, 1000)
             ->timeout(2)
-            ->get(config('keycloak.url'));
+            ->get(config('keycloak.url') + "/auth/");
 
         if (! $response->successful()) {
             $response->throw();
