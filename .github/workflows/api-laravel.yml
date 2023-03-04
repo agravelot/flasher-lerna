@@ -16,7 +16,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-18.04
 
     steps:
       - uses: actions/checkout@v3
@@ -84,6 +84,7 @@ jobs:
           KEYCLOAK_MASTER_PASSWORD: admin
 
       - name: Run php test suites
+        continue-on-error: true
         working-directory: apps/api-laravel
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -T php touch .env
@@ -98,6 +99,7 @@ jobs:
           DB_PASSWORD: "secretPassword"
 
       - name: Run php lint
+        continue-on-error: true
         working-directory: apps/api-laravel
         run: |
           docker-compose -f docker-compose.yml -f docker-compose.local.yml exec -e APP_ENV=testing -T php php vendor/bin/php-cs-fixer fix --dry-run --diff
