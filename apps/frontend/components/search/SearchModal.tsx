@@ -8,7 +8,7 @@ const LazySearch = dynamic(() => import("./Search"), {
 });
 
 export const SearchModal: FunctionComponent = () => {
-  const { status, close } = useSearch();
+  const { status, googleSearch, close } = useSearch();
 
   const handleEscape = (e: KeyboardEvent) => {
     if (e.key === "Esc" || e.key === "Escape") {
@@ -71,7 +71,7 @@ export const SearchModal: FunctionComponent = () => {
           aria-labelledby="modal-headline"
         >
           <div className="container mx-auto">
-            <LazySearch />
+            <LazySearch search={googleSearch}/>
           </div>
         </div>
       </div>

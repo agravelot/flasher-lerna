@@ -77,16 +77,18 @@ const Layout: FunctionComponent<Props> = ({
         />
       </Head>
       {head()}
-      <header>
-        <SearchContextProvider>
-          <Navbar />
-          <SearchModal />
-        </SearchContextProvider>
-      </header>
-      <main>{children}</main>
-      <footer>
-        <Footer socialMedias={socialMedias} />
-      </footer>
+      <SearchContextProvider>
+        <header>
+            <Navbar />
+            <SearchModal />
+        </header>
+        <main>
+          {children}
+        </main>
+        <footer>
+          <Footer socialMedias={socialMedias} />
+        </footer>
+      </SearchContextProvider>
     </>
   );
 };

@@ -7,11 +7,12 @@ import AlbumList from "../components/album/AlbumList";
 import { GetStaticProps, GetStaticPropsResult, NextPage } from "next";
 import { getGlobalProps, GlobalProps } from "../stores";
 import Separator from "../components/Separator";
-import { NextSeo } from "next-seo";
+import { NextSeo, SiteLinksSearchBoxJsonLd } from "next-seo";
 import { Album, Testimonial } from "@flasher/models";
 import { api, PaginatedReponse, sizes } from "@flasher/common";
 import { configuration } from "utils/configuration";
 import { ContactSection } from "../components/ContactSection";
+import { SearchOpener } from "components/SearchOpener";
 
 type Props = {
   albums: Album[];
@@ -31,9 +32,10 @@ const IndexPage: NextPage<Props> = ({
   if (!profilePictureHomepage) {
     console.error("Missing profile picture");
   }
-
+  const ndd = process.env.NEXT_PUBLIC_APP_URL ?? "";
   return (
     <Layout socialMedias={socialMedias} appName={appName}>
+      <SearchOpener/>
       <NextSeo
         title={defaultPageTitle}
         description={seoDescription}
@@ -52,6 +54,15 @@ const IndexPage: NextPage<Props> = ({
               }
             : undefined
         }
+      />
+      <SiteLinksSearchBoxJsonLd
+        url={ndd}
+        potentialActions={[
+          {
+            target: `${ndd}?search`,
+            queryInput: "search_term",
+          },
+        ]}
       />
       <div>
         <Header title={appName} separatorClass="text-gray-300" />

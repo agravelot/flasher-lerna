@@ -10,7 +10,11 @@ import {
 import { FunctionComponent } from "react";
 import { configuration } from "../../utils/configuration";
 
-const Search: FunctionComponent = () => {
+interface Props {
+  search: string | undefined;
+}
+
+const Search: FunctionComponent<Props> = ({search}) => {
   const client = algoliasearch(
     configuration.algolia?.appId ?? "",
     configuration.algolia?.apiKey ?? ""
@@ -18,7 +22,7 @@ const Search: FunctionComponent = () => {
 
   return (
     <InstantSearch searchClient={client} indexName="albums-production">
-      <CustomSearchBox />
+      <CustomSearchBox defaultRefinement={search}/>
       <span className="mb-4 inline-block h-1 w-full rounded bg-gradient-to-r from-blue-700 to-red-700" />
 
       <div className="text-2xl text-white">Albums</div>

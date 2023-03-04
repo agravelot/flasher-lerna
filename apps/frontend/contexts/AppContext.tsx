@@ -16,6 +16,8 @@ interface ContextProps {
   status: SearchStatus;
   open: () => void;
   close: () => void;
+  googleSearch: string | undefined;
+  setGoogleSearch: (search: string) => void;
 }
 
 interface Props {
@@ -29,7 +31,7 @@ export const SearchContextProvider = ({ children }: Props): ReactElement => {
 
   const open = () => setStatus(SearchStatus.Opened);
   const close = () => setStatus(SearchStatus.Closed);
-
+  const [googleSearch, setGoogleSearch] = useState<string|undefined>(undefined);
   // Only trigger refresh on 'status' update.
   // https://stackoverflow.com/a/57840598
   const providerValue = useMemo(
@@ -37,8 +39,10 @@ export const SearchContextProvider = ({ children }: Props): ReactElement => {
       status,
       open,
       close,
+      googleSearch,
+      setGoogleSearch
     }),
-    [status]
+    [status, googleSearch]
   );
 
   return (
