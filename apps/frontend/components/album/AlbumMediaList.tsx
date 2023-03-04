@@ -46,11 +46,11 @@ const AlbumMediaList: FunctionComponent<Props> = ({
     dateModified: album.updated_at ?? undefined,
     datePublished: album.published_at ?? undefined,
     thumbnailUrl: album.medias?.[0].url,
-    url: process.env.APP_URL + asPath,
+    url: configuration.appUrl + asPath,
     abstract: album.meta_description,
     // copyrightHolder: getModule(JsonLdModule, $store).getOrganization,
     copyrightYear: new Date(album.created_at).getFullYear(),
-    license: "",
+    license: "JKanda: Tout droits réservés",
     inLanguage: { "@type": "Language", name: "French" },
   };
 
