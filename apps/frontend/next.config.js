@@ -6,7 +6,8 @@ const path = require("path");
 
 const withPWA = require("next-pwa")({
   dest: "public",
-  disable: process.env.NODE_ENV !== "production",
+  disable: false,
+  // disable: process.env.NODE_ENV !== "production",
   mode: process.env.NODE_ENV,
   runtimeCaching,
   fallbacks: {
