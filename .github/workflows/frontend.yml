@@ -48,7 +48,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
       - name: Build and push base staging
         if: contains(github.ref, '-rc.')
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./apps/frontend/Dockerfile
@@ -72,7 +72,7 @@ jobs:
             "NODE_ENV=production"
       - name: Build and push base production
         if: contains(github.ref, '-rc.') == false
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./apps/frontend/Dockerfile
