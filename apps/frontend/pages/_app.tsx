@@ -5,28 +5,22 @@ import { ReactElement } from "react";
 import { Analytics } from "components/Analytics";
 import { Clarity } from "components/Clarity";
 import { setBaseUrl } from "@flasher/common";
-import {
-  AuthenticationKeeper,
-  AuthenticationProvider,
-} from "hooks/useAuthentication";
+import { SessionProvider } from "next-auth/react";
 
 setBaseUrl(configuration.apiInternalUrl ?? configuration.apiUrl);
 
-function App({ Component, pageProps }: AppProps): ReactElement {
+function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps): ReactElement {
   return (
-    <AuthenticationProvider
-      keycloakConfig={configuration.keycloak}
-      keycloakInitOptions={{
-        enableLogging: process.env.NODE_ENV !== "production",
-      }}
-    >
+    <SessionProvider session={session}>
       <>
-        <AuthenticationKeeper />
         <Analytics />
         <Clarity />
         <Component {...pageProps} />
       </>
-    </AuthenticationProvider>
+    </SessionProvider>
   );
 }
 
