@@ -1,4 +1,3 @@
-import { useAuthentication } from "hooks/useAuthentication";
 import Link from "next/link";
 import { FC, useState } from "react";
 import { configuration } from "../utils/configuration";
@@ -10,11 +9,13 @@ import {
   UserIcon,
   AdjustmentsVerticalIcon,
 } from "@heroicons/react/24/outline";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const NavbarAccount: FC = () => {
-  const { initialized, keycloak, parsedToken, isAdmin, isAuthenticated } =
-    useAuthentication();
+  // const { initialized, keycloak, parsedToken, isAdmin, isAuthenticated } =
+  //   useAuthentication();
   const { administration } = configuration;
+  const session = useSession();
 
   // Dropdown
   const toggleDropdown = () => setIsOpenned((openned) => !openned);
@@ -22,25 +23,25 @@ const NavbarAccount: FC = () => {
   const openCloseIndicatorClass = (): string =>
     isOpenned ? "rotate-180" : "rotate-0";
 
-  if (initialized === false || isAuthenticated === false) {
+  if (session.status !== "authenticated") {
     return (
       <ul className="flex items-center" role="menubar">
         <li className="flex items-center" role="menuitem">
-          <button
-            className="rounded p-2 text-xs font-bold uppercase text-white hover:text-gray-300"
-            type="button"
-            tabIndex={0}
-            onClick={() => keycloak?.register()}
-          >
-            {"S'inscrire"}
-          </button>
+          {/*<button*/}
+          {/*  className="rounded p-2 text-xs font-bold uppercase text-white hover:text-gray-300"*/}
+          {/*  type="button"*/}
+          {/*  tabIndex={0}*/}
+          {/*  onClick={() => keycloak?.register()}*/}
+          {/*>*/}
+          {/*  {"S'inscrire"}*/}
+          {/*</button>*/}
         </li>
         <li className="hidden items-center md:flex" role="menuitem">
           <button
             className="inline-flex rounded p-2 text-xs font-bold uppercase text-white hover:text-gray-300"
             type="button"
             tabIndex={0}
-            onClick={() => keycloak?.login()}
+            onClick={() => signIn()}
           >
             <ArrowLeftOnRectangleIcon
               className="mx-2 h-5 w-5"
@@ -55,7 +56,7 @@ const NavbarAccount: FC = () => {
 
   return (
     <>
-      {initialized && isAuthenticated && (
+      {session.status === "authenticated" && (
         <div className="flex items-center">
           <div className="relative inline-block text-left">
             <Menu>
@@ -68,7 +69,7 @@ const NavbarAccount: FC = () => {
                     aria-expanded="true"
                     onClick={() => toggleDropdown()}
                   >
-                    {parsedToken?.preferred_username}
+                    {session.data.user?.name}
                     <svg
                       className={`-mr-1 ml-2 h-5 w-5 transform transition-transform duration-150 ${openCloseIndicatorClass()}`}
                       viewBox="0 0 20 20"
@@ -98,7 +99,7 @@ const NavbarAccount: FC = () => {
                     " rounded-md bg-white ring-1 ring-black ring-opacity-5"
                   }
                 >
-                  {isAdmin && (
+                  {false && (
                     <Menu.Item>
                       <div className="py-1 text-center">
                         <a
@@ -122,7 +123,7 @@ const NavbarAccount: FC = () => {
                     <a
                       className="inline-flex w-full justify-start px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none"
                       role="menuitem"
-                      href={keycloak?.createAccountUrl()}
+                      // href={keycloak?.createAccountUrl()}
                       target="_blank"
                       rel="noreferrer"
                       tabIndex={0}
@@ -159,7 +160,7 @@ const NavbarAccount: FC = () => {
                         tabIndex={0}
                         className="inline-flex w-full justify-start px-4 py-2 text-sm leading-5 text-red-700 hover:bg-gray-100 hover:text-red-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none"
                         role="menuitem"
-                        href={keycloak?.createLogoutUrl()}
+                        // href={keycloak?.createLogoutUrl()}
                       >
                         <ArrowRightOnRectangleIcon
                           className="ml-2 mr-4 h-5 w-5"
