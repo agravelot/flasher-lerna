@@ -37,18 +37,22 @@ const NavbarAccount: FC = () => {
           {/*</button>*/}
         </li>
         <li className="hidden items-center md:flex" role="menuitem">
-          <button
+          <a
             className="inline-flex rounded p-2 text-xs font-bold uppercase text-white hover:text-gray-300"
             type="button"
             tabIndex={0}
-            onClick={() => signIn()}
+            href={"/api/auth/signin"}
+            onClick={(e) => {
+              e.preventDefault();
+              return signIn("keycloak");
+            }}
           >
             <ArrowLeftOnRectangleIcon
               className="mx-2 h-5 w-5"
               aria-hidden="true"
             />
             Se connecter
-          </button>
+          </a>
         </li>
       </ul>
     );
@@ -160,7 +164,11 @@ const NavbarAccount: FC = () => {
                         tabIndex={0}
                         className="inline-flex w-full justify-start px-4 py-2 text-sm leading-5 text-red-700 hover:bg-gray-100 hover:text-red-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none"
                         role="menuitem"
-                        // href={keycloak?.createLogoutUrl()}
+                        href={"/api/auth/signout"}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          return signOut();
+                        }}
                       >
                         <ArrowRightOnRectangleIcon
                           className="ml-2 mr-4 h-5 w-5"
