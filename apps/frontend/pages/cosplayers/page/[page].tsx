@@ -32,7 +32,7 @@ const DynamicAdminOverlay = dynamic(
   }
 );
 
-const perPage = 24;
+const perPage = 96;
 
 const IndexAlbum: NextPage<Props> = ({
   cosplayers,
