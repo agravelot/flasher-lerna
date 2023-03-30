@@ -5,6 +5,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { configuration } from "utils/configuration";
 import { getAllPosts } from "utils/markdown";
 import fs from "fs";
+import { setBaseUrl } from "@flasher/common";
 
 interface Image {
   loc: string;
@@ -23,6 +24,8 @@ const prefix =
   '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">';
 const suffix = "</urlset>";
 const perPage = 10;
+
+setBaseUrl(configuration.baseUrl);
 
 const getGaleries = async (): Promise<Page[]> => {
   const repo = apiRepository();
@@ -141,7 +144,7 @@ const getDefaultRoutes = (): Page[] => {
       images: [],
     }));
     const regExpProfilePaths = "/(/invitations/validate|/me/albums)/gm";
-    return mapPaths.filter(map => !(map.url.match(regExpProfilePaths)));
+    return mapPaths.filter((map) => !map.url.match(regExpProfilePaths));
   } catch (err) {
     console.error(err);
   }
