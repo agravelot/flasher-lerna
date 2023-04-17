@@ -12,7 +12,7 @@ Allow: /
 Host: ${configuration.appUrl}
 Sitemap: ${configuration.appUrl}/sitemap.xml
 Disallow: /invitations
-Disallow: /me
+Disallow: /me/
 `);
 };
 
