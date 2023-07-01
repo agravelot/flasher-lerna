@@ -25,7 +25,7 @@ const prefix =
 const suffix = "</urlset>";
 const perPage = 10;
 
-setBaseUrl(configuration.baseUrl);
+setBaseUrl(configuration.apiUrl);
 
 const getGaleries = async (): Promise<Page[]> => {
   const repo = apiRepository();
