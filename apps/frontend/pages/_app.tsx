@@ -10,7 +10,7 @@ import {
   AuthenticationProvider,
 } from "hooks/useAuthentication";
 
-setBaseUrl(configuration.baseUrl);
+setBaseUrl(configuration.apiInternalUrl ?? configuration.apiUrl);
 
 function App({ Component, pageProps }: AppProps): ReactElement {
   return (
