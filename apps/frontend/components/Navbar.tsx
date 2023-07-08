@@ -41,59 +41,53 @@ const Navbar: FunctionComponent = () => {
               JKanda
             </Link>
           </li>
-          <li className="hidden items-center lg:flex">
+          <li className="hidden items-center lg:flex" role="menuitem">
             <Link
               href={{ pathname: "/galerie" }}
-              role="menuitem"
               tabIndex={0}
               className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
             >
               Galerie
             </Link>
           </li>
-          <li className="hidden items-center lg:flex">
+          <li className="hidden items-center lg:flex" role="menuitem">
             <Link
               href={{ pathname: "/categories/page/[page]", query: { page: 1 } }}
-              role="menuitem"
               tabIndex={0}
               className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
             >
               Catégories
             </Link>
           </li>
-          <li className="hidden items-center lg:flex">
+          <li className="hidden items-center lg:flex" role="menuitem">
             <Link
               href={{ pathname: "/cosplayers/page/[page]", query: { page: 1 } }}
-              role="menuitem"
               tabIndex={0}
               className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
             >
               Modèles
             </Link>
           </li>
-          <li className="hidden items-center lg:flex">
+          <li className="hidden items-center lg:flex" role="menuitem">
             <Link
               href={{ pathname: "/", hash: "contact" }}
-              role="menuitem"
               tabIndex={0}
               className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
             >
               Contact
             </Link>
           </li>
-          <li className="hidden items-center lg:flex">
+          <li className="hidden items-center lg:flex" role="menuitem">
             <Link
               href={{ pathname: "/blog" }}
-              role="menuitem"
               tabIndex={0}
               className="px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
             >
               Blog
             </Link>
           </li>
-          <li className="hidden items-center lg:flex">
+          <li className="hidden items-center lg:flex" role="menuitem">
             <button
-              role="menuitem"
               tabIndex={0}
               className="inline-flex px-3 py-4 text-xs font-bold uppercase text-white hover:text-gray-300"
               onClick={() => open()}
@@ -107,7 +101,7 @@ const Navbar: FunctionComponent = () => {
           </li>
 
           {/* Right */}
-          <li className="ml-auto flex items-center">
+          <li className="ml-auto flex items-center" role="menuitem">
             <NavbarAccount />
           </li>
           {/* Mobile */}
