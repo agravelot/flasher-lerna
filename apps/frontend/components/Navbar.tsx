@@ -101,7 +101,7 @@ const Navbar: FunctionComponent = () => {
           </li>
 
           {/* Right */}
-          <li className="ml-auto flex items-center">
+          <li className="ml-auto flex items-center" role="menuitem">
             <NavbarAccount />
           </li>
           {/* Mobile */}
