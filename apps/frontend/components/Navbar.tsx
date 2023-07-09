@@ -105,7 +105,7 @@ const Navbar: FunctionComponent = () => {
             <NavbarAccount />
           </li>
           {/* Mobile */}
-          <li className="flex items-center">
+          <li className="flex items-center" role="menuitem">
             <button
               className="block cursor-pointer p-2 text-xl leading-none lg:hidden"
               type="button"
