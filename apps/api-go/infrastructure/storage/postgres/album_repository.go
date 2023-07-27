@@ -109,7 +109,7 @@ func (r AlbumRepository) Create(ctx context.Context, params album.CreateParams) 
 	err := q.WithContext(ctx).Create(&params.Album)
 	// TODO Check duplicate
 	if err != nil {
-		return model.Album{}, err
+		return model.Album{}, fmt.Errorf("error create album: %w", err)
 	}
 
 	return params.Album, nil
