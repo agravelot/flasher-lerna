@@ -33,7 +33,6 @@ require (
 )
 
 require (
-	github.com/davecgh/go-spew v1.1.1
 	github.com/go-sql-driver/mysql v1.7.1 // indirect
 	github.com/gosimple/unidecode v1.0.1 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
