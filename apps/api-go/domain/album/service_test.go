@@ -5,6 +5,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/jackc/pgerrcode"
+	"github.com/jackc/pgx/v5/pgconn"
 	"log"
 	"os"
 	"strconv"
@@ -18,8 +20,6 @@ import (
 	"api-go/model"
 	"api-go/query"
 
-	"github.com/jackc/pgconn"
-	"github.com/jackc/pgerrcode"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -625,7 +625,7 @@ func TestShouldBeAbleToGetNonPublishedAlbumAsAdmin(t *testing.T) {
 	assert.Equal(t, arg.Slug, r.Album.Slug)
 }
 
-func TestShouldHaveNotFoundFornonExistingAlbum(t *testing.T) {
+func TestShouldHaveNotFoundForNonExistingAlbum(t *testing.T) {
 	tx := db.Begin()
 	defer tx.Rollback()
 	repo, err := postgres.NewAlbumRepository(&tx)
@@ -751,8 +751,10 @@ func TestShouldNotBeAbleToCreateAnAlbumWithSameSlug(t *testing.T) {
 
 	var pgErr *pgconn.PgError
 	assert.Error(t, err)
-	assert.True(t, errors.As(err, &pgErr))
-	assert.Equal(t, pgerrcode.UniqueViolation, pgErr.Code)
+	assert.ErrorAs(t, err, &pgErr)
+	if errors.As(err, &pgErr) {
+		assert.Equal(t, pgerrcode.UniqueViolation, pgErr.Code)
+	}
 
 	total, err := a.WithContext(context.Background()).Count()
 	assert.NoError(t, err)
