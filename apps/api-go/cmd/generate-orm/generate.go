@@ -1,5 +1,3 @@
-//go:build exclude
-
 package main
 
 import (
@@ -43,7 +41,7 @@ func main() {
 	// g.WithDataTypeMap(dataMap)
 
 	// reuse the database connection in Project or create a connection here
-	// if you want to use GenerateModel/GenerateModelAs, UseDB is necessray or it will panic
+	// if you want to use GenerateModel/GenerateModelAs, UseDB is necessary, or it will panic
 	db, _ := gorm.Open(postgres.Open("host=localhost user=flasher password=flasher dbname=flasher port=5432 sslmode=disable"))
 	g.UseDB(db)
 
@@ -58,18 +56,29 @@ func main() {
 		"albums",
 		gen.FieldRelate(field.HasMany, "Categories", categories,
 			&field.RelateConfig{
-				GORMTag: "many2many:album_category;joinForeignKey:AlbumID;joinReferences:CategoryID",
+				GORMTag: map[string][]string{
+					"many2many":      {"album_category"},
+					"joinForeignKey": {"AlbumID"},
+					"joinReferences": {"CategoryID"},
+				},
 			},
 		),
 		gen.FieldRelate(field.HasMany, "Medias", medias,
 			&field.RelateConfig{
 				// RelateSlice: true,
-				GORMTag: "polymorphic:Model;polymorphicValue:App\\\\Models\\\\Album",
+				GORMTag: map[string][]string{
+					"polymorphic":      {"Model"},
+					"polymorphicValue": {"App\\\\Models\\\\Album"},
+				},
 			},
 		),
 		gen.FieldRelate(field.HasMany, "Cosplayers", cosplayers,
 			&field.RelateConfig{
-				GORMTag: "many2many:album_cosaplyer;joinForeignKey:AlbumID;joinReferences:CosplayerID",
+				GORMTag: map[string][]string{
+					"many2many":      {"album_cosaplyer"},
+					"joinForeignKey": {"AlbumID"},
+					"joinReferences": {"CosplayerID"},
+				},
 			},
 		),
 	)
@@ -78,7 +87,11 @@ func main() {
 	categories = g.GenerateModel("categories",
 		gen.FieldRelate(field.HasMany, "Albums", albums,
 			&field.RelateConfig{
-				GORMTag: "many2many:album_category;joinForeignKey:CategoryID;joinReferences:AlbumID",
+				GORMTag: map[string][]string{
+					"many2many":      {"album_category"},
+					"joinForeignKey": {"CategoryID"},
+					"joinReferences": {"AlbumID"},
+				},
 			},
 		))
 
@@ -86,7 +99,11 @@ func main() {
 	cosplayers = g.GenerateModel("cosplayers",
 		gen.FieldRelate(field.HasMany, "Albums", albums,
 			&field.RelateConfig{
-				GORMTag: "many2many:album_cosaplyer;joinForeignKey:CosplayerID;joinReferences:AlbumID",
+				GORMTag: map[string][]string{
+					"many2many":      {"album_cosaplyer"},
+					"joinForeignKey": {"CosplayerID"},
+					"joinReferences": {"AlbumID"},
+				},
 			},
 		),
 	)

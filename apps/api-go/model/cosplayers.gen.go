@@ -21,7 +21,7 @@ type Cosplayer struct {
 	CreatedAt   *time.Time `gorm:"column:created_at;type:timestamp(0) without time zone" json:"created_at"`
 	UpdatedAt   *time.Time `gorm:"column:updated_at;type:timestamp(0) without time zone" json:"updated_at"`
 	SsoID       *string    `gorm:"column:sso_id;type:uuid" json:"sso_id"`
-	Albums      []Album    `gorm:"many2many:album_cosaplyer;joinForeignKey:CosplayerID;joinReferences:AlbumID" json:"albums"`
+	Albums      []Album    `gorm:"joinForeignKey:CosplayerID;joinReferences:AlbumID;many2many:album_cosaplyer" json:"albums"`
 }
 
 // TableName Cosplayer's table name

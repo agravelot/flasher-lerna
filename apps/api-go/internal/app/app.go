@@ -79,7 +79,9 @@ func Run(config *config.Config) error {
 	albumspb.RegisterAlbumServiceServer(grpcServer, sAlbum)
 	// Serve gRPC server
 	go func() {
-		log.Printf("Serving gRPC on 0.0.0.0:%d", config.AppGrpcPort)
+		log.Printf(
+
+			"Serving gRPC on 0.0.0.0:%d", config.AppGrpcPort)
 		log.Fatalln(grpcServer.Serve(lis))
 	}()
 

@@ -116,6 +116,8 @@ func (m medium) TableName() string { return m.mediumDo.TableName() }
 
 func (m medium) Alias() string { return m.mediumDo.Alias() }
 
+func (m medium) Columns(cols ...field.Expr) gen.Columns { return m.mediumDo.Columns(cols...) }
+
 func (m *medium) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := m.fieldMap[fieldName]
 	if !ok || _f == nil {
@@ -200,10 +202,6 @@ func (m mediumDo) Select(conds ...field.Expr) *mediumDo {
 
 func (m mediumDo) Where(conds ...gen.Condition) *mediumDo {
 	return m.withDO(m.DO.Where(conds...))
-}
-
-func (m mediumDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *mediumDo {
-	return m.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
 func (m mediumDo) Order(conds ...field.Expr) *mediumDo {

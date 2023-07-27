@@ -115,6 +115,8 @@ func (c cosplayer) TableName() string { return c.cosplayerDo.TableName() }
 
 func (c cosplayer) Alias() string { return c.cosplayerDo.Alias() }
 
+func (c cosplayer) Columns(cols ...field.Expr) gen.Columns { return c.cosplayerDo.Columns(cols...) }
+
 func (c *cosplayer) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := c.fieldMap[fieldName]
 	if !ok || _f == nil {
@@ -179,6 +181,11 @@ func (a cosplayerHasManyAlbums) Where(conds ...field.Expr) *cosplayerHasManyAlbu
 
 func (a cosplayerHasManyAlbums) WithContext(ctx context.Context) *cosplayerHasManyAlbums {
 	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a cosplayerHasManyAlbums) Session(session *gorm.Session) *cosplayerHasManyAlbums {
+	a.db = a.db.Session(session)
 	return &a
 }
 
@@ -268,10 +275,6 @@ func (c cosplayerDo) Select(conds ...field.Expr) *cosplayerDo {
 
 func (c cosplayerDo) Where(conds ...gen.Condition) *cosplayerDo {
 	return c.withDO(c.DO.Where(conds...))
-}
-
-func (c cosplayerDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *cosplayerDo {
-	return c.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
 func (c cosplayerDo) Order(conds ...field.Expr) *cosplayerDo {

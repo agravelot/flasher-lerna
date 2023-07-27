@@ -19,7 +19,7 @@ type Category struct {
 	CreatedAt       *time.Time `gorm:"column:created_at;type:timestamp(0) without time zone" json:"created_at"`
 	UpdatedAt       *time.Time `gorm:"column:updated_at;type:timestamp(0) without time zone" json:"updated_at"`
 	MetaDescription string     `gorm:"column:meta_description;type:character varying(155);not null" json:"meta_description"`
-	Albums          []Album    `gorm:"many2many:album_category;joinForeignKey:CategoryID;joinReferences:AlbumID" json:"albums"`
+	Albums          []Album    `gorm:"joinForeignKey:CategoryID;joinReferences:AlbumID;many2many:album_category" json:"albums"`
 }
 
 // TableName Category's table name

@@ -107,6 +107,8 @@ func (c category) TableName() string { return c.categoryDo.TableName() }
 
 func (c category) Alias() string { return c.categoryDo.Alias() }
 
+func (c category) Columns(cols ...field.Expr) gen.Columns { return c.categoryDo.Columns(cols...) }
+
 func (c *category) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := c.fieldMap[fieldName]
 	if !ok || _f == nil {
@@ -169,6 +171,11 @@ func (a categoryHasManyAlbums) Where(conds ...field.Expr) *categoryHasManyAlbums
 
 func (a categoryHasManyAlbums) WithContext(ctx context.Context) *categoryHasManyAlbums {
 	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a categoryHasManyAlbums) Session(session *gorm.Session) *categoryHasManyAlbums {
+	a.db = a.db.Session(session)
 	return &a
 }
 
@@ -258,10 +265,6 @@ func (c categoryDo) Select(conds ...field.Expr) *categoryDo {
 
 func (c categoryDo) Where(conds ...gen.Condition) *categoryDo {
 	return c.withDO(c.DO.Where(conds...))
-}
-
-func (c categoryDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *categoryDo {
-	return c.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
 func (c categoryDo) Order(conds ...field.Expr) *categoryDo {

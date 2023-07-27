@@ -123,6 +123,8 @@ func (a album) TableName() string { return a.albumDo.TableName() }
 
 func (a album) Alias() string { return a.albumDo.Alias() }
 
+func (a album) Columns(cols ...field.Expr) gen.Columns { return a.albumDo.Columns(cols...) }
+
 func (a *album) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := a.fieldMap[fieldName]
 	if !ok || _f == nil {
@@ -180,6 +182,11 @@ func (a albumHasManyCategories) Where(conds ...field.Expr) *albumHasManyCategori
 
 func (a albumHasManyCategories) WithContext(ctx context.Context) *albumHasManyCategories {
 	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a albumHasManyCategories) Session(session *gorm.Session) *albumHasManyCategories {
+	a.db = a.db.Session(session)
 	return &a
 }
 
@@ -249,6 +256,11 @@ func (a albumHasManyMedias) WithContext(ctx context.Context) *albumHasManyMedias
 	return &a
 }
 
+func (a albumHasManyMedias) Session(session *gorm.Session) *albumHasManyMedias {
+	a.db = a.db.Session(session)
+	return &a
+}
+
 func (a albumHasManyMedias) Model(m *model.Album) *albumHasManyMediasTx {
 	return &albumHasManyMediasTx{a.db.Model(m).Association(a.Name())}
 }
@@ -312,6 +324,11 @@ func (a albumHasManyCosplayers) Where(conds ...field.Expr) *albumHasManyCosplaye
 
 func (a albumHasManyCosplayers) WithContext(ctx context.Context) *albumHasManyCosplayers {
 	a.db = a.db.WithContext(ctx)
+	return &a
+}
+
+func (a albumHasManyCosplayers) Session(session *gorm.Session) *albumHasManyCosplayers {
+	a.db = a.db.Session(session)
 	return &a
 }
 
@@ -401,10 +418,6 @@ func (a albumDo) Select(conds ...field.Expr) *albumDo {
 
 func (a albumDo) Where(conds ...gen.Condition) *albumDo {
 	return a.withDO(a.DO.Where(conds...))
-}
-
-func (a albumDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *albumDo {
-	return a.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
 func (a albumDo) Order(conds ...field.Expr) *albumDo {

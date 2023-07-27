@@ -24,9 +24,9 @@ type Album struct {
 	NotifyUsersOnPublished *bool       `gorm:"column:notify_users_on_published;type:boolean;not null;default:true" json:"notify_users_on_published"`
 	MetaDescription        string      `gorm:"column:meta_description;type:character varying(255);not null" json:"meta_description"`
 	SsoID                  *string     `gorm:"column:sso_id;type:uuid" json:"sso_id"`
-	Categories             []Category  `gorm:"many2many:album_category;joinForeignKey:AlbumID;joinReferences:CategoryID" json:"categories"`
+	Categories             []Category  `gorm:"joinForeignKey:AlbumID;joinReferences:CategoryID;many2many:album_category" json:"categories"`
 	Medias                 []Medium    `gorm:"polymorphic:Model;polymorphicValue:App\\Models\\Album" json:"medias"`
-	Cosplayers             []Cosplayer `gorm:"many2many:album_cosaplyer;joinForeignKey:AlbumID;joinReferences:CosplayerID" json:"cosplayers"`
+	Cosplayers             []Cosplayer `gorm:"joinForeignKey:AlbumID;joinReferences:CosplayerID;many2many:album_cosaplyer" json:"cosplayers"`
 }
 
 // TableName Album's table name
