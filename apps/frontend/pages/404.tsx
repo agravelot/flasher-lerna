@@ -47,9 +47,7 @@ const NotFoundPage: NextPage<Props> = ({
 
 export default NotFoundPage;
 
-export const getStaticProps: GetStaticProps = async ({
-  params,
-}): Promise<GetStaticPropsResult<Props>> => {
+export const getStaticProps: GetStaticProps = async (): Promise<GetStaticPropsResult<Props>> => {
   const global = await getGlobalProps();
 
   return { props: { ...global }, revalidate: 60 };

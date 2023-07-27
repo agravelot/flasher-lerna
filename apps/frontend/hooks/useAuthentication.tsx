@@ -73,11 +73,11 @@ export const AuthenticationProvider = ({
   const [initialized, setInitialized] = useState(false);
   const keycloakInstance: Keycloak | null = useMemo(() => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    return !isServer() ? require("keycloak-js").default(keycloakConfig) : null;
+    return !isServer() ? new (require("keycloak-js").default)(keycloakConfig) : null;
   }, [keycloakConfig]);
 
   useEffect(() => {
-    if (!keycloakInstance) {
+    if (!keycloakInstance || keycloakRef.current) {
       return;
     }
     keycloakRef.current = keycloakInstance
