@@ -3,9 +3,11 @@ import Image from "next/image";
 import Separator from "./Separator";
 import { Media } from "@flasher/models";
 
+///_next/image?url=https%3A%2F%2Fassets-jkanda.s3.fr-par.scw.cloud%2Fmedias%2F3750%2Fmariage-sofia-et-elyess.jpg&w=3840&q=75
+
 const defaultMedia: Media = {
   id: 9999,
-  url: "https://assets-jkanda.s3.fr-par.scw.cloud/medias/4191/JKanda_JKA_5053.jpg",
+  url: "https://assets-jkanda.s3.fr-par.scw.cloud/medias/3750/mariage-sofia-et-elyess.jpg",
   name: "Image présentation JKanda",
   file_name: "aze",
   width: 6000,
