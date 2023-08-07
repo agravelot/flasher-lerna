@@ -84,6 +84,7 @@ jobs:
           build-args: |
             "NEXT_PUBLIC_APP_URL=https://jkanda.fr"
             "NEXT_PUBLIC_API_URL=https://api.jkanda.fr/api"
+            "INTERNAL_API_URL=http://api.flasher-production.svc.cluster.local"
             "NEXT_PUBLIC_KEYCLOAK_REALM=jkanda"
             "NEXT_PUBLIC_KEYCLOAK_URL=https://accounts.jkanda.fr/auth"
             "NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=flasher"

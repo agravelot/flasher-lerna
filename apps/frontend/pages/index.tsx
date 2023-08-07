@@ -8,15 +8,17 @@ import { GetStaticProps, GetStaticPropsResult, NextPage } from "next";
 import { getGlobalProps, GlobalProps } from "../stores";
 import Separator from "../components/Separator";
 import { NextSeo, SiteLinksSearchBoxJsonLd } from "next-seo";
-import { Album, Testimonial } from "@flasher/models";
+import {Album, Category, Testimonial} from "@flasher/models";
 import { api, PaginatedReponse, sizes } from "@flasher/common";
 import { configuration } from "utils/configuration";
 import { ContactSection } from "../components/ContactSection";
 import { SearchOpener } from "components/SearchOpener";
+import CategoryItem from "../components/category/CategoryItem";
 
 type Props = {
   albums: Album[];
   testimonials: Testimonial[];
+  categories: Category[];
 } & GlobalProps;
 
 const IndexPage: NextPage<Props> = ({
@@ -27,12 +29,14 @@ const IndexPage: NextPage<Props> = ({
   profilePictureHomepage,
   homepageDescription,
   socialMedias,
-  seoDescription,
+  seoDescription, 
+  categories,
 }: Props) => {
   if (!profilePictureHomepage) {
     console.error("Missing profile picture");
   }
   const ndd = process.env.NEXT_PUBLIC_APP_URL ?? "";
+ 
   return (
     <Layout socialMedias={socialMedias} appName={appName}>
       <SearchOpener/>
@@ -80,27 +84,41 @@ const IndexPage: NextPage<Props> = ({
             </div>
           </div>
         </section>
+        <section className="container mx-auto px-4 py-8">
+          <div className="py-8">
+            <p>Mes photos reflètent une harmonie subtile de diverses émotions, faisant de chacune d'elles une véritable expression de mon style unique. J'apprécie particulièrement jouer avec ces différentes thématiques pour laisser libre cours à mon imagination débordante. Laissez vous emporter par la magie de mes clichés qui racontent des histoires uniques et captivantes.</p>
+          </div>
+          <div className="flex flex-wrap px--4">
+            {categories.filter(c => c.cover).map(( category ,i) => (
+                <div key={i} className="px-4 w-1/2">
+                  <CategoryItem category={category} />
+                </div>
+            )
+            )}
+          </div>
+        </section>
+       
         <section className="relative py-20">
           <Separator separatorClass="text-white" position="top" />
-          <div className="container mx-auto px-4">
-            <div className="block flex-wrap items-center lg:flex">
+          <div className="md:container md:mx-auto px-4">
+            <div className="block items-center md:flex md:flex-wrap">
               {profilePictureHomepage && (
-                <div className="mx-auto w-full lg:order-2 lg:w-4/12">
+                <div className="w-full md:w-1/2 md:order-2">
                   <Image
-                    className="mb-8 w-full object-cover p-8 shadow-lg lg:mb-0"
+                    className="mb-8 w-full object-cover lg:mb-0"
                     alt={appName}
                     src={profilePictureHomepage.url}
                     width={2000}
-                    draggable={false}
                     height={2000}
+                    draggable={false}
                     sizes={sizes(3, "container")}
                   />
                 </div>
               )}
-              <div className="ml-auto mr-auto w-full px-4 lg:w-8/12">
+              <div className="ml-auto mr-auto w-full md:w-1/2">
                 <div className="md:pr-12">
                   <h2 className="text-3xl font-semibold">
-                    Photographe passionnée sur Lyon
+                    Qui suis-je ?
                   </h2>
                   <div className="mt-2">
                     <span className="mx-auto mb-4 inline-block h-1 w-16 rounded bg-gradient-to-r from-blue-700 to-red-700"></span>
@@ -176,7 +194,12 @@ export const getStaticProps: GetStaticProps = async ({
     .then((res) => res.json())
     .then((res) => res.data.reverse());
 
+  const categories = await api<PaginatedReponse<Category[]>>(
+      `/categories?per_page=${4}`
+  ).then((res) => res.json())
+      .then((res) => res.data.reverse());
+
   const global = await getGlobalProps();
 
-  return { props: { albums, testimonials, ...global }, revalidate: 60 };
+  return { props: { albums, testimonials, categories,...global }, revalidate: 60 };
 };

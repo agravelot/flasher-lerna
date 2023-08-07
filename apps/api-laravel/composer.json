@@ -112,6 +112,9 @@
     "optimize-autoloader": true,
     "platform": {
       "php": "7.4"
+    },
+    "allow-plugins": {
+      "sllh/composer-versions-check": true
     }
   },
   "minimum-stability": "dev",

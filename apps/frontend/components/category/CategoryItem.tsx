@@ -10,7 +10,7 @@ interface Props {
 
 const CategoryItem: FunctionComponent<Props> = ({ category }: Props) => {
   return (
-    <div className="h-full transform overflow-hidden rounded-xl shadow-lg transition duration-200 ease-in-out hover:scale-105">
+    <div className="h-full transform overflow-hidden shadow-lg transition duration-200 ease-in-out hover:scale-105">
       <div className="mb- h-full bg-opacity-50 bg-gradient-to-r from-blue-700 to-red-700 shadow-none">
         <Link
           href={{

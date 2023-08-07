@@ -10,6 +10,8 @@ const withPWA = require("next-pwa")({
   // disable: process.env.NODE_ENV !== "production",
   mode: process.env.NODE_ENV,
   runtimeCaching,
+  // register: false,
+  // skipWaiting: false,
   fallbacks: {
     image: "/static/fallback.jpg",
     // document: '/other-offline',  // if you want to fallback to a custom page other than /_offline

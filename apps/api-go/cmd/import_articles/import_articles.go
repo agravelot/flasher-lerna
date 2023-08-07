@@ -28,7 +28,12 @@ func processFile(entry os.DirEntry) Post {
 	if err != nil {
 		panic(err)
 	}
-	defer file.Close()
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			panic(err)
+		}
+	}(file)
 
 	scanner := bufio.NewScanner(file)
 	beginHeaderRead := false
@@ -95,7 +100,6 @@ func processFile(entry os.DirEntry) Post {
 }
 
 func main() {
-
 	files, err := os.ReadDir(blogContentPath)
 	if err != nil {
 		panic(err)
@@ -113,6 +117,5 @@ func main() {
 		post := processFile(entry)
 
 		pretty.Log(post)
-
 	}
 }

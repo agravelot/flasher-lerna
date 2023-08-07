@@ -1,82 +1,87 @@
-import { CustomError } from "ts-custom-error";
+import {CustomError} from "ts-custom-error";
 
 export class HttpRequestError extends CustomError {
-  public response: Response;
+    public response: Response;
 
-  constructor(response: Response, message: string) {
-    super(message);
-    this.response = response;
-  }
+    constructor(response: Response, message: string) {
+        super(message);
+        this.response = response;
+    }
 }
 
-export class UnprocessableEntity extends HttpRequestError {}
+export class UnprocessableEntity extends HttpRequestError {
+}
 
-export class HttpNotFound extends HttpRequestError {}
+export class HttpNotFound extends HttpRequestError {
+}
 
 class ApiResponse<T> {
-  public response: Response;
+    public response: Response;
 
-  constructor(response: Response) {
-    this.response = response;
-  }
+    constructor(response: Response) {
+        this.response = response;
+    }
 
-  json = (): Promise<T> => this.response.json();
+    json = (): Promise<T> => this.response.json();
 }
 
 let baseUrl = "";
 
 export const setBaseUrl = (url: string) => {
-  baseUrl = url;
+    baseUrl = url;
 };
 
 export async function api<T>(
-  url: string,
-  init?: RequestInit
+    url: string,
+    init?: RequestInit
 ): Promise<ApiResponse<T>> {
-  init = {
-    ...init,
-    headers: {
-      ...init?.headers,
-      Accept: "application/json",
-    },
-  };
+    init = {
+        ...init,
+        headers: {
+            ...init?.headers,
+            Accept: "application/json",
+        },
+    };
 
-  return fetch(`${baseUrl}${url}`, init).then((response) => {
-    if (response.status === 404) {
-      throw new HttpNotFound(response, response.statusText);
-    }
+    // TODO Dynamic if in browser context
 
-    if (response.status === 422) {
-      throw new UnprocessableEntity(response, response.statusText);
-    }
+    return fetch(`${baseUrl}${url}`, init).then((response) => {
+        if (response.status === 404) {
+            throw new HttpNotFound(response, response.statusText);
+        }
 
-    if (!response.ok) {
-      throw new HttpRequestError(response, response.statusText);
-    }
+        if (response.status === 422) {
+            throw new UnprocessableEntity(response, response.statusText);
+        }
 
-    return new ApiResponse<T>(response);
-  });
+        if (!response.ok) {
+            throw new HttpRequestError(response, response.statusText);
+        }
+
+        return new ApiResponse<T>(response);
+    });
 }
 
 export interface WrappedResponse<T> {
-  data: T;
+    data: T;
 }
 
 export interface MetaPaginatedReponse {
-  current_page: number;
-  from: number;
-  last_page: number;
-  path: string;
-  per_page: number;
-  to: number;
-  total: number;
+    current_page: number;
+    from: number;
+    last_page: number;
+    path: string;
+    per_page: number;
+    to: number;
+    total: number;
 }
+
 export interface PaginatedReponse<T> extends WrappedResponse<T> {
-  links: {
-    first: string;
-    last: string;
-    prev: string | null;
-    next: string | null;
-  };
-  meta: MetaPaginatedReponse;
+    links: {
+        first: string;
+        last: string;
+        prev: string | null;
+        next: string | null;
+    };
+    meta: MetaPaginatedReponse;
 }
