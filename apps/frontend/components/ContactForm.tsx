@@ -6,9 +6,27 @@ interface ContactErrors {
   errors: { email?: string[]; name?: string[]; message?: string[] };
 }
 
-interface ContactFormInputs {
+export interface ContactFormRequestInputs {
   name: string;
+  phone?: string;
   email: string;
+  prestationType: string;
+  location?: string;
+  connect?: string;
+  connectOther?: string;
+  date?: string;
+  weddingPartner?: string;
+  weddingGuests?: string;
+  weddingMoments?: string;
+  weddingMoments1?: string;
+  weddingMoments2?: string;
+  weddingMoments3?: string;
+  weddingMoments4?: string;
+  weddingMoments5?: string;
+  familyMembers?: string;
+  animalType?: string;
+  cosplayName?: string;
+  cosplayUniverse?: string;
   message: string;
 }
 
@@ -19,7 +37,10 @@ const ContactForm: FunctionComponent = () => {
     reset,
     setError,
     formState: { errors, isSubmitSuccessful, isValid, isSubmitting },
-  } = useForm<ContactFormInputs>();
+  const [selectedPrestationType, setSelectedPrestationType] = useState("");
+  const [showOtherConnectType, setShowOtherConnectType] = useState(false);
+
+  const onSubmit = (options: ContactFormRequestInputs) => {
 
   const onSubmit = ({ name, email, message }: ContactFormInputs) => {
     api("/contact", {
