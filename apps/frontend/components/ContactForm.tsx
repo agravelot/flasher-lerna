@@ -98,7 +98,7 @@ const ContactForm: FunctionComponent = () => {
           className="mb-2 block text-xs font-bold uppercase text-gray-700"
           htmlFor="contact_name"
         >
-          Nom
+          Prénom
         </label>
 
         <input
