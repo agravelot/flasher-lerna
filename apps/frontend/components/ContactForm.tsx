@@ -1,6 +1,7 @@
 import { FunctionComponent, useState } from "react";
 import { api, HttpRequestError } from "@flasher/common";
 import { Path, useForm } from "react-hook-form";
+import { ContactInput } from "./ContactInput";
 
 interface ContactErrors {
   errors: { email?: string[]; name?: string[]; message?: string[] };
@@ -18,6 +19,7 @@ interface MatrixField {
   type: string;
   placeholder?: string;
   required?: boolean;
+  balise?: string;
 }
 
 export interface ContactFormRequestInputs {
@@ -139,7 +141,8 @@ const ContactForm: FunctionComponent = () => {
             idHtml: "contact_message",
             label: "Parlez moi de vos attentes",
             type: "text",
-            placeholder: "",
+            balise: "textarea",
+            placeholder: "Ecrivez votre message...",
           },
         ],
     },
@@ -175,7 +178,8 @@ const ContactForm: FunctionComponent = () => {
             idHtml: "contact_message",
             label: "Parlez moi de vos attentes",
             type: "text",
-            placeholder: "",
+            balise: "textarea",
+            placeholder: "Ecrivez votre message...",
           },
         ],
     },
@@ -211,7 +215,8 @@ const ContactForm: FunctionComponent = () => {
             idHtml: "contact_message",
             label: "Parlez moi de vos attentes",
             type: "text",
-            placeholder: "",
+            balise: "textarea",
+            placeholder: "Ecrivez votre message...",
           },
         ],
     },
@@ -247,7 +252,8 @@ const ContactForm: FunctionComponent = () => {
             idHtml: "contact_message",
             label: "Parlez moi de vos attentes",
             type: "text",
-            placeholder: "",
+            balise: "textarea",
+            placeholder: "Ecrivez votre message...",
           },
         ],
     },
@@ -299,7 +305,8 @@ const ContactForm: FunctionComponent = () => {
             idHtml: "contact_message",
             label: "Parlez moi de vos attentes",
             type: "text",
-            placeholder: "",
+            balise: "textarea",
+            placeholder: "Ecrivez votre message...",
           },
         ],
     },
@@ -336,7 +343,8 @@ const ContactForm: FunctionComponent = () => {
             idHtml: "contact_message",
             label: "Parlez moi de vos attentes",
             type: "text",
-            placeholder: "",
+            balise: "textarea",
+            placeholder: "Ecrivez votre message...",
           },
         ],
     },
@@ -364,7 +372,8 @@ const ContactForm: FunctionComponent = () => {
             idHtml: "contact_message",
             label: "Parlez moi de vos attentes",
             type: "text",
-            placeholder: "",
+            balise: "textarea",
+            placeholder: "Ecrivez votre message...",
           },
         ],
           }
@@ -380,7 +389,7 @@ const ContactForm: FunctionComponent = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       {
         matrix.find(formPart => formPart.prestationType === "common")?.fields.map((field) => {
-          return <ContactInput key={field.idForm} register={register} errors={errors} idForm={field.idForm} idHtml={field.idHtml} label={field.label} required={field.required} placeholder={field.placeholder} />;
+          return <ContactInput key={field.idForm} register={register} errors={errors} idForm={field.idForm} idHtml={field.idHtml} label={field.label} required={field.required} placeholder={field.placeholder} inputType={field.type} balise={field.balise} />;
         })
       }
 
