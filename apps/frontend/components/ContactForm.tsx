@@ -1,10 +1,11 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 import { api, HttpRequestError } from "@flasher/common";
-import { useForm } from "react-hook-form";
+import { Path, useForm } from "react-hook-form";
 
 interface ContactErrors {
   errors: { email?: string[]; name?: string[]; message?: string[] };
 }
+
 interface MatrixType {
   prestationType: string;
   fields: MatrixField[];
@@ -50,55 +51,326 @@ const ContactForm: FunctionComponent = () => {
     reset,
     setError,
     formState: { errors, isSubmitSuccessful, isValid, isSubmitting },
+  } = useForm<ContactFormRequestInputs>();
+
   const [selectedPrestationType, setSelectedPrestationType] = useState("");
   const [showOtherConnectType, setShowOtherConnectType] = useState(false);
 
-  const onSubmit = (options: ContactFormRequestInputs) => {
-
-  const onSubmit = ({ name, email, message }: ContactFormInputs) => {
-    api("/contact", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+  const matrix: MatrixType[] = [
+    {
+      prestationType: "common",
+      fields:
+        [
+          {
+            idForm: "name",
+            idHtml: "contact_name",
+            label: "Prénom",
+            type: "text",
+            placeholder: "Nom ou pseudonyme",
       },
-      body: JSON.stringify({
-        name,
-        email,
-        message,
-      }),
-    })
-      .then((res) => res.json())
-      .then(() => {
-        reset();
-      })
-      .catch(async (e: HttpRequestError) => {
-        if (e.response.status === 422) {
-          const data: ContactErrors = await e.response.json();
-          if (data.errors.email) {
-            setError(
-              "email",
-              { message: data.errors.email[0] },
-              { shouldFocus: true }
-            );
+          {
+            idForm: "email",
+            idHtml: "contact_email",
+            label: "Email",
+            type: "text",
+            placeholder: "email@example.com",
+          },
+          {
+            idForm: "phone",
+            idHtml: "contact_phone",
+            label: "Numéro de téléphone",
+            type: "text",
+            placeholder: "06 XX XX XX XX",
+            required: false,
           }
+        ],
+    },
+    {
+      prestationType: "wedding",
+      fields:
+        [
+          {
+            idForm: "location",
+            idHtml: "contact_location",
+            label: "Lieu du mariage",
+            type: "text",
+            placeholder: "Indiquez où se déroule la cérémonie",
+          },
+          {
+            idForm: "date",
+            idHtml: "contact_date",
+            label: "Date du mariage",
+            type: "text",
+            placeholder: "",
+            required: false,
+          },
+          {
+            idForm: "weddingPartner",
+            idHtml: "contact_wedding_partner",
+            label: "Prénom du futur époux/(se)",
+            type: "text",
+            placeholder: "",
+            required: false,
+          },
+          {
+            idForm: "weddingGuests",
+            idHtml: "contact_wedding_guests",
+            label: "Nombre d'invités",
+            type: "text",
+            placeholder: "",
+          },
+          {
+            idForm: "weddingMoments",
+            idHtml: "contact_wedding_moments",
+            label: "Moments d'intervention",
+            type: "text",
+            placeholder: "",
+            required: false,
+          },
+          {
+            idForm: "connect",
+            idHtml: "contact_connect",
+            label: "Comment vous m'avez connue?",
+            type: "text",
+            placeholder: "",
+          },
+          {
+            idForm: "message",
+            idHtml: "contact_message",
+            label: "Parlez moi de vos attentes",
+            type: "text",
+            placeholder: "",
+          },
+        ],
+    },
+    {
+      prestationType: "pregnancy",
+      fields:
+        [
+          {
+            idForm: "location",
+            idHtml: "contact_location",
+            label: "Lieu",
+            type: "text",
+            placeholder: "",
+            required: false
+          },
+          {
+            idForm: "date",
+            idHtml: "contact_date",
+            label: "Date",
+            type: "text",
+            placeholder: "",
+            required: false,
+          },
+          {
+            idForm: "connect",
+            idHtml: "contact_connect",
+            label: "Comment vous m'avez connue?",
+            type: "text",
+            placeholder: "",
+          },
+          {
+            idForm: "message",
+            idHtml: "contact_message",
+            label: "Parlez moi de vos attentes",
+            type: "text",
+            placeholder: "",
+          },
+        ],
+    },
+    {
+      prestationType: "family",
+      fields:
+        [
+          {
+            idForm: "location",
+            idHtml: "contact_location",
+            label: "Lieu",
+            type: "text",
+            placeholder: "",
+            required: false
+          },
+          {
+            idForm: "familyMembers",
+            idHtml: "contact_family_members",
+            label: "Nombre de personnes à prendre en photo",
+            type: "text",
+            placeholder: "",
+            required: true,
+          },
+          {
+            idForm: "connect",
+            idHtml: "contact_connect",
+            label: "Comment vous m'avez connue?",
+            type: "text",
+            placeholder: "",
+          },
+          {
+            idForm: "message",
+            idHtml: "contact_message",
+            label: "Parlez moi de vos attentes",
+            type: "text",
+            placeholder: "",
+          },
+        ],
+    },
+    {
+      prestationType: "animal",
+      fields:
+        [
+          {
+            idForm: "location",
+            idHtml: "contact_location",
+            label: "Lieu",
+            type: "text",
+            placeholder: "",
+            required: false
+          },
+          {
+            idForm: "animalType",
+            idHtml: "contact_animal_type",
+            label: "Type d'animal",
+            type: "text",
+            placeholder: "",
+            required: true,
+          },
+          {
+            idForm: "connect",
+            idHtml: "contact_connect",
+            label: "Comment vous m'avez connue?",
+            type: "text",
+            placeholder: "",
+          },
+          {
+            idForm: "message",
+            idHtml: "contact_message",
+            label: "Parlez moi de vos attentes",
+            type: "text",
+            placeholder: "",
+          },
+        ],
+    },
+    {
+      prestationType: "cosplay",
+      fields:
+        [
+          {
+            idForm: "location",
+            idHtml: "contact_location",
+            label: "Lieu",
+            type: "text",
+            placeholder: "",
+            required: false
+          },
+          {
+            idForm: "date",
+            idHtml: "contact_date",
+            label: "Date",
+            type: "text",
+            placeholder: "",
+            required: false,
+          },
+          {
+            idForm: "cosplayName",
+            idHtml: "contact_cosplay_name",
+            label: "Nom du personnage incarné",
+            type: "text",
+            placeholder: "",
+            required: true,
+          },
+          {
+            idForm: "cosplayUniverse",
+            idHtml: "contact_cosplay_universe",
+            label: "Univers du personnage",
+            type: "text",
+            placeholder: "",
+            required: true,
+          },
+          {
+            idForm: "connect",
+            idHtml: "contact_connect",
+            label: "Comment vous m'avez connue?",
+            type: "text",
+            placeholder: "",
+          },
+          {
+            idForm: "message",
+            idHtml: "contact_message",
+            label: "Parlez moi de vos attentes",
+            type: "text",
+            placeholder: "",
+          },
+        ],
+    },
+    {
+      prestationType: "casual",
+      fields:
+        [
+          {
+            idForm: "location",
+            idHtml: "contact_location",
+            label: "Lieu",
+            type: "text",
+            placeholder: "",
+            required: false
+          },
 
-          if (data.errors.name) {
-            setError(
-              "name",
-              { message: data.errors.name[0] },
-              { shouldFocus: true }
-            );
+          {
+            idForm: "date",
+            idHtml: "contact_date",
+            label: "Date",
+            type: "text",
+            placeholder: "",
+            required: false,
+          },
+          {
+            idForm: "connect",
+            idHtml: "contact_connect",
+            label: "Comment vous m'avez connue?",
+            type: "text",
+            placeholder: "",
+          },
+          {
+            idForm: "message",
+            idHtml: "contact_message",
+            label: "Parlez moi de vos attentes",
+            type: "text",
+            placeholder: "",
+          },
+        ],
+    },
+    {
+      prestationType: "other",
+      fields:
+        [
+          {
+            idForm: "location",
+            idHtml: "contact_location",
+            label: "Lieu",
+            type: "text",
+            placeholder: "",
+            required: false
+          },
+          {
+            idForm: "connect",
+            idHtml: "contact_connect",
+            label: "Comment vous m'avez connue?",
+            type: "text",
+            placeholder: "",
+          },
+          {
+            idForm: "message",
+            idHtml: "contact_message",
+            label: "Parlez moi de vos attentes",
+            type: "text",
+            placeholder: "",
+          },
+        ],
           }
+  ];
 
-          if (data.errors.message) {
-            setError(
-              "message",
-              { message: data.errors.message[0] },
-              { shouldFocus: true }
-            );
-          }
-        }
+  const onSubmit = (options: ContactFormRequestInputs) => {
 
         throw e;
       });
