@@ -378,87 +378,11 @@ const ContactForm: FunctionComponent = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="relative mb-3 w-full">
-        <label
-          className="mb-2 block text-xs font-bold uppercase text-gray-700"
-          htmlFor="contact_name"
-        >
-          Prénom
-        </label>
-
-        <input
-          {...register("name", { required: true })}
-          type="text"
-          id="contact_name"
-          required={true}
-          autoComplete={"true"}
-          className="w-full rounded bg-white px-3 py-3 text-sm text-gray-700 placeholder-gray-400 shadow focus:outline-none focus:ring"
-          placeholder="Nom ou pseudonyme"
-        />
-
-        {errors.name && (
-          <div className="text-xs italic text-red-800">
-            <span className="text-xs italic text-red-800">
-              {errors.name.message}
-            </span>
-          </div>
-        )}
-      </div>
-      <div className="relative mb-3 w-full">
-        <label
-          className="mb-2 block text-xs font-bold uppercase text-gray-700"
-          htmlFor="contact_email"
-        >
-          Email
-        </label>
-        <input
-          {...register("email", { required: true })}
-          name="email"
-          type="email"
-          id="contact_email"
-          required={true}
-          autoComplete={"true"}
-          className="w-full rounded bg-white px-3 py-3 text-sm text-gray-700 placeholder-gray-400 shadow focus:outline-none focus:ring"
-          placeholder="email@example.com"
-          style={{ transition: "all 0.15s ease 0s" }}
-        />
-
-        {errors.email && (
-          <div className="text-xs italic text-red-800">
-            <span className="text-xs italic text-red-800">
-              {errors.email.message}
-            </span>
-          </div>
-        )}
-      </div>
-
-      <div className="relative mb-3 w-full">
-        <label
-          className="mb-2 block text-xs font-bold uppercase text-gray-700"
-          htmlFor="contact_phone"
-        >
-          Numéro de téléphone
-        </label>
-        <input
-          {...register("phone", { required: false })}
-          name="phone"
-          type="text"
-          id="contact_phone"
-          required={false}
-          autoComplete={"true"}
-          className="w-full rounded bg-white px-3 py-3 text-sm text-gray-700 placeholder-gray-400 shadow focus:outline-none focus:ring"
-          placeholder="06XXXXXXXX"
-          style={{ transition: "all 0.15s ease 0s" }}
-        />
-
-        {errors.email && (
-          <div className="text-xs italic text-red-800">
-            <span className="text-xs italic text-red-800">
-              {errors.email.message}
-            </span>
-          </div>
-        )}
-      </div>
+      {
+        matrix.find(formPart => formPart.prestationType === "common")?.fields.map((field) => {
+          return <ContactInput key={field.idForm} register={register} errors={errors} idForm={field.idForm} idHtml={field.idHtml} label={field.label} required={field.required} placeholder={field.placeholder} />;
+        })
+      }
 
       <div className="relative mb-3 w-full">
         <label
