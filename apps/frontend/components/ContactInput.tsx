@@ -10,9 +10,10 @@ interface Props {
     label: string;
     type?: string;
     required?: boolean;
+    placeholder?: string;
 }
 
-export const ContactInput: FC<Props> = ({ register, errors, idForm, idHtml, label, type = "text", required = true }) => {
+export const ContactInput: FC<Props> = ({ register, errors, idForm, idHtml, label, placeholder = "", type = "text", required = true }) => {
     return (
         <div className="relative mb-3 w-full">
             <label
@@ -29,7 +30,7 @@ export const ContactInput: FC<Props> = ({ register, errors, idForm, idHtml, labe
                 required={required}
                 autoComplete={"true"}
                 className="w-full rounded bg-white px-3 py-3 text-sm text-gray-700 placeholder-gray-400 shadow focus:outline-none focus:ring"
-                placeholder="Nom ou pseudonyme"
+                placeholder={placeholder}
             />
 
             {errors[idForm] && (
