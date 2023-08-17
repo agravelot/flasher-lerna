@@ -20,9 +20,8 @@ export const ContactInput: FC<Props> = ({ register, errors, idForm, idHtml, labe
                 className="mb-2 block text-xs font-bold uppercase text-gray-700"
                 htmlFor={idHtml}
             >
-                {label}
+                {label}{(required) ? <div className="inline-block pl-0.5 text-red-700">*</div> : ""}
             </label>
-
             <input
                 {...register(`${idForm}`, { required: required })}
                 type={type}
