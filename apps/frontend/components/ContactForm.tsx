@@ -5,6 +5,19 @@ import { useForm } from "react-hook-form";
 interface ContactErrors {
   errors: { email?: string[]; name?: string[]; message?: string[] };
 }
+interface MatrixType {
+  prestationType: string;
+  fields: MatrixField[];
+}
+
+interface MatrixField {
+  idForm: Path<ContactFormRequestInputs>;
+  idHtml: string;
+  label: string;
+  type: string;
+  placeholder?: string;
+  required?: boolean;
+}
 
 export interface ContactFormRequestInputs {
   name: string;
