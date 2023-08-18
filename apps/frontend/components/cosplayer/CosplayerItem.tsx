@@ -11,7 +11,7 @@ const CosplayerItem: FunctionComponent<Props> = ({ cosplayer }: Props) => {
   return (
     <div className="mx-auto max-w-sm">
       <div className="flex flex-col items-center px-6 py-4 md:flex-row">
-        <Avatar name={cosplayer.name} src={cosplayer.avatar?.url} />
+        <Avatar name={cosplayer.name} src={cosplayer.avatar?.url} width={cosplayer.avatar?.width} height={cosplayer.avatar?.height} />
         <div className="mt-4 text-center md:mt-0 md:ml-4 md:text-left">
           <div className="text-xl leading-tight">{cosplayer.name}</div>
           <div className="text-sm leading-tight text-gray-800">Modèle</div>
