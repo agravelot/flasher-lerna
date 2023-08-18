@@ -777,6 +777,25 @@ const ContactForm: FunctionComponent = () => {
         )}
       </div>
       {
+        matrix.find(formPart => formPart.prestationType === selectedPrestationType)?.fields.map((field) => {
+          return <ContactInput
+            key={field.idForm}
+            register={register}
+            errors={errors}
+            idForm={field.idForm}
+            idHtml={field.idHtml}
+            label={field.label}
+            required={field.required}
+            placeholder={field.placeholder}
+            inputType={field.type}
+            tag={field.tag}
+            checkboxLabel={field.checkboxLabel}
+            checkboxTitle={field.checkboxTitle}
+            checkboxValue={field.checkboxValue}
+            selectOptions={field.selectOptions}
+          />;
+        })
+      }
         selectedPrestationType != "" ?
           <div className="relative mb-3 w-full">
             <label
