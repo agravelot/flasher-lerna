@@ -42,7 +42,7 @@ export const ContactInput: FC<Props> = ({ register, errors, idForm, idHtml, labe
                     <input
                         {...register(`${idForm}`, { required: required })}
                         name={idForm}
-                        type={inputType}
+            }
                         id={idHtml}
                         required={required}
                         autoComplete={"true"}
