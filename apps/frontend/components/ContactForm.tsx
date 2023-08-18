@@ -12,6 +12,11 @@ interface MatrixType {
   fields: MatrixField[];
 }
 
+export interface SelectOption {
+  label: string;
+  value: string;
+}
+
 interface MatrixField {
   idForm: Path<ContactFormRequestInputs>;
   idHtml: string;
@@ -23,6 +28,7 @@ interface MatrixField {
   checkboxTitle?: boolean;
   checkboxValue?: string;
   checkboxLabel?: string;
+  selectOptions?: SelectOption[]
 }
 
 export interface ContactFormRequestInputs {
@@ -458,6 +464,7 @@ const ContactForm: FunctionComponent = () => {
             checkboxLabel={field.checkboxLabel}
             checkboxTitle={field.checkboxTitle}
             checkboxValue={field.checkboxValue}
+            selectOptions={field.selectOptions}
           />;
         })
       }
