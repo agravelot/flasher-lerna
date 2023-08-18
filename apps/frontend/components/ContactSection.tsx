@@ -41,10 +41,10 @@ export const ContactSection: FunctionComponent = () => {
           </div>
         </div>
       </div>
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto">
         <div className="flex flex-wrap justify-center">
-          <div className="w-full px-4 lg:w-6/12">
-            <div className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded-lg bg-gray-300 shadow-lg">
+          <div className="w-full lg:w-3/5">
+            <div className="mb-6 flex w-full min-w-0 flex-col break-words sm:rounded-lg bg-gray-300 shadow-lg">
               <div className="flex-auto p-5 lg:p-10">
                 <div className="flex justify-center">
                   <h3 className="mb-4 text-xl font-medium">
