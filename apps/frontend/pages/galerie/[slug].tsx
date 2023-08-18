@@ -148,11 +148,11 @@ const ShowAlbum: NextPage<Props> = ({
       )}
 
       <div className="container mx-auto">
-        <div className="prose max-w-none px-4 pt-8">
+        <div className="prose prose-stone max-w-none px-4 pt-8">
           {album.body && <ReadingTime body={album.body} />}
         </div>
         <article>
-          <div className="prose flex max-w-none content-center justify-center px-4 pb-16 text-justify">
+          <div className="prose prose-stone flex max-w-none content-center justify-center px-4 pb-16 text-justify">
             <div dangerouslySetInnerHTML={{ __html: album.body ?? "" }} />
           </div>
           <div

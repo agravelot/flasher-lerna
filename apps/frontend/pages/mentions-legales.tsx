@@ -70,7 +70,7 @@ const IndexPage: NextPage<Props> = ({
 
       <div className="container mx-auto">
         <div className="flex justify-center py-16 px-4 text-justify">
-          <article className="prose prose-sm max-w-none content-center sm:prose lg:prose-lg xl:prose-xl">
+          <article className="prose prose-stone prose-sm max-w-none content-center sm:prose lg:prose-lg xl:prose-xl">
             <MDXRemote {...content} components={components} />
           </article>
         </div>
