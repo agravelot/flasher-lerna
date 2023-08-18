@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { FieldErrors, Path, UseFormRegister } from "react-hook-form";
 import { ContactFormRequestInputs, SelectOption } from "./ContactForm";
 
@@ -34,7 +34,6 @@ export const ContactInput: FC<Props> = ({ register, errors, idForm, idHtml, labe
                 <textarea
                     {...register(`${idForm}`, { required: required })}
                     name={idForm}
-                    type={inputType}
                     id={idHtml}
                     required={required}
                     rows={8}
