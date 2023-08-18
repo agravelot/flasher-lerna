@@ -688,8 +688,32 @@ const ContactForm: FunctionComponent = () => {
 
   const onSubmit = (options: ContactFormRequestInputs) => {
 
-        throw e;
+    let message = "";
+
+    matrix.find(formPart => formPart.prestationType === "common")?.fields.map((field) => {
+      if (options[field.idForm] != "") {
+        message += `${field.label} : ${options[field.idForm]} \r\n`;
+      }
       });
+
+    matrix.find(formPart => formPart.prestationType === selectedPrestationType)?.fields.map((field) => {
+      if (options[field.idForm] !== "") {
+        switch (field.tag) {
+          case "select": {
+            const answer = field.selectOptions?.find(option => option.value === options[field.idForm]);
+            message += `${field.label} : ${answer?.label} \r\n`;
+            break;
+          }
+          case "checkbox":
+            message += `${field.label} - ${field.checkboxLabel} : ${(options[field.idForm] ? "Oui" : "Non")} \r\n`;
+            break;
+          default:
+            message += `${field.label} : ${options[field.idForm]} \r\n`;
+            break;
+        }
+      }
+
+    });
   };
 
   return (
