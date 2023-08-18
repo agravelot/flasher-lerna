@@ -193,9 +193,44 @@ const ContactForm: FunctionComponent = () => {
           {
             idForm: "connect",
             idHtml: "contact_connect",
-            label: "Comment vous m'avez connue?",
+            label: "Comment m'avez vous connue?",
+            type: "text",
+            tag: "select",
+            placeholder: "",
+            required: false,
+            selectOptions: [
+              {
+                label: "Sélectionner une option",
+                value: "",
+              },
+              {
+                label: "Bouche à oreille",
+                value: "wordOfMouth",
+              },
+              {
+                label: "Google",
+                value: "google",
+              },
+              {
+                label: "Facebook",
+                value: "facebook",
+              },
+              {
+                label: "Instagram",
+                value: "instagram",
+              },
+              {
+                label: "Autre",
+                value: "other",
+              },
+            ],
+          }, {
+            idForm: "connectOther",
+            idHtml: "contact_connect_other",
+            label: "Si Autre, préciser",
             type: "text",
             placeholder: "",
+            required: false
           },
           {
             idForm: "message",
@@ -230,9 +265,44 @@ const ContactForm: FunctionComponent = () => {
           {
             idForm: "connect",
             idHtml: "contact_connect",
-            label: "Comment vous m'avez connue?",
+            label: "Comment m'avez vous connue?",
+            type: "text",
+            tag: "select",
+            placeholder: "",
+            required: false,
+            selectOptions: [
+              {
+                label: "Sélectionner une option",
+                value: "",
+              },
+              {
+                label: "Bouche à oreille",
+                value: "wordOfMouth",
+              },
+              {
+                label: "Google",
+                value: "google",
+              },
+              {
+                label: "Facebook",
+                value: "facebook",
+              },
+              {
+                label: "Instagram",
+                value: "instagram",
+              },
+              {
+                label: "Autre",
+                value: "other",
+              },
+            ],
+          }, {
+            idForm: "connectOther",
+            idHtml: "contact_connect_other",
+            label: "Si Autre, préciser",
             type: "text",
             placeholder: "",
+            required: false
           },
           {
             idForm: "message",
@@ -267,9 +337,44 @@ const ContactForm: FunctionComponent = () => {
           {
             idForm: "connect",
             idHtml: "contact_connect",
-            label: "Comment vous m'avez connue?",
+            label: "Comment m'avez vous connue?",
+            type: "text",
+            tag: "select",
+            placeholder: "",
+            required: false,
+            selectOptions: [
+              {
+                label: "Sélectionner une option",
+                value: "",
+              },
+              {
+                label: "Bouche à oreille",
+                value: "wordOfMouth",
+              },
+              {
+                label: "Google",
+                value: "google",
+              },
+              {
+                label: "Facebook",
+                value: "facebook",
+              },
+              {
+                label: "Instagram",
+                value: "instagram",
+              },
+              {
+                label: "Autre",
+                value: "other",
+              },
+            ],
+          }, {
+            idForm: "connectOther",
+            idHtml: "contact_connect_other",
+            label: "Si Autre, préciser",
             type: "text",
             placeholder: "",
+            required: false
           },
           {
             idForm: "message",
@@ -304,9 +409,44 @@ const ContactForm: FunctionComponent = () => {
           {
             idForm: "connect",
             idHtml: "contact_connect",
-            label: "Comment vous m'avez connue?",
+            label: "Comment m'avez vous connue?",
+            type: "text",
+            tag: "select",
+            placeholder: "",
+            required: false,
+            selectOptions: [
+              {
+                label: "Sélectionner une option",
+                value: "",
+              },
+              {
+                label: "Bouche à oreille",
+                value: "wordOfMouth",
+              },
+              {
+                label: "Google",
+                value: "google",
+              },
+              {
+                label: "Facebook",
+                value: "facebook",
+              },
+              {
+                label: "Instagram",
+                value: "instagram",
+              },
+              {
+                label: "Autre",
+                value: "other",
+              },
+            ],
+          }, {
+            idForm: "connectOther",
+            idHtml: "contact_connect_other",
+            label: "Si Autre, préciser",
             type: "text",
             placeholder: "",
+            required: false
           },
           {
             idForm: "message",
@@ -357,9 +497,44 @@ const ContactForm: FunctionComponent = () => {
           {
             idForm: "connect",
             idHtml: "contact_connect",
-            label: "Comment vous m'avez connue?",
+            label: "Comment m'avez vous connue?",
+            type: "text",
+            tag: "select",
+            placeholder: "",
+            required: false,
+            selectOptions: [
+              {
+                label: "Sélectionner une option",
+                value: "",
+              },
+              {
+                label: "Bouche à oreille",
+                value: "wordOfMouth",
+              },
+              {
+                label: "Google",
+                value: "google",
+              },
+              {
+                label: "Facebook",
+                value: "facebook",
+              },
+              {
+                label: "Instagram",
+                value: "instagram",
+              },
+              {
+                label: "Autre",
+                value: "other",
+              },
+            ],
+          }, {
+            idForm: "connectOther",
+            idHtml: "contact_connect_other",
+            label: "Si Autre, préciser",
             type: "text",
             placeholder: "",
+            required: false
           },
           {
             idForm: "message",
@@ -395,9 +570,44 @@ const ContactForm: FunctionComponent = () => {
           {
             idForm: "connect",
             idHtml: "contact_connect",
-            label: "Comment vous m'avez connue?",
+            label: "Comment m'avez vous connue?",
+            type: "text",
+            tag: "select",
+            placeholder: "",
+            required: false,
+            selectOptions: [
+              {
+                label: "Sélectionner une option",
+                value: "",
+              },
+              {
+                label: "Bouche à oreille",
+                value: "wordOfMouth",
+              },
+              {
+                label: "Google",
+                value: "google",
+              },
+              {
+                label: "Facebook",
+                value: "facebook",
+              },
+              {
+                label: "Instagram",
+                value: "instagram",
+              },
+              {
+                label: "Autre",
+                value: "other",
+              },
+            ],
+          }, {
+            idForm: "connectOther",
+            idHtml: "contact_connect_other",
+            label: "Si Autre, préciser",
             type: "text",
             placeholder: "",
+            required: false
           },
           {
             idForm: "message",
@@ -424,9 +634,44 @@ const ContactForm: FunctionComponent = () => {
           {
             idForm: "connect",
             idHtml: "contact_connect",
-            label: "Comment vous m'avez connue?",
+            label: "Comment m'avez vous connue?",
+            type: "text",
+            tag: "select",
+            placeholder: "",
+            required: false,
+            selectOptions: [
+              {
+                label: "Sélectionner une option",
+                value: "",
+              },
+              {
+                label: "Bouche à oreille",
+                value: "wordOfMouth",
+              },
+              {
+                label: "Google",
+                value: "google",
+              },
+              {
+                label: "Facebook",
+                value: "facebook",
+              },
+              {
+                label: "Instagram",
+                value: "instagram",
+              },
+              {
+                label: "Autre",
+                value: "other",
+              },
+            ],
+          }, {
+            idForm: "connectOther",
+            idHtml: "contact_connect_other",
+            label: "Si Autre, préciser",
             type: "text",
             placeholder: "",
+            required: false
           },
           {
             idForm: "message",
@@ -435,6 +680,7 @@ const ContactForm: FunctionComponent = () => {
             type: "text",
             tag: "textarea",
             placeholder: "Ecrivez votre message...",
+
           },
         ],
           }
