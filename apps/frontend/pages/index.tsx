@@ -64,9 +64,17 @@ const IndexPage: NextPage<Props> = ({
         ]}
       />
       <div>
-        <Header title={appName} separatorClass="text-white" />
+        <Header title={appName} separatorClass="text-white" >
+          <div className="flex flex-wrap justify-center text-center">
+            <div className="w-full lg:w-6/12">
+                <h2 className="text-white font-semibold drop-shadow-lg">
+                        {"UN REGARD ATTENTIF, DES MOMENTS MAGIQUES..."}
+                </h2>
+            </div>
+            </div>
+        </Header>
          <section className="container mx-auto py-8">
-          <div className="prose max-w-none text-justify leading-relaxed">
+          <div className="prose prose-stone max-w-none text-justify leading-relaxed">
             <p>Mes photos reflètent une harmonie subtile de diverses émotions, faisant de chacune d'elles une véritable expression de mon style unique. J'apprécie particulièrement jouer avec ces différentes thématiques pour laisser libre cours à mon imagination débordante. Laissez vous emporter par la magie de mes clichés qui racontent des histoires uniques et captivantes.</p>
           </div>
           <div className="flex flex-wrap px--4">
@@ -99,7 +107,7 @@ const IndexPage: NextPage<Props> = ({
                     <span className="mx-auto mb-4 inline-block h-1 w-16 rounded bg-gradient-to-r from-blue-700 to-red-700"></span>
                   </div>
                   <div
-                    className="prose mt-4 max-w-none text-justify leading-relaxed"
+                    className="prose prose-stone mt-4 max-w-none text-justify leading-relaxed"
                     dangerouslySetInnerHTML={{
                       __html: homepageDescription,
                     }}
