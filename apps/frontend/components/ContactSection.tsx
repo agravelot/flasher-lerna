@@ -49,7 +49,7 @@ export const ContactSection: FunctionComponent = () => {
             <div className="relative mb-6 flex w-full min-w-0 flex-col break-words rounded-lg bg-gray-300 shadow-lg">
               <div className="flex-auto p-5 lg:p-10">
                 <div className="flex justify-center">
-                  <h3 className="my-4 text-xl font-medium">
+                  <h3 className="mb-4 text-xl font-medium">
                     Formulaire de contact
                   </h3>
                 </div>
