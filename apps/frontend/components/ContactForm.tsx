@@ -19,7 +19,10 @@ interface MatrixField {
   type: string;
   placeholder?: string;
   required?: boolean;
-  balise?: string;
+  tag?: string;
+  checkboxTitle?: boolean;
+  checkboxValue?: string;
+  checkboxLabel?: string;
 }
 
 export interface ContactFormRequestInputs {
@@ -122,12 +125,64 @@ const ContactForm: FunctionComponent = () => {
             placeholder: "",
           },
           {
-            idForm: "weddingMoments",
-            idHtml: "contact_wedding_moments",
+            idForm: "weddingMoments1",
+            idHtml: "contact_wedding_moments1",
             label: "Moments d'intervention",
-            type: "text",
+            type: "checkbox",
             placeholder: "",
             required: false,
+            checkboxLabel: "Préparatifs",
+            checkboxTitle: true,
+            checkboxValue: "prepare",
+            tag: "checkbox"
+          },
+          {
+            idForm: "weddingMoments2",
+            idHtml: "contact_wedding_moments2",
+            label: "Moments d'intervention",
+            type: "checkbox",
+            placeholder: "",
+            required: false,
+            checkboxLabel: "Cérémonie(s)",
+            checkboxTitle: false,
+            checkboxValue: "ceremony",
+            tag: "checkbox"
+          },
+          {
+            idForm: "weddingMoments3",
+            idHtml: "contact_wedding_moments3",
+            label: "Moments d'intervention",
+            type: "checkbox",
+            placeholder: "",
+            required: false,
+            checkboxLabel: "Cocktail",
+            checkboxTitle: false,
+            checkboxValue: "cocktail",
+            tag: "checkbox"
+          },
+          {
+            idForm: "weddingMoments4",
+            idHtml: "contact_wedding_moments4",
+            label: "Moments d'intervention",
+            type: "checkbox",
+            placeholder: "",
+            required: false,
+            checkboxLabel: "Dîner et soirée",
+            checkboxTitle: false,
+            checkboxValue: "dinner",
+            tag: "checkbox"
+          },
+          {
+            idForm: "weddingMoments5",
+            idHtml: "contact_wedding_moments5",
+            label: "Moments d'intervention",
+            type: "checkbox",
+            placeholder: "",
+            required: false,
+            checkboxLabel: "Autre",
+            checkboxTitle: false,
+            checkboxValue: "other",
+            tag: "checkbox"
           },
           {
             idForm: "connect",
@@ -141,7 +196,7 @@ const ContactForm: FunctionComponent = () => {
             idHtml: "contact_message",
             label: "Parlez moi de vos attentes",
             type: "text",
-            balise: "textarea",
+            tag: "textarea",
             placeholder: "Ecrivez votre message...",
           },
         ],
@@ -178,7 +233,7 @@ const ContactForm: FunctionComponent = () => {
             idHtml: "contact_message",
             label: "Parlez moi de vos attentes",
             type: "text",
-            balise: "textarea",
+            tag: "textarea",
             placeholder: "Ecrivez votre message...",
           },
         ],
@@ -215,7 +270,7 @@ const ContactForm: FunctionComponent = () => {
             idHtml: "contact_message",
             label: "Parlez moi de vos attentes",
             type: "text",
-            balise: "textarea",
+            tag: "textarea",
             placeholder: "Ecrivez votre message...",
           },
         ],
@@ -252,7 +307,7 @@ const ContactForm: FunctionComponent = () => {
             idHtml: "contact_message",
             label: "Parlez moi de vos attentes",
             type: "text",
-            balise: "textarea",
+            tag: "textarea",
             placeholder: "Ecrivez votre message...",
           },
         ],
@@ -305,7 +360,7 @@ const ContactForm: FunctionComponent = () => {
             idHtml: "contact_message",
             label: "Parlez moi de vos attentes",
             type: "text",
-            balise: "textarea",
+            tag: "textarea",
             placeholder: "Ecrivez votre message...",
           },
         ],
@@ -343,7 +398,7 @@ const ContactForm: FunctionComponent = () => {
             idHtml: "contact_message",
             label: "Parlez moi de vos attentes",
             type: "text",
-            balise: "textarea",
+            tag: "textarea",
             placeholder: "Ecrivez votre message...",
           },
         ],
@@ -372,7 +427,7 @@ const ContactForm: FunctionComponent = () => {
             idHtml: "contact_message",
             label: "Parlez moi de vos attentes",
             type: "text",
-            balise: "textarea",
+            tag: "textarea",
             placeholder: "Ecrivez votre message...",
           },
         ],
