@@ -444,7 +444,12 @@ const ContactForm: FunctionComponent = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       {
         matrix.find(formPart => formPart.prestationType === "common")?.fields.map((field) => {
-          return <ContactInput key={field.idForm} register={register} errors={errors} idForm={field.idForm} idHtml={field.idHtml} label={field.label} required={field.required} placeholder={field.placeholder} inputType={field.type} balise={field.balise} />;
+            inputType={field.type}
+            tag={field.tag}
+            checkboxLabel={field.checkboxLabel}
+            checkboxTitle={field.checkboxTitle}
+            checkboxValue={field.checkboxValue}
+          />;
         })
       }
 

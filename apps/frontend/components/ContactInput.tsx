@@ -8,13 +8,16 @@ interface Props {
     idForm: Path<ContactFormRequestInputs>;
     idHtml: string;
     label: string;
-    balise?: string;
+    tag?: string;
     inputType?: string;
     required?: boolean;
     placeholder?: string;
+    checkboxValue?: string;
+    checkboxTitle?: boolean;
+    checkboxLabel?: string;
 }
 
-export const ContactInput: FC<Props> = ({ register, errors, idForm, idHtml, label, balise = "input", placeholder = "", inputType = "text", required = true }) => {
+export const ContactInput: FC<Props> = ({ register, errors, idForm, idHtml, label, tag = "input", inputType = "text", required = true, placeholder = "", checkboxTitle = false, checkboxValue = "", checkboxLabel = "" }) => {
     return (
         <div className="relative mb-3 w-full">
             <label
