@@ -10,12 +10,10 @@ export const ContactSection: FunctionComponent = () => {
         <div className="flex flex-wrap justify-center text-center">
           <div className="w-full px-4 lg:w-6/12">
             <h2 className="text-4xl font-semibold text-white">
-              Envie de réaliser un projet ?
+              Pourquoi pas vous ?
             </h2>
             <p className="mt-4 mb-4 text-lg leading-relaxed text-gray-200">
-              Réservez votre séance photo grâce à ce formulaire de contact !
-              N’hésitez pas non plus à poser vos questions si vous en avez grâce
-              à celui-ci. Je vous répondrai dans les 24 heures.
+              D'autres avant vous ont fait le grand saut, pourquoi pas vous ? En couple, en famille, seul(e), faites vous plaisir. Chaque prestations est unique, alors, faisons ce petit bout de chemin ensemble, cela vous tente ?
             </p>
             <div className="flex text-white">
               <div className="mx-auto flex">
