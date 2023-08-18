@@ -10,8 +10,8 @@ interface Props {
 
 const CategoryItem: FunctionComponent<Props> = ({ category }: Props) => {
   return (
-    <div className="h-full transform overflow-hidden shadow-lg transition duration-200 ease-in-out hover:scale-105">
-      <div className="mb- h-full bg-opacity-50 bg-gradient-to-r from-blue-700 to-red-700 shadow-none">
+    <div className="group h-full transform overflow-hidden shadow-lg transition duration-200 ease-in-out hover:scale-105">
+      <div className={category.cover ? "" : "h-full bg-opacity-50 bg-gradient-to-r from-blue-700 to-red-700 shadow-none"}>
         <Link
           href={{
             pathname: "/categories/[slug]",
@@ -20,10 +20,8 @@ const CategoryItem: FunctionComponent<Props> = ({ category }: Props) => {
         >
           {category.cover && (
             <div className="absolute top-0 h-full w-full bg-cover bg-center">
-              <span className="absolute h-full w-full bg-black" />
               <Image
-                style={{ filter: "brightness(80%)" }}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-cover brightness-75 group-hover:blur-md"
                 src={category.cover.url}
                 alt={category.name}
                 width={category.cover.width ?? 10}
