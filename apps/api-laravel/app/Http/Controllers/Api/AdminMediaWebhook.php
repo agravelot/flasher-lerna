@@ -22,9 +22,12 @@ class AdminMediaWebhook extends Controller
 
         $remote = config('app.tusd_endpoint').$request->json('HTTPRequest.URI');
 
+        [$width, $height] = getimagesize($remote->getRealPath());
+
         $media = $album->addMediaFromUrl($remote)
             ->usingFileName($request->json('Upload.MetaData.filename'))
             ->preservingOriginal()
+            ->withCustomProperties(['width' => $width, 'height' => $height])
             ->toMediaCollectionOnCloudDisk(Album::PICTURES_COLLECTION);
 
         return (new UploadMediaCompletedResource($media))

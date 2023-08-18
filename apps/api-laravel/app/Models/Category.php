@@ -59,9 +59,12 @@ class Category extends Model implements HasMedia
             return null;
         }
 
+        [$width, $height] = getimagesize($media->getRealPath());
+
         return $this->addMedia($media)
             ->usingFileName("{$this->slug}.{$media->clientExtension()}")
             ->preservingOriginal()
+            ->withCustomProperties(['width' => $width, 'height' => $height])
             ->toMediaCollectionOnCloudDisk(self::COVER_COLLECTION);
     }
 
@@ -71,9 +74,9 @@ class Category extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection(self::COVER_COLLECTION)
-            ->acceptsFile(static function (File $file) {
-                return mb_strpos($file->mimeType, 'image/') === 0;
-            })
+         ->acceptsFile(static function (File $file) {
+             return Str::startsWith($file->mimeType, 'image/');
+         })
             ->singleFile();
     }
 

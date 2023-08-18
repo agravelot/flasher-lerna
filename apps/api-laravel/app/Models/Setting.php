@@ -91,8 +91,11 @@ class Setting extends Model implements HasMedia
     public function setValueAttribute($value): void
     {
         if ($value instanceof \Symfony\Component\HttpFoundation\File\File) {
+            [$width, $height] = getimagesize($value->getRealPath());
+
             $this->addMedia($value)
                 ->preservingOriginal()
+                ->withCustomProperties(['width' => $width, 'height' => $height])
                 ->toMediaCollectionOnCloudDisk(self::SETTING_COLLECTION);
 
             $this->attributes['value'] = null;
@@ -111,7 +114,7 @@ class Setting extends Model implements HasMedia
         $this->addMediaCollection(self::SETTING_COLLECTION)
             ->singleFile()
             ->acceptsFile(static function (File $file) {
-                return mb_strpos($file->mimeType, 'image/') === 0;
+                return Str::startsWith($file->mimeType, 'image/');
             });
     }
 }

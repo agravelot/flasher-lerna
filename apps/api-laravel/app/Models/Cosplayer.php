@@ -72,9 +72,12 @@ class Cosplayer extends Model implements HasMedia
             return;
         }
 
+        [$width, $height] = getimagesize($media->getRealPath());
+
         $this->addMedia($media)
             ->usingFileName("{$this->slug}.{$media->clientExtension()}")
             ->preservingOriginal()
+            ->withCustomProperties(['width' => $width, 'height' => $height])
             ->toMediaCollectionOnCloudDisk(self::AVATAR_COLLECTION);
     }
 
