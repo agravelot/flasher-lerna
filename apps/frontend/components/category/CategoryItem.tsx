@@ -26,8 +26,8 @@ const CategoryItem: FunctionComponent<Props> = ({ category }: Props) => {
                 className="h-full w-full object-cover"
                 src={category.cover.url}
                 alt={category.name}
-                width={category.cover.width}
-                height={category.cover.height}
+                width={category.cover.width ?? 10}
+                height={category.cover.height ?? 10}
                 sizes={sizes(3, "container")}
                 draggable={false}
               />
