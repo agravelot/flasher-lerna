@@ -74,7 +74,7 @@ const IndexPage: NextPage<Props> = ({
             </div>
         </Header>
          <section className="container mx-auto py-8">
-          <div className="prose prose-stone max-w-none text-justify leading-relaxed">
+          <div className="prose prose-stone max-w-none text-justify leading-relaxed sm:px-0 px-4">
             <p>Mes photos reflètent une harmonie subtile de diverses émotions, faisant de chacune d'elles une véritable expression de mon style unique. J'apprécie particulièrement jouer avec ces différentes thématiques pour laisser libre cours à mon imagination débordante. Laissez vous emporter par la magie de mes clichés qui racontent des histoires uniques et captivantes.</p>
           </div>
           <div className="flex flex-wrap px--4">
@@ -82,7 +82,7 @@ const IndexPage: NextPage<Props> = ({
           </div>
         </section>
        
-        <section>
+        <section className="mb-8">
           <div className="container mx-auto">
             <div className="block items-center md:flex md:flex-wrap">
               {profilePictureHomepage && (
@@ -100,14 +100,14 @@ const IndexPage: NextPage<Props> = ({
               )}
               <div className="ml-auto mr-auto w-full md:w-1/2">
                 <div className="md:pr-12">
-                  <h2 className="text-3xl font-semibold">
+                  <h2 className="text-3xl font-semibold sm:px-0 px-4">
                     Qui suis-je ?
                   </h2>
-                  <div className="mt-2">
+                  <div className="mt-2 sm:px-0 px-4">
                     <span className="mx-auto mb-4 inline-block h-1 w-16 rounded bg-gradient-to-r from-blue-700 to-red-700"></span>
                   </div>
                   <div
-                    className="prose prose-stone mt-4 max-w-none text-justify leading-relaxed"
+                    className="prose prose-stone mt-4 max-w-none text-justify leading-relaxed sm:px-0 px-4"
                     dangerouslySetInnerHTML={{
                       __html: homepageDescription,
                     }}
@@ -117,44 +117,44 @@ const IndexPage: NextPage<Props> = ({
             </div>
           </div>
         </section>
-        <section id="testimonials" className="p-12 lg:pb-24">
-          <div className="container mx-auto">
-            <div className="flex flex-wrap justify-center text-center">
-              <div className="w-full lg:w-6/12">
-                <h2 className="text-4xl font-semibold">
-                  <span>
-                    {"Ils sont "}
-                    <span
-                      className="bg-gradient-to-r from-blue-700 to-red-700 bg-clip-text text-transparent shadow-none"
-                      style={{
-                        WebkitBackgroundClip: "text",
-                      }}
-                    >
-                      ravis
-                    </span>
-                  </span>
-                </h2>
-                <span className="mb-4 inline-block h-1 w-10 rounded bg-gradient-to-r from-blue-700 to-red-700" />
-                <p className="m-4 text-lg leading-relaxed">
-                  Vous avez aimer partager cette aventure avec moi ? N’hésitez
-                  pas à en laisser une trace, cela fait toujours plaisir.
-                </p>
-              </div>
-            </div>
-            <div className="body-font">
-              <TestimonialList testimonials={testimonials} appName={appName} />
-            </div>
-            {/* <div className="flex items-center">
-              <button
-                className="my-8 bg-gradient-to-r mx-auto from-blue-700 to-red-700 hover:from-pink-500 hover:to-orange-500 text-white font-semibold py-3 px-10 rounded-lg"
-                onClick={() => toggleTestimonialModal()}
-                tabIndex={0}
-              >
-                Ajouter mon message
-              </button>
-            </div> */}
-          </div>
-        </section>
+        {/*<section id="testimonials" className="p-12 lg:pb-24">*/}
+        {/*  <div className="container mx-auto">*/}
+        {/*    <div className="flex flex-wrap justify-center text-center">*/}
+        {/*      <div className="w-full lg:w-6/12">*/}
+        {/*        <h2 className="text-4xl font-semibold">*/}
+        {/*          <span>*/}
+        {/*            {"Ils sont "}*/}
+        {/*            <span*/}
+        {/*              className="bg-gradient-to-r from-blue-700 to-red-700 bg-clip-text text-transparent shadow-none"*/}
+        {/*              style={{*/}
+        {/*                WebkitBackgroundClip: "text",*/}
+        {/*              }}*/}
+        {/*            >*/}
+        {/*              ravis*/}
+        {/*            </span>*/}
+        {/*          </span>*/}
+        {/*        </h2>*/}
+        {/*        <span className="mb-4 inline-block h-1 w-10 rounded bg-gradient-to-r from-blue-700 to-red-700" />*/}
+        {/*        <p className="m-4 text-lg leading-relaxed">*/}
+        {/*          Vous avez aimer partager cette aventure avec moi ? N’hésitez*/}
+        {/*          pas à en laisser une trace, cela fait toujours plaisir.*/}
+        {/*        </p>*/}
+        {/*      </div>*/}
+        {/*    </div>*/}
+        {/*    <div className="body-font">*/}
+        {/*      <TestimonialList testimonials={testimonials} appName={appName} />*/}
+        {/*    </div>*/}
+        {/*    /!* <div className="flex items-center">*/}
+        {/*      <button*/}
+        {/*        className="my-8 bg-gradient-to-r mx-auto from-blue-700 to-red-700 hover:from-pink-500 hover:to-orange-500 text-white font-semibold py-3 px-10 rounded-lg"*/}
+        {/*        onClick={() => toggleTestimonialModal()}*/}
+        {/*        tabIndex={0}*/}
+        {/*      >*/}
+        {/*        Ajouter mon message*/}
+        {/*      </button>*/}
+        {/*    </div> *!/*/}
+        {/*  </div>*/}
+        {/*</section>*/}
         <ContactSection />
       </div>
     </Layout>
