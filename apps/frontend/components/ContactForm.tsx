@@ -9,6 +9,7 @@ interface ContactErrors {
 
 interface MatrixType {
   prestationType: string;
+  prestationName: string;
   fields: MatrixField[];
 }
 
@@ -70,6 +71,7 @@ const ContactForm: FunctionComponent = () => {
   const matrix: MatrixType[] = [
     {
       prestationType: "common",
+      prestationName: "Commun",
       fields:
         [
           {
@@ -98,6 +100,7 @@ const ContactForm: FunctionComponent = () => {
     },
     {
       prestationType: "wedding",
+      prestationName: "Mariage",
       fields:
         [
           {
@@ -244,6 +247,7 @@ const ContactForm: FunctionComponent = () => {
     },
     {
       prestationType: "pregnancy",
+      prestationName: "Grossesse",
       fields:
         [
           {
@@ -316,6 +320,7 @@ const ContactForm: FunctionComponent = () => {
     },
     {
       prestationType: "family",
+      prestationName: "Familial",
       fields:
         [
           {
@@ -388,6 +393,7 @@ const ContactForm: FunctionComponent = () => {
     },
     {
       prestationType: "animal",
+      prestationName: "Animalier",
       fields:
         [
           {
@@ -460,6 +466,7 @@ const ContactForm: FunctionComponent = () => {
     },
     {
       prestationType: "cosplay",
+      prestationName: "Cosplay",
       fields:
         [
           {
@@ -548,6 +555,7 @@ const ContactForm: FunctionComponent = () => {
     },
     {
       prestationType: "casual",
+      prestationName: "Casual",
       fields:
         [
           {
@@ -621,6 +629,7 @@ const ContactForm: FunctionComponent = () => {
     },
     {
       prestationType: "other",
+      prestationName: "Autre",
       fields:
         [
           {
