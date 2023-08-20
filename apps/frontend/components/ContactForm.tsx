@@ -696,14 +696,19 @@ const ContactForm: FunctionComponent = () => {
   ];
 
   const onSubmit = (options: ContactFormRequestInputs) => {
-
+    const email = options.email;
+    const name = options.name;
     let message = "";
 
     matrix.find(formPart => formPart.prestationType === "common")?.fields.map((field) => {
-      if (options[field.idForm] != "") {
+      if (options[field.idForm] != "" && field.idForm != "email" && field.idForm != "name") {
         message += `${field.label} : ${options[field.idForm]} \r\n`;
       }
       });
+
+    const prestationName = matrix.find(formPart => formPart.prestationType === selectedPrestationType)?.prestationName;
+
+    message += "Type de prestation : " + prestationName + " <br/>";
 
     matrix.find(formPart => formPart.prestationType === selectedPrestationType)?.fields.map((field) => {
       if (options[field.idForm] !== "") {
