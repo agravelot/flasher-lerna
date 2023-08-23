@@ -1,11 +1,10 @@
 import Layout from "../components/Layout";
 import Image from "next/image";
 import Header from "../components/Header";
-import { TestimonialList } from "../components/TestimonialList";
 import { GetStaticProps, GetStaticPropsResult, NextPage } from "next";
 import { getGlobalProps, GlobalProps } from "../stores";
 import { NextSeo, SiteLinksSearchBoxJsonLd } from "next-seo";
-import { Category, Testimonial} from "@flasher/models";
+import { Category } from "@flasher/models";
 import { api, PaginatedReponse, sizes } from "@flasher/common";
 import { configuration } from "utils/configuration";
 import { ContactSection } from "../components/ContactSection";
@@ -13,12 +12,10 @@ import { SearchOpener } from "components/SearchOpener";
 import CategoryList from "../components/category/CategoryList";
 
 type Props = {
-  testimonials: Testimonial[];
   categories: Category[];
 } & GlobalProps;
 
 const IndexPage: NextPage<Props> = ({
-  testimonials,
   defaultPageTitle,
   appName,
   profilePictureHomepage,
@@ -163,15 +160,7 @@ const IndexPage: NextPage<Props> = ({
 
 export default IndexPage;
 
-export const getStaticProps: GetStaticProps = async ({
-  params,
-}): Promise<GetStaticPropsResult<Props>> => {
-  const testimonials = await api<PaginatedReponse<Testimonial[]>>(
-    `/testimonials?page=${params?.page ?? 1}`
-  )
-    .then((res) => res.json())
-    .then((res) => res.data.reverse());
-
+export const getStaticProps: GetStaticProps = async (): Promise<GetStaticPropsResult<Props>> => {
   const categories = await api<PaginatedReponse<Category[]>>(
       `/categories?per_page=${4}`
   ).then((res) => res.json())
@@ -179,5 +168,5 @@ export const getStaticProps: GetStaticProps = async ({
 
   const global = await getGlobalProps();
 
-  return { props: { testimonials, categories,...global }, revalidate: 60 };
+  return { props: {  categories,...global }, revalidate: 60 };
 };
