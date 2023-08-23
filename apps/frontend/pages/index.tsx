@@ -71,15 +71,15 @@ const IndexPage: NextPage<Props> = ({
             </div>
         </Header>
          <section className="container mx-auto py-8">
-          <div className="prose prose-stone max-w-none text-justify leading-relaxed sm:px-0 px-4">
-            <p>Mes photos reflètent une harmonie subtile de diverses émotions, faisant de chacune d'elles une véritable expression de mon style unique. J'apprécie particulièrement jouer avec ces différentes thématiques pour laisser libre cours à mon imagination débordante. Laissez vous emporter par la magie de mes clichés qui racontent des histoires uniques et captivantes.</p>
+          <div className="prose prose-stone mx-auto px-4 sm:px-0">
+            <p>Mes photos reflètent une harmonie subtile de diverses émotions, faisant de chacune d&apos;elles une véritable expression de mon style unique. J&apos;apprécie particulièrement jouer avec ces différentes thématiques pour laisser libre cours à mon imagination débordante. Laissez vous emporter par la magie de mes clichés qui racontent des histoires uniques et captivantes.</p>
           </div>
           <div className="flex flex-wrap px--4">
             <CategoryList categories={categories} />
           </div>
         </section>
        
-        <section className="mb-8">
+        <section className="mb-20">
           <div className="container mx-auto">
             <div className="block items-center md:flex md:flex-wrap">
               {profilePictureHomepage && (
@@ -104,7 +104,7 @@ const IndexPage: NextPage<Props> = ({
                     <span className="mx-auto mb-4 inline-block h-1 w-16 rounded bg-gradient-to-r from-blue-700 to-red-700"></span>
                   </div>
                   <div
-                    className="prose prose-stone mt-4 max-w-none text-justify leading-relaxed sm:px-0 px-4"
+                    className="prose prose-stone mt-4 max-w-none sm:px-0 px-4"
                     dangerouslySetInnerHTML={{
                       __html: homepageDescription,
                     }}
