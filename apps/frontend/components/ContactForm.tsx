@@ -776,6 +776,9 @@ const ContactForm: FunctionComponent = () => {
             message += `${field.label} - ${field.checkboxLabel} : ${(options[field.idForm] ? "Oui" : "Non")} \r\n`;
             break;
           default:
+            if (field.idForm === "connectOther" && options["connect"] !== "other") {
+              break;
+            }
             message += `${field.label} : ${options[field.idForm]} \r\n`;
             break;
         }
