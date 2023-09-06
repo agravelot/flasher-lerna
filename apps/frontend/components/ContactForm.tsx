@@ -30,6 +30,7 @@ interface MatrixField {
   checkboxValue?: string;
   checkboxLabel?: string;
   selectOptions?: SelectOption[]
+  otherInputInfo?: MatrixField;
 }
 
 export interface ContactFormRequestInputs {
@@ -226,6 +227,14 @@ const ContactForm: FunctionComponent = () => {
                 value: "other",
               },
             ],
+            otherInputInfo: {
+              idForm: "connectOther",
+              idHtml: "contact_connect_other",
+              label: "Si Autre, préciser",
+              type: "text",
+              placeholder: "",
+              required: false
+            }
           }, {
             idForm: "connectOther",
             idHtml: "contact_connect_other",
@@ -299,6 +308,14 @@ const ContactForm: FunctionComponent = () => {
                 value: "other",
               },
             ],
+            otherInputInfo: {
+              idForm: "connectOther",
+              idHtml: "contact_connect_other",
+              label: "Si Autre, préciser",
+              type: "text",
+              placeholder: "",
+              required: false
+            }
           }, {
             idForm: "connectOther",
             idHtml: "contact_connect_other",
@@ -372,6 +389,14 @@ const ContactForm: FunctionComponent = () => {
                 value: "other",
               },
             ],
+            otherInputInfo: {
+              idForm: "connectOther",
+              idHtml: "contact_connect_other",
+              label: "Si Autre, préciser",
+              type: "text",
+              placeholder: "",
+              required: false
+            }
           }, {
             idForm: "connectOther",
             idHtml: "contact_connect_other",
@@ -445,6 +470,14 @@ const ContactForm: FunctionComponent = () => {
                 value: "other",
               },
             ],
+            otherInputInfo: {
+              idForm: "connectOther",
+              idHtml: "contact_connect_other",
+              label: "Si Autre, préciser",
+              type: "text",
+              placeholder: "",
+              required: false
+            }
           }, {
             idForm: "connectOther",
             idHtml: "contact_connect_other",
@@ -534,6 +567,14 @@ const ContactForm: FunctionComponent = () => {
                 value: "other",
               },
             ],
+            otherInputInfo: {
+              idForm: "connectOther",
+              idHtml: "contact_connect_other",
+              label: "Si Autre, préciser",
+              type: "text",
+              placeholder: "",
+              required: false
+            }
           }, {
             idForm: "connectOther",
             idHtml: "contact_connect_other",
@@ -608,6 +649,14 @@ const ContactForm: FunctionComponent = () => {
                 value: "other",
               },
             ],
+            otherInputInfo: {
+              idForm: "connectOther",
+              idHtml: "contact_connect_other",
+              label: "Si Autre, préciser",
+              type: "text",
+              placeholder: "",
+              required: false
+            }
           }, {
             idForm: "connectOther",
             idHtml: "contact_connect_other",
@@ -673,6 +722,14 @@ const ContactForm: FunctionComponent = () => {
                 value: "other",
               },
             ],
+            otherInputInfo: {
+              idForm: "connectOther",
+              idHtml: "contact_connect_other",
+              label: "Si Autre, préciser",
+              type: "text",
+              placeholder: "",
+              required: false
+            }
           }, {
             idForm: "connectOther",
             idHtml: "contact_connect_other",
@@ -705,9 +762,7 @@ const ContactForm: FunctionComponent = () => {
       }
     });
 
-    const prestationName = matrix.find(formPart => formPart.prestationType === selectedPrestationType)?.prestationName;
-
-    message += "Type de prestation : " + prestationName + " <br/>";
+    message += "Type de prestation : " + matrix.find(formPart => formPart.prestationType === selectedPrestationType)?.prestationName + " \r\n";
 
     matrix.find(formPart => formPart.prestationType === selectedPrestationType)?.fields.map((field) => {
       if (options[field.idForm] !== "") {
