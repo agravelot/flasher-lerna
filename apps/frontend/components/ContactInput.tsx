@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { FieldErrors, Path, UseFormRegister } from "react-hook-form";
 import { ContactFormRequestInputs, SelectOption } from "./ContactForm";
 
@@ -16,9 +16,22 @@ interface Props {
     checkboxTitle?: boolean;
     checkboxLabel?: string;
     selectOptions?: SelectOption[];
+    otherInputInfo?: Props;
 }
 
-export const ContactInput: FC<Props> = ({ register, errors, idForm, idHtml, label, tag = "input", inputType = "text", required = true, placeholder = "", checkboxTitle = false, checkboxValue = "", checkboxLabel = "", selectOptions = [] }) => {
+const defaultOptions: Partial<Props> = {
+    idHtml: "contact_connect_other",
+    idForm: "connectOther",
+    label: "Si Autre, préciser",
+    tag: "text",
+    placeholder: "",
+    required: false
+};
+export const ContactInput: FC<Props> = (
+    { register, errors, idForm, idHtml, label, tag = "input", inputType = "text", required = true, placeholder = "", checkboxTitle = false, checkboxValue = "", checkboxLabel = "", selectOptions = [], otherInputInfo = { register, errors, ...defaultOptions }
+    }) => {
+    const [showOtherConnectType, setShowOtherConnectType] = useState(false);
+    if (idForm === "connectOther") { return (<div></div>); }
     return (
         <div className={(tag != "checkbox") ? "relative mb-3 w-full" : "relative w-full"}>
             {(tag != "checkbox" || checkboxTitle) &&
@@ -73,6 +86,15 @@ export const ContactInput: FC<Props> = ({ register, errors, idForm, idHtml, labe
                     required={required}
                     className="w-full rounded bg-white px-3 py-3 text-sm text-gray-700 placeholder-gray-400 shadow focus:outline-none focus:ring"
                     style={{ transition: "all 0.15s ease 0s" }}
+                    onChange={(e) => {
+                        if (e.target.value == "other") {
+                            setShowOtherConnectType(true);
+                        }
+                        else {
+                            setShowOtherConnectType(false);
+                        }
+                    }
+                    }
                 >
                     {
                         selectOptions.map((option) => {
@@ -83,7 +105,7 @@ export const ContactInput: FC<Props> = ({ register, errors, idForm, idHtml, labe
             }
 
             {
-                (tag === "input") &&
+                (tag === "input" && idForm !== "connect") &&
                 <input
                     {...register(`${idForm}`, { required: required })}
                     name={idForm}
@@ -94,6 +116,27 @@ export const ContactInput: FC<Props> = ({ register, errors, idForm, idHtml, labe
                     className="w-full rounded bg-white px-3 py-3 text-sm text-gray-700 placeholder-gray-400 shadow focus:outline-none focus:ring"
                     placeholder={placeholder}
                 />
+            }
+            {
+                (tag === "select" && idForm === "connect" && showOtherConnectType) &&
+                <div className="mt-3">
+                    <label
+                        className="mb-2 block text-xs font-bold uppercase text-gray-700"
+                        htmlFor={otherInputInfo.idHtml}
+                    >
+                        {otherInputInfo.label}{(otherInputInfo.required) ? <div className="inline-block pl-0.5 text-red-700">*</div> : ""}
+                    </label>
+                    <input
+                        {...register(`${(otherInputInfo.idForm) ? otherInputInfo.idForm : "connectOther"}`, { required: otherInputInfo.required })}
+                        name={otherInputInfo.idForm}
+                        type={otherInputInfo.inputType}
+                        id={otherInputInfo.idHtml}
+                        required={otherInputInfo.required}
+                        autoComplete={"true"}
+                        className="w-full rounded bg-white px-3 py-3 text-sm text-gray-700 placeholder-gray-400 shadow focus:outline-none focus:ring"
+                        placeholder={otherInputInfo.placeholder}
+                    />
+                </div>
             }
 
             {errors[idForm] && (
