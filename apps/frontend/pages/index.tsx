@@ -21,17 +21,17 @@ const IndexPage: NextPage<Props> = ({
   profilePictureHomepage,
   homepageDescription,
   socialMedias,
-  seoDescription, 
+  seoDescription,
   categories,
 }: Props) => {
   if (!profilePictureHomepage) {
     console.error("Missing profile picture");
   }
   const ndd = process.env.NEXT_PUBLIC_APP_URL ?? "";
- 
+
   return (
     <Layout socialMedias={socialMedias} appName={appName}>
-      <SearchOpener/>
+      <SearchOpener />
       <NextSeo
         title={defaultPageTitle}
         description={seoDescription}
@@ -39,15 +39,15 @@ const IndexPage: NextPage<Props> = ({
         openGraph={
           profilePictureHomepage
             ? {
-                images: [
-                  {
-                    url: profilePictureHomepage.url,
-                    width: profilePictureHomepage.width ?? 0,
-                    height: profilePictureHomepage.height ?? 0,
-                    alt: appName,
-                  },
-                ],
-              }
+              images: [
+                {
+                  url: profilePictureHomepage.url,
+                  width: profilePictureHomepage.width ?? 0,
+                  height: profilePictureHomepage.height ?? 0,
+                  alt: appName,
+                },
+              ],
+            }
             : undefined
         }
       />
@@ -64,13 +64,13 @@ const IndexPage: NextPage<Props> = ({
         <Header title={appName} separatorClass="text-white" >
           <div className="flex flex-wrap justify-center text-center">
             <div className="w-full lg:w-6/12">
-                <h2 className="text-white font-semibold drop-shadow-lg">
-                        {"UN REGARD ATTENTIF, DES MOMENTS MAGIQUES..."}
-                </h2>
+              <h2 className="text-white font-semibold drop-shadow-lg">
+                {"UN REGARD ATTENTIF, DES MOMENTS MAGIQUES..."}
+              </h2>
             </div>
-            </div>
+          </div>
         </Header>
-         <section className="container mx-auto py-8">
+        <section className="container mx-auto py-8">
           <div className="prose prose-stone mx-auto px-4 sm:px-0">
             <p>Mes photos reflètent une harmonie subtile de diverses émotions, faisant de chacune d&apos;elles une véritable expression de mon style unique. J&apos;apprécie particulièrement jouer avec ces différentes thématiques pour laisser libre cours à mon imagination débordante. Laissez vous emporter par la magie de mes clichés qui racontent des histoires uniques et captivantes.</p>
           </div>
@@ -78,7 +78,7 @@ const IndexPage: NextPage<Props> = ({
             <CategoryList categories={categories} />
           </div>
         </section>
-       
+
         <section className="mb-20">
           <div className="container mx-auto">
             <div className="block items-center md:flex md:flex-wrap">
@@ -162,11 +162,11 @@ export default IndexPage;
 
 export const getStaticProps: GetStaticProps = async (): Promise<GetStaticPropsResult<Props>> => {
   const categories = await api<PaginatedReponse<Category[]>>(
-      `/categories?per_page=${4}`
+    `/categories?per_page=${4}`
   ).then((res) => res.json())
-      .then((res) => res.data.reverse());
+    .then((res) => res.data.reverse());
 
   const global = await getGlobalProps();
 
-  return { props: {  categories,...global }, revalidate: 60 };
+  return { props: { categories, ...global }, revalidate: 60 };
 };
