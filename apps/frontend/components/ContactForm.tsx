@@ -54,12 +54,11 @@ export interface ContactFormRequestInputs {
   date?: string;
   weddingPartner?: string;
   weddingGuests?: string;
-  weddingMoments?: string;
-  weddingMoments1?: string;
-  weddingMoments2?: string;
-  weddingMoments3?: string;
-  weddingMoments4?: string;
-  weddingMoments5?: string;
+  weddingPrepare?: string;
+  weddingCeremony?: string;
+  weddingCocktail?: string;
+  weddingDinner?: string;
+  weddingOther?: string;
   familyMembers?: string;
   animalType?: string;
   cosplayName?: string;
@@ -144,8 +143,8 @@ const ContactForm: FunctionComponent = () => {
             placeholder: "",
           },
           {
-            idForm: "weddingMoments1",
-            idHtml: "contact_wedding_moments1",
+            idForm: "weddingPrepare",
+            idHtml: "contact_wedding_prepare",
             label: "Moments d'intervention",
             type: "checkbox",
             placeholder: "",
@@ -156,8 +155,8 @@ const ContactForm: FunctionComponent = () => {
             tag: "checkbox"
           },
           {
-            idForm: "weddingMoments2",
-            idHtml: "contact_wedding_moments2",
+            idForm: "weddingCeremony",
+            idHtml: "contact_wedding_ceremony",
             label: "Moments d'intervention",
             type: "checkbox",
             placeholder: "",
@@ -168,8 +167,8 @@ const ContactForm: FunctionComponent = () => {
             tag: "checkbox"
           },
           {
-            idForm: "weddingMoments3",
-            idHtml: "contact_wedding_moments3",
+            idForm: "weddingCocktail",
+            idHtml: "contact_wedding_cocktail",
             label: "Moments d'intervention",
             type: "checkbox",
             placeholder: "",
@@ -180,8 +179,8 @@ const ContactForm: FunctionComponent = () => {
             tag: "checkbox"
           },
           {
-            idForm: "weddingMoments4",
-            idHtml: "contact_wedding_moments4",
+            idForm: "weddingDinner",
+            idHtml: "contact_wedding_Dinner",
             label: "Moments d'intervention",
             type: "checkbox",
             placeholder: "",
@@ -192,8 +191,8 @@ const ContactForm: FunctionComponent = () => {
             tag: "checkbox"
           },
           {
-            idForm: "weddingMoments5",
-            idHtml: "contact_wedding_moments5",
+            idForm: "weddingOther",
+            idHtml: "contact_wedding_other",
             label: "Moments d'intervention",
             type: "checkbox",
             placeholder: "",
