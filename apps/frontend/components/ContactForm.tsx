@@ -3,6 +3,16 @@ import { api, HttpRequestError } from "@flasher/common";
 import { Path, useForm } from "react-hook-form";
 import { ContactInput } from "./ContactInput";
 
+enum PrestationType {
+  Mariage = "wedding",
+  Grossesse = "pregnancy",
+  Casual = "casual",
+  Animalier = "animal",
+  Familial = "family",
+  Cosplay = "cosplay",
+  Autre = "other"
+}
+
 interface ContactErrors {
   errors: { email?: string[]; name?: string[]; message?: string[] };
 }
@@ -37,7 +47,7 @@ export interface ContactFormRequestInputs {
   name: string;
   phone?: string;
   email: string;
-  prestationType: string;
+  prestationType: PrestationType;
   location?: string;
   connect?: string;
   connectOther?: string;
@@ -66,7 +76,7 @@ const ContactForm: FunctionComponent = () => {
     formState: { errors, isSubmitSuccessful, isValid, isSubmitting },
   } = useForm<ContactFormRequestInputs>();
 
-  const [selectedPrestationType, setSelectedPrestationType] = useState("");
+  const [selectedPrestationType, setSelectedPrestationType] = useState<PrestationType>();
 
   const matrix: MatrixType[] = [
     {
