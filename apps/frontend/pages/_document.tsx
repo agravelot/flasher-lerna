@@ -4,7 +4,9 @@ class MyDocument extends Document {
   render(): JSX.Element {
     return (
       <Html lang={"fr"}>
-        <Head />
+          <Head >
+              <link rel="stylesheet" href="https://use.typekit.net/rcn2jwe.css"/>
+          </Head>
         <Main />
         <NextScript />
       </Html>

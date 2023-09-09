@@ -24,7 +24,7 @@ export const Breadcrumb: FC<Props> = ({ levels }) => {
           })
         )}
       />
-      <ol className="inline-flex items-center space-x-1 md:space-x-3">
+      <ol className="inline-flex items-center space-x-1">
         {levels.map((l, i) => {
           const isFirstItem = i === 0;
           const isLastItem = levels.length - 1 === i;
@@ -32,14 +32,14 @@ export const Breadcrumb: FC<Props> = ({ levels }) => {
             <li key={i} aria-current={isLastItem ? "page" : undefined}>
               <div className="flex items-center">
                 {!isFirstItem && (
-                  <ChevronRightIcon className="h-4 w-4 text-gray-600" />
+                  <ChevronRightIcon className="h-4 w-4 text-gray-200" />
                 )}
                 <Link
                   href={l.path}
-                  className={`py-2 pl-1 text-xs font-medium md:pl-2 ${
+                  className={`py-2 first:pl-4 text-xs font-medium ${
                     isLastItem
-                      ? "text-gray-500 dark:text-gray-400"
-                      : "text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                      ? "text-white hover:text-gray-400"
+                      : "text-gray-200 hover:text-gray-400"
                   }`}
                 >
                   {l.name}

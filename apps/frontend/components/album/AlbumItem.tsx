@@ -37,12 +37,12 @@ const AlbumItem: FunctionComponent<Props> = ({ album }: Props) => {
           aria-label={album.title}
           //  :to="{ name: 'albums-slug', params: { slug: album.slug } }"
         >
-          <h3 className="mb-2 text-xl font-bold leading-tight">
+          <h3 className="text-xl font-bold leading-tight">
             {album.title}
           </h3>
         </Link>
       </div>
-      <div className="px-6 py-4">
+      <div className="px-6 pb-4">
         {album.categories?.map((category) => (
           <Link
             key={category.id}

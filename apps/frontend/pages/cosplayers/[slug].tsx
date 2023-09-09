@@ -102,7 +102,7 @@ const ShowCosplayer: NextPage<Props> = ({
                     <div className="w-full px-4 lg:w-9/12">
                       <div className="mb-4 text-lg leading-relaxed text-gray-800">
                         <div
-                          className="prose max-w-none"
+                          className="prose prose-stone max-w-none"
                           dangerouslySetInnerHTML={{
                             __html: cosplayer.description ?? "",
                           }}

@@ -90,7 +90,7 @@ const ShowCategory: NextPage<Props> = ({
         <div className="container mx-auto px-4">
           <div className="justify-center py-16 text-justify">
             <article
-              className="prose max-w-none content-center"
+              className="prose prose-stone max-w-none content-center"
               dangerouslySetInnerHTML={{ __html: category.description ?? "" }}
             />
           </div>

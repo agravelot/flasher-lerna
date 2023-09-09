@@ -84,7 +84,9 @@ const IndexAlbum: NextPage<Props> = ({
           />
         }
       />
-      <CategoryList categories={categories} />
+        <div className="-mt-24">
+            <CategoryList categories={categories} />
+        </div>
       <div className="container mx-auto mb-20">
         <Pagination
           showInfo={pagination.showInfo}

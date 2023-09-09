@@ -9,6 +9,8 @@ interface Props {
   color?: string;
   size?: 16 | 24;
   border?: boolean;
+  width?: number;
+  height?: number;
 }
 
 const Avatar: FunctionComponent<Props> = ({
@@ -19,6 +21,8 @@ const Avatar: FunctionComponent<Props> = ({
   color = "bg-gradient-to-r from-blue-700 to-red-700",
   size = 16,
   border = false,
+  width = 96,
+  height = 96,
 }: Props) => {
   const avatarText = (name: string): string => {
     return name?.charAt(0);
@@ -36,8 +40,8 @@ const Avatar: FunctionComponent<Props> = ({
             draggable={false}
             className={`h-full w-full overflow-hidden object-cover ${roundClasses} ${className}`}
             src={src}
-            height={96}
-            width={96}
+            height={height}
+            width={width}
             alt={`Avatar de ${name}`}
           />
         )}
