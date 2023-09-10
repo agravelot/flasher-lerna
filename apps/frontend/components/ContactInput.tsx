@@ -1,37 +1,19 @@
-import { FC, useState } from "react";
-import { FieldErrors, Path, UseFormRegister } from "react-hook-form";
-import { ContactFormRequestInputs, SelectOption } from "./ContactForm";
+import { FC } from "react";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { ContactFormRequestInputs } from "./ContactForm";
+import { MatrixField } from "./ContactForm";
 
 interface Props {
     register: UseFormRegister<ContactFormRequestInputs>;
     errors: FieldErrors<ContactFormRequestInputs>;
-    idForm: Path<ContactFormRequestInputs>;
-    idHtml: string;
-    label: string;
-    tag?: string;
-    inputType?: string;
-    required?: boolean;
-    placeholder?: string;
-    checkboxValue?: string;
-    checkboxTitle?: boolean;
-    checkboxLabel?: string;
-    selectOptions?: SelectOption[];
-    otherInputInfo?: Props;
+    field: MatrixField;
 }
 
-const defaultOptions: Partial<Props> = {
-    idHtml: "contact_connect_other",
-    idForm: "connectOther",
-    label: "Si Autre, préciser",
-    tag: "text",
-    placeholder: "",
-    required: false
-};
 export const ContactInput: FC<Props> = (
-    { register, errors, idForm, idHtml, label, tag = "input", inputType = "text", required = true, placeholder = "", checkboxTitle = false, checkboxValue = "", checkboxLabel = "", selectOptions = [], otherInputInfo = { register, errors, ...defaultOptions }
+    {
+        register, errors, field
     }) => {
-    const [showOtherConnectType, setShowOtherConnectType] = useState(false);
-    if (idForm === "connectOther") { return (<div></div>); }
+    const { tag = "input", idHtml, label, checkboxTitle = false, required = true, idForm, placeholder = "", checkboxValue = "", checkboxLabel = "", selectOptions = [], type: inputType } = field;
     return (
         <div className={(tag != "checkbox") ? "relative mb-3 w-full" : "relative w-full"}>
             {(tag != "checkbox" || checkboxTitle) &&
@@ -45,7 +27,7 @@ export const ContactInput: FC<Props> = (
             {
                 (tag === "textarea") &&
                 <textarea
-                    {...register(`${idForm}`, { required: required })}
+                    {...register(`${idForm}`, { required })}
                     name={idForm}
                     id={idHtml}
                     required={required}
@@ -59,7 +41,7 @@ export const ContactInput: FC<Props> = (
                 <div className="relative flex">
 
                     <input
-                        {...register(`${idForm}`, { required: required })}
+                        {...register(`${idForm}`, { required })}
                         name={idForm}
                         type={tag}
                         value={checkboxValue}
@@ -80,24 +62,15 @@ export const ContactInput: FC<Props> = (
             {
                 (tag === "select") &&
                 <select
-                    {...register(`${idForm}`, { required: required })}
+                    {...register(`${idForm}`, { required })}
                     name={idForm}
                     id={idHtml}
                     required={required}
                     className="w-full rounded bg-white px-3 py-3 text-sm text-gray-700 placeholder-gray-400 shadow focus:outline-none focus:ring"
                     style={{ transition: "all 0.15s ease 0s" }}
-                    onChange={(e) => {
-                        if (e.target.value == "other") {
-                            setShowOtherConnectType(true);
-                        }
-                        else {
-                            setShowOtherConnectType(false);
-                        }
-                    }
-                    }
                 >
                     {
-                        selectOptions.map((option) => {
+                        selectOptions?.map((option) => {
                             return (<option key={option.value} value={option.value}>{option.label}</option>);
                         })
                     }
@@ -107,7 +80,7 @@ export const ContactInput: FC<Props> = (
             {
                 (tag === "input" && idForm !== "connect") &&
                 <input
-                    {...register(`${idForm}`, { required: required })}
+                    {...register(`${idForm}`, { required })}
                     name={idForm}
                     type={inputType}
                     id={idHtml}
@@ -117,28 +90,6 @@ export const ContactInput: FC<Props> = (
                     placeholder={placeholder}
                 />
             }
-            {
-                (tag === "select" && idForm === "connect" && showOtherConnectType) &&
-                <div className="mt-3">
-                    <label
-                        className="mb-2 block text-xs font-bold uppercase text-gray-700"
-                        htmlFor={otherInputInfo.idHtml}
-                    >
-                        {otherInputInfo.label}{(otherInputInfo.required) ? <div className="inline-block pl-0.5 text-red-700">*</div> : ""}
-                    </label>
-                    <input
-                        {...register(`${(otherInputInfo.idForm) ? otherInputInfo.idForm : "connectOther"}`, { required: otherInputInfo.required })}
-                        name={otherInputInfo.idForm}
-                        type={otherInputInfo.inputType}
-                        id={otherInputInfo.idHtml}
-                        required={otherInputInfo.required}
-                        autoComplete={"true"}
-                        className="w-full rounded bg-white px-3 py-3 text-sm text-gray-700 placeholder-gray-400 shadow focus:outline-none focus:ring"
-                        placeholder={otherInputInfo.placeholder}
-                    />
-                </div>
-            }
-
             {errors[idForm] && (
                 <div className="text-xs italic text-red-800">
                     <span className="text-xs italic text-red-800">
