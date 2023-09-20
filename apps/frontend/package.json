@@ -71,5 +71,8 @@
     "cli-real-favicon": "^0.0.8",
     "ngx-pwa-icons": "^0.1.2"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "volta": {
+    "node": "20.7.0"
+  }
 }
