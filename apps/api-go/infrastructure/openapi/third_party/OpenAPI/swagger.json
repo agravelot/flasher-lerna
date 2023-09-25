@@ -540,6 +540,7 @@
         "data": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/v2AlbumResponse"
           }
         }
@@ -598,22 +599,13 @@
           "type": "string"
         },
         "name": {
-          "type": "string",
-          "required": [
-            "name"
-          ]
+          "type": "string"
         },
         "metaDescription": {
-          "type": "string",
-          "required": [
-            "metaDescription"
-          ]
+          "type": "string"
         },
         "content": {
-          "type": "string",
-          "required": [
-            "content"
-          ]
+          "type": "string"
         },
         "publishedAt": {
           "type": "string",
@@ -631,44 +623,26 @@
       "properties": {
         "id": {
           "type": "string",
-          "format": "int64",
-          "required": [
-            "id"
-          ]
+          "format": "int64"
         },
         "slug": {
-          "type": "string",
-          "required": [
-            "slug"
-          ]
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "required": [
-            "name"
-          ]
+          "type": "string"
         },
         "metaDescription": {
-          "type": "string",
-          "required": [
-            "metaDescription"
-          ]
+          "type": "string"
         },
         "content": {
-          "type": "string",
-          "required": [
-            "content"
-          ]
+          "type": "string"
         },
         "publishedAt": {
           "type": "string",
           "format": "date-time"
         },
         "authorId": {
-          "type": "string",
-          "required": [
-            "authorId"
-          ]
+          "type": "string"
         }
       },
       "required": [
@@ -717,11 +691,9 @@
         "data": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/v2ArticleResponse"
-          },
-          "required": [
-            "data"
-          ]
+          }
         }
       },
       "required": [
@@ -803,6 +775,7 @@
         "details": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/protobufAny"
           }
         }
@@ -855,6 +828,7 @@
         "categories": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/v2Category"
           },
           "title": "TODO Can be optional"
@@ -862,6 +836,7 @@
         "medias": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/v2Media"
           }
         }
@@ -872,34 +847,19 @@
       "properties": {
         "id": {
           "type": "string",
-          "format": "int64",
-          "required": [
-            "id"
-          ]
+          "format": "int64"
         },
         "slug": {
-          "type": "string",
-          "required": [
-            "slug"
-          ]
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "required": [
-            "name"
-          ]
+          "type": "string"
         },
         "metaDescription": {
-          "type": "string",
-          "required": [
-            "metaDescription"
-          ]
+          "type": "string"
         },
         "content": {
-          "type": "string",
-          "required": [
-            "content"
-          ]
+          "type": "string"
         },
         "publishedAt": {
           "type": "string",
