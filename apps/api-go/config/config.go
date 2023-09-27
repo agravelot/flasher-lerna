@@ -25,8 +25,7 @@ type Config struct {
 }
 
 func FromDotEnv(path string) (*Config, error) {
-	err := godotenv.Load(path)
-	if err != nil {
+	if err := godotenv.Load(path); err != nil {
 		log.Println(err)
 	}
 

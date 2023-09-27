@@ -37,25 +37,25 @@ func NewService(r Repository) (albumspb.AlbumServiceServer, error) {
 	}, nil
 }
 
-func (s *service) Index(ctx context.Context, r *albumspb.IndexRequest) (*albumspb.IndexResponse, error) {
+func (s *service) Index(ctx context.Context, req *albumspb.IndexRequest) (*albumspb.IndexResponse, error) {
 	var next, limit int32
 
 	_, user := auth.GetUser(ctx)
 
-	if r.Next != nil {
-		next = *r.Next
+	if req.Next != nil {
+		next = *req.Next
 	}
 
-	if r.Limit != nil {
-		limit = *r.Limit
+	if req.Limit != nil {
+		limit = *req.Limit
 	}
 
 	params := ListParams{
 		Next:  next,
 		Limit: limit,
 		Joins: ListJoinsParams{
-			Categories: r.Joins.GetCategories(),
-			Medias:     r.Joins.GetMedias(),
+			Categories: req.Joins.GetCategories(),
+			Medias:     req.Joins.GetMedias(),
 		},
 		IncludePrivate: user.IsAdmin(),
 	}
@@ -77,11 +77,11 @@ func (s *service) Index(ctx context.Context, r *albumspb.IndexRequest) (*albumsp
 
 // TODO bool include relation
 
-func (s *service) GetBySlug(ctx context.Context, r *albumspb.GetBySlugRequest) (*albumspb.GetBySlugResponse, error) {
+func (s *service) GetBySlug(ctx context.Context, req *albumspb.GetBySlugRequest) (*albumspb.GetBySlugResponse, error) {
 	_, user := auth.GetUser(ctx)
 
-	a, err := s.repository.GetBySlug(ctx, GetBySlugParams{
-		Slug:           r.Slug,
+	alb, err := s.repository.GetBySlug(ctx, GetBySlugParams{
+		Slug:           req.Slug,
 		IncludePrivate: user.IsAdmin(),
 	})
 
@@ -95,11 +95,11 @@ func (s *service) GetBySlug(ctx context.Context, r *albumspb.GetBySlugRequest) (
 
 	// TODO add medias and categories
 	return &albumspb.GetBySlugResponse{
-		Album: transformAlbumFromDB(a),
+		Album: transformAlbumFromDB(alb),
 	}, err
 }
 
-func (s *service) Create(ctx context.Context, r *albumspb.CreateRequest) (*albumspb.CreateResponse, error) {
+func (s *service) Create(ctx context.Context, req *albumspb.CreateRequest) (*albumspb.CreateResponse, error) {
 	authenticated, user := auth.GetUser(ctx)
 
 	if !authenticated {
@@ -111,21 +111,21 @@ func (s *service) Create(ctx context.Context, r *albumspb.CreateRequest) (*album
 		return nil, ErrNotAdmin
 	}
 
-	if err := r.ValidateAll(); err != nil {
+	if err := req.ValidateAll(); err != nil {
 		return nil, err
 	}
 
 	var publishedAt *time.Time
-	if r.PublishedAt != nil {
-		p := r.PublishedAt.AsTime()
+	if req.PublishedAt != nil {
+		p := req.PublishedAt.AsTime()
 		publishedAt = &p
 	}
 
 	a, err := s.repository.Create(ctx, CreateParams{
 		Album: model.Album{
-			Title:       r.Name,
-			Slug:        r.Slug,
-			Body:        &r.Content,
+			Title:       req.Name,
+			Slug:        req.Slug,
+			Body:        &req.Content,
 			SsoID:       &user.Subject,
 			PublishedAt: publishedAt,
 		},
@@ -152,35 +152,35 @@ func (s *service) Create(ctx context.Context, r *albumspb.CreateRequest) (*album
 	}, nil
 }
 
-func (s *service) Update(ctx context.Context, r *albumspb.UpdateRequest) (*albumspb.UpdateResponse, error) {
+func (s *service) Update(ctx context.Context, req *albumspb.UpdateRequest) (*albumspb.UpdateResponse, error) {
 	authenticated, user := auth.GetUser(ctx)
 
 	if !authenticated {
 		return nil, ErrNoAuth
 	}
 
-	isAdmin := user.IsAdmin()
-	if !isAdmin {
+	if isAdmin := user.IsAdmin(); !isAdmin {
 		return nil, ErrNotAdmin
 	}
 
-	if err := r.ValidateAll(); err != nil {
+	if err := req.ValidateAll(); err != nil {
 		return nil, err
 	}
 
 	var publishedAt *time.Time
-	if r.PublishedAt != nil {
-		p := r.PublishedAt.AsTime()
+	if req.PublishedAt != nil {
+		p := req.PublishedAt.AsTime()
 		publishedAt = &p
 	}
+
 	a, err := s.repository.Update(ctx, UpdateParams{Album: model.Album{
-		ID:          r.Id,
-		Title:       r.Name,
-		Slug:        r.Slug,
-		Body:        &r.Content,
+		ID:          req.Id,
+		Title:       req.Name,
+		Slug:        req.Slug,
+		Body:        &req.Content,
 		SsoID:       &user.Subject,
 		PublishedAt: publishedAt,
-		Private:     &r.Private,
+		Private:     &req.Private,
 	}})
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -213,7 +213,7 @@ func (s *service) Update(ctx context.Context, r *albumspb.UpdateRequest) (*album
 // 	return AlbumResponse{}, nil
 // }
 
-func (s *service) Delete(ctx context.Context, r *albumspb.DeleteRequest) (*albumspb.DeleteResponse, error) {
+func (s *service) Delete(ctx context.Context, req *albumspb.DeleteRequest) (*albumspb.DeleteResponse, error) {
 	authenticated, user := auth.GetUser(ctx)
 
 	if !authenticated {
@@ -224,7 +224,7 @@ func (s *service) Delete(ctx context.Context, r *albumspb.DeleteRequest) (*album
 		return nil, ErrNotAdmin
 	}
 
-	err := s.repository.Delete(ctx, DeleteParams{ID: r.Id})
+	err := s.repository.Delete(ctx, DeleteParams{ID: req.Id})
 	if err != nil {
 		return &albumspb.DeleteResponse{Deleted: false}, fmt.Errorf("unable delete album: %w", err)
 	}
@@ -233,19 +233,25 @@ func (s *service) Delete(ctx context.Context, r *albumspb.DeleteRequest) (*album
 
 func transformMediaFromDB(media model.Medium) *mediaspb.Media {
 	return &mediaspb.Media{
-		Id:        media.ID,
-		Name:      media.Name,
-		FileName:  media.FileName,
-		MimeType:  media.MimeType,
-		Size:      media.Size,
-		CreatedAt: &timestamppb.Timestamp{Seconds: int64(media.CreatedAt.Second())},
-		UpdatedAt: &timestamppb.Timestamp{Seconds: int64(media.UpdatedAt.Second())},
+		Id:       media.ID,
+		Name:     media.Name,
+		FileName: media.FileName,
+		MimeType: media.MimeType,
+		Size:     media.Size,
+		CreatedAt: &timestamppb.Timestamp{
+			Seconds: int64(media.CreatedAt.Second()),
+			Nanos:   int32(media.CreatedAt.Nanosecond()),
+		},
+		UpdatedAt: &timestamppb.Timestamp{
+			Seconds: int64(media.UpdatedAt.Second()),
+			Nanos:   int32(media.UpdatedAt.Nanosecond()),
+		},
 		CustomProperties: &mediaspb.Media_CustomProperties{
 			Height: media.CustomProperties.Height,
 			Width:  media.CustomProperties.Width,
 		},
-		ResponsiveImages: &mediaspb.Media_ResponsiveImages{
-			Responsive: &mediaspb.Media_Responsive{
+		ResponsiveImages: &mediaspb.Media_ResponsiveImages{ //nolint:nosnakecase
+			Responsive: &mediaspb.Media_Responsive{ //nolint:nosnakecase
 				Urls:      media.ResponsiveImages.Responsive.Urls,
 				Base64Svg: media.ResponsiveImages.Responsive.Base64Svg,
 			},
@@ -259,58 +265,58 @@ func transformCategoryFromDB(c model.Category) *categoriespb.Category {
 	}
 }
 
-func transformAlbumFromDB(a model.Album) *albumspb.AlbumResponse {
+func transformAlbumFromDB(alb model.Album) *albumspb.AlbumResponse {
 	var mediasResponse []*mediaspb.Media
-	if a.Medias != nil {
+	if alb.Medias != nil {
 		var tmp []*mediaspb.Media
-		for _, m := range a.Medias {
+		for _, m := range alb.Medias {
 			tmp = append(tmp, transformMediaFromDB(m))
 		}
 		mediasResponse = tmp
 	}
 
 	var categoriesResponse []*categoriespb.Category
-	if a.Categories != nil {
+	if alb.Categories != nil {
 		var tmp []*categoriespb.Category
-		for _, c := range a.Categories {
+		for _, c := range alb.Categories {
 			tmp = append(tmp, transformCategoryFromDB(c))
 		}
 		categoriesResponse = tmp
 	}
 
 	var publishedAt *timestamppb.Timestamp
-	if a.PublishedAt != nil {
-		publishedAt = &timestamppb.Timestamp{Seconds: int64(a.PublishedAt.Second())}
+	if alb.PublishedAt != nil {
+		publishedAt = &timestamppb.Timestamp{Seconds: int64(alb.PublishedAt.Second()), Nanos: int32(alb.PublishedAt.Nanosecond())}
 	}
 
 	var body string
-	if a.Body != nil {
-		body = *a.Body
+	if alb.Body != nil {
+		body = *alb.Body
 	}
 
 	var createdAt *timestamppb.Timestamp
-	if a.CreatedAt != nil {
-		createdAt = &timestamppb.Timestamp{Seconds: int64(a.CreatedAt.Second())}
+	if alb.CreatedAt != nil {
+		createdAt = &timestamppb.Timestamp{Seconds: int64(alb.CreatedAt.Second())}
 	}
 
 	var updatedAt *timestamppb.Timestamp
-	if a.CreatedAt != nil {
-		createdAt = &timestamppb.Timestamp{Seconds: int64(a.CreatedAt.Second())}
+	if alb.CreatedAt != nil {
+		createdAt = &timestamppb.Timestamp{Seconds: int64(alb.CreatedAt.Second())}
 	}
 
 	return &albumspb.AlbumResponse{
-		Id:                     a.ID,
-		Slug:                   a.Slug,
-		Title:                  a.Title,
-		MetaDescription:        a.MetaDescription,
+		Id:                     alb.ID,
+		Slug:                   alb.Slug,
+		Title:                  alb.Title,
+		MetaDescription:        alb.MetaDescription,
 		Content:                body,
 		PublishedAt:            publishedAt,
-		Private:                *a.Private,
-		AuthorId:               *a.SsoID,
-		UserId:                 a.UserID,
+		Private:                *alb.Private,
+		AuthorId:               *alb.SsoID,
+		UserId:                 alb.UserID,
 		CreatedAt:              createdAt,
 		UpdatedAt:              updatedAt,
-		NotifyUsersOnPublished: *a.NotifyUsersOnPublished,
+		NotifyUsersOnPublished: *alb.NotifyUsersOnPublished,
 		Categories:             categoriesResponse,
 		Medias:                 mediasResponse,
 	}
