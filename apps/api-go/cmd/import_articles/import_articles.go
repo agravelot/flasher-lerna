@@ -10,10 +10,12 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"log"
 	"os"
 	"strings"
 	"time"
+	"unicode"
 )
 
 type Post struct {
@@ -101,6 +103,22 @@ func getPostFromFile(entry os.DirEntry) Post {
 	return post
 }
 
+func truncate(text string, maxLength int) string {
+	lastSpaceIx := maxLength
+	length := 0
+	for i, r := range text {
+		if unicode.IsSpace(r) {
+			lastSpaceIx = i
+		}
+		length++
+		if length > maxLength {
+			return text[:lastSpaceIx] + "..."
+		}
+	}
+	// If here, string is shorter or equal to maxLen
+	return text
+}
+
 func main() {
 	conn, err := grpc.Dial("localhost:3100", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -138,12 +156,17 @@ func main() {
 		defer cancel()
 
 		pretty.Log(post.Slug)
+
 		data := articlesgrpc.CreateRequest{
 			Slug:    post.Slug,
 			Name:    post.Title,
 			Content: post.Content,
-			//PublishedAt:     post.CreatedAt,
-			MetaDescription: post.MetaDescription,
+			// TODO Add created at?
+			PublishedAt: &timestamppb.Timestamp{
+				Seconds: int64(post.CreatedAt.Second()),
+				Nanos:   int32(post.CreatedAt.Nanosecond()),
+			},
+			MetaDescription: truncate(post.MetaDescription, 150),
 		}
 
 		at, err := kc.GetAccessToken()
