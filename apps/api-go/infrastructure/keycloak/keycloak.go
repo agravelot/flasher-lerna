@@ -10,7 +10,7 @@ import (
 
 // Keycloak contain keycloak settings
 type Keycloak struct {
-	baseUrl      string
+	baseURL      string
 	realm        string
 	clientID     string
 	clientSecret string
@@ -18,16 +18,16 @@ type Keycloak struct {
 }
 
 // New Return a keycloak instance
-func New(baseUrl, realm, clientID, clientSecret string) (Keycloak, error) {
+func New(baseURL, realm, clientID, clientSecret string) (Keycloak, error) {
 	conf := clientcredentials.Config{
 		ClientID:     clientID,
 		ClientSecret: clientSecret,
-		TokenURL:     fmt.Sprintf("%s/auth/realms/%s/protocol/openid-connect/token", baseUrl, realm),
+		TokenURL:     fmt.Sprintf("%s/auth/realms/%s/protocol/openid-connect/token", baseURL, realm),
 		Scopes:       []string{"openid", "profile", "email"},
 		AuthStyle:    oauth2.AuthStyleInParams,
 	}
 	return Keycloak{
-		baseUrl:      baseUrl,
+		baseURL:      baseURL,
 		realm:        realm,
 		clientID:     clientID,
 		clientSecret: clientSecret,

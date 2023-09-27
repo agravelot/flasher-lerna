@@ -20,10 +20,10 @@ import (
 	"api-go/config"
 	"api-go/domain/album"
 	"api-go/domain/article"
-	albumspb "api-go/gen/go/proto/albums/v2"
-	articlespb "api-go/gen/go/proto/articles/v2"
+	albumsPb "api-go/gen/go/proto/albums/v2"
+	articlesPb "api-go/gen/go/proto/articles/v2"
 	"api-go/infrastructure/storage/postgres"
-	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
+	grpcAuth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 )
 
 // Run creates objects via constructors.
@@ -40,7 +40,12 @@ func Run(config *config.Config) error {
 	if err != nil {
 		return fmt.Errorf("could not connect to database: %w", err)
 	}
-	defer orm.Close()
+	defer func(orm postgres.Postgres) {
+		err := orm.Close()
+		if err != nil {
+			log.Printf("unable to close database connection: %v", err)
+		}
+	}(orm)
 
 	albumRepo, err := postgres.NewAlbumRepository(&orm)
 	if err != nil {
@@ -71,12 +76,12 @@ func Run(config *config.Config) error {
 
 	// Create a gRPC server object
 	grpcServer := grpc.NewServer(
-		grpc.StreamInterceptor(grpc_auth.StreamServerInterceptor(auth.GrpcInterceptor)),
-		grpc.UnaryInterceptor(grpc_auth.UnaryServerInterceptor(auth.GrpcInterceptor)),
+		grpc.StreamInterceptor(grpcAuth.StreamServerInterceptor(auth.GrpcInterceptor)),
+		grpc.UnaryInterceptor(grpcAuth.UnaryServerInterceptor(auth.GrpcInterceptor)),
 	)
 	// Attach the services to the server
-	articlespb.RegisterArticleServiceServer(grpcServer, sArticle)
-	albumspb.RegisterAlbumServiceServer(grpcServer, sAlbum)
+	articlesPb.RegisterArticleServiceServer(grpcServer, sArticle)
+	albumsPb.RegisterAlbumServiceServer(grpcServer, sAlbum)
 	// Serve gRPC server
 	go func() {
 		log.Printf(
@@ -99,12 +104,12 @@ func Run(config *config.Config) error {
 	}
 
 	gwmux := runtime.NewServeMux()
-	err = articlespb.RegisterArticleServiceHandler(context.Background(), gwmux, conn)
+	err = articlesPb.RegisterArticleServiceHandler(context.Background(), gwmux, conn)
 	if err != nil {
 		return fmt.Errorf("failed to register article gateway: %w", err)
 	}
 
-	err = albumspb.RegisterAlbumServiceHandler(context.Background(), gwmux, conn)
+	err = albumsPb.RegisterAlbumServiceHandler(context.Background(), gwmux, conn)
 	if err != nil {
 		return fmt.Errorf("failed to register albuns gateway: %w", err)
 	}

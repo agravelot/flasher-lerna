@@ -14,7 +14,7 @@ func main() {
 	g := gen.NewGenerator(gen.Config{
 		OutPath: "./query",
 		/* Mode: gen.WithoutContext|gen.WithDefaultQuery*/
-		//if you want the nullable field generation property to be pointer type, set FieldNullable true
+		// if you want the nullable field generation property to be pointer type, set FieldNullable true
 		FieldNullable: true,
 		// if you want to assign field which has default value in `Create` API, set FieldCoverable true, reference: https://gorm.io/docs/create.html#Default-Values
 		FieldCoverable: true,

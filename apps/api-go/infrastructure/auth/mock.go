@@ -18,7 +18,7 @@ var UserClaim = Claims{
 		Subject:   UserSsoID,
 		NotBefore: nil,
 	},
-	AuthTime:       1611164364,
+	AuthTime:       1611164364, //nolint:gomnd
 	Typ:            "Bearer",
 	Azp:            "frontend",
 	Nonce:          "1929a0da-156e-45ff-833f-a560b06b5acd",

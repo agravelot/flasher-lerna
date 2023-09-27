@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 	"github.com/golang-jwt/jwt/v4"
-	grpcauth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
-	grpcctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
+	grpcAuth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
+	grpcCtxTags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
 	"github.com/grpc-ecosystem/go-grpc-middleware/util/metautils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -33,10 +33,10 @@ type Claims struct {
 	Typ               string         `json:"typ"`
 	Azp               string         `json:"azp"`
 	Nonce             string         `json:"nonce"`
-	SessionState      string         `json:"session_state"`
+	SessionState      string         `json:"session_state"` //nolint:tagliatelle
 	Acr               string         `json:"acr"`
-	AllowedOrigins    []string       `json:"allowed-origins"`
-	RealmAccess       RealmAccess    `json:"realm_access"`
+	AllowedOrigins    []string       `json:"allowed-origins"` //nolint:tagliatelle
+	RealmAccess       RealmAccess    `json:"realm_access"`    //nolint:tagliatelle
 	ResourceAccess    ResourceAccess `json:"resource_access"`
 	Scope             string         `json:"scope"`
 	EmailVerified     bool           `json:"email_verified"`
@@ -99,7 +99,7 @@ func GrpcInterceptor(ctx context.Context) (context.Context, error) {
 		return ctx, nil
 	}
 
-	token, err := grpcauth.AuthFromMD(ctx, "bearer")
+	token, err := grpcAuth.AuthFromMD(ctx, "bearer")
 
 	if err != nil {
 		return ctx, err
@@ -110,7 +110,7 @@ func GrpcInterceptor(ctx context.Context) (context.Context, error) {
 		return ctx, status.Errorf(codes.Unauthenticated, "invalid auth token: %v", err)
 	}
 
-	grpcctxtags.Extract(ctx).Set("user", parsedToken)
+	grpcCtxTags.Extract(ctx).Set("user", parsedToken)
 
 	newCtx := context.WithValue(ctx, UserClaimsKey, parsedToken)
 
