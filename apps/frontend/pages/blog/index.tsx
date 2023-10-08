@@ -137,7 +137,7 @@ export default IndexAlbum;
 export const getStaticProps: GetStaticProps = async (): Promise<
   GetStaticPropsResult<Props>
 > => {
-  const posts = await getAllPosts("published");
+  const posts = await getAllPosts();
   const global = await getGlobalProps();
 
   return {

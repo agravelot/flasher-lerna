@@ -9,14 +9,19 @@
     "type-check": "tsc",
     "lint": "eslint '**/*{js,jsx,ts,tsx}' --fix",
     "pwa:icons": "ngx-pwa-icons -i static/icon.png -o public",
-    "favicon": "real-favicon generate faviconDescription.json faviconData.json public"
+    "favicon": "real-favicon generate faviconDescription.json faviconData.json public",
+    "buf": "buf generate"
   },
   "dependencies": {
     "@flasher/common": "^0.1.0",
     "@flasher/models": "^0.1.0",
+    "@grpc/grpc-js": "^1.9.5",
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
     "@next/bundle-analyzer": "^13.4.12",
+    "@protobuf-ts/grpc-transport": "^2.9.1",
+    "@protobuf-ts/runtime": "^2.9.1",
+    "@protobuf-ts/runtime-rpc": "^2.9.1",
     "@sentry/nextjs": "^7.60.1",
     "@tailwindcss/typography": "^0.5.9",
     "@types/gtag.js": "^0.0.12",
@@ -37,7 +42,6 @@
     "eslint-plugin-react": "^7.33.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "framer-motion": "^7.6.18",
-    "gray-matter": "^4.0.3",
     "joi": "^17.9.2",
     "keycloak-js": "^22.0.1",
     "lodash-es": "^4.17.21",
@@ -68,11 +72,13 @@
     "typescript": "^4.9.5"
   },
   "devDependencies": {
+    "buf": "^0.1.1",
     "cli-real-favicon": "^0.0.8",
     "ngx-pwa-icons": "^0.1.2"
   },
   "license": "MIT",
   "volta": {
-    "node": "20.7.0"
+    "node": "20.7.0",
+    "yarn": "3.6.4"
   }
 }
