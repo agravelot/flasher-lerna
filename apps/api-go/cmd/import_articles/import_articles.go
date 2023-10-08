@@ -1,7 +1,7 @@
 package main
 
 import (
-	articlesgrpc "api-go/gen/go/proto/articles/v2"
+	articlesgrpc "api-go/gen/go/articles/v2"
 	"api-go/infrastructure/keycloak"
 	"bufio"
 	"context"
@@ -129,7 +129,7 @@ func main() {
 	url := "https://accounts.jkanda.fr"
 	realm := "jkanda"
 	clientID := "service-account"
-	clientSecret := "2d5e4db4-9785-4919-9dbf-39964aebcc4f"
+	clientSecret := "2cfb0a3f-2d88-4614-a81d-8bdd2f212f10"
 
 	kc, err := keycloak.New(url, realm, clientID, clientSecret)
 	s := articlesgrpc.NewArticleServiceClient(conn)
@@ -178,6 +178,23 @@ func main() {
 
 		r, err := s.Create(ctx, &data)
 		if err != nil {
+			//if errors.As(err, &article.ErrAlreadyExists) {
+			//	_, err := s.Update(ctx, &articlesgrpc.UpdateRequest{
+			//		Slug:    post.Slug,
+			//		Name:    post.Title,
+			//		Content: post.Content,
+			//		// TODO Add created at
+			//		PublishedAt: &timestamppb.Timestamp{
+			//			Seconds: int64(post.CreatedAt.Second()),
+			//			Nanos:   int32(post.CreatedAt.Nanosecond()),
+			//		},
+			//		MetaDescription: truncate(post.MetaDescription, 150),
+			//	})
+			//	if err != nil {
+			//		panic(err)
+			//	}
+			//	continue
+			//}
 			log.Fatal(fmt.Errorf("unable to create article: %w", err))
 		}
 

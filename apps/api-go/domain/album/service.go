@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"time"
 
-	albumspb "api-go/gen/go/proto/albums/v2"
-	categoriespb "api-go/gen/go/proto/categories/v2"
-	mediaspb "api-go/gen/go/proto/medias/v2"
+	albumspb "api-go/gen/go/albums/v2"
+	categoriespb "api-go/gen/go/categories/v2"
+	mediaspb "api-go/gen/go/medias/v2"
 	"api-go/model"
 
 	"google.golang.org/grpc/codes"
