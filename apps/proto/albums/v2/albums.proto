@@ -1,14 +1,14 @@
 syntax = "proto3";
 
-package proto.albums.v2;
+package albums.v2;
 option go_package = "api-go/albumsgrpc";
 
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 import "validate/validate.proto";
-import "proto/categories/v2/categories.proto";
-import "proto/medias/v2/medias.proto";
+import "categories/v2/categories.proto";
+import "medias/v2/medias.proto";
 
 message AlbumResponse {
   int32 id = 1;
@@ -24,8 +24,8 @@ message AlbumResponse {
   google.protobuf.Timestamp updated_at = 11;
   bool notify_users_on_published = 12;
   // TODO Can be optional
-  repeated proto.categories.v2.Category categories = 13;
-  repeated proto.medias.v2.Media medias = 14;
+  repeated categories.v2.Category categories = 13;
+  repeated medias.v2.Media medias = 14;
 }
 
 message GetBySlugRequest {

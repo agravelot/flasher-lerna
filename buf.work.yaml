@@ -1,0 +1,5 @@
+version: v1
+directories:
+  - apps/proto
+#  - apps/api-go
+#  - apps/frontend
