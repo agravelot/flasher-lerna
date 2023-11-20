@@ -92,28 +92,28 @@ const ContactForm: FunctionComponent = () => {
 
     contactFormMatrix.find(formPart => formPart.prestationType === "common")?.fields.map((field) => {
       if (options[field.idForm] != "" && field.idForm != "email" && field.idForm != "name") {
-        message += `${field.label} : ${options[field.idForm]} \r\n`;
+        message += `${field.label} : ${options[field.idForm]} <br/>`;
       }
     });
 
-    message += "Type de prestation : " + contactFormMatrix.find(formPart => formPart.prestationType === getValues().prestationType)?.prestationName + " \r\n";
+    message += "Type de prestation : " + contactFormMatrix.find(formPart => formPart.prestationType === getValues().prestationType)?.prestationName + " <br/>";
 
     contactFormMatrix.find(formPart => formPart.prestationType === getValues().prestationType)?.fields.map((field) => {
       if (options[field.idForm] !== "") {
         switch (field.tag) {
           case "select": {
             const answer = field.selectOptions?.find(option => option.value === options[field.idForm]);
-            message += `${field.label} : ${answer?.label} \r\n`;
+            message += `${field.label} : ${answer?.label} <br/>`;
             break;
           }
           case "checkbox":
-            message += `${field.label} - ${field.checkboxLabel} : ${(options[field.idForm] ? "Oui" : "Non")} \r\n`;
+            message += `${field.label} - ${field.checkboxLabel} : ${(options[field.idForm] ? "Oui" : "Non")} <br/>`;
             break;
           default:
             if (field.idForm === "connectOther" && options["connect"] !== "other") {
               break;
             }
-            message += `${field.label} : ${options[field.idForm]} \r\n`;
+            message += `${field.label} : ${options[field.idForm]} <br/>`;
             break;
         }
       }
