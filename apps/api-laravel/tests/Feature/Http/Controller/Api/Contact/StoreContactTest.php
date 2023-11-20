@@ -8,7 +8,7 @@ use App\Adapters\Keycloak\GroupRepresentation;
 use App\Adapters\Keycloak\UserRepresentation;
 use App\Facades\Keycloak;
 use App\Models\Contact;
-use App\Notifications\ContactSent;
+use App\Mail\ContactSent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Facades\Notification;

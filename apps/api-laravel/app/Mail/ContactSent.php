@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Notifications;
+namespace App\Mail;
 
 use App\Models\Contact;
 use Illuminate\Bus\Queueable;
