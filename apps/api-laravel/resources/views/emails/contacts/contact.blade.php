@@ -1,7 +1,7 @@
 @component('mail::message')
 # Bonjour !
 
-From : {{ $contact->name }} <{{ $contact->email }}>
+De : {{ $contact->name }} <{{ $contact->email }}>
 
 Informations du contact : 
 
