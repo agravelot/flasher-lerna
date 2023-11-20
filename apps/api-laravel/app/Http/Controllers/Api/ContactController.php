@@ -10,8 +10,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ContactStoreApiRequest;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
-use App\Notifications\ContactSent;
-use Illuminate\Support\Facades\Notification;
+use App\Mail\ContactSent;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -26,7 +26,7 @@ class ContactController extends Controller
         $query->search = 'admin';
         $group = Keycloak::groups()->first($query);
         $emails = collect(Keycloak::groups()->members($group->id))->map(static fn ($u) => $u->email)->toArray();
-        Notification::route('mail', $emails)->notify(new ContactSent($contact));
+        Mail::to($emails)->send(new ContactSent($contact));
 
         return new ContactResource($contact);
     }
