@@ -1,4 +1,4 @@
-FROM golang:1.20 as builder
+FROM golang:1.21 as builder
 ARG BUF_TOKEN
 WORKDIR /go/src/github.com/agravelot/api-go
 # Fetch dependencies
