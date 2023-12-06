@@ -22,10 +22,13 @@ import { useAuthentication } from "hooks/useAuthentication";
 import { useRouter } from "next/dist/client/router";
 import { Breadcrumb } from "components/Breadcrumb";
 import { removeQueryParams } from "../../utils/canonical";
+import { useEffect, useState } from "react";
+import { useInView } from "react-cool-inview";
 
 type Props = {
   category: Category;
   albums: Album[];
+  hasNextPage: boolean;
 } & GlobalProps;
 
 const DynamicAdminOverlay = dynamic(
@@ -37,12 +40,45 @@ const DynamicAdminOverlay = dynamic(
 
 const ShowCategory: NextPage<Props> = ({
   category,
-  albums,
+  albums: initialAlbums,
+  hasNextPage: initialHasNextPage,
   socialMedias,
   appName,
 }: Props) => {
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasNextPage, setHasNextPage] = useState(initialHasNextPage);
+  const [albums, setAlbums] = useState(initialAlbums);
   const { isAdmin } = useAuthentication();
   const { asPath } = useRouter();
+
+  const { observe, unobserve } = useInView({
+    // For better UX, we can grow the root margin so the data will be loaded earlier
+    rootMargin: "50px 0px",
+    onEnter: () => {
+      setCurrentPage((cp) => cp + 1);
+    },
+  });
+
+  useEffect(() => {
+    if (currentPage === 1) {
+      return;
+    }
+    const url = getApiUrl(category.id, currentPage);
+    api<PaginatedReponse<Album[]>>(url)
+      .then((res) => res.json())
+      .then((res) => {
+        setAlbums((previous) => [...previous, ...res.data]);
+        setCurrentPage(currentPage);
+        setHasNextPage(currentPage < res.meta.last_page);
+      });
+  }, [category, currentPage]);
+
+  useEffect(() => {
+    if (!hasNextPage) {
+      unobserve();
+    }
+  }, [hasNextPage, unobserve]);
 
   return (
     <Layout socialMedias={socialMedias} appName={appName}>
@@ -95,7 +131,6 @@ const ShowCategory: NextPage<Props> = ({
             />
           </div>
         </div>
-
         <div className="container mx-auto mb-8 py-8">
           <div className="-mx-2 flex flex-wrap">
             {albums.map((album) => (
@@ -108,6 +143,7 @@ const ShowCategory: NextPage<Props> = ({
             ))}
           </div>
         </div>
+        {hasNextPage && <span ref={observe} />}
       </div>
       {isAdmin && <DynamicAdminOverlay />}
     </Layout>
@@ -115,6 +151,9 @@ const ShowCategory: NextPage<Props> = ({
 };
 
 export default ShowCategory;
+
+const getApiUrl = (category: number, page: number) =>
+  `/albums?filter[categories.id]=${category}&page=${page}`;
 
 export const getStaticProps: GetStaticProps<Props> = async ({
   params,
@@ -125,15 +164,14 @@ export const getStaticProps: GetStaticProps<Props> = async ({
     )
       .then((res) => res.json())
       .then((res) => res.data);
-    const albums = await api<PaginatedReponse<Album[]>>(
-      `/albums?filter[categories.id]=${category.id}`
-    )
-      .then((res) => res.json())
-      .then((res) => res.data);
+
+
+    const res = await api<PaginatedReponse<Album[]>>(getApiUrl(category.id, 1))
+      .then((res) => res.json());
 
     const global = await getGlobalProps();
 
-    return { props: { category, albums, ...global }, revalidate: 60 };
+    return { props: { category, albums: res.data, hasNextPage: res.meta.current_page < res.meta.last_page, ...global }, revalidate: 60 };
   } catch (e) {
     if (e instanceof HttpNotFound) {
       return { notFound: true, revalidate: 60 };
