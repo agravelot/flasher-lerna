@@ -3,6 +3,7 @@ package postgres
 import (
 	"context"
 	"fmt"
+	"github.com/kr/pretty"
 	"time"
 
 	"api-go/domain/album"
@@ -105,6 +106,8 @@ func (r AlbumRepository) Create(ctx context.Context, params album.CreateParams) 
 	// }
 
 	q := query.Use(r.storage.DB).Album.WithContext(ctx)
+
+	pretty.Log(params.Album.Body)
 
 	err := q.WithContext(ctx).Create(&params.Album)
 	// TODO Check duplicate

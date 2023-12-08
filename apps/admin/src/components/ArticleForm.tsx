@@ -1,6 +1,10 @@
-import { FunctionComponent, useEffect } from "react";
+import "@mdxeditor/editor/style.css";
+import { FunctionComponent } from "react";
 import { useForm } from "react-hook-form";
 import { format } from "date-fns";
+import { MDXEditor, type MDXEditorMethods } from "@mdxeditor/editor";
+import { headingsPlugin } from "@mdxeditor/editor";
+import React from "react";
 
 type Inputs = {
   name: string;
@@ -9,17 +13,18 @@ type Inputs = {
   publishedAt?: Date;
 };
 
-export type ArticleCreateProps =
+export type ArticleCreateProps = {
+  onSubmit: (article: Inputs) => void;
+} & (
   | {
       isNew: true;
       article: Inputs;
-      onSubmit: (article: Inputs) => void;
     }
   | {
       isNew: false;
       article: Partial<Inputs>;
-      onSubmit: (article: Inputs) => void;
-    };
+    }
+);
 
 // TODO Add zod validation
 // TODO USe react hook form
@@ -28,8 +33,9 @@ const ArticleForm: FunctionComponent<ArticleCreateProps> = ({
   article,
   onSubmit,
 }: ArticleCreateProps) => {
+  const ref = React.useRef<MDXEditorMethods>(null);
+
   const {
-    getValues,
     formState: { errors, isValid },
     handleSubmit,
     register,
@@ -44,10 +50,6 @@ const ArticleForm: FunctionComponent<ArticleCreateProps> = ({
         : undefined,
     },
   });
-
-  useEffect(() => {
-    console.log({ values: getValues(), errors, isValid });
-  }, [errors, isValid]);
 
   return (
     <div>
@@ -102,19 +104,15 @@ const ArticleForm: FunctionComponent<ArticleCreateProps> = ({
           {errors.content && (
             <div className="text-error">Le contenu est requis.</div>
           )}
-        </div>
 
-        {/*<div className="form-control">*/}
-        {/*  <label className="label">*/}
-        {/*    <span className="label-text">Status</span>*/}
-        {/*  </label>*/}
-        {/*  <input*/}
-        {/*      name="published_at"*/}
-        {/*      type="text"*/}
-        {/*      placeholder=""*/}
-        {/*      className="input input-bordered"*/}
-        {/*  />*/}
-        {/*</div>*/}
+          <MDXEditor
+            ref={ref}
+            contentEditableClassName="prose"
+            markdown="hello world"
+            onChange={console.log}
+            plugins={[headingsPlugin()]}
+          />
+        </div>
 
         <div className="form-control">
           <label className="label">

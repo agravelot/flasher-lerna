@@ -50,7 +50,7 @@ const AlbumTable: FunctionComponent<AlbumTableProps> = ({
                             <img
                               src={`https://jkanda.fr${generateNextImageUrl(
                                 a.media?.url,
-                                640
+                                640,
                               )}`}
                               alt={`Image ${a.title}`}
                             />
@@ -94,10 +94,7 @@ const AlbumTable: FunctionComponent<AlbumTableProps> = ({
                     ))}
                   </td>
                   <th>
-                    <Link
-                      to={`/albums/${a.slug}`}
-                      className="btn btn-ghost btn-xs"
-                    >
+                    <Link to={`/${a.slug}`} className="btn btn-ghost btn-xs">
                       détails
                     </Link>
                   </th>

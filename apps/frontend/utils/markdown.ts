@@ -37,9 +37,11 @@ export async function getPostBySlug(slug: string): Promise<BlogPost> {
   });
   const client = new ArticleServiceClient(grpcTransport);
 
-  const posts = await client.getBySlug({ slug });
+  const post = await client.getBySlug({ slug });
 
-  return transformArticle(posts.response);
+  console.log(post.response.content);
+
+  return transformArticle(post.response);
 }
 
 export async function getAllPosts(): Promise<BlogPost[]> {

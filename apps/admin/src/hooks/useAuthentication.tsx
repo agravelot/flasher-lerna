@@ -1,7 +1,6 @@
-import {
+import Keycloak, {
   KeycloakConfig,
   KeycloakInitOptions,
-  KeycloakInstance,
   KeycloakTokenParsed,
 } from "keycloak-js";
 import {
@@ -20,14 +19,12 @@ export type ParsedToken = KeycloakTokenParsed & {
 };
 
 type Authentication = {
-  keycloak: KeycloakInstance | null;
+  keycloak: Keycloak | null;
   parsedToken: ParsedToken | undefined;
   isAdmin: boolean;
   isAuthenticated: boolean;
   initialized: boolean;
 };
-
-export const isServer = (): boolean => typeof window === "undefined";
 
 export interface AuthenticationStateProviderProps {
   keycloakConfig: KeycloakConfig;
@@ -40,7 +37,7 @@ export interface AuthenticationStateProviderProps {
 export interface AuthenticationContextProps {
   isAuthenticated: boolean;
   initialized: boolean;
-  keycloak: KeycloakInstance | null;
+  keycloak: Keycloak | null;
   parsedToken: ParsedToken | undefined;
   isAdmin: boolean;
 }
@@ -76,18 +73,21 @@ export const AuthenticationProvider = ({
   const keycloakRef = useRef<Promise<void>>();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [initialized, setInitialized] = useState(false);
-  const keycloakInstance: KeycloakInstance | null = useMemo(() => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    return !isServer() ? require("keycloak-js").default(keycloakConfig) : null;
+  const keycloakInstance: Keycloak | null = useMemo(() => {
+    return new Keycloak(keycloakConfig);
   }, [keycloakConfig]);
 
   useEffect(() => {
+    console.log("as");
+
+    console.log({ keycloakInstance });
     if (!keycloakInstance) {
+      console.error("keycloak instance is not defined");
       return;
     }
     keycloakRef.current = keycloakInstance
       .init({
-        onLoad: undefined,
+        onLoad: "login-required",
         checkLoginIframe: false,
         token: getToken(LOCAL_STORAGE_ACCESS_TOKEN_KEY) ?? undefined,
         refreshToken: getToken(LOCAL_STORAGE_REFRESH_TOKEN_KEY) ?? undefined,
@@ -105,7 +105,7 @@ export const AuthenticationProvider = ({
       });
 
     keycloakInstance.onTokenExpired = () => {
-      keycloakInstance.updateToken(30);
+      void keycloakInstance.updateToken(30);
     };
   }, [keycloakInstance, keycloakInitOptions]);
 

@@ -41,7 +41,7 @@ func getPostFromFile(entry os.DirEntry) Post {
 
 	scanner := bufio.NewScanner(file)
 	beginHeaderRead := false
-	endHeaderRead := false
+	headerCompleted := false
 
 	post := Post{Slug: slug}
 
@@ -54,12 +54,12 @@ func getPostFromFile(entry os.DirEntry) Post {
 			continue
 		}
 
-		if isHeaderSeparator && !endHeaderRead {
-			endHeaderRead = true
+		if isHeaderSeparator && !headerCompleted {
+			headerCompleted = true
 			continue
 		}
 
-		if endHeaderRead {
+		if headerCompleted {
 			post.Content += line + "\n"
 		}
 
@@ -150,17 +150,12 @@ func main() {
 
 		post := getPostFromFile(entry)
 
-		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
-
-		// TODO Fix defer in loop
-		defer cancel()
-
 		pretty.Log(post.Slug)
 
 		data := articlesgrpc.CreateRequest{
 			Slug:    post.Slug,
 			Name:    post.Title,
-			Content: post.Content,
+			Content: post.Content, // TODO Do not escape?
 			// TODO Add created at?
 			PublishedAt: &timestamppb.Timestamp{
 				Seconds: int64(post.CreatedAt.Second()),
@@ -168,6 +163,13 @@ func main() {
 			},
 			MetaDescription: truncate(post.MetaDescription, 150),
 		}
+
+		pretty.Log(data)
+
+		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
+
+		//TODO Fix defer in loop
+		defer cancel()
 
 		at, err := kc.GetAccessToken()
 		if err != nil {
