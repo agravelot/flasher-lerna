@@ -127,7 +127,7 @@ const IndexAlbum: NextPage<Props> = ({
 export default IndexAlbum;
 
 const getApiUrl = (page: number, perPage: number) =>
-  `/albums?page=${page}&limit=${perPage}`;
+  `/albums?page=${page}&per_page=${perPage}`;
 
 export const getStaticProps: GetStaticProps = async (): Promise<
   GetStaticPropsResult<Props>
