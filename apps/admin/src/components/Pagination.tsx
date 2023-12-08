@@ -28,7 +28,6 @@ export const Pagination: FunctionComponent<PaginationProps> = ({
         to={{
           pathname: routeName,
           search: `?page=${currentPage > 1 ? currentPage - 1 : 1}`,
-          // query: { page: currentPage > 1 ? currentPage - 1 : 1 },
         }}
       >
         <a
@@ -59,7 +58,7 @@ export const Pagination: FunctionComponent<PaginationProps> = ({
       </Link>
     </div>
     <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-      <div v-if="showInfo">
+      <div>
         <span className="text-sm leading-5 text-gray-700">
           {"Affichage de "}
           <span className="font-medium">{from}</span>

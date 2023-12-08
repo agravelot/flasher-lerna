@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	articles_pb "api-go/gen/go/proto/articles/v2"
+	articles_pb "api-go/gen/go/articles/v2"
 	"api-go/model"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

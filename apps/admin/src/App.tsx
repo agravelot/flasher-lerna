@@ -7,10 +7,11 @@ import ArticleList from "./pages/ArticleList";
 import ArticleCreate from "./pages/ArticleCreate";
 import AlbumCreate from "./pages/AlbumCreate";
 import AlbumEdit from "./pages/AlbumEdit";
-import { setBaseUrl } from "@flasher/common/src";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { setBaseUrl } from "@flasher/common";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthenticationProvider } from "./hooks/useAuthentication";
 import { StrictMode } from "react";
+import ArticleEdit from "./pages/ArticleEdit";
 
 const queryClient = new QueryClient();
 
@@ -43,24 +44,15 @@ function App() {
           <div className="h-screen">
             <Drawer>
               <Routes>
-                <Route path="/albums/create">
-                  <AlbumCreate />
-                </Route>
-                <Route path="/albums/:slug">
-                  <AlbumEdit />
-                </Route>
-                <Route path="/albums">
-                  <AlbumList />
-                </Route>
-                <Route path="/articles/create">
-                  <ArticleCreate />
-                </Route>
+                <Route path="/albums/create" element={<AlbumCreate />} />
+                <Route path="/albums/:slug" element={<AlbumEdit />} />
+                <Route path="/albums" element={<AlbumList />} />
                 <Route path="/articles">
-                  <ArticleList />
+                  <Route path="create" element={<ArticleCreate />} />
+                  <Route path=":slug" element={<ArticleEdit />} />
+                  <Route index element={<ArticleList />} />
                 </Route>
-                <Route path="/">
-                  <Home />
-                </Route>
+                <Route path="/" element={<Home />} />
               </Routes>
             </Drawer>
           </div>

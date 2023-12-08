@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package proto.medias.v2;
+package medias.v2;
 // option go_package = "api-go/mediasgrpc";
 option go_package = "api-go/gen/go/proto/medias/v2;mediaspbv1";
 

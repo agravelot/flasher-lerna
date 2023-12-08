@@ -1,29 +1,33 @@
-import { FunctionComponent } from "react";
+import { FC, ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { useAuthentication } from "../hooks/useAuthentication";
 
 interface DrawerProps {
-  children: JSX.Element;
+  children: ReactNode;
 }
 
-const Drawer: FunctionComponent<DrawerProps> = ({ children }: DrawerProps) => {
+const Drawer: FC<DrawerProps> = ({ children }: DrawerProps) => {
   const { keycloak, parsedToken } = useAuthentication();
 
   return (
-    <div className="drawer-mobile drawer h-full rounded-lg bg-base-200 shadow">
+    <div className="drawer lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-      <div className="drawer-content flex flex-col items-center">
+      <div className="drawer-content flex flex-col items-center justify-center">
         <label
           htmlFor="my-drawer-2"
-          className="btn btn-primary drawer-button mb-4 lg:hidden"
+          className="btn btn-primary drawer-button lg:hidden"
         >
-          open menu
+          Open drawer
         </label>
         {children}
       </div>
       <div className="drawer-side">
-        <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-        <ul className="menu w-80 overflow-y-auto bg-base-100 p-4 text-base-content">
+        <label
+          htmlFor="my-drawer-2"
+          aria-label="close sidebar"
+          className="drawer-overlay"
+        ></label>
+        <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
           <li>
             <Link to="/">Dashboard</Link>
           </li>
@@ -37,7 +41,7 @@ const Drawer: FunctionComponent<DrawerProps> = ({ children }: DrawerProps) => {
             <a>ID : {parsedToken?.sub}</a>
           </li>
           <li className="text-red-300">
-            <a onClick={() => keycloak?.logout()}>Se deconnecter</a>
+            <a onClick={() => keycloak?.logout()}>Se déconnecter</a>
           </li>
         </ul>
       </div>

@@ -1,0 +1,33 @@
+version: v1
+
+managed:
+  enabled: true
+
+plugins:
+  - plugin: buf.build/community/timostamm-protobuf-ts:v2.9.1
+    out: apps/frontend/gen
+    opt: ts_nocheck,eslint_disable,client_generic,add_pb_suffix
+  - plugin: buf.build/protocolbuffers/go:v1.31.0
+    out: apps/api-go/gen/go
+    opt:
+      - paths=source_relative
+  - plugin: buf.build/grpc/go:v1.3.0
+    out: apps/api-go/gen/go
+    opt:
+      - require_unimplemented_servers=false
+      - paths=source_relative
+  - plugin: buf.build/grpc-ecosystem/gateway:v2.16.1
+    out: apps/api-go/gen/go
+    opt:
+      - paths=source_relative
+      - generate_unbound_methods=true
+      # - standalone=true
+  - plugin: buf.build/grpc-ecosystem/openapiv2:v2.16.1
+    out: apps/api-go/gen/openapiv2
+    # strategy: all
+    opt: allow_merge=true,merge_file_name=all
+  - plugin: buf.build/bufbuild/validate-go:v1.0.2
+    out: apps/api-go/gen/go
+    opt:
+      - paths=source_relative
+      # - validate_out="lang=go:.gen/validate2"

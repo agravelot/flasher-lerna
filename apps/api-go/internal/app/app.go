@@ -20,8 +20,8 @@ import (
 	"api-go/config"
 	"api-go/domain/album"
 	"api-go/domain/article"
-	albumsPb "api-go/gen/go/proto/albums/v2"
-	articlesPb "api-go/gen/go/proto/articles/v2"
+	albumsPb "api-go/gen/go/albums/v2"
+	articlesPb "api-go/gen/go/articles/v2"
 	"api-go/infrastructure/storage/postgres"
 	grpcAuth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 )

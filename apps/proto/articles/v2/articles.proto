@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package proto.articles.v2;
+package articles.v2;
 option go_package = "api-go/articlesgrpc";
 
 import "google/protobuf/timestamp.proto";

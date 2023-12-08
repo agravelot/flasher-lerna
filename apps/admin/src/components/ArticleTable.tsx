@@ -1,6 +1,7 @@
 import { FunctionComponent } from "react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { Link } from "react-router-dom";
 
 interface Article {
   id: string;
@@ -45,9 +46,9 @@ const ArticleTable: FunctionComponent<ArticleListProps> = ({
                 <span className="checkbox-mark"></span>
               </label>
             </th>
-            <th>Name</th>
-            <th>Job</th>
+            <th>Titre</th>
             <th>Status</th>
+            <th>Action</th>
             <th></th>
           </tr>
         </thead>
@@ -68,31 +69,26 @@ const ArticleTable: FunctionComponent<ArticleListProps> = ({
                 </th>
                 <td>
                   <div className="flex items-center space-x-3">
-                    <div className="avatar">
-                      <div className="mask mask-squircle h-12 w-12">
-                        <img
-                          src="/tailwind-css-component-profile-2@56w.png"
-                          alt="Avatar Tailwind CSS Component"
-                        />
-                      </div>
-                    </div>
+                    {/*<div className="avatar">*/}
+                    {/*  <div className="mask mask-squircle h-12 w-12">*/}
+                    {/*    <img*/}
+                    {/*      src="/tailwind-css-component-profile-2@56w.png"*/}
+                    {/*      alt="Avatar Tailwind CSS Component"*/}
+                    {/*    />*/}
+                    {/*  </div>*/}
+                    {/*</div>*/}
                     <div>
                       <div className="font-bold">{a.name}</div>
                       <div className="text-sm opacity-50">
-                        {a.publishedAt &&
-                          format(a.publishedAt, "dd/MM/yyyy", {
-                            locale: fr,
-                          })}
+                        <>
+                          {a.publishedAt &&
+                            format(a.publishedAt, "dd/MM/yyyy", {
+                              locale: fr,
+                            })}
+                        </>
                       </div>
                     </div>
                   </div>
-                </td>
-                <td>
-                  Zemlak, Daniel and Leannon
-                  <br />
-                  <span className="badge badge-outline badge-sm">
-                    Desktop Support Technician
-                  </span>
                 </td>
                 <td>
                   <div className="flex items-center space-x-3">
@@ -106,7 +102,9 @@ const ArticleTable: FunctionComponent<ArticleListProps> = ({
                   </div>
                 </td>
                 <th>
-                  <button className="btn btn-ghost btn-xs">details</button>
+                  <Link to={`${a.slug}`} className="btn btn-ghost btn-xs">
+                    details
+                  </Link>
                 </th>
               </tr>
             );
@@ -115,9 +113,9 @@ const ArticleTable: FunctionComponent<ArticleListProps> = ({
         <tfoot>
           <tr>
             <th></th>
-            <th>Name</th>
-            <th>Job</th>
+            <th>Titre</th>
             <th>Status</th>
+            <th>Action</th>
             <th></th>
           </tr>
         </tfoot>
