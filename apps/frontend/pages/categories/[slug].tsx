@@ -168,12 +168,12 @@ export const getStaticProps: GetStaticProps<Props> = async ({
       .then((res) => res.data);
 
 
-    const res = await api<PaginatedReponse<Album[]>>(getApiUrl(category.id, 1, perPage))
+    const albums = await api<PaginatedReponse<Album[]>>(getApiUrl(category.id, 1, perPage))
       .then((res) => res.json());
 
     const global = await getGlobalProps();
 
-    return { props: { category, albums: res.data, hasNextPage: res.meta.current_page < res.meta.last_page, ...global }, revalidate: 60 };
+    return { props: { category, albums: albums.data, hasNextPage: albums.meta.current_page < albums.meta.last_page, ...global }, revalidate: 60 };
   } catch (e) {
     if (e instanceof HttpNotFound) {
       return { notFound: true, revalidate: 60 };
