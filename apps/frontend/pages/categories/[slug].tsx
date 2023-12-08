@@ -31,6 +31,8 @@ type Props = {
   hasNextPage: boolean;
 } & GlobalProps;
 
+const perPage = 12;
+
 const DynamicAdminOverlay = dynamic(
   () => import("../../components/AdminOverlay"),
   {
@@ -64,7 +66,7 @@ const ShowCategory: NextPage<Props> = ({
     if (currentPage === 1) {
       return;
     }
-    const url = getApiUrl(category.id, currentPage);
+    const url = getApiUrl(category.id, currentPage, perPage);
     api<PaginatedReponse<Album[]>>(url)
       .then((res) => res.json())
       .then((res) => {
@@ -152,8 +154,8 @@ const ShowCategory: NextPage<Props> = ({
 
 export default ShowCategory;
 
-const getApiUrl = (category: number, page: number) =>
-  `/albums?filter[categories.id]=${category}&page=${page}`;
+const getApiUrl = (category: number, page: number, perPage: number) =>
+  `/albums?filter[categories.id]=${category}&page=${page}&per_page=${perPage}`;
 
 export const getStaticProps: GetStaticProps<Props> = async ({
   params,
@@ -166,7 +168,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({
       .then((res) => res.data);
 
 
-    const res = await api<PaginatedReponse<Album[]>>(getApiUrl(category.id, 1))
+    const res = await api<PaginatedReponse<Album[]>>(getApiUrl(category.id, 1, perPage))
       .then((res) => res.json());
 
     const global = await getGlobalProps();
