@@ -154,8 +154,8 @@ const ShowCategory: NextPage<Props> = ({
 
 export default ShowCategory;
 
-const getApiUrl = (category: number, page: number, perPage: number) =>
-  `/albums?filter[categories.id]=${category}&page=${page}&per_page=${perPage}`;
+const getApiUrl = (categoryId: number, page: number, perPage: number) =>
+  `/albums?filter[categories.id]=${categoryId}&page=${page}&per_page=${perPage}`;
 
 export const getStaticProps: GetStaticProps<Props> = async ({
   params,
