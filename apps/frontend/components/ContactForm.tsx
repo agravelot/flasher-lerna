@@ -203,11 +203,11 @@ const ContactForm: FunctionComponent = () => {
         >
           <option value="" disabled>Sélectionner une prestation</option>
           <option value="wedding">Mariage</option>
-          <option value="pregnancy">Grossesse</option>
+          <option value="casual">Casual</option>
           <option value="family">Familial</option>
           <option value="animal">Animalier</option>
           <option value="cosplay">Cosplay</option>
-          <option value="casual">Casual</option>
+          <option value="pregnancy">Grossesse</option>
           <option value="other">Autre</option>
         </select>
         {errors.prestationType && (
