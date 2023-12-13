@@ -11,7 +11,7 @@ export const contactFormMatrix: MatrixType[] = [
                     idHtml: "contact_name",
                     label: "Prénom",
                     type: "text",
-                    placeholder: "Nom ou pseudonyme",
+                    placeholder: "Prénom ou pseudonyme",
                 },
                 {
                     idForm: "email",
@@ -40,7 +40,7 @@ export const contactFormMatrix: MatrixType[] = [
                     idHtml: "contact_location",
                     label: "Lieu du mariage",
                     type: "text",
-                    placeholder: "Indiquez où se déroule la cérémonie",
+                    placeholder: "Indiquez où se déroule la cérémonie / mairie",
                 },
                 {
                     idForm: "date",
@@ -63,7 +63,7 @@ export const contactFormMatrix: MatrixType[] = [
                     idHtml: "contact_wedding_guests",
                     label: "Nombre d'invités",
                     type: "text",
-                    placeholder: "",
+                    placeholder: "Nombre approximatif d'invités",
                 },
                 {
                     idForm: "weddingPrepare",
@@ -190,7 +190,7 @@ export const contactFormMatrix: MatrixType[] = [
                     idHtml: "contact_location",
                     label: "Lieu",
                     type: "text",
-                    placeholder: "",
+                    placeholder: "Par exemple, la ville où vous habitez",
                     required: false
                 },
                 {
@@ -266,7 +266,7 @@ export const contactFormMatrix: MatrixType[] = [
                     idHtml: "contact_location",
                     label: "Lieu",
                     type: "text",
-                    placeholder: "",
+                    placeholder: "Par exemple, la ville où vous habitez",
                     required: false
                 },
                 {
@@ -342,7 +342,7 @@ export const contactFormMatrix: MatrixType[] = [
                     idHtml: "contact_location",
                     label: "Lieu",
                     type: "text",
-                    placeholder: "",
+                    placeholder: "Par exemple, la ville où vous habitez",
                     required: false
                 },
                 {
@@ -418,7 +418,7 @@ export const contactFormMatrix: MatrixType[] = [
                     idHtml: "contact_location",
                     label: "Lieu",
                     type: "text",
-                    placeholder: "",
+                    placeholder: "Par exemple, la ville où vous habitez",
                     required: false
                 },
                 {
@@ -434,7 +434,7 @@ export const contactFormMatrix: MatrixType[] = [
                     idHtml: "contact_cosplay_name",
                     label: "Nom du personnage incarné",
                     type: "text",
-                    placeholder: "",
+                    placeholder: "Par exemple Sukuna...",
                     required: true,
                 },
                 {
@@ -442,7 +442,7 @@ export const contactFormMatrix: MatrixType[] = [
                     idHtml: "contact_cosplay_universe",
                     label: "Univers du personnage",
                     type: "text",
-                    placeholder: "",
+                    placeholder: "Par exemple Jujutsu Kaisen...",
                     required: true,
                 },
                 {
@@ -510,7 +510,7 @@ export const contactFormMatrix: MatrixType[] = [
                     idHtml: "contact_location",
                     label: "Lieu",
                     type: "text",
-                    placeholder: "",
+                    placeholder: "Par exemple, la ville où vous habitez",
                     required: false
                 },
 
@@ -587,7 +587,7 @@ export const contactFormMatrix: MatrixType[] = [
                     idHtml: "contact_location",
                     label: "Lieu",
                     type: "text",
-                    placeholder: "",
+                    placeholder: "Par exemple, la ville où vous habitez",
                     required: false
                 },
                 {
