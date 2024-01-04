@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import { api, HttpRequestError } from "@flasher/common";
 import { Path, useForm } from "react-hook-form";
 import { ContactInput } from "./ContactInput";
@@ -71,9 +71,7 @@ export interface ContactFormRequestInputs {
   message: string;
 }
 
-
-const ContactForm: FunctionComponent = () => {
-
+const ContactForm: FC = () => {
   const {
     register,
     handleSubmit,

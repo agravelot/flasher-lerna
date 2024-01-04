@@ -1,8 +1,8 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import Separator from "./Separator";
 import ContactForm from "./ContactForm";
 
-export const ContactSection: FunctionComponent = () => {
+export const ContactSection: FC = () => {
   return (
     <section className="relative bg-gray-900 pb-20">
       <Separator separatorClass="text-gray-900" position="top" />

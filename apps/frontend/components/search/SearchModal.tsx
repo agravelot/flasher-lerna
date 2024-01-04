@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect } from "react";
+import { FC, useEffect } from "react";
 import { SearchStatus, useSearch } from "../../contexts/AppContext";
 import dynamic from "next/dynamic";
 import { Transition } from "@headlessui/react";
@@ -7,7 +7,7 @@ const LazySearch = dynamic(() => import("./Search"), {
   ssr: false,
 });
 
-export const SearchModal: FunctionComponent = () => {
+export const SearchModal: FC = () => {
   const { status, googleSearch, close } = useSearch();
 
   const handleEscape = (e: KeyboardEvent) => {
@@ -71,7 +71,7 @@ export const SearchModal: FunctionComponent = () => {
           aria-labelledby="modal-headline"
         >
           <div className="container mx-auto">
-            <LazySearch search={googleSearch}/>
+            <LazySearch search={googleSearch} />
           </div>
         </div>
       </div>

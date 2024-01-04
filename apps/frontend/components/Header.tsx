@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode } from "react";
+import { FC, ReactNode } from "react";
 import Image from "next/image";
 import Separator from "./Separator";
 import { Media } from "@flasher/models";
@@ -26,7 +26,7 @@ class Props {
   breadcrumb?: ReactNode;
 }
 
-const Header: FunctionComponent<Props> = ({
+const Header: FC<Props> = ({
   title,
   description,
   children,
@@ -59,8 +59,12 @@ const Header: FunctionComponent<Props> = ({
     <div className="container relative mx-auto">
       <div className="flex flex-wrap items-center">
         <div className="ml-auto mr-auto w-full px-4 text-center lg:w-6/12">
-          <h1 className="text-5xl font-semibold text-white drop-shadow-lg">{title}</h1>
-          <p className="mt-4 text-lg text-gray-300 drop-shadow-lg">{description}</p>
+          <h1 className="text-5xl font-semibold text-white drop-shadow-lg">
+            {title}
+          </h1>
+          <p className="mt-4 text-lg text-gray-300 drop-shadow-lg">
+            {description}
+          </p>
           {children}
         </div>
       </div>

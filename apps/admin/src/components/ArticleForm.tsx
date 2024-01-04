@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import { Formik, Field, Form } from "formik";
 
 export interface ArticleCreateProps {
@@ -14,7 +14,7 @@ interface ArticleForm {
   publishedAt?: Date;
 }
 
-const ArticleForm: FunctionComponent<ArticleCreateProps> = ({
+const ArticleForm: FC<ArticleCreateProps> = ({
   article,
   onSubmit,
 }: ArticleCreateProps) => {

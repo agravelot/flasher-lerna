@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import { range } from "@flasher/common";
 import { Link } from "react-router-dom";
 import React from "react";
@@ -14,7 +14,7 @@ export class PaginationProps {
   routeName!: string;
 }
 
-export const Pagination: FunctionComponent<PaginationProps> = ({
+export const Pagination: FC<PaginationProps> = ({
   currentPage,
   routeName,
   lastPage,

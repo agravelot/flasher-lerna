@@ -1,5 +1,5 @@
 import { Album } from "@flasher/models";
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { generateNextImageUrl, resolveAlbumStatus } from "@flasher/common";
@@ -9,7 +9,7 @@ export interface AlbumTableProps {
   albums: Album[];
 }
 
-const AlbumTable: FunctionComponent<AlbumTableProps> = ({
+const AlbumTable: FC<AlbumTableProps> = ({
   albums,
 }: AlbumTableProps) => {
   return (
