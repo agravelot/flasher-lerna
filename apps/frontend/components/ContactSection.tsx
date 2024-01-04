@@ -13,7 +13,10 @@ export const ContactSection: FC = () => {
               Pourquoi pas vous ?
             </h2>
             <p className="mt-4 mb-4 text-lg leading-relaxed text-gray-200">
-              D&apos;autres avant vous ont fait le grand saut, pourquoi pas vous ? En couple, en famille, seul(e), faites vous plaisir. Chaque prestations est unique, alors, faisons ce petit bout de chemin ensemble, cela vous tente ?
+              D&apos;autres avant vous ont fait le grand saut, pourquoi pas vous
+              ? En couple, en famille, seul(e), faites vous plaisir. Chaque
+              prestations est unique, alors, faisons ce petit bout de chemin
+              ensemble, cela vous tente ?
             </p>
             <div className="flex text-white">
               <div className="mx-auto flex">
