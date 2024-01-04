@@ -214,10 +214,11 @@ const ContactForm: FC = () => {
           Type de prestation
         </label>
         <select
-          {...register("prestationType", { required: false })}
+          {...register("prestationType", {
+            required: "Veuillez sélectionner un type de prestation",
+          })}
           name="prestationType"
           id="contact_prestation_type"
-          required={true}
           defaultValue=""
           className="w-full rounded bg-white px-3 py-3 text-sm text-gray-700 placeholder-gray-400 shadow focus:outline-none focus:ring"
           style={{ transition: "all 0.15s ease 0s" }}
@@ -234,8 +235,8 @@ const ContactForm: FC = () => {
           <option value="other">Autre</option>
         </select>
         {errors.prestationType && (
-          <div className="text-xs italic text-red-800">
-            <span className="text-xs italic text-red-800">
+          <div className="mt-2">
+            <span className=" italic text-red-800">
               {errors.prestationType.message}
             </span>
           </div>

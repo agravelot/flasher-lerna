@@ -44,10 +44,11 @@ export const ContactInput: FC<Props> = ({ register, errors, field }) => {
       )}
       {tag === "textarea" && (
         <textarea
-          {...register(`${idForm}`, { required })}
+          {...register(`${idForm}`, {
+            required: required ? "Ce champ est requis" : undefined,
+          })}
           name={idForm}
           id={idHtml}
-          required={required}
           rows={8}
           className="w-full rounded bg-white px-3 py-3 text-sm text-gray-700 placeholder-gray-400 shadow focus:outline-none focus:ring"
           placeholder={placeholder}
@@ -56,15 +57,17 @@ export const ContactInput: FC<Props> = ({ register, errors, field }) => {
       {tag === "checkbox" && (
         <div className="relative flex">
           <input
-            {...register(`${idForm}`, { required })}
+            {...register(`${idForm}`, {
+              required: required ? "Ce champ est requis" : undefined,
+            })}
             name={idForm}
             type={tag}
             value={checkboxValue}
             id={idHtml}
-            required={required}
             autoComplete={"true"}
             className="rounded bg-white mb-1 text-sm text-gray-700 placeholder-gray-400"
             style={{ transition: "all 0.15s ease 0s" }}
+            aria-invalid={errors[idForm] ? "true" : "false"}
           />
           <label
             className="mb-2 block text-xs pl-2 font-bold text-gray-700"
@@ -76,12 +79,14 @@ export const ContactInput: FC<Props> = ({ register, errors, field }) => {
       )}
       {tag === "select" && (
         <select
-          {...register(`${idForm}`, { required })}
+          {...register(`${idForm}`, {
+            required: required ? "Ce champ est requis" : undefined,
+          })}
           name={idForm}
           id={idHtml}
-          required={required}
           className="w-full rounded bg-white px-3 py-3 text-sm text-gray-700 placeholder-gray-400 shadow focus:outline-none focus:ring"
           style={{ transition: "all 0.15s ease 0s" }}
+          aria-invalid={errors[idForm] ? "true" : "false"}
         >
           {selectOptions?.map((option) => {
             return (
@@ -95,22 +100,23 @@ export const ContactInput: FC<Props> = ({ register, errors, field }) => {
 
       {tag === "input" && idForm !== "connect" && (
         <input
-          {...register(`${idForm}`, { required })}
+          {...register(`${idForm}`, {
+            required: required ? "Ce champ est requis" : undefined,
+            // pattern: inputType === "tel" ? "[0-9]{10}" : undefined,
+          })}
           name={idForm}
           type={inputType}
           id={idHtml}
-          required={required}
           pattern={inputType === "tel" ? "[0-9]{10}" : undefined}
           autoComplete={"true"}
           className="w-full rounded bg-white px-3 py-3 text-sm text-gray-700 placeholder-gray-400 shadow focus:outline-none focus:ring"
           placeholder={placeholder}
+          aria-invalid={errors[idForm] ? "true" : "false"}
         />
       )}
       {errors[idForm] && (
-        <div className="text-xs italic text-red-800">
-          <span className="text-xs italic text-red-800">
-            {errors[idForm]?.message}
-          </span>
+        <div className="mt-2">
+          <span className="italic text-red-800">{errors[idForm]?.message}</span>
         </div>
       )}
     </div>
