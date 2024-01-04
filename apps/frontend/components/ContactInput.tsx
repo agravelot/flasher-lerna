@@ -100,6 +100,7 @@ export const ContactInput: FC<Props> = ({ register, errors, field }) => {
           type={inputType}
           id={idHtml}
           required={required}
+          pattern={inputType === "tel" ? "[0-9]{10}" : undefined}
           autoComplete={"true"}
           className="w-full rounded bg-white px-3 py-3 text-sm text-gray-700 placeholder-gray-400 shadow focus:outline-none focus:ring"
           placeholder={placeholder}
