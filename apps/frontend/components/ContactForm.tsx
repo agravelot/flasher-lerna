@@ -37,10 +37,10 @@ export interface MatrixField {
   idForm: Path<ContactFormRequestInputs>;
   idHtml: string;
   label: string;
-  type: string;
+  inputType: "tel" | "email" | "text" | "checkbox";
   placeholder?: string;
   required?: boolean;
-  tag?: string;
+  tag: "select" | "checkbox" | "textarea" | "input";
   checkboxTitle?: boolean;
   checkboxValue?: string;
   checkboxLabel?: string;

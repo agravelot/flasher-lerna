@@ -21,7 +21,7 @@ export const ContactInput: FC<Props> = ({ register, errors, field }) => {
     checkboxValue = "",
     checkboxLabel = "",
     selectOptions = [],
-    type: inputType,
+    inputType,
   } = field;
   return (
     <div
