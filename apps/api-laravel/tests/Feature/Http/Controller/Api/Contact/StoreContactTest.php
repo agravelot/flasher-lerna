@@ -7,10 +7,9 @@ namespace Tests\Feature\Http\Controller\Api\Contact;
 use App\Adapters\Keycloak\GroupRepresentation;
 use App\Adapters\Keycloak\UserRepresentation;
 use App\Facades\Keycloak;
-use App\Models\Contact;
 use App\Mail\ContactSent;
+use App\Models\Contact;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
@@ -41,8 +40,8 @@ class StoreContactTest extends TestCase
 
         Mail::assertQueued(
             ContactSent::class,
-            function (ContactSent $mail) use ($admin1, $admin2, $admin3) {
-                return $mail->hasTo($admin1) && $mail->hasTo($admin2) && !$mail->hasTo($admin3);
+            static function (ContactSent $mail) use ($admin1, $admin2, $admin3) {
+                return $mail->hasTo($admin1) && $mail->hasTo($admin2) && ! $mail->hasTo($admin3);
             }
         );
     }

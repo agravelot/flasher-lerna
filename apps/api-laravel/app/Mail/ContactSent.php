@@ -6,10 +6,8 @@ namespace App\Mail;
 
 use App\Models\Contact;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Support\HtmlString;
 use Illuminate\Queue\SerializesModels;
 
 class ContactSent extends Mailable implements ShouldQueue

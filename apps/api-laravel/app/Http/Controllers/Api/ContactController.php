@@ -9,8 +9,8 @@ use App\Facades\Keycloak;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContactStoreApiRequest;
 use App\Http\Resources\ContactResource;
-use App\Models\Contact;
 use App\Mail\ContactSent;
+use App\Models\Contact;
 use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
