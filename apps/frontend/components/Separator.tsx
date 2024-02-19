@@ -1,14 +1,14 @@
-import { FunctionComponent } from "react";
+import { FC, ReactElement } from "react";
 
 interface Props {
   separatorClass: string;
   position: "top" | "bottom";
 }
 
-const Separator: FunctionComponent<Props> = ({
+const Separator: FC<Props> = ({
   separatorClass,
   position,
-}: Props) => {
+}: Props): ReactElement => {
   const classes =
     position === "bottom" ? "top-auto bottom-0" : "bottom-auto top-0 -mt-20";
 

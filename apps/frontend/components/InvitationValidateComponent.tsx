@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/dist/client/router";
 import { Invitation } from "@flasher/models";
@@ -19,7 +19,7 @@ export enum Status {
   AlreadyAccepted,
 }
 
-const InvitationValidateComponent: FunctionComponent = () => {
+const InvitationValidateComponent: FC = () => {
   const [status, setStatus] = useState<Status>(Status.Loading);
   const router = useRouter();
   const { initialized, keycloak } = useAuthentication();

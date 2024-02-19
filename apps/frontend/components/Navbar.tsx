@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FunctionComponent, useContext, useState } from "react";
+import { FC, useContext, useState } from "react";
 import NavbarAccount from "./NavbarAccount";
 import { SearchContext } from "../contexts/AppContext";
 import { useAuthentication } from "hooks/useAuthentication";
@@ -11,7 +11,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Transition } from "@headlessui/react";
 
-const Navbar: FunctionComponent = () => {
+const Navbar: FC = () => {
   const [showMenu, setShowMenu] = useState(false);
   const toggleNavbar = () => setShowMenu((prev) => !prev);
   const { keycloak, initialized, isAuthenticated } = useAuthentication();

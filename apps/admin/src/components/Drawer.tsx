@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import { Link } from "react-router-dom";
 import { useAuthentication } from "../hooks/useAuthentication";
 
@@ -6,7 +6,7 @@ interface DrawerProps {
   children: JSX.Element;
 }
 
-const Drawer: FunctionComponent<DrawerProps> = ({ children }: DrawerProps) => {
+const Drawer: FC<DrawerProps> = ({ children }: DrawerProps) => {
   const { keycloak, parsedToken } = useAuthentication();
 
   return (

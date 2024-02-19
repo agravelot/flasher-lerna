@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
@@ -17,7 +17,7 @@ export interface ArticleListProps {
   onSelectChange?: (articles: Article[]) => void;
 }
 
-const ArticleTable: FunctionComponent<ArticleListProps> = ({
+const ArticleTable: FC<ArticleListProps> = ({
   articles,
   onSelectChange,
   selected = [],

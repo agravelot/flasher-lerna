@@ -1,15 +1,12 @@
 import { useRouter } from "next/dist/client/router";
-import { FunctionComponent } from "react";
+import { FC } from "react";
 
 interface Props {
   path?: string;
   targetBlank?: boolean;
 }
 
-const AdminOverlay: FunctionComponent<Props> = ({
-  path,
-  targetBlank = true,
-}: Props) => {
+const AdminOverlay: FC<Props> = ({ path, targetBlank = true }: Props) => {
   const router = useRouter();
 
   return (

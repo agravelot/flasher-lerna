@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import { Review } from "schema-dts";
 import { configuration } from "../utils/configuration";
 import { Testimonial } from "@flasher/models";
@@ -7,7 +7,7 @@ interface Props {
   testimonial: Testimonial;
 }
 
-const TestimonialItem: FunctionComponent<Props> = ({ testimonial }: Props) => {
+const TestimonialItem: FC<Props> = ({ testimonial }: Props) => {
   const jsonLd: Review = {
     "@type": "Review",
     itemReviewed: {

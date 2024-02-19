@@ -1,10 +1,10 @@
-import { FunctionComponent, useEffect } from "react";
+import { FC, useEffect } from "react";
 import { Props as CarouselProps } from "./SwiperCarousel";
 import { SwiperCarousel } from "./SwiperCarousel";
 
 export type Props = { openned: boolean; close: () => void } & CarouselProps;
 
-const FullscreenCarousel: FunctionComponent<Props> = ({
+const FullscreenCarousel: FC<Props> = ({
   medias,
   beginAt,
   openned,

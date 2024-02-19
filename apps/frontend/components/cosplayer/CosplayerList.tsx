@@ -1,5 +1,5 @@
 import { Cosplayer } from "@flasher/models";
-import React, { FunctionComponent } from "react";
+import React, { FC } from "react";
 import CosplayerItem from "./CosplayerItem";
 
 type Props = {
@@ -7,10 +7,7 @@ type Props = {
   className?: string;
 };
 
-const CosplayerList: FunctionComponent<Props> = ({
-  cosplayers,
-  className = "",
-}: Props) => {
+const CosplayerList: FC<Props> = ({ cosplayers, className = "" }: Props) => {
   return (
     <div className={"container mx-auto py-8" + className}>
       <div className="flex flex-wrap md:-mx-3">

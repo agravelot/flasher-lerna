@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import Image from "next/image";
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
   height?: number;
 }
 
-const Avatar: FunctionComponent<Props> = ({
+const Avatar: FC<Props> = ({
   name,
   src,
   className = "",

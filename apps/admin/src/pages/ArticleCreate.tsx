@@ -1,10 +1,10 @@
 import { ArticlesApi, Configuration } from "@flasher/http-client/src";
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import ArticleForm from "../components/ArticleForm";
 import { useAuthentication } from "../hooks/useAuthentication";
 
-const ArticleCreate: FunctionComponent = () => {
+const ArticleCreate: FC = () => {
   const navigate = useNavigate();
   const { initialized } = useAuthentication();
 

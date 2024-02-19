@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, {
@@ -18,10 +18,7 @@ export type Props = {
   beginAt: number;
 };
 
-export const SwiperCarousel: FunctionComponent<Props> = ({
-  medias,
-  beginAt,
-}: Props) => {
+export const SwiperCarousel: FC<Props> = ({ medias, beginAt }: Props) => {
   SwiperCore.use([
     Navigation,
     Pagination,

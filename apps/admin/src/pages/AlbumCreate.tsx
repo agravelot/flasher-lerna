@@ -1,8 +1,8 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import AlbumForm from "../components/AlbumForm";
 
-const AlbumeCreate: FunctionComponent = () => {
+const AlbumeCreate: FC = () => {
   const navigate = useNavigate();
 
   return (

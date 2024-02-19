@@ -1,12 +1,12 @@
 import { SocialMedia } from "@flasher/models";
-import { FunctionComponent } from "react";
+import { FC } from "react";
 
 interface Props {
   socialMedia: SocialMedia;
 }
 
 // TODO Send on click event to analytics
-const SocialMediaItem: FunctionComponent<Props> = ({ socialMedia }: Props) => (
+const SocialMediaItem: FC<Props> = ({ socialMedia }: Props) => (
   <a
     href={socialMedia.url}
     target="_blank"

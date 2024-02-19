@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { sizes } from "../../utils/util";
@@ -8,10 +8,16 @@ interface Props {
   category: Category;
 }
 
-const CategoryItem: FunctionComponent<Props> = ({ category }: Props) => {
+const CategoryItem: FC<Props> = ({ category }: Props) => {
   return (
     <div className="group h-full transform overflow-hidden shadow-lg transition duration-200 ease-in-out hover:scale-105">
-      <div className={category.cover ? "" : "h-full bg-opacity-50 bg-gradient-to-r from-blue-700 to-red-700 shadow-none"}>
+      <div
+        className={
+          category.cover
+            ? ""
+            : "h-full bg-opacity-50 bg-gradient-to-r from-blue-700 to-red-700 shadow-none"
+        }
+      >
         <Link
           href={{
             pathname: "/categories/[slug]",

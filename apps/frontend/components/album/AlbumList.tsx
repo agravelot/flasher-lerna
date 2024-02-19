@@ -1,5 +1,5 @@
 import { Album } from "@flasher/models";
-import React, { FunctionComponent } from "react";
+import React, { FC } from "react";
 import AlbumItem from "./AlbumItem";
 
 type Props = {
@@ -7,10 +7,7 @@ type Props = {
   className?: string;
 };
 
-const AlbumList: FunctionComponent<Props> = ({
-  albums,
-  className = "",
-}: Props) => {
+const AlbumList: FC<Props> = ({ albums, className = "" }: Props) => {
   return (
     <div className={"container mx-auto py-8" + className}>
       <div className="flex flex-wrap md:-mx-3">

@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import Link from "next/link";
 import { range } from "../utils/util";
 
@@ -13,7 +13,7 @@ export class PaginationProps {
   routeName!: string;
 }
 
-const Pagination: FunctionComponent<PaginationProps> = ({
+const Pagination: FC<PaginationProps> = ({
   showInfo,
   currentPage,
   routeName,

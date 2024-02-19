@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 
 export interface DashboardProps {
   cosplayersCount: number;
@@ -8,7 +8,7 @@ export interface DashboardProps {
   albumMediasCount: number;
 }
 
-const Dashboard: FunctionComponent<DashboardProps> = (
+const Dashboard: FC<DashboardProps> = (
   props: DashboardProps
 ) => {
   return (

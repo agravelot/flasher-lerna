@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Album } from "@flasher/models";
@@ -24,10 +24,7 @@ function downloadURI(uri: string, fileName: string) {
   document.body.removeChild(link);
 }
 
-const MyAlbumItem: FunctionComponent<Props> = ({
-  album,
-  showDownload,
-}: Props) => {
+const MyAlbumItem: FC<Props> = ({ album, showDownload }: Props) => {
   const { keycloak } = useAuthentication();
 
   const downloadAlbum = async (): Promise<void> => {
@@ -37,7 +34,7 @@ const MyAlbumItem: FunctionComponent<Props> = ({
         headers: {
           Authorization: `Bearer ${keycloak?.token}`,
         },
-      }
+      },
     )
       .then((res) => {
         if (!res.response.ok) {

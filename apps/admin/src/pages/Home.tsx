@@ -1,10 +1,10 @@
 import { apiRepository } from "@flasher/common/src";
 import { DashboardData } from "@flasher/models";
-import { FunctionComponent, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Dashboard from "../components/Dashboard";
 import { useAuthentication } from "../hooks/useAuthentication";
 
-const Home: FunctionComponent = () => {
+const Home: FC = () => {
   const { keycloak, initialized } = useAuthentication();
 
   const [dashboardData, setDashboardData] = useState<DashboardData>();

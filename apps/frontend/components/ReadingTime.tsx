@@ -1,10 +1,10 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import { calculateReadingTime } from "./../utils/util";
 
 interface Props {
   body: string;
 }
-const ReadingTime: FunctionComponent<Props> = ({ body }: Props) => {
+const ReadingTime: FC<Props> = ({ body }: Props) => {
   const estimatedReadingInMinutes = calculateReadingTime(body);
   if (estimatedReadingInMinutes === 0) {
     return null;

@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import { AggregateRating } from "schema-dts";
 import { configuration } from "../utils/configuration";
 import TestimonialItem from "./TestimonialItem";
@@ -9,7 +9,7 @@ interface Props {
   appName: string;
 }
 
-export const TestimonialList: FunctionComponent<Props> = ({
+export const TestimonialList: FC<Props> = ({
   testimonials,
   appName,
 }: Props) => {

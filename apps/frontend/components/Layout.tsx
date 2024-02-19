@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactNode } from "react";
+import React, { FC, ReactNode } from "react";
 import Head from "next/head";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -15,11 +15,7 @@ type Props = {
   appName: string;
 };
 
-const Layout: FunctionComponent<Props> = ({
-  children,
-  socialMedias,
-  appName,
-}: Props) => {
+const Layout: FC<Props> = ({ children, socialMedias, appName }: Props) => {
   const { head } = useFavion();
 
   return (
@@ -79,12 +75,10 @@ const Layout: FunctionComponent<Props> = ({
       {head()}
       <SearchContextProvider>
         <header>
-            <Navbar />
-            <SearchModal />
+          <Navbar />
+          <SearchModal />
         </header>
-        <main>
-          {children}
-        </main>
+        <main>{children}</main>
         <footer>
           <Footer socialMedias={socialMedias} />
         </footer>
