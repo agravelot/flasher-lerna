@@ -2,7 +2,9 @@ package postgres
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"gorm.io/gorm"
 	"time"
 
 	"api-go/domain/album"
@@ -74,6 +76,29 @@ func (r AlbumRepository) List(ctx context.Context, params album.ListParams) ([]m
 	}
 
 	return albums, nil
+}
+
+func (r AlbumRepository) GetByID(ctx context.Context, params album.GetByIDParams) (model.Album, error) {
+
+	qb := query.Use(r.storage.DB).Album
+
+	q := qb.WithContext(ctx)
+
+	if !params.IncludePrivate {
+		q = q.Scopes(r.published(query.Use(r.storage.DB)))
+	}
+
+	res, err := q.
+		Where(qb.ID.Eq(params.ID)).
+		First()
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return model.Album{}, album.ErrNotFound
+		}
+		return model.Album{}, fmt.Errorf("unable get album: %w", err)
+	}
+
+	return *res, err
 }
 
 func (r AlbumRepository) GetBySlug(ctx context.Context, params album.GetBySlugParams) (model.Album, error) {

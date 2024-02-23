@@ -9,6 +9,9 @@
       "name": "ArticleService"
     },
     {
+      "name": "MediaService"
+    },
+    {
       "name": "AlbumService"
     }
   ],
@@ -399,6 +402,73 @@
           "Articles"
         ]
       }
+    },
+    "/api/v2/medias": {
+      "post": {
+        "summary": "Add an media",
+        "description": "Add an media  to the server.",
+        "operationId": "MediaService_Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protomediasv2CreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protomediasv2CreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Medias"
+        ]
+      }
+    },
+    "/api/v2/medias/{id}": {
+      "delete": {
+        "summary": "Delete an media",
+        "description": "Delete an media to the server.",
+        "operationId": "MediaService_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protomediasv2DeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Medias"
+        ]
+      }
     }
   },
   "definitions": {
@@ -762,6 +832,38 @@
       },
       "additionalProperties": {}
     },
+    "protomediasv2CreateRequest": {
+      "type": "object",
+      "properties": {
+        "fileNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "resourceID": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "$ref": "#/definitions/v2MediasResourceType"
+        }
+      }
+    },
+    "protomediasv2CreateResponse": {
+      "type": "object",
+      "properties": {
+        "FileUploadUrls": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "protomediasv2DeleteResponse": {
+      "type": "object"
+    },
     "rpcStatus": {
       "type": "object",
       "properties": {
@@ -921,6 +1023,14 @@
           "$ref": "#/definitions/MediaResponsiveImages"
         }
       }
+    },
+    "v2MediasResourceType": {
+      "type": "string",
+      "enum": [
+        "RESOURCE_TYPE_UNSPECIFIED",
+        "ALBUMS"
+      ],
+      "default": "RESOURCE_TYPE_UNSPECIFIED"
     }
   },
   "externalDocs": {

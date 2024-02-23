@@ -19,6 +19,33 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+  
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  s3:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio2_storage:/data
+#    environment:
+#      MINIO_ROOT_USER: 
+#      MINIO_ROOT_PASSWORD: 
+    command: server --console-address ":9001" /data
+    
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_volume:/var/lib/rabbitmq/
 
 volumes:
-  db-data2:
+  db-data2: {}
+  minio2_storage: {}
+  rabbitmq_volume: {}
