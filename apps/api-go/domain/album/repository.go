@@ -18,6 +18,11 @@ type ListParams struct {
 	IncludePrivate bool
 }
 
+type GetByIDParams struct {
+	ID             int32
+	IncludePrivate bool
+}
+
 type GetBySlugParams struct {
 	Slug           string
 	IncludePrivate bool
@@ -38,6 +43,7 @@ type DeleteParams struct {
 type Repository interface {
 	Close() error
 	List(ctx context.Context, params ListParams) ([]model.Album, error)
+	GetByID(ctx context.Context, params GetByIDParams) (model.Album, error)
 	GetBySlug(ctx context.Context, params GetBySlugParams) (model.Album, error)
 	Create(ctx context.Context, params CreateParams) (model.Album, error)
 	Update(ctx context.Context, params UpdateParams) (model.Album, error)

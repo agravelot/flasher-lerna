@@ -261,6 +261,414 @@ var _ interface {
 	ErrorName() string
 } = MediaValidationError{}
 
+// Validate checks the field values on CreateRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *CreateRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in CreateRequestMultiError, or
+// nil if none found.
+func (m *CreateRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for ResourceID
+
+	// no validation rules for Type
+
+	if len(errors) > 0 {
+		return CreateRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateRequestMultiError is an error wrapping multiple validation errors
+// returned by CreateRequest.ValidateAll() if the designated constraints
+// aren't met.
+type CreateRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateRequestMultiError) AllErrors() []error { return m }
+
+// CreateRequestValidationError is the validation error returned by
+// CreateRequest.Validate if the designated constraints aren't met.
+type CreateRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateRequestValidationError) ErrorName() string { return "CreateRequestValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CreateRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateRequestValidationError{}
+
+// Validate checks the field values on CreateResponse with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *CreateResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateResponse with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in CreateResponseMultiError,
+// or nil if none found.
+func (m *CreateResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for FileUploadUrls
+
+	if len(errors) > 0 {
+		return CreateResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateResponseMultiError is an error wrapping multiple validation errors
+// returned by CreateResponse.ValidateAll() if the designated constraints
+// aren't met.
+type CreateResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateResponseMultiError) AllErrors() []error { return m }
+
+// CreateResponseValidationError is the validation error returned by
+// CreateResponse.Validate if the designated constraints aren't met.
+type CreateResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateResponseValidationError) ErrorName() string { return "CreateResponseValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CreateResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateResponseValidationError{}
+
+// Validate checks the field values on DeleteRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *DeleteRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on DeleteRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in DeleteRequestMultiError, or
+// nil if none found.
+func (m *DeleteRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *DeleteRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	if len(errors) > 0 {
+		return DeleteRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// DeleteRequestMultiError is an error wrapping multiple validation errors
+// returned by DeleteRequest.ValidateAll() if the designated constraints
+// aren't met.
+type DeleteRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m DeleteRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m DeleteRequestMultiError) AllErrors() []error { return m }
+
+// DeleteRequestValidationError is the validation error returned by
+// DeleteRequest.Validate if the designated constraints aren't met.
+type DeleteRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DeleteRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DeleteRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DeleteRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DeleteRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DeleteRequestValidationError) ErrorName() string { return "DeleteRequestValidationError" }
+
+// Error satisfies the builtin error interface
+func (e DeleteRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDeleteRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DeleteRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DeleteRequestValidationError{}
+
+// Validate checks the field values on DeleteResponse with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *DeleteResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on DeleteResponse with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in DeleteResponseMultiError,
+// or nil if none found.
+func (m *DeleteResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *DeleteResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return DeleteResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// DeleteResponseMultiError is an error wrapping multiple validation errors
+// returned by DeleteResponse.ValidateAll() if the designated constraints
+// aren't met.
+type DeleteResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m DeleteResponseMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m DeleteResponseMultiError) AllErrors() []error { return m }
+
+// DeleteResponseValidationError is the validation error returned by
+// DeleteResponse.Validate if the designated constraints aren't met.
+type DeleteResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DeleteResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DeleteResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DeleteResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DeleteResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DeleteResponseValidationError) ErrorName() string { return "DeleteResponseValidationError" }
+
+// Error satisfies the builtin error interface
+func (e DeleteResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDeleteResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DeleteResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DeleteResponseValidationError{}
+
 // Validate checks the field values on Media_CustomProperties with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
