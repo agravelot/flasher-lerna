@@ -486,7 +486,7 @@
       ]
     },
     {
-      "id": "14c861be-c3f6-47fc-846d-5e14dfe5ee16",
+      "id": "14c861be-c3f6-47FunctionComponent-846d-5e14dfe5ee16",
       "clientId": "account-console",
       "name": "${client_account-console}",
       "rootUrl": "${authBaseUrl}",
@@ -855,7 +855,7 @@
           }
         },
         {
-          "id": "fc4175a1-2141-4ff7-9523-802751646424",
+          "id": "FunctionComponent4175a1-2141-4ff7-9523-802751646424",
           "name": "birthdate",
           "protocol": "openid-connect",
           "protocolMapper": "oidc-usermodel-attribute-mapper",
@@ -990,7 +990,7 @@
           }
         },
         {
-          "id": "7ae231d1-fc31-4c6c-acc6-0b4cb28ad245",
+          "id": "7ae231d1-FunctionComponent31-4c6c-acc6-0b4cb28ad245",
           "name": "website",
           "protocol": "openid-connect",
           "protocolMapper": "oidc-usermodel-attribute-mapper",
@@ -1162,7 +1162,7 @@
       },
       "protocolMappers": [
         {
-          "id": "7d6e1c68-2fc6-4367-8acd-05337ba73801",
+          "id": "7d6e1c68-2FunctionComponent6-4367-8acd-05337ba73801",
           "name": "client roles",
           "protocol": "openid-connect",
           "protocolMapper": "oidc-usermodel-client-role-mapper",
@@ -1221,7 +1221,7 @@
       ]
     },
     {
-      "id": "3cfc92c2-5df4-4d8b-9419-c4472b5460c5",
+      "id": "3cFunctionComponent92c2-5df4-4d8b-9419-c4472b5460c5",
       "name": "microprofile-jwt",
       "description": "Microprofile - JWT built-in scope",
       "protocol": "openid-connect",

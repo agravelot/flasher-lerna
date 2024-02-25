@@ -8,9 +8,6 @@
     "**/frontend",
     "**/frontend/**"
   ],
-  "devDependencies": {
-    "lerna": "^4.0.0"
-  },
   "scripts": {
     "dev": "lerna run dev",
     "test": "lerna run test --since",
@@ -18,7 +15,7 @@
     "diff": "lerna diff"
   },
   "volta": {
-    "node": "16.20.2",
-    "yarn": "1.22.17"
+    "node": "20.11.1",
+    "yarn": "4.1.0"
   }
 }
