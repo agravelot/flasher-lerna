@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "main": "src/",
-  "devDependencies": {
-    "typescript": "^4.9.4"
+  "peerDependencies": {
+    "typescript": "^5.3.3"
   }
 }

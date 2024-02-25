@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FunctionComponent } from "react";
 import { ReactSortable } from "react-sortablejs";
 import { Media } from "@flasher/models";
 
@@ -8,7 +8,7 @@ interface Props {
   onEnd: () => void;
 }
 
-export const MediaOrdering: FC<Props> = ({
+export const MediaOrdering: FunctionComponent<Props> = ({
   medias,
   setMedia,
   onEnd,

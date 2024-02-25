@@ -8,8 +8,11 @@ import dynamic from "next/dynamic";
 type Props = GlobalProps;
 
 const DynamicInvitationValidateComponent = dynamic(
-  () => import("../../components/InvitationValidateComponent"),
-  { ssr: false }
+  () =>
+    import("../../components/InvitationValidateComponent").then(
+      (mod) => mod.InvitationValidateComponent,
+    ),
+  { ssr: false },
 );
 
 const InvitationValidate: NextPage<Props> = ({

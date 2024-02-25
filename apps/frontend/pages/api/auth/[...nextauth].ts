@@ -1,8 +1,10 @@
-import NextAuth, { AuthOptions, DefaultSession, Session } from "next-auth";
-import KeycloakProvider from "next-auth/providers/keycloak";
-import { KeycloakProfile } from "next-auth/src/providers/keycloak";
+import type { AuthOptions, DefaultSession, Session } from "next-auth";
+import NextAuth from "next-auth";
+import KeycloakProvider, {
+  KeycloakProfile,
+} from "next-auth/providers/keycloak";
 import * as process from "node:process";
-import { Awaitable } from "next-auth/src/core/types";
+import { Awaitable } from "next-auth/core/types";
 import { JWT } from "next-auth/jwt";
 import { CustomJWT, CustomSession, Role } from "./types";
 

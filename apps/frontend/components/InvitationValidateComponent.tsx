@@ -19,7 +19,7 @@ export enum Status {
   AlreadyAccepted,
 }
 
-const InvitationValidateComponent: FunctionComponent = () => {
+export const InvitationValidateComponent: FunctionComponent = () => {
   const [status, setStatus] = useState<Status>(Status.Loading);
   const router = useRouter();
   const { initialized, keycloak } = useAuthentication();
@@ -178,5 +178,3 @@ const InvitationValidateComponent: FunctionComponent = () => {
     </div>
   );
 };
-
-export default InvitationValidateComponent;
