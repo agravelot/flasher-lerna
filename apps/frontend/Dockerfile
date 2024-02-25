@@ -1,4 +1,4 @@
-FROM node:21-alpine AS base
+FROM node:20-alpine AS base
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add libc6-compat --no-cache
 
@@ -10,6 +10,7 @@ WORKDIR /app
 # Copy all files, ignore apps folder
 COPY [^a]* . 
 COPY apps/frontend/package.json apps/frontend/package.json
+COPY apps/http-client/package.json apps/http-client/package.json
 COPY apps/common/package.json apps/common/package.json 
 COPY apps/models/package.json apps/models/package.json 
 
@@ -55,7 +56,7 @@ COPY apps/models apps/models
 RUN yarn workspace @flasher/frontend run build
 
 
-FROM node:21-alpine AS runner
+FROM node:20-alpine AS runner
 
 ARG NEXT_PUBLIC_APP_URL
 ARG NEXT_PUBLIC_API_URL
