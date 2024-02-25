@@ -14,7 +14,7 @@ import { Breadcrumb } from "components/Breadcrumb";
 import { removeQueryParams } from "../../utils/canonical";
 
 type Props = {
-  posts: BlogPost[];
+  posts: Omit<BlogPost, "content" | "contentSerialized">[];
 } & GlobalProps;
 
 const truncate = (str: string, n: number): string => {
@@ -143,7 +143,11 @@ export const getStaticProps: GetStaticProps = async (): Promise<
   return {
     props: {
       ...global,
-      posts,
+      posts: posts.map((p) => {
+        delete p.content;
+        delete p.contentSerialized;
+        return p;
+      }),
     },
   };
 };
