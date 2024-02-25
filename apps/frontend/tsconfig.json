@@ -1,5 +1,6 @@
 {
   "extends": "../../tsconfig.json",
+  "typeRoots": ["types/*"],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
