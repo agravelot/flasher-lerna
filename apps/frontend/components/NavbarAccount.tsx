@@ -103,7 +103,7 @@ const NavbarAccount: FC = () => {
                     " rounded-md bg-white ring-1 ring-black ring-opacity-5"
                   }
                 >
-                  {false && (
+                  {session.data.user?.role === "admin" && (
                     <Menu.Item>
                       <div className="py-1 text-center">
                         <a
