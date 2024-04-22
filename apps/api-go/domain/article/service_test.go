@@ -12,7 +12,7 @@ import (
 
 	"api-go/config"
 	"api-go/domain/article"
-	articlesgrpc "api-go/gen/go/proto/articles/v2"
+	articlesgrpc "api-go/gen/go/articles/v2"
 	"api-go/infrastructure/storage/postgres"
 	"api-go/model"
 	"github.com/stretchr/testify/assert"

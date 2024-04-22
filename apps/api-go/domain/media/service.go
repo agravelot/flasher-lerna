@@ -1,18 +1,19 @@
 package media
 
 import (
-	mediaspb "api-go/gen/go/proto/medias/v2"
+	mediaspb "api-go/gen/go/medias/v2"
 	"api-go/infrastructure/auth"
 	"api-go/infrastructure/s3"
 	"api-go/model"
 	"context"
 	"fmt"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"log"
 	"strings"
 	"time"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 var (
@@ -115,12 +116,6 @@ func transformMediaFromDB(media model.Medium) *mediaspb.Media {
 		CustomProperties: &mediaspb.Media_CustomProperties{
 			Height: media.CustomProperties.Height,
 			Width:  media.CustomProperties.Width,
-		},
-		ResponsiveImages: &mediaspb.Media_ResponsiveImages{ //nolint:nosnakecase
-			Responsive: &mediaspb.Media_Responsive{ //nolint:nosnakecase
-				Urls:      media.ResponsiveImages.Responsive.Urls,
-				Base64Svg: media.ResponsiveImages.Responsive.Base64Svg,
-			},
 		},
 	}
 }

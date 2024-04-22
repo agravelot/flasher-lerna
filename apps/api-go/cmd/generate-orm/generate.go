@@ -48,7 +48,12 @@ func main() {
 	medias := g.GenerateModel(
 		"media",
 		gen.FieldType("custom_properties", "*CustomProperties"),
-		gen.FieldType("responsive_images", "*ResponsiveImages"),
+		// gen.FieldType("responsive_images", "*ResponsiveImages"),
+		// gen.FieldGORMTag("responsive_images", func(tag field.GormTag) field.GormTag {
+		// 	// tag.Append("default", "[]")
+		// 	tag.Append("default", "{}")
+		// 	return tag
+		// }),
 	)
 	categories := g.GenerateModel("categories")
 	cosplayers := g.GenerateModel("cosplayers")

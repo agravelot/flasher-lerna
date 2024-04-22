@@ -1,11 +1,10 @@
 package main
 
 import (
-	"fmt"
-	"log"
-
 	"api-go/config"
 	"api-go/internal/app"
+	"fmt"
+	"log"
 )
 
 func main() {

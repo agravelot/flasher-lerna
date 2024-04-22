@@ -23,7 +23,7 @@ type Medium struct {
 	Size             int64             `gorm:"column:size;type:bigint;not null" json:"size"`
 	Manipulations    string            `gorm:"column:manipulations;type:json;not null" json:"manipulations"`
 	CustomProperties *CustomProperties `gorm:"column:custom_properties;type:json;not null" json:"custom_properties"`
-	ResponsiveImages *ResponsiveImages `gorm:"column:responsive_images;type:json;not null" json:"responsive_images"`
+	ResponsiveImages string            `gorm:"column:responsive_images;type:json;not null" json:"responsive_images"`
 	OrderColumn      *int32            `gorm:"column:order_column;type:integer" json:"order_column"`
 	CreatedAt        *time.Time        `gorm:"column:created_at;type:timestamp(0) without time zone" json:"created_at"`
 	UpdatedAt        *time.Time        `gorm:"column:updated_at;type:timestamp(0) without time zone" json:"updated_at"`

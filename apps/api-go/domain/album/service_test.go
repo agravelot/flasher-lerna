@@ -1,24 +1,25 @@
 package album_test
 
 import (
+	"api-go/config"
+	"api-go/domain/album"
 	"api-go/infrastructure/auth"
+	"api-go/infrastructure/storage/postgres"
+	"api-go/model"
+	"api-go/query"
 	"context"
 	"errors"
 	"fmt"
-	"github.com/jackc/pgerrcode"
-	"github.com/jackc/pgx/v5/pgconn"
 	"log"
 	"os"
 	"strconv"
 	"testing"
 	"time"
 
-	"api-go/config"
-	"api-go/domain/album"
-	albums_pb "api-go/gen/go/proto/albums/v2"
-	"api-go/infrastructure/storage/postgres"
-	"api-go/model"
-	"api-go/query"
+	"github.com/jackc/pgerrcode"
+	"github.com/jackc/pgx/v5/pgconn"
+
+	albums_pb "api-go/gen/go/albums/v2"
 
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -300,7 +301,7 @@ func TestList(t *testing.T) {
 					MimeType:         &mimeType,
 					Manipulations:    `{"resize":{"width":100,"height":100}}`,
 					CustomProperties: &model.CustomProperties{},
-					ResponsiveImages: &model.ResponsiveImages{},
+					// ResponsiveImages: &model.ResponsiveImages{},
 				}
 				return []*model.Album{
 					{
@@ -329,7 +330,7 @@ func TestList(t *testing.T) {
 					MimeType:         &mimeType,
 					Manipulations:    `{"resize":{"width":100,"height":100}}`,
 					CustomProperties: &model.CustomProperties{},
-					ResponsiveImages: &model.ResponsiveImages{},
+					// ResponsiveImages: &model.ResponsiveImages{},
 				}
 				return []*model.Album{
 					{

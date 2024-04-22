@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "proto/articles/v2/articles.proto",
+    "title": "articles/v2/articles.proto",
     "version": "1.0"
   },
   "tags": [
@@ -34,7 +34,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoalbumsv2IndexResponse"
+              "$ref": "#/definitions/albumsv2IndexResponse"
             }
           },
           "default": {
@@ -84,7 +84,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoalbumsv2CreateResponse"
+              "$ref": "#/definitions/albumsv2CreateResponse"
             }
           },
           "default": {
@@ -100,7 +100,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/protoalbumsv2CreateRequest"
+              "$ref": "#/definitions/albumsv2CreateRequest"
             }
           }
         ],
@@ -118,7 +118,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoalbumsv2DeleteResponse"
+              "$ref": "#/definitions/albumsv2DeleteResponse"
             }
           },
           "default": {
@@ -149,7 +149,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoalbumsv2UpdateResponse"
+              "$ref": "#/definitions/albumsv2UpdateResponse"
             }
           },
           "default": {
@@ -211,7 +211,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoalbumsv2GetBySlugResponse"
+              "$ref": "#/definitions/albumsv2GetBySlugResponse"
             }
           },
           "default": {
@@ -243,7 +243,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoarticlesv2IndexResponse"
+              "$ref": "#/definitions/articlesv2IndexResponse"
             }
           },
           "default": {
@@ -281,7 +281,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoarticlesv2CreateResponse"
+              "$ref": "#/definitions/articlesv2CreateResponse"
             }
           },
           "default": {
@@ -297,7 +297,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/protoarticlesv2CreateRequest"
+              "$ref": "#/definitions/articlesv2CreateRequest"
             }
           }
         ],
@@ -313,7 +313,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoarticlesv2UpdateResponse"
+              "$ref": "#/definitions/articlesv2UpdateResponse"
             }
           },
           "default": {
@@ -329,7 +329,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/protoarticlesv2UpdateRequest"
+              "$ref": "#/definitions/articlesv2UpdateRequest"
             }
           }
         ],
@@ -347,7 +347,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoarticlesv2DeleteResponse"
+              "$ref": "#/definitions/articlesv2DeleteResponse"
             }
           },
           "default": {
@@ -380,7 +380,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protoarticlesv2GetBySlugResponse"
+              "$ref": "#/definitions/articlesv2GetBySlugResponse"
             }
           },
           "default": {
@@ -412,7 +412,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protomediasv2CreateResponse"
+              "$ref": "#/definitions/mediasv2CreateResponse"
             }
           },
           "default": {
@@ -428,7 +428,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/protomediasv2CreateRequest"
+              "$ref": "#/definitions/mediasv2CreateRequest"
             }
           }
         ],
@@ -446,7 +446,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/protomediasv2DeleteResponse"
+              "$ref": "#/definitions/mediasv2DeleteResponse"
             }
           },
           "default": {
@@ -518,7 +518,7 @@
         }
       }
     },
-    "protoalbumsv2CreateRequest": {
+    "albumsv2CreateRequest": {
       "type": "object",
       "properties": {
         "slug": {
@@ -542,7 +542,7 @@
         }
       }
     },
-    "protoalbumsv2CreateResponse": {
+    "albumsv2CreateResponse": {
       "type": "object",
       "properties": {
         "id": {
@@ -588,7 +588,7 @@
         }
       }
     },
-    "protoalbumsv2DeleteResponse": {
+    "albumsv2DeleteResponse": {
       "type": "object",
       "properties": {
         "deleted": {
@@ -596,7 +596,7 @@
         }
       }
     },
-    "protoalbumsv2GetBySlugResponse": {
+    "albumsv2GetBySlugResponse": {
       "type": "object",
       "properties": {
         "album": {
@@ -604,7 +604,7 @@
         }
       }
     },
-    "protoalbumsv2IndexResponse": {
+    "albumsv2IndexResponse": {
       "type": "object",
       "properties": {
         "data": {
@@ -616,7 +616,7 @@
         }
       }
     },
-    "protoalbumsv2UpdateResponse": {
+    "albumsv2UpdateResponse": {
       "type": "object",
       "properties": {
         "id": {
@@ -662,7 +662,7 @@
         }
       }
     },
-    "protoarticlesv2CreateRequest": {
+    "articlesv2CreateRequest": {
       "type": "object",
       "properties": {
         "slug": {
@@ -688,7 +688,7 @@
         "content"
       ]
     },
-    "protoarticlesv2CreateResponse": {
+    "articlesv2CreateResponse": {
       "type": "object",
       "properties": {
         "id": {
@@ -724,10 +724,10 @@
         "authorId"
       ]
     },
-    "protoarticlesv2DeleteResponse": {
+    "articlesv2DeleteResponse": {
       "type": "object"
     },
-    "protoarticlesv2GetBySlugResponse": {
+    "articlesv2GetBySlugResponse": {
       "type": "object",
       "properties": {
         "id": {
@@ -755,7 +755,7 @@
         }
       }
     },
-    "protoarticlesv2IndexResponse": {
+    "articlesv2IndexResponse": {
       "type": "object",
       "properties": {
         "data": {
@@ -770,7 +770,7 @@
         "data"
       ]
     },
-    "protoarticlesv2UpdateRequest": {
+    "articlesv2UpdateRequest": {
       "type": "object",
       "properties": {
         "id": {
@@ -795,7 +795,7 @@
         }
       }
     },
-    "protoarticlesv2UpdateResponse": {
+    "articlesv2UpdateResponse": {
       "type": "object",
       "properties": {
         "id": {
@@ -823,16 +823,7 @@
         }
       }
     },
-    "protobufAny": {
-      "type": "object",
-      "properties": {
-        "@type": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": {}
-    },
-    "protomediasv2CreateRequest": {
+    "mediasv2CreateRequest": {
       "type": "object",
       "properties": {
         "fileNames": {
@@ -850,7 +841,7 @@
         }
       }
     },
-    "protomediasv2CreateResponse": {
+    "mediasv2CreateResponse": {
       "type": "object",
       "properties": {
         "FileUploadUrls": {
@@ -861,8 +852,17 @@
         }
       }
     },
-    "protomediasv2DeleteResponse": {
+    "mediasv2DeleteResponse": {
       "type": "object"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
     },
     "rpcStatus": {
       "type": "object",

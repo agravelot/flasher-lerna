@@ -1,19 +1,19 @@
 package article
 
 import (
-	"api-go/infrastructure/auth"
 	"context"
 	"errors"
 	"fmt"
 	"time"
 
-	articles_pb "api-go/gen/go/proto/articles/v2"
-	"api-go/model"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
-
 	"gorm.io/gorm"
+
+	articles_pb "api-go/gen/go/articles/v2"
+	"api-go/infrastructure/auth"
+	"api-go/model"
 )
 
 var (
@@ -129,7 +129,8 @@ func (s service) Create(ctx context.Context, request *articles_pb.CreateRequest)
 			Content:         request.Content,
 			PublishedAt:     p,
 			AuthorUUID:      user.Subject,
-		}})
+		},
+	})
 	if err != nil {
 		return nil, fmt.Errorf("unable create article: %w", err)
 	}
@@ -174,7 +175,8 @@ func (s service) Update(ctx context.Context, request *articles_pb.UpdateRequest)
 			Content:         request.Content,
 			PublishedAt:     &p,
 			// AuthorId : request.AuthorId
-		}})
+		},
+	})
 	if err != nil {
 		return &articles_pb.UpdateResponse{}, fmt.Errorf("unable update article: %w", err)
 	}

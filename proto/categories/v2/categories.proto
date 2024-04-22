@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package categories.v2;
+// option go_package = "api-go/categoriesgrpc";
+option go_package = "api-go/gen/go/categories/v2;categoriespbv1";
+
+message Category {
+  int32 id = 1;
+}
+
+service CategoryService {
+
+}

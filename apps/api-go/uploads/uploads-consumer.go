@@ -3,9 +3,10 @@ package uploads
 import (
 	"encoding/json"
 	"fmt"
+	"log"
+
 	"github.com/kr/pretty"
 	amqp "github.com/rabbitmq/amqp091-go"
-	"log"
 )
 
 type Consumer struct {
@@ -52,25 +53,24 @@ func NewEventListener(onEvent OnUploadedFileMessage) error {
 	}
 
 	queue, err := c.channel.QueueDeclare(
-		queueName, // name of the queue
-		true,      // durable
-		false,     // delete when unused
-		false,     // exclusive
-		false,     // noWait
-		nil,       // arguments
+		queueName,
+		true,
+		false,
+		false,
+		false,
+		nil,
 	)
 	if err != nil {
 		return fmt.Errorf("queue Declare: %w", err)
 	}
 
 	err = c.channel.QueueBind(
-		queue.Name, // name of the queue
-		key,        // bindingKey
-		exchange,   // sourceExchange
-		false,      // noWait
-		nil,        // arguments
+		queue.Name,
+		key,
+		exchange,
+		false,
+		nil,
 	)
-
 	if err != nil {
 		return fmt.Errorf("queue bind: %w", err)
 	}
@@ -118,7 +118,6 @@ func handle(deliveries <-chan amqp.Delivery, done chan error, onEvent OnUploaded
 		}
 
 		err = onEvent(event)
-
 		if err != nil {
 			pretty.Log(fmt.Errorf("failed to onEvent: %w", err))
 			err = delivery.Nack(false, false)

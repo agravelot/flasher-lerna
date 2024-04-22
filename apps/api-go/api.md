@@ -15,6 +15,8 @@
 
   ### <span id="tag-article-service"></span>ArticleService
 
+  ### <span id="tag-media-service"></span>MediaService
+
   ### <span id="tag-album-service"></span>AlbumService
 
 ## Content negotiation
@@ -51,6 +53,15 @@
 | GET | /api/v2/articles/{slug} | [article service get by slug](#article-service-get-by-slug) | Get an article by slug |
 | GET | /api/v2/articles | [article service index](#article-service-index) | List articles |
 | PUT | /api/v2/articles | [article service update](#article-service-update) | Update an article |
+  
+
+
+###  medias
+
+| Method  | URI     | Name   | Summary |
+|---------|---------|--------|---------|
+| POST | /api/v2/medias | [media service create](#media-service-create) | Add an media |
+| DELETE | /api/v2/medias/{id} | [media service delete](#media-service-delete) | Delete an media |
   
 
 
@@ -493,6 +504,88 @@ An unexpected error response.
 
 [RPCStatus](#rpc-status)
 
+### <span id="media-service-create"></span> Add an media (*MediaService_Create*)
+
+```
+POST /api/v2/medias
+```
+
+Add an media  to the server.
+
+#### Parameters
+
+| Name | Source | Type | Go type | Separator | Required | Default | Description |
+|------|--------|------|---------|-----------| :------: |---------|-------------|
+| body | `body` | [Protomediasv2CreateRequest](#protomediasv2-create-request) | `models.Protomediasv2CreateRequest` | | ✓ | |  |
+
+#### All responses
+| Code | Status | Description | Has headers | Schema |
+|------|--------|-------------|:-----------:|--------|
+| [200](#media-service-create-200) | OK | A successful response. |  | [schema](#media-service-create-200-schema) |
+| [default](#media-service-create-default) | | An unexpected error response. |  | [schema](#media-service-create-default-schema) |
+
+#### Responses
+
+
+##### <span id="media-service-create-200"></span> 200 - A successful response.
+Status: OK
+
+###### <span id="media-service-create-200-schema"></span> Schema
+   
+  
+
+[Protomediasv2CreateResponse](#protomediasv2-create-response)
+
+##### <span id="media-service-create-default"></span> Default Response
+An unexpected error response.
+
+###### <span id="media-service-create-default-schema"></span> Schema
+
+  
+
+[RPCStatus](#rpc-status)
+
+### <span id="media-service-delete"></span> Delete an media (*MediaService_Delete*)
+
+```
+DELETE /api/v2/medias/{id}
+```
+
+Delete an media to the server.
+
+#### Parameters
+
+| Name | Source | Type | Go type | Separator | Required | Default | Description |
+|------|--------|------|---------|-----------| :------: |---------|-------------|
+| id | `path` | int32 (formatted integer) | `int32` |  | ✓ |  |  |
+
+#### All responses
+| Code | Status | Description | Has headers | Schema |
+|------|--------|-------------|:-----------:|--------|
+| [200](#media-service-delete-200) | OK | A successful response. |  | [schema](#media-service-delete-200-schema) |
+| [default](#media-service-delete-default) | | An unexpected error response. |  | [schema](#media-service-delete-default-schema) |
+
+#### Responses
+
+
+##### <span id="media-service-delete-200"></span> 200 - A successful response.
+Status: OK
+
+###### <span id="media-service-delete-200-schema"></span> Schema
+   
+  
+
+[Protomediasv2DeleteResponse](#protomediasv2-delete-response)
+
+##### <span id="media-service-delete-default"></span> Default Response
+An unexpected error response.
+
+###### <span id="media-service-delete-default-schema"></span> Schema
+
+  
+
+[RPCStatus](#rpc-status)
+
 ## Models
 
 ### <span id="index-request-joins"></span> IndexRequestJoins
@@ -814,6 +907,49 @@ An unexpected error response.
 
 
 
+**Additional Properties**
+
+any
+
+### <span id="protomediasv2-create-request"></span> protomediasv2CreateRequest
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| fileNames | []string| `[]string` |  | |  |  |
+| resourceID | int32 (formatted integer)| `int32` |  | |  |  |
+| type | [V2MediasResourceType](#v2-medias-resource-type)| `V2MediasResourceType` |  | |  |  |
+
+
+
+### <span id="protomediasv2-create-response"></span> protomediasv2CreateResponse
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| FileUploadUrls | map of string| `map[string]string` |  | |  |  |
+
+
+
+### <span id="protomediasv2-delete-response"></span> protomediasv2DeleteResponse
+
+
+  
+
+[interface{}](#interface)
+
 ### <span id="rpc-status"></span> rpcStatus
 
 
@@ -915,5 +1051,16 @@ An unexpected error response.
 | responsiveImages | [MediaResponsiveImages](#media-responsive-images)| `MediaResponsiveImages` |  | |  |  |
 | size | int64 (formatted string)| `string` |  | |  |  |
 | updatedAt | date-time (formatted string)| `strfmt.DateTime` |  | |  |  |
+
+
+
+### <span id="v2-medias-resource-type"></span> v2MediasResourceType
+
+
+  
+
+| Name | Type | Go type | Default | Description | Example |
+|------|------|---------| ------- |-------------|---------|
+| v2MediasResourceType | string| string | `"RESOURCE_TYPE_UNSPECIFIED"`|  |  |
 
 

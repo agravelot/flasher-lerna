@@ -2,15 +2,15 @@ package album
 
 import (
 	"api-go/infrastructure/auth"
+	"api-go/model"
 	"context"
 	"errors"
 	"fmt"
 	"time"
 
-	albumspb "api-go/gen/go/proto/albums/v2"
-	categoriespb "api-go/gen/go/proto/categories/v2"
-	mediaspb "api-go/gen/go/proto/medias/v2"
-	"api-go/model"
+	albumspb "api-go/gen/go/albums/v2"
+	categoriespb "api-go/gen/go/categories/v2"
+	mediaspb "api-go/gen/go/medias/v2"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -250,12 +250,12 @@ func transformMediaFromDB(media model.Medium) *mediaspb.Media {
 			Height: media.CustomProperties.Height,
 			Width:  media.CustomProperties.Width,
 		},
-		ResponsiveImages: &mediaspb.Media_ResponsiveImages{ //nolint:nosnakecase
-			Responsive: &mediaspb.Media_Responsive{ //nolint:nosnakecase
-				Urls:      media.ResponsiveImages.Responsive.Urls,
-				Base64Svg: media.ResponsiveImages.Responsive.Base64Svg,
-			},
-		},
+		// ResponsiveImages: &mediaspb.Media_ResponsiveImages{ //nolint:nosnakecase
+		// 	Responsive: &mediaspb.Media_Responsive{ //nolint:nosnakecase
+		// 		Urls:      media.ResponsiveImages.Responsive.Urls,
+		// 		Base64Svg: media.ResponsiveImages.Responsive.Base64Svg,
+		// 	},
+		// },
 	}
 }
 
