@@ -23,6 +23,7 @@ import (
 	"net/url"
 	"os"
 	"os/signal"
+	"slices"
 	"strconv"
 	"strings"
 	"syscall"
@@ -32,7 +33,6 @@ import (
 	"github.com/google/uuid"
 	grpcAuth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/kr/pretty"
 	"github.com/minio/minio-go/v7"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -194,13 +194,16 @@ func Run(config *config.Config) error {
 // TODO Move it once ready
 func registerUploadHandler(albumRepo album.Repository, mediaRepo media.Repository) error {
 	onEvent := func(file uploads.UploadedFile) error {
-		pretty.Logf("Uploading %d file", len(file.Records))
+		log.Printf("new event: %d record(s)", len(file.Records))
 
 		finalBucket := "final"
+		tempBucket := "temp"
+		supportedFileType := []string{"png", "jpeg"}
+
 		// TODO Goroutine
-		// TODO Return error ?
+		// TODO add error handling
 		for _, record := range file.Records {
-			pretty.Log(record.S3.Object.Key)
+			log.Printf("new file: %s", record.S3.Object.Key)
 			key, err := url.QueryUnescape(record.S3.Object.Key)
 			if err != nil {
 				log.Printf("unable unquote key: %v", err)
@@ -208,20 +211,20 @@ func registerUploadHandler(albumRepo album.Repository, mediaRepo media.Repositor
 				continue
 			}
 
-			if record.S3.Bucket.Name != "temp" {
-				pretty.Log("skipping object not from temp bucket")
+			if record.S3.Bucket.Name != tempBucket {
+				log.Printf("skipping object not from temp bucket")
 
 				continue
 			}
 
 			if record.EventName != types.EventS3ObjectCreatedPut {
-				pretty.Log("skipping non put event")
+				log.Printf("skipping non put event")
 
 				continue
 			}
 
 			if !strings.HasPrefix(record.S3.Object.ContentType, "image/") {
-				pretty.Logf("skipping event with content type: %s", record.S3.Object.ContentType)
+				log.Printf("skipping event with content type: %s", record.S3.Object.ContentType)
 
 				continue
 			}
@@ -229,32 +232,31 @@ func registerUploadHandler(albumRepo album.Repository, mediaRepo media.Repositor
 			// TODO Check size
 
 			if !strings.HasPrefix(key, "albums/") {
-				pretty.Logf("skipping event with key: %s", key)
+				log.Printf("skipping event with key: %s", key)
 
 				continue
 			}
 
 			// TODO extract in func
 			splitPath := strings.Split(key, "/")
-			pretty.Log(splitPath)
 			// TODO strip file extension
 			filename := splitPath[len(splitPath)-1]
 
 			const expectedKeyPathDepth = 3
 			if len(splitPath) != expectedKeyPathDepth {
-				pretty.Log("skipping event with invalid key: %s", key)
+				log.Printf("skipping event with invalid key: %s", key)
 
 				continue
 			}
 
 			albumID, err := strconv.Atoi(splitPath[1])
 			if err != nil {
-				pretty.Logf("skipping event with invalid id: %s", key)
+				log.Printf("skipping event with invalid id: %s", key)
 
 				continue
 			}
 
-			pretty.Logf("get new album event with id %d", albumID)
+			log.Printf("get new album event with id %d", albumID)
 
 			_, err = albumRepo.GetByID(context.TODO(), album.GetByIDParams{
 				ID:             int32(albumID),
@@ -289,12 +291,11 @@ func registerUploadHandler(albumRepo album.Repository, mediaRepo media.Repositor
 				return fmt.Errorf("failed decode image config: %w", err)
 			}
 
-			// TODO list of supported image types
-			if imageType != "jpeg" && imageType != "png" {
+			if slices.Contains(supportedFileType, imageType) {
 				return fmt.Errorf("invalid image type, got=%s", imageType)
 			}
 
-			res, err := tempS3Client.PutObject(
+			_, err = tempS3Client.PutObject(
 				context.TODO(),
 				finalBucket,
 				key,
@@ -305,8 +306,6 @@ func registerUploadHandler(albumRepo album.Repository, mediaRepo media.Repositor
 			if err != nil {
 				return fmt.Errorf("failed get remote file: %w", err)
 			}
-
-			pretty.Log(res)
 
 			// TODO extract in repo
 
@@ -321,7 +320,7 @@ func registerUploadHandler(albumRepo album.Repository, mediaRepo media.Repositor
 			// TODO order
 			order := int32(0)
 
-			medium, err := mediaRepo.Create(context.TODO(), media.CreateParams{
+			_, err = mediaRepo.Create(context.TODO(), media.CreateParams{
 				Media: model.Medium{
 					ModelType:        "App\\Models\\Album",
 					ModelID:          int64(albumID),
@@ -342,8 +341,6 @@ func registerUploadHandler(albumRepo album.Repository, mediaRepo media.Repositor
 				},
 			})
 
-			pretty.Log(medium)
-
 			return err
 		}
 		return nil
@@ -351,7 +348,7 @@ func registerUploadHandler(albumRepo album.Repository, mediaRepo media.Repositor
 
 	err := uploads.NewEventListener(onEvent)
 	if err != nil {
-		pretty.Log(err)
+		log.Printf("failed to proccess new event: %v", err)
 	}
 	return err
 }
