@@ -3,10 +3,11 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"github.com/kr/pretty"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/kr/pretty"
 )
 
 type Post struct {
@@ -63,7 +64,7 @@ func processFile(entry os.DirEntry) Post {
 			continue
 		}
 
-		split := strings.Split(line, ":")
+		split := strings.SplitN(line, ":", 2)
 		key := split[0]
 		value := strings.TrimSpace(split[1])
 
@@ -87,10 +88,10 @@ func processFile(entry os.DirEntry) Post {
 			continue
 		}
 
-		if key == "cratedAt" {
+		if key == "createdAt" {
 			t, err := time.Parse(time.RFC3339, value)
 			if err != nil {
-				panic(err)
+				panic(fmt.Errorf("error parsing date: %s", err))
 			}
 			post.CreatedAt = t
 			continue
