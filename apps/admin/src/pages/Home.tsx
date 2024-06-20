@@ -1,4 +1,4 @@
-import { apiRepository } from "@flasher/common/src";
+import { apiClient } from "@flasher/common/src";
 import { DashboardData } from "@flasher/models";
 import { FunctionComponent, useEffect, useState } from "react";
 import Dashboard from "../components/Dashboard";
@@ -14,7 +14,7 @@ const Home: FunctionComponent = () => {
       return;
     }
 
-    const repo = apiRepository(keycloak);
+    const repo = apiClient(keycloak);
     repo.admin.dashboard().then((data) => {
       setDashboardData(data);
     });

@@ -7,7 +7,7 @@ import {
 } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AlbumForm from "../components/AlbumForm";
-import { apiRepository } from "@flasher/common";
+import { apiClient } from "@flasher/common";
 import { Album, Media } from "@flasher/models";
 import MediaUploader from "../components/MediaUploader";
 import { MediaOrdering } from "../components/MediaOrdering";
@@ -31,7 +31,7 @@ const AlbumEdit: FunctionComponent = () => {
       throw new Error("missing slug");
     }
 
-    const repo = apiRepository(keycloak);
+    const repo = apiClient(keycloak);
     repo.admin.albums
       .retrieve(slug)
       .then((res) => {
@@ -67,11 +67,11 @@ const AlbumEdit: FunctionComponent = () => {
         throw new Error("missing slug");
       }
 
-      const repo = apiRepository(keycloak);
+      const repo = apiClient(keycloak);
 
       await repo.admin.medias.order(
         medias.map((m) => m.id),
-        slug
+        slug,
       );
       // showSuccess(this.$buefy, "Pictures successfully re-ordered");
     } catch (exception) {

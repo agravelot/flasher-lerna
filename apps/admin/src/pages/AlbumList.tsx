@@ -1,5 +1,5 @@
 import { Album } from "@flasher/models";
-import { MetaPaginatedReponse, apiRepository } from "@flasher/common";
+import { MetaPaginatedReponse, apiClient } from "@flasher/common";
 import { FunctionComponent, useEffect, useState } from "react";
 import AlbumTable from "../components/AlbumsTable";
 import { useLocation } from "react-router-dom";
@@ -23,7 +23,7 @@ const AlbumList: FunctionComponent = () => {
       return;
     }
 
-    const repo = apiRepository(keycloak);
+    const repo = apiClient(keycloak);
 
     repo.admin.albums
       .list({ page: Number(query.get("page")) ?? 1, perPage: 10 })

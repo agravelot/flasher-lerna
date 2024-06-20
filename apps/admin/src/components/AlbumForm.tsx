@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { Formik, Field, Form } from "formik";
 import { Album } from "@flasher/models";
-import { apiRepository } from "@flasher/common";
+import { apiClient } from "@flasher/common";
 import { useAuthentication } from "../hooks/useAuthentication";
 
 export type FormType = "edit" | "create";
@@ -33,7 +33,7 @@ const AlbumForm: FunctionComponent<AlbumFormProps> = ({
       return;
     }
 
-    const repo = apiRepository(keycloak);
+    const repo = apiClient(() => keycloak.token);
 
     if (type === "edit") {
       if (!album) return;
@@ -50,7 +50,7 @@ const AlbumForm: FunctionComponent<AlbumFormProps> = ({
       return;
     }
 
-    const repo = apiRepository(keycloak);
+    const repo = apiClient(() => keycloak.token);
 
     await repo.admin.albums.delete(album.slug);
 
