@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"slices"
 	"strings"
 	"time"
 
@@ -188,6 +189,18 @@ func main() {
 
 		posts = append(posts, p)
 	}
+
+	slices.SortFunc(posts, func(a, b Post) int {
+		if a.CreatedAt.Unix() == b.CreatedAt.Unix() {
+			return 0
+		}
+
+		if a.CreatedAt.Unix() > b.CreatedAt.Unix() {
+			return 1
+		}
+
+		return -1
+	})
 
 	log.Println("Importing articles...")
 

@@ -6,6 +6,7 @@ import (
 	"api-go/query"
 	"context"
 	"fmt"
+
 	"gorm.io/gen"
 )
 
@@ -45,7 +46,7 @@ func (r PostgresArticleRepository) List(ctx context.Context, params article.List
 		q = q.Scopes(published(query.Use(r.storage.DB)))
 	}
 
-	articles, err := q.Scopes(paginate(query.Use(r.storage.DB), params.Next, params.Limit)).Find()
+	articles, err := q.Scopes(paginate(query.Use(r.storage.DB), params.Next, params.Limit)).Order(qb.ID.Desc()).Find()
 	if err != nil {
 		return []model.Article{}, fmt.Errorf("unable list articles: %w", err)
 	}

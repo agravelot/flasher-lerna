@@ -35,7 +35,7 @@ func NewService(r Repository) articles_pb.ArticleServiceServer {
 func transform(a model.Article) *articles_pb.ArticleResponse {
 	var publishedAt *timestamppb.Timestamp
 	if a.PublishedAt != nil {
-		publishedAt = &timestamppb.Timestamp{Seconds: int64(a.PublishedAt.Second())}
+		publishedAt = timestamppb.New(*a.PublishedAt)
 	}
 
 	return &articles_pb.ArticleResponse{

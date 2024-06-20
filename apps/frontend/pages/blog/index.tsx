@@ -76,14 +76,15 @@ const IndexAlbum: NextPage<Props> = ({
       </Header>
       <div className="container mx-auto py-8">
         {posts.map((post) => {
-          const createdAt = new Date(post.createdAt);
-
+          if (!post.publishedAt) {
+            return;
+          }
           return (
             <div className="w-full p-3" key={post.slug}>
               <div className="mx-auto mb-10 max-w-2xl">
                 <span className="text-sm font-light text-gray-600">
                   Il y a{" "}
-                  {formatDistance(createdAt, new Date(), {
+                  {formatDistance(post.publishedAt, new Date(), {
                     locale: fr,
                     addSuffix: false,
                   })}
@@ -137,17 +138,17 @@ export default IndexAlbum;
 export const getStaticProps: GetStaticProps = async (): Promise<
   GetStaticPropsResult<Props>
 > => {
-  const posts = await getAllPosts();
-  const global = await getGlobalProps();
-
+  const [posts, global] = await Promise.all([getAllPosts(), getGlobalProps()]);
   return {
     props: {
       ...global,
-      posts: posts.map((p) => {
-        delete p.content;
-        delete p.contentSerialized;
-        return p;
-      }),
+      posts: posts
+        .map((p): Omit<BlogPost, "content" | "contentSerialized"> => {
+          delete p.content;
+          delete p.contentSerialized;
+          return p;
+        })
+        .filter((p) => p.publishedAt),
     },
   };
 };
