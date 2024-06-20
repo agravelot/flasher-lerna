@@ -1,6 +1,8 @@
 package article
 
 import (
+	"api-go/infrastructure/auth"
+	"api-go/model"
 	"context"
 	"errors"
 	"fmt"
@@ -12,8 +14,6 @@ import (
 	"gorm.io/gorm"
 
 	articles_pb "api-go/gen/go/articles/v2"
-	"api-go/infrastructure/auth"
-	"api-go/model"
 )
 
 var (
@@ -132,6 +132,9 @@ func (s service) Create(ctx context.Context, request *articles_pb.CreateRequest)
 		},
 	})
 	if err != nil {
+		if errors.Is(err, gorm.ErrDuplicatedKey) {
+			return nil, ErrAlreadyExists
+		}
 		return nil, fmt.Errorf("unable create article: %w", err)
 	}
 
