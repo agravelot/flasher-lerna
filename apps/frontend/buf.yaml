@@ -1,0 +1,12 @@
+version: v1
+name: buf.build/agravelot/flasher-client
+deps:
+  - buf.build/googleapis/googleapis
+
+breaking:
+  use:
+    - FILE
+
+lint:
+  use:
+    - DEFAULT

@@ -1,0 +1,5 @@
+version: v1
+plugins:
+  - plugin: buf.build/community/timostamm-protobuf-ts
+    out: gen
+    opt: ts_nocheck,eslint_disable,server_none,add_pb_suffix

@@ -9,7 +9,8 @@
     "type-check": "tsc",
     "lint": "eslint '**/*{js,jsx,ts,tsx}' --fix",
     "pwa:icons": "ngx-pwa-icons -i static/icon.png -o public",
-    "favicon": "real-favicon generate faviconDescription.json faviconData.json public"
+    "favicon": "real-favicon generate faviconDescription.json faviconData.json public",
+    "buf": "buf generate"
   },
   "dependencies": {
     "@flasher/common": "file:../common",
@@ -70,11 +71,13 @@
     "typescript": "^5.2.2"
   },
   "devDependencies": {
+    "buf": "^0.1.1",
     "cli-real-favicon": "^0.0.8",
     "ngx-pwa-icons": "^0.1.2"
   },
   "license": "MIT",
   "volta": {
-    "node": "20.11.1"
+    "node": "20.7.0",
+    "yarn": "3.6.4"
   }
 }
