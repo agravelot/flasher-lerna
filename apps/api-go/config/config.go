@@ -22,6 +22,14 @@ type Config struct {
 		// Port     int    `envconfig:"DB_PORT" required:"false"`
 		// SslMode  string `envconfig:"DB_SSL_MODE" required:"false"`
 	}
+	Keycloak struct {
+		Url            string `envconfig:"KEYCLOAK_URL"`
+		Realm          string `envconfig:"KEYCLOAK_REALM"`
+		ServiceAccount struct {
+			User     string `envconfig:"KEYCLOAK_SERVICE_ACCOUNT_USER" required:"false"`
+			Password string `envconfig:"KEYCLOAK_SERVICE_ACCOUNT_PASSWORD" required:"false"`
+		}
+	}
 }
 
 func FromDotEnv(path string) (*Config, error) {
