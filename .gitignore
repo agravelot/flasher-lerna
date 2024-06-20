@@ -2,3 +2,5 @@ node_modules
 .secrets
 apps/api-go/.env
 apps/api-go/tmp
+.idea
+.yarn/
