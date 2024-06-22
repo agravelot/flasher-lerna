@@ -104,7 +104,7 @@ func processFile(entry os.DirEntry) (Post, error) {
 		if key == "createdAt" {
 			t, err := time.Parse(time.RFC3339, value)
 			if err != nil {
-				panic(fmt.Errorf("error parsing date: %s %s", value, err))
+				panic(fmt.Errorf("error parsing date: %s %s %s", value, slug, err))
 			}
 			post.CreatedAt = t
 			continue
