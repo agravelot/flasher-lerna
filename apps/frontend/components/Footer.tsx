@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import SocialMediaItem from "./SocialMedia";
 import Link from "next/link";
 import Separator from "./Separator";
@@ -12,7 +12,7 @@ interface Props {
 
 const date = new Date().getFullYear();
 
-const Footer: FunctionComponent<Props> = ({ socialMedias }: Props) => {
+const Footer: FC<Props> = ({ socialMedias }: Props) => {
   const { keycloak, isAuthenticated } = useAuthentication();
   const { administration } = configuration;
 

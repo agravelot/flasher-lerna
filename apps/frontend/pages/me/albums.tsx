@@ -1,5 +1,5 @@
 import { GetStaticProps } from "next";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import Header from "../../components/Header";
 import Image from "next/image";
@@ -25,10 +25,7 @@ export enum State {
 }
 
 // TODO Notify errors list/download
-const MyAlbums: FunctionComponent<Props> = ({
-  socialMedias,
-  appName,
-}: Props) => {
+const MyAlbums: FC<Props> = ({ socialMedias, appName }: Props) => {
   const [albums, setAlbums] = useState<Album[]>([]);
   const [status, setStatus] = useState<State>(State.Loading);
   const [pagination, setPagination] = useState<PaginationProps>();

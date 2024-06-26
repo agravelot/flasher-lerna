@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FC } from "react";
 import Image from "next/image";
 import { ImageGallery, ImageObject, Person } from "schema-dts";
 import { useRouter } from "next/dist/client/router";
@@ -11,10 +11,7 @@ type Props = {
   openGalleryAt: (index: number) => void;
 };
 
-const AlbumMediaList: FunctionComponent<Props> = ({
-  album,
-  openGalleryAt,
-}: Props) => {
+const AlbumMediaList: FC<Props> = ({ album, openGalleryAt }: Props) => {
   const { asPath } = useRouter();
 
   const person: Person = {

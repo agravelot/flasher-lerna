@@ -1,12 +1,12 @@
 import { Category } from "@flasher/models";
-import React, { FunctionComponent } from "react";
+import React, { FC } from "react";
 import CategoryItem from "./CategoryItem";
 
 type Props = {
   categories: Category[];
 };
 
-const CategoryList: FunctionComponent<Props> = ({ categories }: Props) => (
+const CategoryList: FC<Props> = ({ categories }: Props) => (
   <div className="container mx-auto py-8">
     <div className="flex flex-wrap md:-mx-3">
       {categories.map((category) => (

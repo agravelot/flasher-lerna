@@ -1,21 +1,21 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import { api, HttpRequestError } from "@flasher/common";
 import { Path, useForm } from "react-hook-form";
 import { ContactInput } from "./ContactInput";
 import { contactFormMatrix } from "./ContactFormMatrix";
 
 enum PrestationTypeEnum {
-  COMMON,
-  WEDDING,
-  PREGNANCY,
-  CASUAL,
-  ANIMAL,
-  FAMILY,
-  COSPLAY,
-  OTHER
+  COMMON = 0,
+  WEDDING = 1,
+  PREGNANCY = 2,
+  CASUAL = 3,
+  ANIMAL = 4,
+  FAMILY = 5,
+  COSPLAY = 6,
+  OTHER = 7,
 }
 
-type PrestationType = Lowercase<keyof typeof PrestationTypeEnum>
+type PrestationType = Lowercase<keyof typeof PrestationTypeEnum>;
 
 interface ContactErrors {
   errors: { email?: string[]; name?: string[]; message?: string[] };
@@ -33,18 +33,18 @@ export interface SelectOption {
 }
 
 export interface MatrixField {
-  isVisible?: (input: ContactFormRequestInputs) => boolean
+  isVisible?: (input: ContactFormRequestInputs) => boolean;
   idForm: Path<ContactFormRequestInputs>;
   idHtml: string;
   label: string;
-  type: string;
+  inputType: "tel" | "email" | "text" | "checkbox";
   placeholder?: string;
   required?: boolean;
-  tag?: string;
+  tag: "select" | "checkbox" | "textarea" | "input";
   checkboxTitle?: boolean;
   checkboxValue?: string;
   checkboxLabel?: string;
-  selectOptions?: SelectOption[]
+  selectOptions?: SelectOption[];
   otherInputInfo?: MatrixField;
 }
 
@@ -71,55 +71,74 @@ export interface ContactFormRequestInputs {
   message: string;
 }
 
-
-const ContactForm: FunctionComponent = () => {
-
+const ContactForm: FC = () => {
   const {
     register,
     handleSubmit,
     watch,
     reset,
     setError,
-    formState: { errors, isSubmitSuccessful, isValid, isSubmitting, },
-    getValues
+    formState: { errors, isSubmitSuccessful, isValid, isSubmitting },
+    getValues,
   } = useForm<ContactFormRequestInputs>();
 
   watch(["connect", "prestationType"]);
 
   const onSubmit = (options: ContactFormRequestInputs) => {
-
     let message = "";
 
-    contactFormMatrix.find(formPart => formPart.prestationType === "common")?.fields.map((field) => {
-      if (options[field.idForm] != "" && field.idForm != "email" && field.idForm != "name") {
+    contactFormMatrix
+      .find((formPart) => formPart.prestationType === "common")
+      ?.fields.forEach((field) => {
+        if (
+          options[field.idForm] === "" ||
+          field.idForm === "email" ||
+          field.idForm === "name"
+        ) {
+          return;
+        }
         message += `${field.label} : ${options[field.idForm]} <br/>`;
-      }
-    });
+      });
 
-    message += "Type de prestation : " + contactFormMatrix.find(formPart => formPart.prestationType === getValues().prestationType)?.prestationName + " <br/>";
+    message +=
+      "Type de prestation : " +
+      contactFormMatrix.find(
+        (formPart) => formPart.prestationType === getValues().prestationType,
+      )?.prestationName +
+      " <br/>";
 
-    contactFormMatrix.find(formPart => formPart.prestationType === getValues().prestationType)?.fields.map((field) => {
-      if (options[field.idForm] !== "") {
-        switch (field.tag) {
-          case "select": {
-            const answer = field.selectOptions?.find(option => option.value === options[field.idForm]);
-            message += `${field.label} : ${answer?.label} <br/>`;
-            break;
-          }
-          case "checkbox":
-            message += `${field.label} - ${field.checkboxLabel} : ${(options[field.idForm] ? "Oui" : "Non")} <br/>`;
-            break;
-          default:
-            if (field.idForm === "connectOther" && options["connect"] !== "other") {
+    contactFormMatrix
+      .find(
+        (formPart) => formPart.prestationType === getValues().prestationType,
+      )
+      ?.fields.forEach((field) => {
+        if (options[field.idForm] !== "") {
+          switch (field.tag) {
+            case "select": {
+              const answer = field.selectOptions?.find(
+                (option) => option.value === options[field.idForm],
+              );
+              message += `${field.label} : ${answer?.label} <br/>`;
               break;
             }
-            message += `${field.label} : ${options[field.idForm]} <br/>`;
-            break;
+            case "checkbox":
+              message += `${field.label} - ${field.checkboxLabel} : ${
+                options[field.idForm] ? "Oui" : "Non"
+              } <br/>`;
+              break;
+            default:
+              if (
+                field.idForm === "connectOther" &&
+                options["connect"] !== "other"
+              ) {
+                break;
+              }
+              message += `${field.label} : ${options[field.idForm]} <br/>`;
+              break;
+          }
         }
-      }
-    });
-    const email = options.email;
-    const name = options.name;
+      });
+
     api("/contact", {
       method: "POST",
       headers: {
@@ -127,8 +146,8 @@ const ContactForm: FunctionComponent = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name,
-        email,
+        name: options.name,
+        email: options.email,
         message,
       }),
     })
@@ -143,7 +162,7 @@ const ContactForm: FunctionComponent = () => {
             setError(
               "email",
               { message: data.errors.email[0] },
-              { shouldFocus: true }
+              { shouldFocus: true },
             );
           }
 
@@ -151,7 +170,7 @@ const ContactForm: FunctionComponent = () => {
             setError(
               "name",
               { message: data.errors.name[0] },
-              { shouldFocus: true }
+              { shouldFocus: true },
             );
           }
 
@@ -159,7 +178,7 @@ const ContactForm: FunctionComponent = () => {
             setError(
               "message",
               { message: data.errors.message[0] },
-              { shouldFocus: true }
+              { shouldFocus: true },
             );
           }
         }
@@ -170,20 +189,22 @@ const ContactForm: FunctionComponent = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {
-        contactFormMatrix.find(formPart => formPart.prestationType === "common")?.fields.map((field) => {
+      {contactFormMatrix
+        .find((formPart) => formPart.prestationType === "common")
+        ?.fields.map((field) => {
           if (field.isVisible && !field.isVisible(getValues())) {
             return null;
           }
 
-          return <ContactInput
-            key={field.idForm}
-            register={register}
-            errors={errors}
-            field={field}
-          />;
-        })
-      }
+          return (
+            <ContactInput
+              key={field.idForm}
+              register={register}
+              errors={errors}
+              field={field}
+            />
+          );
+        })}
 
       <div className="relative mb-3 w-full">
         <label
@@ -193,15 +214,18 @@ const ContactForm: FunctionComponent = () => {
           Type de prestation
         </label>
         <select
-          {...register("prestationType", { required: false })}
+          {...register("prestationType", {
+            required: "Veuillez sélectionner un type de prestation",
+          })}
           name="prestationType"
           id="contact_prestation_type"
-          required={true}
           defaultValue=""
           className="w-full rounded bg-white px-3 py-3 text-sm text-gray-700 placeholder-gray-400 shadow focus:outline-none focus:ring"
           style={{ transition: "all 0.15s ease 0s" }}
         >
-          <option value="" disabled>Sélectionner une prestation</option>
+          <option value="" disabled>
+            Sélectionner une prestation
+          </option>
           <option value="wedding">Mariage</option>
           <option value="casual">Casual</option>
           <option value="family">Familial</option>
@@ -211,34 +235,38 @@ const ContactForm: FunctionComponent = () => {
           <option value="other">Autre</option>
         </select>
         {errors.prestationType && (
-          <div className="text-xs italic text-red-800">
-            <span className="text-xs italic text-red-800">
+          <div className="mt-2">
+            <span className=" italic text-red-800">
               {errors.prestationType.message}
             </span>
           </div>
         )}
       </div>
-      {
-        contactFormMatrix.find(formPart => formPart.prestationType === getValues().prestationType)?.fields.map((field) => {
-
+      {contactFormMatrix
+        .find(
+          (formPart) => formPart.prestationType === getValues().prestationType,
+        )
+        ?.fields.map((field) => {
           if (field.isVisible && !field.isVisible(getValues())) {
             return null;
           }
 
-          return <ContactInput
-            key={field.idForm}
-            register={register}
-            errors={errors}
-            field={field}
-          />;
-        })
-      }
+          return (
+            <ContactInput
+              key={field.idForm}
+              register={register}
+              errors={errors}
+              field={field}
+            />
+          );
+        })}
       <div className="mt-6 text-center">
         <button
-          className={`inline-flex rounded-lg bg-gradient-to-r from-blue-700 to-red-700 px-12 py-3 text-sm font-semibold text-white shadow hover:from-pink-500 hover:to-orange-500 hover:shadow-lg active:bg-gray-700 ${(isSubmitting && isValid) || isSubmitSuccessful
-            ? "cursor-not-allowed"
-            : null
-            }`}
+          className={`inline-flex rounded-lg bg-gradient-to-r from-blue-700 to-red-700 px-12 py-3 text-sm font-semibold text-white shadow hover:from-pink-500 hover:to-orange-500 hover:shadow-lg active:bg-gray-700 ${
+            (isSubmitting && isValid) || isSubmitSuccessful
+              ? "cursor-not-allowed"
+              : ""
+          }`}
           type="submit"
           style={{ transition: "all 0.15s ease 0s" }}
         >
@@ -278,26 +306,27 @@ const ContactForm: FunctionComponent = () => {
               />
             </svg>
           )}
-          {(!isSubmitSuccessful && !isSubmitting) || (!isValid && (
-            <svg
-              className="-ml-1 mr-3 h-5 w-5 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-              />
-            </svg>
-          ))}
+          {(!isSubmitSuccessful && !isSubmitting) ||
+            (!isValid && (
+              <svg
+                className="-ml-1 mr-3 h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                />
+              </svg>
+            ))}
           <span>Envoyer</span>
         </button>
       </div>
-    </form >
+    </form>
   );
 };
 

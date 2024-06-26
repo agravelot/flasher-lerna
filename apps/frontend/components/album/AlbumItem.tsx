@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { FunctionComponent } from "react";
+import React, { FC } from "react";
 import Image from "next/image";
 import { Album } from "@flasher/models";
 import { sizes } from "../../utils/util";
@@ -8,7 +8,7 @@ interface Props {
   album: Album;
 }
 
-const AlbumItem: FunctionComponent<Props> = ({ album }: Props) => {
+const AlbumItem: FC<Props> = ({ album }: Props) => {
   return (
     <div className="transform overflow-hidden rounded bg-white shadow-lg transition duration-200 ease-in-out hover:scale-105 motion-reduce:transform-none motion-reduce:transition-none">
       <Link
@@ -37,9 +37,7 @@ const AlbumItem: FunctionComponent<Props> = ({ album }: Props) => {
           aria-label={album.title}
           //  :to="{ name: 'albums-slug', params: { slug: album.slug } }"
         >
-          <h3 className="text-xl font-bold leading-tight">
-            {album.title}
-          </h3>
+          <h3 className="text-xl font-bold leading-tight">{album.title}</h3>
         </Link>
       </div>
       <div className="px-6 pb-4">

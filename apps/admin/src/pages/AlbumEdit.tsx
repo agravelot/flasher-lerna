@@ -1,5 +1,5 @@
 import {
-  FunctionComponent,
+  FC,
   useCallback,
   useEffect,
   useMemo,
@@ -13,7 +13,7 @@ import MediaUploader from "../components/MediaUploader";
 import { MediaOrdering } from "../components/MediaOrdering";
 import { useAuthentication } from "../hooks/useAuthentication";
 
-const AlbumEdit: FunctionComponent = () => {
+const AlbumEdit: FC = () => {
   const navigate = useNavigate();
   const { initialized, keycloak } = useAuthentication();
 

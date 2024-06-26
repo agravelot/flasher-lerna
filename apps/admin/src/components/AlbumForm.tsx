@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import { Formik, Field, Form } from "formik";
 import { Album } from "@flasher/models";
 import { apiRepository } from "@flasher/common";
@@ -20,7 +20,7 @@ interface AlbumForm {
   published_at: string | null;
 }
 
-const AlbumForm: FunctionComponent<AlbumFormProps> = ({
+const AlbumForm: FC<AlbumFormProps> = ({
   onPostSubmit,
   onPostDelete,
   album,

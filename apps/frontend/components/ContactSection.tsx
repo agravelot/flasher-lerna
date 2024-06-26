@@ -1,8 +1,8 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import Separator from "./Separator";
 import ContactForm from "./ContactForm";
 
-export const ContactSection: FunctionComponent = () => {
+export const ContactSection: FC = () => {
   return (
     <section className="relative bg-gray-900 pb-20">
       <Separator separatorClass="text-gray-900" position="top" />
@@ -13,7 +13,10 @@ export const ContactSection: FunctionComponent = () => {
               Pourquoi pas vous ?
             </h2>
             <p className="mt-4 mb-4 text-lg leading-relaxed text-gray-200">
-              D&apos;autres avant vous ont fait le grand saut, pourquoi pas vous ? En couple, en famille, seul(e), faites vous plaisir. Chaque prestations est unique, alors, faisons ce petit bout de chemin ensemble, cela vous tente ?
+              D&apos;autres avant vous ont fait le grand saut, pourquoi pas vous
+              ? En couple, en famille, seul(e), faites vous plaisir. Chaque
+              prestations est unique, alors, faisons ce petit bout de chemin
+              ensemble, cela vous tente ?
             </p>
             <div className="flex text-white">
               <div className="mx-auto flex">

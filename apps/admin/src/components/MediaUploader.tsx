@@ -1,4 +1,4 @@
-import { FunctionComponent, memo, useEffect } from "react";
+import { FC, memo, useEffect } from "react";
 import Uppy from "@uppy/core";
 import Tus from "@uppy/tus";
 import { Dashboard } from "@uppy/react";
@@ -16,7 +16,7 @@ export interface MediaUploaderProps {
 }
 
 // Use memo to avoid re-rendering the component on upload success
-const MediaUploader: FunctionComponent<MediaUploaderProps> = memo(
+const MediaUploader: FC<MediaUploaderProps> = memo(
   function MediaUploader(props: MediaUploaderProps) {
     const { initialized, keycloak } = useAuthentication();
 

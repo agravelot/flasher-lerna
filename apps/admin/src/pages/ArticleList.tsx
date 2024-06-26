@@ -1,6 +1,6 @@
 import { ArticlesApi, Configuration } from "@flasher/http-client";
 import ArticleTable from "../components/ArticleTable";
-import { FunctionComponent, useState } from "react";
+import { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import { useAuthentication } from "../hooks/useAuthentication";
@@ -20,7 +20,7 @@ const config = new Configuration({
 
 const api = new ArticlesApi(config);
 
-const ArticleList: FunctionComponent = () => {
+const ArticleList: FC = () => {
   const { initialized, keycloak } = useAuthentication();
   const [selectedArticles, setSelectedArticles] = useState<Article[]>([]);
 
