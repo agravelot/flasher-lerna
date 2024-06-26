@@ -1,53 +1,45 @@
-import { Album } from "@flasher/models";
-import { MetaPaginatedReponse, apiRepository } from "@flasher/common";
-import { FunctionComponent, useEffect, useState } from "react";
+import { apiRepository } from "@flasher/common";
+import { FunctionComponent } from "react";
 import AlbumTable from "../components/AlbumsTable";
 import { useLocation } from "react-router-dom";
 import { Pagination } from "../components/Pagination";
 import { useAuthentication } from "../hooks/useAuthentication";
-
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
+import { useQuery } from "@tanstack/react-query";
 
 const AlbumList: FunctionComponent = () => {
-  const query = useQuery();
-  const [albums, setAlbums] = useState<Album[]>([]);
-  const [meta, setMeta] = useState<MetaPaginatedReponse | null>(null);
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
   const { keycloak, initialized } = useAuthentication();
 
-  const location = useLocation();
-
-  useEffect(() => {
-    if (!initialized || !keycloak) {
-      return;
-    }
-
-    const repo = apiRepository(keycloak);
-
-    repo.admin.albums
-      .list({ page: Number(query.get("page")) ?? 1, perPage: 10 })
-      .then((res) => {
-        setAlbums(res.data);
-        setMeta(res.meta);
+  const { data } = useQuery({
+    queryKey: ["albums-list"],
+    enabled: initialized && !!keycloak,
+    queryFn: () => {
+      if (!initialized || !keycloak) {
+        return;
+      }
+      return apiRepository(keycloak).admin.albums.list({
+        page: Number(params.get("page")) ?? 1,
+        perPage: 10,
       });
-  }, [location, initialized]);
+    },
+  });
 
   return (
     <div>
-      <AlbumTable albums={albums} />
-      {meta && (
+      <AlbumTable albums={data?.data ?? []} />
+      {data?.meta ? (
         <Pagination
           showInfo={true}
-          currentPage={meta.current_page}
-          perPage={meta.per_page}
-          totalItems={meta.total}
-          from={meta.from}
-          to={meta.to}
-          lastPage={meta.last_page}
+          currentPage={data.meta.current_page}
+          perPage={data.meta.per_page}
+          totalItems={data.meta.total}
+          from={data.meta.from}
+          to={data.meta.to}
+          lastPage={data.meta.last_page}
           routeName="/albums"
         />
-      )}
+      ) : null}
     </div>
   );
 };

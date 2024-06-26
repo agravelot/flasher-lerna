@@ -1,32 +1,8 @@
-import { readdirSync, readFileSync } from "fs";
-import { join } from "path";
-import matter from "gray-matter";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
-
-const postsDirectory = join(process.cwd(), "content", "blog");
-
-export const getPostSlugs = (): string[] => {
-  return readdirSync(postsDirectory);
-};
-
-export async function getPostBySlug(slug: string): Promise<BlogPost> {
-  const realSlug = slug.replace(/\.mdx$/, "");
-  const fullPath = join(postsDirectory, `${realSlug}.mdx`);
-  const fileContents = readFileSync(fullPath, "utf8");
-  const { data, content } = matter(fileContents);
-
-  return {
-    slug: realSlug,
-    content,
-    contentSerialized: null,
-    title: data.title,
-    author: data.author,
-    status: data.status,
-    metaDescription: data.metaDescription,
-    createdAt: data.createdAt.toString(),
-    updatedAt: null,
-  };
-}
+import { GrpcTransport } from "@protobuf-ts/grpc-transport";
+import { ChannelCredentials } from "@grpc/grpc-js";
+import { ArticleServiceClient } from "../gen/articles/v2/articles_pb.client";
+import { ArticleResponse } from "../gen/articles/v2/articles_pb";
 
 export interface BlogPost {
   title: string;
@@ -40,19 +16,44 @@ export interface BlogPost {
   updatedAt: string | null;
 }
 
-export async function getAllPosts(
-  status: "all" | "published" = "all"
-): Promise<BlogPost[]> {
-  const slugs = getPostSlugs();
-  const posts: BlogPost[] = [];
+const transformArticle = (p: ArticleResponse) => {
+  return {
+    title: p.name,
+    author: p.authorId, // TODO add name
+    content: p.content,
+    slug: p.slug,
+    contentSerialized: null,
+    metaDescription: p.metaDescription,
+    status: p.publishedAt ? "published" : "draft",
+    createdAt: new Date().toString(), // TODO
+    updatedAt: new Date().toString(),
+  } satisfies BlogPost;
+};
 
-  for (const slug of slugs) {
-    posts.push(await getPostBySlug(slug));
-  }
+export async function getPostBySlug(slug: string): Promise<BlogPost> {
+  const grpcTransport = new GrpcTransport({
+    host: "localhost:3100",
+    channelCredentials: ChannelCredentials.createInsecure(),
+  });
+  const client = new ArticleServiceClient(grpcTransport);
 
-  return posts
-    .filter((p) => status === "all" || p.status === "published")
-    .sort((post1, post2) =>
-      new Date(post1.createdAt) > new Date(post2.createdAt) ? -1 : 1
-    );
+  const post = await client.getBySlug({ slug });
+
+  console.log(post.response.content);
+
+  return transformArticle(post.response);
+}
+
+export async function getAllPosts(): Promise<BlogPost[]> {
+  const grpcTransport = new GrpcTransport({
+    host: "localhost:3100",
+    channelCredentials: ChannelCredentials.createInsecure(),
+  });
+  const client = new ArticleServiceClient(grpcTransport);
+
+  const posts = await client.index({
+    limit: 100,
+  });
+
+  return posts.response.data.map(transformArticle);
 }
